@@ -103,12 +103,12 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             return individuals
                 .SelectMany(r => Enumerable.Repeat(r, replicates))
                 .SelectMany(r => Enumerable
-                .Range(0, r.NumberOfDaysInSurvey)
-                .Select((id, ix) =>
-                    new SimulatedIndividualDay(r) {
-                        SimulatedIndividualDayId = individualDayCounter++,
-                        Day = ix.ToString(),
-                    })
+                    .Range(0, r.NumberOfDaysInSurvey)
+                    .Select((id, ix) =>
+                        new SimulatedIndividualDay(r) {
+                            SimulatedIndividualDayId = individualDayCounter++,
+                            Day = ix.ToString()
+                        })
                 ).ToList();
         }
 
@@ -125,7 +125,11 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             var simIndex = 0;
             var sims = individuals
                 .SelectMany(r => Enumerable.Repeat(r, replicates))
-                .Select(id => new SimulatedIndividual(id, simIndex++))
+                .Select(r => new SimulatedIndividual(r, simIndex++) {
+                    BodyWeight = r.BodyWeight,
+                    Age = r.Age,
+                    Gender = r.Gender
+                })
                 .ToList();
             return sims;
         }

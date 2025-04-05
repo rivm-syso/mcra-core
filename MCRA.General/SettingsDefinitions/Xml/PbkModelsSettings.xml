@@ -59,8 +59,8 @@
     <Id>SelectedEvents</Id>
     <Name>Specify the hours (events).</Name>
     <Description>
-      Specify the hours (events) on which a dose is applied. Allowed numbers are 1, 2, 3, 4,..., 24 separated
-      by spaces.
+      Specify the hours on which exposure events are simulated.
+      Allowed numbers are 1, 2, 3, 4,..., 24 separated by spaces.
     </Description>
     <ValueType>Numeric</ValueType>
     <IsInteger>true</IsInteger>
@@ -71,8 +71,8 @@
     <Id>SpecifyEvents</Id>
     <Name>Specify event timings</Name>
     <Description>
-      If checked, a sequence of hours can be specified, otherswise the events are derived based on the number
-      of doses per day.
+      If checked, a specific sequence of hours on a day can be specified on which exposure events are simulated.
+      Otherwise the events are derived based on the number of exposure events per day.
     </Description>
     <ValueType>Boolean</ValueType>
   </SettingsItem>

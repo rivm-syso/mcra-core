@@ -505,10 +505,9 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             var pbkSimulationSettings = new PbkSimulationSettings() {
                 NumberOfSimulatedDays = ModuleConfig.NumberOfDays,
                 UseRepeatedDailyEvents = ModuleConfig.ExposureEventsGenerationMethod == ExposureEventsGenerationMethod.DailyAverageEvents,
-                NumberOfDosesPerDay = ModuleConfig.NumberOfDosesPerDayNonDietaryOral,
-                NumberOfDosesPerDayNonDietaryOral = ModuleConfig.NumberOfDosesPerDayNonDietaryOral,
-                NumberOfDosesPerDayNonDietaryDermal = ModuleConfig.NumberOfDosesPerDayNonDietaryDermal,
-                NumberOfDosesPerDayNonDietaryInhalation = ModuleConfig.NumberOfDosesPerDayNonDietaryInhalation,
+                NumberOfOralDosesPerDay = ModuleConfig.NumberOfDosesPerDayNonDietaryOral,
+                NumberOfDermalDosesPerDay = ModuleConfig.NumberOfDosesPerDayNonDietaryDermal,
+                NumberOfInhalationDosesPerDay = ModuleConfig.NumberOfDosesPerDayNonDietaryInhalation,
                 NonStationaryPeriod = ModuleConfig.NonStationaryPeriod,
                 UseParameterVariability = ModuleConfig.UseParameterVariability,
                 SpecifyEvents = ModuleConfig.SpecifyEvents,

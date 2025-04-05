@@ -1,10 +1,10 @@
-﻿using System.Globalization;
+﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Reflection;
 using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
-using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation.ParameterDistributionModels;
+using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation.ExposureEvent;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.R.REngines;
 using MCRA.Utils.Statistics;
@@ -12,9 +12,10 @@ using MCRA.Utils.Statistics;
 namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation.DesolvePbkModelCalculators {
     public abstract class DesolvePbkModelCalculator : PbkModelCalculatorBase {
 
-        protected string _dllFileName;
-        protected List<KineticModelStateSubstanceDefinition> _modelStates;
-        protected List<(string idSpecies, KineticModelOutputDefinition outputDefinition)> _modelOutputs;
+        private readonly string _dllFileName;
+        private readonly string _modelFilePath;
+        private readonly List<KineticModelStateSubstanceDefinition> _modelStates;
+        private readonly List<(string idSpecies, KineticModelOutputDefinition outputDefinition)> _modelOutputs;
 
         public bool DebugMode { get; set; } = false;
         public Func<RDotNetEngine> CreateREngine = () => new RDotNetEngine();
@@ -24,6 +25,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             PbkSimulationSettings simulationSettings
         ) : base(kineticModelInstance, simulationSettings) {
             _dllFileName = Path.GetFileNameWithoutExtension(KineticModelDefinition.FileName);
+            _modelFilePath = getModelFilePath();
             _modelStates = KineticModelDefinition.States
                 .SelectMany(c =>
                     c.StateSubstances?.Count > 0
@@ -50,7 +52,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         /// </summary>
         protected override Dictionary<int, List<SubstanceTargetExposurePattern>> calculate(
             IDictionary<int, List<IExternalIndividualDayExposure>> externalIndividualExposures,
-            ExposureUnitTriple externalExposureUnit,
+            ExposureUnitTriple exposureUnit,
             ICollection<ExposureRoute> routes,
             ICollection<TargetUnit> targetUnits,
             ExposureType exposureType,
@@ -58,13 +60,10 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             IRandom generator,
             ProgressState progressState
         ) {
-            progressState.Update("PBK modelling started");
+            progressState.Update("Starting PBK model simulation");
 
             // Determine modelled/unmodelled exposure routes
             var modelExposureRoutes = KineticModelInstance.KineticModelDefinition.GetExposureRoutes();
-
-            // Get kinetic model output mappings for selected targets
-            var outputMappings = getTargetOutputMappings(targetUnits);
 
             // Get time resolution
             var numberOfSimulatedDays = SimulationSetings.NumberOfSimulatedDays;
@@ -72,48 +71,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             var stepLength = 1d / KineticModelDefinition.EvaluationFrequency;
             var evaluationPeriod = numberOfSimulatedDays * timeUnitMultiplier;
 
-            // Get nominal input parameters
-            var nominalInputParametersOrder = KineticModelDefinition.Parameters
-                .Where(r => !r.SubstanceParameterValues.Any())
-                .ToDictionary(
-                    r => r.Order,
-                    r => {
-                        if (KineticModelInstance.KineticModelInstanceParameters.TryGetValue(r.Id, out var parameter)) {
-                            return parameter;
-                        } else if (!r.IsInternalParameter) {
-                            throw new Exception($"Kinetic model parameter {r.Id} not found in model instance {KineticModelInstance.IdModelInstance}");
-                        } else {
-                            return new KineticModelInstanceParameter() { Parameter = r.Id, Value = 0D };
-                        }
-                    }
-                );
-
-            // Get nominal input parameters for parent and metabolites
-            var substanceParameterValuesOrder = KineticModelDefinition.Parameters
-                .Where(r => r.SubstanceParameterValues.Any())
-                .SelectMany(c => c.SubstanceParameterValues)
-                .ToDictionary(c => c.Order,
-                    c => {
-                        if (KineticModelInstance.KineticModelInstanceParameters.TryGetValue(c.IdParameter, out var parameter)) {
-                            return parameter;
-                        } else {
-                            throw new Exception($"Kinetic model parameter {c} not found in model instance {KineticModelInstance.IdModelInstance}");
-                        }
-                    }
-                );
-
-            // Combine dictionaries
-            substanceParameterValuesOrder.ToList().ForEach(x => nominalInputParametersOrder[x.Key] = x.Value);
-            var nominalInputParameters = nominalInputParametersOrder
-                .OrderBy(c => c.Key)
-                .ToDictionary(c => c.Value.Parameter, c => c.Value);
-
-            // Adapt physiological parameters to current individual
-            var standardBW = nominalInputParameters[KineticModelDefinition.IdBodyWeightParameter].Value;
-            var standardBSA = double.NaN;
-            if (KineticModelDefinition.IdBodySurfaceAreaParameter != null) {
-                standardBSA = nominalInputParameters[KineticModelDefinition.IdBodySurfaceAreaParameter].Value;
-            }
+            var nominalInputParameters = getNominalParameter();
 
             // Get integrator
             var integrator = string.Empty;
@@ -125,104 +83,72 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                 }
             }
 
-            // Get events
-            var eventsDictionary = SimulationSetings.UseRepeatedDailyEvents
-                ? modelExposureRoutes
-                    .ToDictionary(r => r, r => getRepeatedDailyEventTimings(
-                       r, timeUnitMultiplier, numberOfSimulatedDays
-                    ))
-                : modelExposureRoutes
-                    .ToDictionary(r => r, r => getEventTimings(
-                        r, timeUnitMultiplier, numberOfSimulatedDays, SimulationSetings.SpecifyEvents
-                    ));
+            // Initialise exposure events generator
+            var exposureEventsGenerator = new ExposureEventsGenerator(
+                SimulationSetings,
+                KineticModelDefinition.TimeScale,
+                exposureUnit,
+                KineticModelDefinition.Forcings
+                    .ToDictionary(
+                        r => r.Route,
+                        r => r.DoseUnit
+                    )
+            );
 
-            var events = calculateCombinedEventTimings(eventsDictionary);
+            // Get kinetic model output mappings for selected targets
+            var outputMappings = getTargetOutputMappings(targetUnits);
+
             var individualResults = new Dictionary<int, List<SubstanceTargetExposurePattern>>();
             using (var R = CreateREngine()) {
                 R.LoadLibrary("deSolve", null, true);
-                R.EvaluateNoReturn($"dyn.load(paste('{getModelFilePath()}', .Platform$dynlib.ext, sep = ''))");
+                R.EvaluateNoReturn($"dyn.load(paste('{_modelFilePath}', .Platform$dynlib.ext, sep = ''))");
                 try {
-                    R.SetSymbol("events", events);
                     R.EvaluateNoReturn($"times <- seq(from=0, to={evaluationPeriod}, by={stepLength.ToString(CultureInfo.InvariantCulture)})");
                     foreach (var id in externalIndividualExposures.Keys) {
-                        var boundedForcings = new List<string>();
-                        var hasPositiveExposures = false;
+                        var individual = externalIndividualExposures[id].First().SimulatedIndividual;
+
                         // Create exposure events
-                        foreach (var route in modelExposureRoutes) {
-                            if (_modelInputDefinitions.TryGetValue(route, out var value)) {
-                                var routeExposures = getRouteSubstanceIndividualDayExposures(
-                                    externalIndividualExposures[id],
-                                    Substance,
-                                    route
-                                );
-                                var substanceAmountUnitMultiplier = value.DoseUnit
-                                    .GetSubstanceAmountUnit()
-                                    .GetMultiplicationFactor(
-                                        externalExposureUnit.SubstanceAmountUnit,
-                                        Substance.MolecularMass
-                                    );
-                                var dailyDoses = routeExposures
-                                    .Select(r => r / substanceAmountUnitMultiplier)
-                                    .ToList();
-                                var unitDoses = SimulationSetings.UseRepeatedDailyEvents
-                                    ? [dailyDoses.Average()]
-                                    : getUnitDoses(nominalInputParameters, dailyDoses, route);
-                                var simulatedDoses = drawSimulatedDoses(unitDoses, eventsDictionary[route].Count, generator);
-                                var simulatedDosesExpanded = combineDosesWithEvents(events, eventsDictionary[route], simulatedDoses);
-                                R.SetSymbol("doses", simulatedDosesExpanded);
-                                R.EvaluateNoReturn(route.ToString() + " <- cbind(events, doses)");
-                                boundedForcings.Add(route.ToString());
-                                if (unitDoses.Any(c => c > 0)) {
-                                    hasPositiveExposures = true;
-                                }
-                            }
-                        }
+                        var exposureEvents = exposureEventsGenerator
+                            .CreateExposureEvents(
+                                externalIndividualExposures[id],
+                                routes,
+                                Substance,
+                                generator
+                            );
+
+                        // Compute event timings and doses per route and set in R
+                        (var timings, var dosesPerRoute) = computeDoses(
+                            modelExposureRoutes,
+                            exposureEvents,
+                            timeUnitMultiplier
+                        );
 
                         var result = new List<SubstanceTargetExposurePattern>();
-
-                        if (hasPositiveExposures) {
+                        if (exposureEvents.Any()) {
                             // Use variability
-                            var inputParameters = drawParameters(
+                            var parameters = drawParameters(
                                 nominalInputParameters,
                                 generator,
                                 isNominal,
                                 SimulationSetings.UseParameterVariability
                             );
-                            inputParameters = setStartingEvents(inputParameters);
+                            setPhysiologicalParameterValues(parameters, individual);
+                            setStartingEvents(parameters);
 
-                            // Set BW
-                            var bodyWeight = externalIndividualExposures[id].First().SimulatedIndividual?.BodyWeight ?? standardBW;
-                            inputParameters[KineticModelDefinition.IdBodyWeightParameter] = bodyWeight;
-
-                            // Set BSA
-                            if (KineticModelDefinition.IdBodySurfaceAreaParameter != null) {
-                                var allometricScaling = Math.Pow(standardBW / bodyWeight, 1 - 0.7);
-                                inputParameters[KineticModelDefinition.IdBodySurfaceAreaParameter] = standardBSA / allometricScaling;
+                            // Create forcings
+                            R.SetSymbol("events", timings);
+                            foreach (var routeDoses in dosesPerRoute) {
+                                R.SetSymbol("doses", routeDoses.Value);
+                                R.EvaluateNoReturn(routeDoses.Key.ToString() + " <- cbind(events, doses)");
                             }
-
-                            // Set age
-                            if (KineticModelDefinition.IdAgeParameter != null) {
-                                inputParameters[KineticModelDefinition.IdAgeParameter] = getAge(
-                                    externalIndividualExposures[id].First().SimulatedIndividual,
-                                    _modelParameterDefinitions[KineticModelDefinition.IdAgeParameter].DefaultValue ?? double.NaN
-                                );
-                            }
-
-                            // Set gender
-                            if (KineticModelDefinition.IdSexParameter != null) {
-                                inputParameters[KineticModelDefinition.IdSexParameter] = getGender(
-                                    externalIndividualExposures[id].First().SimulatedIndividual,
-                                    _modelParameterDefinitions[KineticModelDefinition.IdSexParameter].DefaultValue ?? double.NaN
-                                );
-                            }
+                            R.EvaluateNoReturn($"allDoses <- list({string.Join(",", modelExposureRoutes.Select(r => r.ToString()))})");
 
                             // Initialize ode parameters, states, and doses
-                            R.SetSymbol("params", inputParameters.Values);
+                            R.SetSymbol("params", parameters.Values);
                             R.EvaluateNoReturn($"params <- .C('getParms', as.double(params), out=double(length(params)), as.integer(length(params)), PACKAGE='{_dllFileName}')$out");
-                            R.SetSymbol("paramNames", inputParameters.Keys);
+                            R.SetSymbol("paramNames", parameters.Keys);
                             R.EvaluateNoReturn($"names(params) <- paramNames");
                             R.SetSymbol("states", Enumerable.Repeat(0d, _modelStates.Count));
-                            R.EvaluateNoReturn($"allDoses <- list({string.Join(",", boundedForcings)})");
                             R.SetSymbol("outputNames", _modelOutputs.Select(r => r.idSpecies));
 
                             // Call to ODE
@@ -244,9 +170,10 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                                 List<TargetExposurePerTimeUnit> exposures = null;
 
                                 // Compartment volume/mass
+                                var bodyWeight = individual.BodyWeight;
                                 var compartmentSize = !string.IsNullOrEmpty(sc.OutputDefinition.CompartmentSizeParameter)
                                     ? R.EvaluateDouble($"params['{sc.OutputDefinition.CompartmentSizeParameter}']")
-                                    : getRelativeCompartmentWeight(sc, inputParameters) * bodyWeight;
+                                    : getRelativeCompartmentWeight(sc, parameters) * bodyWeight;
 
                                 // If output is cumulative amount, then...
                                 if (sc.OutputType == KineticModelOutputType.CumulativeAmount) {
@@ -303,8 +230,81 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                     R.EvaluateNoReturn($"dyn.unload(paste('{getModelFilePath()}', .Platform$dynlib.ext, sep = ''))");
                 }
             }
-            progressState.Update("PBPK modelling finished");
+            progressState.Update("PBK model simulation finished", 100);
             return individualResults;
+        }
+
+        private Dictionary<string, KineticModelInstanceParameter> getNominalParameter() {
+            // Get nominal input parameters
+            var nominalInputParametersOrder = KineticModelDefinition.Parameters
+                .Where(r => !r.SubstanceParameterValues.Any())
+                .ToDictionary(
+                    r => r.Order,
+                    r => {
+                        if (KineticModelInstance.KineticModelInstanceParameters.TryGetValue(r.Id, out var parameter)) {
+                            return parameter;
+                        } else if (!r.IsInternalParameter) {
+                            throw new Exception($"Kinetic model parameter {r.Id} not found in model instance {KineticModelInstance.IdModelInstance}");
+                        } else {
+                            return new KineticModelInstanceParameter() { Parameter = r.Id, Value = 0D };
+                        }
+                    }
+                );
+
+            // Get nominal input parameters for parent and metabolites
+            var substanceParameterValuesOrder = KineticModelDefinition.Parameters
+                .Where(r => r.SubstanceParameterValues.Any())
+                .SelectMany(c => c.SubstanceParameterValues)
+                .ToDictionary(c => c.Order,
+                    c => {
+                        if (KineticModelInstance.KineticModelInstanceParameters.TryGetValue(c.IdParameter, out var parameter)) {
+                            return parameter;
+                        } else {
+                            throw new Exception($"Kinetic model parameter {c.IdParameter} not found in model instance {KineticModelInstance.IdModelInstance}");
+                        }
+                    }
+                );
+
+            // Combine dictionaries
+            substanceParameterValuesOrder.ToList().ForEach(x => nominalInputParametersOrder[x.Key] = x.Value);
+            var nominalInputParameters = nominalInputParametersOrder
+                .OrderBy(c => c.Key)
+                .ToDictionary(c => c.Value.Parameter, c => c.Value);
+            return nominalInputParameters;
+        }
+
+        protected virtual (List<double> timings, Dictionary<ExposureRoute, List<double>> dosesPerRoute) computeDoses(
+            ICollection<ExposureRoute> modelExposureRoutes,
+            List<IExposureEvent> exposureEvents,
+            int timeUnitMultiplier
+        ) {
+            // Convert to repating exposure events to single events
+            var singleExposureEvents = exposureEvents
+                .SelectMany(r => (r is SingleExposureEvent)
+                    ? [r as SingleExposureEvent]
+                    : (r as RepeatingExposureEvent).Expand(SimulationSetings.NumberOfSimulatedDays * timeUnitMultiplier)
+                )
+                .ToList();
+
+            var exposureEventsGrouped = singleExposureEvents
+                .GroupBy(r => r.Time)
+                .OrderBy(r => r.Key);
+            var timings = exposureEventsGrouped
+                .Select(r => r.Key)
+                .ToList();
+            var dosesPerRoute = modelExposureRoutes
+                .ToDictionary(
+                    r => r,
+                    r => Enumerable.Repeat(0D, timings.Count).ToList()
+                );
+            var groupIx = 0;
+            foreach (var group in exposureEventsGrouped) {
+                foreach (var record in group) {
+                    dosesPerRoute[record.Route][groupIx] = record.Value;
+                }
+                groupIx++;
+            }
+            return (timings, dosesPerRoute);
         }
 
         /// <summary>
@@ -318,65 +318,10 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             return dllPath.Replace(@"\", "/");
         }
 
-        protected virtual List<int> calculateCombinedEventTimings(IDictionary<ExposureRoute, List<int>> eventsDictionary) {
-            return eventsDictionary.SelectMany(c => c.Value).Distinct().Order().ToList();
-        }
-
-        protected virtual IDictionary<string, double> setStartingEvents(IDictionary<string, double> parameters) {
-            return parameters;
-        }
-
-        /// <summary>
-        /// Combines doses with relevant events for each exposure route, sets irrelevant events to zero
-        /// </summary>
-        /// <param name="allEvents"></param>
-        /// <param name="events"></param>
-        /// <param name="doses"></param>
-        /// <returns></returns>
-        protected virtual List<double> combineDosesWithEvents(List<int> allEvents, List<int> events, List<double> doses) {
-            var dosesDict = allEvents.ToDictionary(r => r, r => 0D);
-            for (var i = 0; i < events.Count; i++) {
-                dosesDict[events[i]] = doses[i];
-            }
-            return dosesDict.Values.ToList();
-        }
-
-        /// <summary>
-        /// Returns a draw of the parameter values or nominal values
-        /// </summary>
-        /// <param name="parameters"></param>
-        /// <param name="random"></param>
-        /// <returns></returns>
-        protected virtual IDictionary<string, double> drawParameters(IDictionary<string, KineticModelInstanceParameter> parameters, IRandom random, bool isNominal, bool useParameterVariability) {
-            var drawn = new Dictionary<string, double>();
-            if (isNominal || !useParameterVariability) {
-                drawn = parameters.ToDictionary(c => c.Key, c => c.Value.Value);
-            } else {
-                foreach (var parameter in parameters) {
-                    var model = ProbabilityDistributionFactory.createProbabilityDistributionModel(parameter.Value.DistributionType);
-                    model.Initialize(parameter.Value.Value, parameter.Value.CvVariability ?? 0);
-                    drawn.Add(parameter.Key, model.Sample(random));
-                }
-            }
-            return drawn;
-        }
-
-        protected virtual double getAge(SimulatedIndividual individual, double defaultAge) {
-            var age = individual.Age;
-            if (age.HasValue && !double.IsNaN(age.Value)) {
-                return age.Value;
-            } else {
-                return defaultAge;
-            }
-        }
-
-        protected virtual double getGender(SimulatedIndividual individual, double defaultGender) {
-            var gender = individual.Gender;
-            if (gender == GenderType.Undefined) {
-                return defaultGender;
-            } else {
-                return gender == GenderType.Male ? 1d : 0d;
-            }
+        protected virtual void setStartingEvents(
+            IDictionary<string, double> parameters
+        ) {
+            // Default: nothing
         }
 
         protected virtual double getRelativeCompartmentWeight(

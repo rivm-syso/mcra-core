@@ -20,7 +20,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
             return new PbkSimulationSettings() {
                 NumberOfSimulatedDays = 10,
                 UseRepeatedDailyEvents = true,
-                NumberOfDosesPerDay = 1,
+                NumberOfOralDosesPerDay = 1,
                 NonStationaryPeriod = 5
             };
         }
@@ -51,7 +51,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
             var instance = getDefaultInstance(substance);
             var simulationSettings = getDefaultSimulationSettings();
             simulationSettings.NumberOfSimulatedDays = 100;
-            simulationSettings.NumberOfDosesPerDay = 1;
+            simulationSettings.NumberOfOralDosesPerDay = 1;
 
             var calculator = createCalculator(instance, simulationSettings) as DesolvePbkModelCalculator;
             var outputPath = CreateTestOutputPath($"TestSingle_{exposureType}");

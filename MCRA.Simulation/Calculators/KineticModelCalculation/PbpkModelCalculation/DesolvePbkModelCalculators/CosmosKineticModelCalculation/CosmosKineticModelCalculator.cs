@@ -12,7 +12,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             initializePartitionCoefficientCorrelations(kineticModelInstance);
         }
 
-        protected override IDictionary<string, double> drawParameters(
+        protected override Dictionary<string, double> drawParameters(
             IDictionary<string, KineticModelInstanceParameter> parameters,
             IRandom random,
             bool isNominal = false,

@@ -38,7 +38,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
         protected override PbkSimulationSettings getDefaultSimulationSettings() {
             return new PbkSimulationSettings() {
                 NumberOfSimulatedDays = 10,
-                NumberOfDosesPerDay = 1,
+                NumberOfOralDosesPerDay = 1,
                 NonStationaryPeriod = 5,
                 UseRepeatedDailyEvents = true,
             };
@@ -91,7 +91,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
                 new PbkSimulationSettings() {
                     NumberOfSimulatedDays = 10,
                     UseRepeatedDailyEvents = true,
-                    NumberOfDosesPerDay = 1,
+                    NumberOfOralDosesPerDay = 1,
                     NonStationaryPeriod = 0
                 }
             );
@@ -144,7 +144,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
             var simulationSettings = new PbkSimulationSettings() {
                 NumberOfSimulatedDays = 10,
                 UseRepeatedDailyEvents = true,
-                NumberOfDosesPerDay = 1,
+                NumberOfOralDosesPerDay = 1,
                 NonStationaryPeriod = 5,
             };
 
@@ -179,25 +179,23 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
             foreach (var individual in individuals) {
                 individual.BodyWeight = bw;
             }
-            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var individualDays = FakeIndividualDaysGenerator
+                .CreateSimulatedIndividualDays(individuals);
             var individualExposures = FakeExternalExposureGenerator
                 .CreateExternalIndividualExposures(individualDays, substances, paths, seed);
             foreach (var item in individualExposures) {
-                var externalIndividualDayExposures = new List<IExternalIndividualDayExposure>();
                 foreach (var exp in item.ExternalIndividualDayExposures) {
-                    var exposuresPerPath = new Dictionary<ExposurePath, List<IIntakePerCompound>>();
-                    var intakesPerCompound = new List<AggregateIntakePerCompound> {
-                        new() {
-                            Compound = substances.First(),
-                            Amount = intake * bw,
-                        }
-                    };
-                    exposuresPerPath[new(ExposureSource.Diet, ExposureRoute.Oral)] = intakesPerCompound
+                    var intakesPerCompound = substances
+                        .Select(r => 
+                            new AggregateIntakePerCompound() {
+                                Compound = r,
+                                Amount = intake * bw,
+                            })
+                        .ToList();
+                    exp.ExposuresPerPath[new(ExposureSource.Diet, ExposureRoute.Oral)] = intakesPerCompound
                         .Cast<IIntakePerCompound>()
                         .ToList();
-                    externalIndividualDayExposures.Add(new ExternalIndividualDayExposure(exposuresPerPath));
                 }
-                item.ExternalIndividualDayExposures = externalIndividualDayExposures;
             }
             return individualExposures;
         }

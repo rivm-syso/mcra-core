@@ -1,7 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
-using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation.ExposureEvent;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 
@@ -24,64 +23,62 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             IRandom generator,
             ProgressState progressState
         ) {
-            progressState.Update("PBK modelling started");
+            progressState.Update("Starting PBK model simulation");
 
             // Determine modelled/unmodelled exposure routes
             var modelExposureRoutes = KineticModelInstance.KineticModelDefinition.GetExposureRoutes();
 
-            // Get kinetic model output mappings for selected targets
-            var outputMappings = getTargetOutputMappings(targetUnits);
-
             // Get time resolution
-            var stepLength = 1d / KineticModelDefinition.EvaluationFrequency;
             var numberOfSimulatedDays = SimulationSetings.NumberOfSimulatedDays;
             var timeUnitMultiplier = (int)TimeUnit.Days.GetTimeUnitMultiplier(KineticModelDefinition.TimeScale);
+            var stepLength = 1d / KineticModelDefinition.EvaluationFrequency;
             var evaluationPeriod = numberOfSimulatedDays * timeUnitMultiplier;
             var simulationSteps = evaluationPeriod * KineticModelDefinition.EvaluationFrequency + 1;
 
+            // Initialise exposure events generator
+            var exposureEventsGenerator = new ExposureEventsGenerator(
+                SimulationSetings,
+                KineticModelDefinition.TimeScale,
+                exposureUnit,
+                KineticModelDefinition.Forcings
+                    .ToDictionary(
+                        r => r.Route,
+                        r => r.DoseUnit
+                    )
+            );
+
+            // Get kinetic model output mappings for selected targets
+            var outputMappings = getTargetOutputMappings(targetUnits);
+
             var individualResults = new Dictionary<int, List<SubstanceTargetExposurePattern>>();
             using (var runner = new SbmlModelRunner(KineticModelInstance, outputMappings)) {
-
-                // Get exposure event timings (in time-scale of the model)
-                var exposureEventTimings = SimulationSetings.UseRepeatedDailyEvents
-                    ? null
-                    : getExposureEventTimings(
-                        routes,
-                        timeUnitMultiplier,
-                        numberOfSimulatedDays,
-                        SimulationSetings.SpecifyEvents
-                    );
 
                 // Loop over individuals
                 foreach (var id in externalIndividualExposures.Keys) {
                     var individual = externalIndividualExposures[id].First().SimulatedIndividual;
 
                     // Create exposure events
-                    var exposureEvents = SimulationSetings.UseRepeatedDailyEvents
-                        ? createRepeatedExposureEvent(
+                    var exposureEvents = exposureEventsGenerator
+                        .CreateExposureEvents(
                             externalIndividualExposures[id],
                             routes,
                             Substance,
-                            exposureUnit,
-                            timeUnitMultiplier
-                        )
-                        : createExposureEvents(
-                            externalIndividualExposures[id],
-                            routes,
-                            exposureEventTimings,
-                            Substance,
-                            exposureUnit,
                             generator
                         );
 
                     // Collect individual properties
-                    var physiologicalParameters = new Dictionary<string, double>();
-                    setPhysiologicalParameterValues(physiologicalParameters, individual);
+                    var parameters = new Dictionary<string, double>();
+                    setPhysiologicalParameterValues(parameters, individual);
 
                     // If we have positive exposures, then run simulation
                     SimulationOutput output = null;
                     if (exposureEvents.Any()) {
-                        output = runner.Run(exposureEvents, physiologicalParameters, evaluationPeriod, simulationSteps);
+                        output = runner.Run(
+                            exposureEvents,
+                            parameters,
+                            evaluationPeriod,
+                            simulationSteps
+                        );
                     }
 
                     // Fill results from output
@@ -135,102 +132,8 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                 }
             }
 
-            progressState.Update(100);
-
+            progressState.Update("PBK model simulation finished", 100);
             return individualResults;
-        }
-
-        private List<IExposureEvent> createRepeatedExposureEvent(
-            List<IExternalIndividualDayExposure> externalIndividualDayExposures,
-            ICollection<ExposureRoute> routes,
-            Compound substance,
-            ExposureUnitTriple exposureUnit,
-            int timeUnitMultiplier
-        ) {
-            var exposureEvents = new List<IExposureEvent>();
-            foreach (var route in routes) {
-
-                // Get daily doses
-                var dailyDoses = externalIndividualDayExposures
-                    .Select(r => r.GetExposure(route, substance))
-                    .ToList();
-
-                // Compute average daily dose
-                var averageDailyDose = dailyDoses.Sum() / dailyDoses.Count;
-
-                // Get alignment factor for aligning the substance amount unit of the
-                // exposure with the substance amount unit of the PBK model
-                var modelInput = KineticModelDefinition.GetInputByExposureRoute(route);
-                var substanceAmountAlignmentFactor = modelInput.DoseUnit
-                    .GetSubstanceAmountUnit()
-                    .GetMultiplicationFactor(
-                        exposureUnit.SubstanceAmountUnit,
-                        substance.MolecularMass
-                    );
-
-                // Timescale and exposure unit should be aligned with unit of the model
-                var routeExposureEvent = new RepeatingExposureEvent() {
-                    Route = modelInput.Route,
-                    TimeStart = 0,
-                    Value = averageDailyDose / substanceAmountAlignmentFactor,
-                    Interval = timeUnitMultiplier
-                };
-                exposureEvents.Add(routeExposureEvent);
-            }
-
-            return exposureEvents;
-        }
-
-        private List<IExposureEvent> createExposureEvents(
-            List<IExternalIndividualDayExposure> externalIndividualExposures,
-            ICollection<ExposureRoute> routes,
-            Dictionary<ExposureRoute, List<int>> exposureEventTimings,
-            Compound substance,
-            ExposureUnitTriple exposureUnit,
-            IRandom generator
-        ) {
-            var exposureEvents = new List<IExposureEvent>();
-            foreach (var exposureRoute in routes) {
-                // Get daily doses
-                var dailyDoses = getRouteSubstanceIndividualDayExposures(
-                    externalIndividualExposures,
-                    substance,
-                    exposureRoute
-                );
-
-                // Get alignment factor for aligning the time scale of the
-                // exposures with the time scale of the PBK model
-                var unitDoses = getUnitDoses(null, dailyDoses, exposureRoute);
-                var simulatedDoses = drawSimulatedDoses(
-                    unitDoses,
-                    exposureEventTimings[exposureRoute].Count,
-                    generator
-                );
-
-                var modelInput = KineticModelDefinition.GetInputByExposureRoute(exposureRoute);
-
-                // Get alignment factor for aligning the substance amount unit of the
-                // exposure with the substance amount unit of the PBK model
-                var substanceAmountAlignmentFactor = modelInput.DoseUnit
-                    .GetSubstanceAmountUnit()
-                    .GetMultiplicationFactor(
-                        exposureUnit.SubstanceAmountUnit,
-                        substance.MolecularMass
-                    );
-
-                // Timescale and exposure unit should be aligned with unit of the model
-                var routeExposureEvents = exposureEventTimings[exposureRoute]
-                    .Select((r, ix) => new SingleExposureEvent() {
-                        Route = modelInput.Route,
-                        Time = r,
-                        Value = simulatedDoses[ix] / substanceAmountAlignmentFactor
-                    })
-                    .Where(r => r.Value > 0)
-                    .ToList();
-                exposureEvents.AddRange(routeExposureEvents);
-            }
-
-            return exposureEvents;
         }
     }
 }

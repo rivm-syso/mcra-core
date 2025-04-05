@@ -105,20 +105,6 @@ namespace MCRA.General {
         }
 
         /// <summary>
-        /// Returns the input definition for the exposure path type.
-        /// </summary>
-        /// <param name="route"></param>
-        /// <returns></returns>
-        public KineticModelInputDefinition GetInputByExposureRoute(ExposureRoute route) {
-            var input = Forcings.FirstOrDefault(r => r.Route == route);
-            if (input == null) {
-                // Fall back to oral if dietary path is missing
-                input = Forcings.FirstOrDefault(r => r.Route == ExposureRoute.Oral);
-            }
-            return input;
-        }
-
-        /// <summary>
         /// The time scale considered by the model.
         /// </summary>
         public TimeUnit TimeScale {

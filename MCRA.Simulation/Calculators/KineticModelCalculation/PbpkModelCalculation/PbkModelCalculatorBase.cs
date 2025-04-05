@@ -2,6 +2,7 @@
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
+using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation.ParameterDistributionModels;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Utils.ProgressReporting;
@@ -31,8 +32,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             SimulationSetings = simulationSettings;
 
             // Lookups/dictionaries for model definition elements
-            _modelInputDefinitions = KineticModelDefinition.Forcings
-                .ToDictionary(r => r.Route);
             _modelParameterDefinitions = KineticModelDefinition.Parameters
                 .ToDictionary(r => r.Id, StringComparer.OrdinalIgnoreCase);
         }
@@ -189,7 +188,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             var exposurePerRoutes = computeAverageSubstanceExposurePerRoute(
                 externalIndividualExposures,
                 KineticModelInstance.Substances.First(),
-                _modelInputDefinitions.Keys,
+                routes,
                 exposureUnit
             );
             // TODO: not the right place to compute average
@@ -226,7 +225,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                 externalIndividualDayExposures,
                 KineticModelInstance.Substances.First(),
                 exposureUnit,
-                _modelInputDefinitions.Keys
+                routes
             );
             // TODO: not the right place to compute average
             // exposures per route and define nominal individual.
@@ -362,20 +361,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         }
 
         /// <summary>
-        /// Get external individual day exposures of the specified route and substance.
-        /// </summary>
-        protected List<double> getRouteSubstanceIndividualDayExposures(
-            ICollection<IExternalIndividualDayExposure> externalIndividualDayExposures,
-            Compound substance,
-            ExposureRoute route
-        ) {
-            var exposures = externalIndividualDayExposures
-                .Select(e => e.GetExposure(route, substance))
-                .ToList();
-            return exposures;
-        }
-
-        /// <summary>
         /// Computes the average of the positive, chronic, substance exposures per route.
         /// NOTE: uses samplingweights to account for weighing of individuals.
         /// </summary>
@@ -436,8 +421,31 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             return exposurePerRoute;
         }
 
+
+        /// <summary>
+        /// Returns a draw of the parameter values or nominal values
+        /// </summary>
+        protected virtual Dictionary<string, double> drawParameters(
+            IDictionary<string, KineticModelInstanceParameter> parameters,
+            IRandom random,
+            bool isNominal,
+            bool useParameterVariability
+        ) {
+            var drawn = new Dictionary<string, double>();
+            if (isNominal || !useParameterVariability) {
+                drawn = parameters.ToDictionary(c => c.Key, c => c.Value.Value);
+            } else {
+                foreach (var parameter in parameters) {
+                    var model = ProbabilityDistributionFactory.createProbabilityDistributionModel(parameter.Value.DistributionType);
+                    model.Initialize(parameter.Value.Value, parameter.Value.CvVariability ?? 0);
+                    drawn.Add(parameter.Key, model.Sample(random));
+                }
+            }
+            return drawn;
+        }
+
         protected void setPhysiologicalParameterValues(
-            Dictionary<string, double> physiologicalParameters,
+            Dictionary<string, double> parametrisation,
             SimulatedIndividual individual
         ) {
             var instanceParameters = KineticModelInstance.KineticModelInstanceParameters;
@@ -446,7 +454,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             if (!string.IsNullOrEmpty(KineticModelDefinition.IdBodyWeightParameter)) {
                 // TODO: current code assumes bodyweights in same unit as kinetic model parameter
                 var bodyWeight = individual.BodyWeight;
-                physiologicalParameters.Add(KineticModelDefinition.IdBodyWeightParameter, bodyWeight);
+                parametrisation[KineticModelDefinition.IdBodyWeightParameter] = bodyWeight;
 
                 // Set BSA
                 if (!string.IsNullOrEmpty(KineticModelDefinition.IdBodySurfaceAreaParameter)) {
@@ -456,7 +464,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                         var standardBSA = bsaParameterValue.Value;
                         var standardBW = bwParameterValue.Value;
                         var allometricScaling = Math.Pow(standardBW / bodyWeight, 1 - 0.7);
-                        physiologicalParameters[KineticModelDefinition.IdBodySurfaceAreaParameter] = standardBSA / allometricScaling;
+                        parametrisation[KineticModelDefinition.IdBodySurfaceAreaParameter] = standardBSA / allometricScaling;
                     }
                 }
             }
@@ -479,7 +487,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                         throw new Exception($"Cannot set required parameter for age for PBK model [{KineticModelDefinition.Name}].");
                     }
                 }
-                physiologicalParameters[KineticModelDefinition.IdAgeParameter] = age.Value;
+                parametrisation[KineticModelDefinition.IdAgeParameter] = age.Value;
             }
 
             // Set sex
@@ -499,133 +507,8 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                         throw new Exception($"Cannot set required parameter for sex for PBK model [{KineticModelDefinition.Name}].");
                     }
                 }
-                physiologicalParameters[KineticModelDefinition.IdSexParameter] = (double)sex;
+                parametrisation[KineticModelDefinition.IdSexParameter] = (double)sex;
             }
-        }
-
-        /// <summary>
-        /// Correct doses for number of doses per day based on exposure route.
-        /// </summary>
-        protected virtual List<double> getUnitDoses(
-            IDictionary<string, KineticModelInstanceParameter> parameters,
-            List<double> doses,
-            ExposureRoute route
-        ) {
-            var result = new List<double>();
-            switch (route) {
-                case ExposureRoute.Oral:
-                    doses.ForEach(c => result.Add(c / SimulationSetings.NumberOfDosesPerDay));
-                    break;
-                case ExposureRoute.Dermal:
-                    doses.ForEach(c => result.Add(c / SimulationSetings.NumberOfDosesPerDayNonDietaryDermal));
-                    break;
-                case ExposureRoute.Inhalation:
-                    doses.ForEach(c => result.Add(c / SimulationSetings.NumberOfDosesPerDayNonDietaryInhalation));
-                    break;
-                default:
-                    throw new Exception("Route not recognized");
-            }
-            return result;
-        }
-
-        /// <summary>
-        /// Draw random doses
-        /// </summary>
-        protected static List<double> drawSimulatedDoses(List<double> doseRecords, int numberOfDoses, IRandom random) {
-            var doses = new List<double>();
-            for (var i = 0; i < numberOfDoses; i++) {
-                var ix = random.Next(0, doseRecords.Count);
-                doses.Add(doseRecords[ix]);
-            }
-            return doses;
-        }
-
-        protected Dictionary<ExposureRoute, List<int>> getExposureEventTimings(
-            ICollection<ExposureRoute> routes,
-            int timeMultiplier,
-            int numberOfDays,
-            bool specifyEvents
-        ) {
-            var result = routes.ToDictionary(
-                r => r,
-                r => getEventTimings(
-                    r,
-                    timeMultiplier,
-                    numberOfDays,
-                    specifyEvents
-                )
-            );
-            return result;
-        }
-
-        protected List<int> getEventTimings(
-            ExposureRoute route,
-            int timeMultiplier,
-            int numberOfDays,
-            bool specifyEvents
-        ) {
-            if (specifyEvents) {
-                return route switch {
-                    ExposureRoute.Oral => getAllEvents(SimulationSetings.SelectedEvents, timeMultiplier, numberOfDays),
-                    ExposureRoute.Dermal => getAllEvents(SimulationSetings.NumberOfDosesPerDayNonDietaryDermal, timeMultiplier, numberOfDays),
-                    ExposureRoute.Inhalation => getAllEvents(SimulationSetings.NumberOfDosesPerDayNonDietaryInhalation, timeMultiplier, numberOfDays),
-                    _ => throw new Exception("Route not recognized"),
-                };
-            } else {
-                return route switch {
-                    ExposureRoute.Oral => getAllEvents(SimulationSetings.NumberOfDosesPerDay, timeMultiplier, numberOfDays),
-                    ExposureRoute.Dermal => getAllEvents(SimulationSetings.NumberOfDosesPerDayNonDietaryDermal, timeMultiplier, numberOfDays),
-                    ExposureRoute.Inhalation => getAllEvents(SimulationSetings.NumberOfDosesPerDayNonDietaryInhalation, timeMultiplier, numberOfDays),
-                    _ => throw new Exception("Route not recognized"),
-                };
-            }
-        }
-
-        protected List<int> getRepeatedDailyEventTimings(
-            ExposureRoute route,
-            int timeMultiplier,
-            int numberOfDays
-        ) {
-            return route switch {
-                ExposureRoute.Oral => getAllEvents(1, timeMultiplier, numberOfDays),
-                ExposureRoute.Dermal => getAllEvents(1, timeMultiplier, numberOfDays),
-                ExposureRoute.Inhalation => getAllEvents(1, timeMultiplier, numberOfDays),
-                _ => throw new Exception("Route not recognized"),
-            }; ;
-        }
-
-
-        /// <summary>
-        /// Get all events based on specification of numberOfDoses.
-        /// </summary>
-        private List<int> getAllEvents(int numberOfDoses, int timeMultiplier, int numberOfDays) {
-            if (numberOfDoses <= 0) {
-                numberOfDoses = 1;
-            }
-            var interval = timeMultiplier / numberOfDoses;
-            var events = new List<int>();
-            for (var d = 0; d < numberOfDays; d++) {
-                for (var n = 0; n < numberOfDoses; n++) {
-                    events.Add(n * interval + d * timeMultiplier);
-                }
-            }
-            return events;
-        }
-
-        /// <summary>
-        /// Get all events based on specification of selected events/hours
-        /// </summary>
-        private List<int> getAllEvents(int[] selectedEvents, int timeMultiplier, int numberOfDays) {
-            if (timeMultiplier != 24) {
-                throw new Exception("Specification of events/hours is only implemented for resolution = 24 hours.");
-            }
-            var events = new List<int>();
-            for (var d = 0; d < numberOfDays; d++) {
-                for (var n = 0; n < selectedEvents.Length; n++) {
-                    events.Add(selectedEvents[n] + d * timeMultiplier - 1);
-                }
-            }
-            return events;
         }
 
         /// <summary>

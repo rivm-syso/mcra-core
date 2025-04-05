@@ -41,7 +41,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var simulationSettings = new PbkSimulationSettings() {
                 NumberOfSimulatedDays = 5,
                 UseRepeatedDailyEvents = true,
-                NumberOfDosesPerDay = 1,
+                NumberOfOralDosesPerDay = 1,
                 NonStationaryPeriod = 1
             };
 
@@ -97,7 +97,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var simulationSettings = new PbkSimulationSettings() {
                 NumberOfSimulatedDays = 5,
                 UseRepeatedDailyEvents = true,
-                NumberOfDosesPerDay = 1,
+                NumberOfOralDosesPerDay = 1,
                 NonStationaryPeriod = 1
             };
 

@@ -6,10 +6,12 @@ using MCRA.Simulation.Objects;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
+
     /// <summary>
     /// Class for generating mock external exposures
     /// </summary>
     public static class FakeExternalExposureGenerator {
+
         /// <summary>
         /// Creates external individual exposures
         /// </summary>
@@ -22,7 +24,12 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             var result = simulatedIndividualDays
                 .GroupBy(r => r.SimulatedIndividual)
                 .Select(g => {
-                    var indvDayExposures = CreateExternalIndividualDayExposures(g.ToList(), substances, paths, seed + g.Key.Id);
+                    var indvDayExposures = CreateExternalIndividualDayExposures(
+                        [.. g],
+                        substances,
+                        paths,
+                        seed + g.Key.Id
+                    );
                     var exposure = new ExternalIndividualExposure(g.Key) {
                         ExternalIndividualDayExposures = indvDayExposures,
                         ExposuresPerPath = indvDayExposures

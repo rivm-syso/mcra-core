@@ -95,7 +95,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
             var instance = createFakeModelInstance(substance);
             var simulationSettings = new PbkSimulationSettings() {
                 NumberOfSimulatedDays = 10,
-                NumberOfDosesPerDay = 1,
+                NumberOfOralDosesPerDay = 1,
                 SpecifyEvents = true,
                 SelectedEvents = [1, 2, 4, 6, 8, 9, 10]
             };
