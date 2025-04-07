@@ -7,8 +7,6 @@ using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.DietaryExposures;
 using MCRA.Simulation.Calculators.DustExposureCalculation;
-using MCRA.Simulation.Calculators.IndividualDaysGenerator;
-using MCRA.Simulation.Calculators.PopulationGeneration;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
@@ -17,16 +15,15 @@ using MCRA.Utils.Statistics.RandomGenerators;
 namespace MCRA.Simulation.Actions.DustExposures {
 
     [ActionType(ActionType.DustExposures)]
-    public class DustExposuresActionCalculator : ActionCalculatorBase<DustExposuresActionResult> {
+    public class DustExposuresActionCalculator(ProjectDto project) : ActionCalculatorBase<DustExposuresActionResult>(project) {
         private DustExposuresModuleConfig ModuleConfig => (DustExposuresModuleConfig)_moduleSettings;
-
-        public DustExposuresActionCalculator(ProjectDto project) : base(project) {
-        }
 
         protected override void verify() {
             var requireDietaryExposures = ModuleConfig.DustExposuresIndividualGenerationMethod == DustExposuresIndividualGenerationMethod.UseDietaryExposures;
             _actionInputRequirements[ActionType.DietaryExposures].IsRequired = requireDietaryExposures;
             _actionInputRequirements[ActionType.DietaryExposures].IsVisible = requireDietaryExposures;
+            _actionInputRequirements[ActionType.Individuals].IsRequired = !requireDietaryExposures;
+            _actionInputRequirements[ActionType.Individuals].IsVisible = !requireDietaryExposures;
         }
 
         protected override ActionSettingsSummary summarizeSettings() {
@@ -92,24 +89,13 @@ namespace MCRA.Simulation.Actions.DustExposures {
 
             ICollection<IIndividualDay> individualDays = null;
             if (ModuleConfig.DustExposuresIndividualGenerationMethod == DustExposuresIndividualGenerationMethod.Simulate) {
-                var individualsRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DUE_DrawIndividuals));
-                var individualsGenerator = new IndividualsGenerator();
-                var daysPerIndividual = 1;
-                var individuals = individualsGenerator
-                    .GenerateSimulatedIndividuals(
-                        data.SelectedPopulation,
-                        ModuleConfig.NumberOfSimulatedIndividuals,
-                        daysPerIndividual,
-                        individualsRandomGenerator
-                    );
-                individualDays = IndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+                individualDays = data.Individuals;
             } else {
                 individualDays = data.DietaryIndividualDayIntakes
                     .GroupBy(r => r.SimulatedIndividual.Id, (key, g) => g.First())
                     .Cast<IIndividualDay>()
                     .ToList();
             }
-
             var substances = data.ActiveSubstances ?? data.AllCompounds;
 
             var dustConcentrationDistributions = data.DustConcentrationDistributions;

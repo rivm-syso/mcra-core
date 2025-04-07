@@ -28,7 +28,6 @@
   </SelectionInputs>
   <CalculationSettings>
     <CalculationSetting>AirExposuresIndividualGenerationMethod</CalculationSetting>
-    <CalculationSetting source="DustExposures">NumberOfSimulatedIndividuals</CalculationSetting>
     <CalculationSetting source="Action">RandomSeed</CalculationSetting>
     <CalculationSetting>SelectedExposureRoutes</CalculationSetting>
     <CalculationSetting>AirPopulationAlignmentMethod</CalculationSetting>
@@ -47,5 +46,6 @@
     <Input>IndoorAirConcentrations</Input>
     <Input>OutdoorAirConcentrations</Input>
     <Input>AirExposureDeterminants</Input>
+    <Input>Individuals</Input>
   </CalculationInputs>
 </Module>

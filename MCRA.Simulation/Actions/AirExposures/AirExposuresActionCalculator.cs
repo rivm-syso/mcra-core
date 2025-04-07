@@ -6,8 +6,6 @@ using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Calculators.AirExposureCalculation;
-using MCRA.Simulation.Calculators.IndividualDaysGenerator;
-using MCRA.Simulation.Calculators.PopulationGeneration;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
@@ -16,16 +14,15 @@ using MCRA.Utils.Statistics.RandomGenerators;
 namespace MCRA.Simulation.Actions.AirExposures {
 
     [ActionType(ActionType.AirExposures)]
-    public class AirExposuresActionCalculator : ActionCalculatorBase<AirExposuresActionResult> {
+    public class AirExposuresActionCalculator(ProjectDto project) : ActionCalculatorBase<AirExposuresActionResult>(project) {
         private AirExposuresModuleConfig ModuleConfig => (AirExposuresModuleConfig)_moduleSettings;
-
-        public AirExposuresActionCalculator(ProjectDto project) : base(project) {
-        }
 
         protected override void verify() {
             var requireDietaryExposures = ModuleConfig.AirExposuresIndividualGenerationMethod == AirExposuresIndividualGenerationMethod.UseDietaryExposures;
             _actionInputRequirements[ActionType.DietaryExposures].IsRequired = requireDietaryExposures;
             _actionInputRequirements[ActionType.DietaryExposures].IsVisible = requireDietaryExposures;
+            _actionInputRequirements[ActionType.Individuals].IsRequired = !requireDietaryExposures;
+            _actionInputRequirements[ActionType.Individuals].IsVisible = !requireDietaryExposures;
         }
 
         protected override ActionSettingsSummary summarizeSettings() {
@@ -91,17 +88,7 @@ namespace MCRA.Simulation.Actions.AirExposures {
 
             ICollection<IIndividualDay> individualDays = null;
             if (ModuleConfig.AirExposuresIndividualGenerationMethod == AirExposuresIndividualGenerationMethod.Simulate) {
-                var individualsRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.AIE_DrawIndividuals));
-                var individualsGenerator = new IndividualsGenerator();
-                var daysPerIndividual = 1;
-                var individuals = individualsGenerator
-                    .GenerateSimulatedIndividuals(
-                        data.SelectedPopulation,
-                        ModuleConfig.NumberOfSimulatedIndividuals,
-                        daysPerIndividual,
-                        individualsRandomGenerator
-                    );
-                individualDays = IndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+                individualDays = data.Individuals;
             } else {
                 individualDays = data.DietaryIndividualDayIntakes
                     .GroupBy(r => r.SimulatedIndividual.Id, (key, g) => g.First())

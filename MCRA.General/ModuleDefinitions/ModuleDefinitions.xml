@@ -83,6 +83,7 @@
       <xi:include href="Modules/OutdoorAirConcentrations.xml" />
       <xi:include href="Modules/AirExposureDeterminants.xml" />
       <xi:include href="Modules/AirExposures.xml" />
+      <xi:include href="Modules/Individuals.xml" />
     </Modules>
   </ModuleGroupDefinition>
   <ModuleGroupDefinition>

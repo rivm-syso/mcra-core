@@ -28,7 +28,6 @@
   </SelectionInputs>
   <CalculationSettings>
     <CalculationSetting>DustExposuresIndividualGenerationMethod</CalculationSetting>
-    <CalculationSetting>NumberOfSimulatedIndividuals</CalculationSetting>
     <CalculationSetting source="Action">RandomSeed</CalculationSetting>
     <CalculationSetting>SelectedExposureRoutes</CalculationSetting>
     <CalculationSetting>DustTimeExposed</CalculationSetting>
@@ -47,5 +46,6 @@
     <Input>DietaryExposures</Input>
     <Input>DustConcentrationDistributions</Input>
     <Input>DustExposureDeterminants</Input>
+    <Input>Individuals</Input>
   </CalculationInputs>
 </Module>

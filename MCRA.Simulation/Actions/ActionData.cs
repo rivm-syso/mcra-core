@@ -36,6 +36,7 @@ using MCRA.Simulation.Actions.HazardCharacterisations;
 using MCRA.Simulation.Actions.HighExposureFoodSubstanceCombinations;
 using MCRA.Simulation.Actions.HumanMonitoringAnalysis;
 using MCRA.Simulation.Actions.HumanMonitoringData;
+using MCRA.Simulation.Actions.Individuals;
 using MCRA.Simulation.Actions.IndoorAirConcentrations;
 using MCRA.Simulation.Actions.InterSpeciesConversions;
 using MCRA.Simulation.Actions.IntraSpeciesFactors;
@@ -992,6 +993,12 @@ namespace MCRA.Simulation {
         public ICollection<IestiSpecialCase> IestiSpecialCases {
             get => GetOrCreateModuleOutputData<UnitVariabilityFactorsOutputData>(ActionType.UnitVariabilityFactors).IestiSpecialCases;
             set => GetOrCreateModuleOutputData<UnitVariabilityFactorsOutputData>(ActionType.UnitVariabilityFactors).IestiSpecialCases = value;
+        }
+
+        //Individuals
+        public ICollection<IIndividualDay> Individuals {
+            get => GetOrCreateModuleOutputData<IndividualsOutputData>(ActionType.Individuals).Individuals;
+            set => GetOrCreateModuleOutputData<IndividualsOutputData>(ActionType.Individuals).Individuals = value;
         }
 
         /// <summary>

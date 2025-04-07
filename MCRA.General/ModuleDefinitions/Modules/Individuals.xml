@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>Individuals</Id>
+  <Name>Individuals</Name>
+  <ActionType>Individuals</ActionType>
+  <ModuleType>CalculatorModule</ModuleType>
+  <CanCompute>true</CanCompute>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <HasUncertaintyAnalysis>true</HasUncertaintyAnalysis>
+  <Description>
+    Simulates individuals with properties like age, body weight, sex, and body surface area.
+  </Description>
+  <ShortDescription>
+    Simulates individuals with properties like age, body weight, sex, and body surface area.
+  </ShortDescription>
+  <CalculationDescription>
+    Simulates individuals.
+  </CalculationDescription>
+  <Entities>
+    <Entity>Populations</Entity>
+  </Entities>
+  <CalculationSettings>
+    <CalculationSetting>NumberOfSimulatedIndividuals</CalculationSetting>
+    <CalculationSetting source="Action">RandomSeed</CalculationSetting>
+  </CalculationSettings>
+</Module>

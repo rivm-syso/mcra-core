@@ -18,10 +18,6 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
 
             section.SummarizeSetting(SettingsItemType.SoilExposuresIndividualGenerationMethod, _configuration.SoilExposuresIndividualGenerationMethod);
 
-            if (_configuration.SoilExposuresIndividualGenerationMethod == SoilExposuresIndividualGenerationMethod.Simulate) {
-                section.SummarizeSetting(SettingsItemType.NumberOfSimulatedIndividuals, _configuration.NumberOfSimulatedIndividuals);
-            }
-
             return section;
         }
     }

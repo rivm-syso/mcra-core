@@ -8,7 +8,7 @@
   <Units>
     <Unit>
       <Id>Simulate</Id>
-      <Name>Simulate indivuals</Name>
+      <Name>Simulate individuals</Name>
       <ShortName>Simulate</ShortName>
       <Description>
         Simulate individuals based on population data.

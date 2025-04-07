@@ -66,5 +66,7 @@
         AIE_DrawIndividuals = 33,
         // Dust exposures: draw individuals
         SOE_DrawIndividuals = 34,
+        // Exposures: draw simulated individuals
+        SIM_DrawIndividuals = 35,
     }
 }

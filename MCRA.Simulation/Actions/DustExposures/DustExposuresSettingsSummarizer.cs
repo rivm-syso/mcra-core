@@ -23,10 +23,6 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             );
             section.SummarizeSetting(SettingsItemType.DustExposuresIndividualGenerationMethod, _configuration.DustExposuresIndividualGenerationMethod);
 
-            if (_configuration.DustExposuresIndividualGenerationMethod == DustExposuresIndividualGenerationMethod.Simulate) {
-                section.SummarizeSetting(SettingsItemType.NumberOfSimulatedIndividuals, _configuration.NumberOfSimulatedIndividuals);
-            }
-
             if (_configuration.SelectedExposureRoutes.Contains(ExposureRoute.Dermal)) {
                 section.SummarizeSetting(SettingsItemType.DustTimeExposed, _configuration.DustTimeExposed);
             }

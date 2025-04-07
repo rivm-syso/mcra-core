@@ -193,6 +193,8 @@ namespace MCRA.General {
         [Display(Name = "Air exposure determinants")]
         AirExposureDeterminants = 72,
         [Display(Name = "Outdoor air concentrations")]
-        OutdoorAirConcentrations = 73
+        OutdoorAirConcentrations = 73,
+        [Display(Name = "Individuals")]
+        Individuals = 74,
     }
 }

@@ -6,8 +6,6 @@ using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.DietaryExposures;
-using MCRA.Simulation.Calculators.IndividualDaysGenerator;
-using MCRA.Simulation.Calculators.PopulationGeneration;
 using MCRA.Simulation.Calculators.SoilExposureCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;
@@ -17,16 +15,15 @@ using MCRA.Utils.Statistics.RandomGenerators;
 namespace MCRA.Simulation.Actions.SoilExposures {
 
     [ActionType(ActionType.SoilExposures)]
-    public class SoilExposuresActionCalculator : ActionCalculatorBase<SoilExposuresActionResult> {
+    public class SoilExposuresActionCalculator(ProjectDto project) : ActionCalculatorBase<SoilExposuresActionResult>(project) {
         private SoilExposuresModuleConfig ModuleConfig => (SoilExposuresModuleConfig)_moduleSettings;
-
-        public SoilExposuresActionCalculator(ProjectDto project) : base(project) {
-        }
 
         protected override void verify() {
             var requireDietaryExposures = ModuleConfig.SoilExposuresIndividualGenerationMethod == SoilExposuresIndividualGenerationMethod.UseDietaryExposures;
             _actionInputRequirements[ActionType.DietaryExposures].IsRequired = requireDietaryExposures;
             _actionInputRequirements[ActionType.DietaryExposures].IsVisible = requireDietaryExposures;
+            _actionInputRequirements[ActionType.Individuals].IsRequired = !requireDietaryExposures;
+            _actionInputRequirements[ActionType.Individuals].IsVisible = !requireDietaryExposures;
         }
 
         protected override ActionSettingsSummary summarizeSettings() {
@@ -92,17 +89,7 @@ namespace MCRA.Simulation.Actions.SoilExposures {
 
             ICollection<IIndividualDay> individualDays = null;
             if (ModuleConfig.SoilExposuresIndividualGenerationMethod == SoilExposuresIndividualGenerationMethod.Simulate) {
-                var individualsRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.SOE_DrawIndividuals));
-                var individualsGenerator = new IndividualsGenerator();
-                var daysPerIndividual = 1;
-                var individuals = individualsGenerator
-                    .GenerateSimulatedIndividuals(
-                        data.SelectedPopulation,
-                        ModuleConfig.NumberOfSimulatedIndividuals,
-                        daysPerIndividual,
-                        individualsRandomGenerator
-                    );
-                individualDays = IndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+                individualDays = data.Individuals;
             } else {
                 individualDays = data.DietaryIndividualDayIntakes
                     .GroupBy(r => r.SimulatedIndividual.Id, (key, g) => g.First())

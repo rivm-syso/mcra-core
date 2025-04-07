@@ -7,6 +7,8 @@ using MCRA.Utils.Statistics;
 namespace MCRA.Simulation.Calculators.PopulationGeneration {
     public class IndividualsGenerator {
 
+        private bool _allometricScaling = true;
+
         public List<SimulatedIndividual> GenerateSimulatedIndividuals(
             Population population,
             int numberOfIndividuals,
@@ -70,9 +72,11 @@ namespace MCRA.Simulation.Calculators.PopulationGeneration {
             for (int i = 0; i < numberOfIndividuals; i++) {
                 var age = availableAges.DrawRandom(individualsRandomGenerator);
                 var sex = availableSexes.DrawRandom(individualsRandomGenerator);
-                var bsa = availableBsa.DrawRandom(individualsRandomGenerator);
                 var bwBirth = 3.68;
                 var bw = bwBirth + (4.47 * age) - (0.093 * Math.Pow(age, 2D)) + (0.00061 * Math.Pow(age, 3D));
+                var bsa = _allometricScaling
+                    ? getAllometricScaledBSA(bw)
+                    : availableBsa.DrawRandom(individualsRandomGenerator);
                 var individual = new Individual(i) {
                     Code = $"{population.Code}-Ind{i}",
                     Name = $"{population.Code}-Ind{i}",
@@ -82,10 +86,19 @@ namespace MCRA.Simulation.Calculators.PopulationGeneration {
                 individual.SetPropertyValue(ageProperty, doubleValue: age);
                 individual.SetPropertyValue(sexProperty, sex);
                 individual.SetPropertyValue(bsaProperty, doubleValue: bsa);
-
                 result.Add(new(individual, i));
             }
             return result;
+        }
+
+        // Allometric scaling Bokkers and Slob, 2007
+        // BSA is in dm2??
+        private static double getAllometricScaledBSA(double bodyWeight) {
+            var standardBodyWeight = 70d;
+            var standardBSA = 270d;
+            var bsaScaling = Math.Pow(standardBodyWeight / bodyWeight, 1 - 0.7);
+            var bsa = standardBSA / bsaScaling / 100;
+            return bsa;
         }
     }
 }

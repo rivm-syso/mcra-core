@@ -16,16 +16,18 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             ModuleSettingsType moduleSettings = [
                 ("DustExposures",
                     [
-                        ("NumberOfSimulatedIndividuals", "111"),
                         ("DustExposuresIndividualGenerationMethod", oldGenerationMethod.ToString())
                     ]
-                )
+                ),
+                ("Individuals", [
+                    ("NumberOfSimulatedIndividuals", "111"),
+                    ])
             ];
             var xmlOld = createMockSettingsXml(moduleSettings, new(10, 1, 1));
             var newXml = ProjectSettingsSerializer.GetTransformedSettingsXml(xmlOld);
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xmlOld, null, false, out _);
             Assert.AreEqual(expectedGenerationMethod, settingsDto.DustExposuresSettings.DustExposuresIndividualGenerationMethod);
-            Assert.AreEqual(111, settingsDto.DustExposuresSettings.NumberOfSimulatedIndividuals);
+            Assert.AreEqual(111, settingsDto.IndividualsSettings.NumberOfSimulatedIndividuals);
         }
 
         [TestMethod]

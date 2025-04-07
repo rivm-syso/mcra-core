@@ -1,10 +1,14 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using System;
+using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.DustExposures;
+using MCRA.Simulation.Calculators.IndividualDaysGenerator;
+using MCRA.Simulation.Calculators.PopulationGeneration;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
+using MCRA.Utils.Statistics.RandomGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
@@ -21,6 +25,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void DustExposuresActionCalculator_TestSimulate() {
             var seed = 1;
             var numberOfIndividuals = 10;
+            var random = new McraRandomGenerator(seed);
 
             var substances = FakeSubstancesGenerator.Create(1);
             var selectedPopulation = FakePopulationsGenerator.Create(1).First();
@@ -56,8 +61,15 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var config = project.DustExposuresSettings;
             config.SelectedExposureRoutes = [ExposureRoute.Dermal, ExposureRoute.Oral];
             config.DustExposuresIndividualGenerationMethod = DustExposuresIndividualGenerationMethod.Simulate;
-            config.NumberOfSimulatedIndividuals = numberOfIndividuals;
-
+            var individualPropertyValues = new Dictionary<string, PopulationIndividualPropertyValue>();
+            var individualsGenerator = new IndividualsGenerator();
+            var individuals = individualsGenerator
+                .GenerateSimulatedIndividuals(
+                    new Population() {PopulationIndividualPropertyValues = individualPropertyValues },
+                    numberOfIndividuals,
+                    1,
+                    random
+                );
             var data = new ActionData() {
                 AllCompounds = substances,
                 ActiveSubstances = substances,
@@ -68,7 +80,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 DustAdherenceAmounts = dustAdherenceAmounts,
                 DustAvailabilityFractions = dustAvailabilityFractions,
                 DustConcentrationUnit = dustConcentrations.FirstOrDefault().Unit,
-                DustIngestionUnit = dustIngestions.FirstOrDefault().ExposureUnit
+                DustIngestionUnit = dustIngestions.FirstOrDefault().ExposureUnit,
+                Individuals = IndividualDaysGenerator.CreateSimulatedIndividualDays(individuals),
             };
 
             var calculator = new DustExposuresActionCalculator(project);

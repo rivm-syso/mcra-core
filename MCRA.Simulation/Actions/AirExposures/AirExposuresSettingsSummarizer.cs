@@ -23,9 +23,6 @@ namespace MCRA.Simulation.Actions.AirExposures {
             );
             section.SummarizeSetting(SettingsItemType.AirExposuresIndividualGenerationMethod, _configuration.AirExposuresIndividualGenerationMethod);
 
-            if (_configuration.AirExposuresIndividualGenerationMethod == AirExposuresIndividualGenerationMethod.Simulate) {
-                section.SummarizeSetting(SettingsItemType.NumberOfSimulatedIndividuals, _configuration.NumberOfSimulatedIndividuals);
-            }
             return section;
         }
     }

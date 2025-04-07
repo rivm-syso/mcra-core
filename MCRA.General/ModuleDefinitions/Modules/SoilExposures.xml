@@ -28,7 +28,6 @@
   </SelectionInputs>
   <CalculationSettings>
     <CalculationSetting>SoilExposuresIndividualGenerationMethod</CalculationSetting>
-    <CalculationSetting source="DustExposures">NumberOfSimulatedIndividuals</CalculationSetting>
     <CalculationSetting source="Action">RandomSeed</CalculationSetting>
     <CalculationSetting>SoilPopulationAlignmentMethod</CalculationSetting>
   </CalculationSettings>
@@ -45,5 +44,6 @@
     <Input>DietaryExposures</Input>
     <Input>SoilConcentrationDistributions</Input>
     <Input>SoilExposureDeterminants</Input>
+    <Input>Individuals</Input>
   </CalculationInputs>
 </Module>
