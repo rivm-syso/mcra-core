@@ -79,6 +79,14 @@
         <string>BodyWeight</string>
       </Aliases>
     </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric">
+      <Id>Size</Id>
+      <Description>The number of individuals of this population.</Description>
+      <Aliases>
+        <string>Size</string>
+        <string>PopulationSize</string>
+      </Aliases>
+    </ColumnDefinition>
 
     <ColumnDefinition IsDynamic="true">
       <Description>

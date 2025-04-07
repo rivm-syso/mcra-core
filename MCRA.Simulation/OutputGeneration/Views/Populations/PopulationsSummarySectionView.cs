@@ -52,7 +52,14 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             } else {
                 sb.AppendDescriptionParagraph($"Nominal population bodyweight: {Model.NominalPopulationBodyWeight} kg.");
             }
-            if (Model.Records.Any()) {
+
+            if (double.IsNaN(Model.PopulationSize)) {
+                sb.AppendDescriptionParagraph($"No population size specified.");
+            } else {
+                sb.AppendDescriptionParagraph($"Population size: {Model.PopulationSize}.");
+            }
+
+            if (Model.Records.Count != 0) {
                 sb.AppendTable(
                     Model,
                     Model.Records,

@@ -40,7 +40,7 @@ namespace MCRA.Simulation.Actions.Populations {
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
-            if (!subsetManager.AllPopulations.Any()) {
+            if (subsetManager.AllPopulations.Count == 0) {
                 throw new Exception("No population found.");
             } else if (subsetManager.AllPopulations.Count > 1) {
                 throw new Exception("Multiple populations selected.");

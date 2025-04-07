@@ -22,19 +22,9 @@ namespace MCRA.Simulation.Actions.BaselineBodIndicators {
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
-
-            var baselineBodIndicators = subsetManager.AllBaselineBodIndicators;
-            var list = new List<BaselineBodIndicator>();
-            foreach (var bbi in baselineBodIndicators) {
-                var record = new BaselineBodIndicator() {
-                    Population = bbi.Population,
-                    Effect = bbi.Effect,
-                    BodIndicator = bbi.BodIndicator,
-                    Value = bbi.Value
-                };
-                list.Add(record);
-            }
-            data.BaselineBodIndicators = list;
+            data.BaselineBodIndicators = subsetManager.AllBaselineBodIndicators
+                .Where(r => r.Population == null || data.SelectedPopulation.Code == "Generated")
+                .ToList();
         }
 
         protected override void summarizeActionResult(IBaselineBodIndicatorsActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {

@@ -10,11 +10,11 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public List<BaselineBodIndicatorsSummaryRecord> Records { get; set; }
 
-        public void Summarize(List<BaselineBodIndicator> burdenOfDiseaseInfos) {
-            Records = burdenOfDiseaseInfos
+        public void Summarize(List<BaselineBodIndicator> baselineBodIndicators) {
+            Records = baselineBodIndicators
                 .Select(r => {
                     var record = new BaselineBodIndicatorsSummaryRecord {
-                        Population = r.Population,
+                        Population = r.Population.Code,
                         Effect = r.Effect.Name,
                         BodIndicator = r.BodIndicator.GetDisplayName(),
                         Value = r.Value.ToString()

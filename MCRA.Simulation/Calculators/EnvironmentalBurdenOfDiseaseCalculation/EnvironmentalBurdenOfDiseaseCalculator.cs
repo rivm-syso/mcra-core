@@ -30,22 +30,22 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
         }
 
         private EnvironmentalBurdenOfDiseaseResultRecord compute(
-            ExposureResponseResultRecord exposureResponesResultRecord
+            ExposureResponseResultRecord exposureResponseResultRecord
         ) {
             var result = new EnvironmentalBurdenOfDiseaseResultRecord {
                 BodIndicator = BaselineBodIndicator.BodIndicator,
-                ExposureBinId = exposureResponesResultRecord.ExposureBinId,
-                ExposureBin = exposureResponesResultRecord.ExposureInterval,
-                ExposurePercentileBin = exposureResponesResultRecord.PercentileInterval,
-                ErfDoseUnit = exposureResponesResultRecord.ExposureResponseFunction.DoseUnit,
-                ResponseValue = exposureResponesResultRecord.PercentileSpecificRisk,
-                TargetUnit = exposureResponesResultRecord?.TargetUnit
+                ExposureBinId = exposureResponseResultRecord.ExposureBinId,
+                ExposureBin = exposureResponseResultRecord.ExposureInterval,
+                ExposurePercentileBin = exposureResponseResultRecord.PercentileInterval,
+                ErfDoseUnit = exposureResponseResultRecord.ExposureResponseFunction.DoseUnit,
+                ResponseValue = exposureResponseResultRecord.PercentileSpecificRisk,
+                TargetUnit = exposureResponseResultRecord?.TargetUnit
             };
             result.AttributableFraction = (result.ResponseValue - 1) / result.ResponseValue;
             result.TotalBod = BaselineBodIndicator.Value 
-                * exposureResponesResultRecord.PercentileInterval.Percentage / 100;
+                * exposureResponseResultRecord.PercentileInterval.Percentage / 100;
             result.AttributableBod = result.TotalBod * result.AttributableFraction;
-            result.ExposureResponseResultRecord = exposureResponesResultRecord;
+            result.ExposureResponseResultRecord = exposureResponseResultRecord;
             return result;
         }
     }

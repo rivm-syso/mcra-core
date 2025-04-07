@@ -553,7 +553,6 @@ namespace MCRA.Data.Management {
 
         public List<MarketShare> AllMarketShares => _dataManager.GetAllMarketShares().ToList();
 
-
         public ICollection<DeterministicSubstanceConversionFactor> AllDeterministicSubstanceConversionFactors => _dataManager.GetAllDeterministicSubstanceConversionFactors();
 
         public ICollection<ConcentrationSingleValue> AllConcentrationSingleValues => _dataManager.GetAllConcentrationSingleValues();
@@ -567,9 +566,13 @@ namespace MCRA.Data.Management {
         public IList<ExposureEstimate> AllSingleValueNonDietaryExposures => _dataManager.GetAllSingleValueNonDietaryExposures();
 
         public IList<IndoorAirConcentration> AllIndoorAirConcentrations => _dataManager.GetAllIndoorAirConcentrations();
+
         public IList<OutdoorAirConcentration> AllOutdoorAirConcentrations => _dataManager.GetAllOutdoorAirConcentrations();
+
         public IList<AirIndoorFraction> AllAirIndoorFractions => _dataManager.GetAllAirIndoorFractions();
+
         public IList<AirVentilatoryFlowRate> AllAirVentilatoryFlowRates => _dataManager.GetAllAirVentilatoryFlowRates();
+
         public IList<DustConcentrationDistribution> AllDustConcentrationDistributions => _dataManager.GetAllDustConcentrationDistributions();
 
         public IList<DustIngestion> AllDustIngestions => _dataManager.GetAllDustIngestions();
@@ -587,6 +590,7 @@ namespace MCRA.Data.Management {
         public IList<SoilConcentrationDistribution> AllSoilConcentrationDistributions => _dataManager.GetAllSoilConcentrationDistributions();
 
         public IList<SoilIngestion> AllSoilIngestions => _dataManager.GetAllSoilIngestions();
+
         public IList<BaselineBodIndicator> AllBaselineBodIndicators => _dataManager.GetAllBaselineBodIndicators();
     }
 }

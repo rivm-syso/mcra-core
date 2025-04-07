@@ -9,7 +9,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
     public partial class CompiledDataManager {
 
         /// <summary>
-        /// Gets all human monitoring surveys.
+        /// Gets all populations.
         /// </summary>
         /// <returns></returns>
         public IDictionary<string, Population> GetAllPopulations() {
@@ -35,6 +35,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             StartDate = r.GetDateTimeOrNull(RawPopulations.StartDate, fieldMap),
                                             EndDate = r.GetDateTimeOrNull(RawPopulations.EndDate, fieldMap),
                                             NominalBodyWeight = r.GetDoubleOrNull(RawPopulations.NominalBodyWeight, fieldMap) ?? double.NaN,
+                                            Size = r.GetDoubleOrNull(RawPopulations.Size, fieldMap) ?? double.NaN,
                                             PopulationIndividualPropertyValues = [],
                                         };
                                         allPopulations[population.Code] = population;
@@ -213,6 +214,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 row.WriteNonNullDateTime(RawPopulations.StartDate, item.StartDate);
                 row.WriteNonNullDateTime(RawPopulations.EndDate, item.EndDate);
                 row.WriteNonNullDouble(RawPopulations.NominalBodyWeight, item.NominalBodyWeight);
+                row.WriteNonNullDouble(RawPopulations.Size, item.Size);
 
                 dtp.Rows.Add(row);
                 //population individual property values

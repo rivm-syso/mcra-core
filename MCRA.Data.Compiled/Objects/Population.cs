@@ -7,6 +7,7 @@ namespace MCRA.Data.Compiled.Objects {
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public double NominalBodyWeight { get; set; }
+        public double Size { get; set; }
 
         public BodyWeightUnit BodyWeightUnit => BodyWeightUnit.kg;
 

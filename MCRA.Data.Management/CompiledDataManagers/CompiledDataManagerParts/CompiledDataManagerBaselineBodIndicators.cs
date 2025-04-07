@@ -15,6 +15,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             if (_data.AllBaselineBodIndicators == null) {
                 LoadScope(SourceTableGroup.BaselineBodIndicators);
                 GetAllEffects();
+                GetAllPopulations();
                 var allBaselineBodIndicators = new List<BaselineBodIndicator>();
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.BaselineBodIndicators);
                 if (rawDataSourceIds?.Count > 0) {
@@ -23,9 +24,9 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                             using (var r = rdm.OpenDataReader<RawBaselineBodIndicators>(rawDataSourceId, out int[] fieldMap)) {
                                 while (r?.Read() ?? false) {
                                     var idEffect = r.GetString(RawBaselineBodIndicators.IdEffect, fieldMap);
-
+                                    var idPopulation = r.GetString(RawBaselineBodIndicators.Population, fieldMap);
                                     var record = new BaselineBodIndicator() {
-                                        Population = r.GetStringOrNull(RawBaselineBodIndicators.Population, fieldMap),
+                                        Population = _data.GetOrAddPopulation(idPopulation),
                                         Effect = _data.GetOrAddEffect(idEffect),
                                         BodIndicator = r.GetEnum<BodIndicator>(RawBaselineBodIndicators.BodIndicator, fieldMap),
                                         Value = r.GetDouble(RawBaselineBodIndicators.Value, fieldMap)
@@ -52,7 +53,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             var ccr = new int[Enum.GetNames(typeof(RawBaselineBodIndicators)).Length];
             foreach (var bodi in baselineBodIndicators) {
                 var r = dtABaselineBodIndicators.NewRow();
-                r.WriteNonEmptyString(RawBaselineBodIndicators.Population, bodi.Population, ccr);
+                r.WriteNonEmptyString(RawBaselineBodIndicators.Population, bodi.Population.ToString(), ccr);
                 r.WriteNonEmptyString(RawBaselineBodIndicators.IdEffect, bodi.Effect?.Code, ccr);
                 r.WriteNonEmptyString(RawBaselineBodIndicators.BodIndicator, bodi.BodIndicator.ToString(), ccr);
                 r.WriteNonEmptyString(RawBaselineBodIndicators.Value, bodi.Value.ToString(), ccr);
