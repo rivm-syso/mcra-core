@@ -108,7 +108,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 var record = new ExposureBySubstanceRecord {
                     SubstanceCode = substance.Code,
                     SubstanceName = substance.Name,
-                    Percentage = weights.Count / exposures.Count * 100D,
+                    Percentage = weights.Count * 100D / exposures.Count,
                     MeanAll = total / weightsAll.Sum(),
                     Mean = total / weights.Sum(),
                     Percentile25 = percentiles[0],

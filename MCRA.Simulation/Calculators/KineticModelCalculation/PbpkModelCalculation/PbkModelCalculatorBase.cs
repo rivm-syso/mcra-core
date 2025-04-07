@@ -395,7 +395,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                     var averageBodyWeight = positives.Average(c => c.SimulatedIndividual.BodyWeight);
                     var sumOfSamplingWeights = externalIndividualExposures.Sum(c => c.SimulatedIndividual.SamplingWeight);
                     var exposures = positives
-                       .Select(r => r.GetExposure(route, substance, isPerPerson: false) * r.SimulatedIndividual.SamplingWeight)
+                       .Select(r => r.GetExposure(route, substance, isPerPerson: true) * r.SimulatedIndividual.SamplingWeight)
                        .ToList();
                     var exposure = exposures.Sum() / sumOfSamplingWeights;
                     if (exposureUnit.IsPerBodyWeight()) {

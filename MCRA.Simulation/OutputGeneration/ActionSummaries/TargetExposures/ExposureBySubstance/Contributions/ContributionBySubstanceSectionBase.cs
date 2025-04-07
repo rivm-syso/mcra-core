@@ -59,7 +59,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     SubstanceCode = substance.Code,
                     SubstanceName = substance.Name,
                     Contribution = total * rpf * membership,
-                    PercentagePositives = weights.Count / exposures.Count * 100D,
+                    PercentagePositives = weights.Count * 100D / exposures.Count,
                     RelativePotencyFactor = relativePotencyFactors?[substance] ?? double.NaN,
                     Mean = total / weightsAll.Sum(),
                     NumberOfDays = weights.Count,
