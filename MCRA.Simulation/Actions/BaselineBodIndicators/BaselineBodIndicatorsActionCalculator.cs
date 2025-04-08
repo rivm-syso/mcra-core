@@ -23,7 +23,10 @@ namespace MCRA.Simulation.Actions.BaselineBodIndicators {
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
             data.BaselineBodIndicators = subsetManager.AllBaselineBodIndicators
-                .Where(r => r.Population == null || data.SelectedPopulation.Code == "Generated")
+                .Where(r => r.Population == null
+                    || data.SelectedPopulation.Code == "Generated"
+                    || r.Population == data.SelectedPopulation
+                )
                 .ToList();
         }
 
