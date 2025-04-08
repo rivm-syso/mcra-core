@@ -1,5 +1,24 @@
 # Change Log
 
+## Version 10.1.8 (2025-04-08)
+
+### Added
+
+- Add bar plot of attributable burden together with cumulative percentage (#2171)
+- Implement environmental burden of disease with uncertainty (#2179)
+- Implement TOC Exposures by Source and Substance in Internal Exposures module (#2184)
+
+### Changed
+
+- Rename exposure effect functions to exposure response functions (#2174)
+- Align non-dietary expore module with other external exposure modules (dust, soil, etc) (#2183)
+
+### Fixed
+
+- Excel data templates table name too long for sheet name (#2134)
+- Core and Web have different outputs for AIR (and probably DUST and SOIL) (#2177)
+- Align non-dietary expore module with other external exposure modules (dust, soil, etc) (#2183)
+
 ## Version 10.1.7 (2025-03-24)
 
 ### Added
