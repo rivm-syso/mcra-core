@@ -449,11 +449,6 @@ namespace MCRA.Simulation {
             set => GetOrCreateModuleOutputData<EnvironmentalBurdenOfDiseaseOutputData>(ActionType.EnvironmentalBurdenOfDisease).EnvironmentalBurdenOfDiseases = value;
         }
 
-        public List<ExposureResponseResultRecord> ExposureResponses {
-            get => GetOrCreateModuleOutputData<EnvironmentalBurdenOfDiseaseOutputData>(ActionType.EnvironmentalBurdenOfDisease).ExposureResponses;
-            set => GetOrCreateModuleOutputData<EnvironmentalBurdenOfDiseaseOutputData>(ActionType.EnvironmentalBurdenOfDisease).ExposureResponses = value;
-        }
-
         // ExposureResponseFunctions
         public List<ExposureResponseFunction> ExposureResponseFunctions {
             get => (List<ExposureResponseFunction>)GetOrCreateModuleOutputData<ExposureResponseFunctionsOutputData>(ActionType.ExposureResponseFunctions).ExposureResponseFunctions;

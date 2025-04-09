@@ -1,7 +1,4 @@
-﻿using MCRA.Data.Compiled.Objects;
-using MCRA.General;
-using MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation;
-using MCRA.Utils.ExtensionMethods;
+﻿using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
 using OxyPlot.Annotations;
 using OxyPlot.Axes;
@@ -42,19 +39,18 @@ namespace MCRA.Simulation.OutputGeneration {
             var x = record.ExposureResponseDataPoints.Select(c => c.Exposure).ToList();
             var y = record.ExposureResponseDataPoints.Select(c => c.ResponseValue).ToList();
 
+            var xLine = record.ExposureResponseChartDataPoints.Select(c => c.Exposure).ToList();
+            var yLine = record.ExposureResponseChartDataPoints.Select(c => c.ResponseValue).ToList();
+
             var plotModel = createDefaultPlotModel();
 
-            Func<double, double> calcErf = (x) => record.ExposureResponseFunction
-                .Compute(x * record.ErfDoseAlignmentFactor);
-            var series1 = new FunctionSeries(
-                calcErf,
-                record.ExposureResponseFunction.Baseline,
-                1.1 * x.Max(),
-                0.0001
-            ) {
+            var series1 = new LineSeries() {
                 Color = OxyColors.Black,
                 MarkerType = MarkerType.None
             };
+            for (int i = 0; i < xLine.Count; i++) {
+                series1.Points.Add(new DataPoint(xLine[i], yLine[i]));
+            }
             var series2 = new ScatterSeries() {
                 MarkerType = MarkerType.Circle,
                 MarkerFill = OxyColors.Red,

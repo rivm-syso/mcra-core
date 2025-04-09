@@ -18,17 +18,25 @@ namespace MCRA.Simulation.OutputGeneration {
                 var ebdRecords = environmentalBurdenOfDiseases
                     .Where(r => r.ExposureResponseFunction == erf)
                     .ToList();
+                var targetUnit = ebdRecords.First().TargetUnit;
+                var doseUnitAlignmentFactor = ebdRecords.First()
+                    .ExposureResponseResultRecord.ErfDoseUnitAlignmentFactor;
                 var dataPoints = ebdRecords
                     .Select(r => new ExposureResponseDataPoint() {
                         Exposure = r.Exposure,
                         ResponseValue = r.ResponseValue
                     })
                     .ToList();
-                var targetUnit = ebdRecords.First().TargetUnit;
-                var doseUnitAlignmentFactor = ebdRecords.First()
-                    .ExposureResponseResultRecord.ErfDoseUnitAlignmentFactor;
+                var maxExposure = ebdRecords.Max(r => r.Exposure);
+                var functionDataPoints = new List<ExposureResponseDataPoint>();
+                for (double x = erf.Baseline; x <= 1.01 * maxExposure; x += 0.001) {
+                    var functionDataPoint = new ExposureResponseDataPoint() {
+                        Exposure = x,
+                        ResponseValue = erf.Compute(x * doseUnitAlignmentFactor)
+                    };
+                    functionDataPoints.Add(functionDataPoint);
+                };
                 var record = new ErfSummaryRecord() {
-                    ExposureResponseFunction = erf,
                     ErfCode = erf.Code,
                     SubstanceName = erf.Substance.Name,
                     SubstanceCode = erf.Substance.Code,
@@ -52,7 +60,8 @@ namespace MCRA.Simulation.OutputGeneration {
                     ErfDoseAlignmentFactor = doseUnitAlignmentFactor,
                     Baseline = erf.Baseline,
                     HasSubgroups = erf.HasErfSubGroups(),
-                    ExposureResponseDataPoints = dataPoints
+                    ExposureResponseDataPoints = dataPoints,
+                    ExposureResponseChartDataPoints = functionDataPoints
                 };
                 erfSummaryRecords.Add(record);
             }

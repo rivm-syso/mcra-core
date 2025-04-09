@@ -110,7 +110,6 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
                 }
 
                 result.EnvironmentalBurdenOfDiseases = environmentalBurdenOfDiseases;
-                //result.ExposureResponses = exposureResponeResults;
                 localProgress.Update(100);
                 return result;
             } else {
@@ -127,7 +126,6 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
 
         protected override void updateSimulationData(ActionData data, EnvironmentalBurdenOfDiseaseActionResult result) {
             data.EnvironmentalBurdenOfDiseases = result.EnvironmentalBurdenOfDiseases;
-            data.ExposureResponses = result.ExposureResponses;
         }
         protected override void summarizeActionResultUncertain(
             UncertaintyFactorialSet factorialSet,

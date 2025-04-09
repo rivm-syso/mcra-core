@@ -77,8 +77,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [Display(AutoGenerateField = false)]
         public List<ExposureResponseDataPoint> ExposureResponseDataPoints { get; set; }
 
-        // TODO: remove this compiled data object from this summary record
         [Display(AutoGenerateField = false)]
-        public ExposureResponseFunction ExposureResponseFunction { get; set; }
+        public List<ExposureResponseDataPoint> ExposureResponseChartDataPoints { get; set; }
     }
 }
