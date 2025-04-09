@@ -4,9 +4,13 @@ using System.ComponentModel.DataAnnotations;
 namespace MCRA.Simulation.OutputGeneration {
     public class EnvironmentalBurdenOfDiseaseSummaryRecord {
 
-        [Description("Population.")]
-        [DisplayName("Population")]
-        public string Population { get; set; }
+        [Description("Identification code of the population.")]
+        [DisplayName("Population code")]
+        public string PopulationCode { get; set; }
+
+        [Description("Name of the population.")]
+        [DisplayName("Population name")]
+        public string PopulationName { get; set; }
 
         [Description("Burden of disease indicator.")]
         [DisplayName("BoD indicator")]
@@ -24,5 +28,10 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Total attributable BoD")]
         [DisplayFormat(DataFormatString = "{0:G4}")]
         public double TotalAttributableBod { get; set; }
+
+        [Description("Standardized total attributable burden of disease for the whole population (AttrBoD / Population size * 100.000) .")]
+        [DisplayName("Standardized total attributable BoD per 100.000")]
+        [DisplayFormat(DataFormatString = "{0:G4}")]
+        public double StandardizedTotalAttributableBod { get; set; }
     }
 }

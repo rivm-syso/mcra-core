@@ -2,19 +2,19 @@
 using OxyPlot;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class AttributableBodChartCreator : AttributableBodChartCreatorBase {
+    public sealed class StandardizedAttributableBodChartCreator : AttributableBodChartCreatorBase {
 
-        public AttributableBodChartCreator(
+        public StandardizedAttributableBodChartCreator(
             List<AttributableBodSummaryRecord> records,
             string sectionId
         ) : base(records, sectionId) {
         }
 
-        public override string Title => "Attributable burden &amp; cumulative percentage.";
+        public override string Title => "Standardized attributable burden &amp; cumulative percentage.";
 
         public override string ChartId {
             get {
-                var pictureId = "764e10fb-d6e0-4690-b5ce-ffdbd3643d5d";
+                var pictureId = "bd49c628-fc08-482d-8878-cf3fcecbdc1d";
                 return StringExtensions.CreateFingerprint(_sectionId + pictureId + _population + _bodIndicator + _erfCode);
             }
         }
@@ -22,9 +22,9 @@ namespace MCRA.Simulation.OutputGeneration {
         public override PlotModel Create() => create(
             bars: _records
                 .Select(c => (
-                    Value: c.AttributableBod,
-                    Lower: c.LowerAttributableBod,
-                    Upper: c.UpperAttributableBod
+                    Value: c.StandardizedAttributableBod,
+                    Lower: c.LowerStandardizedAttributableBod,
+                    Upper: c.UpperStandardizedAttributableBod
                 ))
                 .ToList(),
             cumulative: _records
@@ -36,7 +36,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .ToList(),
             labels: _records.Select(c => c.ExposureBin).ToList(),
             unit: _unit,
-            leftYAxisTitle: $"Attributable Burden ({_bodIndicator})",
+            leftYAxisTitle: $"Attributable Burden ({_bodIndicator} per 100k)",
             uncertainty: _records.SelectMany(c => c.AttributableBods).Any()
         );
     }

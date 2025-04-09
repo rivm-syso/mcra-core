@@ -1,4 +1,5 @@
-﻿using MCRA.General;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation;
@@ -13,7 +14,6 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
     public sealed class EnvironmentalBurdenOfDiseaseSummarizer : ActionModuleResultsSummarizer<EnvironmentalBurdenOfDiseaseModuleConfig, EnvironmentalBurdenOfDiseaseActionResult> {
         public EnvironmentalBurdenOfDiseaseSummarizer(EnvironmentalBurdenOfDiseaseModuleConfig config) : base(config) {
         }
-        //public override ActionType ActionType => ActionType.EnvironmentalBurdenOfDisease;
 
         public override void Summarize(
             ActionModuleConfig sectionConfig,
@@ -30,7 +30,10 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
                 SectionLabel = ActionType.ToString()
             };
             var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
-            section.Summarize(data.EnvironmentalBurdenOfDiseases);
+            section.Summarize(
+                data.EnvironmentalBurdenOfDiseases,
+                data.SelectedPopulation
+            );
             subHeader.SaveSummarySection(section);
             var subOrder = 0;
 
@@ -40,6 +43,7 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
             ) {
                 summarizeAttributableBod(
                     data.EnvironmentalBurdenOfDiseases,
+                    data.SelectedPopulation,
                     subHeader,
                     subOrder++
                 );
@@ -79,6 +83,7 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
 
         private void summarizeAttributableBod(
             List<EnvironmentalBurdenOfDiseaseResultRecord> environmentalBurdenOfDiseases,
+            Population selectedPopulation,
             SectionHeader header,
             int order
         ) {
@@ -90,7 +95,7 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
                 "Attributable BoDs",
                 order
             );
-            section.Summarize(environmentalBurdenOfDiseases);
+            section.Summarize(environmentalBurdenOfDiseases, selectedPopulation);
             subHeader.Units = collectUnits(environmentalBurdenOfDiseases);
             subHeader.SaveSummarySection(section);
         }

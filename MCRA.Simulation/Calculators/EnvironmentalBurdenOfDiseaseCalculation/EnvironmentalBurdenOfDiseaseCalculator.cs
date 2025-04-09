@@ -8,12 +8,16 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
 
         public BaselineBodIndicator BaselineBodIndicator { get; set; }
 
+        public double PopulationSize { get; set; }
+
         public EnvironmentalBurdenOfDiseaseCalculator(
             List<ExposureResponseResultRecord> exposureResponseResults = null,
-            BaselineBodIndicator baselineBodIndicator = null
+            BaselineBodIndicator baselineBodIndicator = null,
+            double populationSize = double.NaN
         ) {
             ExposureResponseResults = exposureResponseResults;
             BaselineBodIndicator = baselineBodIndicator;
+            PopulationSize = populationSize;
         }
 
         public List<EnvironmentalBurdenOfDiseaseResultRecord> Compute() {
@@ -22,9 +26,13 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
                 .ToList();
             var sum = result.Sum(c => c.AttributableBod);
             var cumulative = 0d;
+            var sumExposed = result.Sum(c => c.AttributableBod / PopulationSize / c.ExposurePercentileBin.Percentage * 100);
+            var cumulativeExposed = 0d;
             foreach (var record in result) {
                 cumulative += record.AttributableBod;
+                cumulativeExposed += record.AttributableBod / PopulationSize  / record.ExposurePercentileBin.Percentage * 100;
                 record.CumulativeAttributableBod = cumulative / sum * 100;
+                record.CumulativeStandardizedExposedAttributableBod = cumulativeExposed / sumExposed * 100;
             }
             return result;
         }
@@ -42,7 +50,7 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
                 TargetUnit = exposureResponseResultRecord?.TargetUnit
             };
             result.AttributableFraction = (result.ResponseValue - 1) / result.ResponseValue;
-            result.TotalBod = BaselineBodIndicator.Value 
+            result.TotalBod = BaselineBodIndicator.Value
                 * exposureResponseResultRecord.PercentileInterval.Percentage / 100;
             result.AttributableBod = result.TotalBod * result.AttributableFraction;
             result.ExposureResponseResultRecord = exposureResponseResultRecord;

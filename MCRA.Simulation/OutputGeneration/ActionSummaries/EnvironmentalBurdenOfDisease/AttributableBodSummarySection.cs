@@ -1,4 +1,5 @@
-﻿using MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation;
 using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.OutputGeneration {
@@ -6,11 +7,16 @@ namespace MCRA.Simulation.OutputGeneration {
         public override bool SaveTemporaryData => true;
         public List<AttributableBodSummaryRecord> Records { get; set; }
 
-        public void Summarize(List<EnvironmentalBurdenOfDiseaseResultRecord> environmentalBurdenOfDiseases) {
+        public void Summarize(
+            List<EnvironmentalBurdenOfDiseaseResultRecord> environmentalBurdenOfDiseases,
+            Population population
+        ) {
             Records = environmentalBurdenOfDiseases
                 .Select((s, ix) => new AttributableBodSummaryRecord {
                     ExposureBinId = s.ExposureBinId,
-                    Population = s.BaselineBodIndicator.Population.Name,
+                    PopulationCode = s.BaselineBodIndicator.Population.Code,
+                    PopulationName = s.BaselineBodIndicator.Population.Name,
+                    PopulationSize = population.Size > 0 ? population.Size : double.NaN,
                     BodIndicator = s.BaselineBodIndicator.BodIndicator.GetShortDisplayName(),
                     ExposureResponseFunctionCode = s.ExposureResponseFunction.Code,
                     BinPercentage = s.ExposurePercentileBin.Percentage,
@@ -26,6 +32,8 @@ namespace MCRA.Simulation.OutputGeneration {
                     AttributableBods = [],
                     CumulativeAttributableBods = [],
                     CumulativeAttributableBod = s.CumulativeAttributableBod,
+                    CumulativeStandardizedExposedAttributableBods = [],
+                    CumulativeStandardizedExposedAttributableBod = s.CumulativeStandardizedExposedAttributableBod,
                 })
                 .ToList();
         }
@@ -45,6 +53,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 record.UncertaintyUpperBound = upperBound;
                 record.AttributableBods.Add(item.AttributableBod);
                 record.CumulativeAttributableBods.Add(item.CumulativeAttributableBod);
+                record.CumulativeStandardizedExposedAttributableBods.Add(item.CumulativeStandardizedExposedAttributableBod);
                 record.Exposures.Add(item.Exposure);
             }
         }

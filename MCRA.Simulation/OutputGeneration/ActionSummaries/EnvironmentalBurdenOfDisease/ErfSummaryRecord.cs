@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using MCRA.Data.Compiled.Objects;
+
 namespace MCRA.Simulation.OutputGeneration {
     public class ErfSummaryRecord {
 

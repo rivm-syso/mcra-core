@@ -100,7 +100,8 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
                         var totalBurdenOfDisease = burdenOfDiseaseIndicator.Value;
                         var ebdCalculator = new EnvironmentalBurdenOfDiseaseCalculator(
                             exposureResponseResults,
-                            burdenOfDiseaseIndicator
+                            burdenOfDiseaseIndicator,
+                            data.SelectedPopulation.Size
                         );
                         var resultRecords = ebdCalculator.Compute();
                         foreach (var resultRecord in resultRecords) {
