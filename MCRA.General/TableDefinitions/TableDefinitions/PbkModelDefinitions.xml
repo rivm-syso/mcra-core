@@ -2,7 +2,7 @@
 <TableDefinition IsStrongEntity="true">
   <Id>KineticModelDefinitions</Id>
   <Name>PBK model definitions</Name>
-  <Description>PBK model definitions, uploadable PBK models.</Description>
+  <Description>PBK model definitions.</Description>
   <Aliases>
     <string>PbkModelDefinitions</string>
     <string>PbkModelDefinition</string>
@@ -14,7 +14,7 @@
   <ColumnDefinitions>
     <ColumnDefinition IsPrimaryKey="true" Required="true" FieldType="AlphaNumeric" FieldSize="50">
       <Id>Id</Id>
-      <Description>Code of PBK model.</Description>
+      <Description>Unique identifier/code of the model.</Description>
       <Aliases>
         <string>id</string>
         <string>idModel</string>
@@ -23,7 +23,7 @@
     </ColumnDefinition>
     <ColumnDefinition FieldType="AlphaNumeric" FieldSize="100" IsNameColumn="true">
       <Id>Name</Id>
-      <Description>The PBK model name.</Description>
+      <Description>The name of the model.</Description>
       <Aliases>
         <string>Name</string>
         <string>PbkName</string>
@@ -32,7 +32,7 @@
     <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
       <Id>Description</Id>
       <Description>
-        PBK model description.
+        Description of the model.
       </Description>
       <Aliases>
         <string>Description</string>

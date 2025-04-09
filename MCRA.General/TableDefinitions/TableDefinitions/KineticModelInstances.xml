@@ -1,14 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TableDefinition IsStrongEntity="true">
   <Id>KineticModelInstances</Id>
-  <Name>Kinetic model instances</Name>
+  <Name>PBK model instances</Name>
   <Description>
-        Kinetic model instances.
-      </Description>
+    PBK model instances/parametrisations.
+  </Description>
   <Aliases>
+    <string>PbkModelInstances</string>
+    <string>PbkModelParametrisations</string>
     <string>KineticModelInstances</string>
     <string>KineticModelInstance</string>
   </Aliases>
+  <PreferredAlias>PbkModelInstances</PreferredAlias>
   <HiddenAliases>
     <string>RawKineticModelInstances</string>
   </HiddenAliases>
@@ -17,8 +20,8 @@
     <ColumnDefinition IsPrimaryKey="true" Required="true" FieldType="AlphaNumeric" FieldSize="50">
       <Id>idModelInstance</Id>
       <Description>
-            Unique identification code of the kinetic model instance.
-          </Description>
+        Unique identification code of the PBK model instance/parametrisation.
+      </Description>
       <Aliases>
         <string>idModelInstance</string>
         <string>Id</string>
@@ -27,7 +30,7 @@
     </ColumnDefinition>
     <ColumnDefinition Required="true" FieldType="KineticModelType">
       <Id>idModelDefinition</Id>
-      <Description>Identifier of the kinetic model definition for which this is an instance.</Description>
+      <Description>Identifier of the PBK model definition of which this is an instance/parametrisation.</Description>
       <Aliases>
         <string>idModelDefinition</string>
         <string>ModelDefinition</string>
@@ -44,16 +47,20 @@
     <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
       <Id>idTestSystem</Id>
       <Name>Species</Name>
-      <Description>The species on which the experiment was performed.</Description>
+      <PreferredAlias>Species</PreferredAlias>
+      <Description>The species to which this instance/parametrisation applies.</Description>
       <Aliases>
+        <string>Species</string>
         <string>System</string>
         <string>TestSystem</string>
-        <string>Species</string>
       </Aliases>
     </ColumnDefinition>
     <ColumnDefinition FieldType="AlphaNumeric" FieldSize="150">
       <Id>Substances</Id>
-      <Description>Code or comma separated list of the codes of the substances. Unique identification code of substance, Default: valid for all substances. Should be omitted for parameters in the class Physiological</Description>
+      <Description>
+        Code or comma separated list of the codes of the substances.
+        Only applies for substance-specific parameters.
+      </Description>
       <Aliases>
         <string>idSubstance</string>
         <string>idSubstances</string>
@@ -82,14 +89,14 @@
     </ColumnDefinition>
     <ColumnDefinition FieldType="AlphaNumeric" FieldSize="100" IsNameColumn="true">
       <Id>Name</Id>
-      <Description>Name of the kinetic model instance.</Description>
+      <Description>Name of the kinetic model instance/parametrisation.</Description>
       <Aliases>
         <string>Name</string>
       </Aliases>
     </ColumnDefinition>
     <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
       <Id>Description</Id>
-      <Description>Additional description of the kinetic model instance.</Description>
+      <Description>Additional description of the model instance/parametrisation.</Description>
       <Aliases>
         <string>Description</string>
       </Aliases>

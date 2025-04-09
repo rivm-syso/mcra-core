@@ -1,12 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TableDefinition>
   <Id>KineticModelInstanceParameters</Id>
-  <Name>Kinetic model instance parameters </Name>
-  <Description>Kinetic model parameters</Description>
+  <Name>PBK model instance parameters </Name>
+  <Description>
+    PBK model instance/parametrisation parameter values.
+  </Description>
   <Aliases>
+    <string>PbkModelInstanceParameters</string>
+    <string>PbkModelInstanceParameterValues</string>
     <string>KineticModelInstanceParameters</string>
     <string>KineticModelInstanceParameter</string>
   </Aliases>
+  <PreferredAlias>PbkModelInstanceParameters</PreferredAlias>
   <HiddenAliases>
     <string>RawKineticModelInstanceParameters</string>
   </HiddenAliases>
@@ -25,23 +30,22 @@
     </ColumnDefinition>
     <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
       <Id>Parameter</Id>
-      <Description>Name of the parameter in the kinetic model.</Description>
+      <Description>Identifier of the parameter in the PBK model.</Description>
     </ColumnDefinition>
     <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
       <Id>Description</Id>
-      <Description>Description of or reference for the parameter values in the kinetic model.</Description>
+      <Description>Description of or reference for the parameter values in the model.</Description>
     </ColumnDefinition>
     <ColumnDefinition Required="true" FieldType="Numeric">
       <Id>Value</Id>
-      <Description>Mean.</Description>
+      <Description>Nominal parameter value of the distribution.</Description>
       <Aliases>
-        <string>MEAN</string>
-        <string>mean</string>
+        <string>Mean</string>
       </Aliases>
     </ColumnDefinition>
     <ColumnDefinition FieldType="ProbabilityDistribution">
       <Id>DistributionType</Id>
-      <Description>Distribution.</Description>
+      <Description>Parameter distribution type.</Description>
       <Aliases>
         <string>DistributionType</string>
         <string>Distribution</string>
@@ -54,11 +58,11 @@
     </ColumnDefinition>
     <ColumnDefinition FieldType="Numeric">
       <Id>CvVariability</Id>
-      <Description>Variability.</Description>
+      <Description>Variability of the parameter expressed as a coefficient of variation (CV).</Description>
     </ColumnDefinition>
     <ColumnDefinition FieldType="Numeric">
       <Id>CvUncertainty</Id>
-      <Description>Uncertainty.</Description>
+      <Description>Uncertainty of the parameter expressed as a coefficient of variation (CV).</Description>
     </ColumnDefinition>
   </ColumnDefinitions>
 </TableDefinition>
