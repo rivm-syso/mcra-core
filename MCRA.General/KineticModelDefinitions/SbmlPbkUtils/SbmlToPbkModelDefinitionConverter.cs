@@ -122,13 +122,13 @@ namespace MCRA.General.Sbml {
                 .ToList();
 
             result.IdAgeParameter = sbmlModel.Parameters
-                .FirstOrDefault(r => r.IsOfType(PbkModelParameterType.Age))?.Id;
+                .FirstOrDefault(r => r.IsOfType(PbkModelParameterType.Age) && r.IsConstant)?.Id;
             result.IdSexParameter = sbmlModel.Parameters
                 .FirstOrDefault(r => r.IsOfType(PbkModelParameterType.Sex))?.Id;
             result.IdBodyWeightParameter = sbmlModel.Parameters
-                .FirstOrDefault(r => r.IsOfType(PbkModelParameterType.BodyWeight))?.Id;
+                .FirstOrDefault(r => r.IsOfType(PbkModelParameterType.BodyWeight) && r.IsConstant)?.Id;
             result.IdBodySurfaceAreaParameter = sbmlModel.Parameters
-                .FirstOrDefault(r => r.IsOfType(PbkModelParameterType.BodySurfaceArea))?.Id;
+                .FirstOrDefault(r => r.IsOfType(PbkModelParameterType.BodySurfaceArea) && r.IsConstant)?.Id;
 
             return result;
         }
