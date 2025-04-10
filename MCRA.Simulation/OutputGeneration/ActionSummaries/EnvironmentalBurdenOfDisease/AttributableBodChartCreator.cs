@@ -10,6 +10,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         private readonly List<AttributableBodSummaryRecord> _records;
         private readonly string _sectionId;
+        private readonly string _population;
         private readonly string _bodIndicator;
         private readonly string _erfCode;
         private readonly string _unit;
@@ -23,6 +24,7 @@ namespace MCRA.Simulation.OutputGeneration {
             _records = records;
             _sectionId = sectionId;
             _unit = records.First().TargetUnit;
+            _population = records.First().Population;
             _bodIndicator = records.First().BodIndicator;
             _erfCode = records.First().ExposureResponseFunctionCode;
         }
@@ -31,7 +33,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public override string ChartId {
             get {
                 var pictureId = "764e10fb-d6e0-4690-b5ce-ffdbd3643d5d";
-                return StringExtensions.CreateFingerprint(_sectionId + pictureId + _bodIndicator + _erfCode);
+                return StringExtensions.CreateFingerprint(_sectionId + pictureId + _population + _bodIndicator + _erfCode);
             }
         }
 
@@ -46,7 +48,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var sumNominal = records.Sum(c => c.AttributableBod) / 100;
             var sumMedian = records.Sum(c => c.MedianAttributableBod) / 100;
             var plotModel = new PlotModel();
-            var name = $"{_bodIndicator} - {_erfCode}";
+            var name = $"{_population} - {_bodIndicator} - {_erfCode}";
 
             // Create bar series with error bars
             var errorBarSeries = new ColumnWithErrorBarsSeries() {

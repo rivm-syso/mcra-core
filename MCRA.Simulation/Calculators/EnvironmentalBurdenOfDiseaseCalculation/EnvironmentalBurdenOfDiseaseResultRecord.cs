@@ -3,7 +3,7 @@ using MCRA.General;
 
 namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
     public sealed class EnvironmentalBurdenOfDiseaseResultRecord {
-        public BodIndicator BodIndicator { get; set; }
+        public BaselineBodIndicator BaselineBodIndicator { get; set; }
         public int ExposureBinId { get; set; }
         public ExposureInterval ExposureBin { get; set; }
         public PercentileInterval ExposurePercentileBin { get; set; }

@@ -10,7 +10,8 @@ namespace MCRA.Simulation.OutputGeneration {
             Records = environmentalBurdenOfDiseases
                 .Select((s, ix) => new AttributableBodSummaryRecord {
                     ExposureBinId = s.ExposureBinId,
-                    BodIndicator = s.BodIndicator.GetShortDisplayName(),
+                    Population = s.BaselineBodIndicator.Population.Name,
+                    BodIndicator = s.BaselineBodIndicator.BodIndicator.GetShortDisplayName(),
                     ExposureResponseFunctionCode = s.ExposureResponseFunction.Code,
                     BinPercentage = s.ExposurePercentileBin.Percentage,
                     ExposurePercentileBin = s.ExposurePercentileBin.ToString(),

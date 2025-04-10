@@ -13,6 +13,10 @@ namespace MCRA.Simulation.OutputGeneration {
         [Display(AutoGenerateField = false)]
         public int ExposureBinId { get; set; }
 
+        [Description("Population.")]
+        [DisplayName("Population")]
+        public string Population { get; set; }
+
         [Description("Burden of disease indicator.")]
         [DisplayName("Bod indicator")]
         public string BodIndicator { get; set; }

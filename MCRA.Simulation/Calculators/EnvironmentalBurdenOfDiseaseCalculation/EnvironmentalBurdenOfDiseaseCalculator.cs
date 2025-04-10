@@ -33,7 +33,7 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
             ExposureResponseResultRecord exposureResponseResultRecord
         ) {
             var result = new EnvironmentalBurdenOfDiseaseResultRecord {
-                BodIndicator = BaselineBodIndicator.BodIndicator,
+                BaselineBodIndicator = BaselineBodIndicator,
                 ExposureBinId = exposureResponseResultRecord.ExposureBinId,
                 ExposureBin = exposureResponseResultRecord.ExposureInterval,
                 ExposurePercentileBin = exposureResponseResultRecord.PercentileInterval,

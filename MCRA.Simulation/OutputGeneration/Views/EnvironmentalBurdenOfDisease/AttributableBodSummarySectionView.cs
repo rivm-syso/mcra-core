@@ -28,11 +28,11 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             var panelBuilder = new HtmlTabPanelBuilder();
 
             var panelGroup = Model.Records
-                .GroupBy(r => (r.BodIndicator, r.ExposureResponseFunctionCode));
+                .GroupBy(r => (r.Population, r.BodIndicator, r.ExposureResponseFunctionCode));
 
             foreach (var group in panelGroup) {
                 var panelSb = new StringBuilder();
-                var key = $"{group.Key.BodIndicator}-{group.Key.ExposureResponseFunctionCode}";
+                var key = $"{group.Key.Population}-{group.Key.BodIndicator}-{group.Key.ExposureResponseFunctionCode}";
                 panelSb.AppendTable(
                     Model,
                     [.. group],
