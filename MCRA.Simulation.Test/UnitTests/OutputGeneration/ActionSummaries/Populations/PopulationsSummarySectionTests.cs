@@ -14,7 +14,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Popula
         /// </summary>
         [TestMethod]
         public void PopulationsSummarySection_Test1() {
-            var section = new PopulationsSummarySection();
+            var section = new PopulationPropertySummarySection();
 
             var propertyValueDict = new Dictionary<string, PopulationIndividualPropertyValue>();
             var propertyValue = new PopulationIndividualPropertyValue() {

@@ -132,6 +132,30 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                 property.Value.PropertyType = individualPropertyValues.All(ipv => ipv.IsNumeric()) ? IndividualPropertyType.Numeric : IndividualPropertyType.Categorical;
                             }
                         }
+
+                        // Read population characteristics
+                        foreach (var rawDataSourceId in rawDataSourceIds) {
+                            using (var r = rdm.OpenDataReader<RawPopulationCharacteristics>(rawDataSourceId, out int[] fieldMap)) {
+                                if (r != null) {
+                                    while (r?.Read() ?? false) {
+                                        var idPopulation = r.GetString(RawPopulationCharacteristics.IdPopulation, fieldMap);
+                                        var valid = CheckLinkSelected(ScopingType.Populations, idPopulation);
+                                        if (valid && allPopulations.TryGetValue(idPopulation, out var population)) {
+                                            var record = new PopulationCharacteristic {
+                                                idPopulation = idPopulation,
+                                                Characteristic = r.GetEnum<PopulationCharacteristicType>(RawPopulationCharacteristics.Characteristic, fieldMap),
+                                                Unit = r.GetStringOrNull(RawPopulationCharacteristics.Unit, fieldMap),
+                                                Value = r.GetDouble(RawPopulationCharacteristics.Value, fieldMap),
+                                                DistributionType = r.GetEnum(RawPopulationCharacteristics.PopulationCharacteristicDistributionType, fieldMap, PopulationCharacteristicDistributionType.Constant),
+                                                CvVariability = r.GetDoubleOrNull(RawPopulationCharacteristics.CvVariability, fieldMap),
+                                            };
+
+                                            population.PopulationCharacteristics.Add(record);
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
 
                     // Add items by code from the scope where no matched items were found in the source

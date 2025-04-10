@@ -115,6 +115,34 @@
         <string>AdjustmentMethod</string>
       </Aliases>
     </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="PopulationCharacteristicType">
+      <Id>PopulationCharacteristic</Id>
+      <Description>Population characteristic type.</Description>
+      <Aliases>
+        <string>Characteristic</string>
+        <string>idCharacteristic</string>
+        <string>PopulationCharacteristic</string>
+        <string>IdPopulationCharacteristic</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="Numeric" FieldSize="50">
+      <Id>EffectThresholdLower</Id>
+      <Description>
+        Lower threshold for the effect for the specified population characteristic.
+      </Description>
+      <Aliases>
+        <string>EffectThresholdLower</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="Numeric" FieldSize="50">
+      <Id>EffectThresholdUpper</Id>
+      <Description>
+        Upper threshold for the effect for the specified population characteristic.
+      </Description>
+      <Aliases>
+        <string>EffectThresholdUpper</string>
+      </Aliases>
+    </ColumnDefinition>
     <ColumnDefinition Required="true" FieldType="EffectMetric">
       <Id>EffectMetric</Id>
       <Name>Effect metric</Name>

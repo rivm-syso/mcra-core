@@ -24,7 +24,12 @@ namespace MCRA.Simulation.OutputGeneration {
                             ? r.BiologicalMatrix.GetDisplayName()
                             : null,
                         DoseUnit = r.DoseUnit.GetShortDisplayName(),
-                        ExpressionType = r.ExpressionType != ExpressionType.None 
+                        PopulationCharacteristic = r.PopulationCharacteristic != PopulationCharacteristicType.Undefined
+                            ? r.PopulationCharacteristic.GetDisplayName()
+                            : null,
+                        EffectThresholdLower = r.EffectThresholdLower,
+                        EffectThresholdUpper = r.EffectThresholdUpper,
+                        ExpressionType = r.ExpressionType != ExpressionType.None
                             ? r.ExpressionType.GetDisplayName()
                             : null,
                         EffectMetric = r.EffectMetric.GetDisplayName(),

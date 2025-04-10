@@ -177,7 +177,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         [Description("Cumulative standardized exposed burden of disease attributable to part of population identified by exposure bin per 100.000 exposed.")]
         [DisplayName("Cumulative standardized exposed attributable BoD")]
-        [DisplayFormat(DataFormatString = "{0:F!}")]
+        [DisplayFormat(DataFormatString = "{0:F1}")]
         public double CumulativeStandardizedExposedAttributableBod { get; set; }
 
         [Display(AutoGenerateField = false)]

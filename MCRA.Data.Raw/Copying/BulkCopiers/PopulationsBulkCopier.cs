@@ -38,6 +38,10 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                             );
                         }
                     }
+                    var hasPopulationCharacteristics = tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.PopulationCharacteristics);
+                    if (hasPopulationCharacteristics) {
+                        progressState.Update("Processing population characteristics tables", 60);
+                    }
                     registerTableGroup(SourceTableGroup.Populations);
                 }
             }

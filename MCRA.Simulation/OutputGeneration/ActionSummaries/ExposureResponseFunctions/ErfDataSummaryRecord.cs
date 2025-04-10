@@ -39,6 +39,20 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Unit")]
         public string DoseUnit { get; set; }
 
+        [Description("Population characteric.")]
+        [DisplayName("PopulationCharacteristic")]
+        public string PopulationCharacteristic { get; set; }
+
+        [Description("The lower threshold of the effect for the population characteristic.")]
+        [DisplayName("EffectThresholdLower")]
+        [DisplayFormat(DataFormatString = "{0:G3}")]
+        public double? EffectThresholdLower { get; set; }
+
+        [Description("The upper threshold of the effect for the population characteristic.")]
+        [DisplayName("EffectThresholdUpper")]
+        [DisplayFormat(DataFormatString = "{0:G3}")]
+        public double? EffectThresholdUpper { get; set; }
+
         [Description("Expression type of the exposure.")]
         [DisplayName("Expression type")]
         public string ExpressionType { get; set; }

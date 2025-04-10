@@ -1946,4 +1946,18 @@
       </ParentScopeReference>
     </ParentScopeReferences>
   </ScopingTypeDefinition>
+  <ScopingTypeDefinition>
+    <Id>PopulationCharacteristics</Id>
+    <Name>Population characteristicss</Name>
+    <TableGroup>Populations</TableGroup>
+    <RawTableId>PopulationCharacteristics</RawTableId>
+    <Description>-</Description>
+    <IsStrongEntity>false</IsStrongEntity>
+    <ParentScopeReferences>
+      <ParentScopeReference>
+        <IdField>idPopulation</IdField>
+        <ReferencedScope>Populations</ReferencedScope>
+      </ParentScopeReference>
+    </ParentScopeReferences>
+  </ScopingTypeDefinition>
 </ScopingTypeDefinitions>

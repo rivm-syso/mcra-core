@@ -16,6 +16,15 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (Model.Records.All(r => string.IsNullOrEmpty(r.ExpressionType))) {
                 hiddenProperties.Add("ExpressionType");
             }
+            if (Model.Records.All(r => string.IsNullOrEmpty(r.PopulationCharacteristic))) {
+                hiddenProperties.Add("PopulationCharacteristic");
+            }
+            if (Model.Records.All(r => r.EffectThresholdLower == null)) {
+                hiddenProperties.Add("EffectThresholdLower");
+            }
+            if (Model.Records.All(r => r.EffectThresholdUpper == null)) {
+                hiddenProperties.Add("EffectThresholdUpper");
+            }
 
             sb.AppendTable(
                 Model,

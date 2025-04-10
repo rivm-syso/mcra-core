@@ -12,5 +12,11 @@ namespace MCRA.Data.Compiled.Objects {
         public BodyWeightUnit BodyWeightUnit => BodyWeightUnit.kg;
 
         public Dictionary<string, PopulationIndividualPropertyValue> PopulationIndividualPropertyValues { get; set; }
+
+        public ICollection<PopulationCharacteristic> PopulationCharacteristics { get; set; } = [];
+        public bool HasPopulationCharacteristics() {
+            return PopulationCharacteristics != null && PopulationCharacteristics.Count > 0;
+        }
+
     }
 }

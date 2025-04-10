@@ -134,6 +134,7 @@
         AirVentilatoryFlowRates = 137,
         OutdoorAirConcentrations = 138,
         ErfSubgroups = 139,
+        PopulationCharacteristics = 140,
 
     }
 }

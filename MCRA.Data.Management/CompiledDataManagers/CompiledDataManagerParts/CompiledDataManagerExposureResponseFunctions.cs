@@ -65,6 +65,10 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             fieldMap,
                                             ExposureResponseType.Function
                                         );
+                                        var populationCharacteristicType = r.GetEnum(
+                                            RawExposureResponseFunctions.PopulationCharacteristic,
+                                            fieldMap,
+                                            PopulationCharacteristicType.Undefined);
                                         var exposureResponseSpecificationString = r.GetStringOrNull(RawExposureResponseFunctions.ExposureResponseSpecification, fieldMap);
                                         var exposureResponseSpecification = parseErfString(
                                             exposureResponseSpecificationString,
@@ -85,7 +89,10 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             EffectMetric = effectMetric,
                                             ExposureResponseType = exposureResponseType,
                                             ExposureResponseSpecification = exposureResponseSpecification,
-                                            Baseline = r.GetDouble(RawExposureResponseFunctions.Baseline, fieldMap)
+                                            Baseline = r.GetDouble(RawExposureResponseFunctions.Baseline, fieldMap),
+                                            PopulationCharacteristic = populationCharacteristicType,
+                                            EffectThresholdLower = r.GetDoubleOrNull(RawExposureResponseFunctions.EffectThresholdLower, fieldMap),
+                                            EffectThresholdUpper = r.GetDoubleOrNull(RawExposureResponseFunctions.EffectThresholdUpper, fieldMap)
                                         };
                                         allExposureResponseFunctions.Add(record);
                                     }
@@ -168,6 +175,9 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 r.WriteNonEmptyString(RawExposureResponseFunctions.ExposureResponseType, erf.ExposureResponseType.ToString(), ccr);
                 r.WriteNonEmptyString(RawExposureResponseFunctions.ExposureResponseSpecification, erf.ExposureResponseSpecification.ToString(), ccr);
                 r.WriteNonEmptyString(RawExposureResponseFunctions.Baseline, erf.Baseline.ToString(), ccr);
+                r.WriteNonEmptyString(RawExposureResponseFunctions.PopulationCharacteristic, erf.PopulationCharacteristic.ToString(), ccr);
+                r.WriteNonEmptyString(RawExposureResponseFunctions.EffectThresholdLower, erf.EffectThresholdLower.ToString(), ccr);
+                r.WriteNonEmptyString(RawExposureResponseFunctions.EffectThresholdUpper, erf.EffectThresholdUpper.ToString(), ccr);
                 dtAExposureResponseFunctions.Rows.Add(r);
             }
             writeToCsv(tempFolder, tdExposureResponseFunctions, dtAExposureResponseFunctions);

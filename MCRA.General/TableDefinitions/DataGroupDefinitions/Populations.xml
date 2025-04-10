@@ -16,5 +16,8 @@
     <DataGroupTable>
       <Id>PopulationIndividualPropertyValues</Id>
     </DataGroupTable>
+    <DataGroupTable>
+      <Id>PopulationCharacteristics</Id>
+    </DataGroupTable>
   </DataGroupTables>
 </DataGroupDefinition>

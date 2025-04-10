@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>PopulationCharacteristics</Id>
+  <Name>Population characteristics</Name>
+  <Description>
+    Characteristics describing specifics of a population, e.g. IQ or average birth weight.
+  </Description>
+  <Aliases>
+    <string>PopulationCharacteristics</string>
+    <string>PopulationCharacteristic</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawPopulationCharacteristics</string>
+  </HiddenAliases>
+  <TargetDataTable>RawPopulationCharacteristics</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idPopulation</Id>
+      <Description>Unique identification code of the population.</Description>
+      <Aliases>
+        <string>IdPopulation</string>
+        <string>PopulationId</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Populations</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="PopulationCharacteristicType">
+      <Id>Characteristic</Id>
+      <Description>Population characteristic type.</Description>
+      <Aliases>
+        <string>Characteristic</string>
+        <string>idCharacteristic</string>
+        <string>PopulationCharacteristic</string>
+        <string>IdPopulationCharacteristic</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50">
+      <Id>Unit</Id>
+      <Description>Unit of the population characteristic.</Description>
+      <Aliases>
+        <string>Unit</string>
+        <string>CharacteristicUnit</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>Value</Id>
+      <Description>Mean of the distribution.</Description>
+      <Aliases>
+        <string>Mean</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="PopulationCharacteristicDistributionType">
+      <Id>PopulationCharacteristicDistributionType</Id>
+      <Description>
+        Distribution type (Normal, Uniform, or LogNormal).
+        If not specified, the characteristic is assumed to be constant.
+      </Description>
+      <Aliases>
+        <string>DistributionType</string>
+        <string>PopulationCharacteristicDistributionType</string>
+        <string>Distribution</string>
+      </Aliases>
+      <PossibleValues>
+        <PossibleValue>Normal</PossibleValue>
+        <PossibleValue>Uniform</PossibleValue>
+        <PossibleValue>LogNormal</PossibleValue>
+      </PossibleValues>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric">
+      <Id>CvVariability</Id>
+      <Description>Coefficient of variation.</Description>
+      <Aliases>
+        <string>CvVariability</string>
+        <string>CV</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

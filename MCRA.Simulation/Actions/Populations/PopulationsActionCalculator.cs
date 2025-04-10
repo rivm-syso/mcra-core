@@ -23,8 +23,10 @@ namespace MCRA.Simulation.Actions.Populations {
                 _actionDataSelectionRequirements[ScopingType.Populations].MaxSelectionCount = 1;
             }
             _actionDataSelectionRequirements[ScopingType.PopulationIndividualProperties].AllowEmptyScope = true;
+            _actionDataSelectionRequirements[ScopingType.PopulationCharacteristics].AllowEmptyScope = true;
             _actionDataLinkRequirements[ScopingType.PopulationIndividualPropertyValues][ScopingType.Populations].AlertTypeMissingData = AlertType.Notification;
             _actionDataLinkRequirements[ScopingType.PopulationIndividualPropertyValues][ScopingType.PopulationIndividualProperties].AlertTypeMissingData = AlertType.Notification;
+            _actionDataLinkRequirements[ScopingType.PopulationCharacteristics][ScopingType.Populations].AlertTypeMissingData = AlertType.Notification;
         }
 
         public override bool CheckDataDependentSettings(ICompiledLinkManager linkManager) {

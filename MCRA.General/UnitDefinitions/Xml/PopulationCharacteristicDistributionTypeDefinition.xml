@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>PopulationCharacteristicDistributionType</Id>
+  <Name>Population characteristic distribution types.</Name>
+  <UndefinedValue Id="Constant" Name="Constant">0</UndefinedValue>
+  <Description>
+    Distribution types used to described population characteristics.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>Normal</Id>
+      <Name>Normal</Name>
+      <ShortName>Normal</ShortName>
+      <Description>
+        Normal distribution parameterised by a mean and a coefficient of variation.
+      </Description>
+      <Aliases>
+        <Alias>LogNormal</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>LogNormal</Id>
+      <Name>LogNormal</Name>
+      <ShortName>LogNormal</ShortName>
+      <Description>
+        Lognormal distribution parameterised by a mean and a coefficient of variation.
+      </Description>
+      <Aliases>
+        <Alias>LogNormal</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Uniform</Id>
+      <Name>Uniform</Name>
+      <ShortName>Uniform</ShortName>
+      <Description>
+        Uniform distribution specified by a mean/median and a coefficient of variation.
+      </Description>
+      <Aliases>
+        <Alias>Uniform</Alias>
+      </Aliases>
+    </Unit>
+  </Units>
+</UnitDefinition>

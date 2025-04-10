@@ -58,5 +58,15 @@ namespace MCRA.Utils.Statistics {
         public static double CDF(double mu, double stddev, double x) {
             return Normal.CDF(mu, stddev, x);
         }
+
+        /// <summary>
+        /// Creates a <see cref="NormalDistribution"/> instance based on a provided mean
+        /// and coefficient of variation.
+        /// </summary>
+        public static NormalDistribution FromMeanAndCv(double mean, double cv) {
+            var sigma = mean * cv;
+            var distribution = new NormalDistribution(mean, sigma);
+            return distribution;
+        }
     }
 }

@@ -20,6 +20,9 @@ namespace MCRA.Data.Compiled.Objects {
         public Expression ExposureResponseSpecification { get; set; }
         public double Baseline { get; set; }
         public ICollection<ErfSubgroup> ErfSubgroups { get; set; } = [];
+        public PopulationCharacteristicType PopulationCharacteristic { get; set; }
+        public double? EffectThresholdLower { get; set; }
+        public double? EffectThresholdUpper { get; set; }
         public ExposureTarget ExposureTarget {
             get {
                 return TargetLevel == TargetLevelType.External

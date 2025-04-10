@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>PopulationCharacteristicType</Id>
+  <Name>Population characteristic type</Name>
+  <UndefinedValue Id="Undefined">-1</UndefinedValue>
+  <Description>
+    Different characteristic types that can be used to describe a population.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>IQ</Id>
+      <Name>IQ</Name>
+      <ShortName>IQ</ShortName>
+      <Description>Intelligence quotient.</Description>
+      <Aliases>
+        <Alias>IQ</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>BirthWeight</Id>
+      <Name>BirthWeight</Name>
+      <ShortName>BirthWeight</ShortName>
+      <Description>Body weight of a baby at their birth.</Description>
+      <Aliases>
+        <Alias>BirthWeight</Alias>
+      </Aliases>
+    </Unit>    
+  </Units>
+</UnitDefinition>
