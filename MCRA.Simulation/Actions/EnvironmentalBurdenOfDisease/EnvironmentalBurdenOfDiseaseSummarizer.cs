@@ -35,6 +35,7 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
                 data.SelectedPopulation
             );
             subHeader.SaveSummarySection(section);
+
             var subOrder = 0;
 
             // Table of attributable EBDs
@@ -70,7 +71,18 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
             var subHeader = header.GetSubSectionHeader<EnvironmentalBurdenOfDiseaseSummarySection>();
             if (subHeader == null) {
                 return;
+            } else {
+                var section = subHeader.GetSummarySection() as EnvironmentalBurdenOfDiseaseSummarySection;
+                section.SummarizeUncertainty(
+                    data.EnvironmentalBurdenOfDiseases,
+                    data.SelectedPopulation,
+                    _configuration.UncertaintyLowerBound,
+                    _configuration.UncertaintyUpperBound
+                );
+                subHeader.Units = collectUnits(data.EnvironmentalBurdenOfDiseases);
+                subHeader.SaveSummarySection(section);
             }
+
             if (data.EnvironmentalBurdenOfDiseases.Count > 0) {
                 summarizeAttributableBodUncertainty(
                     data.EnvironmentalBurdenOfDiseases,
