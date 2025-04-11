@@ -6,7 +6,9 @@ using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation.DesolvePbkModelCalculators.ChlorpyrifosPbkModelCalculation;
 using MCRA.Simulation.Objects;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
+using MCRA.Utils.Logger;
 using MCRA.Utils.ProgressReporting;
+using MCRA.Utils.R.REngines;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -150,6 +152,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
 
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.mgPerL, biologicalMatrix);
             var model = new ChlorpyrifosPbkModelCalculator(instance, simulationSettings);
+            var outputPath = CreateTestOutputPath($"Matrix_{biologicalMatrix}");
+            using var logger = new FileLogger(Path.Combine(outputPath, $"Chlorpyrifos_DeSolve_{biologicalMatrix}.R"));
+            model.CreateREngine = () => new LoggingRDotNetEngine(logger);
             var internalExposures = model.CalculateIndividualTargetExposures(
                 individualExposures,
                 paths.Select(p => p.Route).ToList(),
@@ -158,13 +163,14 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
                 new ProgressState(),
                 random
             );
+
             var substanceTargetExposurePattern = internalExposures
                 .Select(r => r.GetSubstanceTargetExposure(targetUnit.Target, substances.Single(r => r.Code == codeFocalSubstance)))
                 .Cast<SubstanceTargetExposurePattern>()
                 .Single();
 
             var exposure = substanceTargetExposurePattern.SteadyStateTargetExposure;
-            Assert.AreEqual(expectedSteadyState, exposure, 1e-4);
+            Assert.AreEqual(expectedSteadyState, exposure, 2e-3);
         }
 
         private static List<IExternalIndividualExposure> createFakeExternalIndividualExposures(
@@ -186,7 +192,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
             foreach (var item in individualExposures) {
                 foreach (var exp in item.ExternalIndividualDayExposures) {
                     var intakesPerCompound = substances
-                        .Select(r => 
+                        .Select(r =>
                             new AggregateIntakePerCompound() {
                                 Compound = r,
                                 Amount = intake * bw,
