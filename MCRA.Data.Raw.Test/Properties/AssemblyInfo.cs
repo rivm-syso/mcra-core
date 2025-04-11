@@ -1,4 +1,4 @@
-using System.Reflection;
+﻿using System.Reflection;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("MCRA.Data.Raw.Test")]
@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("MCRA.Data.Raw.Test")]
-[assembly: AssemblyCopyright("Copyright © Wageningen University and Research 2024")]
+[assembly: AssemblyCopyright("Copyright © Wageningen University and Research 2025")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

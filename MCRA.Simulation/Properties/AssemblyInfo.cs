@@ -10,7 +10,7 @@ using MCRA.Simulation;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("MCRA.Utils")]
 [assembly: AssemblyProduct("MCRA.Simulation")]
-[assembly: AssemblyCopyright("Copyright © Wageningen University and Research 2024")]
+[assembly: AssemblyCopyright("Copyright © Wageningen University and Research 2025")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
