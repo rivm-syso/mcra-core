@@ -23,5 +23,9 @@
         public override double Draw(IRandom random) {
             return UtilityFunctions.ILogit(Sigma * NormalDistribution.InvCDF(0, 1, random.NextDouble()) + Mu);
         }
+
+        public override double CDF(double x) {
+            throw new NotImplementedException();
+        }
     }
 }

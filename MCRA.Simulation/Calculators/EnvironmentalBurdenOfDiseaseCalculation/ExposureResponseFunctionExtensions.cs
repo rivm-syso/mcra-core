@@ -7,7 +7,8 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
 
         public static double Compute(this ExposureResponseFunction erf, double x) {
             if (x <= erf.Baseline) {
-                return 1D;
+                return erf.EffectMetric == EffectMetric.NegativeShift |
+                    erf.EffectMetric == EffectMetric.PositiveShift ? 0D : 1D;
             }
 
             Expression erfSpecification;

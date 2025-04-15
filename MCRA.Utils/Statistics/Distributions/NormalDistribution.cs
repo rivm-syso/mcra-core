@@ -68,5 +68,9 @@ namespace MCRA.Utils.Statistics {
             var distribution = new NormalDistribution(mean, sigma);
             return distribution;
         }
+
+        public override double CDF(double x) {
+            return CDF(Mu, Stddev, x);
+        }
     }
 }

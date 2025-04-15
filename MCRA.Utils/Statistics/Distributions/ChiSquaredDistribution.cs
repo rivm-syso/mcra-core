@@ -41,6 +41,10 @@ namespace MCRA.Utils.Statistics {
         public static double CDF(double freedom, double p) {
             return ChiSquared.CDF(freedom, p);
         }
+
+        public override double CDF(double x) {
+            return CDF(Freedom, x);
+        }
     }
 }
 

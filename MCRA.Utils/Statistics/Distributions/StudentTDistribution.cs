@@ -46,5 +46,9 @@ namespace MCRA.Utils.Statistics {
             var student = new StudentT(location, scale, freedom);
             return student.Density(x);
         }
+
+        public override double CDF(double x) {
+            throw new NotImplementedException();
+        }
     }
 }

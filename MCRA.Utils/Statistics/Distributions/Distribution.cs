@@ -7,6 +7,8 @@
 
         public abstract double Draw(IRandom random);
 
+        public abstract double CDF(double x);
+
         public virtual List<double> Draws(IRandom random, int n) {
             var draws = new List<double>();
             for (int i = 0; i < n; i++) {

@@ -5,5 +5,8 @@ namespace MCRA.Simulation.Calculators.IntakeModelling.Integrators {
         public override double Draw(IRandom random) {
             return NormalDistribution.DrawInvCdf(random, Mu, Math.Sqrt(VarianceBetween));
         }
+        public override double CDF(double x) {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -90,5 +90,9 @@ namespace MCRA.Utils.Statistics {
             var distribution = new LogNormalDistribution(mu, sigma);
             return distribution;
         }
+
+        public override double CDF(double x) {
+            return CDF(Mu, Sigma, x);
+        }
     }
 }

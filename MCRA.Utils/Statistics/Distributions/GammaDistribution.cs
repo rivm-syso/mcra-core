@@ -46,5 +46,9 @@ namespace MCRA.Utils.Statistics {
             var gamma = new Gamma(shape, rate);
             return gamma.Density(x);
         }
+
+        public override double CDF(double x) {
+            throw new NotImplementedException();
+        }
     }
 }

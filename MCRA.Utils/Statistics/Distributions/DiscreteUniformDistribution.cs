@@ -38,5 +38,9 @@ namespace MCRA.Utils.Statistics {
             }
             return list;
         }
+
+        public override double CDF(double x) {
+            throw new NotImplementedException();
+        }
     }
 }

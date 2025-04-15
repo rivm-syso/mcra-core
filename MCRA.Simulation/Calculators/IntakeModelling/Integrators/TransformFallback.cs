@@ -11,5 +11,8 @@ namespace MCRA.Simulation.Calculators.IntakeModelling.Integrators {
         public override double Draw(IRandom random) {
             return Probability;
         }
+        public override double CDF(double x) {
+            throw new NotImplementedException();
+        }
     }
 }

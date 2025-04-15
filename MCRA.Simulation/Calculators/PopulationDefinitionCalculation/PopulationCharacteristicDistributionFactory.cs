@@ -6,7 +6,8 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
     public sealed class PopulationCharacteristicDistributionFactory {
 
         public static Distribution createProbabilityDistribution(
-            PopulationCharacteristic populationCharacteristic
+            PopulationCharacteristic populationCharacteristic,
+            double shift = 0
         ) {
             var distributionType = populationCharacteristic.DistributionType;
 
@@ -16,7 +17,7 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
                 throw new Exception(msg);
             }
 
-            var mean = populationCharacteristic.Value;
+            var mean = populationCharacteristic.Value + shift;
             var cv = populationCharacteristic.CvVariability.GetValueOrDefault();
 
             Distribution distribution = distributionType switch {

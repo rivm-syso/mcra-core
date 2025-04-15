@@ -31,5 +31,25 @@
         <Alias>Odds Ratio</Alias>
       </Aliases>
     </Unit>
+    <Unit>
+      <Id>NegativeShift</Id>
+      <Name>Negative shift</Name>
+      <ShortName>NegativeShift</ShortName>
+      <Description>Use negative shift when the risk is expressed as a negative shift in a continuous variable.</Description>
+      <Aliases>
+        <Alias>NegativeShift</Alias>
+        <Alias>Negative Shift</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>PositiveShift</Id>
+      <Name>Positive shift</Name>
+      <ShortName>PositiveShift</ShortName>
+      <Description>Use positive shift when the risk is expressed as a positive shift in a continuous variable.</Description>
+      <Aliases>
+        <Alias>PositiveShift</Alias>
+        <Alias>Positive Shift</Alias>
+      </Aliases>
+    </Unit>
   </Units>
 </UnitDefinition>

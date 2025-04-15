@@ -62,5 +62,9 @@ namespace MCRA.Utils.Statistics {
             var beta = alpha * (1 / mean - 1);
             return new BetaDistribution(alpha, beta);
         }
+
+        public override double CDF(double x) {
+            return CDF(ShapeA, ShapeB, x);
+        }
     }
 }

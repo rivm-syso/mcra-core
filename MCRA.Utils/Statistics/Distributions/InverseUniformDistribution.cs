@@ -74,5 +74,8 @@ namespace MCRA.Utils.Statistics {
             var b = 2 / median - a;
             return new InverseUniformDistribution(a, b);
         }
+        public override double CDF(double x) {
+            throw new NotImplementedException();
+        }
     }
 }

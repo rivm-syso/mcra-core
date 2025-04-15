@@ -40,5 +40,9 @@ namespace MCRA.Utils.Statistics {
         public static double Draw(double lower, double upper) {
             return ContinuousUniform.Sample(lower, upper);
         }
+
+        public override double CDF(double x) {
+            throw new NotImplementedException();
+        }
     }
 }

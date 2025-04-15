@@ -70,5 +70,9 @@
             var upper = mean + Math.Sqrt(3) * mean * cv;
             return new UniformDistribution(lower, upper);
         }
+
+        public override double CDF(double x) {
+            return (x - Lower) / (Upper - Lower);
+        }
     }
 }
