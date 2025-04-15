@@ -6,7 +6,13 @@ using Microsoft.AspNetCore.Html;
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class AttributableBodSummarySectionView : SectionView<AttributableBodSummarySection> {
         public override void RenderSectionHtml(StringBuilder sb) {
-            var hiddenProperties = new List<string>() { "BodIndicator", "ExposureResponseFunctionCode", "Unit" };
+            var hiddenProperties = new List<string>() {
+                "BodIndicator",
+                "ExposureResponseFunctionCode",
+                "Unit",
+                "PopulationCode",
+                "PopulationName"
+            };
             var isUncertainty = Model.Records.FirstOrDefault()?.AttributableBods.Any() ?? false;
 
             if (isUncertainty) {
@@ -81,14 +87,14 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 );
 
                 var chart = ChartHelpers.Chart(
-                        name: $"AttributableBodChart{key}",
-                        section: Model,
-                        viewBag: ViewBag,
-                        caption: chartCreator.Title,
-                        chartCreator: chartCreator,
-                        fileType: ChartFileType.Svg,
-                        saveChartFile: true
-                    );
+                    name: $"AttributableBodChart{key}",
+                    section: Model,
+                    viewBag: ViewBag,
+                    caption: chartCreator.Title,
+                    chartCreator: chartCreator,
+                    fileType: ChartFileType.Svg,
+                    saveChartFile: true
+                );
 
                 var chartStandardized = string.Empty;
                 var chartExposed = string.Empty;

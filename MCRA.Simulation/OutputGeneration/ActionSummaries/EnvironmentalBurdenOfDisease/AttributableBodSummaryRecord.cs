@@ -109,8 +109,8 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double UpperAttributableBod { get { return AttributableBods.Percentile(UncertaintyUpperBound); } }
 
-        [Description("Cumulative burden of disease attributable to part of population identified by exposure bin.")]
-        [DisplayName("Cumulative attributable BoD")]
+        [Description("Cumulative percentage burden of disease attributable to part of population identified by exposure bin.")]
+        [DisplayName("Cumulative attributable BoD (%)")]
         [DisplayFormat(DataFormatString = "{0:F1}")]
         public double CumulativeAttributableBod { get; set; }
 
@@ -175,8 +175,8 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double UpperStandardizedExposedAttributableBod { get { return AttributableBods.Percentile(UncertaintyUpperBound) / PopulationSize / BinPercentage * 1e7; } }
 
-        [Description("Cumulative standardized exposed burden of disease attributable to part of population identified by exposure bin per 100.000 exposed.")]
-        [DisplayName("Cumulative standardized exposed attributable BoD")]
+        [Description("Cumulative percentage standardized exposed burden of disease attributable to part of population identified by exposure bin per 100.000 exposed.")]
+        [DisplayName("Cumulative standardized exposed attributable BoD (%)")]
         [DisplayFormat(DataFormatString = "{0:F1}")]
         public double CumulativeStandardizedExposedAttributableBod { get; set; }
 
@@ -199,7 +199,6 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Cumulative standardized exposed attributable BoD upper bound (UpperBound)")]
         [DisplayFormat(DataFormatString = "{0:F1}")]
         public double UpperCumulativeStandardizedExposedAttributableBod { get { return CumulativeStandardizedExposedAttributableBods.Percentile(UncertaintyUpperBound); } }
-
 
     }
 }

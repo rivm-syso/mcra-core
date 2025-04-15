@@ -18,8 +18,8 @@ namespace MCRA.Simulation.OutputGeneration {
             List<AttributableBodSummaryRecord> records,
             string sectionId
         ) {
-            Width = 500;
-            Height = 350;
+            Width = 370;
+            Height = 300;
             _records = records;
             _sectionId = sectionId;
             _unit = records.First().TargetUnit;
