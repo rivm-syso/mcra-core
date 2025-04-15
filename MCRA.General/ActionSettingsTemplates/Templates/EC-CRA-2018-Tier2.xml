@@ -166,6 +166,7 @@
         <Setting id="ScenarioAnalysisFoods" />
         <Setting id="UseOccurrencePatternsForResidueGeneration" />
         <Setting id="VariabilityDiagnosticsAnalysis" />
+        <Setting id="DietPopulationAlignmentMethod" />
       </ExcludedSettings>
     </ModuleConfiguration>
     <ModuleConfiguration module="ConcentrationModels">

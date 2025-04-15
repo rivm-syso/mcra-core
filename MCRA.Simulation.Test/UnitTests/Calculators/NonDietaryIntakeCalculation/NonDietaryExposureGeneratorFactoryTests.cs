@@ -1,5 +1,5 @@
 ﻿using MCRA.General;
-using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
+using MCRA.Simulation.Calculators.PopulationAlignmentCalculation.NonDietaryExposureGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation {

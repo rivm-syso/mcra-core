@@ -1,13 +1,14 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
-using MCRA.General;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Objects;
+using MCRA.General;
+using MCRA.Utils.Statistics;
+using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
 
-namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
+namespace MCRA.Simulation.Calculators.PopulationAlignmentCalculation.NonDietaryExposureGenerators {
 
-    public class NonDietaryUnmatchedExposureGenerator : NonDietaryExposureGenerator {
+    public class NonDietaryUnmatchedCorrelatedExposureGenerator : NonDietaryExposureGenerator {
 
-        protected Dictionary<NonDietarySurvey, List<string>> _individualsPerSurvey = [];
+        protected List<string> _nonDietaryIndividualCodes = [];
 
         public override void Initialize(
             IDictionary<NonDietarySurvey, List<NonDietaryExposureSet>> nonDietaryExposureSets,
@@ -19,13 +20,16 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
                 routes,
                 targetUnit
             );
-            _individualsPerSurvey = nonDietaryExposureSets
-                .ToDictionary(r => r.Key, r => r.Value.Select(e => e.IndividualCode).ToList());
+
+            _nonDietaryIndividualCodes = nonDietaryExposureSets
+                .SelectMany(ndeuis => ndeuis.Value.Select(r => r.IndividualCode))
+                .Distinct()
+                .ToList();
         }
 
         /// <summary>
-        /// No correlation between individuals in different  nondietary surveys
-        ///  Randomly pair non-dietary and dietary individuals, no correlation between nondietary individuals
+        /// Use the correlation between individuals in different nondietary surveys.
+        /// Randomly pair non-dietary and dietary individuals
         /// (if the properties of the individual match the covariates of the non-dietary survey)
         /// </summary>
         /// <param name="individual"></param>
@@ -42,12 +46,11 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
             var nonDietaryExposures = new List<NonDietaryIntakePerCompound>();
             if (_nonDietaryExposureSetsDictionary.TryGetValue(nonDietarySurvey, out var exposureSets)) {
                 if (checkIndividualMatchesNonDietarySurvey(individual, nonDietarySurvey) && nonDietarySurvey.ProportionZeros < 100) {
-                    if (_individualsPerSurvey.TryGetValue(nonDietarySurvey, out var individualSet) && individualSet.Any()) {
-                        if (generator.NextDouble() >= nonDietarySurvey.ProportionZeros / 100) {
-                            var ix = generator.Next(0, individualSet.Count);
-                            if (exposureSets.TryGetValue(individualSet.ElementAt(ix), out var exposureSet)) {
-                                nonDietaryExposures.AddRange(nonDietaryIntakePerCompound(exposureSet, nonDietarySurvey, individual, substances));
-                            }
+                    generator.Reset();
+                    if (generator.NextDouble() >= nonDietarySurvey.ProportionZeros / 100) {
+                        var randomIndividualCode = _nonDietaryIndividualCodes.ElementAt(generator.Next(0, _nonDietaryIndividualCodes.Count));
+                        if (exposureSets.TryGetValue(randomIndividualCode, out var exposureSet) && exposureSet != null) {
+                            nonDietaryExposures.AddRange(nonDietaryIntakePerCompound(exposureSet, nonDietarySurvey, individual, substances));
                         }
                     }
                 }

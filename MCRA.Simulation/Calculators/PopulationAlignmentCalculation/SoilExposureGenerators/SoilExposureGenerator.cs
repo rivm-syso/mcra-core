@@ -2,8 +2,9 @@
 using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Objects;
 using MCRA.Utils.Statistics.RandomGenerators;
+using MCRA.Simulation.Calculators.SoilExposureCalculation;
 
-namespace MCRA.Simulation.Calculators.SoilExposureCalculation {
+namespace MCRA.Simulation.Calculators.PopulationAlignmentCalculation.SoilExposureGenerators {
     public abstract class SoilExposureGenerator {
 
         /// <summary>

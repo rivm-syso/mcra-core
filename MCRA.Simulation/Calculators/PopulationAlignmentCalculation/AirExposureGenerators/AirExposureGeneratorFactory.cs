@@ -1,6 +1,6 @@
 ﻿using MCRA.General;
 
-namespace MCRA.Simulation.Calculators.AirExposureCalculation {
+namespace MCRA.Simulation.Calculators.PopulationAlignmentCalculation.AirExposureGenerators {
     public class AirExposureGeneratorFactory {
 
         public static AirExposureGenerator Create(PopulationAlignmentMethod populationAlignmentMethod) {

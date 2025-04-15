@@ -11,11 +11,6 @@ namespace MCRA.Simulation.Objects {
         ExposureRoute route
         ) : IEquatable<ExposurePath> {
 
-        /// <summary>
-        /// Defines the default path for dietary exposures.
-        /// </summary>
-        public static readonly ExposurePath defaultDietaryExposurePath = new(ExposureSource.Diet, ExposureRoute.Oral);
-
         public ExposureSource Source => source;
         public ExposureRoute Route => route;
 

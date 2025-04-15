@@ -5,8 +5,9 @@ using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.RandomGenerators;
+using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
 
-namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
+namespace MCRA.Simulation.Calculators.PopulationAlignmentCalculation.NonDietaryExposureGenerators {
     public abstract class NonDietaryExposureGenerator {
 
         protected ExposureUnitTriple _targetUnit;
@@ -107,8 +108,8 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
             var result = survey.NonDietarySurveyProperties.All(sp => {
                 var ip = individual.Individual.GetPropertyValue(sp.IndividualProperty);
                 if (ip != null) {
-                    var match = ((sp.PropertyType == PropertyType.Cofactor) && (sp.IndividualPropertyTextValue == ip.Value))
-                        || ((sp.PropertyType == PropertyType.Covariable) && (sp.IndividualPropertyDoubleValueMin <= ip.DoubleValue && sp.IndividualPropertyDoubleValueMax >= ip.DoubleValue));
+                    var match = sp.PropertyType == PropertyType.Cofactor && sp.IndividualPropertyTextValue == ip.Value
+                        || sp.PropertyType == PropertyType.Covariable && sp.IndividualPropertyDoubleValueMin <= ip.DoubleValue && sp.IndividualPropertyDoubleValueMax >= ip.DoubleValue;
                     return match;
                 } else {
                     return true;

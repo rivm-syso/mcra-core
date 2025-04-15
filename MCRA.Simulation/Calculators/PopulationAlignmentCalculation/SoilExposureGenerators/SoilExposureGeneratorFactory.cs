@@ -1,6 +1,6 @@
 ﻿using MCRA.General;
 
-namespace MCRA.Simulation.Calculators.SoilExposureCalculation {
+namespace MCRA.Simulation.Calculators.PopulationAlignmentCalculation.SoilExposureGenerators {
     public class SoilExposureGeneratorFactory {
 
         public static SoilExposureGenerator Create(PopulationAlignmentMethod populationAlignmentMethod) {

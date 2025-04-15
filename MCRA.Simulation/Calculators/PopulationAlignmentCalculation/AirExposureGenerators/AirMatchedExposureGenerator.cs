@@ -1,8 +1,9 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Objects;
+using MCRA.Simulation.Calculators.AirExposureCalculation;
 
-namespace MCRA.Simulation.Calculators.AirExposureCalculation {
+namespace MCRA.Simulation.Calculators.PopulationAlignmentCalculation.AirExposureGenerators {
     public class AirMatchedExposureGenerator : AirExposureGenerator {
 
         protected override AirIndividualDayExposure createAirIndividualExposure(

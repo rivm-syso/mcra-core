@@ -1,8 +1,9 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Simulation.Calculators.AirExposureCalculation;
 using MCRA.Simulation.Objects;
 using MCRA.Utils.Statistics;
 
-namespace MCRA.Simulation.Calculators.AirExposureCalculation {
+namespace MCRA.Simulation.Calculators.PopulationAlignmentCalculation.AirExposureGenerators {
 
     public class AirUnmatchedCorrelatedExposureGenerator : AirExposureGenerator {
 

@@ -47,7 +47,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ExternalExposureUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
                 DietaryExposureUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
                 SelectedPopulation = new Population { NominalBodyWeight = 70 },
-                KineticConversionFactorModels = kineticConversionFactorModels
+                KineticConversionFactorModels = kineticConversionFactorModels,
+                MembershipProbabilities = substances.ToDictionary(c => c, c => 1d)
             };
 
             var project = new ProjectDto();

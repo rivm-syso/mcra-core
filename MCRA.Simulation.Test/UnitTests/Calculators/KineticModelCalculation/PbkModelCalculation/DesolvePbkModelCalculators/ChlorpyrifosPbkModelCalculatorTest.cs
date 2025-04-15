@@ -134,7 +134,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
                 })
                 .ToList();
             var metabolites = substances.Skip(1).ToList();
-            var paths = new List<ExposurePath>() { ExposurePath.defaultDietaryExposurePath };
+            var paths = new List<ExposurePath>() { new(ExposureSource.Diet, ExposureRoute.Oral) };
             var individualExposures = createFakeExternalIndividualExposures(
                 seed,
                 substances,

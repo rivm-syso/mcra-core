@@ -1,8 +1,9 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
 using MCRA.Simulation.Objects;
 using MCRA.Utils.Statistics;
 
-namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
+namespace MCRA.Simulation.Calculators.PopulationAlignmentCalculation.NonDietaryExposureGenerators {
     public class NonDietaryMatchedExposureGenerator : NonDietaryExposureGenerator {
 
         protected override List<NonDietaryIntakePerCompound> createNonDietaryIndividualExposure(

@@ -111,10 +111,10 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
 
             var aggregateIndividualDayExposures = AggregateIntakeCalculator
                 .CreateCombinedIndividualDayExposures(
-                    dietaryIndividualDayIntakes,
                     externalExposureCollections,
                     externalExposuresUnit,
-                    ExposureType.Acute
+                    ExposureType.Acute,
+                    new CancellationToken()
                 );
             var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(
                 kineticModelCalculators

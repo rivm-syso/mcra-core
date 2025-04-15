@@ -1,6 +1,6 @@
 ﻿using MCRA.General;
 
-namespace MCRA.Simulation.Calculators.DustExposureCalculation {
+namespace MCRA.Simulation.Calculators.PopulationAlignmentCalculation.DustExposureGenerators {
     public class DustExposureGeneratorFactory {
 
         public static DustExposureGenerator Create(PopulationAlignmentMethod populationAlignmentMethod) {

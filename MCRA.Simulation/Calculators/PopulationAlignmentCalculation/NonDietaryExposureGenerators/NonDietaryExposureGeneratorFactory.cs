@@ -1,6 +1,6 @@
 ﻿using MCRA.General;
 
-namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
+namespace MCRA.Simulation.Calculators.PopulationAlignmentCalculation.NonDietaryExposureGenerators {
     public class NonDietaryExposureGeneratorFactory {
         public static NonDietaryExposureGenerator Create(
             PopulationAlignmentMethod populationAlignmentMethod,

@@ -68,5 +68,7 @@
         SOE_DrawIndividuals = 34,
         // Exposures: draw simulated individuals
         SIM_DrawIndividuals = 35,
+        // Diet exposures: draw diet exposures
+        DIE_DrawDietExposures= 36,
     }
 }

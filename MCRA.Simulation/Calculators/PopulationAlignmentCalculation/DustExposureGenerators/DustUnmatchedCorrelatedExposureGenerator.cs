@@ -1,8 +1,9 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Objects;
+using MCRA.Simulation.Calculators.DustExposureCalculation;
 
-namespace MCRA.Simulation.Calculators.DustExposureCalculation {
+namespace MCRA.Simulation.Calculators.PopulationAlignmentCalculation.DustExposureGenerators {
 
     public class DustUnmatchedCorrelatedExposureGenerator : DustExposureGenerator {
 

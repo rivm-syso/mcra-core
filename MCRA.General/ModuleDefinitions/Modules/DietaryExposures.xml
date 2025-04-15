@@ -120,6 +120,7 @@
     <CalculationSetting source="Action">McrPlotMinimumPercentage</CalculationSetting>
     <CalculationSetting source="HazardCharacterisations">TargetDoseLevelType</CalculationSetting>
     <CalculationSetting source="Action">RandomSeed</CalculationSetting>
+    <CalculationSetting>DietPopulationAlignmentMethod</CalculationSetting>
   </CalculationSettings>
   <UncertaintySettings>
     <UncertaintySetting>ResampleImputationExposureDistributions</UncertaintySetting>

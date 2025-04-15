@@ -57,7 +57,6 @@
     <CalculationSetting>ExposureSources</CalculationSetting>
     <CalculationSetting source="HazardCharacterisations">ExposureRoutes</CalculationSetting>
     <CalculationSetting>IndividualReferenceSet</CalculationSetting>
-    <CalculationSetting>NonDietaryPopulationAlignmentMethod</CalculationSetting>
     <CalculationSetting source="NonDietaryExposures">IsCorrelationBetweenIndividuals</CalculationSetting>
     <CalculationSetting>McrExposureApproachType</CalculationSetting>
     <CalculationSetting>McrAnalysis</CalculationSetting>
@@ -70,9 +69,11 @@
     <CalculationSetting>StandardisedBlood</CalculationSetting>
     <CalculationSetting>StandardisedNormalisedUrine</CalculationSetting>
     <CalculationSetting>SelectedExpressionType</CalculationSetting>
+    <CalculationSetting>NonDietaryPopulationAlignmentMethod</CalculationSetting>
     <CalculationSetting>DustPopulationAlignmentMethod</CalculationSetting>
     <CalculationSetting>SoilPopulationAlignmentMethod</CalculationSetting>
     <CalculationSetting>AirPopulationAlignmentMethod</CalculationSetting>
+    <CalculationSetting>DietPopulationAlignmentMethod</CalculationSetting>
     <CalculationSetting source="PbkModels">ExposureEventsGenerationMethod</CalculationSetting>
     <CalculationSetting source="PbkModels">NumberOfDays</CalculationSetting>
     <CalculationSetting source="PbkModels">NonStationaryPeriod</CalculationSetting>

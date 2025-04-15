@@ -165,6 +165,7 @@
         <Setting id="UseOccurrencePatternsForResidueGeneration" />
         <Setting id="UseUnitVariability" />
         <Setting id="VariabilityDiagnosticsAnalysis" />
+        <Setting id="DietPopulationAlignmentMethod" />
       </ExcludedSettings>
     </ModuleConfiguration>
     <ModuleConfiguration module="ConcentrationModels">

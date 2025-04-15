@@ -1,5 +1,4 @@
-﻿using MCRA.Simulation.Objects;
-using MCRA.Data.Management;
+﻿using MCRA.Data.Management;
 using MCRA.Data.Management.RawDataWriters;
 using MCRA.General;
 using MCRA.General.Action.ActionSettingsManagement;
@@ -9,17 +8,19 @@ using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.ActionComparison;
-using MCRA.Simulation.Calculators.AirExposureCalculation;
 using MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculation;
 using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
-using MCRA.Simulation.Calculators.DustExposureCalculation;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
-using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
 using MCRA.Simulation.Calculators.PercentilesUncertaintyFactorialCalculation;
-using MCRA.Simulation.Calculators.SoilExposureCalculation;
+using MCRA.Simulation.Calculators.PopulationAlignmentCalculation.AirExposureGenerators;
+using MCRA.Simulation.Calculators.PopulationAlignmentCalculation.DietExposureGenerator;
+using MCRA.Simulation.Calculators.PopulationAlignmentCalculation.DustExposureGenerators;
+using MCRA.Simulation.Calculators.PopulationAlignmentCalculation.NonDietaryExposureGenerators;
+using MCRA.Simulation.Calculators.PopulationAlignmentCalculation.SoilExposureGenerators;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
+using MCRA.Simulation.Objects;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
@@ -90,51 +91,14 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         protected override TargetExposuresActionResult run(ActionData data, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
 
-            var substances = data.ActiveSubstances;
-
-            // TODO: get external exposure unit from selected reference source
-            var externalExposureUnit = data.DietaryExposureUnit.ExposureUnit;
-
-            TargetUnit targetUnit;
-
-            if (ModuleConfig.TargetDoseLevelType == TargetLevelType.Systemic) {
-                targetUnit = TargetUnit.FromSystemicExposureUnit(externalExposureUnit);
-            } else if (ModuleConfig.TargetDoseLevelType == TargetLevelType.Internal) {
-                // Determine target (from compartment selection) and appropriate internal exposure unit
-                var biologicalMatrix = BiologicalMatrixConverter
-                    .FromString(ModuleConfig.CodeCompartment, BiologicalMatrix.WholeBody);
-
-                ExpressionType expressionType;
-                if (biologicalMatrix.IsUrine() && ModuleConfig.StandardisedNormalisedUrine) {
-                    if (ModuleConfig.SelectedExpressionType == ExpressionType.Creatinine) {
-                        expressionType = ExpressionType.Creatinine;
-                    } else {
-                        expressionType = ExpressionType.SpecificGravity;
-                    }
-                } else if (biologicalMatrix.IsBlood() && ModuleConfig.StandardisedBlood) {
-                    expressionType = ExpressionType.Lipids;
-                } else {
-                    expressionType = ExpressionType.None;
-                }
-
-                var target = new ExposureTarget(biologicalMatrix, expressionType);
-                targetUnit = new TargetUnit(
-                    target,
-                    ExposureUnitTriple.CreateDefaultExposureUnit(target, ModuleConfig.ExposureType)
-                );
-            } else {
-                var msg = "Cannot compute internal exposures for target level 'external'.";
-                throw new Exception(msg);
-            }
-
             // Compute results
             var result = compute(
                 data,
-                targetUnit,
                 new CompositeProgressState(progressReport.CancellationToken)
             );
 
             // TODO, MCR analysis on target (internal) concentrations needs to be implemented
+            var substances = data.ActiveSubstances;
             if (ModuleConfig.McrAnalysis
                 && substances.Count > 1
                 && data.CorrectedRelativePotencyFactors != null
@@ -181,16 +145,14 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         ) {
             var localProgress = progressReport.NewProgressState(100);
 
-            var substances = data.ActiveSubstances;
-
             // Compute results
             var result = compute(
                 data,
-                data.TargetExposureUnit,
                 new CompositeProgressState(progressReport.CancellationToken)
             );
 
             // TODO: find a better way to compute uncertainty factorials
+            var substances = data.ActiveSubstances;
             if (substances.Count == 1 || data.CorrectedRelativePotencyFactors != null) {
                 // Compute factorial responses
                 var uncertaintyFactorialResponses = new List<double>();
@@ -328,19 +290,36 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         /// </summary>
         private TargetExposuresActionResult compute(
             ActionData data,
-            TargetUnit targetUnit,
             CompositeProgressState progressReport
         ) {
             var result = new TargetExposuresActionResult();
 
             var localProgress = progressReport.NewProgressState(20);
 
-            var externalExposureUnit = data.DietaryExposureUnit.ExposureUnit;
-
-            ICollection<IIndividualDay> referenceIndividualDays = null;
+            ExposureUnitTriple externalExposureUnit;
+            ICollection<IIndividualDay> referenceIndividualDays;
             switch (ModuleConfig.IndividualReferenceSet) {
                 case ExposureSource.Diet:
+                    externalExposureUnit = data.DietaryExposureUnit.ExposureUnit;
                     referenceIndividualDays = data.DietaryIndividualDayIntakes
+                        .Cast<IIndividualDay>()
+                        .ToList();
+                    break;
+                case ExposureSource.Air:
+                    externalExposureUnit = data.AirExposureUnit;
+                    referenceIndividualDays = data.IndividualAirExposures
+                        .Cast<IIndividualDay>()
+                        .ToList();
+                    break;
+                case ExposureSource.Soil:
+                    externalExposureUnit = data.SoilExposureUnit;
+                    referenceIndividualDays = data.IndividualSoilExposures
+                        .Cast<IIndividualDay>()
+                        .ToList();
+                    break;
+                case ExposureSource.Dust:
+                    externalExposureUnit = data.DustExposureUnit;
+                    referenceIndividualDays = data.IndividualDustExposures
                         .Cast<IIndividualDay>()
                         .ToList();
                     break;
@@ -348,9 +327,42 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     throw new NotImplementedException();
             }
 
+            var targetUnit = data.TargetExposureUnit;
+            if (targetUnit == null) {
+                if (ModuleConfig.TargetDoseLevelType == TargetLevelType.Systemic) {
+                    targetUnit = TargetUnit.FromSystemicExposureUnit(externalExposureUnit);
+                } else if (ModuleConfig.TargetDoseLevelType == TargetLevelType.Internal) {
+                    // Determine target (from compartment selection) and appropriate internal exposure unit
+                    var biologicalMatrix = BiologicalMatrixConverter
+                        .FromString(ModuleConfig.CodeCompartment, BiologicalMatrix.WholeBody);
+
+                    ExpressionType expressionType;
+                    if (biologicalMatrix.IsUrine() && ModuleConfig.StandardisedNormalisedUrine) {
+                        if (ModuleConfig.SelectedExpressionType == ExpressionType.Creatinine) {
+                            expressionType = ExpressionType.Creatinine;
+                        } else {
+                            expressionType = ExpressionType.SpecificGravity;
+                        }
+                    } else if (biologicalMatrix.IsBlood() && ModuleConfig.StandardisedBlood) {
+                        expressionType = ExpressionType.Lipids;
+                    } else {
+                        expressionType = ExpressionType.None;
+                    }
+
+                    var target = new ExposureTarget(biologicalMatrix, expressionType);
+                    targetUnit = new TargetUnit(
+                        target,
+                        ExposureUnitTriple.CreateDefaultExposureUnit(target, ModuleConfig.ExposureType)
+                    );
+                } else {
+                    var msg = "Cannot compute internal exposures for target level 'external'.";
+                    throw new Exception(msg);
+                }
+            }
+
             var externalExposureCollections = new List<ExternalExposureCollection>();
 
-            // Collect non-dietary exposures
+            // Align non-dietary exposures
             if (ModuleConfig.ExposureSources.Contains(ExposureSource.OtherNonDiet)) {
                 localProgress.Update("Matching dietary and non-dietary exposures");
 
@@ -397,10 +409,9 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             }
             localProgress.Update(20);
 
-            // Collect dust exposures
+            // Align dust exposures
             if (ModuleConfig.ExposureSources.Contains(ExposureSource.Dust)) {
-                localProgress.Update("Matching dietary and dust exposures");
-
+                localProgress.Update("Matching dust exposures");
                 var dustExposureCalculator = DustExposureGeneratorFactory.Create(ModuleConfig.DustPopulationAlignmentMethod);
                 var seedDustExposuresSampling = RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DUE_DrawDustExposures);
                 var dustIndividualDayExposures = dustExposureCalculator
@@ -413,7 +424,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     )
                     .Cast<IExternalIndividualDayExposure>()
                     .ToList();
-
                 var dustExposureCollection = new ExternalExposureCollection {
                     ExposureUnit = new ExposureUnitTriple(data.DustExposureUnit.SubstanceAmountUnit, ConcentrationMassUnit.PerUnit, TimeScaleUnit.PerDay),
                     ExposureSource = ExposureSource.Dust,
@@ -423,10 +433,9 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             }
             localProgress.Update(20);
 
-            // Collect soil exposures
+            // Align soil exposures
             if (ModuleConfig.ExposureSources.Contains(ExposureSource.Soil)) {
-                localProgress.Update("Matching dietary and soil exposures");
-
+                localProgress.Update("Matching soil exposures");
                 var soilExposureCalculator = SoilExposureGeneratorFactory.Create(ModuleConfig.SoilPopulationAlignmentMethod);
                 var seedSoilExposuresSampling = RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DUE_DrawSoilExposures);
                 var soilIndividualDayExposures = soilExposureCalculator
@@ -439,7 +448,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     )
                     .Cast<IExternalIndividualDayExposure>()
                     .ToList();
-
                 var soilExposureCollection = new ExternalExposureCollection {
                     ExposureUnit = new ExposureUnitTriple(data.SoilExposureUnit.SubstanceAmountUnit, ConcentrationMassUnit.PerUnit, TimeScaleUnit.PerDay),
                     ExposureSource = ExposureSource.Soil,
@@ -449,16 +457,12 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             }
             localProgress.Update(30);
 
-            // Create air exposure calculator
-            ICollection<AirIndividualDayExposure> airIndividualDayExposures = null;
+            // Align air exposures
             if (ModuleConfig.ExposureSources.Contains(ExposureSource.Air)) {
-                localProgress.Update("Matching dietary and air exposures");
-
+                localProgress.Update("Matching air exposures");
                 var airExposureCalculator = AirExposureGeneratorFactory.Create(ModuleConfig.AirPopulationAlignmentMethod);
                 var seedAirExposuresSampling = RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.AIE_DrawAirExposures);
-
-                // Generate air exposures
-                airIndividualDayExposures = airExposureCalculator
+                var airIndividualDayExposures = airExposureCalculator
                     .GenerateAirIndividualDayExposures(
                         referenceIndividualDays,
                         data.ActiveSubstances,
@@ -466,11 +470,9 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         seedAirExposuresSampling,
                         progressReport.CancellationToken
                     );
-
                 var airExternalIndividualDayExposures = airIndividualDayExposures
                     .Cast<IExternalIndividualDayExposure>()
                     .ToList();
-
                 var airExposureCollection = new ExternalExposureCollection {
                     ExposureUnit = new ExposureUnitTriple(data.AirExposureUnit.SubstanceAmountUnit, ConcentrationMassUnit.PerUnit, TimeScaleUnit.PerDay),
                     ExposureSource = ExposureSource.Air,
@@ -480,18 +482,37 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             }
             localProgress.Update(20);
 
-
-            var dietaryExposures = ModuleConfig.ExposureSources.Contains(ExposureSource.Diet)
-                ? data.DietaryIndividualDayIntakes
-                : null;
+            // Align dietary exposures
+            if (ModuleConfig.ExposureSources.Contains(ExposureSource.Diet)) {
+                localProgress.Update("Matching dietary exposures");
+                var dietExposureCalculator = DietExposureGeneratorFactory.Create(ModuleConfig.DietPopulationAlignmentMethod);
+                var seedDietExposuresSampling = RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DIE_DrawDietExposures);
+                var dietIndividualDayExposures = dietExposureCalculator
+                    .GenerateDietIndividualDayExposures(
+                        referenceIndividualDays,
+                        data.ActiveSubstances,
+                        data.DietaryIndividualDayIntakes,
+                        seedDietExposuresSampling,
+                        progressReport.CancellationToken
+                    );
+                var dietExternalIndividualDayExposures = dietIndividualDayExposures
+                    .Cast<IExternalIndividualDayExposure>()
+                    .ToList();
+                var dietExposureCollection = new ExternalExposureCollection {
+                    ExposureUnit = new ExposureUnitTriple(data.DietaryExposureUnit.SubstanceAmountUnit, ConcentrationMassUnit.PerUnit, TimeScaleUnit.PerDay),
+                    ExposureSource = ExposureSource.Diet,
+                    ExternalIndividualDayExposures = dietExternalIndividualDayExposures
+                };
+                externalExposureCollections.Add(dietExposureCollection);
+            }
 
             // Combine all external exposures
             var combinedExternalIndividualDayExposures = AggregateIntakeCalculator
                 .CreateCombinedIndividualDayExposures(
-                    dietaryExposures,
                     externalExposureCollections,
                     externalExposureUnit,
-                    ModuleConfig.ExposureType
+                    ModuleConfig.ExposureType,
+                    progressReport.CancellationToken
                 );
 
             // Create kinetic model calculators

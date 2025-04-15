@@ -2,8 +2,9 @@
 using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Objects;
 using MCRA.Utils.Statistics.RandomGenerators;
+using MCRA.Simulation.Calculators.AirExposureCalculation;
 
-namespace MCRA.Simulation.Calculators.AirExposureCalculation {
+namespace MCRA.Simulation.Calculators.PopulationAlignmentCalculation.AirExposureGenerators {
     public abstract class AirExposureGenerator {
 
         /// <summary>

@@ -73,4 +73,10 @@
     <Description>Population aligment methods for (RSExpo) air exposure sources.</Description>
     <ValueType>PopulationAlignmentMethod</ValueType>
   </SettingsItem>
+  <SettingsItem>
+    <Id>DietPopulationAlignmentMethod</Id>
+    <Name>Population alignment method diet exposures</Name>
+    <Description>Population aligment methods for dietary exposure sources.</Description>
+    <ValueType>PopulationAlignmentMethod</ValueType>
+  </SettingsItem>
 </SettingsItems>
