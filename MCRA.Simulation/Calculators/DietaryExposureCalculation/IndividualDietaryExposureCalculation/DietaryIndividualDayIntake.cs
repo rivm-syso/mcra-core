@@ -166,23 +166,6 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
         }
 
         /// <summary>
-        /// Returns the aggregate intake per substance of the dietary individual day intake.
-        /// </summary>
-        /// <returns></returns>
-        public List<AggregateIntakePerCompound> GetDietaryIntakesPerSubstance() {
-            var intakesPerCompound = IntakesPerFood
-                .SelectMany(ipc => ipc.IntakesPerCompound)
-                .Concat(OtherIntakesPerCompound)
-                .GroupBy(ipc => ipc.Compound)
-                .Select(g => new AggregateIntakePerCompound() {
-                    Compound = g.Key,
-                    Amount = g.Sum(ipc => ipc.Amount),
-                })
-                .ToList();
-            return intakesPerCompound;
-        }
-
-        /// <summary>
         /// Returns the total intake of the substance of the dietary individual day intake.
         /// </summary>
         /// <returns></returns>
