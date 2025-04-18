@@ -20,6 +20,9 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
                 while (i < erfSubGroups.Count && erfSubGroups[i].ExposureUpper < x) {
                     i++;
                 }
+                if (i == erfSubGroups.Count) {
+                    throw new Exception($"Subgroup not defined for {erfSubGroups.First().idModel} for exposure of {x}.");
+                }
                 erfSpecification = erfSubGroups[i].ExposureResponseSpecification;
             } else {
                 erfSpecification = erf.ExposureResponseSpecification;
