@@ -13,11 +13,14 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
 
             Expression erfSpecification;
             if (erf.HasErfSubGroups()) {
+                var erfSubGroups = erf.ErfSubgroups
+                    .OrderBy(r => r.ExposureUpper ?? double.PositiveInfinity)
+                    .ToList();
                 var i = 0;
-                while (i < erf.ErfSubgroups.Count && erf.ErfSubgroups.ElementAt(i).ExposureUpper < x) {
+                while (i < erfSubGroups.Count && erfSubGroups[i].ExposureUpper < x) {
                     i++;
                 }
-                erfSpecification = erf.ErfSubgroups.ElementAt(i).ExposureResponseSpecification;
+                erfSpecification = erfSubGroups[i].ExposureResponseSpecification;
             } else {
                 erfSpecification = erf.ExposureResponseSpecification;
             }

@@ -78,7 +78,8 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
             };
             if (ExposureResponseFunction.HasErfSubGroups()) {
                 upperBounds.AddRange(
-                    ExposureResponseFunction.ErfSubgroups?
+                    ExposureResponseFunction.ErfSubgroups
+                        .OrderBy(r => r.ExposureUpper ?? double.PositiveInfinity)
                         .Select(r => r.ExposureUpper * unitAlignmentFactor ?? double.NaN)
                     );
             }

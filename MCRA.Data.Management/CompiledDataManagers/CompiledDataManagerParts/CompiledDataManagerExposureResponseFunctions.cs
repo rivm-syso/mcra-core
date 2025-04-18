@@ -191,7 +191,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             if (exposureResponseType == ExposureResponseType.Function) {
                 exposureResponseSpecification = new Expression(
                     exposureResponseSpecificationString,
-                    ExpressionOptions.IgnoreCase,
+                    ExpressionOptions.IgnoreCaseAtBuiltInFunctions,
                     CultureInfo.InvariantCulture
                 );
             } else {
@@ -203,7 +203,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 var erfValue = exposureResponseSpecificationString.Replace(",", ".");
                 exposureResponseSpecification = new Expression(
                     erfValue.ToString(CultureInfo.InvariantCulture),
-                    ExpressionOptions.IgnoreCase,
+                    ExpressionOptions.IgnoreCaseAtBuiltInFunctions,
                     CultureInfo.InvariantCulture
                 );
             }
