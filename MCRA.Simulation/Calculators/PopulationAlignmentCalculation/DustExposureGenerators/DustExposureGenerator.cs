@@ -3,6 +3,8 @@ using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Objects;
 using MCRA.Utils.Statistics.RandomGenerators;
 using MCRA.Simulation.Calculators.DustExposureCalculation;
+using MCRA.Simulation.Calculators.ExternalExposureCalculation;
+using MCRA.General;
 
 namespace MCRA.Simulation.Calculators.PopulationAlignmentCalculation.DustExposureGenerators {
     public abstract class DustExposureGenerator {
@@ -10,10 +12,11 @@ namespace MCRA.Simulation.Calculators.PopulationAlignmentCalculation.DustExposur
         /// <summary>
         /// Generates dust individual day exposures.
         /// </summary>
-        public ICollection<DustIndividualDayExposure> GenerateDustIndividualDayExposures(
+        public ExternalExposureCollection GenerateDustIndividualDayExposures(
             ICollection<IIndividualDay> individualDays,
             ICollection<Compound> substances,
             ICollection<DustIndividualDayExposure> dustIndividualDayExposures,
+            SubstanceAmountUnit substanceAmountUnit,
             int seed,
             CancellationToken cancelToken
         ) {
@@ -31,13 +34,19 @@ namespace MCRA.Simulation.Calculators.PopulationAlignmentCalculation.DustExposur
                     );
                     return dustIndividualDayExposure;
                 })
+                .Cast<IExternalIndividualDayExposure>()
                 .ToList();
 
             // Check if success
             if (dustIndividualExposures.Count == 0) {
-                throw new Exception("Failed to match any dust exposure to a dietary exposure");
+                throw new Exception("Failed to match any dust exposure");
             }
-            return dustIndividualExposures;
+            var dustExposureCollection = new ExternalExposureCollection {
+                ExposureUnit = new ExposureUnitTriple(substanceAmountUnit, ConcentrationMassUnit.PerUnit, TimeScaleUnit.PerDay),
+                ExposureSource = ExposureSource.Dust,
+                ExternalIndividualDayExposures = dustIndividualExposures
+            };
+            return dustExposureCollection;
         }
 
         protected abstract DustIndividualDayExposure createDustIndividualExposure(

@@ -6,6 +6,7 @@ using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryE
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.RandomGenerators;
 using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
+using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 
 namespace MCRA.Simulation.Calculators.PopulationAlignmentCalculation.NonDietaryExposureGenerators {
     public abstract class NonDietaryExposureGenerator {
@@ -28,10 +29,11 @@ namespace MCRA.Simulation.Calculators.PopulationAlignmentCalculation.NonDietaryE
         /// <summary>
         /// Generates acute non-dietary individual day exposures.
         /// </summary>
-        public List<NonDietaryIndividualDayIntake> GenerateAcuteNonDietaryIntakes(
+        public ExternalExposureCollection GenerateAcuteNonDietaryIntakes(
             ICollection<IIndividualDay> individualDays,
             ICollection<Compound> substances,
             ICollection<NonDietarySurvey> nonDietarySurveys,
+            ExternalExposureUnit externalExposureUnit,
             int seed,
             CancellationToken cancelToken
         ) {
@@ -55,16 +57,24 @@ namespace MCRA.Simulation.Calculators.PopulationAlignmentCalculation.NonDietaryE
             if (!nonDietaryIndividualDayIntakes.Any(r => r.NonDietaryIntake?.NonDietaryIntakesPerCompound?.Count > 0)) {
                 throw new Exception("Failed to match any non-dietary exposure to a dietary exposure");
             }
-            return nonDietaryIndividualDayIntakes;
+            var nonDietaryExposureCollection = new ExternalExposureCollection {
+                ExposureUnit = ExposureUnitTriple.FromExposureUnit(externalExposureUnit),
+                ExposureSource = ExposureSource.OtherNonDiet,
+                ExternalIndividualDayExposures = nonDietaryIndividualDayIntakes
+                    .Cast<IExternalIndividualDayExposure>()
+                    .ToList()
+            };
+            return nonDietaryExposureCollection;
         }
 
         /// <summary>
         /// Calculate chronic daily intakes
         /// </summary>
-        public List<NonDietaryIndividualDayIntake> GenerateChronicNonDietaryIntakes(
+        public ExternalExposureCollection GenerateChronicNonDietaryIntakes(
             ICollection<IIndividualDay> individualDays,
             ICollection<Compound> substances,
             ICollection<NonDietarySurvey> nonDietarySurveys,
+            ExternalExposureUnit externalExposureUnit,
             int seed,
             CancellationToken cancelToken
         ) {
@@ -91,7 +101,14 @@ namespace MCRA.Simulation.Calculators.PopulationAlignmentCalculation.NonDietaryE
                 throw new Exception("Failed to match any non-dietary exposure to a dietary exposure");
             }
 
-            return nonDietaryIndividualDayIntakes;
+            var nonDietaryExposureCollection = new ExternalExposureCollection {
+                ExposureUnit = ExposureUnitTriple.FromExposureUnit(externalExposureUnit),
+                ExposureSource = ExposureSource.OtherNonDiet,
+                ExternalIndividualDayExposures = nonDietaryIndividualDayIntakes
+                    .Cast<IExternalIndividualDayExposure>()
+                    .ToList()
+            };
+            return nonDietaryExposureCollection;
         }
 
         protected abstract List<NonDietaryIntakePerCompound> createNonDietaryIndividualExposure(

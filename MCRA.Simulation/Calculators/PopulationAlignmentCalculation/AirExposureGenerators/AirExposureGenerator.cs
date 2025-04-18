@@ -3,6 +3,8 @@ using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Objects;
 using MCRA.Utils.Statistics.RandomGenerators;
 using MCRA.Simulation.Calculators.AirExposureCalculation;
+using MCRA.Simulation.Calculators.ExternalExposureCalculation;
+using MCRA.General;
 
 namespace MCRA.Simulation.Calculators.PopulationAlignmentCalculation.AirExposureGenerators {
     public abstract class AirExposureGenerator {
@@ -10,10 +12,11 @@ namespace MCRA.Simulation.Calculators.PopulationAlignmentCalculation.AirExposure
         /// <summary>
         /// Generates air individual day exposures.
         /// </summary>
-        public ICollection<AirIndividualDayExposure> GenerateAirIndividualDayExposures(
+        public ExternalExposureCollection GenerateAirIndividualDayExposures(
             ICollection<IIndividualDay> individualDays,
             ICollection<Compound> substances,
             ICollection<AirIndividualDayExposure> airIndividualDayExposures,
+            SubstanceAmountUnit substanceAmountUnit,
             int seed,
             CancellationToken cancelToken
         ) {
@@ -31,13 +34,19 @@ namespace MCRA.Simulation.Calculators.PopulationAlignmentCalculation.AirExposure
                     );
                     return airIndividualDayExposure;
                 })
+                .Cast<IExternalIndividualDayExposure>()
                 .ToList();
 
             // Check if success
             if (airIndividualExposures.Count == 0) {
-                throw new Exception("Failed to match any air exposure to a dietary exposure");
+                throw new Exception("Failed to match any air exposure");
             }
-            return airIndividualExposures;
+            var airExposureCollection = new ExternalExposureCollection {
+                ExposureUnit = new ExposureUnitTriple(substanceAmountUnit, ConcentrationMassUnit.PerUnit, TimeScaleUnit.PerDay),
+                ExposureSource = ExposureSource.Air,
+                ExternalIndividualDayExposures = airIndividualExposures
+            };
+            return airExposureCollection;
         }
 
         protected abstract AirIndividualDayExposure createAirIndividualExposure(

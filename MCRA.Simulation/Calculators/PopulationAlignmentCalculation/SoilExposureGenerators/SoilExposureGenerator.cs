@@ -3,6 +3,8 @@ using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Objects;
 using MCRA.Utils.Statistics.RandomGenerators;
 using MCRA.Simulation.Calculators.SoilExposureCalculation;
+using MCRA.Simulation.Calculators.ExternalExposureCalculation;
+using MCRA.General;
 
 namespace MCRA.Simulation.Calculators.PopulationAlignmentCalculation.SoilExposureGenerators {
     public abstract class SoilExposureGenerator {
@@ -10,10 +12,11 @@ namespace MCRA.Simulation.Calculators.PopulationAlignmentCalculation.SoilExposur
         /// <summary>
         /// Generates soil individual day exposures.
         /// </summary>
-        public ICollection<SoilIndividualDayExposure> GenerateSoilIndividualDayExposures(
+        public ExternalExposureCollection GenerateSoilIndividualDayExposures(
             ICollection<IIndividualDay> individualDays,
             ICollection<Compound> substances,
             ICollection<SoilIndividualDayExposure> soilIndividualDayExposures,
+            SubstanceAmountUnit substanceAmountUnit,
             int seed,
             CancellationToken cancelToken
         ) {
@@ -31,13 +34,19 @@ namespace MCRA.Simulation.Calculators.PopulationAlignmentCalculation.SoilExposur
                     );
                     return soilIndividualDayExposure;
                 })
+                .Cast<IExternalIndividualDayExposure>()
                 .ToList();
 
             // Check if success
             if (soilIndividualExposures.Count == 0) {
-                throw new Exception("Failed to match any soil exposure to a dietary exposure");
+                throw new Exception("Failed to match any soil exposure");
             }
-            return soilIndividualExposures;
+            var soilExposureCollection = new ExternalExposureCollection {
+                ExposureUnit = new ExposureUnitTriple(substanceAmountUnit, ConcentrationMassUnit.PerUnit, TimeScaleUnit.PerDay),
+                ExposureSource = ExposureSource.Soil,
+                ExternalIndividualDayExposures = soilIndividualExposures
+            };
+            return soilExposureCollection;
         }
 
         protected abstract SoilIndividualDayExposure createSoilIndividualExposure(
