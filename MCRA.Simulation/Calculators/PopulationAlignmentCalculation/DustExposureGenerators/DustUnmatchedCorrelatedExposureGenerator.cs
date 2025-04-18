@@ -11,8 +11,8 @@ namespace MCRA.Simulation.Calculators.PopulationAlignmentCalculation.DustExposur
         /// Randomly pair dust and dietary individuals
         /// (if the properties of the dietary individual match the properties of the dust individual)
         /// </summary>
-        protected override DustIndividualDayExposure createDustIndividualExposure(
-            IIndividualDay individualDay,
+        protected override List<DustIndividualDayExposure> createDustIndividualExposure(
+            IGrouping<int, IIndividualDay> individualDays,
             ICollection<DustIndividualDayExposure> dustIndividualDayExposures,
             ICollection<Compound> substances,
             IRandom generator

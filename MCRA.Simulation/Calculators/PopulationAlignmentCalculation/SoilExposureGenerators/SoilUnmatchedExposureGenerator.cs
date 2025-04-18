@@ -2,6 +2,7 @@
 using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Objects;
 using MCRA.Simulation.Calculators.SoilExposureCalculation;
+using MCRA.Simulation.Calculators.AirExposureCalculation;
 
 namespace MCRA.Simulation.Calculators.PopulationAlignmentCalculation.SoilExposureGenerators {
 
@@ -10,19 +11,20 @@ namespace MCRA.Simulation.Calculators.PopulationAlignmentCalculation.SoilExposur
         /// <summary>
         /// Randomly pair soil and reference individuals
         /// </summary>
-        protected override SoilIndividualDayExposure createSoilIndividualExposure(
-            IIndividualDay individualDay,
+        protected override List<SoilIndividualDayExposure> createSoilIndividualExposure(
+            IGrouping<int, IIndividualDay> individualDays,
             ICollection<SoilIndividualDayExposure> soilIndividualDayExposures,
             ICollection<Compound> substances,
             IRandom generator
         ) {
             var ix = generator.Next(0, soilIndividualDayExposures.Count);
             var selected = soilIndividualDayExposures.ElementAt(ix);
-            var result = selected.Clone();
-            result.SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId;
-            result.SimulatedIndividual = individualDay.SimulatedIndividual;
-            result.Day = individualDay.Day;
-            return result;
+            var results = new List<SoilIndividualDayExposure>();
+            foreach (var individualDay in individualDays) {
+                var result = selected.Clone(individualDay);
+                results.Add(result);
+            }
+            return results;
         }
     }
 }

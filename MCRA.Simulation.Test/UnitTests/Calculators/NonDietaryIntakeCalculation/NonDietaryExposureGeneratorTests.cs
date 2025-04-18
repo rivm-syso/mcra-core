@@ -33,9 +33,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 substances,
                 nonDietarySurveys.Keys,
                 ExternalExposureUnit.mgPerGBWPerDay,
-                123456,
-                new CancellationToken()
-            );
+                123456);
             Assert.AreEqual(result.ExternalIndividualDayExposures.Count, individualDays.Count);
         }
 
@@ -59,9 +57,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 substances,
                 nonDietarySurveys.Keys,
                 ExternalExposureUnit.mgPerKgBWPerDay,
-                123456,
-                new CancellationToken()
-            );
+                123456);
             Assert.AreEqual(result.ExternalIndividualDayExposures.Count, individuals.Count);
         }
 
@@ -85,9 +81,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 substances,
                 nonDietarySurveys.Keys,
                 ExternalExposureUnit.ugPerKgBWPerDay,
-                123456,
-                new CancellationToken()
-            );
+                123456);
             Assert.AreEqual(result.ExternalIndividualDayExposures.Count, individualDays.Count);
         }
 
@@ -111,9 +105,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 substances,
                 nonDietarySurveys.Keys,
                 ExternalExposureUnit.mgPerKgBWPerDay,
-                123456,
-                new CancellationToken()
-            );
+                123456);
             Assert.AreEqual(result.ExternalIndividualDayExposures.Count, individuals.Count);
         }
 
@@ -137,9 +129,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 substances,
                 nonDietarySurveys.Keys,
                 ExternalExposureUnit.mgPerKgBWPerDay,
-                123456,
-                new CancellationToken()
-            );
+                123456);
             Assert.AreEqual(result.ExternalIndividualDayExposures.Count, individualDays.Count);
         }
 
@@ -163,9 +153,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 substances,
                 nonDietarySurveys.Keys,
                 ExternalExposureUnit.mgPerKgBWPerDay,
-                123456,
-                new CancellationToken()
-            );
+                123456);
             Assert.AreEqual(result.ExternalIndividualDayExposures.Count, individuals.Count);
         }
 
@@ -198,9 +186,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 substances,
                 nonDietarySurveys.Keys,
                 ExternalExposureUnit.ugPerKgBWPerDay,
-                123456,
-                new CancellationToken()
-            );
+                123456);
             Assert.AreEqual(result.ExternalIndividualDayExposures.Count, individuals.Count);
         }
 
@@ -230,9 +216,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 substances,
                 nonDietarySurveys.Keys,
                 ExternalExposureUnit.ugPerKgBWPerDay,
-                123456,
-                new CancellationToken()
-            );
+                123456);
 
             var dermalRandom = result.ExternalIndividualDayExposures
                 .SelectMany(c => c.ExposuresPerPath)
@@ -284,9 +268,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                     substances,
                     nonDietarySurveys.Keys,
                     ExternalExposureUnit.ugPerKgBWPerDay,
-                    random.Next(),
-                    new CancellationToken()
-                );
+                    random.Next());
 
                 var dermalRandom = result.ExternalIndividualDayExposures
                     .SelectMany(c => c.ExposuresPerPath)
@@ -335,9 +317,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 substances,
                 nonDietarySurveys.Keys,
                 ExternalExposureUnit.ugPerKgBWPerDay,
-                random.Next(),
-                new CancellationToken()
-            );
+                random.Next());
 
             var dermalRandom = result.ExternalIndividualDayExposures
                 .SelectMany(c => c.ExposuresPerPath)
@@ -397,9 +377,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 substances,
                 nonDietarySurveys.Keys,
                 ExternalExposureUnit.ugPerKgBWPerDay,
-                random.Next(),
-                new CancellationToken()
-            );
+                random.Next());
 
             var dermalRandom = result.ExternalIndividualDayExposures
                 .SelectMany(c => c.ExposuresPerPath)

@@ -7,11 +7,11 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
         Dictionary<ExposurePath, List<IIntakePerCompound>> exposuresPerPath
     ) : ExternalIndividualDayExposure(exposuresPerPath) {
 
-        public DustIndividualDayExposure Clone() {
+        public DustIndividualDayExposure Clone(IIndividualDay individualDay) {
             return new DustIndividualDayExposure(ExposuresPerPath) {
-                SimulatedIndividualDayId = SimulatedIndividualDayId,
-                SimulatedIndividual = SimulatedIndividual,
-                Day = Day
+                SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId,
+                SimulatedIndividual = individualDay.SimulatedIndividual,
+                Day = individualDay.Day,
             };
         }
     }

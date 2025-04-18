@@ -11,8 +11,8 @@ namespace MCRA.Simulation.Calculators.PopulationAlignmentCalculation.SoilExposur
         /// Randomly pair soil and dietary individuals
         /// (if the properties of the dietary individual match the properties of the soil individual)
         /// </summary>
-        protected override SoilIndividualDayExposure createSoilIndividualExposure(
-            IIndividualDay individualDay,
+        protected override List<SoilIndividualDayExposure> createSoilIndividualExposure(
+            IGrouping<int, IIndividualDay> individualDays,
             ICollection<SoilIndividualDayExposure> soilIndividualDayExposures,
             ICollection<Compound> substances,
             IRandom generator

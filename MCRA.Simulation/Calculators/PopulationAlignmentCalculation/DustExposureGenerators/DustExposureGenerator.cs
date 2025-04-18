@@ -17,20 +17,18 @@ namespace MCRA.Simulation.Calculators.PopulationAlignmentCalculation.DustExposur
             ICollection<Compound> substances,
             ICollection<DustIndividualDayExposure> dustIndividualDayExposures,
             SubstanceAmountUnit substanceAmountUnit,
-            int seed,
-            CancellationToken cancelToken
+            int seed
         ) {
             var dustIndividualExposures = individualDays
-                .GroupBy(r => r.SimulatedIndividual.Id, (key, g) => g.First())
                 .AsParallel()
-                .WithCancellation(cancelToken)
                 .WithDegreeOfParallelism(100)
-                .Select(individualDay => {
+                .GroupBy(r => r.SimulatedIndividual.Id)
+                .SelectMany(individualDays => {
                     var dustIndividualDayExposure = createDustIndividualExposure(
-                        individualDay,
+                        individualDays,
                         dustIndividualDayExposures,
                         substances,
-                        new McraRandomGenerator(RandomUtils.CreateSeed(seed, individualDay.SimulatedIndividualDayId))
+                        new McraRandomGenerator(RandomUtils.CreateSeed(seed, individualDays.First().SimulatedIndividualDayId))
                     );
                     return dustIndividualDayExposure;
                 })
@@ -49,8 +47,8 @@ namespace MCRA.Simulation.Calculators.PopulationAlignmentCalculation.DustExposur
             return dustExposureCollection;
         }
 
-        protected abstract DustIndividualDayExposure createDustIndividualExposure(
-            IIndividualDay individualDay,
+        protected abstract List<DustIndividualDayExposure> createDustIndividualExposure(
+            IGrouping<int, IIndividualDay> individualDays,
             ICollection<DustIndividualDayExposure> dustIndividualDayExposures,
             ICollection<Compound> substances,
             IRandom randomIndividual

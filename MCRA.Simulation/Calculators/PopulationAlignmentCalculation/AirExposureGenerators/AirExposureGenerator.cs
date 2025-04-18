@@ -17,20 +17,18 @@ namespace MCRA.Simulation.Calculators.PopulationAlignmentCalculation.AirExposure
             ICollection<Compound> substances,
             ICollection<AirIndividualDayExposure> airIndividualDayExposures,
             SubstanceAmountUnit substanceAmountUnit,
-            int seed,
-            CancellationToken cancelToken
+            int seed
         ) {
             var airIndividualExposures = individualDays
-                .GroupBy(r => r.SimulatedIndividual.Id, (key, g) => g.First())
                 .AsParallel()
-                .WithCancellation(cancelToken)
                 .WithDegreeOfParallelism(100)
-                .Select(individualDay => {
+                .GroupBy(r => r.SimulatedIndividual.Id)
+                .SelectMany(individualDays => {
                     var airIndividualDayExposure = createAirIndividualExposure(
-                        individualDay,
+                        individualDays,
                         airIndividualDayExposures,
                         substances,
-                        new McraRandomGenerator(RandomUtils.CreateSeed(seed, individualDay.SimulatedIndividualDayId))
+                        new McraRandomGenerator(RandomUtils.CreateSeed(seed, individualDays.First().SimulatedIndividualDayId))
                     );
                     return airIndividualDayExposure;
                 })
@@ -49,8 +47,8 @@ namespace MCRA.Simulation.Calculators.PopulationAlignmentCalculation.AirExposure
             return airExposureCollection;
         }
 
-        protected abstract AirIndividualDayExposure createAirIndividualExposure(
-            IIndividualDay individualDay,
+        protected abstract List<AirIndividualDayExposure> createAirIndividualExposure(
+            IGrouping<int, IIndividualDay> individualDays,
             ICollection<AirIndividualDayExposure> airIndividualDayExposures,
             ICollection<Compound> substances,
             IRandom randomIndividual

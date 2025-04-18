@@ -1,5 +1,4 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.DietExposureCalculation;
@@ -21,8 +20,9 @@ namespace MCRA.Simulation.Calculators.PopulationAlignmentCalculation.DietExposur
                 var msg = $"Failed to find matching exposure for individual [{individualDay.SimulatedIndividual.Code}].";
                 throw new Exception(msg);
             }
-            var exposuresPerPath = new Dictionary<ExposurePath, List<IIntakePerCompound>>();
-            exposuresPerPath[new(ExposureSource.Diet, ExposureRoute.Oral)] = [.. dietIndividualDayIntake.GetTotalIntakesPerSubstance()];
+            var exposuresPerPath = new Dictionary<ExposurePath, List<IIntakePerCompound>> {
+                [new(ExposureSource.Diet, ExposureRoute.Oral)] = [.. dietIndividualDayIntake.GetTotalIntakesPerSubstance()]
+            };
             var result = new DietIndividualDayExposure(exposuresPerPath) {
                 SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId,
                 SimulatedIndividual = individualDay.SimulatedIndividual,

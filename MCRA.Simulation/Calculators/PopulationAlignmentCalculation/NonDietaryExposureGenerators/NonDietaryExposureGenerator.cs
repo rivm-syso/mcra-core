@@ -34,12 +34,10 @@ namespace MCRA.Simulation.Calculators.PopulationAlignmentCalculation.NonDietaryE
             ICollection<Compound> substances,
             ICollection<NonDietarySurvey> nonDietarySurveys,
             ExternalExposureUnit externalExposureUnit,
-            int seed,
-            CancellationToken cancelToken
+            int seed
         ) {
             var nonDietaryIndividualDayIntakes = individualDays
                 .AsParallel()
-                .WithCancellation(cancelToken)
                 .WithDegreeOfParallelism(100)
                 .Select(individualDay => {
                     var nonDietaryIndividualDayIntake = generateNonDietaryIndividualDayIntake(
@@ -75,14 +73,12 @@ namespace MCRA.Simulation.Calculators.PopulationAlignmentCalculation.NonDietaryE
             ICollection<Compound> substances,
             ICollection<NonDietarySurvey> nonDietarySurveys,
             ExternalExposureUnit externalExposureUnit,
-            int seed,
-            CancellationToken cancelToken
+            int seed
         ) {
             // Generate non-dietary individual day exposures from individual days and non-dietary individual exposures.
             var nonDietaryIndividualDayIntakes = individualDays
                 .GroupBy(r => r.SimulatedIndividual.Id, (key, g) => g.First())
                 .AsParallel()
-                .WithCancellation(cancelToken)
                 .WithDegreeOfParallelism(100)
                 .Select(individualDay => {
                     var nonDietaryIndividualDayIntake = generateNonDietaryIndividualDayIntake(

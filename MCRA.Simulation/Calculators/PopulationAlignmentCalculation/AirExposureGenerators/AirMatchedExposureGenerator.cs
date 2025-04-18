@@ -6,20 +6,24 @@ using MCRA.Simulation.Calculators.AirExposureCalculation;
 namespace MCRA.Simulation.Calculators.PopulationAlignmentCalculation.AirExposureGenerators {
     public class AirMatchedExposureGenerator : AirExposureGenerator {
 
-        protected override AirIndividualDayExposure createAirIndividualExposure(
-            IIndividualDay individualDay,
+        protected override List<AirIndividualDayExposure> createAirIndividualExposure(
+            IGrouping<int, IIndividualDay> individualDays,
             ICollection<AirIndividualDayExposure> airIndividualDayExposures,
             ICollection<Compound> substances,
             IRandom randomIndividual
         ) {
-            var airIndividualExposures = airIndividualDayExposures
-                .FirstOrDefault(r => r.SimulatedIndividual.Id == individualDay.SimulatedIndividual.Id);
-            if (airIndividualExposures == null) {
-                var msg = $"Failed to find matching air exposure for individual [{individualDay.SimulatedIndividual.Code}].";
+            var airIndividualExposure = airIndividualDayExposures
+                .FirstOrDefault(r => r.SimulatedIndividual.Id == individualDays.First().SimulatedIndividual.Id);
+            if (airIndividualExposure == null) {
+                var msg = $"Failed to find matching air exposure for individual [{individualDays.First().SimulatedIndividual.Code}].";
                 throw new Exception(msg);
             }
-            var result = airIndividualExposures.Clone();
-            return airIndividualExposures;
+            var results = new List<AirIndividualDayExposure>();
+            foreach (var individualDay in individualDays) {
+                var result = airIndividualExposure.Clone(individualDay);
+                results.Add(result);
+            }
+            return results;
         }
     }
 }

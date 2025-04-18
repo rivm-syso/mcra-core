@@ -18,13 +18,10 @@ namespace MCRA.Simulation.Calculators.PopulationAlignmentCalculation.DietExposur
             ICollection<Compound> substances,
             ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes,
             SubstanceAmountUnit substanceAmountUnit,
-            int seed,
-            CancellationToken cancelToken
+            int seed
         ) {
             var dietIndividualExposures = individualDays
-                .GroupBy(r => r.SimulatedIndividual.Id, (key, g) => g.First())
                 .AsParallel()
-                .WithCancellation(cancelToken)
                 .WithDegreeOfParallelism(100)
                 .Select(individualDay => {
                     var dietIndividualDayExposure = createDietIndividualExposure(

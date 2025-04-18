@@ -17,20 +17,18 @@ namespace MCRA.Simulation.Calculators.PopulationAlignmentCalculation.SoilExposur
             ICollection<Compound> substances,
             ICollection<SoilIndividualDayExposure> soilIndividualDayExposures,
             SubstanceAmountUnit substanceAmountUnit,
-            int seed,
-            CancellationToken cancelToken
+            int seed
         ) {
             var soilIndividualExposures = individualDays
-                .GroupBy(r => r.SimulatedIndividual.Id, (key, g) => g.First())
                 .AsParallel()
-                .WithCancellation(cancelToken)
                 .WithDegreeOfParallelism(100)
-                .Select(individualDay => {
+                .GroupBy(r => r.SimulatedIndividual.Id)
+                .SelectMany(individualDays => {
                     var soilIndividualDayExposure = createSoilIndividualExposure(
-                        individualDay,
+                        individualDays,
                         soilIndividualDayExposures,
                         substances,
-                        new McraRandomGenerator(RandomUtils.CreateSeed(seed, individualDay.SimulatedIndividualDayId))
+                        new McraRandomGenerator(RandomUtils.CreateSeed(seed, individualDays.First().SimulatedIndividualDayId))
                     );
                     return soilIndividualDayExposure;
                 })
@@ -49,8 +47,8 @@ namespace MCRA.Simulation.Calculators.PopulationAlignmentCalculation.SoilExposur
             return soilExposureCollection;
         }
 
-        protected abstract SoilIndividualDayExposure createSoilIndividualExposure(
-            IIndividualDay individualDay,
+        protected abstract List<SoilIndividualDayExposure> createSoilIndividualExposure(
+            IGrouping<int, IIndividualDay> individualDays,
             ICollection<SoilIndividualDayExposure> soilIndividualDayExposures,
             ICollection<Compound> substances,
             IRandom randomIndividual

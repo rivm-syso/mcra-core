@@ -10,19 +10,20 @@ namespace MCRA.Simulation.Calculators.PopulationAlignmentCalculation.AirExposure
         /// <summary>
         /// Randomly pair dust and reference individuals
         /// </summary>
-        protected override AirIndividualDayExposure createAirIndividualExposure(
-            IIndividualDay individualDay,
+        protected override List<AirIndividualDayExposure> createAirIndividualExposure(
+            IGrouping<int, IIndividualDay> individualDays,
             ICollection<AirIndividualDayExposure> airIndividualDayExposures,
             ICollection<Compound> substances,
             IRandom generator
         ) {
             var ix = generator.Next(0, airIndividualDayExposures.Count);
             var selected = airIndividualDayExposures.ElementAt(ix);
-            var result = selected.Clone();
-            result.SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId;
-            result.SimulatedIndividual = individualDay.SimulatedIndividual;
-            result.Day = individualDay.Day;
-            return result;
+            var results = new List<AirIndividualDayExposure>();
+            foreach (var individualDay in individualDays) {
+                var result = selected.Clone(individualDay);
+                results.Add(result);
+            }
+            return results;
         }
     }
 }

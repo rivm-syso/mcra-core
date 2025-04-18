@@ -8,11 +8,11 @@ namespace MCRA.Simulation.Calculators.AirExposureCalculation {
             Dictionary<ExposurePath, List<IIntakePerCompound>> exposuresPerPath
         ) : ExternalIndividualDayExposure(exposuresPerPath) {
 
-            public AirIndividualDayExposure Clone() {
+            public AirIndividualDayExposure Clone(IIndividualDay individualDay) {
             return new AirIndividualDayExposure(ExposuresPerPath) {
-                SimulatedIndividualDayId = SimulatedIndividualDayId,
-                SimulatedIndividual = SimulatedIndividual,
-                Day = Day,
+                SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId,
+                SimulatedIndividual = individualDay.SimulatedIndividual,
+                Day = individualDay.Day,
             };
         }
     }

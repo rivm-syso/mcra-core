@@ -28,10 +28,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
                         exposureUnit: c.ExposureUnit,
                         externalIndividualDayExposures: r
                     ))
-                .GroupBy(c => exposureType == ExposureType.Acute
-                    ? c.externalIndividualDayExposures.SimulatedIndividualDayId
-                    : c.externalIndividualDayExposures.SimulatedIndividual.Id
-                )
+                .GroupBy(c =>  c.externalIndividualDayExposures.SimulatedIndividualDayId)
                 .Select(r => {
                     var externalExposures = r.Select(s => (s.exposureUnit, s.externalIndividualDayExposures)).ToList();
                     return createExternalIndividualDayExposure(

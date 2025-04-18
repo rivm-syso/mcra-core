@@ -2,6 +2,7 @@
 using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Objects;
 using MCRA.Simulation.Calculators.DustExposureCalculation;
+using MCRA.Simulation.Calculators.AirExposureCalculation;
 
 namespace MCRA.Simulation.Calculators.PopulationAlignmentCalculation.DustExposureGenerators {
 
@@ -10,19 +11,20 @@ namespace MCRA.Simulation.Calculators.PopulationAlignmentCalculation.DustExposur
         /// <summary>
         /// Randomly pair dust and reference individuals
         /// </summary>
-        protected override DustIndividualDayExposure createDustIndividualExposure(
-            IIndividualDay individualDay,
+        protected override List<DustIndividualDayExposure> createDustIndividualExposure(
+            IGrouping<int, IIndividualDay> individualDays,
             ICollection<DustIndividualDayExposure> dustIndividualDayExposures,
             ICollection<Compound> substances,
             IRandom generator
         ) {
             var ix = generator.Next(0, dustIndividualDayExposures.Count);
             var selected = dustIndividualDayExposures.ElementAt(ix);
-            var result = selected.Clone();
-            result.SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId;
-            result.SimulatedIndividual = individualDay.SimulatedIndividual;
-            result.Day = individualDay.Day;
-            return result;
+            var results = new List<DustIndividualDayExposure>();
+            foreach (var individualDay in individualDays) {
+                var result = selected.Clone(individualDay);
+                results.Add(result);
+            }
+            return results;
         }
     }
 }
