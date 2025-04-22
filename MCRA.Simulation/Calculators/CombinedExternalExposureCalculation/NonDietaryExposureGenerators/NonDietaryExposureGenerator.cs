@@ -1,29 +1,58 @@
 ﻿using CommandLine;
 using MCRA.Data.Compiled.Objects;
-using MCRA.Simulation.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
+using MCRA.Simulation.Calculators.ExternalExposureCalculation;
+using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
+using MCRA.Simulation.Objects;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.RandomGenerators;
-using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
-using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 
 namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.NonDietaryExposureGenerators {
     public abstract class NonDietaryExposureGenerator {
 
-        protected ExposureUnitTriple _targetUnit;
-        HashSet<ExposureRoute> _routes;
         protected Dictionary<NonDietarySurvey, Dictionary<string, NonDietaryExposureSet>> _nonDietaryExposureSetsDictionary;
 
         public virtual void Initialize(
-            IDictionary<NonDietarySurvey, List<NonDietaryExposureSet>> nonDietaryExposureSets,
-            HashSet<ExposureRoute> routes,
-            ExposureUnitTriple targetUnit
-        ) {
-            _targetUnit = targetUnit;
-            _routes = routes;
+            IDictionary<NonDietarySurvey, List<NonDietaryExposureSet>> nonDietaryExposureSets) {
             _nonDietaryExposureSetsDictionary = nonDietaryExposureSets
                 .ToDictionary(r => r.Key, r => r.Value.ToDictionary(nde => nde.IndividualCode, StringComparer.OrdinalIgnoreCase));
+        }
+
+        /// <summary>
+        /// Generates acute non-dietary individual day exposures for the
+        /// specified collection of individual days.
+        /// </summary>
+        public ExternalExposureCollection Generate(
+            ICollection<IIndividualDay> individualDays,
+            ICollection<NonDietarySurvey> nonDietarySurveys,
+            ExternalExposureUnit externalExposureUnit,
+            ICollection<Compound> substances,
+            ICollection<ExposureRoute> routes,
+            ExposureUnitTriple targetUnit,
+            ExposureType exposureType,
+            int seed
+        ) {
+            var result = exposureType == ExposureType.Acute
+                ? GenerateAcute(
+                    individualDays,
+                    nonDietarySurveys,
+                    externalExposureUnit,
+                    substances,
+                    routes,
+                    targetUnit,
+                    seed
+                )
+                : GenerateChronic(
+                    individualDays,
+                    nonDietarySurveys,
+                    externalExposureUnit,
+                    substances,
+                    routes,
+                    targetUnit,
+                    seed
+                );
+            return result;
         }
 
         /// <summary>
@@ -31,33 +60,34 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.NonDie
         /// </summary>
         public ExternalExposureCollection GenerateAcute(
             ICollection<IIndividualDay> individualDays,
-            ICollection<Compound> substances,
             ICollection<NonDietarySurvey> nonDietarySurveys,
             ExternalExposureUnit externalExposureUnit,
+            ICollection<Compound> substances,
+            ICollection<ExposureRoute> routes,
+            ExposureUnitTriple targetUnit,
             int seed
         ) {
-            var nonDietaryIndividualDayIntakes = individualDays
+            var individualDayExposures = individualDays
                 .AsParallel()
-                .Select(individualDay => {
-                    var nonDietaryIndividualDayIntake = generateNonDietaryIndividualDayIntake(
-                        individualDay,
-                        substances,
-                        nonDietarySurveys,
-                        new McraRandomGenerator(RandomUtils.CreateSeed(seed, individualDay.SimulatedIndividualDayId))
-                    );
-                    return nonDietaryIndividualDayIntake;
-                })
+                .Select(individualDay => generateIndividualExposure(
+                    individualDay,
+                    substances,
+                    routes,
+                    nonDietarySurveys,
+                    targetUnit,
+                    new McraRandomGenerator(RandomUtils.CreateSeed(seed, individualDay.SimulatedIndividualDayId))
+                ))
                 .OrderBy(r => r.SimulatedIndividualDayId)
                 .ToList();
 
             // Check if success
-            if (!nonDietaryIndividualDayIntakes.Any(r => r.NonDietaryIntake?.NonDietaryIntakesPerCompound?.Count > 0)) {
+            if (!individualDayExposures.Any(r => r.NonDietaryIntake?.NonDietaryIntakesPerCompound?.Count > 0)) {
                 throw new Exception("Failed to match any non-dietary exposure to a dietary exposure.");
             }
             var nonDietaryExposureCollection = new ExternalExposureCollection {
                 ExposureUnit = ExposureUnitTriple.FromExposureUnit(externalExposureUnit),
                 ExposureSource = ExposureSource.OtherNonDiet,
-                ExternalIndividualDayExposures = nonDietaryIndividualDayIntakes
+                ExternalIndividualDayExposures = individualDayExposures
                     .Cast<IExternalIndividualDayExposure>()
                     .ToList()
             };
@@ -69,47 +99,48 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.NonDie
         /// </summary>
         public ExternalExposureCollection GenerateChronic(
             ICollection<IIndividualDay> individualDays,
-            ICollection<Compound> substances,
             ICollection<NonDietarySurvey> nonDietarySurveys,
             ExternalExposureUnit externalExposureUnit,
+            ICollection<Compound> substances,
+            ICollection<ExposureRoute> routes,
+            ExposureUnitTriple targetUnit,
             int seed
         ) {
             // Generate non-dietary individual day exposures from individual days and non-dietary individual exposures.
-            var nonDietaryIndividualDayIntakes = individualDays
+            var individualDayExposures = individualDays
                 .GroupBy(r => r.SimulatedIndividual.Id, (key, g) => g.First())
                 .AsParallel()
-                .WithDegreeOfParallelism(100)
-                .Select(individualDay => {
-                    var nonDietaryIndividualDayIntake = generateNonDietaryIndividualDayIntake(
-                        individualDay,
-                        substances,
-                        nonDietarySurveys,
-                        new McraRandomGenerator(RandomUtils.CreateSeed(seed, individualDay.SimulatedIndividual.Code))
-                    );
-                    return nonDietaryIndividualDayIntake;
-                })
+                .Select(individualDay => generateIndividualExposure(
+                    individualDay,
+                    substances,
+                    routes,
+                    nonDietarySurveys,
+                    targetUnit,
+                    new McraRandomGenerator(RandomUtils.CreateSeed(seed, individualDay.SimulatedIndividual.Code))
+                ))
                 .OrderBy(r => r.SimulatedIndividualDayId)
                 .ToList();
 
             // Check if success
-            if (!nonDietaryIndividualDayIntakes.Any(r => r.NonDietaryIntake?.NonDietaryIntakesPerCompound?.Count > 0)) {
+            if (!individualDayExposures.Any(r => r.NonDietaryIntake?.NonDietaryIntakesPerCompound?.Count > 0)) {
                 throw new Exception("Failed to match any non-dietary exposure to a dietary exposure");
             }
-
             var nonDietaryExposureCollection = new ExternalExposureCollection {
                 ExposureUnit = ExposureUnitTriple.FromExposureUnit(externalExposureUnit),
                 ExposureSource = ExposureSource.OtherNonDiet,
-                ExternalIndividualDayExposures = nonDietaryIndividualDayIntakes
+                ExternalIndividualDayExposures = individualDayExposures
                     .Cast<IExternalIndividualDayExposure>()
                     .ToList()
             };
             return nonDietaryExposureCollection;
         }
 
-        protected abstract List<NonDietaryIntakePerCompound> createNonDietaryIndividualExposure(
+        protected abstract List<NonDietaryIntakePerCompound> generateIntakesPerSubstance(
             SimulatedIndividual individual,
             NonDietarySurvey nonDietarySurvey,
             ICollection<Compound> substances,
+            ICollection<ExposureRoute> routes,
+            ExposureUnitTriple targetUnit,
             IRandom randomIndividual
         );
 
@@ -138,21 +169,23 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.NonDie
             NonDietaryExposureSet exposureSet,
             NonDietarySurvey nonDietarySurvey,
             SimulatedIndividual individual,
-            ICollection<Compound> substances
+            ICollection<Compound> substances,
+            ICollection<ExposureRoute> routes,
+            ExposureUnitTriple targetUnit
         ) {
             var correctionFactor = nonDietarySurvey.ExposureUnit
                 .GetExposureUnitMultiplier(
-                    _targetUnit,
+                    targetUnit,
                     individual.BodyWeight
                 );
-            if (_targetUnit.ConcentrationMassUnit != ConcentrationMassUnit.PerUnit) {
+            if (targetUnit.ConcentrationMassUnit != ConcentrationMassUnit.PerUnit) {
                 correctionFactor = correctionFactor * individual.BodyWeight;
             }
             var nonDietaryExposures = exposureSet.NonDietaryExposures
                 .Where(nde => substances.Contains(nde.Compound))
                 .SelectMany(nde => {
                     var result = new List<NonDietaryIntakePerCompound>();
-                    if (_routes.Contains(ExposureRoute.Oral)) {
+                    if (routes.Contains(ExposureRoute.Oral)) {
                         var oral = new NonDietaryIntakePerCompound() {
                             Route = ExposureRoute.Oral,
                             Amount = correctionFactor * nde.Oral,
@@ -160,7 +193,7 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.NonDie
                         };
                         result.Add(oral);
                     }
-                    if (_routes.Contains(ExposureRoute.Dermal)) {
+                    if (routes.Contains(ExposureRoute.Dermal)) {
                         var dermal = new NonDietaryIntakePerCompound() {
                             Route = ExposureRoute.Dermal,
                             Amount = correctionFactor * nde.Dermal,
@@ -168,7 +201,7 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.NonDie
                         };
                         result.Add(dermal);
                     }
-                    if (_routes.Contains(ExposureRoute.Inhalation)) {
+                    if (routes.Contains(ExposureRoute.Inhalation)) {
                         var inhalation = new NonDietaryIntakePerCompound() {
                             Route = ExposureRoute.Inhalation,
                             Amount = correctionFactor * nde.Inhalation,
@@ -186,23 +219,27 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.NonDie
         /// <summary>
         /// Simulates the acute individual days.
         /// </summary>
-        private NonDietaryIndividualDayIntake generateNonDietaryIndividualDayIntake(
+        private NonDietaryIndividualDayIntake generateIndividualExposure(
             IIndividualDay individualDay,
             ICollection<Compound> substances,
+            ICollection<ExposureRoute> routes,
             ICollection<NonDietarySurvey> nonDietarySurveys,
+            ExposureUnitTriple targetUnit,
             IRandom generator
         ) {
-            var nonDietaryExposures = new List<IIntakePerCompound>();
+            var intakesPerSubstance = new List<NonDietaryIntakePerCompound>();
             foreach (var nonDietarySurvey in nonDietarySurveys) {
-                nonDietaryExposures.AddRange(createNonDietaryIndividualExposure(
+                var surveyIntakesPerSubstance = generateIntakesPerSubstance(
                     individualDay.SimulatedIndividual,
                     nonDietarySurvey,
                     substances,
+                    routes,
+                    targetUnit,
                     generator
-                ));
+                );
+                intakesPerSubstance.AddRange(surveyIntakesPerSubstance);
             }
-            var nonDietaryIntakesPerCompound = nonDietaryExposures.Cast<NonDietaryIntakePerCompound>().ToList();
-            var exposuresPerPath = nonDietaryIntakesPerCompound
+            var exposuresPerPath = intakesPerSubstance
                 .GroupBy(r => r.Route)
                 .ToDictionary(
                     item => new ExposurePath(ExposureSource.OtherNonDiet, item.Key),
@@ -213,7 +250,7 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.NonDie
                 Day = individualDay.Day,
                 SimulatedIndividual = individualDay.SimulatedIndividual,
                 NonDietaryIntake = new NonDietaryIntake() {
-                    NonDietaryIntakesPerCompound = nonDietaryIntakesPerCompound,
+                    NonDietaryIntakesPerCompound = intakesPerSubstance,
                 },
             };
         }

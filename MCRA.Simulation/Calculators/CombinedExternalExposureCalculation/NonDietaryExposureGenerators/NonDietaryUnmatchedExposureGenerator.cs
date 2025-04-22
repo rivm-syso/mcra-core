@@ -11,15 +11,8 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.NonDie
         protected Dictionary<NonDietarySurvey, List<string>> _individualsPerSurvey = [];
 
         public override void Initialize(
-            IDictionary<NonDietarySurvey, List<NonDietaryExposureSet>> nonDietaryExposureSets,
-            HashSet<ExposureRoute> routes,
-            ExposureUnitTriple targetUnit
-        ) {
-            base.Initialize(
-                nonDietaryExposureSets,
-                routes,
-                targetUnit
-            );
+            IDictionary<NonDietarySurvey, List<NonDietaryExposureSet>> nonDietaryExposureSets) {
+            base.Initialize(nonDietaryExposureSets);
             _individualsPerSurvey = nonDietaryExposureSets
                 .ToDictionary(r => r.Key, r => r.Value.Select(e => e.IndividualCode).ToList());
         }
@@ -29,25 +22,34 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.NonDie
         ///  Randomly pair non-dietary and dietary individuals, no correlation between nondietary individuals
         /// (if the properties of the individual match the covariates of the non-dietary survey)
         /// </summary>
-        /// <param name="individual"></param>
-        /// <param name="nonDietarySurvey"></param>
-        /// <param name="substances"></param>
-        /// <param name="generator"></param>
-        /// <returns></returns>
-        protected override List<NonDietaryIntakePerCompound> createNonDietaryIndividualExposure(
+        protected override List<NonDietaryIntakePerCompound> generateIntakesPerSubstance(
             SimulatedIndividual individual,
             NonDietarySurvey nonDietarySurvey,
             ICollection<Compound> substances,
+            ICollection<ExposureRoute> routes,
+            ExposureUnitTriple targetUnit,
             IRandom generator
         ) {
             var nonDietaryExposures = new List<NonDietaryIntakePerCompound>();
             if (_nonDietaryExposureSetsDictionary.TryGetValue(nonDietarySurvey, out var exposureSets)) {
-                if (checkIndividualMatchesNonDietarySurvey(individual, nonDietarySurvey) && nonDietarySurvey.ProportionZeros < 100) {
-                    if (_individualsPerSurvey.TryGetValue(nonDietarySurvey, out var individualSet) && individualSet.Any()) {
+                if (checkIndividualMatchesNonDietarySurvey(individual, nonDietarySurvey)
+                    && nonDietarySurvey.ProportionZeros < 100
+                ) {
+                    if (_individualsPerSurvey.TryGetValue(nonDietarySurvey, out var individualSet)
+                        && individualSet.Any()
+                    ) {
                         if (generator.NextDouble() >= nonDietarySurvey.ProportionZeros / 100) {
                             var ix = generator.Next(0, individualSet.Count);
                             if (exposureSets.TryGetValue(individualSet.ElementAt(ix), out var exposureSet)) {
-                                nonDietaryExposures.AddRange(nonDietaryIntakePerCompound(exposureSet, nonDietarySurvey, individual, substances));
+                                var individualDayExposure = nonDietaryIntakePerCompound(
+                                    exposureSet,
+                                    nonDietarySurvey,
+                                    individual,
+                                    substances,
+                                    routes,
+                                    targetUnit
+                                );
+                                nonDietaryExposures.AddRange(individualDayExposure);
                             }
                         }
                     }

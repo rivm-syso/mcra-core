@@ -367,36 +367,24 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             // Align non-dietary exposures
             if (ModuleConfig.ExposureSources.Contains(ExposureSource.OtherNonDiet)) {
                 localProgress.Update("Matching dietary and non-dietary exposures");
-
-                var nonDietaryIntakeCalculator = NonDietaryExposureGeneratorFactory.Create(
+                var nonDietaryExposuresGenerator = NonDietaryExposureGeneratorFactory.Create(
                     ModuleConfig.NonDietaryPopulationAlignmentMethod,
                     ModuleConfig.IsCorrelationBetweenIndividuals
                 );
-                nonDietaryIntakeCalculator.Initialize(
-                    data.NonDietaryExposures,
-                    [.. ModuleConfig.ExposureRoutes],
-                    externalExposureUnit
-                );
-                var seedNonDietaryExposuresSampling = RandomUtils
-                    .CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.BME_DrawNonDietaryExposures);
-
-                var nonDietaryExposureCollection = ModuleConfig.ExposureType == ExposureType.Acute
-                    ? nonDietaryIntakeCalculator?
-                        .GenerateAcute(
-                            referenceIndividualDays,
-                            data.ActiveSubstances,
-                            data.NonDietaryExposures.Keys,
-                            data.NonDietaryExposureUnit,
-                            seedNonDietaryExposuresSampling
-                        )
-                    : nonDietaryIntakeCalculator?
-                        .GenerateChronic(
-                            referenceIndividualDays,
-                            data.ActiveSubstances,
-                            data.NonDietaryExposures.Keys,
-                            data.NonDietaryExposureUnit,
-                            seedNonDietaryExposuresSampling
-                        );
+                nonDietaryExposuresGenerator.Initialize(
+                    data.NonDietaryExposures);
+                var seedNonDietaryExposuresSampling = RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.BME_DrawNonDietaryExposures);
+                var nonDietaryExposureCollection = nonDietaryExposuresGenerator?
+                    .Generate(
+                        referenceIndividualDays,
+                        data.NonDietaryExposures.Keys,
+                        data.NonDietaryExposureUnit,
+                        data.ActiveSubstances,
+                        ModuleConfig.ExposureRoutes,
+                        externalExposureUnit,
+                        ModuleConfig.ExposureType,
+                        seedNonDietaryExposuresSampling
+                    );
                 externalExposureCollections.Add(nonDietaryExposureCollection);
             }
             localProgress.Update(20);
