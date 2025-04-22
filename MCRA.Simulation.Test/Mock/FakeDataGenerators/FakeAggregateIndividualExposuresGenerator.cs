@@ -7,6 +7,7 @@ using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
+using MCRA.Simulation.Calculators.CombinedExternalExposureCalculation;
 
 namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
 
@@ -89,7 +90,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                     paths,
                     random.Next()
                 );
-            var aggregateIndividualExposures = AggregateIntakeCalculator
+            var aggregateIndividualExposures = CombinedExternalExposuresCalculator
                 .CreateCombinedExternalIndividualExposures(externalIndividualDayExposures);
 
             var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(

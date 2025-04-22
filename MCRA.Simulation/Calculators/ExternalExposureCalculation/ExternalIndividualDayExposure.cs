@@ -5,8 +5,8 @@ using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryE
 
 namespace MCRA.Simulation.Calculators.ExternalExposureCalculation {
     public class ExternalIndividualDayExposure(
-            Dictionary<ExposurePath, List<IIntakePerCompound>> exposuresPerPath
-        ) : IExternalIndividualDayExposure {
+        Dictionary<ExposurePath, List<IIntakePerCompound>> exposuresPerPath
+    ) : IExternalIndividualDayExposure {
 
         public Dictionary<ExposurePath, List<IIntakePerCompound>> ExposuresPerPath => exposuresPerPath;
         public SimulatedIndividual SimulatedIndividual { get; set; }
@@ -223,6 +223,20 @@ namespace MCRA.Simulation.Calculators.ExternalExposureCalculation {
             return new ExternalIndividualDayExposure(exposuresPerPathSubstance) {
                 SimulatedIndividual = individual,
             };
+        }
+
+        public static ExternalIndividualDayExposure FromDietaryIndividualDayIntake(
+            DietaryIndividualDayIntake individualDay
+        ) {
+            var exposuresPerPath = new Dictionary<ExposurePath, List<IIntakePerCompound>> {
+                [new(ExposureSource.Diet, ExposureRoute.Oral)] = [.. individualDay.GetTotalIntakesPerSubstance()]
+            };
+            var result = new ExternalIndividualDayExposure(exposuresPerPath) {
+                SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId,
+                SimulatedIndividual = individualDay.SimulatedIndividual,
+                Day = individualDay.Day
+            };
+            return result;
         }
     }
 }

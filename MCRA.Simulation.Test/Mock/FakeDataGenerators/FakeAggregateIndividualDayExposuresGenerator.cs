@@ -8,6 +8,7 @@ using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
+using MCRA.Simulation.Calculators.CombinedExternalExposureCalculation;
 
 namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
 
@@ -109,7 +110,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                 externalExposureCollections.Add(nonDietaryExposureCollection);
             }
 
-            var aggregateIndividualDayExposures = AggregateIntakeCalculator
+            var aggregateIndividualDayExposures = CombinedExternalExposuresCalculator
                 .CreateCombinedIndividualDayExposures(
                     externalExposureCollections,
                     externalExposuresUnit,
