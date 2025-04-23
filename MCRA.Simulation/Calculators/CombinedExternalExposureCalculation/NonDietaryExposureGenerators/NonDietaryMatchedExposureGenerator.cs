@@ -1,26 +1,26 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
+using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Objects;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.NonDietaryExposureGenerators {
     public class NonDietaryMatchedExposureGenerator : NonDietaryExposureGenerator {
 
-        protected override List<NonDietaryIntakePerCompound> generateIntakesPerSubstance(
-            SimulatedIndividual individual,
+        protected override List<IExternalIndividualDayExposure> generate(
+            IIndividualDay individual,
             NonDietarySurvey nonDietarySurvey,
             ICollection<Compound> substances,
             ICollection<ExposureRoute> routes,
             ExposureUnitTriple targetUnit,
             IRandom randomIndividual
         ) {
-            var nonDietaryExposures = new List<NonDietaryIntakePerCompound>();
+            var externalIndividualDayExposures = new List<IExternalIndividualDayExposure>();
             if (_nonDietaryExposureSetsDictionary.TryGetValue(nonDietarySurvey, out var exposureSets)) {
-                if (exposureSets.TryGetValue(individual.Code, out var exposureSet)
+                if (exposureSets.TryGetValue(individual.SimulatedIndividual.Code, out var exposureSet)
                     || exposureSets.TryGetValue("general", out exposureSet)
                 ) {
-                    var individualDayExposure = nonDietaryIntakePerCompound(
+                    var externalIndividualDayExposure = createExternalIndividualDayExposure(
                         exposureSet,
                         nonDietarySurvey,
                         individual,
@@ -28,10 +28,12 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.NonDie
                         routes,
                         targetUnit
                     );
-                    nonDietaryExposures.AddRange(individualDayExposure);
+                    if (externalIndividualDayExposure != null) {
+                        externalIndividualDayExposures.Add(externalIndividualDayExposure);
+                    }
                 }
             }
-            return nonDietaryExposures;
+            return externalIndividualDayExposures;
         }
     }
 }

@@ -92,7 +92,6 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             var nonDietaryExposureRoutes = routes
                 .Where(r => r != ExposureRoute.Oral)
                 .ToList();
-            //var paths = FakeExposurePathGenerator.Create([.. routes]);
             var nonDietaryIndividualDayIntakes = FakeNonDietaryIndividualDayIntakeGenerator
                 .Generate(simulatedIndividualDays, substances, nonDietaryExposureRoutes, 0.5, random);
 

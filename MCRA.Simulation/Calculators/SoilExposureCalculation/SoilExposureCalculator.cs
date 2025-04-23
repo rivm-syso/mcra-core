@@ -1,7 +1,8 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Simulation.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
+using MCRA.Simulation.Objects;
+using MCRA.Simulation.Objects.IndividualExposures;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 
@@ -92,7 +93,7 @@ namespace MCRA.Simulation.Calculators.SoilExposureCalculation {
                 if (adjustedSoilConcentrationDistributions.TryGetValue(substance, out var soilConcentrations)) {
                     var individualSoilConcentration = soilConcentrations
                         .DrawRandom(soilConcentrationsRandomGenerator);
-                    var exposure = new SoilExposurePerSubstance {
+                    var exposure = new ExposurePerSubstance {
                         Compound = substance,
                         Amount = individualSoilIngestion * individualSoilConcentration
                     };

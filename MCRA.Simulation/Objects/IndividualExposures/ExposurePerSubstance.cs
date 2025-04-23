@@ -1,12 +1,12 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 
-namespace MCRA.Simulation.Calculators.AirExposureCalculation {
+namespace MCRA.Simulation.Objects.IndividualExposures {
 
-    public sealed class AirExposurePerSubstance : IIntakePerCompound {
+    public sealed class ExposurePerSubstance : IIntakePerCompound {
 
         /// <summary>
-        /// The substance for which the exposure is simulated.
+        /// The substance to which the intake belongs.
         /// </summary>
         public Compound Compound { get; set; }
 
@@ -16,12 +16,11 @@ namespace MCRA.Simulation.Calculators.AirExposureCalculation {
         public double Amount { get; set; }
 
         /// <summary>
-        /// The substance intake amount corrected for relative potency and assessment group membership.
+        /// The substance intake amount corrected for relative potency and
+        /// assessment group membership.
         /// </summary>
         public double EquivalentSubstanceAmount(double rpf, double membershipProbability) {
-            var exposure = Amount;
-            exposure *= rpf * membershipProbability;
-            return exposure;
+            return Amount * rpf * membershipProbability;
         }
     }
 }

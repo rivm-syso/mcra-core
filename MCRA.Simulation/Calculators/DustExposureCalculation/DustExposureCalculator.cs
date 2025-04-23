@@ -1,7 +1,8 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Simulation.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
+using MCRA.Simulation.Objects;
+using MCRA.Simulation.Objects.IndividualExposures;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 
@@ -156,7 +157,7 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
                 if (adjustedDustConcentrationDistributions.TryGetValue(substance, out var dustConcentrations)) {
                     var individualDustConcentration = dustConcentrations
                         .DrawRandom(dustConcentrationsRandomGenerator);
-                    var exposure = new DustExposurePerSubstance {
+                    var exposure = new ExposurePerSubstance {
                         Compound = substance,
                         Amount = substanceDustAvailabilityFraction[substance]
                             * individualDustAdherenceAmount * timeDustExposure / 24D
@@ -181,7 +182,7 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
                 if (adjustedDustConcentrationDistributions.TryGetValue(substance, out var dustConcentrations)) {
                     var individualDustConcentration = dustConcentrations
                         .DrawRandom(dustConcentrationsRandomGenerator);
-                    var exposure = new DustExposurePerSubstance {
+                    var exposure = new ExposurePerSubstance {
                         Compound = substance,
                         Amount = individualDustIngestion * individualDustConcentration
                     };

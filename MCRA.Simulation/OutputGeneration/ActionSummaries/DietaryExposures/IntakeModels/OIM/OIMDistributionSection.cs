@@ -1,6 +1,5 @@
 ﻿using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
-using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
@@ -46,35 +45,6 @@ namespace MCRA.Simulation.OutputGeneration {
             LowPercentileValue = upperIntakes.DefaultIfEmpty(double.NaN).Min();
             HighPercentileValue = upperIntakes.DefaultIfEmpty(double.NaN).Max();
             NRecords = upperIntakes.Count;
-            Summarize(upperIntakes, samplingWeights);
-        }
-
-        /// <summary>
-        /// Upper distribution NonDietary
-        /// </summary>
-        /// <param name="nonDietaryIndividualMeans"></param>
-        /// <param name="upperPercentage"></param>
-        /// <param name="isPerPerson"></param>
-        public void SummarizeUpperNonDietary(
-            List<NonDietaryIndividualIntake> nonDietaryIndividualMeans,
-            double upperPercentage,
-            bool isPerPerson
-        ) {
-            var exposures = nonDietaryIndividualMeans.Select(c => c.NonDietaryIntakePerBodyWeight * (isPerPerson ? c.Individual.BodyWeight : 1)).ToList();
-            var weights = nonDietaryIndividualMeans.Select(c => c.IndividualSamplingWeight).ToList();
-            var intakeValue = exposures.PercentilesWithSamplingWeights(weights, upperPercentage);
-            var individualsId = nonDietaryIndividualMeans
-                .Where(c => c.NonDietaryIntakePerBodyWeight * (isPerPerson ? c.Individual.BodyWeight : 1) > intakeValue)
-                .Select(c => c.SimulatedIndividualId)
-                .ToHashSet();
-            var upperIntakes = nonDietaryIndividualMeans
-                 .Where(c => individualsId.Contains(c.SimulatedIndividualId))
-                 .Select(c => c.NonDietaryIntakePerBodyWeight * (isPerPerson ? c.Individual.BodyWeight : 1))
-                 .ToList();
-            var samplingWeights = nonDietaryIndividualMeans
-                .Where(c => individualsId.Contains(c.SimulatedIndividualId))
-                .Select(c => c.IndividualSamplingWeight)
-                .ToList();
             Summarize(upperIntakes, samplingWeights);
         }
     }

@@ -1,8 +1,8 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Objects;
-using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.NonDietaryExposureGenerators {
 
@@ -22,17 +22,17 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.NonDie
         ///  Randomly pair non-dietary and dietary individuals, no correlation between nondietary individuals
         /// (if the properties of the individual match the covariates of the non-dietary survey)
         /// </summary>
-        protected override List<NonDietaryIntakePerCompound> generateIntakesPerSubstance(
-            SimulatedIndividual individual,
+        protected override List<IExternalIndividualDayExposure> generate(
+            IIndividualDay individual,
             NonDietarySurvey nonDietarySurvey,
             ICollection<Compound> substances,
             ICollection<ExposureRoute> routes,
             ExposureUnitTriple targetUnit,
             IRandom generator
         ) {
-            var nonDietaryExposures = new List<NonDietaryIntakePerCompound>();
+            var externalIndividualDayExposures = new List<IExternalIndividualDayExposure>();
             if (_nonDietaryExposureSetsDictionary.TryGetValue(nonDietarySurvey, out var exposureSets)) {
-                if (checkIndividualMatchesNonDietarySurvey(individual, nonDietarySurvey)
+                if (checkIndividualMatchesNonDietarySurvey(individual.SimulatedIndividual, nonDietarySurvey)
                     && nonDietarySurvey.ProportionZeros < 100
                 ) {
                     if (_individualsPerSurvey.TryGetValue(nonDietarySurvey, out var individualSet)
@@ -41,7 +41,7 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.NonDie
                         if (generator.NextDouble() >= nonDietarySurvey.ProportionZeros / 100) {
                             var ix = generator.Next(0, individualSet.Count);
                             if (exposureSets.TryGetValue(individualSet.ElementAt(ix), out var exposureSet)) {
-                                var individualDayExposure = nonDietaryIntakePerCompound(
+                                var externalIndividualDayExposure = createExternalIndividualDayExposure(
                                     exposureSet,
                                     nonDietarySurvey,
                                     individual,
@@ -49,13 +49,15 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.NonDie
                                     routes,
                                     targetUnit
                                 );
-                                nonDietaryExposures.AddRange(individualDayExposure);
+                                if (externalIndividualDayExposure != null) {
+                                    externalIndividualDayExposures.Add(externalIndividualDayExposure);
+                                }
                             }
                         }
                     }
                 }
             }
-            return nonDietaryExposures;
+            return externalIndividualDayExposures;
         }
     }
 }

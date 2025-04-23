@@ -367,12 +367,12 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             // Align non-dietary exposures
             if (ModuleConfig.ExposureSources.Contains(ExposureSource.OtherNonDiet)) {
                 localProgress.Update("Matching dietary and non-dietary exposures");
-                var nonDietaryExposuresGenerator = NonDietaryExposureGeneratorFactory.Create(
-                    ModuleConfig.NonDietaryPopulationAlignmentMethod,
-                    ModuleConfig.IsCorrelationBetweenIndividuals
-                );
-                nonDietaryExposuresGenerator.Initialize(
-                    data.NonDietaryExposures);
+                var nonDietaryExposuresGenerator = NonDietaryExposureGeneratorFactory
+                    .Create(
+                        ModuleConfig.NonDietaryPopulationAlignmentMethod,
+                        ModuleConfig.IsCorrelationBetweenIndividuals
+                    );
+                nonDietaryExposuresGenerator.Initialize(data.NonDietaryExposures);
                 var seedNonDietaryExposuresSampling = RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.BME_DrawNonDietaryExposures);
                 var nonDietaryExposureCollection = nonDietaryExposuresGenerator?
                     .Generate(
@@ -387,7 +387,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     );
                 externalExposureCollections.Add(nonDietaryExposureCollection);
             }
-            localProgress.Update(20);
 
             // Align dust exposures
             if (ModuleConfig.ExposureSources.Contains(ExposureSource.Dust)) {
@@ -404,7 +403,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     );
                 externalExposureCollections.Add(dustExposureCollection);
             }
-            localProgress.Update(20);
 
             // Align soil exposures
             if (ModuleConfig.ExposureSources.Contains(ExposureSource.Soil)) {
@@ -421,7 +419,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     );
                 externalExposureCollections.Add(soilExposureCollection);
             }
-            localProgress.Update(30);
 
             // Align air exposures
             if (ModuleConfig.ExposureSources.Contains(ExposureSource.Air)) {
@@ -438,7 +435,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     );
                 externalExposureCollections.Add(airExposureCollection);
             }
-            localProgress.Update(20);
 
             // Align dietary exposures
             if (ModuleConfig.ExposureSources.Contains(ExposureSource.Diet)) {
@@ -501,7 +497,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             var kineticModelCalculators = kineticModelCalculatorFactory
                 .CreateHumanKineticModels(data.ActiveSubstances, pbkSimulationSettings);
 
-            localProgress.Update("Computing internal exposures");
+            localProgress.Update("Computing internal exposures", 20);
 
             // Create internal concentrations calculator
             var targetExposuresCalculator = new InternalTargetExposuresCalculator(kineticModelCalculators);

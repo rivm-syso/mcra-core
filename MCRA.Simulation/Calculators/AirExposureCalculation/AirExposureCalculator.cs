@@ -1,7 +1,8 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Simulation.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
+using MCRA.Simulation.Objects;
+using MCRA.Simulation.Objects.IndividualExposures;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 
@@ -107,7 +108,7 @@ namespace MCRA.Simulation.Calculators.AirExposureCalculation {
                         .DrawRandom(airConcentrationsRandomGenerator);
                     amount =+ individualFlowRate * individualOutdoorConcentration * (1 - indoorFraction);
                 }
-                var exposure = new AirExposurePerSubstance {
+                var exposure = new ExposurePerSubstance {
                         Compound = substance,
                         Amount = amount
                     };
