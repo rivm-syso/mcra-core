@@ -62,7 +62,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 routes,
                 ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay),
                 123456);
-            Assert.AreEqual(result.ExternalIndividualDayExposures.Count, individuals.Count);
+            Assert.AreEqual(result.ExternalIndividualDayExposures.Count, individualDays.Count);
         }
 
         /// <summary>
@@ -114,7 +114,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 routes,
                 ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay),
                 123456);
-            Assert.AreEqual(result.ExternalIndividualDayExposures.Count, individuals.Count);
+            Assert.AreEqual(result.ExternalIndividualDayExposures.Count, individualDays.Count);
         }
 
         /// <summary>
@@ -166,7 +166,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 routes,
                 ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay),
                 123456);
-            Assert.AreEqual(result.ExternalIndividualDayExposures.Count, individuals.Count);
+            Assert.AreEqual(result.ExternalIndividualDayExposures.Count, individualDays.Count);
         }
 
         /// <summary>
@@ -201,7 +201,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 routes,
                 ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
                 123456);
-            Assert.AreEqual(result.ExternalIndividualDayExposures.Count, individuals.Count);
+            Assert.AreEqual(result.ExternalIndividualDayExposures.Count, individualDays.Count);
         }
 
         /// <summary>
