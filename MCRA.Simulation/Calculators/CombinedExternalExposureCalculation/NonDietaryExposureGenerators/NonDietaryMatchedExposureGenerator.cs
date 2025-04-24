@@ -8,7 +8,7 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.NonDie
     public class NonDietaryMatchedExposureGenerator : NonDietaryExposureGenerator {
 
         protected override List<IExternalIndividualDayExposure> generate(
-            IIndividualDay individual,
+            ICollection<IIndividualDay> individualDays,
             NonDietarySurvey nonDietarySurvey,
             ICollection<Compound> substances,
             ICollection<ExposureRoute> routes,
@@ -17,19 +17,21 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.NonDie
         ) {
             var externalIndividualDayExposures = new List<IExternalIndividualDayExposure>();
             if (_nonDietaryExposureSetsDictionary.TryGetValue(nonDietarySurvey, out var exposureSets)) {
-                if (exposureSets.TryGetValue(individual.SimulatedIndividual.Code, out var exposureSet)
-                    || exposureSets.TryGetValue("general", out exposureSet)
-                ) {
-                    var externalIndividualDayExposure = createExternalIndividualDayExposure(
-                        exposureSet,
-                        nonDietarySurvey,
-                        individual,
-                        substances,
-                        routes,
-                        targetUnit
-                    );
-                    if (externalIndividualDayExposure != null) {
-                        externalIndividualDayExposures.Add(externalIndividualDayExposure);
+                foreach (var individualDay in individualDays) {
+                    if (exposureSets.TryGetValue(individualDay.SimulatedIndividual.Code, out var exposureSet)
+                        || exposureSets.TryGetValue("general", out exposureSet)
+                    ) {
+                        var externalIndividualDayExposure = createExternalIndividualDayExposure(
+                            exposureSet,
+                            nonDietarySurvey,
+                            individualDay,
+                            substances,
+                            routes,
+                            targetUnit
+                        );
+                        if (externalIndividualDayExposure != null) {
+                            externalIndividualDayExposures.Add(externalIndividualDayExposure);
+                        }
                     }
                 }
             }

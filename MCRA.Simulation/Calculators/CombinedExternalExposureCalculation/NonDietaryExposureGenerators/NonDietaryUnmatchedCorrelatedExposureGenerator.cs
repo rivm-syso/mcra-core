@@ -25,7 +25,7 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.NonDie
         /// (if the properties of the individual match the covariates of the non-dietary survey)
         /// </summary>
         protected override List<IExternalIndividualDayExposure> generate(
-            IIndividualDay individual,
+            ICollection<IIndividualDay> individualDays,
             NonDietarySurvey nonDietarySurvey,
             ICollection<Compound> substances,
             ICollection<ExposureRoute> routes,
@@ -34,26 +34,28 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.NonDie
         ) {
             var externalIndividualDayExposures = new List<IExternalIndividualDayExposure>();
             if (_nonDietaryExposureSetsDictionary.TryGetValue(nonDietarySurvey, out var exposureSets)) {
-                if (checkIndividualMatchesNonDietarySurvey(individual.SimulatedIndividual, nonDietarySurvey)
+                foreach (var individualDay in individualDays) {
+                    if (checkIndividualMatchesNonDietarySurvey(individualDay.SimulatedIndividual, nonDietarySurvey)
                     && nonDietarySurvey.ProportionZeros < 100
                 ) {
-                    generator.Reset();
-                    if (generator.NextDouble() >= nonDietarySurvey.ProportionZeros / 100) {
-                        var ix = generator.Next(0, _nonDietaryIndividualCodes.Count);
-                        var randomIndividualCode = _nonDietaryIndividualCodes[ix];
-                        if (exposureSets.TryGetValue(randomIndividualCode, out var exposureSet)
-                            && exposureSet != null
-                        ) {
-                            var externalIndividualDayExposure = createExternalIndividualDayExposure(
-                                exposureSet,
-                                nonDietarySurvey,
-                                individual,
-                                substances,
-                                routes,
-                                targetUnit
-                            );
-                            if (externalIndividualDayExposure != null) {
-                                externalIndividualDayExposures.Add(externalIndividualDayExposure);
+                        generator.Reset();
+                        if (generator.NextDouble() >= nonDietarySurvey.ProportionZeros / 100) {
+                            var ix = generator.Next(0, _nonDietaryIndividualCodes.Count);
+                            var randomIndividualCode = _nonDietaryIndividualCodes[ix];
+                            if (exposureSets.TryGetValue(randomIndividualCode, out var exposureSet)
+                                && exposureSet != null
+                            ) {
+                                var externalIndividualDayExposure = createExternalIndividualDayExposure(
+                                    exposureSet,
+                                    nonDietarySurvey,
+                                    individualDay,
+                                    substances,
+                                    routes,
+                                    targetUnit
+                                );
+                                if (externalIndividualDayExposure != null) {
+                                    externalIndividualDayExposures.Add(externalIndividualDayExposure);
+                                }
                             }
                         }
                     }

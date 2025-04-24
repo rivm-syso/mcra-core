@@ -70,7 +70,7 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.NonDie
             var externalIndividualDayExposures = individualDays
                 .AsParallel()
                 .SelectMany(individualDay => generateIndividualExposure(
-                    individualDay,
+                    [individualDay],
                     substances,
                     routes,
                     nonDietarySurveys,
@@ -108,15 +108,15 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.NonDie
         ) {
             // Generate non-dietary individual day exposures from individual days and non-dietary individual exposures.
             var externalIndividualDayExposures = individualDays
-                .GroupBy(r => r.SimulatedIndividual.Id, (key, g) => g.First())
+                .GroupBy(r => r.SimulatedIndividual)
                 .AsParallel()
-                .SelectMany(individualDay => generateIndividualExposure(
-                    individualDay,
+                .SelectMany(individualExposures => generateIndividualExposure(
+                    [..individualExposures],
                     substances,
                     routes,
                     nonDietarySurveys,
                     targetUnit,
-                    new McraRandomGenerator(RandomUtils.CreateSeed(seed, individualDay.SimulatedIndividual.Code))
+                    new McraRandomGenerator(RandomUtils.CreateSeed(seed, individualExposures.Key.Code))
                 ))
                 .OrderBy(r => r.SimulatedIndividualDayId)
                 .ToList();
@@ -136,7 +136,7 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.NonDie
         }
 
         protected abstract List<IExternalIndividualDayExposure> generate(
-            IIndividualDay individualDay,
+            ICollection<IIndividualDay> individualDays,
             NonDietarySurvey nonDietarySurvey,
             ICollection<Compound> substances,
             ICollection<ExposureRoute> routes,
@@ -242,7 +242,7 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.NonDie
         /// Simulates external individual days.
         /// </summary>
         private List<IExternalIndividualDayExposure> generateIndividualExposure(
-            IIndividualDay individualDay,
+            ICollection<IIndividualDay> individualDays,
             ICollection<Compound> substances,
             ICollection<ExposureRoute> routes,
             ICollection<NonDietarySurvey> nonDietarySurveys,
@@ -252,7 +252,7 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.NonDie
             var externalIndividualDayExposures = new List<IExternalIndividualDayExposure>();
             foreach (var nonDietarySurvey in nonDietarySurveys) {
                 var surveyIntakesPerSubstance = generate(
-                    individualDay,
+                    individualDays,
                     nonDietarySurvey,
                     substances,
                     routes,
