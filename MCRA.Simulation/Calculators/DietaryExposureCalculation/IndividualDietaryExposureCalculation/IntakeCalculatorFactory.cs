@@ -2,13 +2,13 @@
 using MCRA.Simulation.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
-using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDayPruning;
+using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDayPruning;
 using MCRA.Simulation.Calculators.ProcessingFactorCalculation;
 using MCRA.Simulation.Calculators.ResidueGeneration;
 using MCRA.Simulation.Calculators.SingleValueConsumptionsCalculation;
 using MCRA.Simulation.Calculators.UnitVariabilityCalculation;
 
-namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation {
+namespace MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation {
 
     public class IntakeCalculatorFactory {
         private readonly bool _isSampleBased;

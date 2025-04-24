@@ -1,6 +1,6 @@
 ﻿using MCRA.Simulation.Objects;
 
-namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation {
+namespace MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation {
 
     /// <summary>
     /// Contains all information for a single individual.

@@ -1,7 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Objects;
-using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
-using MCRA.Simulation.Calculators.DietaryExposuresCalculation.MaximalSubstanceIntakesCorrelationCalculation;
+using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation;
+using MCRA.Simulation.Calculators.DietaryExposureCalculation.MaximalSubstanceIntakesCorrelationCalculation;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

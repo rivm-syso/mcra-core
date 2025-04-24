@@ -76,7 +76,7 @@ using MCRA.Simulation.Actions.UnitVariabilityFactors;
 using MCRA.Simulation.Calculators.AirExposureCalculation;
 using MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
-using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
+using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.DustExposureCalculation;
 using MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation;
 using MCRA.Simulation.Calculators.FoodExtrapolationsCalculation;

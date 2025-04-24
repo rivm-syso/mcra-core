@@ -1,4 +1,4 @@
-﻿using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
+﻿using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation;
 
 namespace MCRA.Simulation.Calculators.IntakeModelling {
     public sealed class UsualIntakeResults {

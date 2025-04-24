@@ -4,17 +4,17 @@ using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Objects;
 using MCRA.Simulation.Calculators.ConsumptionAmountGeneration;
-using MCRA.Simulation.Calculators.DietaryExposuresCalculation.DietaryExposureImputationCalculation;
-using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDayPruning;
-using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation.ConsumptionUnitWeightGeneration;
-using MCRA.Simulation.Calculators.DietaryExposuresCalculation.MaximalSubstanceIntakesCorrelationCalculation;
+using MCRA.Simulation.Calculators.DietaryExposureCalculation.DietaryExposureImputationCalculation;
+using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDayPruning;
+using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation.ConsumptionUnitWeightGeneration;
+using MCRA.Simulation.Calculators.DietaryExposureCalculation.MaximalSubstanceIntakesCorrelationCalculation;
 using MCRA.Simulation.Calculators.ProcessingFactorCalculation;
 using MCRA.Simulation.Calculators.ResidueGeneration;
 using MCRA.Simulation.Calculators.UnitVariabilityCalculation;
 using MCRA.Utils.Statistics.RandomGenerators;
 using MCRA.General;
 
-namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation {
+namespace MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation {
     public sealed class AcuteDietaryExposureCalculator : DietaryExposureCalculatorBase {
 
         private readonly UnitVariabilityCalculator _unitVariabilityCalculator;

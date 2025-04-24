@@ -2,7 +2,7 @@
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.Histograms;
 using MCRA.Data.Compiled.Objects;
-using MCRA.Simulation.Calculators.DietaryExposuresCalculation.DietaryExposureImputationCalculation;
+using MCRA.Simulation.Calculators.DietaryExposureCalculation.DietaryExposureImputationCalculation;
 using System.Collections.Concurrent;
 
 namespace MCRA.Simulation.OutputGeneration {

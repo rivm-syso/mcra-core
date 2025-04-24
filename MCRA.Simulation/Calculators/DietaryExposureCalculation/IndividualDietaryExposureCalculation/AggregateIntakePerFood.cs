@@ -1,6 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 
-namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation {
+namespace MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation {
 
     /// <summary>
     /// Summarizes all info for a consumed modelled food: the food as eaten, the consumed amount, the exposures per substance.

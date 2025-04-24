@@ -1,7 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Objects;
 using MCRA.General;
-using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
+using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.IntakeModelling;
 using MCRA.Simulation.Calculators.IntakeModelling.IndividualAmountCalculation;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;

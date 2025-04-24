@@ -1,8 +1,8 @@
 ﻿using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.ProgressReporting;
-using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
+using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation;
 
-namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.MaximalSubstanceIntakesCorrelationCalculation {
+namespace MCRA.Simulation.Calculators.DietaryExposureCalculation.MaximalSubstanceIntakesCorrelationCalculation {
 
     /// <summary>
     /// Calculator to maximise co-occurrence of high values in simulated intakes.

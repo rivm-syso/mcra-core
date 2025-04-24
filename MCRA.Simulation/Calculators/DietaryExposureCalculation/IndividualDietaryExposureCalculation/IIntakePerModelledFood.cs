@@ -1,6 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 
-namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation {
+namespace MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation {
     public interface IIntakePerModelledFood {
         /// <summary>
         /// The food for which the exposure is simulated.

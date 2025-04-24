@@ -2,8 +2,8 @@
 using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Objects;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
-using MCRA.Simulation.Calculators.DietaryExposuresCalculation.DietaryExposureImputationCalculation;
-using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDayPruning;
+using MCRA.Simulation.Calculators.DietaryExposureCalculation.DietaryExposureImputationCalculation;
+using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDayPruning;
 using MCRA.Simulation.Calculators.MarketSharesCalculation;
 using MCRA.Simulation.Calculators.ProcessingFactorCalculation;
 using MCRA.Simulation.Calculators.ResidueGeneration;
@@ -13,7 +13,7 @@ using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.RandomGenerators;
 
-namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation {
+namespace MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation {
     public sealed class ChronicDietaryExposureCalculator : DietaryExposureCalculatorBase {
 
         private static readonly ILog log = LogManager.GetLogger(typeof(ChronicDietaryExposureCalculator));

@@ -3,7 +3,7 @@ using MCRA.Utils.Statistics;
 //using MathNet.Numerics.Distributions;
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
+using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation;
 
 namespace MCRA.Simulation.Calculators.UnitVariabilityCalculation {
 

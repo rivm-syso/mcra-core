@@ -2,9 +2,9 @@
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation;
-using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
+using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation;
 
-namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.DietaryExposureImputationCalculation {
+namespace MCRA.Simulation.Calculators.DietaryExposureCalculation.DietaryExposureImputationCalculation {
     public sealed class DietaryExposureImputationCalculator {
 
         /// <summary>

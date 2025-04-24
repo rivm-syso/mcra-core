@@ -1,6 +1,6 @@
-﻿using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
+﻿using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation;
 
-namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDayPruning {
+namespace MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDayPruning {
 
     /// <summary>
     /// Void pruner: prunes nothing, returns the complete unpruned individual day intake object.

@@ -3,7 +3,7 @@ using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Objects;
 using MCRA.Utils.Statistics;
 
-namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation.ConsumptionUnitWeightGeneration {
+namespace MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation.ConsumptionUnitWeightGeneration {
     public sealed class ConsumptionUnitWeightGenerator {
 
         private ConcurrentDictionary<FoodConsumptionQuantification, ConsumptionUnitWeightModel> _models = new();

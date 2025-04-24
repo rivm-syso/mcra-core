@@ -1,4 +1,4 @@
-﻿namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation {
+﻿namespace MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation {
 
     /// <summary>
     /// Collector class for unit variability calculations

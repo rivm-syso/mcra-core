@@ -1,4 +1,4 @@
-﻿namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.DietaryExposureImputationCalculation {
+﻿namespace MCRA.Simulation.Calculators.DietaryExposureCalculation.DietaryExposureImputationCalculation {
 
     public sealed class ExposureRecord {
         public int IndividualDayId { get; set; }

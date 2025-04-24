@@ -2,7 +2,7 @@
 using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
 
-namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation.ConsumptionUnitWeightGeneration {
+namespace MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation.ConsumptionUnitWeightGeneration {
     public sealed class LogNormalConsumptionUnitWeightModel : ConsumptionUnitWeightModel {
 
         private double _muUnitWeight;

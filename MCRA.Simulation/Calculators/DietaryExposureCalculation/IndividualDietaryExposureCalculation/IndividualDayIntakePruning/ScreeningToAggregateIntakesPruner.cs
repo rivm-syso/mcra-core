@@ -1,8 +1,8 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Objects;
-using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
+using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation;
 
-namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDayPruning {
+namespace MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDayPruning {
 
     /// <summary>
     /// Individual day intake pruner that prunes (removed) the non-selected SCCs, and records the

@@ -1,5 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Simulation.Calculators.DietaryExposuresCalculation.DietaryExposureImputationCalculation;
+using MCRA.Simulation.Calculators.DietaryExposureCalculation.DietaryExposureImputationCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Helpers;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;

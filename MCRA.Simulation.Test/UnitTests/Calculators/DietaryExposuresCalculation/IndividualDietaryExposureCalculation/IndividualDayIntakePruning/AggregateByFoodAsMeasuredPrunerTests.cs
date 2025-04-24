@@ -1,5 +1,5 @@
 ﻿using MCRA.Utils.Statistics;
-using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDayPruning;
+using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDayPruning;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

@@ -1,7 +1,7 @@
 ﻿using MCRA.Utils;
 using MCRA.Utils.Statistics;
 using MCRA.General;
-using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
+using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.IntakeModelling.IntakeModels.OIMCalculation;
 using MCRA.Simulation.Calculators.IntakeModelling.ModelThenAddIntakeModelCalculation;
 using MCRA.Utils.Statistics.RandomGenerators;

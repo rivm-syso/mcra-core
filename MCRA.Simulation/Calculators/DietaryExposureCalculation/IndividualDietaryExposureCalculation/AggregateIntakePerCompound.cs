@@ -1,6 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 
-namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation {
+namespace MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation {
 
     /// <summary>
     /// Represents an intake for a substance aggregated over multiple sources (e.g., modelled foods).

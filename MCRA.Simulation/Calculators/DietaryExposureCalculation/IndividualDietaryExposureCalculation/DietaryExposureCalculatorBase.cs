@@ -1,12 +1,12 @@
 ﻿using MCRA.Utils.ProgressReporting;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Objects;
-using MCRA.Simulation.Calculators.DietaryExposuresCalculation.DietaryExposureImputationCalculation;
-using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDayPruning;
-using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation.ConsumptionUnitWeightGeneration;
+using MCRA.Simulation.Calculators.DietaryExposureCalculation.DietaryExposureImputationCalculation;
+using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDayPruning;
+using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation.ConsumptionUnitWeightGeneration;
 using MCRA.Simulation.Calculators.ProcessingFactorCalculation;
 
-namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation {
+namespace MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation {
 
     /// <summary>
     /// Base class for all IntakeCalculators: algorithms for calculating the substance exposure for a given set of individuals.

@@ -2,7 +2,7 @@
 using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.DietaryExposures;
-using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
+using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Test.Helpers;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;

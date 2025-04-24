@@ -1,7 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
+using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation;
 
-namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation {
+namespace MCRA.Simulation.Calculators.DietaryExposureCalculation {
     public sealed class IntakePerModelledFoodSubstance : IIntakePerModelledFoodSubstance {
         public Food ModelledFood { get; set; }
         public Compound Substance { get; set; }
