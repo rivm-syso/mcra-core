@@ -1,6 +1,6 @@
 ﻿using MCRA.Utils.ExtensionMethods;
 using MCRA.Data.Compiled.Objects;
-using MCRA.Simulation.Objects;
+using MCRA.Simulation.Calculators.FoodConversionCalculation;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class ConversionsSection : SummarySection {

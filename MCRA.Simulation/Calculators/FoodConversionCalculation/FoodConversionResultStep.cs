@@ -1,7 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 
-namespace MCRA.Simulation.Objects {
+namespace MCRA.Simulation.Calculators.FoodConversionCalculation {
 
     /// <summary>
     /// Collects for each step in the conversion algorithm the food from to from to information

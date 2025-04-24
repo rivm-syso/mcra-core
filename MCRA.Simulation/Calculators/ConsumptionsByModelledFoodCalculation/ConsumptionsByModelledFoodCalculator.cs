@@ -2,6 +2,7 @@
 using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Objects;
 using MCRA.Simulation.Constants;
+using MCRA.Simulation.Calculators.FoodConversionCalculation;
 
 namespace MCRA.Simulation.Calculators.SingleValueConsumptionsCalculation {
     public sealed class ConsumptionsByModelledFoodCalculator {

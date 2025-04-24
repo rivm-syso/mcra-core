@@ -99,6 +99,7 @@ using MCRA.Simulation.Calculators.SingleValueRisksCalculation;
 using MCRA.Simulation.Calculators.SoilExposureCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Data.Compiled.Wrappers;
+using MCRA.Simulation.Calculators.FoodConversionCalculation;
 
 namespace MCRA.Simulation {
     public class ActionData {

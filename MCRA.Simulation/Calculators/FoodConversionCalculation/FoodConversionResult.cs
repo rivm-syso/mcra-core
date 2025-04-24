@@ -1,6 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 
-namespace MCRA.Simulation.Objects {
+namespace MCRA.Simulation.Calculators.FoodConversionCalculation {
 
     /// <summary>
     /// Collects conversion info into argument object

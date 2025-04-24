@@ -1,4 +1,4 @@
-﻿using MCRA.Simulation.Objects;
+﻿using MCRA.Simulation.Calculators.FoodConversionCalculation;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class UnMatchedFoodAsEatenSummarySection : SummarySection {

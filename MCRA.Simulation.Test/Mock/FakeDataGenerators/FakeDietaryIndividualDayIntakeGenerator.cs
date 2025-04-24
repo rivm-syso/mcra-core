@@ -2,6 +2,7 @@
 using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Objects;
 using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation;
+using MCRA.Simulation.Calculators.FoodConversionCalculation;
 
 namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
     /// <summary>
