@@ -56,6 +56,8 @@ namespace MCRA.Simulation.OutputGeneration {
                     EffectMetric = erf.EffectMetric.GetDisplayName(),
                     ExposureResponseType = erf.ExposureResponseType.GetDisplayName(),
                     ExposureResponseSpecification = erf.ExposureResponseSpecification.ExpressionString,
+                    ExposureResponseSpecificationLower = erf.ExposureResponseSpecificationLower.ExpressionString,
+                    ExposureResponseSpecificationUpper = erf.ExposureResponseSpecificationUpper.ExpressionString,
                     ErfDoseUnit = erf.DoseUnit.GetShortDisplayName(),
                     ErfDoseAlignmentFactor = doseUnitAlignmentFactor,
                     Baseline = erf.Baseline,

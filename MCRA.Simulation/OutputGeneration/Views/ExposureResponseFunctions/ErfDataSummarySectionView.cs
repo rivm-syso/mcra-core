@@ -25,6 +25,12 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (Model.Records.All(r => r.EffectThresholdUpper == null)) {
                 hiddenProperties.Add("EffectThresholdUpper");
             }
+            if (Model.Records.All(r => r.ExposureResponseSpecificationLower == null)) {
+                hiddenProperties.Add("ExposureResponseSpecificationLower");
+            }
+            if (Model.Records.All(r => r.ExposureResponseSpecificationUpper == null)) {
+                hiddenProperties.Add("ExposureResponseSpecificationUpper");
+            }
 
             sb.AppendTable(
                 Model,

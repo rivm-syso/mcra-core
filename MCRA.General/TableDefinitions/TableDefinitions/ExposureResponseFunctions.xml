@@ -180,6 +180,30 @@
         <string>ErSpecification</string>
       </Aliases>
     </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
+      <Id>ExposureResponseSpecificationLower</Id>
+      <Name>ExposureResponseSpecificationLower</Name>
+      <Description>
+        Exposure response lower uncertainty bound. Either a mathematical expression when the exposure response type is function,
+        or a single value if the exposure response type is constant, perDoubling, or perUnit.
+      </Description>
+      <Aliases>
+        <string>ExposureResponseSpecificationLower</string>
+        <string>ErfLower</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
+      <Id>ExposureResponseSpecificationUpper</Id>
+      <Name>ExposureResponseSpecificationUpper</Name>
+      <Description>
+        Exposure response upper uncertainty bound. Either a mathematical expression when the exposure response type is function,
+        or a single value if the exposure response type is constant, perDoubling, or perUnit.
+      </Description>
+      <Aliases>
+        <string>ExposureResponseSpecificationUpper</string>
+        <string>ErfUpper</string>
+      </Aliases>
+    </ColumnDefinition>
     <ColumnDefinition Required="true" FieldType="Numeric" FieldSize="50">
       <Id>Baseline</Id>
       <Description>

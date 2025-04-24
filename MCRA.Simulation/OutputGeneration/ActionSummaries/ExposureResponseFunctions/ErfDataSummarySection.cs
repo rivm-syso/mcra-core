@@ -35,6 +35,8 @@ namespace MCRA.Simulation.OutputGeneration {
                         EffectMetric = r.EffectMetric.GetDisplayName(),
                         ExposureResponseType = r.ExposureResponseType.GetDisplayName(),
                         ExposureResponseSpecification = r.ExposureResponseSpecification.ExpressionString,
+                        ExposureResponseSpecificationLower = r.ExposureResponseSpecificationLower.ExpressionString,
+                        ExposureResponseSpecificationUpper = r.ExposureResponseSpecificationUpper.ExpressionString,
                         Baseline = r.Baseline,
                         HasSubgroups = r.HasErfSubGroups()
                     };

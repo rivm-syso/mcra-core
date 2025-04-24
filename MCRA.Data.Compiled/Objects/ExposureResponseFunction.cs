@@ -18,6 +18,8 @@ namespace MCRA.Data.Compiled.Objects {
         public EffectMetric EffectMetric { get; set; }
         public ExposureResponseType ExposureResponseType { get; set; }
         public Expression ExposureResponseSpecification { get; set; }
+        public Expression ExposureResponseSpecificationLower { get; set; }
+        public Expression ExposureResponseSpecificationUpper { get; set; }
         public double Baseline { get; set; }
         public ICollection<ErfSubgroup> ErfSubgroups { get; set; } = [];
         public PopulationCharacteristicType PopulationCharacteristic { get; set; }

@@ -74,6 +74,16 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             exposureResponseSpecificationString,
                                             exposureResponseType
                                         );
+                                        var exposureResponseSpecificationLowerString = r.GetStringOrNull(RawExposureResponseFunctions.ExposureResponseSpecificationLower, fieldMap);
+                                        var exposureResponseSpecificationLower = parseErfString(
+                                            exposureResponseSpecificationLowerString,
+                                            exposureResponseType
+                                        );
+                                        var exposureResponseSpecificationUpperString = r.GetStringOrNull(RawExposureResponseFunctions.ExposureResponseSpecificationUpper, fieldMap);
+                                        var exposureResponseSpecificationUpper = parseErfString(
+                                            exposureResponseSpecificationUpperString,
+                                            exposureResponseType
+                                        );
 
                                         var record = new ExposureResponseFunction() {
                                             Code = idModel,
@@ -89,6 +99,8 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             EffectMetric = effectMetric,
                                             ExposureResponseType = exposureResponseType,
                                             ExposureResponseSpecification = exposureResponseSpecification,
+                                            ExposureResponseSpecificationLower = exposureResponseSpecificationLower,
+                                            ExposureResponseSpecificationUpper = exposureResponseSpecificationUpper,
                                             Baseline = r.GetDouble(RawExposureResponseFunctions.Baseline, fieldMap),
                                             PopulationCharacteristic = populationCharacteristicType,
                                             EffectThresholdLower = r.GetDoubleOrNull(RawExposureResponseFunctions.EffectThresholdLower, fieldMap),
@@ -174,6 +186,8 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 r.WriteNonEmptyString(RawExposureResponseFunctions.EffectMetric, erf.EffectMetric.ToString(), ccr);
                 r.WriteNonEmptyString(RawExposureResponseFunctions.ExposureResponseType, erf.ExposureResponseType.ToString(), ccr);
                 r.WriteNonEmptyString(RawExposureResponseFunctions.ExposureResponseSpecification, erf.ExposureResponseSpecification.ToString(), ccr);
+                r.WriteNonEmptyString(RawExposureResponseFunctions.ExposureResponseSpecificationLower, erf.ExposureResponseSpecificationLower.ToString(), ccr);
+                r.WriteNonEmptyString(RawExposureResponseFunctions.ExposureResponseSpecificationUpper, erf.ExposureResponseSpecificationUpper.ToString(), ccr);
                 r.WriteNonEmptyString(RawExposureResponseFunctions.Baseline, erf.Baseline.ToString(), ccr);
                 r.WriteNonEmptyString(RawExposureResponseFunctions.PopulationCharacteristic, erf.PopulationCharacteristic.ToString(), ccr);
                 r.WriteNonEmptyString(RawExposureResponseFunctions.EffectThresholdLower, erf.EffectThresholdLower.ToString(), ccr);

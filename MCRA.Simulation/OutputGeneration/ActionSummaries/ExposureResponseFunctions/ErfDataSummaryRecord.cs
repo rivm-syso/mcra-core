@@ -69,6 +69,14 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Exposure response specification")]
         public string ExposureResponseSpecification { get; set; }
 
+        [Description("The lower threshold of the function in mathematical notation.")]
+        [DisplayName("Threshold lower")]
+        public string ExposureResponseSpecificationLower { get; set; }
+
+        [Description("The upper threshold of the function in mathematical notation.")]
+        [DisplayName("Threshold upper")]
+        public string ExposureResponseSpecificationUpper { get; set; }
+
         [Description("The baseline level of the exposure response function.")]
         [DisplayName("Baseline")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
