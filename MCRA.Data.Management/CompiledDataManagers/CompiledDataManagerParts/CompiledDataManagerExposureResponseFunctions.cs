@@ -202,7 +202,9 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             ExposureResponseType exposureResponseType
         ) {
             Expression exposureResponseSpecification;
-            if (exposureResponseType == ExposureResponseType.Function) {
+            if (exposureResponseSpecificationString == null) {
+                exposureResponseSpecification = new Expression("");
+            } else if (exposureResponseType == ExposureResponseType.Function) {
                 exposureResponseSpecification = new Expression(
                     exposureResponseSpecificationString,
                     ExpressionOptions.IgnoreCaseAtBuiltInFunctions,
