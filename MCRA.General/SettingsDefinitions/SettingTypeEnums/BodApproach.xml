@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>BodApproach</Id>
+  <Name>Burden of disease approach</Name>
+  <Description>
+    Methodologial approach used for estimating the burden of disease attributable to a chemical exposure.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>TopDown</Id>
+      <Name>Top-down</Name>
+      <ShortName>Top-down</ShortName>
+      <Description>
+        Top-down approach starting with an estimate of thee total burden in the population. A population attributable fraction (PAF) is calculated by
+        applying an exposure response function (ERF) along with observed exposures, thereby estimating the proportion of the overall burden
+        attributable to the chemical exposure. The attributable burden follows from multiplication of the total burden by the PAF.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>BottomUp</Id>
+      <Name>Bottom-up</Name>
+      <ShortName>Bottom-up</ShortName>
+      <Description>
+        Bottom-up approach starting either by estimating the number of new or excess cases based on observed exposures and the exposure
+        response function (ERF), or by evaluating the expected shift in individual responses (e.g. changes in IQ) resulting from exposure.
+        These are translated into a burden measure – often by multiplying by factors such as duration and disability weight (or a monetary value)
+        to calculate the attributable BoD for indicators like DALYs.
+      </Description>
+    </Unit>
+  </Units>
+</UnitDefinition>

@@ -42,6 +42,12 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (Model.ErfSummaryRecords.All(r => string.IsNullOrEmpty(r.ExpressionType))) {
                 hiddenProperties.Add("ExpressionType");
             }
+            if (Model.ErfSummaryRecords.All(r => string.IsNullOrEmpty(r.ExposureResponseSpecificationLower))) {
+                hiddenProperties.Add("ExposureResponseSpecificationLower");
+            }
+            if (Model.ErfSummaryRecords.All(r => string.IsNullOrEmpty(r.ExposureResponseSpecificationUpper))) {
+                hiddenProperties.Add("ExposureResponseSpecificationUpper");
+            }
 
             sb.AppendTable(
                 Model,

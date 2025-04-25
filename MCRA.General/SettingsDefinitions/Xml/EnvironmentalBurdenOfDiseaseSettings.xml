@@ -9,6 +9,12 @@
     <IsList>true</IsList>
   </SettingsItem>
   <SettingsItem>
+    <Id>BodApproach</Id>
+    <Name>Specify the Bod approach</Name>
+    <Description>Specify the approach used for estimating the attributable burden of disease.</Description>
+    <ValueType>BodApproach</ValueType>
+  </SettingsItem>
+  <SettingsItem>
     <Id>ExposureGroupingMethod</Id>
     <Name>Specify the exposure grouping method</Name>
     <Description>Specify the method by which the exposures are grouped in bins.</Description>

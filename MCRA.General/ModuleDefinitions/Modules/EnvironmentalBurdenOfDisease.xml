@@ -41,6 +41,7 @@
     <CalculationSetting source="HazardCharacterisations">TargetDoseLevelType</CalculationSetting>
     <CalculationSetting source="Risks">ExposureCalculationMethod</CalculationSetting>
     <CalculationSetting>BodIndicators</CalculationSetting>
+    <CalculationSetting>BodApproach</CalculationSetting>
     <CalculationSetting>ExposureGroupingMethod</CalculationSetting>
     <CalculationSetting>BinBoundaries</CalculationSetting>
   </CalculationSettings>

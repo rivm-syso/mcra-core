@@ -35,7 +35,8 @@ namespace MCRA.Simulation.OutputGeneration {
                         ResponseValue = erf.Compute(x * doseUnitAlignmentFactor)
                     };
                     functionDataPoints.Add(functionDataPoint);
-                };
+                }
+                ;
                 var record = new ErfSummaryRecord() {
                     ErfCode = erf.Code,
                     SubstanceName = erf.Substance.Name,
@@ -56,8 +57,12 @@ namespace MCRA.Simulation.OutputGeneration {
                     EffectMetric = erf.EffectMetric.GetDisplayName(),
                     ExposureResponseType = erf.ExposureResponseType.GetDisplayName(),
                     ExposureResponseSpecification = erf.ExposureResponseSpecification.ExpressionString,
-                    ExposureResponseSpecificationLower = erf.ExposureResponseSpecificationLower.ExpressionString,
-                    ExposureResponseSpecificationUpper = erf.ExposureResponseSpecificationUpper.ExpressionString,
+                    ExposureResponseSpecificationLower = erf.ExposureResponseSpecificationLower.ExpressionString.Length != 0
+                        ? erf.ExposureResponseSpecificationLower.ExpressionString
+                        : null,
+                    ExposureResponseSpecificationUpper = erf.ExposureResponseSpecificationUpper.ExpressionString.Length != 0
+                        ? erf.ExposureResponseSpecificationUpper.ExpressionString
+                        : null,
                     ErfDoseUnit = erf.DoseUnit.GetShortDisplayName(),
                     ErfDoseAlignmentFactor = doseUnitAlignmentFactor,
                     Baseline = erf.Baseline,

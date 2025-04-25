@@ -25,10 +25,10 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (Model.Records.All(r => r.EffectThresholdUpper == null)) {
                 hiddenProperties.Add("EffectThresholdUpper");
             }
-            if (Model.Records.All(r => r.ExposureResponseSpecificationLower == null)) {
+            if (Model.Records.All(r => string.IsNullOrEmpty(r.ExposureResponseSpecificationLower))) {
                 hiddenProperties.Add("ExposureResponseSpecificationLower");
             }
-            if (Model.Records.All(r => r.ExposureResponseSpecificationUpper == null)) {
+            if (Model.Records.All(r => string.IsNullOrEmpty(r.ExposureResponseSpecificationUpper))) {
                 hiddenProperties.Add("ExposureResponseSpecificationUpper");
             }
 
