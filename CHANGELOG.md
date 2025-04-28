@@ -1,5 +1,20 @@
 # Change Log
 
+## Version 10.1.9 (2025-04-28)
+
+### Added
+
+- New columns for uncertainty in exposure response functions data (#2149)
+- Add Standardized and Exposed Attributable plots to Environmental Burden of Disease module (#2171)
+- New table population characteristics (#2176)
+- New column 'population size' in populations table (#2185)
+- New module 'Individuals' (#2188)
+- Allow for definition of exposure response functions as shifts (#2191)
+
+### Fixed
+
+- Total attributable BoD does not correspond to total in table when uncertainty is applied, add uncertainy bounds (#2189)
+
 ## Version 10.1.8 (2025-04-08)
 
 ### Added
