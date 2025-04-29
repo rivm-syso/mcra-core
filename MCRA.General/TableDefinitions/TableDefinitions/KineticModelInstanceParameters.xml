@@ -43,7 +43,7 @@
         <string>Mean</string>
       </Aliases>
     </ColumnDefinition>
-    <ColumnDefinition FieldType="ProbabilityDistribution">
+    <ColumnDefinition FieldType="PbkModelParameterDistributionType">
       <Id>DistributionType</Id>
       <Description>Parameter distribution type.</Description>
       <Aliases>

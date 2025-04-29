@@ -108,7 +108,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             Parameter = r.GetString(RawKineticModelInstanceParameters.Parameter, fieldMap),
                                             Description = r.GetStringOrNull(RawKineticModelInstanceParameters.Description, fieldMap),
                                             Value = r.GetDouble(RawKineticModelInstanceParameters.Value, fieldMap),
-                                            DistributionType = r.GetEnum<ProbabilityDistribution>(RawKineticModelInstanceParameters.DistributionType, fieldMap),
+                                            DistributionType = r.GetEnum<PbkModelParameterDistributionType>(RawKineticModelInstanceParameters.DistributionType, fieldMap),
                                             CvVariability = variability,
                                             CvUncertainty = uncertainty,
                                         };

@@ -2,7 +2,7 @@
 using MCRA.Simulation.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
-using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation.ParameterDistributionModels;
+using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation.PbkModelParameterDistributionModels;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Utils.ProgressReporting;
@@ -436,8 +436,8 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                 drawn = parameters.ToDictionary(c => c.Key, c => c.Value.Value);
             } else {
                 foreach (var parameter in parameters) {
-                    var model = ProbabilityDistributionFactory.createProbabilityDistributionModel(parameter.Value.DistributionType);
-                    model.Initialize(parameter.Value.Value, parameter.Value.CvVariability ?? 0);
+                    var model = PbkModelParameterDistributionModelFactory.Create(parameter.Value.DistributionType);
+                    model.Initialize(parameter.Value.Value, parameter.Value.CvVariability);
                     drawn.Add(parameter.Key, model.Sample(random));
                 }
             }

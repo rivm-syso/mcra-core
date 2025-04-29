@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <UnitDefinition>
-  <Id>ProbabilityDistribution</Id>
-  <Name>Probability distribution type</Name>
+  <Id>PbkModelParameterDistributionType</Id>
+  <Name>PBK model parameter distribution types.</Name>
   <UndefinedValue Id="Unspecified" Name="Unspecified">-1</UndefinedValue>
   <Description>
-    Probability distribution types.
+    Probability distribution types for PBK model parameters.
   </Description>
   <Units>
     <Unit>
       <Id>LogNormal</Id>
       <Name>LogNormal</Name>
       <ShortName>LogNormal</ShortName>
-      <Description>Lognormal distribution.</Description>
+      <Description>Lognormal distribution parameterised by a mean and two coefficients of variation (CVs), one representing variability around the mean and the other reprenting uncertainty of the mean.</Description>
       <Aliases>
         <Alias>LogNormal</Alias>
       </Aliases>
@@ -20,16 +20,16 @@
       <Id>Normal</Id>
       <Name>Normal</Name>
       <ShortName>Normal</ShortName>
-      <Description>Normal distribution.</Description>
+      <Description>Normal distribution parameterised by a mean and two standard deviations (SDs), one representing variability around the mean and the other reprenting uncertainty of the mean.</Description>
       <Aliases>
         <Alias>Normal</Alias>
       </Aliases>
     </Unit>
     <Unit>
       <Id>LogisticNormal</Id>
-      <Name>LogisticNormal</Name>
-      <ShortName>LogisticNormal</ShortName>
-      <Description>Logisticnormal distribution.</Description>
+      <Name>Logistic Normal</Name>
+      <ShortName>Logistic Normal</ShortName>
+      <Description>Logistic Normal distribution parameterised by a mean and two coefficients of variation (CVs), one representing variability around the mean and the other reprenting uncertainty of the mean.</Description>
       <Aliases>
         <Alias>LogisticNormal</Alias>
       </Aliases>
@@ -41,6 +41,7 @@
       <Description>Deterministic distribution.</Description>
       <Aliases>
         <Alias>Deterministic</Alias>
+        <Alias>Constant</Alias>
       </Aliases>
     </Unit>
   </Units>

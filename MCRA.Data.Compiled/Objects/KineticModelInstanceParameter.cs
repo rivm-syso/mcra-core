@@ -10,7 +10,7 @@ namespace MCRA.Data.Compiled.Objects {
         public double? CvVariability { get; set; }
         public double? CvUncertainty { get; set; }
 
-        public ProbabilityDistribution DistributionType { get; set; }
+        public PbkModelParameterDistributionType DistributionType { get; set; }
 
         public KineticModelInstanceParameter Clone(double value) {
             var parameter = new KineticModelInstanceParameter() {

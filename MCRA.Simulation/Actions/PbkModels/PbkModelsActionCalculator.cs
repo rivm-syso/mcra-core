@@ -7,7 +7,7 @@ using MCRA.General.Annotations;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
-using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation.ParameterDistributionModels;
+using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation.PbkModelParameterDistributionModels;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
@@ -103,7 +103,10 @@ namespace MCRA.Simulation.Actions.PbkModels {
             var localProgress = progressReport.NewProgressState(100);
             if (data.KineticModelInstances != null && factorialSet.Contains(UncertaintySource.PbkModelParameters)) {
                 localProgress.Update("Resampling PBK model parameters.");
-                var resampledModelInstances = resampleKineticModelParameters(data.KineticModelInstances, uncertaintySourceGenerators[UncertaintySource.PbkModelParameters]);
+                var resampledModelInstances = resampleKineticModelParameters(
+                    data.KineticModelInstances,
+                    uncertaintySourceGenerators[UncertaintySource.PbkModelParameters]
+                );
                 data.KineticModelInstances = resampledModelInstances;
             }
             localProgress.Update(100);
@@ -120,12 +123,10 @@ namespace MCRA.Simulation.Actions.PbkModels {
             foreach (var kineticModelinstance in kineticModelInstances) {
                 var modelParameters = new Dictionary<string, KineticModelInstanceParameter>();
                 foreach (var parameter in kineticModelinstance.KineticModelInstanceParameters.Values) {
-
                     var model = parameter.CvUncertainty.HasValue
-                        ? ProbabilityDistributionFactory.createProbabilityDistributionModel(parameter.DistributionType)
-                        : new DeterministicDistributionModel();
-
-                    model.Initialize(parameter.Value, parameter.CvUncertainty ?? 0);
+                        ? PbkModelParameterDistributionModelFactory.Create(parameter.DistributionType)
+                        : new PbkModelParameterDeterministicModel();
+                    model.Initialize(parameter.Value, parameter.CvUncertainty);
                     modelParameters[parameter.Parameter] = parameter.Clone(model.Sample(random));
                 }
                 var clone = kineticModelinstance.Clone();
