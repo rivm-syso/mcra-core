@@ -22,6 +22,8 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add("CumulativeAttributableBod");
                 hiddenProperties.Add("CumulativeStandardizedExposedAttributableBod");
                 hiddenProperties.Add("Exposure");
+                hiddenProperties.Add("BinPercentage");
+                hiddenProperties.Add("TotalBod");
             } else {
                 hiddenProperties.Add("LowerAttributableBod");
                 hiddenProperties.Add("UpperAttributableBod");
@@ -41,6 +43,8 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add("LowerBoundExposure");
                 hiddenProperties.Add("UpperBoundExposure");
                 hiddenProperties.Add("MedianExposure");
+                hiddenProperties.Add("MedianBinPercentage");
+                hiddenProperties.Add("MedianTotalBod");
             }
             // Remove all standardized records when the population size is not specified
             // and in that case there is room for an extra column, otherwise surpress
@@ -61,10 +65,16 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             } else {
                 hiddenProperties.Add("ExposurePercentileBin");
             }
+            if (Model.Records.All(r => r.AttributableFraction == 0D)) {
+                hiddenProperties.Add("AttributableFraction");
+            }
 
             var panelBuilder = new HtmlTabPanelBuilder();
 
             var panelGroup = Model.Records
+                .Where(r => !isUncertainty && !(r.TotalBod == 0D && r.CumulativeAttributableBod == 100D) ||
+                    isUncertainty && !(r.UpperAttributableBod == 0D && r.MedianCumulativeAttributableBod == 100D)
+                )
                 .GroupBy(r => (r.PopulationName, r.BodIndicator, r.ExposureResponseFunctionCode));
 
             foreach (var group in panelGroup) {

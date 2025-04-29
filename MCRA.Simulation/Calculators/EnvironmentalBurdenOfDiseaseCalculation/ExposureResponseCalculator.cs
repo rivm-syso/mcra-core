@@ -102,7 +102,6 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
                     Upper = upperPercentile
                 };
                 result.Add((exposureInterval, percentileInterval));
-                if (upperPercentile == 100) break;
                 lower = upper;
                 lowerPercentile = upperPercentile;
             }

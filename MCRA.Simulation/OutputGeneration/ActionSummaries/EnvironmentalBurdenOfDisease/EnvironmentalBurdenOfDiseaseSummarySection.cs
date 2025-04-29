@@ -63,7 +63,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 foreach (var bin in result.AttributableBodPerBin) {
                     record.UncertaintyLowerBound = lowerBound;
                     record.UncertaintyUpperBound = upperBound;
-                    record.AttributableBodPerBinList.Where(c => c.Id == bin.Id).First().Bods.Add(bin.Bod);
+                    record.AttributableBodPerBinList.First(c => c.Id == bin.Id).Bods.Add(bin.Bod);
                 }
                 record.TotalAttributableBods.Add(result.TotalAttributableBod);
             }
