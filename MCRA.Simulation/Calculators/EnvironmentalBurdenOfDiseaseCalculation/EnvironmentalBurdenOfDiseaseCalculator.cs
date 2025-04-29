@@ -12,14 +12,18 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
 
         public Population Population { get; set; }
 
+        public BodApproach BodApproach { get; set; }
+
         public EnvironmentalBurdenOfDiseaseCalculator(
             List<ExposureResponseResultRecord> exposureResponseResults = null,
             BaselineBodIndicator baselineBodIndicator = null,
-            Population population = null
+            Population population = null,
+            BodApproach bodApproach = BodApproach.TopDown
         ) {
             ExposureResponseResults = exposureResponseResults;
             BaselineBodIndicator = baselineBodIndicator;
             Population = population;
+            BodApproach = bodApproach;
         }
 
         public List<EnvironmentalBurdenOfDiseaseResultRecord> Compute() {
@@ -29,7 +33,9 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
                 .ToList();
             var sum = result.Sum(c => c.AttributableBod);
             var cumulative = 0d;
-            var sumExposed = result.Sum(c => c.AttributableBod / populationSize / c.ExposurePercentileBin.Percentage * 100);
+            var sumExposed = result
+                .Where(r => r.ExposurePercentileBin.Percentage > 0)
+                .Sum(r => r.AttributableBod / populationSize / r.ExposurePercentileBin.Percentage * 100);
             var cumulativeExposed = 0d;
             foreach (var record in result) {
                 cumulative += record.AttributableBod;
@@ -52,11 +58,15 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
                 ResponseValue = exposureResponseResultRecord.PercentileSpecificRisk,
                 TargetUnit = exposureResponseResultRecord?.TargetUnit
             };
-            var attributableFraction = computeAttributableFraction(exposureResponseResultRecord, result.ResponseValue);
-            result.AttributableFraction = attributableFraction;
             result.TotalBod = BaselineBodIndicator.Value
                 * exposureResponseResultRecord.PercentileInterval.Percentage / 100;
-            result.AttributableBod = result.TotalBod * result.AttributableFraction;
+            if (BodApproach == BodApproach.TopDown) {
+                var attributableFraction = computeAttributableFraction(exposureResponseResultRecord, result.ResponseValue);
+                result.AttributableFraction = attributableFraction;
+                result.AttributableBod = result.TotalBod * attributableFraction;
+            } else {
+                result.AttributableBod = result.TotalBod * result.ResponseValue * Population.Size;
+            }
             result.ExposureResponseResultRecord = exposureResponseResultRecord;
             return result;
         }
