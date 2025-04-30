@@ -127,7 +127,7 @@ namespace MCRA.Simulation.OutputGeneration {
             // https://git.wur.nl/Biometris/mcra-dev/MCRA-Issues/-/issues/2172
             // This might be useful when multiple bars are plotted for e.g.
             // 1) the relative attributable BoD,
-            // 2) the relative standardized attributable bod,
+            // 2) the relative standardised attributable bod,
             // 3) the PAF (for top-down calculations, otherwise the proportion of excess cases), and
             // 4) the relative population size
             var legend = new Legend {

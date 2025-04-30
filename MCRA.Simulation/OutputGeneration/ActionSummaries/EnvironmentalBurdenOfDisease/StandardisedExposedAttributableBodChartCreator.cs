@@ -2,19 +2,19 @@
 using OxyPlot;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class StandardizedAttributableBodChartCreator : AttributableBodChartCreatorBase {
+    public sealed class StandardisedExposedAttributableBodChartCreator : AttributableBodChartCreatorBase {
 
-        public StandardizedAttributableBodChartCreator(
+        public StandardisedExposedAttributableBodChartCreator(
             List<AttributableBodSummaryRecord> records,
             string sectionId
         ) : base(records, sectionId) {
         }
 
-        public override string Title => "Standardized attributable burden &amp; cumulative percentage.";
+        public override string Title => "Standardised exposed attributable burden &amp; cumulative percentage.";
 
         public override string ChartId {
             get {
-                var pictureId = "bd49c628-fc08-482d-8878-cf3fcecbdc1d";
+                var pictureId = "32eee09f-61c2-4408-aace-91baa9ead5b8";
                 return StringExtensions.CreateFingerprint(_sectionId + pictureId + _population + _bodIndicator + _erfCode);
             }
         }
@@ -22,21 +22,21 @@ namespace MCRA.Simulation.OutputGeneration {
         public override PlotModel Create() => create(
             bars: _records
                 .Select(c => (
-                    Value: c.StandardizedAttributableBod,
-                    Lower: c.LowerStandardizedAttributableBod,
-                    Upper: c.UpperStandardizedAttributableBod
+                    Value: c.StandardisedExposedAttributableBod,
+                    Lower: c.LowerStandardisedExposedAttributableBod,
+                    Upper: c.UpperStandardisedExposedAttributableBod
                 ))
                 .ToList(),
             cumulative: _records
                 .Select(c => (
-                    Value: c.CumulativeAttributableBod,
-                    Lower: c.LowerCumulativeAttributableBod,
-                    Upper: c.UpperCumulativeAttributableBod
+                    Value: c.CumulativeStandardisedExposedAttributableBod,
+                    Lower: c.LowerCumulativeStandardisedExposedAttributableBod,
+                    Upper: c.UpperCumulativeStandardisedExposedAttributableBod
                 ))
                 .ToList(),
             labels: _records.Select(c => c.ExposureBin).ToList(),
             unit: _unit,
-            leftYAxisTitle: $"Attributable Burden ({_bodIndicator} per 100k)",
+            leftYAxisTitle: $"Attributable Burden ({_bodIndicator} per 100k exposed)",
             uncertainty: _records.SelectMany(c => c.AttributableBods).Any()
         );
     }

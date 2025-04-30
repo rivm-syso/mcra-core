@@ -17,10 +17,10 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             if (isUncertainty) {
                 hiddenProperties.Add("AttributableBod");
-                hiddenProperties.Add("StandardizedAttributableBod");
-                hiddenProperties.Add("StandardizedExposedAttributableBod");
+                hiddenProperties.Add("StandardisedAttributableBod");
+                hiddenProperties.Add("StandardisedExposedAttributableBod");
                 hiddenProperties.Add("CumulativeAttributableBod");
-                hiddenProperties.Add("CumulativeStandardizedExposedAttributableBod");
+                hiddenProperties.Add("CumulativeStandardisedExposedAttributableBod");
                 hiddenProperties.Add("Exposure");
                 hiddenProperties.Add("BinPercentage");
                 hiddenProperties.Add("TotalBod");
@@ -28,45 +28,47 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add("LowerAttributableBod");
                 hiddenProperties.Add("UpperAttributableBod");
                 hiddenProperties.Add("MedianAttributableBod");
-                hiddenProperties.Add("LowerStandardizedAttributableBod");
-                hiddenProperties.Add("UpperStandardizedAttributableBod");
-                hiddenProperties.Add("MedianStandardizedAttributableBod");
-                hiddenProperties.Add("LowerStandardizedExposedAttributableBod");
-                hiddenProperties.Add("UpperStandardizedExposedAttributableBod");
-                hiddenProperties.Add("MedianStandardizedExposedAttributableBod");
+                hiddenProperties.Add("LowerStandardisedAttributableBod");
+                hiddenProperties.Add("UpperStandardisedAttributableBod");
+                hiddenProperties.Add("MedianStandardisedAttributableBod");
+                hiddenProperties.Add("LowerStandardisedExposedAttributableBod");
+                hiddenProperties.Add("UpperStandardisedExposedAttributableBod");
+                hiddenProperties.Add("MedianStandardisedExposedAttributableBod");
                 hiddenProperties.Add("LowerCumulativeAttributableBod");
                 hiddenProperties.Add("UpperCumulativeAttributableBod");
                 hiddenProperties.Add("MedianCumulativeAttributableBod");
-                hiddenProperties.Add("LowerCumulativeStandardizedExposedAttributableBod");
-                hiddenProperties.Add("UpperCumulativeStandardizedExposedAttributableBod");
-                hiddenProperties.Add("MedianCumulativeStandardizedExposedAttributableBod");
+                hiddenProperties.Add("LowerCumulativeStandardisedExposedAttributableBod");
+                hiddenProperties.Add("UpperCumulativeStandardisedExposedAttributableBod");
+                hiddenProperties.Add("MedianCumulativeStandardisedExposedAttributableBod");
                 hiddenProperties.Add("LowerBoundExposure");
                 hiddenProperties.Add("UpperBoundExposure");
                 hiddenProperties.Add("MedianExposure");
                 hiddenProperties.Add("MedianBinPercentage");
                 hiddenProperties.Add("MedianTotalBod");
             }
-            // Remove all standardized records when the population size is not specified
+            // Remove all standardised records when the population size is not specified
             // and in that case there is room for an extra column, otherwise surpress
             var missingPopulationSize = Model.Records.All(c => double.IsNaN(c.PopulationSize));
             if (missingPopulationSize) {
-                hiddenProperties.Add("LowerStandardizedAttributableBod");
-                hiddenProperties.Add("UpperStandardizedAttributableBod");
-                hiddenProperties.Add("MedianStandardizedAttributableBod");
-                hiddenProperties.Add("LowerStandardizedExposedAttributableBod");
-                hiddenProperties.Add("UpperStandardizedExposedAttributableBod");
-                hiddenProperties.Add("MedianStandardizedExposedAttributableBod");
-                hiddenProperties.Add("LowerCumulativeStandardizedExposedAttributableBod");
-                hiddenProperties.Add("UpperCumulativeStandardizedExposedAttributableBod");
-                hiddenProperties.Add("MedianCumulativeStandardizedExposedAttributableBod");
-                hiddenProperties.Add("StandardizedAttributableBod");
-                hiddenProperties.Add("StandardizedExposedAttributableBod");
-                hiddenProperties.Add("CumulativeStandardizedExposedAttributableBod");
+                hiddenProperties.Add("LowerStandardisedAttributableBod");
+                hiddenProperties.Add("UpperStandardisedAttributableBod");
+                hiddenProperties.Add("MedianStandardisedAttributableBod");
+                hiddenProperties.Add("LowerStandardisedExposedAttributableBod");
+                hiddenProperties.Add("UpperStandardisedExposedAttributableBod");
+                hiddenProperties.Add("MedianStandardisedExposedAttributableBod");
+                hiddenProperties.Add("LowerCumulativeStandardisedExposedAttributableBod");
+                hiddenProperties.Add("UpperCumulativeStandardisedExposedAttributableBod");
+                hiddenProperties.Add("MedianCumulativeStandardisedExposedAttributableBod");
+                hiddenProperties.Add("StandardisedAttributableBod");
+                hiddenProperties.Add("StandardisedExposedAttributableBod");
+                hiddenProperties.Add("CumulativeStandardisedExposedAttributableBod");
             } else {
                 hiddenProperties.Add("ExposurePercentileBin");
             }
-            if (Model.Records.All(r => r.AttributableFraction == 0D)) {
+            var isBottomUp = Model.Records.All(r => r.AttributableFraction == 0D);
+            if (isBottomUp) {
                 hiddenProperties.Add("AttributableFraction");
+                hiddenProperties.Add("MedianTotalBod");
             }
 
             var panelBuilder = new HtmlTabPanelBuilder();
@@ -106,24 +108,24 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     saveChartFile: true
                 );
 
-                var chartStandardized = string.Empty;
+                var chartStandardised = string.Empty;
                 var chartExposed = string.Empty;
                 if (!missingPopulationSize) {
-                    var chartCreatorStandardized = new StandardizedAttributableBodChartCreator(
+                    var chartCreatorStandardised = new StandardisedAttributableBodChartCreator(
                         [.. group],
                         Model.SectionId
                     );
-                    var chartCreatorExposed = new StandardizedExposedAttributableBodChartCreator(
+                    var chartCreatorExposed = new StandardisedExposedAttributableBodChartCreator(
                         [.. group],
                         Model.SectionId
                     );
 
-                     chartStandardized = ChartHelpers.Chart(
-                            name: $"StandardizedAttributableBodChart{key}",
+                     chartStandardised = ChartHelpers.Chart(
+                            name: $"StandardisedAttributableBodChart{key}",
                             section: Model,
                             viewBag: ViewBag,
-                            caption: chartCreatorStandardized.Title,
-                            chartCreator: chartCreatorStandardized,
+                            caption: chartCreatorStandardised.Title,
+                            chartCreator: chartCreatorStandardised,
                             fileType: ChartFileType.Svg,
                             saveChartFile: true
                         ).ToString();
@@ -141,7 +143,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
                 var contentPanel = new HtmlString(
                     "<div class=\"figure-container\">"
-                    + chart + chartStandardized + chartExposed
+                    + chart + chartStandardised + chartExposed
                     + "</div>"
                     + panelSb.ToString()
                 );

@@ -30,13 +30,13 @@ namespace MCRA.Simulation.OutputGeneration {
                     TotalBod = s.TotalBod,
                     AttributableBod = s.AttributableBod,
                     AttributableBods = [],
-                    StandardizedAttributableBods = [],
+                    StandardisedExposedAttributableBods = [],
                     BinPercentages = [],
                     TotalBods = [],
                     CumulativeAttributableBods = [],
                     CumulativeAttributableBod = s.CumulativeAttributableBod,
-                    CumulativeStandardizedExposedAttributableBods = [],
-                    CumulativeStandardizedExposedAttributableBod = s.CumulativeStandardizedExposedAttributableBod,
+                    CumulativeStandardisedExposedAttributableBods = [],
+                    CumulativeStandardisedExposedAttributableBod = s.CumulativeStandardisedExposedAttributableBod,
                 })
                 .ToList();
         }
@@ -55,11 +55,11 @@ namespace MCRA.Simulation.OutputGeneration {
                 record.UncertaintyLowerBound = lowerBound;
                 record.UncertaintyUpperBound = upperBound;
                 record.AttributableBods.Add(item.AttributableBod);
-                record.StandardizedAttributableBods.Add(item.AttributableBod / item.ExposurePercentileBin.Percentage);
+                record.StandardisedExposedAttributableBods.Add(item.AttributableBod / item.ExposurePercentileBin.Percentage);
                 record.BinPercentages.Add(item.ExposurePercentileBin.Percentage);
                 record.TotalBods.Add(item.TotalBod);
                 record.CumulativeAttributableBods.Add(item.CumulativeAttributableBod);
-                record.CumulativeStandardizedExposedAttributableBods.Add(item.CumulativeStandardizedExposedAttributableBod);
+                record.CumulativeStandardisedExposedAttributableBods.Add(item.CumulativeStandardisedExposedAttributableBod);
                 record.Exposures.Add(item.Exposure);
             }
         }

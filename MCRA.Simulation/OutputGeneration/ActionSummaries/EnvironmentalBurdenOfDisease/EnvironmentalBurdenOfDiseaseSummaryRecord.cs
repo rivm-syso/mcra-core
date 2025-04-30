@@ -63,24 +63,24 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:G4}")]
         public double UpperTotalAttributableBod { get { return TotalAttributableBods.Percentile(UncertaintyUpperBound); } }
 
-        [Description("Standardized total attributable burden of disease for the whole population (AttrBoD / Population size * 100.000) .")]
-        [DisplayName("Standardized total attributable BoD per 100.000")]
+        [Description("Standardised total attributable burden of disease for the whole population (AttrBoD / Population size * 100.000) .")]
+        [DisplayName("Standardised total attributable BoD per 100.000")]
         [DisplayFormat(DataFormatString = "{0:G4}")]
-        public double StandardizedTotalAttributableBod { get { return TotalAttributableBod / PopulationSize * 1e5; } }
+        public double StandardisedTotalAttributableBod { get { return TotalAttributableBod / PopulationSize * 1e5; } }
 
-        [Description("Median standardized total attributable burden of disease for the whole population.")]
-        [DisplayName("Standardized total attributable BoD median")]
+        [Description("Median standardised total attributable burden of disease for the whole population.")]
+        [DisplayName("Standardised total attributable BoD median")]
         [DisplayFormat(DataFormatString = "{0:G4}")]
-        public double MedianStandardizedTotalAttributableBod { get { return MedianTotalAttributableBod / PopulationSize * 1e5; } }
+        public double MedianStandardisedTotalAttributableBod { get { return MedianTotalAttributableBod / PopulationSize * 1e5; } }
 
-        [Description("Lower uncertainty bound standardized total attributable burden of disease for the whole population.")]
-        [DisplayName("Standardized total attributable BoD lower bound (LowerBound)")]
+        [Description("Lower uncertainty bound standardised total attributable burden of disease for the whole population.")]
+        [DisplayName("Standardised total attributable BoD lower bound (LowerBound)")]
         [DisplayFormat(DataFormatString = "{0:G4}")]
-        public double LowerStandardizedTotalAttributableBod { get { return LowerTotalAttributableBod / PopulationSize * 1e5; } }
+        public double LowerStandardisedTotalAttributableBod { get { return LowerTotalAttributableBod / PopulationSize * 1e5; } }
 
-        [Description("Upper uncertainty bound standardized total attributable burden of disease for the whole population.")]
-        [DisplayName("Standardized total attributable BoD upper bound (UpperBound)")]
+        [Description("Upper uncertainty bound standardised total attributable burden of disease for the whole population.")]
+        [DisplayName("Standardised total attributable BoD upper bound (UpperBound)")]
         [DisplayFormat(DataFormatString = "{0:G4}")]
-        public double UpperStandardizedTotalAttributableBod { get { return UpperTotalAttributableBod / PopulationSize * 1e5; } }
+        public double UpperStandardisedTotalAttributableBod { get { return UpperTotalAttributableBod / PopulationSize * 1e5; } }
     }
 }

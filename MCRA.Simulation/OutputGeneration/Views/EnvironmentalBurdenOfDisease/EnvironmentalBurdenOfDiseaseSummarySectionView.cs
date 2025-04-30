@@ -6,29 +6,29 @@ namespace MCRA.Simulation.OutputGeneration.Views {
         public override void RenderSectionHtml(StringBuilder sb) {
 
             var hiddenProperties = new List<string>();
-            if (Model.Records.All(c => double.IsInfinity(c.StandardizedTotalAttributableBod))) {
-                hiddenProperties.Add("StandardizedTotalAttributableBod");
+            if (Model.Records.All(c => double.IsInfinity(c.StandardisedTotalAttributableBod))) {
+                hiddenProperties.Add("StandardisedTotalAttributableBod");
             }
 
             var isUncertainty = Model.Records.FirstOrDefault()?.TotalAttributableBods.Any() ?? false;
             if (isUncertainty) {
                 hiddenProperties.Add("TotalAttributableBod");
-                hiddenProperties.Add("StandardizedTotalAttributableBod");
+                hiddenProperties.Add("StandardisedTotalAttributableBod");
             } else {
                 hiddenProperties.Add("MedianTotalAttributableBod");
                 hiddenProperties.Add("LowerTotalAttributableBod");
                 hiddenProperties.Add("UpperTotalAttributableBod");
-                hiddenProperties.Add("MedianStandardizedTotalAttributableBod");
-                hiddenProperties.Add("LowerStandardizedTotalAttributableBod");
-                hiddenProperties.Add("UpperStandardizedTotalAttributableBod");
+                hiddenProperties.Add("MedianStandardisedTotalAttributableBod");
+                hiddenProperties.Add("LowerStandardisedTotalAttributableBod");
+                hiddenProperties.Add("UpperStandardisedTotalAttributableBod");
             }
 
             var missingPopulationSize = Model.Records.All(c => double.IsNaN(c.PopulationSize));
             if (missingPopulationSize) {
-                hiddenProperties.Add("StandardizedTotalAttributableBod");
-                hiddenProperties.Add("MedianStandardizedTotalAttributableBod");
-                hiddenProperties.Add("LowerStandardizedTotalAttributableBod");
-                hiddenProperties.Add("UpperStandardizedTotalAttributableBod");
+                hiddenProperties.Add("StandardisedTotalAttributableBod");
+                hiddenProperties.Add("MedianStandardisedTotalAttributableBod");
+                hiddenProperties.Add("LowerStandardisedTotalAttributableBod");
+                hiddenProperties.Add("UpperStandardisedTotalAttributableBod");
             }
 
             sb.AppendTable(
