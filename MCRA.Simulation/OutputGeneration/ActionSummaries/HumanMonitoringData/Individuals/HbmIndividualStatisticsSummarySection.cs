@@ -57,6 +57,22 @@ namespace MCRA.Simulation.OutputGeneration {
                     Missing = hbmIndividuals.Count - hbmIndividualsWithBw.Count
                 });
             }
+            var weights = hbmIndividuals.Select(c => c.SamplingWeight).ToList();
+            if (weights.Any(c => c != 1d)) {
+                var totalSamplingWeights = weights.Sum();
+                var percentiles = weights.Percentiles(percentages);
+                result.Add(new HbmPopulationCharacteristicsDataRecord {
+                    Property = "Sampling weight",
+                    Mean = totalSamplingWeights/weights.Count,
+                    P25 = percentiles[0],
+                    Median = percentiles[1],
+                    P75 = percentiles[2],
+                    Min = !skipPrivacySensitiveOutputs ? weights.Min() : null,
+                    Max = !skipPrivacySensitiveOutputs ? weights.Max() : null,
+                    DistinctValues = weights.Distinct().Count(),
+                    Missing = 0
+                });
+            }
             var properties = hbmIndividuals.SelectMany(i => i.IndividualPropertyValues.Select(c => c.IndividualProperty))
                 .Distinct()
                 .OrderBy(ip => ip.Name, StringComparer.OrdinalIgnoreCase)
