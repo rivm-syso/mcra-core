@@ -239,6 +239,12 @@ namespace MCRA.Simulation.Action {
                         project.HumanMonitoringAnalysisSettings.ResampleHbmIndividuals
                     );
                 }
+                if (activeUncertaintySettings.Contains(SettingsItemType.ResampleExposureResponseFunctions)) {
+                    section.SummarizeSetting(
+                        SettingsItemType.ResampleExposureResponseFunctions,
+                        project.EnvironmentalBurdenOfDiseaseSettings.ResampleExposureResponseFunctions
+                    );
+                }
 
                 section.SummarizeSetting(SettingsItemType.UncertaintyLowerBound, actionConfig.UncertaintyLowerBound);
                 section.SummarizeSetting(SettingsItemType.UncertaintyUpperBound, actionConfig.UncertaintyUpperBound);

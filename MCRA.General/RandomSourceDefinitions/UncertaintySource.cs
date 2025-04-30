@@ -61,6 +61,8 @@ namespace MCRA.General {
         [Display(Name = "PBK model parameters")]
         PbkModelParameters = 29,
         [Display(Name = "Dust exposures")]
-        DustExposures = 30
+        DustExposures = 30,
+        [Display(Name = "Exposure response functions")]
+        ExposureResponseFunctions = 31,
     }
 }

@@ -46,9 +46,13 @@
     <CalculationSetting>BinBoundaries</CalculationSetting>
   </CalculationSettings>
   <UncertaintySettings>
+    <UncertaintySetting>ResampleExposureResponseFunctions</UncertaintySetting>
     <UncertaintySetting source="Action">UncertaintyLowerBound</UncertaintySetting>
     <UncertaintySetting source="Action">UncertaintyUpperBound</UncertaintySetting>
   </UncertaintySettings>
+  <UncertaintySources>
+    <UncertaintySource>ExposureResponseFunctions</UncertaintySource>
+  </UncertaintySources>
   <OutputSettings>
   </OutputSettings>
 </Module>
