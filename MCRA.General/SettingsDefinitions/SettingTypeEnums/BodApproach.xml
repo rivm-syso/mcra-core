@@ -11,7 +11,7 @@
       <Name>Top-down</Name>
       <ShortName>Top-down</ShortName>
       <Description>
-        Top-down approach starting with an estimate of thee total burden in the population. A population attributable fraction (PAF) is calculated by
+        Top-down approach starting with an estimate of the total burden in the population. A population attributable fraction (PAF) is calculated by
         applying an exposure response function (ERF) along with observed exposures, thereby estimating the proportion of the overall burden
         attributable to the chemical exposure. The attributable burden follows from multiplication of the total burden by the PAF.
       </Description>

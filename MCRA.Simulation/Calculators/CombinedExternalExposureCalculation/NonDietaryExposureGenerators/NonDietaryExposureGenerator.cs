@@ -103,7 +103,7 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.NonDie
             // Generate non-dietary individual day exposures from individual days and non-dietary individual exposures.
             var externalIndividualDayExposures = individualDays
                 .GroupBy(r => r.SimulatedIndividual)
-                //.AsParallel()
+                .AsParallel()
                 .SelectMany(individualExposures => generateIndividualExposure(
                     [.. individualExposures],
                     substances,
