@@ -96,6 +96,7 @@ namespace MCRA.General {
     public enum ActionZipDataExportFormat {
         NoData,
         CsvData,
+        SpreadsheetData,
         OriginalData
     }
 

@@ -38,18 +38,24 @@ namespace MCRA.Simulation.Commander.Actions.ConvertAction {
                     throw new Exception($"Csv temp folder {csvTempFolder} already exists.");
                 }
 
+                var asExcel = options.FileType.Contains('x', StringComparison.OrdinalIgnoreCase);
+
                 // Check if there is a entity code conversions configuration and initialize data source writer factory accordingly
                 var entityRecodingsFile = getRecodingsFile(options, inputFileName);
 
                 Func<IDataSourceWriter> writerFactory;
+                Func<IDataSourceWriter> concreteWriter = asExcel
+                    ? () => new SpreadsheetDataSourceWriter(targetFileName)
+                    : () => new ZippedCsvFileDataSourceWriter(targetFileName, csvTempFolder, options.KeepTempFiles);
+
                 if (!string.IsNullOrEmpty(entityRecodingsFile) && File.Exists(entityRecodingsFile)) {
                     var entityCodeConversionConfiguration = EntityCodeConversionConfiguration.FromXmlFile(entityRecodingsFile);
                     writerFactory = () => new RecodingDataSourceWriter(
-                        new ZippedCsvFileDataSourceWriter(targetFileName, csvTempFolder, options.KeepTempFiles),
+                        concreteWriter.Invoke(),
                         entityCodeConversionConfiguration.EntityCodeConversions
                     );
                 } else {
-                    writerFactory = () => new ZippedCsvFileDataSourceWriter(targetFileName, csvTempFolder, options.KeepTempFiles);
+                    writerFactory = concreteWriter.Invoke;
                 }
 
                 // Run

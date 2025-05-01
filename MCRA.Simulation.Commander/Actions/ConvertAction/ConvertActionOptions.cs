@@ -2,10 +2,10 @@
 
 namespace MCRA.Simulation.Commander.Actions.ConvertAction {
 
-    [Verb("convert", HelpText = "Convert datafile to zipped csv archive.")]
+    [Verb("convert", HelpText = "Convert datafile to zipped csv or excel archive.")]
     public class ConvertActionOptions : ActionOptionsBase {
 
-        [Value(0, MetaName = "Task input file", HelpText = "Input file containing the simulation task to be processed.", Required = true)]
+        [Value(0, MetaName = "Task input file", HelpText = "Input file containing the input data file.", Required = true)]
         public string InputPath { get; set; }
 
         [Option("keeptempfiles", Default = false, HelpText = "Keep temp files.")]
@@ -20,5 +20,7 @@ namespace MCRA.Simulation.Commander.Actions.ConvertAction {
         [Option("recoding-file", Default = null, HelpText = "Recoding configuration.")]
         public string EntityRecodingFileName { get; set; }
 
+        [Option('t', "filetype", Default = "csv", HelpText = "Output file type (csv or excel)")]
+        public string FileType { get; set; } = "csv";
     }
 }

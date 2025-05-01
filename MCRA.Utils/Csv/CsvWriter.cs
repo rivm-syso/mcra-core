@@ -168,21 +168,13 @@ namespace MCRA.Utils.Csv {
                     var generateField = displayAttribute?.GetAutoGenerateField();
                     if (generateField ?? true) {
                         var formatAttribute = property.GetAttribute<DisplayFormatAttribute>(false);
-                        var isNumeric = property.PropertyType == typeof(double)
-                            || property.PropertyType == typeof(decimal)
-                            || property.PropertyType == typeof(float)
-                            || property.PropertyType == typeof(int)
-                            || property.PropertyType == typeof(double?)
-                            || property.PropertyType == typeof(decimal?)
-                            || property.PropertyType == typeof(float?)
-                            || property.PropertyType == typeof(int?);
                         var isInteger = property.PropertyType == typeof(int) || property.PropertyType == typeof(int?);
                         var isEnum = property.PropertyType.IsSubclassOf(typeof(Enum));
                         var propertyValue = property.GetValue(tableRow, null);
                         string cellValue;
                         if (propertyValue == null) {
                             cellValue = "";
-                        } else if (isNumeric) {
+                        } else if (property.PropertyType.IsNumeric()) {
                             if (!isInteger && Options.SignificantDigits > 0) {
                                 var rounded = RoundToSignificantDigits(Convert.ToDouble(propertyValue), Options.SignificantDigits);
                                 cellValue = string.Format(CultureInfo.InvariantCulture, $"{{0:G{Options.SignificantDigits}}}", rounded);
