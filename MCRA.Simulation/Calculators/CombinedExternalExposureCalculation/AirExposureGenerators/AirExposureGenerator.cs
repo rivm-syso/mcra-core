@@ -35,7 +35,7 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.AirExp
                 throw new Exception("Failed to match any air exposure.");
             }
             var airExposureCollection = new ExternalExposureCollection {
-                ExposureUnit = new ExposureUnitTriple(substanceAmountUnit, ConcentrationMassUnit.PerUnit, TimeScaleUnit.PerDay),
+                SubstanceAmountUnit = substanceAmountUnit,
                 ExposureSource = ExposureSource.Air,
                 ExternalIndividualDayExposures = airIndividualExposures
             };

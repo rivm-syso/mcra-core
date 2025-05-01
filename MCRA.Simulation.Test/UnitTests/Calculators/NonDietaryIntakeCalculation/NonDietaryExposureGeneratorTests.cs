@@ -34,7 +34,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 ExternalExposureUnit.mgPerGBWPerDay,
                 substances,
                 routes,
-                ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerGBWPerDay),
                 123456);
             Assert.AreEqual(result.ExternalIndividualDayExposures.Count, individualDays.Count);
         }
@@ -60,7 +59,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 ExternalExposureUnit.mgPerKgBWPerDay,
                 substances,
                 routes,
-                ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay),
                 123456);
             Assert.AreEqual(result.ExternalIndividualDayExposures.Count, individualDays.Count);
         }
@@ -86,7 +84,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 ExternalExposureUnit.ugPerKgBWPerDay,
                 substances,
                 routes,
-                ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay),
                 123456);
             Assert.AreEqual(result.ExternalIndividualDayExposures.Count, individualDays.Count);
         }
@@ -112,7 +109,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 ExternalExposureUnit.mgPerKgBWPerDay,
                 substances,
                 routes,
-                ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay),
                 123456);
             Assert.AreEqual(result.ExternalIndividualDayExposures.Count, individualDays.Count);
         }
@@ -138,7 +134,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 ExternalExposureUnit.mgPerKgBWPerDay,
                 substances,
                 routes,
-                ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay),
                 123456);
             Assert.AreEqual(result.ExternalIndividualDayExposures.Count, individualDays.Count);
         }
@@ -164,7 +159,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 ExternalExposureUnit.mgPerKgBWPerDay,
                 substances,
                 routes,
-                ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay),
                 123456);
             Assert.AreEqual(result.ExternalIndividualDayExposures.Count, individualDays.Count);
         }
@@ -199,7 +193,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 ExternalExposureUnit.ugPerKgBWPerDay,
                 substances,
                 routes,
-                ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
                 123456);
             Assert.AreEqual(result.ExternalIndividualDayExposures.Count, individualDays.Count);
         }
@@ -220,8 +213,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
             var substances = FakeSubstancesGenerator.Create(1);
             var nonDietarySurveys = FakeNonDietaryExposureSetsGenerator.MockNonDietarySurveys(individuals, substances, routes, random, ExternalExposureUnit.mgPerDay, 2);
             var nonDietaryExposures = nonDietarySurveys.SelectMany(c => c.Value.SelectMany(r => r.NonDietaryExposures)).ToList();
-            var dermal = nonDietaryExposures.Select(c => c.Dermal * 1000).ToList();
-            var oral = nonDietaryExposures.Select(c => c.Oral * 1000).ToList();
+            var dermal = nonDietaryExposures.Select(c => c.Dermal).ToList();
+            var oral = nonDietaryExposures.Select(c => c.Oral).ToList();
 
             var calculator = new NonDietaryUnmatchedCorrelatedExposureGenerator();
             calculator.Initialize(nonDietarySurveys);
@@ -231,7 +224,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 ExternalExposureUnit.ugPerKgBWPerDay,
                 substances,
                 routes,
-                ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
                 123456);
 
             var dermalRandom = result.ExternalIndividualDayExposures
@@ -285,7 +277,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                     ExternalExposureUnit.ugPerKgBWPerDay,
                     substances,
                     routes,
-                    ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay),
                     random.Next());
 
                 var dermalRandom = result.ExternalIndividualDayExposures
@@ -336,7 +327,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 ExternalExposureUnit.ugPerKgBWPerDay,
                 substances,
                 routes,
-                ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay),
                 random.Next());
 
             var dermalRandom = result.ExternalIndividualDayExposures
@@ -398,7 +388,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 ExternalExposureUnit.ugPerKgBWPerDay,
                 substances,
                 routes,
-                ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay),
                 random.Next());
 
             var dermalRandom = result.ExternalIndividualDayExposures

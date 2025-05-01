@@ -35,7 +35,7 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.DustEx
                 throw new Exception("Failed to match any dust exposure.");
             }
             var dustExposureCollection = new ExternalExposureCollection {
-                ExposureUnit = new ExposureUnitTriple(substanceAmountUnit, ConcentrationMassUnit.PerUnit, TimeScaleUnit.PerDay),
+                SubstanceAmountUnit = substanceAmountUnit,
                 ExposureSource = ExposureSource.Dust,
                 ExternalIndividualDayExposures = dustIndividualExposures
             };

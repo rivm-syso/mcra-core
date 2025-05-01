@@ -103,7 +103,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             if (nonDietaryExternalIndividualDayExposures?.Count > 0) {
                 var nonDietaryExposureCollection = new ExternalExposureCollection {
                     ExposureSource = ExposureSource.OtherNonDiet,
-                    ExposureUnit = externalExposuresUnit,
+                    SubstanceAmountUnit = externalExposuresUnit.SubstanceAmountUnit,
                     ExternalIndividualDayExposures = nonDietaryExternalIndividualDayExposures
                 };
                 externalExposureCollections.Add(nonDietaryExposureCollection);

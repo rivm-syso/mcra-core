@@ -16,11 +16,8 @@ using MCRA.Utils.Statistics.RandomGenerators;
 namespace MCRA.Simulation.Actions.NonDietaryExposures {
 
     [ActionType(ActionType.NonDietaryExposures)]
-    public class NonDietaryExposuresActionCalculator : ActionCalculatorBase<INonDietaryExposuresActionResult> {
+    public class NonDietaryExposuresActionCalculator(ProjectDto project) : ActionCalculatorBase<INonDietaryExposuresActionResult>(project) {
         private NonDietaryExposuresModuleConfig ModuleConfig => (NonDietaryExposuresModuleConfig)_moduleSettings;
-
-        public NonDietaryExposuresActionCalculator(ProjectDto project) : base(project) {
-        }
 
         protected override void verify() {
             _actionDataLinkRequirements[ScopingType.NonDietaryExposures][ScopingType.Compounds].AlertTypeMissingData = AlertType.Notification;
@@ -52,6 +49,15 @@ namespace MCRA.Simulation.Actions.NonDietaryExposures {
                 ExposureRoute.Inhalation,
                 ExposureRoute.Oral
             ];
+
+            var exposureUnits = subsetManager.NonDietaryExposureSets
+                .Select(c => c.NonDietarySurvey.ExposureUnit)
+                .ToHashSet();
+            if (exposureUnits.Count == 1) {
+                data.NonDietaryExposureUnit = exposureUnits.First();
+            } else {
+                throw new Exception("The nondietary surveys have different exposure units, which is currently not allowed.");
+            }
             localProgress.Update(100);
         }
 

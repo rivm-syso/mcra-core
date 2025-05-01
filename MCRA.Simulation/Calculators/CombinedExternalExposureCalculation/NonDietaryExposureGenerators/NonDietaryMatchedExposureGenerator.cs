@@ -12,7 +12,6 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.NonDie
             NonDietarySurvey nonDietarySurvey,
             ICollection<Compound> substances,
             ICollection<ExposureRoute> routes,
-            ExposureUnitTriple targetUnit,
             IRandom randomIndividual
         ) {
             var externalIndividualDayExposures = new List<IExternalIndividualDayExposure>();
@@ -23,11 +22,9 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.NonDie
                     ) {
                         var externalIndividualDayExposure = createExternalIndividualDayExposure(
                             exposureSet,
-                            nonDietarySurvey,
                             individualDay,
                             substances,
-                            routes,
-                            targetUnit
+                            routes
                         );
                         if (externalIndividualDayExposure != null) {
                             externalIndividualDayExposures.Add(externalIndividualDayExposure);

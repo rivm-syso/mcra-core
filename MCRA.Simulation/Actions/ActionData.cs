@@ -719,7 +719,10 @@ namespace MCRA.Simulation {
             set => GetOrCreateModuleOutputData<NonDietaryExposuresOutputData>(ActionType.NonDietaryExposures).NonDietaryExposureRoutes = value;
         }
 
-        public ExternalExposureUnit NonDietaryExposureUnit => GetOrCreateModuleOutputData<NonDietaryExposuresOutputData>(ActionType.NonDietaryExposures).NonDietaryExposureUnit;
+        public ExternalExposureUnit NonDietaryExposureUnit {
+            get => GetOrCreateModuleOutputData<NonDietaryExposuresOutputData>(ActionType.NonDietaryExposures).NonDietaryExposureUnit;
+            set => GetOrCreateModuleOutputData<NonDietaryExposuresOutputData>(ActionType.NonDietaryExposures).NonDietaryExposureUnit = value;
+        }
 
         // NonDietaryExposureSources
         public ICollection<NonDietaryExposureSource> NonDietaryExposureSources {

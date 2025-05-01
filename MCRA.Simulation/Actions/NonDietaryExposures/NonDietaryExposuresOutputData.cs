@@ -8,20 +8,13 @@ namespace MCRA.Simulation.Actions.NonDietaryExposures {
         public ICollection<NonDietaryExposureSet> NonDietaryExposureSets { get; set; }
         public IDictionary<NonDietarySurvey, List<NonDietaryExposureSet>> NonDietaryExposures { get; set; }
         public ICollection<ExposureRoute> NonDietaryExposureRoutes { get; set; }
-        public ExternalExposureUnit NonDietaryExposureUnit {
-            get {
-                if (NonDietaryExposureSets?.Count > 0) {
-                    return NonDietaryExposureSets.First().NonDietarySurvey.ExposureUnit;
-                } else {
-                    return ExternalExposureUnit.mgPerDay;
-                }
-            }
-        }
+        public ExternalExposureUnit NonDietaryExposureUnit { get; set; }
         public IModuleOutputData Copy() {
             return new NonDietaryExposuresOutputData() {
                 NonDietaryExposureSets = NonDietaryExposureSets,
                 NonDietaryExposures = NonDietaryExposures,
                 NonDietaryExposureRoutes = NonDietaryExposureRoutes,
+                NonDietaryExposureUnit = NonDietaryExposureUnit,
             };
         }
     }

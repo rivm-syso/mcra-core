@@ -35,7 +35,7 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.DietEx
                 throw new Exception("Failed to match any dietary exposure to a dietary exposure.");
             }
             var dietExposureCollection = new ExternalExposureCollection {
-                ExposureUnit = new ExposureUnitTriple(substanceAmountUnit, ConcentrationMassUnit.PerUnit, TimeScaleUnit.PerDay),
+                SubstanceAmountUnit = substanceAmountUnit,
                 ExposureSource = ExposureSource.Diet,
                 ExternalIndividualDayExposures = dietIndividualExposures
             };

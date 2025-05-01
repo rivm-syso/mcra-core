@@ -8,19 +8,18 @@ using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.ActionComparison;
-using MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculation;
-using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
-using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation;
-using MCRA.Simulation.Calculators.ExternalExposureCalculation;
-using MCRA.Simulation.Calculators.KineticModelCalculation;
-using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
-using MCRA.Simulation.Calculators.PercentilesUncertaintyFactorialCalculation;
 using MCRA.Simulation.Calculators.CombinedExternalExposureCalculation;
 using MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.AirExposureGenerators;
 using MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.DietExposureGenerator;
 using MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.DustExposureGenerators;
 using MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.NonDietaryExposureGenerators;
 using MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.SoilExposureGenerators;
+using MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculation;
+using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
+using MCRA.Simulation.Calculators.ExternalExposureCalculation;
+using MCRA.Simulation.Calculators.KineticModelCalculation;
+using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
+using MCRA.Simulation.Calculators.PercentilesUncertaintyFactorialCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
 using MCRA.Simulation.Objects;
 using MCRA.Simulation.OutputGeneration;
@@ -381,7 +380,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         data.NonDietaryExposureUnit,
                         data.ActiveSubstances,
                         ModuleConfig.ExposureRoutes,
-                        externalExposureUnit,
                         ModuleConfig.ExposureType,
                         seedNonDietaryExposuresSampling
                     );
@@ -442,7 +440,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 ExternalExposureCollection dietExposureCollection = null;
                 if (ModuleConfig.IndividualReferenceSet == ExposureSource.Diet) {
                     dietExposureCollection = new ExternalExposureCollection {
-                        ExposureUnit = new ExposureUnitTriple(data.DietaryExposureUnit.SubstanceAmountUnit, ConcentrationMassUnit.PerUnit, TimeScaleUnit.PerDay),
+                        SubstanceAmountUnit = data.DietaryExposureUnit.SubstanceAmountUnit,
                         ExposureSource = ExposureSource.Diet,
                         ExternalIndividualDayExposures = data.DietaryIndividualDayIntakes
                             .AsParallel()

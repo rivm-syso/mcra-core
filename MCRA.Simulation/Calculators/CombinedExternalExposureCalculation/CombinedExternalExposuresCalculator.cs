@@ -25,12 +25,12 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation {
                 .WithCancellation(cancelToken)
                 .SelectMany(c => c.ExternalIndividualDayExposures,
                     (c, r) => (
-                        exposureUnit: c.ExposureUnit,
+                        substanceAmountUnit: c.SubstanceAmountUnit,
                         externalIndividualDayExposures: r
                     ))
                 .GroupBy(c => c.externalIndividualDayExposures.SimulatedIndividualDayId)
                 .Select(r => {
-                    var externalExposures = r.Select(s => (s.exposureUnit, s.externalIndividualDayExposures)).ToList();
+                    var externalExposures = r.Select(s => (s.substanceAmountUnit, s.externalIndividualDayExposures)).ToList();
                     return createExternalIndividualDayExposure(
                         externalExposures,
                         paths,
@@ -67,7 +67,7 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation {
         }
 
         private static ExternalIndividualDayExposure createExternalIndividualDayExposure(
-            List<(ExposureUnitTriple, IExternalIndividualDayExposure)> externalExposures,
+            List<(SubstanceAmountUnit AmountUnit, IExternalIndividualDayExposure IndividualDayExposure)> externalExposures,
             ICollection<ExposurePath> paths,
             ExposureUnitTriple targetUnit
         ) {
@@ -88,7 +88,7 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation {
         /// Change: aggregate the Oral dietary route with the Oral nondietary route.
         /// </summary>
         private static Dictionary<ExposurePath, List<IIntakePerCompound>> collectIndividualDayExposurePerRouteSubstance(
-            List<(ExposureUnitTriple, IExternalIndividualDayExposure)> externalIndividualDayExposures,
+            List<(SubstanceAmountUnit AmountUnit, IExternalIndividualDayExposure IndividualDayExposure)> externalIndividualDayExposures,
             ICollection<ExposurePath> paths,
             ExposureUnitTriple targetUnit
         ) {
@@ -96,17 +96,14 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation {
             foreach (var path in paths) {
                 var intakesPerSubstance = new List<IIntakePerCompound>();
                 foreach (var externalIndividualDayExposure in externalIndividualDayExposures) {
-                    var exposureUnit = externalIndividualDayExposure.Item1;
-                    var bodyWeight = externalIndividualDayExposure.Item2.SimulatedIndividual.BodyWeight;
-                    var externalExposurePerSubstance = externalIndividualDayExposure.Item2.ExposuresPerPath
+                    var exposureAmountUnit = externalIndividualDayExposure.AmountUnit;
+                    var bodyWeight = externalIndividualDayExposure.IndividualDayExposure.SimulatedIndividual.BodyWeight;
+                    var externalExposurePerSubstance = externalIndividualDayExposure.IndividualDayExposure.ExposuresPerPath
                         .Where(r => r.Key == path)
                         .SelectMany(r => r.Value)
                         .Select(g => {
-                            var alignmentFactor = exposureUnit
-                                .GetAlignmentFactor(targetUnit, g.Compound.MolecularMass, bodyWeight);
-                            if (targetUnit.IsPerBodyWeight()) {
-                                alignmentFactor *= bodyWeight;
-                            }
+                            var alignmentFactor = exposureAmountUnit
+                                .GetMultiplicationFactor(targetUnit.SubstanceAmountUnit, g.Compound.MolecularMass);
                             var result = new AggregateIntakePerCompound() {
                                 Compound = g.Compound,
                                 Amount = g.Amount * alignmentFactor

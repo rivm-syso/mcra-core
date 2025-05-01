@@ -35,7 +35,7 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.SoilEx
                 throw new Exception("Failed to match any soil exposure.");
             }
             var soilExposureCollection = new ExternalExposureCollection {
-                ExposureUnit = new ExposureUnitTriple(substanceAmountUnit, ConcentrationMassUnit.PerUnit, TimeScaleUnit.PerDay),
+                SubstanceAmountUnit = substanceAmountUnit,
                 ExposureSource = ExposureSource.Soil,
                 ExternalIndividualDayExposures = soilIndividualExposures
             };

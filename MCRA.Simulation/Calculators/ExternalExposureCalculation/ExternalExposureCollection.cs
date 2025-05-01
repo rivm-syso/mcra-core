@@ -4,9 +4,9 @@ namespace MCRA.Simulation.Calculators.ExternalExposureCalculation {
     public sealed class ExternalExposureCollection {
 
         /// <summary>
-        /// The exposure unit.
+        /// Substance amount unit of the individual day exposures.
         /// </summary>
-        public ExposureUnitTriple ExposureUnit { get; set; }
+        public SubstanceAmountUnit SubstanceAmountUnit { get; set; }
 
         /// <summary>
         /// Exposure source of this collection.
