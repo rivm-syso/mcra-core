@@ -30,6 +30,7 @@
         <string>idResidueDefinition</string>
         <string>ResidueDefinition</string>
         <string>MeasuredSubstance</string>
+        <string>ParamCodeMeasuredSubstance</string>
       </Aliases>
       <ForeignKeyTables>
         <string>Compounds</string>
@@ -45,6 +46,7 @@
         <string>idSubstance</string>
         <string>ActiveSubstance</string>
         <string>Substance</string>
+        <string>ParamCodeActiveSubstance</string>
       </Aliases>
       <ForeignKeyTables>
         <string>Compounds</string>
