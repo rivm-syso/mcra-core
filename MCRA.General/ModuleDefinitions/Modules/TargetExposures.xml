@@ -83,6 +83,10 @@
     <CalculationSetting source="PbkModels">NumberOfDosesPerDayNonDietaryOral</CalculationSetting>
     <CalculationSetting source="PbkModels">SelectedEvents</CalculationSetting>
     <CalculationSetting source="PbkModels">SpecifyEvents</CalculationSetting>
+    <CalculationSetting>AirSexAlignment</CalculationSetting>
+    <CalculationSetting>AirAgeAlignment</CalculationSetting>
+    <CalculationSetting>AirAgeAlignmentMethod</CalculationSetting>
+    <CalculationSetting>AirAgeBins</CalculationSetting>
   </CalculationSettings>
   <UncertaintySettings>
     <UncertaintySetting source="KineticConversionFactors">ResampleKineticConversionFactors</UncertaintySetting>

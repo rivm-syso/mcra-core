@@ -46,6 +46,31 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 ) {
                     section.SummarizeSetting(SettingsItemType.DustPopulationAlignmentMethod, _configuration.DustPopulationAlignmentMethod);
                 }
+                if (_configuration.ExposureSources.Contains(ExposureSource.Soil)
+                    && _configuration.IndividualReferenceSet != ExposureSource.Soil
+                ) {
+                    section.SummarizeSetting(SettingsItemType.SoilPopulationAlignmentMethod, _configuration.SoilPopulationAlignmentMethod);
+                }
+                if (_configuration.ExposureSources.Contains(ExposureSource.Air)
+                    && _configuration.IndividualReferenceSet != ExposureSource.Air
+                ) {
+                    section.SummarizeSetting(SettingsItemType.AirPopulationAlignmentMethod, _configuration.AirPopulationAlignmentMethod);
+                    if (_configuration.AirPopulationAlignmentMethod == PopulationAlignmentMethod.MatchRandom) {
+                        section.SummarizeSetting(SettingsItemType.AirAgeAlignment, _configuration.AirAgeAlignment);
+                        if (_configuration.AirAgeAlignment) {
+                            section.SummarizeSetting(SettingsItemType.AirAgeAlignmentMethod, _configuration.AirAgeAlignmentMethod);
+                            if (_configuration.AirAgeAlignmentMethod == AgeAlignmentMethod.AgeBins) {
+                                section.SummarizeSetting(SettingsItemType.AirAgeBins, _configuration.AirAgeBins);
+                            }
+                        }
+                        section.SummarizeSetting(SettingsItemType.AirSexAlignment, _configuration.AirSexAlignment);
+                    }
+                }
+                if (_configuration.ExposureSources.Contains(ExposureSource.Diet)
+                    && _configuration.IndividualReferenceSet != ExposureSource.Diet
+                ) {
+                    section.SummarizeSetting(SettingsItemType.DietPopulationAlignmentMethod, _configuration.DietPopulationAlignmentMethod);
+                }
             }
 
             if (_configuration.RequirePbkModels) {
@@ -68,6 +93,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     }
                 }
             }
+
 
             // MCR analysis
             section.SummarizeSetting(SettingsItemType.McrAnalysis, _configuration.McrAnalysis);

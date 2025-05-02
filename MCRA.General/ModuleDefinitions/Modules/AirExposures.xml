@@ -30,7 +30,6 @@
     <CalculationSetting>AirExposuresIndividualGenerationMethod</CalculationSetting>
     <CalculationSetting source="Action">RandomSeed</CalculationSetting>
     <CalculationSetting>SelectedExposureRoutes</CalculationSetting>
-    <CalculationSetting>AirPopulationAlignmentMethod</CalculationSetting>
   </CalculationSettings>
   <OutputSettings>
     <OutputSetting source="Action">VariabilityLowerPercentage</OutputSetting>

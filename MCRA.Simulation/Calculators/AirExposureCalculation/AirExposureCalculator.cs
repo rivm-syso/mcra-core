@@ -24,6 +24,8 @@ namespace MCRA.Simulation.Calculators.AirExposureCalculation {
             ExposureUnitTriple targetUnit,
             IRandom airExposureDeterminantsRandomGenerator
         ) {
+            airVentilatoryFlowRates = [.. airVentilatoryFlowRates.OrderBy(x => x.AgeLower)];
+            airIndoorFractions = [.. airIndoorFractions.OrderBy(x => x.AgeLower)];
             var needsAge = airVentilatoryFlowRates.All(r => r.AgeLower.HasValue)
                 || airIndoorFractions.All(r => r.AgeLower.HasValue);
             if (needsAge && individualDays.Any(r => r.SimulatedIndividual.Age == null)) {
@@ -32,7 +34,7 @@ namespace MCRA.Simulation.Calculators.AirExposureCalculation {
 
             var needsSex = airVentilatoryFlowRates.All(r => r.Sex != GenderType.Undefined);
             if (needsSex && individualDays.Any(r => r.SimulatedIndividual.Gender == GenderType.Undefined)) {
-                throw new Exception("Missing values for gender in individuals.");
+                throw new Exception("Missing values for sex in individuals.");
             }
 
             var flowRateRandomGenerator = new McraRandomGenerator(airExposureDeterminantsRandomGenerator.Next());
@@ -94,25 +96,25 @@ namespace MCRA.Simulation.Calculators.AirExposureCalculation {
             McraRandomGenerator airConcentrationsRandomGenerator
         ) {
             // TODO: create random generator per substance
-            // TODO it is assumed that indoor and outdoor concentrations are independent.
+            // Note: it is assumed that indoor and outdoor concentrations are independent.
             var airExposurePerSubstance = new List<IIntakePerCompound>();
             foreach (var substance in substances) {
                 var amount = 0d;
                 if (adjustedIndoorAirConcentrations.TryGetValue(substance, out var indoorConcentrations)) {
                     var individualIndoorConcentration = indoorConcentrations
                         .DrawRandom(airConcentrationsRandomGenerator);
-                    amount = individualFlowRate * individualIndoorConcentration * indoorFraction;
+                    amount += individualFlowRate * individualIndoorConcentration * indoorFraction;
                 }
                 if (adjustedOutdoorAirConcentrations.TryGetValue(substance, out var outdoorConcentrations)) {
                     var individualOutdoorConcentration = outdoorConcentrations
                         .DrawRandom(airConcentrationsRandomGenerator);
-                    amount =+ individualFlowRate * individualOutdoorConcentration * (1 - indoorFraction);
+                    amount += individualFlowRate * individualOutdoorConcentration * (1 - indoorFraction);
                 }
                 var exposure = new ExposurePerSubstance {
-                        Compound = substance,
-                        Amount = amount
-                    };
-                    airExposurePerSubstance.Add(exposure);
+                    Compound = substance,
+                    Amount = amount
+                };
+                airExposurePerSubstance.Add(exposure);
             }
             return airExposurePerSubstance;
         }

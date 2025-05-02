@@ -1,6 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.AirExposureCalculation;
+using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Objects;
 using MCRA.Utils.Statistics;
@@ -26,8 +27,7 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.AirExp
                     [.. individualExposures],
                     airIndividualDayExposures,
                     substances,
-                    new McraRandomGenerator(RandomUtils.CreateSeed(seed, individualExposures.Key))
-                ))
+                    new McraRandomGenerator(RandomUtils.CreateSeed(seed, individualExposures.Key))))
                 .ToList();
 
             // Check if success
@@ -49,11 +49,28 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.AirExp
             IRandom randomIndividual
         );
 
-        protected ExternalIndividualDayExposure createExternalIndividualDayExposure(
+        protected static ExternalIndividualDayExposure createExternalIndividualDayExposure(
             IIndividualDay individualDay,
             AirIndividualDayExposure individualDayExposure
         ) {
             return new ExternalIndividualDayExposure(individualDayExposure.ExposuresPerPath) {
+                SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId,
+                SimulatedIndividual = individualDay.SimulatedIndividual,
+                Day = individualDay.Day,
+            };
+        }
+
+        /// <summary>
+        /// Is this really needed? Don't think so
+        /// </summary>
+        protected static ExternalIndividualDayExposure createEmptyExternalIndividualDayExposure(
+            IIndividualDay individualDay,
+            HashSet<ExposurePath> exposurePaths
+        ) {
+            var emptyExposuresPerPath = exposurePaths
+                .Select(c => c)
+                .ToDictionary(c => c, c => new List<IIntakePerCompound>());
+            return new ExternalIndividualDayExposure(emptyExposuresPerPath) {
                 SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId,
                 SimulatedIndividual = individualDay.SimulatedIndividual,
                 Day = individualDay.Day,

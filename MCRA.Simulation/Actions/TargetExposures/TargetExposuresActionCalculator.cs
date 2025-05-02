@@ -294,7 +294,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             CompositeProgressState progressReport
         ) {
             var result = new TargetExposuresActionResult();
-
             var localProgress = progressReport.NewProgressState(20);
 
             ExposureUnitTriple externalExposureUnit;
@@ -418,10 +417,17 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 externalExposureCollections.Add(soilExposureCollection);
             }
 
-            // Align air exposures
             if (ModuleConfig.ExposureSources.Contains(ExposureSource.Air)) {
+                // Align air exposures
                 localProgress.Update("Matching air exposures");
-                var airExposureCalculator = AirExposureGeneratorFactory.Create(ModuleConfig.AirPopulationAlignmentMethod);
+                var airExposureCalculator = AirExposureGeneratorFactory.Create(
+                    ModuleConfig.AirPopulationAlignmentMethod,
+                    ModuleConfig.AirAgeAlignment,
+                    ModuleConfig.AirSexAlignment,
+                    ModuleConfig.AirAgeAlignmentMethod,
+                    ModuleConfig.AirAgeBins
+                );
+
                 var seedAirExposuresSampling = RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.AIE_DrawAirExposures);
                 var airExposureCollection = airExposureCalculator
                     .Generate(

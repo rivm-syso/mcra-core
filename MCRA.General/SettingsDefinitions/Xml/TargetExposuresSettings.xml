@@ -79,4 +79,30 @@
     <Description>Population aligment methods for dietary exposure sources.</Description>
     <ValueType>PopulationAlignmentMethod</ValueType>
   </SettingsItem>
+  <SettingsItem>
+    <Id>AirAgeAlignment</Id>
+    <Name>Match at random based on age</Name>
+    <Description>Air exposures are randomly matched on stratifying covariable age.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>AirSexAlignment</Id>
+    <Name>Match at random based on sex</Name>
+    <Description>Match at random based on stratifying cofactor sex.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>AirAgeAlignmentMethod</Id>
+    <Name>Matching method for age</Name>
+    <Description>Match at random based on age using user defined bins (in years) or fit to closest available set of ages.</Description>
+    <ValueType>AgeAlignmentMethod</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>AirAgeBins</Id>
+    <Name>Specify bins:</Name>
+    <Description>Specify bins, e.g. 10 25 50 (space separated) in years.</Description>
+    <ValueType>Numeric</ValueType>
+    <IsList>true</IsList>
+    <DefaultValue>25,50,75,100</DefaultValue>
+  </SettingsItem>
 </SettingsItems>

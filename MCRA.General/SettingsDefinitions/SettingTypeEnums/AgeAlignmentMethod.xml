@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>AgeAlignmentMethod</Id>
+  <Name>Age alignment method</Name>
+  <Description>
+    Age alignment method used for the selected exposure source.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>FitClosest</Id>
+      <Name>Fit to closest available age</Name>
+      <ShortName>Closest</ShortName>
+      <Description>Fit to closest available age.</Description>
+      <Aliases>
+        <Alias>FitClosest</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>AgeBins</Id>
+      <Name>User defined bins (in years)</Name>
+      <ShortName>Bins</ShortName>
+      <Description>User defined bins.</Description>
+      <Aliases>
+        <Alias>AgeBins</Alias>
+      </Aliases>
+    </Unit>
+  </Units>
+</UnitDefinition>
