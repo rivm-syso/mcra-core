@@ -84,10 +84,26 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double ResponseValue { get; set; }
 
+        [Display(AutoGenerateField = false)]
+        public List<double> ResponseValues { get; set; }
+
+        [Description("Median percentile specific response value ({EffectMetric}).")]
+        [DisplayName("Percentile specific {EffectMetric} median")]
+        [DisplayFormat(DataFormatString = "{0:G3}")]
+        public double MedianResponseValue { get { return ResponseValues.Count != 0 ? ResponseValues.Percentile(50) : double.NaN; } }
+
         [Description("Percentile specific attributable fraction.")]
         [DisplayName("Percentile specific AF")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double AttributableFraction { get; set; }
+
+        [Display(AutoGenerateField = false)]
+        public List<double> AttributableFractions { get; set; }
+
+        [Description("Median percentile specific attributable fraction.")]
+        [DisplayName("Percentile specific AF median")]
+        [DisplayFormat(DataFormatString = "{0:G3}")]
+        public double MedianAttributableFraction { get { return AttributableFractions.Count != 0 ? AttributableFractions.Percentile(50) : double.NaN; } }
 
         [Description("Total burden of disease.")]
         [DisplayName("Total BoD")]
@@ -134,7 +150,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<double> CumulativeAttributableBods { get; set; }
 
         [Description("Median cumulative burden of disease attributable to part of population identified by exposure bin.")]
-        [DisplayName("Cumulative attributable BoD median (%")]
+        [DisplayName("Cumulative attributable BoD median (%)")]
         [DisplayFormat(DataFormatString = "{0:F1}")]
         public double MedianCumulativeAttributableBod { get { return CumulativeAttributableBods.Count != 0 ? CumulativeAttributableBods.Percentile(50) : double.NaN; } }
 

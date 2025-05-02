@@ -242,7 +242,7 @@ namespace MCRA.Simulation.Action {
                 if (activeUncertaintySettings.Contains(SettingsItemType.ResampleExposureResponseFunctions)) {
                     section.SummarizeSetting(
                         SettingsItemType.ResampleExposureResponseFunctions,
-                        project.EnvironmentalBurdenOfDiseaseSettings.ResampleExposureResponseFunctions
+                        project.ExposureResponseFunctionsSettings.ResampleExposureResponseFunctions
                     );
                 }
 

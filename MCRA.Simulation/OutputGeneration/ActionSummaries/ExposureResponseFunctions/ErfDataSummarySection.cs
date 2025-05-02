@@ -1,5 +1,5 @@
-﻿using MCRA.Data.Compiled.Objects;
-using MCRA.General;
+﻿using MCRA.General;
+using MCRA.Simulation.Calculators.ExposureResponseFunctions;
 using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.OutputGeneration {
@@ -7,7 +7,11 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public List<ErfDataSummaryRecord> Records { get; set; }
 
-        public void Summarize(List<ExposureResponseFunction> exposureResponseFunctions) {
+        public void Summarize(ICollection<IExposureResponseFunctionModel> exposureResponseFunctionModels) {
+            var exposureResponseFunctions = exposureResponseFunctionModels
+                .Select(r => r.ExposureResponseFunction)
+                .ToList();
+
             Records = exposureResponseFunctions
                 .Select(r => {
                     var record = new ErfDataSummaryRecord {

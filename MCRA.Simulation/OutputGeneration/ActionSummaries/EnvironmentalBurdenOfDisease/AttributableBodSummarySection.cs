@@ -26,7 +26,9 @@ namespace MCRA.Simulation.OutputGeneration {
                     Exposures = [],
                     TargetUnit = s.TargetUnit.GetShortDisplayName(),
                     ResponseValue = s.ResponseValue,
+                    ResponseValues = [],
                     AttributableFraction = s.AttributableFraction,
+                    AttributableFractions = [],
                     TotalBod = s.TotalBod,
                     AttributableBod = s.AttributableBod,
                     AttributableBods = [],
@@ -54,6 +56,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 );
                 record.UncertaintyLowerBound = lowerBound;
                 record.UncertaintyUpperBound = upperBound;
+                record.ResponseValues.Add(item.ResponseValue);
+                record.AttributableFractions.Add(item.AttributableFraction);
                 record.AttributableBods.Add(item.AttributableBod);
                 record.StandardisedExposedAttributableBods.Add(item.AttributableBod / item.ExposurePercentileBin.Percentage);
                 record.BinPercentages.Add(item.ExposurePercentileBin.Percentage);

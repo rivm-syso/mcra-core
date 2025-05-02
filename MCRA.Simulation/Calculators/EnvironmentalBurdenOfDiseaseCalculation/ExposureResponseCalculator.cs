@@ -1,5 +1,5 @@
-﻿using MCRA.Data.Compiled.Objects;
-using MCRA.General;
+﻿using MCRA.General;
+using MCRA.Simulation.Calculators.ExposureResponseFunctions;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Utils.Statistics;
 
@@ -7,11 +7,11 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
 
     public class ExposureResponseCalculator {
 
-        public ExposureResponseFunction ExposureResponseFunction { get; set; }
+        public IExposureResponseFunctionModel ExposureResponseFunctionModel { get; set; }
         public List<ExposureInterval> ExposureIntervals { get; set; }
 
-        public ExposureResponseCalculator(ExposureResponseFunction exposureResponseFunction) {
-            ExposureResponseFunction = exposureResponseFunction;
+        public ExposureResponseCalculator(IExposureResponseFunctionModel exposureResponseFunctionModel) {
+            ExposureResponseFunctionModel = exposureResponseFunctionModel;
         }
 
         public List<ExposureResponseResultRecord> Compute(
@@ -20,13 +20,15 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
             List<PercentileInterval> defaultPercentileIntervals,
             ExposureGroupingMethod exposureGroupingMethod
         ) {
-            var substance = ExposureResponseFunction.Substance;
+            var erf = ExposureResponseFunctionModel.ExposureResponseFunction;
+
+            var substance = erf.Substance;
 
             var unitAlignmentFactor = targetUnit.GetAlignmentFactor(
-                ExposureResponseFunction.TargetUnit, substance.MolecularMass, double.NaN
+                erf.TargetUnit, substance.MolecularMass, double.NaN
             );
 
-            var useErfBins = ExposureResponseFunction.HasErfSubGroups
+            var useErfBins = erf.HasErfSubGroups()
                 && exposureGroupingMethod == ExposureGroupingMethod.ErfDefinedBins;
 
             var bins = getBins(
@@ -65,7 +67,9 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
             List<ITargetIndividualExposure> exposures,
             double unitAlignmentFactor
         ) {
-            var substance = ExposureResponseFunction.Substance;
+            var erf = ExposureResponseFunctionModel.ExposureResponseFunction;
+
+            var substance = erf.Substance;
 
             var weights = exposures
                 .Select(c => c.SimulatedIndividual.SamplingWeight)
@@ -74,11 +78,11 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
                 .Select(c => c.GetSubstanceExposure(substance))
                 .ToList();
             var upperBounds = new List<double> {
-                ExposureResponseFunction.Baseline * unitAlignmentFactor
+                erf.Baseline * unitAlignmentFactor
             };
-            if (ExposureResponseFunction.HasErfSubGroups) {
+            if (erf.HasErfSubGroups()) {
                 upperBounds.AddRange(
-                    ExposureResponseFunction.ErfSubgroups
+                    erf.ErfSubgroups
                         .OrderBy(r => r.ExposureUpper ?? double.PositiveInfinity)
                         .Select(r => r.ExposureUpper * unitAlignmentFactor ?? double.NaN)
                     );
@@ -112,7 +116,9 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
             List<ITargetIndividualExposure> exposures,
             List<PercentileInterval> percentileIntervals
         ) {
-            var substance = ExposureResponseFunction.Substance;
+            var erf = ExposureResponseFunctionModel.ExposureResponseFunction;
+
+            var substance = erf.Substance;
 
             var weights = exposures
                 .Select(c => c.SimulatedIndividual.SamplingWeight)
@@ -149,23 +155,25 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
             bool useErfBins,
             int exposureBinId
         ) {
-            var exposureLevel = !double.IsNaN(exposureInterval.Upper) 
+            var erf = ExposureResponseFunctionModel.ExposureResponseFunction;
+
+            var exposureLevel = !double.IsNaN(exposureInterval.Upper)
                 ? exposureInterval.Upper : exposureInterval.Lower;
 
             var result = new ExposureResponseResultRecord {
-                ExposureResponseFunction = ExposureResponseFunction,
-                ExposureResponseType = ExposureResponseFunction.ExposureResponseType,
+                ExposureResponseFunction = erf,
+                ExposureResponseType = erf.ExposureResponseType,
                 IsErfDefinedExposureBin = useErfBins,
                 ExposureBinId = exposureBinId,
                 ExposureInterval = exposureInterval,
                 PercentileInterval = percentileInterval,
                 ExposureLevel = exposureLevel,
                 ErfDoseUnitAlignmentFactor = unitAlignmentFactor,
-                PercentileSpecificRisk = ExposureResponseFunction
+                PercentileSpecificRisk = ExposureResponseFunctionModel
                     .Compute(exposureLevel * unitAlignmentFactor),
                 TargetUnit = targetUnit,
-                Substance = ExposureResponseFunction.Substance,
-                EffectMetric = ExposureResponseFunction.EffectMetric
+                Substance = erf.Substance,
+                EffectMetric = erf.EffectMetric
             };
             return result;
         }

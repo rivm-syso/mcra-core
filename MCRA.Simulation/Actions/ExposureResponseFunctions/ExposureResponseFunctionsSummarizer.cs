@@ -22,7 +22,7 @@ namespace MCRA.Simulation.Actions.ExposureResponseFunctions {
                 SectionLabel = ActionType.ToString()
             };
             var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
-            section.Summarize(data.ExposureResponseFunctions);
+            section.Summarize(data.ExposureResponseFunctionModels);
             subHeader.SaveSummarySection(section);
         }
     }

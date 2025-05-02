@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsItems>
+  <!-- Exposure response functions settings  -->
+  <SettingsItem>
+    <Id>ResampleExposureResponseFunctions</Id>
+    <Name>Resample exposure response function values</Name>
+    <Description>Specifies whether exposure response function values are resampled.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+</SettingsItems>

@@ -100,6 +100,7 @@ using MCRA.Simulation.Calculators.SoilExposureCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.Simulation.Calculators.FoodConversionCalculation;
+using MCRA.Simulation.Calculators.ExposureResponseFunctions;
 
 namespace MCRA.Simulation {
     public class ActionData {
@@ -450,9 +451,9 @@ namespace MCRA.Simulation {
         }
 
         // ExposureResponseFunctions
-        public List<ExposureResponseFunction> ExposureResponseFunctions {
-            get => (List<ExposureResponseFunction>)GetOrCreateModuleOutputData<ExposureResponseFunctionsOutputData>(ActionType.ExposureResponseFunctions).ExposureResponseFunctions;
-            set => GetOrCreateModuleOutputData<ExposureResponseFunctionsOutputData>(ActionType.ExposureResponseFunctions).ExposureResponseFunctions = value;
+        public ICollection<IExposureResponseFunctionModel> ExposureResponseFunctionModels {
+            get => GetOrCreateModuleOutputData<ExposureResponseFunctionsOutputData>(ActionType.ExposureResponseFunctions).ExposureResponseFunctionModels;
+            set => GetOrCreateModuleOutputData<ExposureResponseFunctionsOutputData>(ActionType.ExposureResponseFunctions).ExposureResponseFunctionModels = value;
         }
 
         // BaselineBodIndicators

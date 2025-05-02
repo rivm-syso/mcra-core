@@ -141,7 +141,7 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
             };
 
             section.Summarize(
-                data.ExposureResponseFunctions,
+                data.ExposureResponseFunctionModels,
                 data.EnvironmentalBurdenOfDiseases
             );
             var subHeader = header.AddSubSectionHeaderFor(

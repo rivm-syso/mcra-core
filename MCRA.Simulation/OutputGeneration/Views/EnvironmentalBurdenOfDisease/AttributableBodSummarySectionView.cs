@@ -21,8 +21,10 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add("StandardisedExposedAttributableBod");
                 hiddenProperties.Add("CumulativeAttributableBod");
                 hiddenProperties.Add("CumulativeStandardisedExposedAttributableBod");
-                hiddenProperties.Add("Exposure");
                 hiddenProperties.Add("BinPercentage");
+                hiddenProperties.Add("Exposure");
+                hiddenProperties.Add("ResponseValue");
+                hiddenProperties.Add("AttributableFraction");
                 hiddenProperties.Add("TotalBod");
             } else {
                 hiddenProperties.Add("LowerAttributableBod");
@@ -44,6 +46,8 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add("UpperBoundExposure");
                 hiddenProperties.Add("MedianExposure");
                 hiddenProperties.Add("MedianBinPercentage");
+                hiddenProperties.Add("MedianResponseValue");
+                hiddenProperties.Add("MedianAttributableFraction");
                 hiddenProperties.Add("MedianTotalBod");
             }
             // Remove all standardised records when the population size is not specified

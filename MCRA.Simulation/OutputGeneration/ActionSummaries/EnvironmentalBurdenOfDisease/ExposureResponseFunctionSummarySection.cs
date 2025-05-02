@@ -1,6 +1,6 @@
-﻿using MCRA.Data.Compiled.Objects;
-using MCRA.General;
+﻿using MCRA.General;
 using MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation;
+using MCRA.Simulation.Calculators.ExposureResponseFunctions;
 using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.OutputGeneration {
@@ -9,10 +9,12 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<ErfSummaryRecord> ErfSummaryRecords { get; set; }
 
         public void Summarize(
-            List<ExposureResponseFunction> exposureResponseFunctions,
+            ICollection<IExposureResponseFunctionModel> exposureResponseFunctionModels,
             List<EnvironmentalBurdenOfDiseaseResultRecord> environmentalBurdenOfDiseases
         ) {
-
+            var exposureResponseFunctions = exposureResponseFunctionModels
+                .Select(r => r.ExposureResponseFunction)
+                .ToList();
             var erfSummaryRecords = new List<ErfSummaryRecord>();
             foreach (var erf in exposureResponseFunctions) {
                 var ebdRecords = environmentalBurdenOfDiseases

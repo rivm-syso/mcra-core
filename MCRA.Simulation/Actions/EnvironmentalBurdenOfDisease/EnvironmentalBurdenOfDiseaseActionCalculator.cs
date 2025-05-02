@@ -69,7 +69,9 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
                 var result = new EnvironmentalBurdenOfDiseaseActionResult();
                 var environmentalBurdenOfDiseases = new List<EnvironmentalBurdenOfDiseaseResultRecord>();
 
-                var exposureResponseFunctions = data.ExposureResponseFunctions;
+                var exposureResponseFunctions = data.ExposureResponseFunctionModels
+                    .Select(r => r.ExposureResponseFunction)
+                    .ToList();
                 var burdenOfDiseaseIndicators = data.BaselineBodIndicators
                     .Where(r => ModuleConfig.BodIndicators.Contains(r.BodIndicator))
                     .ToList();
@@ -77,17 +79,19 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
                 // Get exposures per target
                 var exposuresCollections = getExposures(data);
 
-                foreach (var exposureResponseFunction in exposureResponseFunctions) {
-                    var target = exposureResponseFunction.ExposureTarget;
+                foreach (var exposureResponseFunctionModel in data.ExposureResponseFunctionModels) {
+                    var erf = exposureResponseFunctionModel.ExposureResponseFunction;
+
+                    var target = erf.ExposureTarget;
 
                     // Get exposures for target
                     if (!exposuresCollections.TryGetValue(target, out var targetExposures)) {
-                        var msg = $"Failed to compute effects for exposure response function {exposureResponseFunction.Code}: missing estimates for target {target.GetDisplayName()}.";
+                        var msg = $"Failed to compute effects for exposure response function {erf.Code}: missing estimates for target {target.GetDisplayName()}.";
                         throw new Exception(msg);
                     }
                     (var exposures, var exposureUnit) = (targetExposures.Exposures, targetExposures.Unit);
 
-                    var exposureResponseCalculator = new ExposureResponseCalculator(exposureResponseFunction);
+                    var exposureResponseCalculator = new ExposureResponseCalculator(exposureResponseFunctionModel);
                     var exposureResponseResults = exposureResponseCalculator
                         .Compute(
                             exposures,

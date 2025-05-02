@@ -6,6 +6,7 @@
   <ModuleType>DataModule</ModuleType>
   <TableGroup>ExposureResponseFunctions</TableGroup>
   <IsAdvancedActionType>true</IsAdvancedActionType>
+  <HasUncertaintyAnalysis>true</HasUncertaintyAnalysis>
   <Description>
     Exposure response functions define the relation between percentiles and percentile specific ratios for exposure effect related to environmental burden of disease.
   </Description>
@@ -16,4 +17,10 @@
     <Entity>Substances</Entity>
     <Entity>Effects</Entity>
   </Entities>
+  <UncertaintySources>
+    <UncertaintySource>ExposureResponseFunctions</UncertaintySource>
+  </UncertaintySources>
+  <UncertaintySettings>
+    <UncertaintySetting>ResampleExposureResponseFunctions</UncertaintySetting>
+  </UncertaintySettings>  
 </Module>
