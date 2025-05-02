@@ -85,7 +85,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
             var palette = CustomPalettes.DistinctTone(4);
             var paletteNr = 2;
-            if (items.Any(r => r.HasUncertainty())) {
+            if (items.Any(r => r.HasUncertainty)) {
                 for (int i = 0; i < items.Count; i++) {
                     var r = items[i];
                     //When riskmetric == HazardExposureRatio, replace infinities by Moe_eps, otherwise the kernel calculation crashes.

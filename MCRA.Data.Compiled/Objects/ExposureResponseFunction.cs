@@ -41,8 +41,6 @@ namespace MCRA.Data.Compiled.Objects {
                 }
             }
         }
-        public bool HasErfSubGroups() {
-            return ErfSubgroups != null && ErfSubgroups.Count > 0;
-        }
+        public bool HasErfSubGroups => ErfSubgroups != null && ErfSubgroups.Count > 0;
     }
 }

@@ -110,9 +110,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
             get { return ConcentrationModelType.ZeroSpikeCensoredLogNormal; }
         }
 
-        public override bool IsParametric() {
-            return true;
-        }
+        public override bool IsParametric => true;
 
         /// <summary>
         /// Draws new parameters for Parametric Bootstrap.

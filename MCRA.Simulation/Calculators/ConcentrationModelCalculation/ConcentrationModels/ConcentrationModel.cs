@@ -151,9 +151,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         /// Specifies wheter the model is parametric.
         /// </summary>
         /// <returns></returns>
-        public virtual bool IsParametric() {
-            return false;
-        }
+        public virtual bool IsParametric => false;
 
         /// <summary>
         /// Draws a new parameter set for Parametric Uncertainty

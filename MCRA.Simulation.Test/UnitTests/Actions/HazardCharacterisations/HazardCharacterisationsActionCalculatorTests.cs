@@ -145,7 +145,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             TestLoadAndSummarizeNominal(calculator, data, subsetManager, MethodBase.GetCurrentMethod().Name);
             Assert.AreEqual(TargetLevelType.External, data.HazardCharacterisationModelsCollections.First().TargetUnit.TargetLevelType);
             Assert.AreEqual(ExposureRoute.Oral, data.HazardCharacterisationModelsCollections.First().TargetUnit.ExposureRoute);
-            Assert.IsTrue(data.HazardCharacterisationModelsCollections.First().TargetUnit.IsPerBodyWeight());
+            Assert.IsTrue(data.HazardCharacterisationModelsCollections.First().TargetUnit.IsPerBodyWeight);
         }
 
         /// <summary>

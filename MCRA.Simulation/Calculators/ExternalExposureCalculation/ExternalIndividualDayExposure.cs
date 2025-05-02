@@ -211,7 +211,7 @@ namespace MCRA.Simulation.Calculators.ExternalExposureCalculation {
             ExposureUnitTriple targetDoseUnit,
             SimulatedIndividual individual
         ) {
-            var absoluteDose = targetDoseUnit.IsPerBodyWeight() ? dose * individual.BodyWeight : dose;
+            var absoluteDose = targetDoseUnit.IsPerBodyWeight ? dose * individual.BodyWeight : dose;
             var exposuresPerRouteCompound = new AggregateIntakePerCompound() {
                 Compound = compound,
                 Amount = absoluteDose,

@@ -26,7 +26,7 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
                 ExposureResponseFunction.TargetUnit, substance.MolecularMass, double.NaN
             );
 
-            var useErfBins = ExposureResponseFunction.HasErfSubGroups()
+            var useErfBins = ExposureResponseFunction.HasErfSubGroups
                 && exposureGroupingMethod == ExposureGroupingMethod.ErfDefinedBins;
 
             var bins = getBins(
@@ -76,7 +76,7 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
             var upperBounds = new List<double> {
                 ExposureResponseFunction.Baseline * unitAlignmentFactor
             };
-            if (ExposureResponseFunction.HasErfSubGroups()) {
+            if (ExposureResponseFunction.HasErfSubGroups) {
                 upperBounds.AddRange(
                     ExposureResponseFunction.ErfSubgroups
                         .OrderBy(r => r.ExposureUpper ?? double.PositiveInfinity)

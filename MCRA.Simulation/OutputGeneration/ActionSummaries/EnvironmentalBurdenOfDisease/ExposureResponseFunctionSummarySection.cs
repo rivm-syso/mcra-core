@@ -66,7 +66,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     ErfDoseUnit = erf.DoseUnit.GetShortDisplayName(),
                     ErfDoseAlignmentFactor = doseUnitAlignmentFactor,
                     Baseline = erf.Baseline,
-                    HasSubgroups = erf.HasErfSubGroups(),
+                    HasSubgroups = erf.HasErfSubGroups,
                     ExposureResponseDataPoints = dataPoints,
                     ExposureResponseChartDataPoints = functionDataPoints
                 };

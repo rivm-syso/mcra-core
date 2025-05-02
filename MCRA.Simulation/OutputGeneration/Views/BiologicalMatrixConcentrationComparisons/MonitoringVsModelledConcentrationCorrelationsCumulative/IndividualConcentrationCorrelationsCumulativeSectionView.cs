@@ -22,7 +22,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     sb.Append("<tr>");
                     foreach (var record in Model.Records.Skip(i * take).Take(take)) {
                         sb.Append("<td>");
-                        if (record.MonitoringVersusModelExposureRecords.Any(r => r.BothPositive())) {
+                        if (record.MonitoringVersusModelExposureRecords.Any(r => r.BothPositive)) {
                             var chartCreator = new IndividualConcentrationCorrelationCumulativeChartCreator(
                                 Model,
                                 record.SubstanceCode,

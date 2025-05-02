@@ -52,7 +52,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
                         var random = new McraRandomGenerator(RandomUtils.CreateSeed(seed.Value, food.Code));
                         var compoundResidueCollection = cumulativeCompoundResidueCollections.ContainsKey(food) ? cumulativeCompoundResidueCollections[food] : null;
                         var model = CreateCumulativeModelAndCalculateParameters(modelFactory, food, cumulativeCompound, compoundResidueCollection, concentrationUnit);
-                        if (model.IsParametric()) {
+                        if (model.IsParametric) {
                             model.DrawParametricUncertainty(random);
                         } else {
                             // Bootstrap using the "old" concentration model type (i.e., the model fitted in the nominal run)

@@ -218,7 +218,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposu
                 relativePotencyFactors,
                 membershipProbabilities,
                 kineticConversionFactors,
-                externalExposureUnit.IsPerUnit()
+                externalExposureUnit.IsPerUnit
             );
             // Calculate route exposure and use kinetic conversion factors
             foreach (var route in routes) {
@@ -227,7 +227,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposu
                     relativePotencyFactors,
                     membershipProbabilities,
                     kineticConversionFactors,
-                    externalExposureUnit.IsPerUnit()
+                    externalExposureUnit.IsPerUnit
                 );
                 var contribution = routeExposure / internalExposure;
                 result.Add(contribution);

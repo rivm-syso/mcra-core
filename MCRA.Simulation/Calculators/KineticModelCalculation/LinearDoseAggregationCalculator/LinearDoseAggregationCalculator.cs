@@ -210,7 +210,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
             IRandom generator
         ) {
             // TODO refactor KCF: include/fix unit conversion
-            var concentrationMassAlignmentFactor = exposureUnit.IsPerBodyWeight()
+            var concentrationMassAlignmentFactor = exposureUnit.IsPerBodyWeight
                 ? 1D / externalIndividualDayExposure.SimulatedIndividual.BodyWeight : 1D;
             var substanceExposure = externalIndividualDayExposure.GetExposure(route, Substance);
             var individual = externalIndividualDayExposure.SimulatedIndividual;
@@ -321,7 +321,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
         ) {
             var simulatedIndividual = externalIndividualDayExposure.SimulatedIndividual;
             var routeExposure = externalIndividualDayExposure.GetExposure(route, substance);
-            routeExposure = exposureUnit.IsPerBodyWeight() ? routeExposure / simulatedIndividual.BodyWeight : routeExposure;
+            routeExposure = exposureUnit.IsPerBodyWeight ? routeExposure / simulatedIndividual.BodyWeight : routeExposure;
             return getTargetConcentration(exposureUnit, route, target, substance, simulatedIndividual, routeExposure);
         }
 
@@ -336,7 +336,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
             var routeExposure = externalIndividualExposure.ExternalIndividualDayExposures
                 .Select(d => d.GetExposure(route, substance))
                 .Average();
-            routeExposure = exposureUnit.IsPerBodyWeight() ? routeExposure / simulatedIndividual.BodyWeight : routeExposure;
+            routeExposure = exposureUnit.IsPerBodyWeight ? routeExposure / simulatedIndividual.BodyWeight : routeExposure;
             return getTargetConcentration(exposureUnit, route, target, substance, simulatedIndividual, routeExposure);
         }
 

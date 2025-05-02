@@ -205,9 +205,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
             }
         }
 
-        public override bool IsParametric() {
-            return true;
-        }
+        public override bool IsParametric => true;
 
         public override double GetImputedCensoredValue(SampleCompound sampleSubstance, IRandom random) {
             throw new NotImplementedException();

@@ -70,7 +70,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         Exposure: r.GetExposure(
                             airExposureRoute,
                             substance,
-                            exposureUnit.IsPerUnit()
+                            exposureUnit.IsPerUnit
                         ),
                         SamplingWeight: r.SimulatedIndividual.SamplingWeight
                 ))
@@ -135,7 +135,7 @@ namespace MCRA.Simulation.OutputGeneration {
                             Exposure: r.GetExposure(
                                 airExposureRoute,
                                 substance,
-                                exposureUnit.IsPerUnit()
+                                exposureUnit.IsPerUnit
                             ),
                             SamplingWeight: r.SimulatedIndividual.SamplingWeight
                     ))

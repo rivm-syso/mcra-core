@@ -38,7 +38,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         Exposure: c.GetTotalExternalExposureForSubstance(
                             substance,
                             kineticConversionFactors,
-                            externalExposureUnit.IsPerUnit()
+                            externalExposureUnit.IsPerUnit
                         )
                     ))
                     .ToList();
@@ -105,7 +105,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         Exposure: c.GetTotalExternalExposureForSubstance(
                             substance,
                             kineticConversionFactors,
-                            externalExposureUnit.IsPerUnit()
+                            externalExposureUnit.IsPerUnit
                         )
                     ))
                     .ToList();

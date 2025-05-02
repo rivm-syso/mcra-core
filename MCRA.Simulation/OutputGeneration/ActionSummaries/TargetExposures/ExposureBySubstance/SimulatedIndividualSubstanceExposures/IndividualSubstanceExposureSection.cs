@@ -38,7 +38,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     var exposure = idi.GetTotalExternalExposureForSubstance(
                         referenceSubstance,
                         kineticConversionFactors,
-                        externalExposureUnit.IsPerUnit()
+                        externalExposureUnit.IsPerUnit
                     );
                     if (exposure > 0) {
                         results.Add(new IndividualSubstanceExposureRecord() {
@@ -56,7 +56,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         var exposure = idi.GetTotalExternalExposureForSubstance(
                             substance,
                             kineticConversionFactors,
-                            externalExposureUnit.IsPerUnit()
+                            externalExposureUnit.IsPerUnit
                         );
                         if (exposure > 0) {
                             var cumulativeExposure = isCumulative

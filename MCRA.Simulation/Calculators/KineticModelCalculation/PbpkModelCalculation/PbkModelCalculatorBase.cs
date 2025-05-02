@@ -383,7 +383,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                        .Select(r => r.GetExposure(route, substance, isPerPerson: true) * r.SimulatedIndividual.SamplingWeight)
                        .ToList();
                     var exposure = exposures.Sum() / sumOfSamplingWeights;
-                    if (exposureUnit.IsPerBodyWeight()) {
+                    if (exposureUnit.IsPerBodyWeight) {
                         exposure = exposure / averageBodyWeight;
                     }
                     exposurePerRoute.Add(route, exposure);
@@ -412,7 +412,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                        .Select(r => r.GetExposure(route, substance))
                        .ToList();
                     var exposure = exposures.Sum() / sumOfWeights;
-                    if (exposureUnit.IsPerBodyWeight()) {
+                    if (exposureUnit.IsPerBodyWeight) {
                         exposure = exposure / averageBodyWeight;
                     }
                     exposurePerRoute.Add(route, exposure);

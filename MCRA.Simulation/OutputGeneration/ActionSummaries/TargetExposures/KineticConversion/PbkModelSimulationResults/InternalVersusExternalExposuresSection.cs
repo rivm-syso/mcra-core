@@ -47,7 +47,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 var record = new InternalVersusExternalExposureRecord() {
                     ExternalExposure = item.GetTotalExternalExposureForSubstance(
                         substance,
-                        externalExposureUnit.IsPerUnit()
+                        externalExposureUnit.IsPerUnit
                     ),
                     TargetExposure = internalExposures
                 };

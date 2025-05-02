@@ -9,13 +9,13 @@
         public double? UncertaintyUpperBound { get; set; }
 
         public List<double> UncertaintyValues { get; set; }
-        public bool HasUncertainty() {
-            return UncertaintyMedian != null
+
+        public bool HasUncertainty =>
+            UncertaintyMedian != null
                 && UncertaintyLowerBound != null
                 && UncertaintyUpperBound != null
                 && !double.IsNaN((double)UncertaintyMedian)
                 && (!double.IsNaN((double)UncertaintyLowerBound)
                     || !double.IsNaN((double)UncertaintyUpperBound));
-        }
     }
 }

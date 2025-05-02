@@ -29,7 +29,7 @@ namespace MCRA.Simulation.OutputGeneration {
                             relativePotencyFactors,
                             membershipProbabilities,
                             kineticConversionFactors,
-                            externalExposureUnit.IsPerUnit()
+                            externalExposureUnit.IsPerUnit
                         )
                     ))
                     .ToList();

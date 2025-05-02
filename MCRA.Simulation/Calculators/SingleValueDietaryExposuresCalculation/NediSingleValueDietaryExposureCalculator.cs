@@ -50,7 +50,7 @@ namespace MCRA.Simulation.Calculators.SingleValueDietaryExposuresCalculation {
             BodyWeightUnit consumptionBodyWeightUnit,
             TargetUnit targetUnit
         ) {
-            if (!targetUnit.IsPerBodyWeight()) {
+            if (!targetUnit.IsPerBodyWeight) {
                 throw new NotImplementedException("NEDI calculation is not implemented for per-person.");
             }
             if (!consumptionIntakeUnit.IsPerPerson()) {

@@ -42,7 +42,7 @@ namespace MCRA.Simulation.OutputGeneration {
                             ? r.ExposureResponseSpecificationUpper.ExpressionString
                             : null,
                         Baseline = r.Baseline,
-                        HasSubgroups = r.HasErfSubGroups()
+                        HasSubgroups = r.HasErfSubGroups
                     };
                     return record;
                 })

@@ -21,11 +21,6 @@ namespace MCRA.Data.Compiled.Objects {
         public bool IsBulkingBlending { get; set; }
         public ProcessingDistributionType DistributionType { get; set; } = ProcessingDistributionType.LogisticNormal;
 
-        public bool IsUnspecified() {
-            if (Code.Equals(_unspecified, StringComparison.OrdinalIgnoreCase)) {
-                return true;
-            }
-            return false;
-        }
+        public bool IsUnspecified => Code.Equals(_unspecified, StringComparison.OrdinalIgnoreCase);
     }
 }

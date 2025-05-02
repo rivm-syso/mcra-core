@@ -2342,7 +2342,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     ? data.TargetExposureUnit.GetShortDisplayName()
                     : data.TargetExposureUnit.GetShortDisplayName(TargetUnit.DisplayOption.AppendExpressionType)
             );
-            var bodyWeightUnit = data.ExternalExposureUnit.IsPerBodyWeight() 
+            var bodyWeightUnit = data.ExternalExposureUnit.IsPerBodyWeight
                 ? data.ExternalExposureUnit.ConcentrationMassUnit.GetShortDisplayName()
                 : BodyWeightUnit.kg.GetShortDisplayName();
             var result = new List<ActionSummaryUnitRecord> {

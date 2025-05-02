@@ -41,7 +41,7 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
 
             var rpfDict = new ConcurrentDictionary<Compound, double>(relativePotencyFactors);
             var mspDict = new ConcurrentDictionary<Compound, double>(membershipProbabilities);
-            var isPerPerson = !exposureUnit.IsPerBodyWeight();
+            var isPerPerson = !exposureUnit.IsPerBodyWeight;
 
             Parallel.ForEach(targetIndividualDayExposures, idv => {
                 var alignmentFactor = exposureUnit

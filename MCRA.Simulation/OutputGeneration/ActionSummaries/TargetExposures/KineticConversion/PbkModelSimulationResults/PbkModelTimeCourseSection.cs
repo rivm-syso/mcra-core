@@ -78,7 +78,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     record.RelativeCompartmentWeight = pattern.RelativeCompartmentWeight;
                     record.Compartment = pattern.Compartment;
                     record.ExternalExposure = aggregateExposure
-                        .GetTotalExternalExposureForSubstance(substance, externalExposureUnit.IsPerUnit());
+                        .GetTotalExternalExposureForSubstance(substance, externalExposureUnit.IsPerUnit);
 
                     var exposurePerRoute = routes
                         .ToDictionary(
@@ -87,7 +87,7 @@ namespace MCRA.Simulation.OutputGeneration {
                                 .GetTotalRouteExposureForSubstance(
                                     route,
                                     substance,
-                                    externalExposureUnit.IsPerUnit()
+                                    externalExposureUnit.IsPerUnit
                                 )
                         );
                     record.TargetExposures = pattern.TargetExposuresPerTimeUnit

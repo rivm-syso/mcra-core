@@ -12,7 +12,7 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
             }
 
             Expression erfSpecification;
-            if (erf.HasErfSubGroups()) {
+            if (erf.HasErfSubGroups) {
                 var erfSubGroups = erf.ErfSubgroups
                     .OrderBy(r => r.ExposureUpper ?? double.PositiveInfinity)
                     .ToList();

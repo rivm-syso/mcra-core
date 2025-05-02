@@ -34,7 +34,7 @@ namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation {
                 || _processingFactorModels.ContainsKey((food, null, processingType))
             ) {
                 return true;
-            } else if (_useDefaultForMissing && !processingType.IsUnspecified()) {
+            } else if (_useDefaultForMissing && !processingType.IsUnspecified) {
                 return true;
             }
             return false;
@@ -53,7 +53,7 @@ namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation {
                 || _processingFactorModels.TryGetValue((food, null, processingType), out model)
             ) {
                 return model.GetNominalValue();
-            } else if (_useDefaultForMissing && !processingType.IsUnspecified()) {
+            } else if (_useDefaultForMissing && !processingType.IsUnspecified) {
                 return _defaultMissingProcessingFactor;
             } else {
                 return double.NaN;
@@ -75,7 +75,7 @@ namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation {
                 || _processingFactorModels.TryGetValue((food, null, processingType), out model)
             ) {
                 return model.DrawFromDistribution(generator);
-            } else if (_useDefaultForMissing && !processingType.IsUnspecified()) {
+            } else if (_useDefaultForMissing && !processingType.IsUnspecified) {
                 return _defaultMissingProcessingFactor;
             } else {
                 return double.NaN;

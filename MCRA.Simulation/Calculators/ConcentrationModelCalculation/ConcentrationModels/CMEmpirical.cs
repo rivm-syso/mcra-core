@@ -136,9 +136,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
             throw new NotImplementedException();
         }
 
-        public override bool IsParametric() {
-            return false;
-        }
+        public override bool IsParametric => false;
 
         /// <summary>
         /// Returns an imputation value for the censored substance concentration.

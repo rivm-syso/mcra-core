@@ -21,7 +21,7 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
                 .GetTotalIntakesPerSubstance()
                 .ToDictionary(r => r.Compound, r => new SubstanceTargetExposure() {
                     Substance = r.Compound,
-                    Exposure = r.Amount / (_exposureUnit.IsPerUnit() ? 1 : SimulatedIndividual.BodyWeight)
+                    Exposure = r.Amount / (_exposureUnit.IsPerUnit ? 1 : SimulatedIndividual.BodyWeight)
                 } as ISubstanceTargetExposure);
         }
 
@@ -90,14 +90,14 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities) {
             return _dietaryIndividualDayIntake
-                .GetModelledFoodTotalExposures(relativePotencyFactors, membershipProbabilities, _exposureUnit.IsPerUnit());
+                .GetModelledFoodTotalExposures(relativePotencyFactors, membershipProbabilities, _exposureUnit.IsPerUnit);
         }
 
         public IDictionary<(Food, Compound), IIntakePerModelledFoodSubstance> GetModelledFoodSubstanceTotalExposures(
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities) {
             return _dietaryIndividualDayIntake
-                .GetModelledFoodSubstanceTotalExposures(relativePotencyFactors, membershipProbabilities, _exposureUnit.IsPerUnit());
+                .GetModelledFoodSubstanceTotalExposures(relativePotencyFactors, membershipProbabilities, _exposureUnit.IsPerUnit);
         }
     }
 }

@@ -168,9 +168,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
             get { return ConcentrationModelType.NonDetectSpikeTruncatedLogNormal; }
         }
 
-        public override bool IsParametric() {
-            return true;
-        }
+        public override bool IsParametric => true;
 
         /// <summary>
         /// Draws new parameters for Parametric Uncertainty for Model 3.

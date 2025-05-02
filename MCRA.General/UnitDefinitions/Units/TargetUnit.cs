@@ -48,75 +48,45 @@ namespace MCRA.General {
         /// <summary>
         /// The unit of the substance amounts.
         /// </summary>
-        public SubstanceAmountUnit SubstanceAmountUnit {
-            get {
-                return ExposureUnit.SubstanceAmountUnit;
-            }
-        }
+        public SubstanceAmountUnit SubstanceAmountUnit => ExposureUnit.SubstanceAmountUnit;
 
         /// <summary>
         /// The object mass unit. per-unit for absolute amounts (e.g., mg/day), otherwise
         /// a mass unit (e.g., kg for mg/kg BW/day).
         /// </summary>
-        public ConcentrationMassUnit ConcentrationMassUnit {
-            get {
-                return ExposureUnit.ConcentrationMassUnit;
-            }
-        }
+        public ConcentrationMassUnit ConcentrationMassUnit => ExposureUnit.ConcentrationMassUnit;
 
         /// <summary>
         /// The time scale. E.g., per day, peak (acute), long term (chronic).
         /// </summary>
-        public TimeScaleUnit TimeScaleUnit {
-            get {
-                return ExposureUnit.TimeScaleUnit;
-            }
-        }
+        public TimeScaleUnit TimeScaleUnit => ExposureUnit.TimeScaleUnit;
 
         /// <summary>
         /// The target level/type of the target (i.e., internal or external).
         /// </summary>
-        public TargetLevelType TargetLevelType {
-            get {
-                return Target.TargetLevelType;
-            }
-        }
+        public TargetLevelType TargetLevelType => Target.TargetLevelType;
 
         /// <summary>
         /// Exposure route (for external exposures).
         /// </summary>
-        public ExposureRoute ExposureRoute {
-            get {
-                return Target.ExposureRoute;
-            }
-        }
+        public ExposureRoute ExposureRoute => Target.ExposureRoute;
 
         /// <summary>
         /// The target biological matrix or compartment. May be
         /// internal organs, e.g., liver or, in case of external
         /// target exposures, this could be a person/individual.
         /// </summary>
-        public BiologicalMatrix BiologicalMatrix {
-            get {
-                return Target.BiologicalMatrix;
-            }
-        }
+        public BiologicalMatrix BiologicalMatrix => Target.BiologicalMatrix;
 
         /// <summary>
         /// Examples: "lipids", "creatinine"
         /// </summary>
-        public ExpressionType ExpressionType {
-            get {
-                return Target.ExpressionType;
-            }
-        }
+        public ExpressionType ExpressionType => Target.ExpressionType;
 
         /// <summary>
         /// Gets whether this is a per-mass unit.
         /// </summary>
-        public bool IsPerBodyWeight() {
-            return ConcentrationMassUnit != ConcentrationMassUnit.PerUnit;
-        }
+        public bool IsPerBodyWeight => ConcentrationMassUnit != ConcentrationMassUnit.PerUnit;
 
         /// <summary>
         /// Gets the multiplication factor to align a dose of the specified dose unit with the specified

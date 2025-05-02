@@ -74,7 +74,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 var items = models
                     .Select(r => _section.GetPercentile(r.Id, percentile))
                     .ToList();
-                if (items.Any(r => r.HasUncertainty())) {
+                if (items.Any(r => r.HasUncertainty)) {
                     var series = new ConfidenceIntervalBarSeries() {
                         Title = $"p{percentile}",
                         MarkerSize = 4,

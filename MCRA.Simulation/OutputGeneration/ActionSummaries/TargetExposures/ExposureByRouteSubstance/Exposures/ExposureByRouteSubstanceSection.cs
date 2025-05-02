@@ -95,7 +95,7 @@ namespace MCRA.Simulation.OutputGeneration {
                                 .GetTotalRouteExposureForSubstance(
                                     route,
                                     substance,
-                                    externalExposureUnit.IsPerUnit()
+                                    externalExposureUnit.IsPerUnit
                                 ) * kineticConversionFactors[(route, substance)]
                         ))
                         .ToList();
@@ -165,7 +165,7 @@ namespace MCRA.Simulation.OutputGeneration {
                             Exposure: idi.GetTotalRouteExposureForSubstance(
                                 route,
                                 substance,
-                                externalExposureUnit.IsPerUnit()
+                                externalExposureUnit.IsPerUnit
                             ) * kineticConversionFactors[(route, substance)]
                         ))
                         .ToList();

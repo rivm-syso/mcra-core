@@ -36,16 +36,12 @@ namespace MCRA.General {
         /// <summary>
         /// Gets whether this is a per-mass unit.
         /// </summary>
-        public bool IsPerBodyWeight() {
-            return ConcentrationMassUnit != ConcentrationMassUnit.PerUnit;
-        }
+        public bool IsPerBodyWeight => ConcentrationMassUnit != ConcentrationMassUnit.PerUnit;
 
         /// <summary>
         /// Gets whether this is a per-mass unit.
         /// </summary>
-        public bool IsPerUnit() {
-            return ConcentrationMassUnit == ConcentrationMassUnit.PerUnit;
-        }
+        public bool IsPerUnit => ConcentrationMassUnit == ConcentrationMassUnit.PerUnit;
 
         /// <summary>
         /// Gets the multiplication factor to align a dose of the specified dose unit with the specified

@@ -24,7 +24,7 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
                 .Select(r => new SubstanceTargetExposure() {
                     Substance = r.Key,
                     Exposure = r.Sum(i => i.Amount) / _dietaryIndividualDayTargetExposures.Count
-                        / (_exposureUnit.IsPerUnit() ? 1 : SimulatedIndividual.BodyWeight)
+                        / (_exposureUnit.IsPerUnit ? 1 : SimulatedIndividual.BodyWeight)
                 } as ISubstanceTargetExposure)
                 .ToDictionary(r => r.Substance);
         }
@@ -95,7 +95,7 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities) {
             var intakesPerModelledFood = _dietaryIndividualDayTargetExposures
-                .Select(c => c.GetModelledFoodTotalExposures(relativePotencyFactors, membershipProbabilities, _exposureUnit.IsPerUnit()))
+                .Select(c => c.GetModelledFoodTotalExposures(relativePotencyFactors, membershipProbabilities, _exposureUnit.IsPerUnit))
                 .SelectMany(c => c.Values)
                 .GroupBy(c => c.ModelledFood)
                 .Select(c => new IntakePerModelledFood() {
@@ -112,7 +112,7 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
            IDictionary<Compound, double> relativePotencyFactors,
            IDictionary<Compound, double> membershipProbabilities) {
             var intakePerModelledFoodSubstance = _dietaryIndividualDayTargetExposures
-                .Select(c => c.GetModelledFoodSubstanceTotalExposures(relativePotencyFactors, membershipProbabilities, _exposureUnit.IsPerUnit()))
+                .Select(c => c.GetModelledFoodSubstanceTotalExposures(relativePotencyFactors, membershipProbabilities, _exposureUnit.IsPerUnit))
                 .SelectMany(c => c.Values)
                 .GroupBy(c => (c.ModelledFood, c.Substance))
                 .Select(c => new IntakePerModelledFoodSubstance() {
