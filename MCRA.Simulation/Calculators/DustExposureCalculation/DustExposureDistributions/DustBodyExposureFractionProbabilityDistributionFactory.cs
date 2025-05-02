@@ -10,7 +10,7 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
         ) {
             var distributionType = dustBodyExposureFraction.DistributionType;
 
-            if (!distributionType.Equals(DustBodyExposureFractionDistributionType.Constant) &
+            if (!distributionType.Equals(DustBodyExposureFractionDistributionType.Constant) &&
                 dustBodyExposureFraction.CvVariability == null) {
                 var msg = $"CvVariability cannot be missing for distribution {distributionType} for dust body exposure fraction.";
                 throw new Exception(msg);

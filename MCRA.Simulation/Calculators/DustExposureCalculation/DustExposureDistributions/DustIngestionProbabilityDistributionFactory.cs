@@ -10,7 +10,7 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
         ) {
             var distributionType = dustIngestion.DistributionType;
 
-            if (!distributionType.Equals(DustIngestionDistributionType.Constant) &
+            if (!distributionType.Equals(DustIngestionDistributionType.Constant) &&
                 dustIngestion.CvVariability == null) {
                 var msg = $"CvVariability cannot be missing for distribution {distributionType} for dust ingestion.";
                 throw new Exception(msg);

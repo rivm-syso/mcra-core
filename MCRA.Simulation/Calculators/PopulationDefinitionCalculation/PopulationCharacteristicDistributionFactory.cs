@@ -11,7 +11,7 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
         ) {
             var distributionType = populationCharacteristic.DistributionType;
 
-            if (!distributionType.Equals(PopulationCharacteristicDistributionType.Constant) &
+            if (!distributionType.Equals(PopulationCharacteristicDistributionType.Constant) &&
                 populationCharacteristic.CvVariability == null) {
                 var msg = $"CvVariability cannot be missing for distribution {distributionType} for population characteristic.";
                 throw new Exception(msg);

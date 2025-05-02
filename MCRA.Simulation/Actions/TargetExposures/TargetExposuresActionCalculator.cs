@@ -55,17 +55,17 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             _actionInputRequirements[ActionType.DietaryExposures].IsRequired = requireDietary;
             _actionInputRequirements[ActionType.DietaryExposures].IsVisible = requireDietary;
 
-            var requireDust = ModuleConfig.ExposureType == ExposureType.Chronic &
+            var requireDust = ModuleConfig.ExposureType == ExposureType.Chronic &&
                 ModuleConfig.ExposureSources.Contains(ExposureSource.Dust);
             _actionInputRequirements[ActionType.DustExposures].IsRequired = requireDust;
             _actionInputRequirements[ActionType.DustExposures].IsVisible = requireDust;
 
-            var requireSoil = ModuleConfig.ExposureType == ExposureType.Chronic &
+            var requireSoil = ModuleConfig.ExposureType == ExposureType.Chronic &&
                 ModuleConfig.ExposureSources.Contains(ExposureSource.Soil);
             _actionInputRequirements[ActionType.SoilExposures].IsRequired = requireSoil;
             _actionInputRequirements[ActionType.SoilExposures].IsVisible = requireSoil;
 
-            var requireAir = ModuleConfig.ExposureType == ExposureType.Chronic &
+            var requireAir = ModuleConfig.ExposureType == ExposureType.Chronic &&
                 ModuleConfig.ExposureSources.Contains(ExposureSource.Air);
             _actionInputRequirements[ActionType.AirExposures].IsRequired = requireAir;
             _actionInputRequirements[ActionType.AirExposures].IsVisible = requireAir;

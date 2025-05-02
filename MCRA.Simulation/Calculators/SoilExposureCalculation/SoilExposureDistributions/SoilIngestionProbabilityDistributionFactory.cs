@@ -10,7 +10,7 @@ namespace MCRA.Simulation.Calculators.SoilExposureCalculation {
         ) {
             var distributionType = soilIngestion.DistributionType;
 
-            if (!distributionType.Equals(SoilIngestionDistributionType.Constant) &
+            if (!distributionType.Equals(SoilIngestionDistributionType.Constant) &&
                 soilIngestion.CvVariability == null) {
                 var msg = $"CvVariability cannot be missing for distribution {distributionType} for soil ingestion.";
                 throw new Exception(msg);

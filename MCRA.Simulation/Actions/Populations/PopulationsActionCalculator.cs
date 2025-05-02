@@ -30,10 +30,7 @@ namespace MCRA.Simulation.Actions.Populations {
         }
 
         public override bool CheckDataDependentSettings(ICompiledLinkManager linkManager) {
-            if (_moduleSettings.IsCompute) {
-                return true;
-            }
-            return linkManager.GetCodesInScope(ScopingType.Populations).Count == 1;
+            return _moduleSettings.IsCompute || linkManager.GetCodesInScope(ScopingType.Populations).Count == 1;
         }
 
         protected override ActionSettingsSummary summarizeSettings() {

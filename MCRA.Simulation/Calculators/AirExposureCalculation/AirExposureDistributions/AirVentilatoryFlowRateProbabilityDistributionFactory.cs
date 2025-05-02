@@ -10,7 +10,7 @@ namespace MCRA.Simulation.Calculators.AirExposureCalculation {
         ) {
             var distributionType = flowRate.DistributionType;
 
-            if (!distributionType.Equals(VentilatoryFlowRateDistributionType.Constant) &
+            if (!distributionType.Equals(VentilatoryFlowRateDistributionType.Constant) &&
                 flowRate.CvVariability == null) {
                 var msg = $"CvVariability cannot be missing for distribution {distributionType} for air ventilatory flow rate.";
                 throw new Exception(msg);
