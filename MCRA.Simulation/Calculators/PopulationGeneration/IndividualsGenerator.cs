@@ -1,13 +1,13 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Simulation.Objects;
 using MCRA.General;
+using MCRA.Simulation.Objects;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.PopulationGeneration {
     public class IndividualsGenerator {
 
-        private bool _allometricScaling = true;
+        private readonly bool _allometricScaling = true;
 
         public List<SimulatedIndividual> GenerateSimulatedIndividuals(
             Population population,
@@ -48,25 +48,22 @@ namespace MCRA.Simulation.Calculators.PopulationGeneration {
                 availableSexes = ["male", "female"];
             }
 
-            var availableAges = individualProperties
-                .Where(r => r.Value.IndividualProperty.IsAgeProperty)
-                .Select(r => Convert.ToInt32(r.Value.Value))
-                .ToList();
-            if (availableAges.Count == 0) {
-                for (int i = (int)ageProperty.Min; i < (int)ageProperty.Max; i++) {
-                    availableAges.Add(i);
-                }
-            }
+            var populationPropertyAge = individualProperties
+                .SingleOrDefault(r => r.Value.IndividualProperty.IsAgeProperty)
+                .Value;
+            var minimumAge = (int)(populationPropertyAge?.MinValue ?? ageProperty.Min);
+            var maximumAge = (int)(populationPropertyAge?.MaxValue ?? ageProperty.Max);
+            var availableAges = Enumerable.Range(minimumAge, maximumAge - minimumAge + 1).ToList();
 
-            var availableBsa = individualProperties
-                .Where(r => r.Value.IndividualProperty.Name == "BSA")
-                .Select(r => Convert.ToDouble(r.Value.Value))
-                .ToList();
-            if (availableBsa.Count == 0) {
-                for (double i = bsaProperty.Min; i < bsaProperty.Max;) {
-                    availableBsa.Add(i);
-                    i = i + 0.01;
-                }
+            var populationPropertyBsa = individualProperties
+                .SingleOrDefault(r => r.Value.IndividualProperty.Name == "BSA")
+                .Value;
+            var minimumBsa = populationPropertyBsa?.MinValue ?? bsaProperty.Min;
+            var maximumBsa = populationPropertyBsa?.MaxValue ?? bsaProperty.Max;
+            var availableBsa = new List<double>();
+            for (double i = minimumBsa; i < maximumBsa;) {
+                availableBsa.Add(i);
+                i = i + 0.01;
             }
 
             for (int i = 0; i < numberOfIndividuals; i++) {
