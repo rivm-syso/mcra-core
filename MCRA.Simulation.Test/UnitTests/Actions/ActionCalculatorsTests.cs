@@ -92,6 +92,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 project.ConcentrationsSettings.FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByLimitValue;
                 project.ConcentrationsSettings.ExtrapolateConcentrations = true;
                 project.SingleValueRisksSettings.UseAdjustmentFactors = true;
+                project.ExposureResponseFunctionsSettings.ResampleExposureResponseFunctions = true;
                 var calculator = ActionCalculatorProvider.Create(definition.ActionType, project, false);
 
                 var sources = calculator.GetRandomSources();
