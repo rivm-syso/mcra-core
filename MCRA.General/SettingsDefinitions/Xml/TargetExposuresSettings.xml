@@ -105,4 +105,16 @@
     <IsList>true</IsList>
     <DefaultValue>25,50,75,100</DefaultValue>
   </SettingsItem>
+  <SettingsItem>
+    <Id>NonDietaryAgeAlignment</Id>
+    <Name>Match at random based on age</Name>
+    <Description>Nondietary exposures are randomly matched on stratifying covariable age.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>NonDietarySexAlignment</Id>
+    <Name>Match at random based on sex</Name>
+    <Description>Match at random based on stratifying cofactor sex.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
 </SettingsItems>

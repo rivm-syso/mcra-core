@@ -367,10 +367,12 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 localProgress.Update("Matching dietary and non-dietary exposures");
                 var nonDietaryExposuresGenerator = NonDietaryExposureGeneratorFactory
                     .Create(
+                        data.NonDietaryExposures,
                         ModuleConfig.NonDietaryPopulationAlignmentMethod,
-                        ModuleConfig.IsCorrelationBetweenIndividuals
+                        ModuleConfig.IsCorrelationBetweenIndividuals,
+                        ModuleConfig.NonDietaryAgeAlignment,
+                        ModuleConfig.NonDietarySexAlignment
                     );
-                nonDietaryExposuresGenerator.Initialize(data.NonDietaryExposures);
                 var seedNonDietaryExposuresSampling = RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.BME_DrawNonDietaryExposures);
                 var nonDietaryExposureCollection = nonDietaryExposuresGenerator?
                     .Generate(

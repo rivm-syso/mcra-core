@@ -13,24 +13,28 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
         /// </summary>
         [TestMethod]
         public void NonDietaryExposureGeneratorFactory_TestCreateMatched() {
-            var calculator = NonDietaryExposureGeneratorFactory.Create(PopulationAlignmentMethod.MatchIndividualID, false);
+            var calculator = NonDietaryExposureGeneratorFactory.Create(
+                null,
+                PopulationAlignmentMethod.MatchIndividualID,
+                false,
+                false,
+                false
+            );
             Assert.IsTrue(calculator is NonDietaryMatchedExposureGenerator);
         }
-
-        ///// <summary>
-        ///// NonDietary exposure generator factory: matchSpecificIndividuals = false, isCorrelationBetweenIndividuals = false
-        ///// </summary>
-        //[TestMethod]
-        //public void NonDietaryExposureGeneratorFactory_TestCreateUnmatched() {
-        //    var calculator = NonDietaryExposureGeneratorFactory.Create(PopulationAlignmentMethod.MatchRandom, false);
-        //}
 
         /// <summary>
         /// NonDietary exposure generator factory: matchSpecificIndividuals = false, isCorrelationBetweenIndividuals = false
         /// </summary>
         [TestMethod]
         public void NonDietaryExposureGeneratorFactory_TestCreateUnmatchedUnCorrelated() {
-            var calculator = NonDietaryExposureGeneratorFactory.Create(PopulationAlignmentMethod.MatchCofactors, false);
+            var calculator = NonDietaryExposureGeneratorFactory.Create(
+                null,
+                PopulationAlignmentMethod.MatchCofactors,
+                false,
+                false,
+                true
+            );
             Assert.IsTrue(calculator is NonDietaryUnmatchedExposureGenerator);
         }
 
@@ -39,7 +43,13 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
         /// </summary>
         [TestMethod]
         public void NonDietaryExposureGeneratorFactory_TestCreateUnmatchedCorrelated() {
-            var calculator = NonDietaryExposureGeneratorFactory.Create(PopulationAlignmentMethod.MatchCofactors, true);
+            var calculator = NonDietaryExposureGeneratorFactory.Create(
+                null,
+                PopulationAlignmentMethod.MatchCofactors,
+                true,
+                false,
+                true
+            );
             Assert.IsTrue(calculator is NonDietaryUnmatchedCorrelatedExposureGenerator);
         }
     }

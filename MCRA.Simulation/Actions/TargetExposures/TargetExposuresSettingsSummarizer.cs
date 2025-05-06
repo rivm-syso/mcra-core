@@ -40,6 +40,10 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     && _configuration.IndividualReferenceSet != ExposureSource.OtherNonDiet
                 ) {
                     section.SummarizeSetting(SettingsItemType.NonDietaryPopulationAlignmentMethod, _configuration.NonDietaryPopulationAlignmentMethod);
+                    if (_configuration.NonDietaryPopulationAlignmentMethod == PopulationAlignmentMethod.MatchRandom) {
+                        section.SummarizeSetting(SettingsItemType.NonDietaryAgeAlignment, _configuration.NonDietaryAgeAlignment);
+                        section.SummarizeSetting(SettingsItemType.NonDietarySexAlignment, _configuration.NonDietarySexAlignment);
+                    }
                 }
                 if (_configuration.ExposureSources.Contains(ExposureSource.Dust)
                     && _configuration.IndividualReferenceSet != ExposureSource.Dust

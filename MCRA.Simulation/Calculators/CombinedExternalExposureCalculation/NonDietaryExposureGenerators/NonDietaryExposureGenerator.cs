@@ -3,6 +3,7 @@ using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
+using MCRA.Simulation.Filters.IndividualFilters;
 using MCRA.Simulation.Objects;
 using MCRA.Simulation.Objects.IndividualExposures;
 using MCRA.Utils.Statistics;
@@ -12,12 +13,6 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.NonDie
     public abstract class NonDietaryExposureGenerator {
 
         protected Dictionary<NonDietarySurvey, Dictionary<string, NonDietaryExposureSet>> _nonDietaryExposureSetsDictionary;
-
-        public virtual void Initialize(
-            IDictionary<NonDietarySurvey, List<NonDietaryExposureSet>> nonDietaryExposureSets) {
-            _nonDietaryExposureSetsDictionary = nonDietaryExposureSets
-                .ToDictionary(r => r.Key, r => r.Value.ToDictionary(nde => nde.IndividualCode, StringComparer.OrdinalIgnoreCase));
-        }
 
         /// <summary>
         /// Generates acute non-dietary individual day exposures for the
@@ -65,8 +60,8 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.NonDie
         ) {
             var externalIndividualDayExposures = individualDays
                 .AsParallel()
-                .SelectMany(individualDay => generateIndividualExposure(
-                    [individualDay],
+                .Select(individualDay => generateIndividualExposure(
+                    individualDay,
                     substances,
                     routes,
                     nonDietarySurveys,
@@ -105,6 +100,7 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.NonDie
                 .GroupBy(r => r.SimulatedIndividual)
                 .AsParallel()
                 .SelectMany(individualExposures => generateIndividualExposure(
+                    individualExposures.Key,
                     [.. individualExposures],
                     substances,
                     routes,
@@ -115,6 +111,8 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.NonDie
                 .ToList();
 
             // Check if success
+
+
             if (externalIndividualDayExposures.Count == 0) {
                 throw new Exception("Failed to match any non-dietary exposure");
             }
@@ -129,7 +127,16 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.NonDie
         }
 
         protected abstract List<IExternalIndividualDayExposure> generate(
+            SimulatedIndividual simulatedIndividual,
             ICollection<IIndividualDay> individualDays,
+            NonDietarySurvey nonDietarySurvey,
+            ICollection<Compound> substances,
+            ICollection<ExposureRoute> routes,
+            IRandom randomIndividual
+        );
+
+        protected abstract IExternalIndividualDayExposure generate(
+            IIndividualDay individualDay,
             NonDietarySurvey nonDietarySurvey,
             ICollection<Compound> substances,
             ICollection<ExposureRoute> routes,
@@ -139,12 +146,47 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.NonDie
         /// <summary>
         /// Evaluates whether the individual matches with the non-dietary survey properties.
         /// </summary>
-        protected static bool checkIndividualMatchesNonDietarySurvey(SimulatedIndividual individual, NonDietarySurvey survey) {
+        protected static bool checkIndividualMatchesNonDietarySurvey(
+            SimulatedIndividual individual,
+            NonDietarySurvey survey,
+            bool alignOnSex = false,
+            bool alignOnAge = false
+        ) {
             var result = survey.NonDietarySurveyProperties.All(sp => {
+                var matchAge = false;
+                var matchSex = false;
+
                 var ip = individual.Individual.GetPropertyValue(sp.IndividualProperty);
+
+                //Set matchAge always to true if property is cofactor (sex)
+                if (sp.PropertyType == PropertyType.Cofactor) {
+                    matchAge = true;
+                    //Evaluate cofactor sex and set matchSex; when sex is not relevant (alignOnSex = false) set matchSex to true
+                    if (alignOnSex) {
+                        if (sp.IndividualPropertyTextValue == ip.Value) {
+                            matchSex = true;
+                        }
+                    } else {
+                        matchSex = true;
+                    }
+                }
+
+                //Set matchSex always to true if property is covariable (age)
+                if (sp.PropertyType == PropertyType.Covariable) {
+                    matchSex = true;
+                    //Evaluate covariable age and set matchAge; when age is not relevant (alignOnAge = false) set matchAge to true
+                    if (alignOnAge) {
+                        if (sp.IndividualPropertyDoubleValueMin <= ip.DoubleValue
+                            && sp.IndividualPropertyDoubleValueMax >= ip.DoubleValue) {
+                            matchAge = true;
+                        }
+                    } else {
+                        matchAge = true;
+                    }
+                }
+
                 if (ip != null) {
-                    var match = sp.PropertyType == PropertyType.Cofactor && sp.IndividualPropertyTextValue == ip.Value
-                        || sp.PropertyType == PropertyType.Covariable && sp.IndividualPropertyDoubleValueMin <= ip.DoubleValue && sp.IndividualPropertyDoubleValueMax >= ip.DoubleValue;
+                    var match = matchSex && matchAge;
                     return match;
                 } else {
                     return true;
@@ -224,28 +266,114 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.NonDie
             }
         }
 
-
         /// <summary>
-        /// Simulates external individual days.
+        /// Simulates external individual days for acute
         /// </summary>
-        private List<IExternalIndividualDayExposure> generateIndividualExposure(
-            ICollection<IIndividualDay> individualDays,
+        private IExternalIndividualDayExposure generateIndividualExposure(
+            IIndividualDay individualDays,
             ICollection<Compound> substances,
             ICollection<ExposureRoute> routes,
             ICollection<NonDietarySurvey> nonDietarySurveys,
             IRandom generator
         ) {
-            var externalIndividualDayExposures = new List<IExternalIndividualDayExposure>();
+            var results = new List<IExternalIndividualDayExposure>();
             foreach (var nonDietarySurvey in nonDietarySurveys) {
-                var surveyIntakesPerSubstance = generate(
+                var externalIndividualDayExposure = generate(
                     individualDays,
                     nonDietarySurvey,
                     substances,
                     routes,
                     generator
                 );
-                externalIndividualDayExposures.AddRange(surveyIntakesPerSubstance);
+                results.Add(externalIndividualDayExposure);
             }
+
+            //aggregate all exposures for multiple surveys, do this on a per day basis
+            var grouping = results
+                .GroupBy(c => c.Day)
+                .ToList();
+
+            var pathWays = results
+                .SelectMany(c => c.ExposuresPerPath.Keys)
+                .ToHashSet();
+
+            var exposuresPerPath = new Dictionary<ExposurePath, List<IIntakePerCompound>>();
+            foreach (var group in grouping) {
+                foreach (var pathWay in pathWays) {
+                    var intakesPerSubstance = group.SelectMany(c => c.ExposuresPerPath[pathWay])
+                        .GroupBy(c => c.Compound)
+                        .Select(c => new AggregateIntakePerCompound() {
+                            Compound = c.Key,
+                            Amount = c.Sum(r => r.Amount)
+                        })
+                        .Cast<IIntakePerCompound>().ToList();
+                    exposuresPerPath[pathWay] = intakesPerSubstance;
+                }
+            }
+            var individualDayExposure = grouping.SelectMany(c => c).First();
+            var externalExposure = new ExternalIndividualDayExposure(exposuresPerPath) {
+                SimulatedIndividualDayId = individualDayExposure.SimulatedIndividualDayId,
+                SimulatedIndividual = individualDayExposure.SimulatedIndividual,
+                Day = individualDayExposure.Day
+            };
+            return externalExposure;
+        }
+
+        /// <summary>
+        /// Simulates external individual days for chronic
+        /// </summary>
+        private List<IExternalIndividualDayExposure> generateIndividualExposure(
+            SimulatedIndividual simulatedIndividual,
+            ICollection<IIndividualDay> individualDays,
+            ICollection<Compound> substances,
+            ICollection<ExposureRoute> routes,
+            ICollection<NonDietarySurvey> nonDietarySurveys,
+            IRandom generator
+        ) {
+            var results = new List<IExternalIndividualDayExposure>();
+            foreach (var nonDietarySurvey in nonDietarySurveys) {
+                var externalIndividualDayExposure = generate(
+                    simulatedIndividual,
+                    individualDays,
+                    nonDietarySurvey,
+                    substances,
+                    routes,
+                    generator
+                );
+                results.AddRange(externalIndividualDayExposure);
+            }
+
+            //aggregate all exposures for multiple surveys, do this on a per day basis
+            var externalIndividualDayExposures = new List<IExternalIndividualDayExposure>();
+            var grouping = results
+                .GroupBy(c => c.Day)
+                .ToList();
+
+            var pathWays = results
+                .SelectMany(c => c.ExposuresPerPath.Keys)
+                .ToHashSet();
+
+            foreach (var group in grouping) {
+                var exposuresPerPath = new Dictionary<ExposurePath, List<IIntakePerCompound>>();
+                foreach (var pathWay in pathWays) {
+                    var intakesPerSubstance = group.SelectMany(c => c.ExposuresPerPath[pathWay])
+                        .GroupBy(c => c.Compound)
+                        .Select(c => new AggregateIntakePerCompound() {
+                            Compound = c.Key,
+                            Amount = c.Sum(r => r.Amount)
+                        })
+                        .Cast<IIntakePerCompound>().ToList();
+                    exposuresPerPath[pathWay] = intakesPerSubstance;
+                }
+                var individualDayExposure = group.First();
+                var externalExposure = new ExternalIndividualDayExposure(exposuresPerPath) {
+                    SimulatedIndividualDayId = individualDayExposure.SimulatedIndividualDayId,
+                    SimulatedIndividual = individualDayExposure.SimulatedIndividual,
+                    Day = individualDayExposure.Day
+                };
+                externalIndividualDayExposures.Add(externalExposure);
+            }
+
             return externalIndividualDayExposures;
         }
     }

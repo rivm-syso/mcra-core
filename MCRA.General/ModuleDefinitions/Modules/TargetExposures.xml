@@ -90,6 +90,8 @@
     <CalculationSetting>AirAgeAlignment</CalculationSetting>
     <CalculationSetting>AirAgeAlignmentMethod</CalculationSetting>
     <CalculationSetting>AirAgeBins</CalculationSetting>
+    <CalculationSetting>NonDietarySexAlignment</CalculationSetting>
+    <CalculationSetting>NonDietaryAgeAlignment</CalculationSetting>
   </CalculationSettings>
   <UncertaintySettings>
     <UncertaintySetting source="KineticConversionFactors">ResampleKineticConversionFactors</UncertaintySetting>
