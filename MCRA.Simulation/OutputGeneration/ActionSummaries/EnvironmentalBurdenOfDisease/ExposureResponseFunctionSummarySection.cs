@@ -29,7 +29,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     .ToList();
                 var maxExposure = ebdRecords.Max(r => r.Exposure);
                 var functionDataPoints = new List<ExposureResponseDataPoint>();
-                for (double x = erf.Baseline; x <= maxExposure; x += 0.001) {
+                for (double x = erf.Baseline; x <= maxExposure; x += 0.001 * erf.Baseline) {
                     var functionDataPoint = new ExposureResponseDataPoint() {
                         Exposure = x,
                         ResponseValue = exposureResponseFunctionModel.Compute(x * doseUnitAlignmentFactor)
