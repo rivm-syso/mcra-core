@@ -72,92 +72,98 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             var isBottomUp = Model.Records.All(r => r.AttributableFraction == 0D);
             if (isBottomUp) {
                 hiddenProperties.Add("AttributableFraction");
+                hiddenProperties.Add("MedianAttributableFraction");
+                hiddenProperties.Add("TotalBod");
                 hiddenProperties.Add("MedianTotalBod");
             }
 
             var panelBuilder = new HtmlTabPanelBuilder();
 
             var panelGroup = Model.Records
-                .Where(r => !isUncertainty && !(r.TotalBod == 0D && r.CumulativeAttributableBod == 100D) ||
-                    isUncertainty && !(r.UpperAttributableBod == 0D && r.MedianCumulativeAttributableBod == 100D)
+                .Where(r => (!isUncertainty && !(r.TotalBod == 0D && r.CumulativeAttributableBod == 100D)) ||
+                    (isUncertainty && !(r.UpperAttributableBod == 0D && r.MedianCumulativeAttributableBod == 100D))
                 )
                 .GroupBy(r => (r.PopulationName, r.BodIndicator, r.ExposureResponseFunctionCode));
 
             foreach (var group in panelGroup) {
-                var panelSb = new StringBuilder();
                 var key = $"{group.Key.PopulationName}-{group.Key.BodIndicator}-{group.Key.ExposureResponseFunctionCode}";
-                panelSb.AppendTable(
-                    Model,
-                    [.. group],
-                    $"AttributableBodTable_{key}",
-                    ViewBag,
-                    header: true,
-                    caption: $"Attributable burden of disease {key}.",
-                    saveCsv: true,
-                    sortable: true,
-                    hiddenProperties: hiddenProperties
-                );
-                var chartCreator = new AttributableBodChartCreator(
-                    [.. group],
-                    Model.SectionId
-                );
-
-                var chart = ChartHelpers.Chart(
-                    name: $"AttributableBodChart{key}",
-                    section: Model,
-                    viewBag: ViewBag,
-                    caption: chartCreator.Title,
-                    chartCreator: chartCreator,
-                    fileType: ChartFileType.Svg,
-                    saveChartFile: true
-                );
-
-                var chartStandardised = string.Empty;
-                var chartExposed = string.Empty;
-                if (!missingPopulationSize) {
-                    var chartCreatorStandardised = new StandardisedAttributableBodChartCreator(
+                if (!group.All(g => g.AttributableBod == 0D)) {
+                    var panelSb = new StringBuilder();
+                    panelSb.AppendTable(
+                        Model,
                         [.. group],
-                        Model.SectionId
+                        $"AttributableBodTable_{key}",
+                        ViewBag,
+                        header: true,
+                        caption: $"Attributable burden of disease {key}.",
+                        saveCsv: true,
+                        sortable: true,
+                        hiddenProperties: hiddenProperties
                     );
-                    var chartCreatorExposed = new StandardisedExposedAttributableBodChartCreator(
+                    var chartCreator = new AttributableBodChartCreator(
                         [.. group],
                         Model.SectionId
                     );
 
-                     chartStandardised = ChartHelpers.Chart(
-                            name: $"StandardisedAttributableBodChart{key}",
-                            section: Model,
-                            viewBag: ViewBag,
-                            caption: chartCreatorStandardised.Title,
-                            chartCreator: chartCreatorStandardised,
-                            fileType: ChartFileType.Svg,
-                            saveChartFile: true
-                        ).ToString();
+                    var chart = ChartHelpers.Chart(
+                        name: $"AttributableBodChart{key}",
+                        section: Model,
+                        viewBag: ViewBag,
+                        caption: chartCreator.Title,
+                        chartCreator: chartCreator,
+                        fileType: ChartFileType.Svg,
+                        saveChartFile: true
+                    );
 
-                     chartExposed = ChartHelpers.Chart(
-                            name: $"ExposedAttributableBodChart{key}",
-                            section: Model,
-                            viewBag: ViewBag,
-                            caption: chartCreatorExposed.Title,
-                            chartCreator: chartCreatorExposed,
-                            fileType: ChartFileType.Svg,
-                            saveChartFile: true
-                        ).ToString();
+                    var chartStandardised = string.Empty;
+                    var chartExposed = string.Empty;
+                    if (!missingPopulationSize) {
+                        var chartCreatorStandardised = new StandardisedAttributableBodChartCreator(
+                            [.. group],
+                            Model.SectionId
+                        );
+                        var chartCreatorExposed = new StandardisedExposedAttributableBodChartCreator(
+                            [.. group],
+                            Model.SectionId
+                        );
+
+                        chartStandardised = ChartHelpers.Chart(
+                               name: $"StandardisedAttributableBodChart{key}",
+                               section: Model,
+                               viewBag: ViewBag,
+                               caption: chartCreatorStandardised.Title,
+                               chartCreator: chartCreatorStandardised,
+                               fileType: ChartFileType.Svg,
+                               saveChartFile: true
+                           ).ToString();
+
+                        chartExposed = ChartHelpers.Chart(
+                               name: $"ExposedAttributableBodChart{key}",
+                               section: Model,
+                               viewBag: ViewBag,
+                               caption: chartCreatorExposed.Title,
+                               chartCreator: chartCreatorExposed,
+                               fileType: ChartFileType.Svg,
+                               saveChartFile: true
+                           ).ToString();
+                    }
+
+                    var contentPanel = new HtmlString(
+                        "<div class=\"figure-container\">"
+                        + chart + chartStandardised + chartExposed
+                        + "</div>"
+                        + panelSb.ToString()
+                    );
+
+                    panelBuilder.AddPanel(
+                        id: $"Panel_{key}",
+                        title: $"{key}",
+                        hoverText: key,
+                        content: contentPanel
+                    );
+                } else {
+                    sb.AppendNotification($"No attributable burden of disease above the threshold for {key}.");
                 }
-
-                var contentPanel = new HtmlString(
-                    "<div class=\"figure-container\">"
-                    + chart + chartStandardised + chartExposed
-                    + "</div>"
-                    + panelSb.ToString()
-                );
-
-                panelBuilder.AddPanel(
-                    id: $"Panel_{key}",
-                    title: $"{key}",
-                    hoverText: key,
-                    content: contentPanel
-                );
             }
             panelBuilder.RenderPanel(sb);
         }
