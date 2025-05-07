@@ -6,5 +6,6 @@
     <Name>Resample exposure response function values</Name>
     <Description>Specifies whether exposure response function values are resampled.</Description>
     <ValueType>Boolean</ValueType>
+    <DefaultValue>true</DefaultValue>
   </SettingsItem>
 </SettingsItems>

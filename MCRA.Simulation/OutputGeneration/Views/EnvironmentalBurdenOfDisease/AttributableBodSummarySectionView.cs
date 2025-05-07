@@ -87,8 +87,8 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             foreach (var group in panelGroup) {
                 var key = $"{group.Key.PopulationName}-{group.Key.BodIndicator}-{group.Key.ExposureResponseFunctionCode}";
+                var panelSb = new StringBuilder();
                 if (!group.All(g => g.AttributableBod == 0D)) {
-                    var panelSb = new StringBuilder();
                     panelSb.AppendTable(
                         Model,
                         [.. group],
@@ -162,7 +162,14 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         content: contentPanel
                     );
                 } else {
-                    sb.AppendNotification($"No attributable burden of disease above the threshold for {key}.");
+                    panelSb.AppendNotification($"No attributable burden of disease above the threshold for {key}.");
+
+                    panelBuilder.AddPanel(
+                        id: $"Panel_{key}",
+                        title: $"{key}",
+                        hoverText: key,
+                        content: new HtmlString(panelSb.ToString())
+                    );
                 }
             }
             panelBuilder.RenderPanel(sb);

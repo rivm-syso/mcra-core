@@ -64,6 +64,11 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
         ) {
             if (_project.ActionSettings.ExposureType == ExposureType.Chronic) {
 
+                if (ModuleConfig.BodApproach == BodApproach.BottomUp &&
+                    data.SelectedPopulation.Size == 0D) {
+                    throw new Exception("Population size is required for bottom-up burden of disease computations.");
+                }
+
                 var percentileIntervals = generatePercentileIntervals(ModuleConfig.BinBoundaries);
 
                 var result = new EnvironmentalBurdenOfDiseaseActionResult();
