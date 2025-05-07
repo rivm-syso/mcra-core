@@ -2,6 +2,7 @@
 using MCRA.General;
 using MCRA.Utils.Statistics;
 using NCalc;
+using Parlot.Fluent;
 
 namespace MCRA.Simulation.Calculators.ExposureResponseFunctions {
 
@@ -91,10 +92,14 @@ namespace MCRA.Simulation.Calculators.ExposureResponseFunctions {
             Expression erfSpecification;
             switch (functionLevel) {
                 case FunctionLevel.Lower:
-                    erfSpecification = erf.ExposureResponseSpecificationLower ?? erf.ExposureResponseSpecification;
+                    erfSpecification = erf.ExposureResponseSpecificationLower.ExpressionString.Length > 0 
+                        ? erf.ExposureResponseSpecificationLower
+                        : erf.ExposureResponseSpecification;
                     break;
                 case FunctionLevel.Upper:
-                    erfSpecification = erf.ExposureResponseSpecificationUpper ?? erf.ExposureResponseSpecification;
+                    erfSpecification = erf.ExposureResponseSpecificationUpper.ExpressionString.Length > 0 ?
+                        erf.ExposureResponseSpecificationUpper
+                        : erf.ExposureResponseSpecification;
                     break;
                 default:
                     erfSpecification = erf.ExposureResponseSpecification;
@@ -108,10 +113,14 @@ namespace MCRA.Simulation.Calculators.ExposureResponseFunctions {
             Expression erfSpecification;
             switch (functionLevel) {
                 case FunctionLevel.Lower:
-                    erfSpecification = erfSubGroups[i].ExposureResponseSpecificationLower;
+                    erfSpecification = erfSubGroups[i].ExposureResponseSpecificationLower.ExpressionString.Length > 0
+                        ? erfSubGroups[i].ExposureResponseSpecificationLower
+                        : erfSubGroups[i].ExposureResponseSpecification;
                     break;
                 case FunctionLevel.Upper:
-                    erfSpecification = erfSubGroups[i].ExposureResponseSpecificationUpper;
+                    erfSpecification = erfSubGroups[i].ExposureResponseSpecificationUpper.ExpressionString.Length > 0
+                        ? erfSubGroups[i].ExposureResponseSpecificationUpper
+                        : erfSubGroups[i].ExposureResponseSpecification;
                     break;
                 default:
                     erfSpecification = erfSubGroups[i].ExposureResponseSpecification;
