@@ -1,6 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation;
+using MCRA.Simulation.Calculators.ExposureResponseFunctions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
@@ -12,7 +12,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.EnvironmentalBurdenOfDiseas
                 ExposureResponseType = ExposureResponseType.Constant,
                 ExposureResponseSpecification = new NCalc.Expression("5.01")
             };
-            var result = erf.Compute(42);
+            var erfModel = new ExposureResponseFunctionModel(erf);
+            var result = erfModel.Compute(42);
             Assert.AreEqual(5.01, result);
         }
     }

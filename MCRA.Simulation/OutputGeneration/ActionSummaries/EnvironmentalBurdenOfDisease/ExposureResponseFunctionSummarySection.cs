@@ -12,11 +12,9 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<IExposureResponseFunctionModel> exposureResponseFunctionModels,
             List<EnvironmentalBurdenOfDiseaseResultRecord> environmentalBurdenOfDiseases
         ) {
-            var exposureResponseFunctions = exposureResponseFunctionModels
-                .Select(r => r.ExposureResponseFunction)
-                .ToList();
             var erfSummaryRecords = new List<ErfSummaryRecord>();
-            foreach (var erf in exposureResponseFunctions) {
+            foreach (var exposureResponseFunctionModel in exposureResponseFunctionModels) {
+                var erf = exposureResponseFunctionModel.ExposureResponseFunction;
                 var ebdRecords = environmentalBurdenOfDiseases
                     .Where(r => r.ExposureResponseFunction == erf)
                     .ToList();
@@ -34,7 +32,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 for (double x = erf.Baseline; x <= maxExposure; x += 0.001) {
                     var functionDataPoint = new ExposureResponseDataPoint() {
                         Exposure = x,
-                        ResponseValue = erf.Compute(x * doseUnitAlignmentFactor)
+                        ResponseValue = exposureResponseFunctionModel.Compute(x * doseUnitAlignmentFactor)
                     };
                     functionDataPoints.Add(functionDataPoint);
                 }
