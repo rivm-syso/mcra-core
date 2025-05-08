@@ -1,5 +1,21 @@
 # Change Log
 
+## Version 10.1.10 (2025-05-08)
+
+### Added
+
+- New setting EbdApproach in ebd module (#2120)
+- Implement external exposures, exposures by route toc (#2193)
+- New functionality for erfs defined as population shifts (#2194)
+- Add info about sampling weights for HBM data (#2195)
+- Add Excel as output format for MCRA CLI file conversion (#2200)
+- Add uncertainty in erf (#2204)
+
+### Fixed
+
+- Implement correct alignment (to amounts) of nondietary exposures target exposures module (#2197)
+- Update individuals module to use population properties when generating individuals (#2202)
+
 ## Version 10.1.9 (2025-04-28)
 
 ### Added
