@@ -77,7 +77,9 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             List<IExposureEvent> exposureEvents,
             Dictionary<string, double> parameters,
             int evaluationPeriod,
-            int steps
+            int steps,
+            bool applyBodyweightScaling,
+            string idBodyweightParameter
         ) {
             using (Py.GIL()) {
                 initializeModel();
@@ -93,45 +95,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                         _model.__setattr__(parameter.Key, parameter.Value);
                     }
                 }
-
-                // Set exposure events
-                var eidCounter = 1;
-                foreach (var exposureEvent in exposureEvents) {
-                    // Create an event for each exposure event
-                    if (exposureEvent.GetType() == typeof(SingleExposureEvent)) {
-                        var singleEvent = (SingleExposureEvent)exposureEvent;
-                        var speciesId = _modelInputs[exposureEvent.Route];
-                        var eid = $"ev_{eidCounter++}";
-                        _model.addEvent(
-                            eid,
-                        false,
-                            $"time > {singleEvent.Time.ToString(CultureInfo.InvariantCulture)}",
-                            false
-                        );
-                        _model.addEventAssignment(
-                            eid,
-                            speciesId,
-                            $"{speciesId} + {singleEvent.Value.ToString(CultureInfo.InvariantCulture)}",
-                            false
-                        );
-                    } else {
-                        var repetitiveEvent = (RepeatingExposureEvent)exposureEvent;
-                        var speciesId = _modelInputs[exposureEvent.Route];
-                        var eid = $"ev_{eidCounter++}";
-                        _model.addEvent(
-                            eid,
-                            false,
-                            $"time % {repetitiveEvent.Interval.ToString(CultureInfo.InvariantCulture)} == 0",
-                            false
-                        );
-                        _model.addEventAssignment(
-                            eid,
-                            speciesId,
-                            $"{speciesId} + {repetitiveEvent.Value.ToString(CultureInfo.InvariantCulture)}",
-                            false
-                        );
-                    }
-                }
+                setExposuresEvents(exposureEvents, applyBodyweightScaling, idBodyweightParameter);
 
                 // Regenerate model
                 _model.regenerateModel(true, true);
@@ -163,6 +127,54 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                 return result;
             }
         }
+
+        private void setExposuresEvents(
+            List<IExposureEvent> exposureEvents,
+            bool applyBodyweightScaling,
+            string idBodyweightParameter
+        ) {
+            // Set exposure events
+            var eidCounter = 1;
+            var bodyweightMultiplication = applyBodyweightScaling
+                ? $"*{idBodyweightParameter}" : string.Empty;
+            foreach (var exposureEvent in exposureEvents) {
+                // Create an event for each exposure event
+                if (exposureEvent.GetType() == typeof(SingleExposureEvent)) {
+                    var singleEvent = (SingleExposureEvent)exposureEvent;
+                    var speciesId = _modelInputs[exposureEvent.Route];
+                    var eid = $"ev_{eidCounter++}";
+                    _model.addEvent(
+                        eid,
+                    false,
+                        $"time > {singleEvent.Time.ToString(CultureInfo.InvariantCulture)}",
+                        false
+                    );
+                    _model.addEventAssignment(
+                        eid,
+                        speciesId,
+                        $"{speciesId} + {singleEvent.Value.ToString(CultureInfo.InvariantCulture)}{bodyweightMultiplication}",
+                        false
+                    );
+                } else {
+                    var repetitiveEvent = (RepeatingExposureEvent)exposureEvent;
+                    var speciesId = _modelInputs[exposureEvent.Route];
+                    var eid = $"ev_{eidCounter++}";
+                    _model.addEvent(
+                        eid,
+                        false,
+                        $"time % {repetitiveEvent.Interval.ToString(CultureInfo.InvariantCulture)} == 0",
+                        false
+                    );
+                    _model.addEventAssignment(
+                        eid,
+                        speciesId,
+                        $"{speciesId} + {repetitiveEvent.Value.ToString(CultureInfo.InvariantCulture)}{bodyweightMultiplication}",
+                        false
+                    );
+                }
+            }
+        }
+
 
         public void Dispose() {
             Dispose(true);

@@ -3,7 +3,9 @@
 namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation {
     public class PbkSimulationSettings {
         public int NumberOfSimulatedDays { get; set; } = 50;
+        public int LifetimeYears { get; set; } = 50;
         public bool UseRepeatedDailyEvents { get; set; } = true;
+        public bool BodyWeightCorrected { get; set; }
 
         public bool UseParameterVariability { get; set; }
 
@@ -28,7 +30,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         public int[] SelectedEvents { get; set; }
 
         public double PrecisionReverseDoseCalculation { get; set; } = 0.001;
-
+        public PbkSimulationMethod PbkSimulationMethod { get; set; }
         public int GetNumberOfEventsPerDay(ExposureRoute exposureRoute) {
             switch (exposureRoute) {
                 case ExposureRoute.Oral:

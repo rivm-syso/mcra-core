@@ -83,6 +83,9 @@
     <CalculationSetting source="PbkModels">NumberOfDosesPerDayNonDietaryOral</CalculationSetting>
     <CalculationSetting source="PbkModels">SelectedEvents</CalculationSetting>
     <CalculationSetting source="PbkModels">SpecifyEvents</CalculationSetting>
+    <CalculationSetting source="PbkModels">PbkSimulationMethod</CalculationSetting>
+    <CalculationSetting source="PbkModels">LifetimeYears</CalculationSetting>
+    <CalculationSetting source="PbkModels">BodyWeightCorrected</CalculationSetting>
     <CalculationSetting>AirSexAlignment</CalculationSetting>
     <CalculationSetting>AirAgeAlignment</CalculationSetting>
     <CalculationSetting>AirAgeAlignmentMethod</CalculationSetting>

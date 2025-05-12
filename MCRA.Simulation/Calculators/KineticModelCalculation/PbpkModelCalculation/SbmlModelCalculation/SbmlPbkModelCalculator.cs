@@ -29,15 +29,12 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             var modelExposureRoutes = KineticModelInstance.KineticModelDefinition.GetExposureRoutes();
 
             // Get time resolution
-            var numberOfSimulatedDays = SimulationSetings.NumberOfSimulatedDays;
-            var timeUnitMultiplier = (int)TimeUnit.Days.GetTimeUnitMultiplier(KineticModelDefinition.TimeScale);
+            var timeUnitMultiplier = TimeUnit.Days.GetTimeUnitMultiplier(KineticModelDefinition.TimeScale);
             var stepLength = 1d / KineticModelDefinition.EvaluationFrequency;
-            var evaluationPeriod = numberOfSimulatedDays * timeUnitMultiplier;
-            var simulationSteps = evaluationPeriod * KineticModelDefinition.EvaluationFrequency + 1;
 
             // Initialise exposure events generator
             var exposureEventsGenerator = new ExposureEventsGenerator(
-                SimulationSetings,
+                SimulationSettings,
                 KineticModelDefinition.TimeScale,
                 exposureUnit,
                 KineticModelDefinition.Forcings
@@ -52,10 +49,13 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
 
             var individualResults = new Dictionary<int, List<SubstanceTargetExposurePattern>>();
             using (var runner = new SbmlModelRunner(KineticModelInstance, outputMappings)) {
-
                 // Loop over individuals
                 foreach (var id in externalIndividualExposures.Keys) {
                     var individual = externalIndividualExposures[id].First().SimulatedIndividual;
+
+                    // Get simulation period
+                    var evaluationPeriod = getEvaluationPeriod(timeUnitMultiplier, individual.Age);
+                    var simulationSteps = evaluationPeriod * KineticModelDefinition.EvaluationFrequency + 1;
 
                     // Create exposure events
                     var exposureEvents = exposureEventsGenerator
@@ -77,7 +77,9 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                             exposureEvents,
                             parameters,
                             evaluationPeriod,
-                            simulationSteps
+                            simulationSteps,
+                            SimulationSettings.BodyWeightCorrected,
+                            KineticModelDefinition.IdBodyWeightParameter
                         );
                     }
 
@@ -122,7 +124,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                                 ? relativeCompartmentWeight : double.NaN,
                             ExposureType = exposureType,
                             TargetExposuresPerTimeUnit = exposures ?? [],
-                            NonStationaryPeriod = SimulationSetings.NonStationaryPeriod,
+                            NonStationaryPeriod = SimulationSettings.NonStationaryPeriod,
                             TimeUnitMultiplier = timeUnitMultiplier,
                         };
                         results.Add(record);

@@ -22,18 +22,26 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         protected IDictionary<string, KineticModelParameterDefinition> _modelParameterDefinitions;
 
         // Run/simulation settings
-        public PbkSimulationSettings SimulationSetings { get; }
+        public PbkSimulationSettings SimulationSettings { get; }
 
         public PbkModelCalculatorBase(
             KineticModelInstance kineticModelInstance,
             PbkSimulationSettings simulationSettings
         ) {
             KineticModelInstance = kineticModelInstance;
-            SimulationSetings = simulationSettings;
+            SimulationSettings = simulationSettings;
 
             // Lookups/dictionaries for model definition elements
             _modelParameterDefinitions = KineticModelDefinition.Parameters
                 .ToDictionary(r => r.Id, StringComparer.OrdinalIgnoreCase);
+
+            // Check if model matches settings
+            if (SimulationSettings.BodyWeightCorrected
+                && string.IsNullOrEmpty(KineticModelDefinition.IdBodyWeightParameter)
+            ) {
+                var msg = $"Cannot apply bodyweight corrected exposures on PBK model [{KineticModelDefinition.Id}]: no BW parameter found.";
+                throw new Exception(msg);
+            }
         }
 
         /// <summary>
@@ -289,7 +297,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             ExposureType exposureType,
             IRandom generator
         ) {
-            var precision = SimulationSetings.PrecisionReverseDoseCalculation;
+            var precision = SimulationSettings.PrecisionReverseDoseCalculation;
             var xLower = 10E-6 * dose;
             var xUpper = 10E6 * dose;
             var xMiddle = double.NaN;
@@ -508,6 +516,28 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                     }
                 }
                 parametrisation[KineticModelDefinition.IdSexParameter] = (double)sex;
+            }
+        }
+
+        /// <summary>
+        /// Gets the evaluation time of the model.
+        /// </summary>
+        protected int getEvaluationPeriod(
+            double timeUnitMultiplier,
+            double? currentAge
+        ) {
+            switch (SimulationSettings.PbkSimulationMethod) {
+                case PbkSimulationMethod.Standard:
+                    return (int)(SimulationSettings.NumberOfSimulatedDays * timeUnitMultiplier);
+                case PbkSimulationMethod.LifetimeToSpecifiedAge:
+                    return (int)(SimulationSettings.LifetimeYears * 365.25 * timeUnitMultiplier);
+                case PbkSimulationMethod.LifetimeToCurrentAge:
+                    if (!currentAge.HasValue) {
+                        throw new Exception("Cannot run PBK model simulation to current age for individuals with undefined age.");
+                    }
+                    return (int)(timeUnitMultiplier * currentAge.Value * 365.25);
+                default:
+                    throw new NotImplementedException();
             }
         }
 

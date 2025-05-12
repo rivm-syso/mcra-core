@@ -88,4 +88,24 @@
     <Description>Generates doses and events for PBK model</Description>
     <ValueType>ExposureEventsGenerationMethod</ValueType>
   </SettingsItem>
+  <SettingsItem>
+    <Id>PbkSimulationMethod</Id>
+    <Name>PBK simulation method</Name>
+    <Description>Specifies in which mode to run the PBK model</Description>
+    <ValueType>PbkSimulationMethod</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>LifetimeYears</Id>
+    <Name>Expected life time in years</Name>
+    <Description>The total expected lifetime (in years) of the PBK model.</Description>
+    <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <DefaultValue>50</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>BodyWeightCorrected</Id>
+    <Name>Use bodyweight adjusted exposures</Name>
+    <Description>Use bodyweight adjusted exposures in PBK model simulations.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
 </SettingsItems>

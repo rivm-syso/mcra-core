@@ -54,7 +54,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
         [DataRow(TimeUnit.Days, 2)]
         public void ExposureEventsGenerator_TestCreateRandomDaily(
             TimeUnit timeUnit,
-            int dosesPerDay
+            int oralDosesPerDay
         ) {
             var random = new McraRandomGenerator(seed: 1);
             var routes = new [] { ExposureRoute.Oral, ExposureRoute.Dermal, ExposureRoute.Inhalation };
@@ -64,7 +64,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
             var settings = new PbkSimulationSettings() {
                 NumberOfSimulatedDays = 10,
                 UseRepeatedDailyEvents = false,
-                NumberOfOralDosesPerDay = 2,
+                NumberOfOralDosesPerDay = oralDosesPerDay,
                 NumberOfDermalDosesPerDay = 3,
                 NumberOfInhalationDosesPerDay = 4,
             };
@@ -135,13 +135,50 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
             Assert.IsTrue(events.All(e => e is SingleExposureEvent));
         }
 
+        [TestMethod]
+        [DataRow(true, true)]
+        [DataRow(false, true)]
+        [DataRow(true, false)]
+        [DataRow(false, false)]
+        public void ExposureEventsGenerator_TestCreatePerBwDoses(
+            bool bodyWeightCorrected,
+            bool useRepeatedDailyEvents
+        ) {
+            var random = new McraRandomGenerator(seed: 1);
+            var routes = new[] { ExposureRoute.Oral };
+            var substance = FakeSubstancesGenerator.Create(1).Single();
+            var externalExposures = createFakeIndividualDayExposures(random, routes, [substance], nDays: 1);
+
+            var settings = new PbkSimulationSettings() {
+                NumberOfSimulatedDays = 10,
+                UseRepeatedDailyEvents = useRepeatedDailyEvents,
+                BodyWeightCorrected = bodyWeightCorrected
+            };
+            var generator = new ExposureEventsGenerator(
+                settings,
+                TimeUnit.Hours,
+                ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
+                routes.ToDictionary(r => r, r => DoseUnit.ugPerDay)
+            );
+            var events = generator.CreateExposureEvents(
+                externalExposures,
+                routes,
+                substance,
+                random
+            );
+
+            var exp = externalExposures.Single().GetExposure(substance, !bodyWeightCorrected);
+            Assert.IsTrue(events.All(r => r.Value == exp));
+        }
+
         private static List<IExternalIndividualDayExposure> createFakeIndividualDayExposures(
             IRandom random,
             ExposureRoute[] routes,
-            List<Compound> substances
+            List<Compound> substances,
+            int nDays = 2
         ) {
             var paths = FakeExposurePathGenerator.Create(routes);
-            var individuals = FakeIndividualsGenerator.Create(1, 2, random);
+            var individuals = FakeIndividualsGenerator.Create(1, nDays, random);
             var individualDays = FakeIndividualDaysGenerator
                 .CreateSimulatedIndividualDays(individuals);
             var externalExposures = FakeExternalExposureGenerator

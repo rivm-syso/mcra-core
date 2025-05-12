@@ -495,7 +495,10 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 NonStationaryPeriod = ModuleConfig.NonStationaryPeriod,
                 UseParameterVariability = ModuleConfig.UseParameterVariability,
                 SpecifyEvents = ModuleConfig.SpecifyEvents,
-                SelectedEvents = [.. ModuleConfig.SelectedEvents]
+                SelectedEvents = [.. ModuleConfig.SelectedEvents],
+                PbkSimulationMethod = ModuleConfig.PbkSimulationMethod,
+                LifetimeYears = ModuleConfig.LifetimeYears,
+                BodyWeightCorrected = ModuleConfig.BodyWeightCorrected,
             };
 
             var kineticModelCalculators = kineticModelCalculatorFactory

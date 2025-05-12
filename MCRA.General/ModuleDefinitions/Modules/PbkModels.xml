@@ -29,6 +29,9 @@
     <CalculationSetting>SelectedEvents</CalculationSetting>
     <CalculationSetting>SpecifyEvents</CalculationSetting>
     <CalculationSetting>ExposureEventsGenerationMethod</CalculationSetting>
+    <CalculationSetting>PbkSimulationMethod</CalculationSetting>
+    <CalculationSetting>LifetimeYears</CalculationSetting>
+    <CalculationSetting>BodyWeightCorrected</CalculationSetting>
   </CalculationSettings>
   <UncertaintySettings>
     <UncertaintySetting>ResamplePbkModelParameters</UncertaintySetting>

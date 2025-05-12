@@ -12,6 +12,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         private readonly int _timeUnitMultiplier;
         private readonly ExposureUnitTriple _exposureUnit;
         private readonly Dictionary<ExposureRoute, DoseUnit> _routeDoseUnits;
+        private bool _perPerson => !SimulationSettings.BodyWeightCorrected;
 
         public ExposureEventsGenerator(
             PbkSimulationSettings simulationSetings,
@@ -61,7 +62,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
 
                 // Get daily doses
                 var dailyDoses = externalIndividualDayExposures
-                    .Select(r => r.GetExposure(route, substance))
+                    .Select(r => r.GetExposure(route, substance, _perPerson))
                     .ToList();
 
                 // Compute average daily dose
@@ -96,7 +97,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             Compound substance,
             IRandom generator
         ) {
-
             var exposureEvents = new List<IExposureEvent>();
             foreach (var route in routes) {
                 var doseUnit = _routeDoseUnits[route];
@@ -112,7 +112,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
 
                 // Get daily doses
                 var dailyDoses = externalIndividualExposures
-                    .Select(e => e.GetExposure(route, substance) / substanceAmountAlignmentFactor)
+                    .Select(e => e.GetExposure(route, substance, _perPerson) / substanceAmountAlignmentFactor)
                     .ToList();
 
                 // Get the timings of the exposure events per day

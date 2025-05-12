@@ -44,6 +44,13 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                     : [(id: r.Id, r)]
                 )
                 .ToList();
+
+            if (simulationSettings.PbkSimulationMethod != PbkSimulationMethod.Standard) {
+                throw new NotImplementedException($"PBK simulation method [{simulationSettings.PbkSimulationMethod}] not implemented for DeSolve PBK models.");
+            }
+            if (simulationSettings.BodyWeightCorrected) {
+                throw new NotImplementedException($"Bodyweight corrected exposure events not implemented for DeSolve PBK models.");
+            }
         }
 
         /// <summary>
@@ -65,7 +72,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             var modelExposureRoutes = KineticModelInstance.KineticModelDefinition.GetExposureRoutes();
 
             // Get time resolution
-            var numberOfSimulatedDays = SimulationSetings.NumberOfSimulatedDays;
+            var numberOfSimulatedDays = SimulationSettings.NumberOfSimulatedDays;
             var timeUnitMultiplier = (int)TimeUnit.Days.GetTimeUnitMultiplier(KineticModelDefinition.TimeScale);
             var stepLength = 1d / KineticModelDefinition.EvaluationFrequency;
             var evaluationPeriod = numberOfSimulatedDays * timeUnitMultiplier;
@@ -84,7 +91,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
 
             // Initialise exposure events generator
             var exposureEventsGenerator = new ExposureEventsGenerator(
-                SimulationSetings,
+                SimulationSettings,
                 KineticModelDefinition.TimeScale,
                 exposureUnit,
                 KineticModelDefinition.Forcings
@@ -129,7 +136,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                                 nominalInputParameters,
                                 generator,
                                 isNominal,
-                                SimulationSetings.UseParameterVariability
+                                SimulationSettings.UseParameterVariability
                             );
                             setPhysiologicalParameterValues(parameters, individual);
                             setStartingEvents(parameters);
@@ -204,7 +211,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                                     RelativeCompartmentWeight = compartmentSize / bodyWeight,
                                     ExposureType = exposureType,
                                     TargetExposuresPerTimeUnit = exposures ?? [],
-                                    NonStationaryPeriod = SimulationSetings.NonStationaryPeriod,
+                                    NonStationaryPeriod = SimulationSettings.NonStationaryPeriod,
                                     TimeUnitMultiplier = timeUnitMultiplier
                                 });
                             }
@@ -218,7 +225,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                                     RelativeCompartmentWeight = double.NegativeInfinity,
                                     ExposureType = exposureType,
                                     TargetExposuresPerTimeUnit = [],
-                                    NonStationaryPeriod = SimulationSetings.NonStationaryPeriod,
+                                    NonStationaryPeriod = SimulationSettings.NonStationaryPeriod,
                                     TimeUnitMultiplier = timeUnitMultiplier
                                 });
                             }
@@ -281,7 +288,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             var singleExposureEvents = exposureEvents
                 .SelectMany(r => (r is SingleExposureEvent)
                     ? [r as SingleExposureEvent]
-                    : (r as RepeatingExposureEvent).Expand(SimulationSetings.NumberOfSimulatedDays * timeUnitMultiplier)
+                    : (r as RepeatingExposureEvent).Expand(SimulationSettings.NumberOfSimulatedDays * timeUnitMultiplier)
                 )
                 .ToList();
 

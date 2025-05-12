@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>PbkSimulationMethod</Id>
+  <Name>PBK simulation methods</Name>
+  <Description>
+    PBK simulation methods.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>Standard</Id>
+      <Name>Standard PBK model simulation</Name>
+      <ShortName>Repeated</ShortName>
+      <Description>
+        Standard PBK model simulation, starting at current age and run simulation for specified time period.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>LifetimeToCurrentAge</Id>
+      <Name>Lifetime model simulation from birth to current age</Name>
+      <ShortName>LifeTimeCurrentAge</ShortName>
+      <Description>
+        Run (lifetime) PBK model simulation from birth until current age.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>LifetimeToSpecifiedAge</Id>
+      <Name>Lifetime model simulation from birth until specified age</Name>
+      <ShortName>LifeTimeSpecifiedAge</ShortName>
+      <Description>
+        Run (lifetime) PBK model simulation from birth until specified age.
+      </Description>
+    </Unit>
+  </Units>
+</UnitDefinition>

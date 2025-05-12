@@ -75,9 +75,19 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
             if (_configuration.RequirePbkModels) {
                 section.SummarizeSetting(SettingsItemType.UseParameterVariability, _configuration.UseParameterVariability);
-                section.SummarizeSetting(SettingsItemType.NumberOfDays, _configuration.NumberOfDays);
+                if (_configuration.PbkSimulationMethod == PbkSimulationMethod.Standard) {
+                    section.SummarizeSetting(SettingsItemType.NumberOfDays, _configuration.NumberOfDays);
+                }
                 section.SummarizeSetting(SettingsItemType.NonStationaryPeriod, _configuration.NonStationaryPeriod);
                 section.SummarizeSetting(SettingsItemType.ExposureEventsGenerationMethod, _configuration.ExposureEventsGenerationMethod);
+                section.SummarizeSetting(SettingsItemType.PbkSimulationMethod, _configuration.PbkSimulationMethod);
+                if (_configuration.PbkSimulationMethod != PbkSimulationMethod.Standard) {
+                    section.SummarizeSetting(SettingsItemType.BodyWeightCorrected, _configuration.BodyWeightCorrected);
+                    if (_configuration.PbkSimulationMethod == PbkSimulationMethod.LifetimeToSpecifiedAge) {
+                        section.SummarizeSetting(SettingsItemType.LifetimeYears, _configuration.LifetimeYears);
+                    }
+                }
+
                 if (_configuration.ExposureEventsGenerationMethod == ExposureEventsGenerationMethod.RandomDailyEvents) {
                     if (_configuration.SpecifyEvents) {
                         section.SummarizeSetting(SettingsItemType.SelectedEvents, _configuration.SelectedEvents);

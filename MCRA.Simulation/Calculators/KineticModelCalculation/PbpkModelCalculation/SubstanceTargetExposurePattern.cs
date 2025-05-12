@@ -40,7 +40,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         /// <summary>
         /// Time unit multiplication factor.
         /// </summary>
-        public int TimeUnitMultiplier { get; set; }
+        public double TimeUnitMultiplier { get; set; }
 
         /// <summary>
         /// The computed average target exposure = internal dose
