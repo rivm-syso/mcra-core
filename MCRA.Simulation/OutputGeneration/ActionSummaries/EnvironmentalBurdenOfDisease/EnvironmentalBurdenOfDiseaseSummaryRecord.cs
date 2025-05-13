@@ -42,16 +42,10 @@ namespace MCRA.Simulation.OutputGeneration {
         [Display(AutoGenerateField = false)]
         public List<double> TotalAttributableBods { get; set; }
 
-        [Display(AutoGenerateField = false)]
-        public List<(int Id, double Bod)> AttributableBodPerBin { get; set; }
-        [Display(AutoGenerateField = false)]
-
-        public List<(int Id, List<double> Bods)> AttributableBodPerBinList { get; set; }
-
         [Description("Median total attributable burden of disease for the whole population.")]
         [DisplayName("Total attributable BoD median")]
         [DisplayFormat(DataFormatString = "{0:G4}")]
-        public double MedianTotalAttributableBod { get { return AttributableBodPerBinList.Any() ? AttributableBodPerBinList.Sum(c => c.Bods.Percentile(50)) : double.NaN; } }
+        public double MedianTotalAttributableBod { get { return TotalAttributableBods.Any() ? TotalAttributableBods.Percentile(50) : double.NaN; } }
 
         [Description("Lower uncertainty bound total attributable burden of disease for the whole population.")]
         [DisplayName("Attributable BoD lower bound (LowerBound)")]

@@ -7,8 +7,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
     public class AttributableBodSummarySectionView : SectionView<AttributableBodSummarySection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>() {
-                "BodIndicator",
-                "ExposureResponseFunctionCode",
+                "ErfCode",
                 "Unit",
                 "PopulationCode",
                 "PopulationName"
@@ -83,17 +82,27 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 .Where(r => (!isUncertainty && !(r.TotalBod == 0D && r.CumulativeAttributableBod == 100D)) ||
                     (isUncertainty && !(r.UpperAttributableBod == 0D && r.MedianCumulativeAttributableBod == 100D))
                 )
-                .GroupBy(r => (r.PopulationName, r.BodIndicator, r.ExposureResponseFunctionCode));
+                .GroupBy(r => (r.PopulationName, r.BodIndicator, r.ErfCode));
 
             foreach (var group in panelGroup) {
-                var key = $"{group.Key.PopulationName}-{group.Key.BodIndicator}-{group.Key.ExposureResponseFunctionCode}";
+                var key = $"{group.Key.PopulationName}-{group.Key.BodIndicator}-{group.Key.ErfCode}";
                 var panelSb = new StringBuilder();
                 if (!group.All(g => g.AttributableBod == 0D)) {
+                    
+                    var populationSize = group.FirstOrDefault().PopulationSize;
+                    if (!double.IsNaN(populationSize)) {
+                        panelSb.AppendDescriptionParagraph($"Population size: {populationSize}");
+                    }
+
+                    // Create copy of viewbag and fill with (local) BodIndicator
+                    var viewBag = ViewBag.Clone();
+                    viewBag.UnitsDictionary.Add("BodIndicator", group.Key.BodIndicator ?? string.Empty);
+
                     panelSb.AppendTable(
                         Model,
                         [.. group],
                         $"AttributableBodTable_{key}",
-                        ViewBag,
+                        viewBag,
                         header: true,
                         caption: $"Attributable burden of disease {key}.",
                         saveCsv: true,

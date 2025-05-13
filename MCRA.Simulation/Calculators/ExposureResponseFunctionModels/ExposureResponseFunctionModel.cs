@@ -2,7 +2,6 @@
 using MCRA.General;
 using MCRA.Utils.Statistics;
 using NCalc;
-using Parlot.Fluent;
 
 namespace MCRA.Simulation.Calculators.ExposureResponseFunctions {
 
@@ -92,7 +91,7 @@ namespace MCRA.Simulation.Calculators.ExposureResponseFunctions {
             Expression erfSpecification;
             switch (functionLevel) {
                 case FunctionLevel.Lower:
-                    erfSpecification = erf.ExposureResponseSpecificationLower.ExpressionString.Length > 0 
+                    erfSpecification = erf.ExposureResponseSpecificationLower.ExpressionString.Length > 0
                         ? erf.ExposureResponseSpecificationLower
                         : erf.ExposureResponseSpecification;
                     break;

@@ -26,48 +26,56 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
             BodApproach = bodApproach;
         }
 
-        public List<EnvironmentalBurdenOfDiseaseResultRecord> Compute() {
+        public EnvironmentalBurdenOfDiseaseResultRecord Compute() {
             var populationSize = Population.Size;
-            var result = ExposureResponseResults
+            var environmentalBurdenOfDiseaseResultBinRecords = ExposureResponseResults
                 .Select(compute)
                 .ToList();
-            var sum = result.Sum(c => c.AttributableBod);
+            var sum = environmentalBurdenOfDiseaseResultBinRecords.Sum(c => c.AttributableBod);
             var cumulative = 0d;
-            var sumExposed = result
+            var sumExposed = environmentalBurdenOfDiseaseResultBinRecords
                 .Where(r => r.ExposurePercentileBin.Percentage > 0)
                 .Sum(r => r.AttributableBod / populationSize / r.ExposurePercentileBin.Percentage * 100);
             var cumulativeExposed = 0d;
-            foreach (var record in result) {
+            foreach (var record in environmentalBurdenOfDiseaseResultBinRecords) {
                 cumulative += record.AttributableBod;
                 cumulativeExposed += record.AttributableBod / populationSize / record.ExposurePercentileBin.Percentage * 100;
                 record.CumulativeAttributableBod = cumulative / sum * 100;
                 record.CumulativeStandardisedExposedAttributableBod = cumulativeExposed / sumExposed * 100;
             }
+            var result = new EnvironmentalBurdenOfDiseaseResultRecord {
+                BaselineBodIndicator = BaselineBodIndicator,
+                ExposureResponseFunction = ExposureResponseResults.First().ExposureResponseFunction,
+                ErfDoseUnit = ExposureResponseResults.First().ExposureResponseFunction.DoseUnit,
+                TargetUnit = ExposureResponseResults.First().TargetUnit,
+                EnvironmentalBurdenOfDiseaseResultBinRecords = environmentalBurdenOfDiseaseResultBinRecords
+            };
             return result;
         }
 
-        private EnvironmentalBurdenOfDiseaseResultRecord compute(
+        private EnvironmentalBurdenOfDiseaseResultBinRecord compute(
             ExposureResponseResultRecord exposureResponseResultRecord
         ) {
-            var result = new EnvironmentalBurdenOfDiseaseResultRecord {
-                BaselineBodIndicator = BaselineBodIndicator,
+            var totalBod = BaselineBodIndicator.Value
+                * exposureResponseResultRecord.PercentileInterval.Percentage / 100;
+            var responseValue = exposureResponseResultRecord.PercentileSpecificRisk;
+            var result = new EnvironmentalBurdenOfDiseaseResultBinRecord {
                 ExposureBinId = exposureResponseResultRecord.ExposureBinId,
                 ExposureBin = exposureResponseResultRecord.ExposureInterval,
                 ExposurePercentileBin = exposureResponseResultRecord.PercentileInterval,
-                ErfDoseUnit = exposureResponseResultRecord.ExposureResponseFunction.DoseUnit,
-                ResponseValue = exposureResponseResultRecord.PercentileSpecificRisk,
-                TargetUnit = exposureResponseResultRecord?.TargetUnit
+                Exposure = exposureResponseResultRecord.ExposureLevel,
+                TotalBod = totalBod,
+                ResponseValue = responseValue,
+                ExposureResponseResultRecord = exposureResponseResultRecord
             };
-            result.TotalBod = BaselineBodIndicator.Value
-                * exposureResponseResultRecord.PercentileInterval.Percentage / 100;
             if (BodApproach == BodApproach.TopDown) {
-                var attributableFraction = computeAttributableFraction(exposureResponseResultRecord, result.ResponseValue);
+                var attributableFraction = computeAttributableFraction(exposureResponseResultRecord, responseValue);
                 result.AttributableFraction = attributableFraction;
-                result.AttributableBod = result.TotalBod * attributableFraction;
+                result.AttributableBod = totalBod * attributableFraction;
             } else {
-                result.AttributableBod = result.TotalBod * result.ResponseValue * Population.Size;
+                result.AttributableBod = totalBod * responseValue * Population.Size;
             }
-            result.ExposureResponseResultRecord = exposureResponseResultRecord;
+
             return result;
         }
 

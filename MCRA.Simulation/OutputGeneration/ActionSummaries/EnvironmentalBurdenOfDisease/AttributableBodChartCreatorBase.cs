@@ -25,7 +25,7 @@ namespace MCRA.Simulation.OutputGeneration {
             _unit = records.First().TargetUnit;
             _population = records.First().PopulationName;
             _bodIndicator = records.First().BodIndicator;
-            _erfCode = records.First().ExposureResponseFunctionCode;
+            _erfCode = records.First().ErfCode;
         }
 
         protected static PlotModel create(

@@ -113,10 +113,8 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
                             data.SelectedPopulation,
                             ModuleConfig.BodApproach
                         );
-                        var resultRecords = ebdCalculator.Compute();
-                        foreach (var resultRecord in resultRecords) {
-                            environmentalBurdenOfDiseases.Add(resultRecord);
-                        }
+                        var resultRecord = ebdCalculator.Compute();
+                        environmentalBurdenOfDiseases.Add(resultRecord);
                     }
                 }
 

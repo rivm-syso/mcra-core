@@ -18,16 +18,18 @@ namespace MCRA.Simulation.OutputGeneration {
                 var ebdRecords = environmentalBurdenOfDiseases
                     .Where(r => r.ExposureResponseFunction == erf)
                     .ToList();
-                var targetUnit = ebdRecords.First().TargetUnit;
-                var doseUnitAlignmentFactor = ebdRecords.First()
+                var ebdBinRecords = ebdRecords
+                    .SelectMany(r => r.EnvironmentalBurdenOfDiseaseResultBinRecords);
+                var targetUnit = erf.TargetUnit;
+                var doseUnitAlignmentFactor = ebdBinRecords.First()
                     .ExposureResponseResultRecord.ErfDoseUnitAlignmentFactor;
-                var dataPoints = ebdRecords
+                var dataPoints = ebdBinRecords
                     .Select(r => new ExposureResponseDataPoint() {
                         Exposure = r.Exposure,
                         ResponseValue = r.ResponseValue
                     })
                     .ToList();
-                var maxExposure = ebdRecords.Max(r => r.Exposure);
+                var maxExposure = ebdBinRecords.Max(r => r.Exposure);
                 var functionDataPoints = new List<ExposureResponseDataPoint>();
                 for (double x = erf.Baseline; x <= maxExposure; x += 0.001 * erf.Baseline) {
                     var functionDataPoint = new ExposureResponseDataPoint() {
