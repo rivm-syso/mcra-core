@@ -72,16 +72,16 @@ namespace MCRA.Simulation.Calculators.ExposureResponseFunctions {
 
             if (erf.ExposureResponseType == ExposureResponseType.Function) {
                 erfSpecification.Parameters["x"] = x;
-                return (double)erfSpecification.Evaluate();
+                return Convert.ToDouble(erfSpecification.Evaluate());
             } else if (erf.ExposureResponseType == ExposureResponseType.PerDoubling) {
-                var doubFac = (double)erfSpecification.Evaluate();
+                var doubFac = Convert.ToDouble(erfSpecification.Evaluate());
                 return Math.Pow(doubFac, Math.Log2(x / erf.Baseline));
             } else if (erf.ExposureResponseType == ExposureResponseType.PerUnit) {
-                var a = (double)erfSpecification.Evaluate();
+                var a = Convert.ToDouble(erfSpecification.Evaluate());
                 var b = 1 - a * erf.Baseline;
                 return a * x + b;
             } else if (erf.ExposureResponseType == ExposureResponseType.Constant) {
-                return (double)erfSpecification.Evaluate();
+                return Convert.ToDouble(erfSpecification.Evaluate());
             } else {
                 throw new NotImplementedException();
             }
