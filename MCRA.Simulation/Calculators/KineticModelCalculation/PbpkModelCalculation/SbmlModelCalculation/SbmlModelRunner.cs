@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using DocumentFormat.OpenXml.InkML;
 using ExCSS;
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
@@ -78,8 +79,8 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             Dictionary<string, double> parameters,
             int evaluationPeriod,
             int steps,
-            bool applyBodyweightScaling,
-            string idBodyweightParameter
+            bool applyBodyWeightScaling,
+            string idBodyWeightParameter
         ) {
             using (Py.GIL()) {
                 initializeModel();
@@ -95,13 +96,16 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                         _model.__setattr__(parameter.Key, parameter.Value);
                     }
                 }
-                setExposuresEvents(exposureEvents, applyBodyweightScaling, idBodyweightParameter);
+                setExposuresEvents(exposureEvents, applyBodyWeightScaling, idBodyWeightParameter);
 
                 // Regenerate model
                 _model.regenerateModel(true, true);
 
+                var outputParams = (string[])_model.timeCourseSelections.As<string[]>();
+                outputParams = outputParams.Union([idBodyWeightParameter]).ToArray();
+
                 // Determine total evaluation period and output steps and run the model
-                var simulationOutput = _model.simulate(0, evaluationPeriod, steps);
+                var simulationOutput = _model.simulate(0, evaluationPeriod, steps, outputParams);
 
                 // Get output compartment (trim brackets that are added by roadrunner)
                 var outputNames = new List<string>(simulationOutput.colnames.As<string[]>())
@@ -117,7 +121,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                     CompartmentVolumes = []
                 };
                 for (var i = 0; i < output.Length - 1; i++) {
-                    result.OutputTimeSeries[outputNames[i]] = output[i + 1].ToList();
+                    result.OutputTimeSeries[outputNames[i]] = [.. output[i + 1]];
                 }
 
                 foreach (var mapping in _targetOutputMappings) {

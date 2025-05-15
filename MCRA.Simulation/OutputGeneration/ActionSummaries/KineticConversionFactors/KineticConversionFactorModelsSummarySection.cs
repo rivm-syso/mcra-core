@@ -48,8 +48,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     DistributionType = conversionRule.Distribution != KineticConversionFactorDistributionType.Unspecified
                         ? conversionRule.Distribution.GetDisplayName() : null,
                     ConversionFactor = conversionRule.ConversionFactor,
-                    UncertaintyUpper = conversionRule.UncertaintyUpper.HasValue
-                        ? conversionRule.UncertaintyUpper.Value : double.NaN,
+                    UncertaintyUpper = conversionRule.UncertaintyUpper ?? double.NaN,
                     IsAgeLower = isAgeLower,
                     IsGender = isGender,
                     Both = isAgeLower && isGender

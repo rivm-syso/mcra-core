@@ -1,43 +1,40 @@
 ﻿using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
-using OxyPlot.Annotations;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public class PbkModelTimeCourseChartCreator : TimeCourseChartCreatorBase {
+    public class PbkModelLifeTimeChartCreator : TimeCourseChartCreatorBase {
 
         private readonly string _id;
-        private readonly string _intakeUnit;
         private readonly PbkModelTimeCourseSection _section;
         private readonly PbkModelTimeCourseDrilldownRecord _internalExposures;
+        private readonly string _bodyWeightUnit;
 
-        public PbkModelTimeCourseChartCreator(
+        public PbkModelLifeTimeChartCreator(
             PbkModelTimeCourseDrilldownRecord internalExposures,
             PbkModelTimeCourseSection section,
-            string intakeUnit
+            string bodyWeightUnit
         ) {
             Width = 500;
             Height = 350;
             _section = section;
-            _intakeUnit = intakeUnit;
             _id = internalExposures.IndividualCode;
             _internalExposures = internalExposures;
+            _bodyWeightUnit = bodyWeightUnit;
         }
-
-        public override string Title => $"Compartment: {_internalExposures.BiologicalMatrix}";
 
         public override string ChartId {
             get {
-                var pictureId = "7ffc4ee2-eeea-4800-9b5d-965409b78411";
+                var pictureId = "09b11006-2b82-4cc4-a37c-00c8d00cfe0b";
                 return StringExtensions.CreateFingerprint(_section.SectionId + pictureId + _id + _internalExposures.BiologicalMatrix);
             }
         }
 
         public override PlotModel Create() {
             var xtitle = $"Time (days)";
-            var ytitle = $"Exposure ({_intakeUnit})";
+            var ytitle = $"Body weight ({_bodyWeightUnit})";
             var xValues = _internalExposures.TargetExposures.Select(c => c.Time).ToList();
-            var yValues = _internalExposures.TargetExposures.Select(c => c.Exposure).ToList();
-            var plotModel = createPlotModel(
+            var yValues = _internalExposures.TargetExposures.Select(c => (double)c.BodyWeight).ToList();
+            return createPlotModel(
                 xValues,
                 yValues,
                 _section.TimeScale,
@@ -47,17 +44,6 @@ namespace MCRA.Simulation.OutputGeneration {
                 _section.NumberOfDaysSkipped,
                 false
             );
-
-            // Internal (target) exposure reference line
-            var referenceLineAnnotation = new LineAnnotation() {
-                Type = LineAnnotationType.Horizontal,
-                Y = _internalExposures.TargetExposure,
-                LineStyle = LineStyle.Solid,
-                Color = OxyColors.RoyalBlue,
-                StrokeThickness = 1.5
-            };
-            plotModel.Annotations.Add(referenceLineAnnotation);
-            return plotModel;
         }
     }
 }

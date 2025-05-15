@@ -3,6 +3,7 @@ using MCRA.General;
 using MCRA.Simulation.OutputGeneration.Helpers;
 using MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders;
 using Microsoft.AspNetCore.Html;
+using Microsoft.AspNetCore.Routing.Constraints;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class PbkModelTimeCourseSectionView : SectionView<PbkModelTimeCourseSection> {
@@ -36,7 +37,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (Model.InternalTargetSystemExposures.All(r => r.IndividualCode == null)) {
                 hiddenProperties.Add("IndividualCode");
             }
-
+            if (Model.InternalTargetSystemExposures.All(r => double.IsNaN(r.Age))) {
+                hiddenProperties.Add("Age");
+            }
             //no items in InternalTargetSystemExposures collection, return
             if ((Model.InternalTargetSystemExposures?.Count ?? 0) == 0) {
                 return;
@@ -47,44 +50,69 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (groups.Count() > 1) {
                 var targetPanelBuilder = new HtmlTabPanelBuilder();
                 foreach (var group in groups) {
-                    var targetPanelSb = new StringBuilder();
+                    var chartTimeCourse = string.Empty;
+                    var chartBodyWeight = string.Empty;
+                    var panelSb = new StringBuilder();
                     var panelBuilder = new HtmlTabPanelBuilder();
                     //loop over each item using a value tuple to select the item and the item's index
                     foreach (var record in group) {
                         if (record.MaximumTargetExposure > 0) {
-                            var chartCreator = new PbkModelTimeCourseChartCreator(record, Model, record.Unit);
+                            var chartCreatorTimeCourse = new PbkModelTimeCourseChartCreator(record, Model, record.Unit);
                             var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
                                 name: $"KineticTimeCourse{group.Key}{record.BiologicalMatrix}",
                                 section: Model,
                                 items: Model.InternalTargetSystemExposures,
                                 viewBag: ViewBag
                             );
-                            var figCaption = !string.IsNullOrEmpty(record.IndividualCode)
+                            var figCaptionBiologicalMatrix = !string.IsNullOrEmpty(record.IndividualCode)
                                 ? $"PBK model time course {record.BiologicalMatrix} for individual {record.IndividualCode}."
                                 : $"PBK model time course {record.BiologicalMatrix}.";
+                            chartTimeCourse = ChartHelpers.Chart(
+                                    name: $"KineticTimeCourse{group.Key}{record.BiologicalMatrix}",
+                                    section: Model,
+                                    viewBag: ViewBag,
+                                    chartCreator: chartCreatorTimeCourse,
+                                    fileType: ChartFileType.Svg,
+                                    saveChartFile: true,
+                                    caption: figCaptionBiologicalMatrix,
+                                    chartData: percentileDataSection
+                                ).ToString();
+
+                            var chartCreatorBodyweight = new PbkModelLifeTimeChartCreator(record, Model, ViewBag.GetUnit("BodyWeightUnit"));
+                            var figCaptionBodyWeight = !string.IsNullOrEmpty(record.IndividualCode)
+                                ? $"PBK model time course Body weight for individual {record.IndividualCode}."
+                                : $"PBK model time course Body weight.";
+                            chartBodyWeight = ChartHelpers.Chart(
+                                    name: $"BodyWeightTimeCourse{group.Key}{record.BiologicalMatrix}",
+                                    section: Model,
+                                    viewBag: ViewBag,
+                                    chartCreator: chartCreatorBodyweight,
+                                    fileType: ChartFileType.Svg,
+                                    saveChartFile: true,
+                                    caption: figCaptionBodyWeight,
+                                    chartData: percentileDataSection
+                                ).ToString();
+
+                            var contentPanel = new HtmlString(
+                                "<div class=\"figure-container\">"
+                                + chartTimeCourse + chartBodyWeight
+                                + "</div>"
+                                + panelSb.ToString()
+                            );
                             panelBuilder.AddPanel(
                                 id: record.BiologicalMatrix,
                                 title: record.BiologicalMatrix,
                                 hoverText: record.BiologicalMatrix,
-                                content: ChartHelpers.Chart(
-                                    name: $"KineticTimeCourse{group.Key}{record.BiologicalMatrix}",
-                                    section: Model,
-                                    viewBag: ViewBag,
-                                    chartCreator: chartCreator,
-                                    fileType: ChartFileType.Svg,
-                                    saveChartFile: true,
-                                    caption: figCaption,
-                                    chartData: percentileDataSection
-                                )
+                                content: contentPanel
                             );
                         }
                     }
-                    panelBuilder.RenderPanel(targetPanelSb);
+                    panelBuilder.RenderPanel(panelSb);
                     targetPanelBuilder.AddPanel(
                         id: group.Key,
                         title: $"Ind: {group.Key}",
                         hoverText: group.Key,
-                        content: new HtmlString(targetPanelSb.ToString())
+                        content: new HtmlString(panelSb.ToString())
                     );
                 }
                 targetPanelBuilder.RenderPanel(sb);

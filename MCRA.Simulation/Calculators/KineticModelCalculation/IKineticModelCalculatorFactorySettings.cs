@@ -8,7 +8,6 @@
         int NumberOfDosesPerDayNonDietaryOral { get; }
         int NumberOfDosesPerDayNonDietaryDermal { get; }
         int NumberOfDosesPerDayNonDietaryInhalation { get; }
-        int NonStationaryPeriod { get; }
         bool UseParameterVariability { get; }
         bool SpecifyEvents { get; }
         string SelectedEvents { get; }

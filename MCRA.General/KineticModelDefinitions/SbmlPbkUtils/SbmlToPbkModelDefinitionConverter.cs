@@ -101,7 +101,7 @@ namespace MCRA.General.Sbml {
             result.Parameters = sbmlModel.Parameters
                 .Select((r, ix) => new KineticModelParameterDefinition() {
                     Id = r.Id,
-                    IsInternalParameter = r.IsConstant,
+                    IsInternalParameter = !r.IsConstant,
                     DefaultValue = r.DefaultValue,
                     Order = ix,
                     Description = r.Name,
@@ -122,13 +122,13 @@ namespace MCRA.General.Sbml {
                 .ToList();
 
             result.IdAgeParameter = sbmlModel.Parameters
-                .FirstOrDefault(r => r.IsOfType(PbkModelParameterType.Age) && r.IsConstant)?.Id;
+                .FirstOrDefault(r => r.IsOfType(PbkModelParameterType.Age))?.Id;
             result.IdSexParameter = sbmlModel.Parameters
                 .FirstOrDefault(r => r.IsOfType(PbkModelParameterType.Sex))?.Id;
             result.IdBodyWeightParameter = sbmlModel.Parameters
-                .FirstOrDefault(r => r.IsOfType(PbkModelParameterType.BodyWeight) && r.IsConstant)?.Id;
+                .FirstOrDefault(r => r.IsOfType(PbkModelParameterType.BodyWeight))?.Id;
             result.IdBodySurfaceAreaParameter = sbmlModel.Parameters
-                .FirstOrDefault(r => r.IsOfType(PbkModelParameterType.BodySurfaceArea) && r.IsConstant)?.Id;
+                .FirstOrDefault(r => r.IsOfType(PbkModelParameterType.BodySurfaceArea))?.Id;
 
             return result;
         }

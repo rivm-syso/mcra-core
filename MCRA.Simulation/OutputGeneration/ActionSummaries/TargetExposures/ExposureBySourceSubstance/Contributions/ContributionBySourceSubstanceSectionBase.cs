@@ -66,8 +66,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Select(c => c.SimulatedIndividual.SamplingWeight)
                 .ToList();
             var total = exposures.Sum(c => c.Exposure * c.SimulatedIndividual.SamplingWeight)
-                * (rpf.HasValue ? rpf.Value : double.NaN)
-                * (membership.HasValue ? membership.Value : double.NaN);
+                * (rpf ?? double.NaN)
+                * (membership ?? double.NaN);
             var record = new ContributionBySourceSubstanceRecord {
                 ExposureSource = source.GetShortDisplayName(),
                 SubstanceCode = substance.Code,

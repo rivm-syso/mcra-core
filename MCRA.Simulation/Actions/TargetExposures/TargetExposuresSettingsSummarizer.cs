@@ -81,12 +81,14 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 section.SummarizeSetting(SettingsItemType.UseParameterVariability, _configuration.UseParameterVariability);
                 if (_configuration.PbkSimulationMethod == PbkSimulationMethod.Standard) {
                     section.SummarizeSetting(SettingsItemType.NumberOfDays, _configuration.NumberOfDays);
+                    section.SummarizeSetting(SettingsItemType.NonStationaryPeriod, _configuration.NonStationaryPeriod);
                 }
-                section.SummarizeSetting(SettingsItemType.NonStationaryPeriod, _configuration.NonStationaryPeriod);
                 section.SummarizeSetting(SettingsItemType.ExposureEventsGenerationMethod, _configuration.ExposureEventsGenerationMethod);
                 section.SummarizeSetting(SettingsItemType.PbkSimulationMethod, _configuration.PbkSimulationMethod);
                 if (_configuration.PbkSimulationMethod != PbkSimulationMethod.Standard) {
                     section.SummarizeSetting(SettingsItemType.BodyWeightCorrected, _configuration.BodyWeightCorrected);
+                    section.SummarizeSetting(SettingsItemType.NonStationaryPeriodInYears, _configuration.NonStationaryPeriodInYears);
+                    section.SummarizeSetting(SettingsItemType.NonStationaryPeriod, _configuration.NonStationaryPeriodInDays);
                     if (_configuration.PbkSimulationMethod == PbkSimulationMethod.LifetimeToSpecifiedAge) {
                         section.SummarizeSetting(SettingsItemType.LifetimeYears, _configuration.LifetimeYears);
                     }

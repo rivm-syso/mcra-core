@@ -28,7 +28,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         public int NonStationaryPeriod { get; set; } = 10;
         public bool SpecifyEvents { get; set; }
         public int[] SelectedEvents { get; set; }
-
         public double PrecisionReverseDoseCalculation { get; set; } = 0.001;
         public PbkSimulationMethod PbkSimulationMethod { get; set; }
         public int GetNumberOfEventsPerDay(ExposureRoute exposureRoute) {

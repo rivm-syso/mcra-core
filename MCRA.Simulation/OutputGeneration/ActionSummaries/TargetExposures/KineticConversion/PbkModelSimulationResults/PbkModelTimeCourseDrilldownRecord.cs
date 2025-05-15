@@ -12,6 +12,9 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("BodyWeight ({BodyWeightUnit})")]
         public double BodyWeight { get; set; }
 
+        [DisplayName("Age ({AgeUnit})")]
+        public double Age { get; set; }
+
         [DisplayName("External exposure ({ExternalExposureUnit})")]
         [Description("Total external exposure ({ExternalExposureUnit}).")]
         [DisplayFormat(DataFormatString = "{0:G3}")]

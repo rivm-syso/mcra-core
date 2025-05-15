@@ -36,7 +36,8 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                 .ToDictionary(r => r.Id, StringComparer.OrdinalIgnoreCase);
 
             // Check if model matches settings
-            if (SimulationSettings.BodyWeightCorrected
+            if (SimulationSettings.PbkSimulationMethod != PbkSimulationMethod.Standard
+                && SimulationSettings.BodyWeightCorrected
                 && string.IsNullOrEmpty(KineticModelDefinition.IdBodyWeightParameter)
             ) {
                 var msg = $"Cannot apply bodyweight corrected exposures on PBK model [{KineticModelDefinition.Id}]: no BW parameter found.";
@@ -201,14 +202,20 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             );
             // TODO: not the right place to compute average
             // exposures per route and define nominal individual.
-            var individual = new SimulatedIndividual(
-                new Individual(0) {
-                    BodyWeight = externalIndividualExposures.Average(c => c.SimulatedIndividual.BodyWeight)
-                }, 0
+            var individual = new Individual(0) {
+                BodyWeight = externalIndividualExposures.Average(c => c.SimulatedIndividual.BodyWeight),
+            };
+            individual.SetPropertyValue(
+                property: new () {
+                    PropertyType = IndividualPropertyType.Numeric,
+                    Name = "Age"
+                },
+                doubleValue: externalIndividualExposures.Average(c => c.SimulatedIndividual.Age)
             );
+
             return computeAbsorptionFactors(
                 Substance,
-                individual,
+                new(individual, 0),
                 routes,
                 exposurePerRoutes,
                 ExposureType.Chronic,
@@ -457,15 +464,23 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             SimulatedIndividual individual
         ) {
             var instanceParameters = KineticModelInstance.KineticModelInstanceParameters;
+            var bodyWeightParameter = KineticModelDefinition.Parameters
+                .FirstOrDefault(r => r.Id == KineticModelDefinition.IdBodyWeightParameter);
 
             // Set BW
-            if (!string.IsNullOrEmpty(KineticModelDefinition.IdBodyWeightParameter)) {
+            //IsInternalParameter is equal to IsConstant, see also SbmlToPbkModelDefinitionConverter where IsInternalParameter is set
+            //Meaning of IsConstant: true = parameter is set from outside
+            //                       false = parameter is calculated in PBK model
+            if (!bodyWeightParameter.IsInternalParameter) {
                 // TODO: current code assumes bodyweights in same unit as kinetic model parameter
                 var bodyWeight = individual.BodyWeight;
                 parametrisation[KineticModelDefinition.IdBodyWeightParameter] = bodyWeight;
 
                 // Set BSA
-                if (!string.IsNullOrEmpty(KineticModelDefinition.IdBodySurfaceAreaParameter)) {
+                var bodySurfaceAreaParameter = KineticModelDefinition.Parameters
+                    .FirstOrDefault(r => r.Id == KineticModelDefinition.IdBodySurfaceAreaParameter);
+
+                if (!bodySurfaceAreaParameter?.IsInternalParameter ?? false) {
                     if (instanceParameters.TryGetValue(KineticModelDefinition.IdBodySurfaceAreaParameter, out var bsaParameterValue)
                         && instanceParameters.TryGetValue(KineticModelDefinition.IdBodyWeightParameter, out var bwParameterValue)
                     ) {
@@ -478,7 +493,9 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             }
 
             // Set age
-            if (!string.IsNullOrEmpty(KineticModelDefinition.IdAgeParameter)) {
+            var ageParameter = KineticModelDefinition.Parameters
+                .FirstOrDefault(r => r.Id == KineticModelDefinition.IdAgeParameter);
+            if (!ageParameter?.IsInternalParameter ?? false) {
                 // Get individual age
                 // TODO: current code assumes age in same unit as kinetic model parameter
                 var age = individual.Age;
@@ -499,7 +516,9 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             }
 
             // Set sex
-            if (!string.IsNullOrEmpty(KineticModelDefinition.IdSexParameter)) {
+            var sexParameter = KineticModelDefinition.Parameters
+                .FirstOrDefault(r => r.Id == KineticModelDefinition.IdAgeParameter);
+            if (!sexParameter?.IsInternalParameter ?? false) {
                 // TODO: implicit assumption of Female = 1, Male = 2 should become explicit
                 var sex = individual.Gender;
                 if (sex == GenderType.Undefined) {

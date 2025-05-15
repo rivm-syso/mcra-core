@@ -18,6 +18,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public int NumberOfDaysSkipped { get; set; }
         public double Maximum { get; set; }
 
+
         public void Summarize(
            ICollection<AggregateIndividualExposure> targetExposures,
            ICollection<ExposureRoute> routes,
@@ -69,6 +70,7 @@ namespace MCRA.Simulation.OutputGeneration {
             foreach (var pattern in substanceCompartmentTargetExposuresPatterns) {
                 var record = new PbkModelTimeCourseDrilldownRecord() {
                     BodyWeight = aggregateExposure.SimulatedIndividual.BodyWeight,
+                    Age = aggregateExposure.SimulatedIndividual.Age ?? double.NaN,
                     IndividualCode = aggregateExposure.SimulatedIndividual.Code
                 };
                 if (pattern != null) {
@@ -93,7 +95,8 @@ namespace MCRA.Simulation.OutputGeneration {
                     record.TargetExposures = pattern.TargetExposuresPerTimeUnit
                         .Select(r => new TargetIndividualExposurePerTimeUnitRecord() {
                             Exposure = r.Exposure,
-                            Time = r.Time
+                            Time = r.Time,
+                            BodyWeight = r.BodyWeight ?? double.NaN
                         })
                         .ToList();
                     record.PeakTargetExposure = pattern.PeakTargetExposure;

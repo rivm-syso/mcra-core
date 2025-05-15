@@ -1549,7 +1549,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 targetUnits,
                 externalExposureUnit,
                 _configuration.ExposureType,
-                _configuration.NonStationaryPeriod
+                _configuration.NonStationaryPeriodInDays
             );
             subHeader.SaveSummarySection(section);
         }
@@ -2356,6 +2356,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 new("UpperPercentage", $"p{_configuration.VariabilityUpperPercentage}"),
                 new("LowerBound", $"p{_configuration.UncertaintyLowerBound}"),
                 new("UpperBound", $"p{_configuration.UncertaintyUpperBound}"),
+                new("AgeUnit", "years"),
                 actionSummaryTargetUnitRecord
             };
             return result;

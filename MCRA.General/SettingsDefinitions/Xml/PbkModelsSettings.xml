@@ -108,4 +108,12 @@
     <Description>Use bodyweight adjusted exposures in PBK model simulations.</Description>
     <ValueType>Boolean</ValueType>
   </SettingsItem>
+  <SettingsItem>
+    <Id>NonStationaryPeriodInYears</Id>
+    <Name>Number of initial years skipped</Name>
+    <Description>The initial period (or burn-in period, specified in years) that needs to be skipped when calculating the steady-state or peak internal exposures from the simulated time series.</Description>
+    <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <DefaultValue>10</DefaultValue>
+  </SettingsItem>
 </SettingsItems>

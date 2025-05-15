@@ -494,7 +494,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 NumberOfOralDosesPerDay = ModuleConfig.NumberOfDosesPerDayNonDietaryOral,
                 NumberOfDermalDosesPerDay = ModuleConfig.NumberOfDosesPerDayNonDietaryDermal,
                 NumberOfInhalationDosesPerDay = ModuleConfig.NumberOfDosesPerDayNonDietaryInhalation,
-                NonStationaryPeriod = ModuleConfig.NonStationaryPeriod,
+                NonStationaryPeriod = ModuleConfig.NonStationaryPeriodInDays,
                 UseParameterVariability = ModuleConfig.UseParameterVariability,
                 SpecifyEvents = ModuleConfig.SpecifyEvents,
                 SelectedEvents = [.. ModuleConfig.SelectedEvents],

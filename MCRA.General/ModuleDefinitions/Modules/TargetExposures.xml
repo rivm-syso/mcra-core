@@ -92,6 +92,7 @@
     <CalculationSetting>AirAgeBins</CalculationSetting>
     <CalculationSetting>NonDietarySexAlignment</CalculationSetting>
     <CalculationSetting>NonDietaryAgeAlignment</CalculationSetting>
+    <CalculationSetting source="PbkModels">NonStationaryPeriodInYears</CalculationSetting>
   </CalculationSettings>
   <UncertaintySettings>
     <UncertaintySetting source="KineticConversionFactors">ResampleKineticConversionFactors</UncertaintySetting>

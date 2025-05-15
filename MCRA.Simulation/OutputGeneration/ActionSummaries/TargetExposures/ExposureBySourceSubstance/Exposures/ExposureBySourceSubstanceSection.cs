@@ -145,8 +145,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 Percentile25All = percentilesAll[0],
                 MedianAll = percentilesAll[1],
                 Percentile75All = percentilesAll[2],
-                RelativePotencyFactor = rpf.HasValue ? rpf.Value : double.NaN,
-                AssessmentGroupMembership = membership.HasValue ? membership.Value : double.NaN,
+                RelativePotencyFactor = rpf ?? double.NaN,
+                AssessmentGroupMembership = membership ?? double.NaN,
                 NumberOfDays = weights.Count,
             };
             return record;

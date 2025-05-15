@@ -32,6 +32,7 @@
     <CalculationSetting>PbkSimulationMethod</CalculationSetting>
     <CalculationSetting>LifetimeYears</CalculationSetting>
     <CalculationSetting>BodyWeightCorrected</CalculationSetting>
+    <CalculationSetting>NonStationaryPeriodInYears</CalculationSetting>
   </CalculationSettings>
   <UncertaintySettings>
     <UncertaintySetting>ResamplePbkModelParameters</UncertaintySetting>
