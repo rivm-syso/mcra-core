@@ -5,6 +5,7 @@ using MCRA.Utils.Statistics.RandomGenerators;
 using MCRA.Simulation.Calculators.SoilExposureCalculation;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.General;
+using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation;
 
 namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.SoilExposureGenerators {
     public abstract class SoilExposureGenerator {
@@ -54,6 +55,19 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.SoilEx
             SoilIndividualDayExposure soilIndividualDayExposure
         ) {
             return new ExternalIndividualDayExposure(soilIndividualDayExposure.ExposuresPerPath) {
+                SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId,
+                SimulatedIndividual = individualDay.SimulatedIndividual,
+                Day = individualDay.Day,
+            };
+        }
+        protected static ExternalIndividualDayExposure createEmptyExternalIndividualDayExposure(
+            IIndividualDay individualDay,
+            HashSet<ExposurePath> exposurePaths
+        ) {
+            var emptyExposuresPerPath = exposurePaths
+                .Select(c => c)
+                .ToDictionary(c => c, c => new List<IIntakePerCompound>());
+            return new ExternalIndividualDayExposure(emptyExposuresPerPath) {
                 SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId,
                 SimulatedIndividual = individualDay.SimulatedIndividual,
                 Day = individualDay.Day,

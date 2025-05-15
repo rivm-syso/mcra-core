@@ -49,11 +49,31 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     && _configuration.IndividualReferenceSet != ExposureSource.Dust
                 ) {
                     section.SummarizeSetting(SettingsItemType.DustPopulationAlignmentMethod, _configuration.DustPopulationAlignmentMethod);
+                    if (_configuration.DustPopulationAlignmentMethod == PopulationAlignmentMethod.MatchRandom) {
+                        section.SummarizeSetting(SettingsItemType.DustAgeAlignment, _configuration.DustAgeAlignment);
+                        if (_configuration.DustAgeAlignment) {
+                            section.SummarizeSetting(SettingsItemType.DustAgeAlignmentMethod, _configuration.DustAgeAlignmentMethod);
+                            if (_configuration.DustAgeAlignmentMethod == AgeAlignmentMethod.AgeBins) {
+                                section.SummarizeSetting(SettingsItemType.DustAgeBins, _configuration.DustAgeBins);
+                            }
+                        }
+                        section.SummarizeSetting(SettingsItemType.DustSexAlignment, _configuration.DustSexAlignment);
+                    }
                 }
                 if (_configuration.ExposureSources.Contains(ExposureSource.Soil)
                     && _configuration.IndividualReferenceSet != ExposureSource.Soil
                 ) {
                     section.SummarizeSetting(SettingsItemType.SoilPopulationAlignmentMethod, _configuration.SoilPopulationAlignmentMethod);
+                    if (_configuration.SoilPopulationAlignmentMethod == PopulationAlignmentMethod.MatchRandom) {
+                        section.SummarizeSetting(SettingsItemType.SoilAgeAlignment, _configuration.SoilAgeAlignment);
+                        if (_configuration.SoilAgeAlignment) {
+                            section.SummarizeSetting(SettingsItemType.SoilAgeAlignmentMethod, _configuration.SoilAgeAlignmentMethod);
+                            if (_configuration.SoilAgeAlignmentMethod == AgeAlignmentMethod.AgeBins) {
+                                section.SummarizeSetting(SettingsItemType.SoilAgeBins, _configuration.SoilAgeBins);
+                            }
+                        }
+                        section.SummarizeSetting(SettingsItemType.SoilSexAlignment, _configuration.SoilSexAlignment);
+                    }
                 }
                 if (_configuration.ExposureSources.Contains(ExposureSource.Air)
                     && _configuration.IndividualReferenceSet != ExposureSource.Air
@@ -74,6 +94,16 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     && _configuration.IndividualReferenceSet != ExposureSource.Diet
                 ) {
                     section.SummarizeSetting(SettingsItemType.DietPopulationAlignmentMethod, _configuration.DietPopulationAlignmentMethod);
+                    if (_configuration.DietPopulationAlignmentMethod == PopulationAlignmentMethod.MatchRandom) {
+                        section.SummarizeSetting(SettingsItemType.DietAgeAlignment, _configuration.DietAgeAlignment);
+                        if (_configuration.DietAgeAlignment) {
+                            section.SummarizeSetting(SettingsItemType.DietAgeAlignmentMethod, _configuration.DietAgeAlignmentMethod);
+                            if (_configuration.DietAgeAlignmentMethod == AgeAlignmentMethod.AgeBins) {
+                                section.SummarizeSetting(SettingsItemType.DietAgeBins, _configuration.DietAgeBins);
+                            }
+                        }
+                        section.SummarizeSetting(SettingsItemType.DietSexAlignment, _configuration.DietSexAlignment);
+                    }
                 }
             }
 

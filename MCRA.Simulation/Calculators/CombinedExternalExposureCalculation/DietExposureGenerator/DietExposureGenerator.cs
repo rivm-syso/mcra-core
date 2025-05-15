@@ -48,5 +48,34 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.DietEx
             ICollection<Compound> substances,
             IRandom randomIndividual
         );
+
+        protected static ExternalIndividualDayExposure createExternalIndividualDayExposure(
+            IIndividualDay individualDay,
+            DietaryIndividualDayIntake individualDayExposure
+        ) {
+            var exposuresPerPath = new Dictionary<ExposurePath, List<IIntakePerCompound>> {
+                [new(ExposureSource.Diet, ExposureRoute.Oral)] = [.. individualDayExposure.GetTotalIntakesPerSubstance()]
+            };
+
+            return new ExternalIndividualDayExposure(exposuresPerPath) {
+                SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId,
+                SimulatedIndividual = individualDay.SimulatedIndividual,
+                Day = individualDay.Day,
+            };
+        }
+
+        protected static ExternalIndividualDayExposure createEmptyExternalIndividualDayExposure(
+            IIndividualDay individualDay,
+            HashSet<ExposurePath> exposurePaths
+        ) {
+            var emptyExposuresPerPath = exposurePaths
+                .Select(c => c)
+                .ToDictionary(c => c, c => new List<IIntakePerCompound>());
+            return new ExternalIndividualDayExposure(emptyExposuresPerPath) {
+                SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId,
+                SimulatedIndividual = individualDay.SimulatedIndividual,
+                Day = individualDay.Day,
+            };
+        }
     }
 }

@@ -3,6 +3,7 @@
 namespace MCRA.Data.Compiled.Objects {
     public sealed class Individual(int id) {
         private string _name;
+        private readonly ICollection<IndividualPropertyValue> _individualPropertyValues = [];
 
         public int Id { get; } = id;
 
@@ -26,15 +27,14 @@ namespace MCRA.Data.Compiled.Objects {
 
         public string CodeFoodSurvey { get; set; }
 
-        private ICollection<IndividualPropertyValue> _individualPropertyValues = [];
-
         public IEnumerable<IndividualPropertyValue> IndividualPropertyValues => _individualPropertyValues;
 
         public override string ToString() {
             return $"[{GetHashCode():X8}] {Id:000} {Code}";
         }
 
-        public IDictionary<string, IndividualDay> IndividualDays { get; set; } = new Dictionary<string, IndividualDay>(StringComparer.OrdinalIgnoreCase);
+        public IDictionary<string, IndividualDay> IndividualDays { get; set; } =
+            new Dictionary<string, IndividualDay>(StringComparer.OrdinalIgnoreCase);
 
         public void SetPropertyValue(
             IndividualProperty property,
@@ -64,9 +64,9 @@ namespace MCRA.Data.Compiled.Objects {
 
         public string GetTextValue(IndividualProperty property) => GetPropertyValue(property)?.TextValue;
 
-        public IndividualPropertyValue GetPropertyValue(IndividualProperty property) {
-            return _individualPropertyValues.FirstOrDefault(v => v.IndividualProperty == property);
-        }
+        public IndividualPropertyValue GetPropertyValue(IndividualProperty property) =>
+            _individualPropertyValues.FirstOrDefault(v => v.IndividualProperty.Code.Equals(property.Code,
+                StringComparison.OrdinalIgnoreCase));
 
         public double? Age { get; private set; }
 

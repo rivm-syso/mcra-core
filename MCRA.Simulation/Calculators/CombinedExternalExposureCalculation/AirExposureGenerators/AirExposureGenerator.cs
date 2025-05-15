@@ -60,9 +60,6 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.AirExp
             };
         }
 
-        /// <summary>
-        /// Is this really needed? Don't think so
-        /// </summary>
         protected static ExternalIndividualDayExposure createEmptyExternalIndividualDayExposure(
             IIndividualDay individualDay,
             HashSet<ExposurePath> exposurePaths

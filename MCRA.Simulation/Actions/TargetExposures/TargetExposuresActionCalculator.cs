@@ -390,7 +390,13 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             // Align dust exposures
             if (ModuleConfig.ExposureSources.Contains(ExposureSource.Dust)) {
                 localProgress.Update("Matching dust exposures");
-                var dustExposureCalculator = DustExposureGeneratorFactory.Create(ModuleConfig.DustPopulationAlignmentMethod);
+                var dustExposureCalculator = DustExposureGeneratorFactory.Create(
+                    ModuleConfig.DustPopulationAlignmentMethod,
+                    ModuleConfig.DustAgeAlignment,
+                    ModuleConfig.DustSexAlignment,
+                    ModuleConfig.DustAgeAlignmentMethod,
+                    ModuleConfig.DustAgeBins
+                );
                 var seedDustExposuresSampling = RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DUE_DrawDustExposures);
                 var dustExposureCollection = dustExposureCalculator
                     .Generate(
@@ -406,7 +412,13 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             // Align soil exposures
             if (ModuleConfig.ExposureSources.Contains(ExposureSource.Soil)) {
                 localProgress.Update("Matching soil exposures");
-                var soilExposureCalculator = SoilExposureGeneratorFactory.Create(ModuleConfig.SoilPopulationAlignmentMethod);
+                var soilExposureCalculator = SoilExposureGeneratorFactory.Create(
+                    ModuleConfig.SoilPopulationAlignmentMethod,
+                    ModuleConfig.SoilAgeAlignment,
+                    ModuleConfig.SoilSexAlignment,
+                    ModuleConfig.SoilAgeAlignmentMethod,
+                    ModuleConfig.SoilAgeBins
+                );
                 var seedSoilExposuresSampling = RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DUE_DrawSoilExposures);
                 var soilExposureCollection = soilExposureCalculator
                     .Generate(
@@ -457,7 +469,13 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                             .ToList()
                     };
                 } else {
-                    var dietExposureCalculator = DietExposureGeneratorFactory.Create(ModuleConfig.DietPopulationAlignmentMethod);
+                    var dietExposureCalculator = DietExposureGeneratorFactory.Create(
+                        ModuleConfig.DietPopulationAlignmentMethod,
+                        ModuleConfig.DietAgeAlignment,
+                        ModuleConfig.DietSexAlignment,
+                        ModuleConfig.DietAgeAlignmentMethod,
+                        ModuleConfig.DietAgeBins
+                    );
                     var seedDietExposuresSampling = RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DIE_DrawDietExposures);
                     dietExposureCollection = dietExposureCalculator
                         .Generate(

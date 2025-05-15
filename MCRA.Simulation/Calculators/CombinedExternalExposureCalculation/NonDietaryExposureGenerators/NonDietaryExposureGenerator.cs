@@ -157,35 +157,34 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.NonDie
                 var matchSex = false;
 
                 var ip = individual.Individual.GetPropertyValue(sp.IndividualProperty);
-
-                //Set matchAge always to true if property is cofactor (sex)
-                if (sp.PropertyType == PropertyType.Cofactor) {
-                    matchAge = true;
-                    //Evaluate cofactor sex and set matchSex; when sex is not relevant (alignOnSex = false) set matchSex to true
-                    if (alignOnSex) {
-                        if (sp.IndividualPropertyTextValue == ip.Value) {
+                if (ip != null) {
+                    //Set matchAge always to true if property is cofactor (sex)
+                    if (sp.PropertyType == PropertyType.Cofactor) {
+                        matchAge = true;
+                        //Evaluate cofactor sex and set matchSex; when sex is not relevant (alignOnSex = false) set matchSex to true
+                        if (alignOnSex) {
+                            if (sp.IndividualPropertyTextValue == ip.Value) {
+                                matchSex = true;
+                            }
+                        } else {
                             matchSex = true;
                         }
-                    } else {
-                        matchSex = true;
                     }
-                }
 
-                //Set matchSex always to true if property is covariable (age)
-                if (sp.PropertyType == PropertyType.Covariable) {
-                    matchSex = true;
-                    //Evaluate covariable age and set matchAge; when age is not relevant (alignOnAge = false) set matchAge to true
-                    if (alignOnAge) {
-                        if (sp.IndividualPropertyDoubleValueMin <= ip.DoubleValue
-                            && sp.IndividualPropertyDoubleValueMax >= ip.DoubleValue) {
+                    //Set matchSex always to true if property is covariable (age)
+                    if (sp.PropertyType == PropertyType.Covariable) {
+                        matchSex = true;
+                        //Evaluate covariable age and set matchAge; when age is not relevant (alignOnAge = false) set matchAge to true
+                        if (alignOnAge) {
+                            if (sp.IndividualPropertyDoubleValueMin <= ip.DoubleValue
+                                && sp.IndividualPropertyDoubleValueMax >= ip.DoubleValue) {
+                                matchAge = true;
+                            }
+                        } else {
                             matchAge = true;
                         }
-                    } else {
-                        matchAge = true;
                     }
-                }
 
-                if (ip != null) {
                     var match = matchSex && matchAge;
                     return match;
                 } else {

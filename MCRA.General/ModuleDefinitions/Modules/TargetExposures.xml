@@ -90,6 +90,18 @@
     <CalculationSetting>AirAgeAlignment</CalculationSetting>
     <CalculationSetting>AirAgeAlignmentMethod</CalculationSetting>
     <CalculationSetting>AirAgeBins</CalculationSetting>
+    <CalculationSetting>SoilSexAlignment</CalculationSetting>
+    <CalculationSetting>SoilAgeAlignment</CalculationSetting>
+    <CalculationSetting>SoilAgeAlignmentMethod</CalculationSetting>
+    <CalculationSetting>SoilAgeBins</CalculationSetting>
+    <CalculationSetting>DustSexAlignment</CalculationSetting>
+    <CalculationSetting>DustAgeAlignment</CalculationSetting>
+    <CalculationSetting>DustAgeAlignmentMethod</CalculationSetting>
+    <CalculationSetting>DustAgeBins</CalculationSetting>
+    <CalculationSetting>DietSexAlignment</CalculationSetting>
+    <CalculationSetting>DietAgeAlignment</CalculationSetting>
+    <CalculationSetting>DietAgeAlignmentMethod</CalculationSetting>
+    <CalculationSetting>DietAgeBins</CalculationSetting>
     <CalculationSetting>NonDietarySexAlignment</CalculationSetting>
     <CalculationSetting>NonDietaryAgeAlignment</CalculationSetting>
     <CalculationSetting source="PbkModels">NonStationaryPeriodInYears</CalculationSetting>

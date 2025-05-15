@@ -106,6 +106,84 @@
     <DefaultValue>25,50,75,100</DefaultValue>
   </SettingsItem>
   <SettingsItem>
+    <Id>SoilAgeAlignment</Id>
+    <Name>Match at random based on age</Name>
+    <Description>Soil exposures are randomly matched on stratifying covariable age.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>SoilSexAlignment</Id>
+    <Name>Match at random based on sex</Name>
+    <Description>Match at random based on stratifying cofactor sex.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>SoilAgeAlignmentMethod</Id>
+    <Name>Matching method for age</Name>
+    <Description>Match at random based on age using user defined bins (in years) or fit to closest available set of ages.</Description>
+    <ValueType>AgeAlignmentMethod</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>SoilAgeBins</Id>
+    <Name>Specify bins:</Name>
+    <Description>Specify bins, e.g. 10 25 50 (space separated) in years.</Description>
+    <ValueType>Numeric</ValueType>
+    <IsList>true</IsList>
+    <DefaultValue>25,50,75,100</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>DustAgeAlignment</Id>
+    <Name>Match at random based on age</Name>
+    <Description>Dust exposures are randomly matched on stratifying covariable age.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>DustSexAlignment</Id>
+    <Name>Match at random based on sex</Name>
+    <Description>Match at random based on stratifying cofactor sex.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>DustAgeAlignmentMethod</Id>
+    <Name>Matching method for age</Name>
+    <Description>Match at random based on age using user defined bins (in years) or fit to closest available set of ages.</Description>
+    <ValueType>AgeAlignmentMethod</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>DustAgeBins</Id>
+    <Name>Specify bins:</Name>
+    <Description>Specify bins, e.g. 10 25 50 (space separated) in years.</Description>
+    <ValueType>Numeric</ValueType>
+    <IsList>true</IsList>
+    <DefaultValue>25,50,75,100</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>DietAgeAlignment</Id>
+    <Name>Match at random based on age</Name>
+    <Description>Dietary exposures are randomly matched on stratifying covariable age.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>DietSexAlignment</Id>
+    <Name>Match at random based on sex</Name>
+    <Description>Match at random based on stratifying cofactor sex.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>DietAgeAlignmentMethod</Id>
+    <Name>Matching method for age</Name>
+    <Description>Match at random based on age using user defined bins (in years) or fit to closest available set of ages.</Description>
+    <ValueType>AgeAlignmentMethod</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>DietAgeBins</Id>
+    <Name>Specify bins:</Name>
+    <Description>Specify bins, e.g. 10 25 50 (space separated) in years.</Description>
+    <ValueType>Numeric</ValueType>
+    <IsList>true</IsList>
+    <DefaultValue>25,50,75,100</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
     <Id>NonDietaryAgeAlignment</Id>
     <Name>Match at random based on age</Name>
     <Description>Nondietary exposures are randomly matched on stratifying covariable age.</Description>
