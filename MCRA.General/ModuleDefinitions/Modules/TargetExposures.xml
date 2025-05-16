@@ -69,11 +69,6 @@
     <CalculationSetting>StandardisedBlood</CalculationSetting>
     <CalculationSetting>StandardisedNormalisedUrine</CalculationSetting>
     <CalculationSetting>SelectedExpressionType</CalculationSetting>
-    <CalculationSetting>NonDietaryPopulationAlignmentMethod</CalculationSetting>
-    <CalculationSetting>DustPopulationAlignmentMethod</CalculationSetting>
-    <CalculationSetting>SoilPopulationAlignmentMethod</CalculationSetting>
-    <CalculationSetting>AirPopulationAlignmentMethod</CalculationSetting>
-    <CalculationSetting>DietPopulationAlignmentMethod</CalculationSetting>
     <CalculationSetting source="PbkModels">ExposureEventsGenerationMethod</CalculationSetting>
     <CalculationSetting source="PbkModels">NumberOfDays</CalculationSetting>
     <CalculationSetting source="PbkModels">NonStationaryPeriod</CalculationSetting>
@@ -86,22 +81,27 @@
     <CalculationSetting source="PbkModels">PbkSimulationMethod</CalculationSetting>
     <CalculationSetting source="PbkModels">LifetimeYears</CalculationSetting>
     <CalculationSetting source="PbkModels">BodyWeightCorrected</CalculationSetting>
-    <CalculationSetting>AirSexAlignment</CalculationSetting>
-    <CalculationSetting>AirAgeAlignment</CalculationSetting>
-    <CalculationSetting>AirAgeAlignmentMethod</CalculationSetting>
-    <CalculationSetting>AirAgeBins</CalculationSetting>
-    <CalculationSetting>SoilSexAlignment</CalculationSetting>
-    <CalculationSetting>SoilAgeAlignment</CalculationSetting>
-    <CalculationSetting>SoilAgeAlignmentMethod</CalculationSetting>
-    <CalculationSetting>SoilAgeBins</CalculationSetting>
-    <CalculationSetting>DustSexAlignment</CalculationSetting>
-    <CalculationSetting>DustAgeAlignment</CalculationSetting>
-    <CalculationSetting>DustAgeAlignmentMethod</CalculationSetting>
-    <CalculationSetting>DustAgeBins</CalculationSetting>
+    <CalculationSetting>DietPopulationAlignmentMethod</CalculationSetting>
     <CalculationSetting>DietSexAlignment</CalculationSetting>
     <CalculationSetting>DietAgeAlignment</CalculationSetting>
     <CalculationSetting>DietAgeAlignmentMethod</CalculationSetting>
     <CalculationSetting>DietAgeBins</CalculationSetting>
+    <CalculationSetting>AirPopulationAlignmentMethod</CalculationSetting>
+    <CalculationSetting>AirSexAlignment</CalculationSetting>
+    <CalculationSetting>AirAgeAlignment</CalculationSetting>
+    <CalculationSetting>AirAgeAlignmentMethod</CalculationSetting>
+    <CalculationSetting>AirAgeBins</CalculationSetting>
+    <CalculationSetting>SoilPopulationAlignmentMethod</CalculationSetting>
+    <CalculationSetting>SoilSexAlignment</CalculationSetting>
+    <CalculationSetting>SoilAgeAlignment</CalculationSetting>
+    <CalculationSetting>SoilAgeAlignmentMethod</CalculationSetting>
+    <CalculationSetting>SoilAgeBins</CalculationSetting>
+    <CalculationSetting>DustPopulationAlignmentMethod</CalculationSetting>
+    <CalculationSetting>DustSexAlignment</CalculationSetting>
+    <CalculationSetting>DustAgeAlignment</CalculationSetting>
+    <CalculationSetting>DustAgeAlignmentMethod</CalculationSetting>
+    <CalculationSetting>DustAgeBins</CalculationSetting>
+    <CalculationSetting>NonDietaryPopulationAlignmentMethod</CalculationSetting>
     <CalculationSetting>NonDietarySexAlignment</CalculationSetting>
     <CalculationSetting>NonDietaryAgeAlignment</CalculationSetting>
     <CalculationSetting source="PbkModels">NonStationaryPeriodInYears</CalculationSetting>

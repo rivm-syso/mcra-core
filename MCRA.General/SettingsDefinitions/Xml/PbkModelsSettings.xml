@@ -41,7 +41,7 @@
   </SettingsItem>
   <SettingsItem>
     <Id>NumberOfDosesPerDayNonDietaryInhalation</Id>
-    <Name>Number of events per day for the INHALATION  ose</Name>
+    <Name>Number of events per day for the INHALATION dose</Name>
     <Description>The daily dose is administered in equal portions (dose / number of events) per event.</Description>
     <ValueType>Numeric</ValueType>
     <IsInteger>true</IsInteger>
