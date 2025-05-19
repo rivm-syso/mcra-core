@@ -20,7 +20,7 @@ namespace MCRA.Data.Compiled.Objects {
         public Expression ExposureResponseSpecification { get; set; }
         public Expression ExposureResponseSpecificationLower { get; set; }
         public Expression ExposureResponseSpecificationUpper { get; set; }
-        public double Baseline { get; set; }
+        public double CounterfactualValue { get; set; }
         public ICollection<ErfSubgroup> ErfSubgroups { get; set; } = [];
         public PopulationCharacteristicType PopulationCharacteristic { get; set; }
         public double? EffectThresholdLower { get; set; }

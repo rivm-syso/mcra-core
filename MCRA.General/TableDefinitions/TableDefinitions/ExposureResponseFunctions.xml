@@ -205,12 +205,12 @@
       </Aliases>
     </ColumnDefinition>
     <ColumnDefinition Required="true" FieldType="Numeric" FieldSize="50">
-      <Id>Baseline</Id>
+      <Id>CounterfactualValue</Id>
       <Description>
-        Baseline level of the exposure response function.
+        Counterfactual value for the exposure response function. Below this exposure the exposure response is evaluated as 1.
       </Description>
       <Aliases>
-        <string>Baseline</string>
+        <string>CounterfactualValue</string>
       </Aliases>
     </ColumnDefinition>
   </ColumnDefinitions>

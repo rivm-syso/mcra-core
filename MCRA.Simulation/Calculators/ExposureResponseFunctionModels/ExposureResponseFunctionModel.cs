@@ -48,7 +48,7 @@ namespace MCRA.Simulation.Calculators.ExposureResponseFunctions {
 
         public double compute(double x, FunctionLevel functionLevel) {
             var erf = ExposureResponseFunction;
-            if (x <= erf.Baseline) {
+            if (x <= erf.CounterfactualValue) {
                 return erf.EffectMetric == EffectMetric.NegativeShift |
                     erf.EffectMetric == EffectMetric.PositiveShift ? 0D : 1D;
             }
@@ -75,10 +75,10 @@ namespace MCRA.Simulation.Calculators.ExposureResponseFunctions {
                 return Convert.ToDouble(erfSpecification.Evaluate());
             } else if (erf.ExposureResponseType == ExposureResponseType.PerDoubling) {
                 var doubFac = Convert.ToDouble(erfSpecification.Evaluate());
-                return Math.Pow(doubFac, Math.Log2(x / erf.Baseline));
+                return Math.Pow(doubFac, Math.Log2(x / erf.CounterfactualValue));
             } else if (erf.ExposureResponseType == ExposureResponseType.PerUnit) {
                 var a = Convert.ToDouble(erfSpecification.Evaluate());
-                var b = 1 - a * erf.Baseline;
+                var b = 1 - a * erf.CounterfactualValue;
                 return a * x + b;
             } else if (erf.ExposureResponseType == ExposureResponseType.Constant) {
                 return Convert.ToDouble(erfSpecification.Evaluate());

@@ -62,13 +62,13 @@ namespace MCRA.Simulation.OutputGeneration {
             plotModel.Series.Add(series1);
             plotModel.Series.Add(series2);
 
-            var baseline = new LineAnnotation {
+            var counterfactualValue = new LineAnnotation {
                 LineStyle = LineStyle.Dash,
                 Type = LineAnnotationType.Vertical,
-                X = record.Baseline,
+                X = record.CounterfactualValue,
                 Color = OxyColors.Red
             };
-            plotModel.Annotations.Add(baseline);
+            plotModel.Annotations.Add(counterfactualValue);
 
             var horizontalAxis = createLinearAxis("Exposure level (" + record.TargetUnit + ")", 0D);
             horizontalAxis.Position = AxisPosition.Bottom;

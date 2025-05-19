@@ -101,7 +101,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             ExposureResponseSpecification = exposureResponseSpecification,
                                             ExposureResponseSpecificationLower = exposureResponseSpecificationLower,
                                             ExposureResponseSpecificationUpper = exposureResponseSpecificationUpper,
-                                            Baseline = r.GetDouble(RawExposureResponseFunctions.Baseline, fieldMap),
+                                            CounterfactualValue = r.GetDouble(RawExposureResponseFunctions.CounterfactualValue, fieldMap),
                                             PopulationCharacteristic = populationCharacteristicType,
                                             EffectThresholdLower = r.GetDoubleOrNull(RawExposureResponseFunctions.EffectThresholdLower, fieldMap),
                                             EffectThresholdUpper = r.GetDoubleOrNull(RawExposureResponseFunctions.EffectThresholdUpper, fieldMap)
@@ -188,7 +188,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 r.WriteNonEmptyString(RawExposureResponseFunctions.ExposureResponseSpecification, erf.ExposureResponseSpecification.ToString(), ccr);
                 r.WriteNonEmptyString(RawExposureResponseFunctions.ExposureResponseSpecificationLower, erf.ExposureResponseSpecificationLower.ToString(), ccr);
                 r.WriteNonEmptyString(RawExposureResponseFunctions.ExposureResponseSpecificationUpper, erf.ExposureResponseSpecificationUpper.ToString(), ccr);
-                r.WriteNonEmptyString(RawExposureResponseFunctions.Baseline, erf.Baseline.ToString(), ccr);
+                r.WriteNonEmptyString(RawExposureResponseFunctions.CounterfactualValue, erf.CounterfactualValue.ToString(), ccr);
                 r.WriteNonEmptyString(RawExposureResponseFunctions.PopulationCharacteristic, erf.PopulationCharacteristic.ToString(), ccr);
                 r.WriteNonEmptyString(RawExposureResponseFunctions.EffectThresholdLower, erf.EffectThresholdLower.ToString(), ccr);
                 r.WriteNonEmptyString(RawExposureResponseFunctions.EffectThresholdUpper, erf.EffectThresholdUpper.ToString(), ccr);

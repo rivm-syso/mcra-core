@@ -77,10 +77,10 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Threshold upper")]
         public string ExposureResponseSpecificationUpper { get; set; }
 
-        [Description("The baseline level of the exposure response function.")]
-        [DisplayName("Baseline")]
+        [Description("The counterfactual value of the exposure response function.")]
+        [DisplayName("Counterfactual value")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double Baseline { get; set; }
+        public double CounterfactualValue { get; set; }
 
         [Description("Specifies whether this ERF is composed of multiple exposure subgroups/bins.")]
         [DisplayName("Has subgroups")]

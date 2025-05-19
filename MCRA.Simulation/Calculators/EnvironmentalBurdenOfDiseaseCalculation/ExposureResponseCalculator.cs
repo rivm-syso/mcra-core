@@ -78,7 +78,7 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
                 .Select(c => c.GetSubstanceExposure(substance))
                 .ToList();
             var upperBounds = new List<double> {
-                erf.Baseline * unitAlignmentFactor
+                erf.CounterfactualValue * unitAlignmentFactor
             };
             if (erf.HasErfSubGroups) {
                 upperBounds.AddRange(

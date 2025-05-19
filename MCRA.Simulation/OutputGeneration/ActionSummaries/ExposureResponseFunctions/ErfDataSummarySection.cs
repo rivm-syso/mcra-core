@@ -45,7 +45,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         ExposureResponseSpecificationUpper = r.ExposureResponseSpecificationUpper.ExpressionString.Length != 0
                             ? r.ExposureResponseSpecificationUpper.ExpressionString
                             : null,
-                        Baseline = r.Baseline,
+                        CounterfactualValue = r.CounterfactualValue,
                         HasSubgroups = r.HasErfSubGroups
                     };
                     return record;

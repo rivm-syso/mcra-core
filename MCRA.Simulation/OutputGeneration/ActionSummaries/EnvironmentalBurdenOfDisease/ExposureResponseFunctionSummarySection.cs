@@ -31,7 +31,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     .ToList();
                 var maxExposure = ebdBinRecords.Max(r => r.Exposure);
                 var functionDataPoints = new List<ExposureResponseDataPoint>();
-                for (double x = erf.Baseline; x <= maxExposure; x += 0.001 * erf.Baseline) {
+                for (double x = erf.CounterfactualValue; x <= maxExposure; x += 0.001 * erf.CounterfactualValue) {
                     var functionDataPoint = new ExposureResponseDataPoint() {
                         Exposure = x,
                         ResponseValue = exposureResponseFunctionModel.Compute(x * doseUnitAlignmentFactor)
@@ -67,7 +67,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         : null,
                     ErfDoseUnit = erf.DoseUnit.GetShortDisplayName(),
                     ErfDoseAlignmentFactor = doseUnitAlignmentFactor,
-                    Baseline = erf.Baseline,
+                    CounterfactualValue = erf.CounterfactualValue,
                     HasSubgroups = erf.HasErfSubGroups,
                     ExposureResponseDataPoints = dataPoints,
                     ExposureResponseChartDataPoints = functionDataPoints
