@@ -26,7 +26,6 @@ namespace MCRA.General.Test.UnitTests.UnitDefinitions {
                 PbkModelCompartmentType.Undefined,
                 PbkModelCompartmentType.Other,
                 PbkModelCompartmentType.AlveolarAir,
-                PbkModelCompartmentType.Feces,
                 PbkModelCompartmentType.Gut,
                 PbkModelCompartmentType.RestOfBody
             };

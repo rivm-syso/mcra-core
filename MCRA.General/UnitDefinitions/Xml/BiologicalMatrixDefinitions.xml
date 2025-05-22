@@ -507,5 +507,15 @@
         <Alias>O_CR</Alias>
       </Aliases>
     </Unit>
+    <Unit>
+      <Id>Feces</Id>
+      <Name>Feces</Name>
+      <ShortName>Feces</ShortName>
+      <Description>Bodily waste discharged through the anus.</Description>
+      <Aliases>
+        <Alias>Excrement</Alias>
+        <Alias>Poop</Alias>
+      </Aliases>
+    </Unit>
   </Units>
 </UnitDefinition>
