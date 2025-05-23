@@ -97,7 +97,7 @@ namespace MCRA.Data.Compiled {
         public IDictionary<string, PbkModelDefinition> AllPbkModelDefinitions { get; set; }
         public IList<SoilConcentrationDistribution> AllSoilConcentrationDistributions { get; set; }
         public IList<SoilIngestion> AllSoilIngestions { get; set; }
-        public IList<BaselineBodIndicator> AllBaselineBodIndicators { get; set; }
+        public IList<BurdenOfDisease> AllBurdensOfDisease { get; set; }
         #region Methods
 
         public Food GetOrAddFood(string id, string name = null) {

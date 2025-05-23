@@ -4,16 +4,16 @@ using MCRA.Utils.ExtensionMethods;
 namespace MCRA.Simulation.OutputGeneration {
 
     /// <summary>
-    /// Summarizes the burden of disease infos.
+    /// Summarizes burden of disease data.
     /// </summary>
-    public sealed class BaselineBodIndicatorsSummarySection : SummarySection {
+    public sealed class BurdensOfDiseaseSummarySection : SummarySection {
 
-        public List<BaselineBodIndicatorsSummaryRecord> Records { get; set; }
+        public List<BurdensOfDiseaseSummaryRecord> Records { get; set; }
 
-        public void Summarize(List<BaselineBodIndicator> baselineBodIndicators) {
-            Records = baselineBodIndicators
+        public void Summarize(List<BurdenOfDisease> burdensOfDisease) {
+            Records = burdensOfDisease
                 .Select(r => {
-                    var record = new BaselineBodIndicatorsSummaryRecord {
+                    var record = new BurdensOfDiseaseSummaryRecord {
                         Population = r.Population.Code,
                         Effect = r.Effect.Name,
                         BodIndicator = r.BodIndicator.GetDisplayName(),

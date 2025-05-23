@@ -2,15 +2,15 @@
 using MCRA.Simulation.OutputGeneration.Helpers;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
-    public class BaselineBodIndicatorsSummarySectionView : SectionView<BaselineBodIndicatorsSummarySection> {
+    public class BurdensOfDiseaseSummarySectionView : SectionView<BurdensOfDiseaseSummarySection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             sb.AppendTable(
                 Model,
                 Model.Records,
-                "BaselineBodIndicatorsSummaryTable",
+                "BurdensOfDiseaseSummaryTable",
                 ViewBag,
                 header: true,
-                caption: "Baseline BoD indicators.",
+                caption: "Burden of disease.",
                 saveCsv: true,
                 sortable: true
             );

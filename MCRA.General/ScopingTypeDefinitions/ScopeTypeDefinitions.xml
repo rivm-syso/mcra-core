@@ -1875,11 +1875,11 @@
     <TableGroup>SoilExposureDeterminants</TableGroup>
   </ScopingTypeDefinition>
   <ScopingTypeDefinition>
-    <Id>BaselineBodIndicators</Id>
-    <Name>Baseline BoD indicators</Name>
+    <Id>BurdensOfDisease</Id>
+    <Name>Burden of disease</Name>
     <Description>-</Description>
-    <TableGroup>BaselineBodIndicators</TableGroup>
-    <RawTableId>BaselineBodIndicators</RawTableId>
+    <TableGroup>BurdensOfDisease</TableGroup>
+    <RawTableId>BurdensOfDisease</RawTableId>
     <AllowUserSelection>true</AllowUserSelection>
     <ParentScopeReferences>
       <ParentScopeReference>

@@ -211,6 +211,7 @@
       </Description>
       <Aliases>
         <string>CounterfactualValue</string>
+        <string>Baseline</string>
       </Aliases>
     </ColumnDefinition>
   </ColumnDefinitions>

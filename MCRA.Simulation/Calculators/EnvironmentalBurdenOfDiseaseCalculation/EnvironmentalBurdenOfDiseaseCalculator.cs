@@ -8,7 +8,7 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
 
         public List<ExposureResponseResultRecord> ExposureResponseResults { get; set; }
 
-        public BaselineBodIndicator BaselineBodIndicator { get; set; }
+        public BurdenOfDisease BurdenOfDisease { get; set; }
 
         public Population Population { get; set; }
 
@@ -16,12 +16,12 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
 
         public EnvironmentalBurdenOfDiseaseCalculator(
             List<ExposureResponseResultRecord> exposureResponseResults = null,
-            BaselineBodIndicator baselineBodIndicator = null,
+            BurdenOfDisease burdenOfDisease = null,
             Population population = null,
             BodApproach bodApproach = BodApproach.TopDown
         ) {
             ExposureResponseResults = exposureResponseResults;
-            BaselineBodIndicator = baselineBodIndicator;
+            BurdenOfDisease = burdenOfDisease;
             Population = population;
             BodApproach = bodApproach;
         }
@@ -44,7 +44,7 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
                 record.CumulativeStandardisedExposedAttributableBod = cumulativeExposed / sumExposed * 100;
             }
             var result = new EnvironmentalBurdenOfDiseaseResultRecord {
-                BaselineBodIndicator = BaselineBodIndicator,
+                BurdenOfDisease = BurdenOfDisease,
                 ExposureResponseFunction = ExposureResponseResults.First().ExposureResponseFunction,
                 ErfDoseUnit = ExposureResponseResults.First().ExposureResponseFunction.DoseUnit,
                 TargetUnit = ExposureResponseResults.First().TargetUnit,
@@ -56,7 +56,7 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
         private EnvironmentalBurdenOfDiseaseResultBinRecord compute(
             ExposureResponseResultRecord exposureResponseResultRecord
         ) {
-            var totalBod = BaselineBodIndicator.Value
+            var totalBod = BurdenOfDisease.Value
                 * exposureResponseResultRecord.PercentileInterval.Percentage / 100;
             var responseValue = exposureResponseResultRecord.PercentileSpecificRisk;
             var result = new EnvironmentalBurdenOfDiseaseResultBinRecord {

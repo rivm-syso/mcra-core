@@ -28,7 +28,7 @@
     <Input>TargetExposures</Input>
     <Input>HumanMonitoringAnalysis</Input>
     <Input>ExposureResponseFunctions</Input>
-    <Input>BaselineBodIndicators</Input>
+    <Input>BurdensOfDisease</Input>
   </CalculationInputs>
   <SelectionInputs>
   </SelectionInputs>

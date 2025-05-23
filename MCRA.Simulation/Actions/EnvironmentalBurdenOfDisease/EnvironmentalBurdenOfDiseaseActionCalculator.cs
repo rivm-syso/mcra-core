@@ -77,7 +77,7 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
                 var exposureResponseFunctions = data.ExposureResponseFunctionModels
                     .Select(r => r.ExposureResponseFunction)
                     .ToList();
-                var burdenOfDiseaseIndicators = data.BaselineBodIndicators
+                var burdenOfDiseaseIndicators = data.BurdensOfDisease
                     .Where(r => ModuleConfig.BodIndicators.Contains(r.BodIndicator))
                     .ToList();
 

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 namespace MCRA.Simulation.OutputGeneration {
-    public class BaselineBodIndicatorsSummaryRecord {
+    public class BurdensOfDiseaseSummaryRecord {
 
         [Description("Population.")]
         [DisplayName("Population")]

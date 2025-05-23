@@ -1,12 +1,12 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Simulation.Objects;
+using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Actions.ActiveSubstances;
 using MCRA.Simulation.Actions.AirExposureDeterminants;
 using MCRA.Simulation.Actions.AirExposures;
 using MCRA.Simulation.Actions.AOPNetworks;
-using MCRA.Simulation.Actions.BaselineBodIndicators;
+using MCRA.Simulation.Actions.BurdensOfDisease;
 using MCRA.Simulation.Actions.ConcentrationDistributions;
 using MCRA.Simulation.Actions.ConcentrationLimits;
 using MCRA.Simulation.Actions.ConcentrationModels;
@@ -79,6 +79,8 @@ using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationMod
 using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.DustExposureCalculation;
 using MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation;
+using MCRA.Simulation.Calculators.ExposureResponseFunctions;
+using MCRA.Simulation.Calculators.FoodConversionCalculation;
 using MCRA.Simulation.Calculators.FoodExtrapolationsCalculation;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiomarkerConversion.ExposureBiomarkerConversionModels;
@@ -98,9 +100,7 @@ using MCRA.Simulation.Calculators.SingleValueNonDietaryExposuresCalculation;
 using MCRA.Simulation.Calculators.SingleValueRisksCalculation;
 using MCRA.Simulation.Calculators.SoilExposureCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
-using MCRA.Data.Compiled.Wrappers;
-using MCRA.Simulation.Calculators.FoodConversionCalculation;
-using MCRA.Simulation.Calculators.ExposureResponseFunctions;
+using MCRA.Simulation.Objects;
 
 namespace MCRA.Simulation {
     public class ActionData {
@@ -456,10 +456,10 @@ namespace MCRA.Simulation {
             set => GetOrCreateModuleOutputData<ExposureResponseFunctionsOutputData>(ActionType.ExposureResponseFunctions).ExposureResponseFunctionModels = value;
         }
 
-        // BaselineBodIndicators
-        public List<BaselineBodIndicator> BaselineBodIndicators {
-            get => (List<BaselineBodIndicator>)GetOrCreateModuleOutputData<BaselineBodIndicatorsOutputData>(ActionType.BaselineBodIndicators).BaselineBodIndicators;
-            set => GetOrCreateModuleOutputData<BaselineBodIndicatorsOutputData>(ActionType.BaselineBodIndicators).BaselineBodIndicators = value;
+        // BurdensOfDisease
+        public List<BurdenOfDisease> BurdensOfDisease {
+            get => (List<BurdenOfDisease>)GetOrCreateModuleOutputData<BurdensOfDiseaseOutputData>(ActionType.BurdensOfDisease).BurdensOfDisease;
+            set => GetOrCreateModuleOutputData<BurdensOfDiseaseOutputData>(ActionType.BurdensOfDisease).BurdensOfDisease = value;
         }
 
         // ExposureBiomarkerConversions

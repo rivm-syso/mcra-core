@@ -76,7 +76,7 @@
 
     <GraphDefinition ActionType="EnvironmentalBurdenOfDisease" X="89" Y="69" Linebreaks="1"/>
     <GraphDefinition ActionType="ExposureResponseFunctions" X="105" Y="69" Linebreaks="1"/>
-    <GraphDefinition ActionType="BaselineBodIndicators" X="121" Y="69" Linebreaks="1"/>
+    <GraphDefinition ActionType="BurdensOfDisease" X="121" Y="69" Linebreaks="1"/>
     <GraphDefinition ActionType="PbkModelDefinitions" X="110" Y="37" Linebreaks="1"/>
 	</GraphDefinitions>
 </ModuleDiagramDefinitions>

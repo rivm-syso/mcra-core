@@ -1,20 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TableDefinition>
-  <Id>BaselineBodIndicators</Id>
-  <Name>Baseline BoD Indicators</Name>
+  <Id>BurdensOfDisease</Id>
+  <Name>Burden of disease</Name>
   <Description></Description>
   <Aliases>
-    <string>BaselineBodIndicators</string>
-    <string>BaselineBodIndicator</string>
+    <string>BurdenOfDisease</string>
+    <string>BurdensOfDisease</string>
   </Aliases>
   <HiddenAliases>
-    <string>RawBaselineBodIndicators</string>
+    <string>RawBurdensOfDisease</string>
+    <string>BaselineBodIndicator</string>
+    <string>BaselineBodIndicators</string>
   </HiddenAliases>
-  <TargetDataTable>RawBaselineBodIndicators</TargetDataTable>
+  <TargetDataTable>RawBurdensOfDisease</TargetDataTable>
   <ColumnDefinitions>
     <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
       <Id>Population</Id>
-      <Description>The population linked to this burden of disease information.</Description>
+      <Description>The population linked to this burden of disease.</Description>
       <Aliases>
         <string>Population</string>
       </Aliases>
@@ -24,7 +26,7 @@
     </ColumnDefinition>
     <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50" Required="true">
       <Id>idEffect</Id>
-      <Description>Code of the effect linked to this burden of disease information.</Description>
+      <Description>Code of the effect linked to this burden of disease.</Description>
       <Aliases>
         <string>idEffect</string>
         <string>EffectId</string>
@@ -38,7 +40,7 @@
     <ColumnDefinition Required="true" FieldType="BodIndicator">
       <Id>BodIndicator</Id>
       <Description>
-        The burden of disease indicator linked to this burden of disease information.
+        The burden of disease indicator linked to this burden of disease.
       </Description>
       <Aliases>
         <string>BodIndicator</string>

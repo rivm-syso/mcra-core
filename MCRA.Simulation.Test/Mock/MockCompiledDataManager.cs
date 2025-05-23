@@ -340,8 +340,8 @@ namespace MCRA.Simulation.Test.Mock {
         public IList<SoilIngestion> GetAllSoilIngestions() {
             return _data.AllSoilIngestions;
         }
-        public IList<BaselineBodIndicator> GetAllBaselineBodIndicators() {
-            return _data.AllBaselineBodIndicators;
+        public IList<BurdenOfDisease> GetAllBurdensOfDisease() {
+            return _data.AllBurdensOfDisease;
         }
 
         public IList<IndoorAirConcentration> GetAllIndoorAirConcentrations() {

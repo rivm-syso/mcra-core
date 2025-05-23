@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>BurdensOfDisease</Id>
+  <Name>Burden of disease</Name>
+  <ActionType>BurdensOfDisease</ActionType>
+  <ModuleType>DataModule</ModuleType>
+  <TableGroup>BurdensOfDisease</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Burden of disease data specify the burden of disease information related to specific effects and burden of disease indicators in specific populations.
+  </Description>
+  <DataDescription>
+    Burden of disease definitions are provided as lists/catalogues of burden of disease information.
+  </DataDescription>
+  <Entities>
+    <Entity>Populations</Entity>
+    <Entity>Effects</Entity>
+  </Entities>
+</Module>

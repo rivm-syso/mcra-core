@@ -128,7 +128,7 @@
         ExposureResponseFunctions = 131,
         SoilConcentrationDistributions = 132,
         SoilIngestions = 133,
-        BaselineBodIndicators = 134,
+        BurdensOfDisease = 134,
         IndoorAirConcentrations = 135,
         AirIndoorFractions = 136,
         AirVentilatoryFlowRates = 137,
