@@ -1960,4 +1960,16 @@
       </ParentScopeReference>
     </ParentScopeReferences>
   </ScopingTypeDefinition>
+
+  <ScopingTypeDefinition>
+    <Id>ConsumerProducts</Id>
+    <Name>ConsumerProducts</Name>
+    <RawTableId>ConsumerProducts</RawTableId>
+    <Description>-</Description>
+    <TableGroup>ConsumerProducts</TableGroup>
+    <IsStrongEntity>true</IsStrongEntity>
+    <AllowUserSelection>true</AllowUserSelection>
+    <IsAutoScope>true</IsAutoScope>
+  </ScopingTypeDefinition>
+
 </ScopingTypeDefinitions>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>ConsumerProducts</Id>
+  <Name>Consumer products</Name>
+  <ModuleType>PrimaryEntityModule</ModuleType>
+  <ActionType>ConsumerProducts</ActionType>
+  <TableGroup>ConsumerProducts</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Consumer products are uniquely defined sources of (personal care) products.
+  </Description>
+  <ShortDescription>
+    Consumer products are uniquely defined sources of (personal care) products.
+  </ShortDescription>
+  <DataDescription>
+    Consumer products definitions are provided as lists/catalogues of food definitions or hierarchy definitions.
+  </DataDescription>
+</Module>

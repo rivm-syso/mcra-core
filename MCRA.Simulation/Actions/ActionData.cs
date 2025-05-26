@@ -101,6 +101,9 @@ using MCRA.Simulation.Calculators.SingleValueRisksCalculation;
 using MCRA.Simulation.Calculators.SoilExposureCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.Objects;
+using MCRA.Simulation.Calculators.FoodConversionCalculation;
+using MCRA.Simulation.Calculators.ExposureResponseFunctions;
+using MCRA.Simulation.Actions.ConsumerProducts;
 
 namespace MCRA.Simulation {
     public class ActionData {
@@ -998,6 +1001,11 @@ namespace MCRA.Simulation {
         public ICollection<IIndividualDay> Individuals {
             get => GetOrCreateModuleOutputData<IndividualsOutputData>(ActionType.Individuals).Individuals;
             set => GetOrCreateModuleOutputData<IndividualsOutputData>(ActionType.Individuals).Individuals = value;
+        }
+
+        public ICollection<ConsumerProduct> AllConsumerProducts {
+            get => GetOrCreateModuleOutputData<ConsumerProductsOutputData>(ActionType.ConsumerProducts).AllConsumerProducts;
+            set => GetOrCreateModuleOutputData<ConsumerProductsOutputData>(ActionType.ConsumerProducts).AllConsumerProducts = value;
         }
 
         /// <summary>

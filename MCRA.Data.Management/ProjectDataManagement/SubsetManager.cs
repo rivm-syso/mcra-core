@@ -592,5 +592,10 @@ namespace MCRA.Data.Management {
         public IList<SoilIngestion> AllSoilIngestions => _dataManager.GetAllSoilIngestions();
 
         public IList<BurdenOfDisease> AllBurdensOfDisease => _dataManager.GetAllBurdensOfDisease();
+
+        /// <summary>
+        /// Gets all foods of the compiled data source.
+        /// </summary>
+        public ICollection<ConsumerProduct> AllConsumerProducts => _dataManager.GetAllConsumerProducts().Values.ToHashSet();
     }
 }

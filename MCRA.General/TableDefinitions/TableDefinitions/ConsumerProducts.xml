@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition IsStrongEntity="true">
+  <Id>ConsumerProducts</Id>
+  <Name>ConsumerProducts</Name>
+  <Description>
+    Each consumer product is identified by a unique code (id), a name, description and/or product group (parent).
+    Consumer products codes are not harmonised.
+  </Description>
+  <Aliases>
+    <string>ConsumerProducts</string>
+    <string>ConsumerProduct</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawConsumerProducts</string>
+  </HiddenAliases>
+  <TargetDataTable>RawConsumerProducts</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition IsPrimaryKey="true" Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
+      <Id>Id</Id>
+      <Description>The unique identification code of the consumer product.</Description>
+      <Aliases>
+        <string>idConsumerProduct</string>
+        <string>ConsumerProdufctId</string>
+        <string>Id</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="100" IsNameColumn="true">
+      <Id>Name</Id>
+      <Description>The name of the consumer product.</Description>
+      <Aliases>
+        <string>Name</string>
+        <string>ConsumerProductName</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
+      <Id>Description</Id>
+      <Description>
+        Substance description.
+      </Description>
+      <Aliases>
+        <string>Description</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idGroup</Id>
+      <Description>
+        Consumer product groups.
+      </Description>
+      <Aliases>
+        <string>idGroup</string>
+        <string>GroupId</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

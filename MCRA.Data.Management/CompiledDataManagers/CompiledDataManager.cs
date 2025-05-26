@@ -149,6 +149,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 writeIndoorAirConcentrationsToCsv(folderName, data.AllIndoorAirConcentrations);
                 writeAirVentilatoryFlowRatesToCsv(folderName, data.AllAirVentilatoryFlowRates);
                 writeAirIndoorFractionsToCsv(folderName, data.AllAirIndoorFractions);
+                writeConsumerProductsDataToCsv(folderName, data.AllConsumerProducts?.Values);
             } catch (Exception) {
                 throw;
             }

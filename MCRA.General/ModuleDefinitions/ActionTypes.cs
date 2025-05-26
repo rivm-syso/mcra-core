@@ -196,5 +196,7 @@ namespace MCRA.General {
         OutdoorAirConcentrations = 73,
         [Display(Name = "Individuals")]
         Individuals = 74,
+        [Display(Name = "Consumer products")]
+        ConsumerProducts = 75,
     }
 }

@@ -98,6 +98,7 @@ namespace MCRA.Data.Compiled {
         public IList<SoilConcentrationDistribution> AllSoilConcentrationDistributions { get; set; }
         public IList<SoilIngestion> AllSoilIngestions { get; set; }
         public IList<BurdenOfDisease> AllBurdensOfDisease { get; set; }
+        public IDictionary<string, ConsumerProduct> AllConsumerProducts { get; set; }
         #region Methods
 
         public Food GetOrAddFood(string id, string name = null) {

@@ -125,5 +125,7 @@ namespace MCRA.General {
         AirExposureDeterminants = 56,
         [Display(Name = "Outdoor air concentratios", Order = 59)]
         OutdoorAirConcentrations = 57,
+        [Display(Name = "Consumer products", Order = 60)]
+        ConsumerProducts = 58,
     }
 }

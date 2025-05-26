@@ -312,6 +312,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 AllBurdensOfDisease = [],
                 AllConcentrationDistributions = [],
                 AllConcentrationSingleValues = [],
+                AllConsumerProducts = new Dictionary<string, ConsumerProduct>(),
                 AllDeterministicSubstanceConversionFactors = [],
                 AllDietaryIndividualProperties = new Dictionary<string, IndividualProperty>(),
                 AllDietaryExposureModels = new Dictionary<string, DietaryExposureModel>(),

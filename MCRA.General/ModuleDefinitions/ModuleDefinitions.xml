@@ -12,6 +12,7 @@
       <xi:include href="Modules/Populations.xml" />
       <xi:include href="Modules/TestSystems.xml" />
       <xi:include href="Modules/Responses.xml" />
+      <xi:include href="Modules/ConsumerProducts.xml" />
     </Modules>
   </ModuleGroupDefinition>
   <ModuleGroupDefinition>
