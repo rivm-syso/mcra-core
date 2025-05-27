@@ -144,7 +144,7 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
         private static List<IIntakePerCompound> computeDermalExposures(
             ICollection<Compound> substances,
             double timeDustExposure,
-            McraRandomGenerator dustConcentrationsRandomGenerator,
+            IRandom dustConcentrationsRandomGenerator,
             Dictionary<Compound, double> substanceDustAvailabilityFraction,
             Dictionary<Compound, IEnumerable<double>> adjustedDustConcentrationDistributions,
             double bodySurfaceArea,
@@ -174,7 +174,7 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
             ICollection<Compound> substances,
             double individualDustIngestion,
             Dictionary<Compound, IEnumerable<double>> adjustedDustConcentrationDistributions,
-            McraRandomGenerator dustConcentrationsRandomGenerator
+            IRandom dustConcentrationsRandomGenerator
         ) {
             // TODO: create random generator per substance
             var dustExposurePerSubstance = new List<IIntakePerCompound>();
@@ -196,7 +196,7 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
         private static Dictionary<Compound, double> calculateSubstanceDustAvailabilityFraction(
             ICollection<DustAvailabilityFraction> dustAvailabilityFractions,
             ICollection<Compound> substances,
-            McraRandomGenerator random
+            IRandom random
         ) {
             var result = new Dictionary<Compound, double>();
             foreach (var substance in substances) {
@@ -225,7 +225,7 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
             double? age,
             GenderType? sex,
             ExternalExposureUnit dustIngestionUnit,
-            McraRandomGenerator random
+            IRandom random
         ) {
             var dustIngestionAlignmentFactor = dustIngestionUnit
                 .GetSubstanceAmountUnit()
@@ -250,7 +250,7 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
             ICollection<DustAdherenceAmount> dustAdherenceAmounts,
             double? age,
             GenderType? sex,
-            McraRandomGenerator random
+            IRandom random
         ) {
             var dustAdherenceAmount = dustAdherenceAmounts
                 .Where(r => age >= r.AgeLower || r.AgeLower == null)
@@ -271,7 +271,7 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
             ICollection<DustBodyExposureFraction> dustBodyExposureFractions,
             double? age,
             GenderType? sex,
-            McraRandomGenerator random
+            IRandom random
         ) {
             var dustBodyExposureFraction = dustBodyExposureFractions
                 .Where(r => age >= r.AgeLower || r.AgeLower == null)

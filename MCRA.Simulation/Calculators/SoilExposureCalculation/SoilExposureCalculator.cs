@@ -85,7 +85,7 @@ namespace MCRA.Simulation.Calculators.SoilExposureCalculation {
             ICollection<Compound> substances,
             double individualSoilIngestion,
             Dictionary<Compound, IEnumerable<double>> adjustedSoilConcentrationDistributions,
-            McraRandomGenerator soilConcentrationsRandomGenerator
+            IRandom soilConcentrationsRandomGenerator
         ) {
             // TODO: create random generator per substance
             var soilExposurePerSubstance = new List<IIntakePerCompound>();
@@ -109,7 +109,7 @@ namespace MCRA.Simulation.Calculators.SoilExposureCalculation {
             double? age,
             GenderType? sex,
             ExternalExposureUnit soilIngestionUnit,
-            McraRandomGenerator random
+            IRandom random
         ) {
             var soilIngestionAlignmentFactor = soilIngestionUnit
                 .GetSubstanceAmountUnit()

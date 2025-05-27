@@ -93,7 +93,7 @@ namespace MCRA.Simulation.Calculators.AirExposureCalculation {
             double indoorFraction,
             Dictionary<Compound, IEnumerable<double>> adjustedIndoorAirConcentrations,
             Dictionary<Compound, IEnumerable<double>> adjustedOutdoorAirConcentrations,
-            McraRandomGenerator airConcentrationsRandomGenerator
+            IRandom airConcentrationsRandomGenerator
         ) {
             // TODO: create random generator per substance
             // Note: it is assumed that indoor and outdoor concentrations are independent.
@@ -123,7 +123,7 @@ namespace MCRA.Simulation.Calculators.AirExposureCalculation {
             ICollection<AirVentilatoryFlowRate> airVentilatoryFlowRates,
             double? age,
             GenderType? sex,
-            McraRandomGenerator random
+            IRandom random
         ) {
             var flowRate = airVentilatoryFlowRates
                 .Where(r => age >= r.AgeLower || r.AgeLower == null)
