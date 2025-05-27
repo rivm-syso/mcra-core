@@ -46,6 +46,7 @@
         <string>FoodSurveys</string>
         <string>HumanMonitoringSurveys</string>
         <string>NonDietarySurveys</string>
+        <string>ConsumerProductSurveys</string>
       </ForeignKeyTables>
     </ColumnDefinition>
     <ColumnDefinition FieldType="Numeric">

@@ -99,6 +99,11 @@ namespace MCRA.Data.Compiled {
         public IList<SoilIngestion> AllSoilIngestions { get; set; }
         public IList<BurdenOfDisease> AllBurdensOfDisease { get; set; }
         public IDictionary<string, ConsumerProduct> AllConsumerProducts { get; set; }
+        public IDictionary<string, ConsumerProductSurvey> AllConsumerProductSurveys { get; set; }
+        public IDictionary<string, Individual> AllConsumerProductIndividuals { get; set; }
+        public IDictionary<string, IndividualProperty> AllConsumerProductIndividualProperties { get; set; }
+        public IList<IndividualConsumerProductUseFrequency> AllIndividualConsumerProductUseFrequencies { get; set; }
+
         #region Methods
 
         public Food GetOrAddFood(string id, string name = null) {
@@ -169,6 +174,13 @@ namespace MCRA.Data.Compiled {
             if (!AllHumanMonitoringSurveys.TryGetValue(id, out HumanMonitoringSurvey item)) {
                 item = new HumanMonitoringSurvey { Code = id, Name = name };
                 AllHumanMonitoringSurveys.Add(id, item);
+            }
+            return item;
+        }
+        public ConsumerProductSurvey GetOrAddConsumerProductSurvey(string id, string name = null) {
+            if (!AllConsumerProductSurveys.TryGetValue(id, out ConsumerProductSurvey item)) {
+                item = new ConsumerProductSurvey { Code = id, Name = name };
+                AllConsumerProductSurveys.Add(id, item);
             }
             return item;
         }

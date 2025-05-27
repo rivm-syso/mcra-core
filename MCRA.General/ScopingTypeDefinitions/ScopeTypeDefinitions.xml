@@ -1963,7 +1963,7 @@
 
   <ScopingTypeDefinition>
     <Id>ConsumerProducts</Id>
-    <Name>ConsumerProducts</Name>
+    <Name>Consumer products</Name>
     <RawTableId>ConsumerProducts</RawTableId>
     <Description>-</Description>
     <TableGroup>ConsumerProducts</TableGroup>
@@ -1972,4 +1972,71 @@
     <IsAutoScope>true</IsAutoScope>
   </ScopingTypeDefinition>
 
+  <ScopingTypeDefinition>
+    <Id>ConsumerProductIndividualProperties</Id>
+    <Name>Consumer product individual properties</Name>
+    <RawTableId>IndividualProperties</RawTableId>
+    <Description>-</Description>
+    <TableGroup>ConsumerProductUseFrequencies</TableGroup>
+    <IsStrongEntity>true</IsStrongEntity>
+  </ScopingTypeDefinition>
+  <ScopingTypeDefinition>
+    <Id>ConsumerProductIndividualPropertyValues</Id>
+    <Name>Consumer product g individual property values</Name>
+    <RawTableId>IndividualPropertyValues</RawTableId>
+    <Description>-</Description>
+    <TableGroup>ConsumerProductUseFrequencies</TableGroup>
+    <IsStrongEntity>false</IsStrongEntity>
+    <ParentScopeReferences>
+      <ParentScopeReference>
+        <IdField>idIndividual</IdField>
+        <ReferencedScope>ConsumerProductIndividuals</ReferencedScope>
+      </ParentScopeReference>
+    </ParentScopeReferences>
+  </ScopingTypeDefinition>
+  <ScopingTypeDefinition>
+    <Id>ConsumerProductIndividuals</Id>
+    <Name>Consumer product  individuals</Name>
+    <RawTableId>Individuals</RawTableId>
+    <Description>-</Description>
+    <TableGroup>ConsumerProductUseFrequencies</TableGroup>
+    <IsStrongEntity>true</IsStrongEntity>
+    <ParentScopeReferences>
+      <ParentScopeReference>
+        <IdField>idFoodSurvey</IdField>
+        <ReferencedScope>ConsumerProductSurveys</ReferencedScope>
+      </ParentScopeReference>
+    </ParentScopeReferences>
+  </ScopingTypeDefinition>
+  <ScopingTypeDefinition>
+    <Id>ConsumerProductSurveys</Id>
+    <Name>Consumer product  surveys</Name>
+    <RawTableId>ConsumerProductSurveys</RawTableId>
+    <Description>-</Description>
+    <TableGroup>ConsumerProductUseFrequencies</TableGroup>
+    <IsStrongEntity>true</IsStrongEntity>
+    <AllowUserSelection>true</AllowUserSelection>
+    <IsAutoScope>true</IsAutoScope>
+    <ParentScopeReferences>
+      <ParentScopeReference>
+        <IdField>idPopulation</IdField>
+        <ReferencedScope>Populations</ReferencedScope>
+      </ParentScopeReference>
+    </ParentScopeReferences>
+  </ScopingTypeDefinition>
+
+  <ScopingTypeDefinition>
+    <Id>ConsumerProductUseFrequencies</Id>
+    <Name>Consumer product use frequencies</Name>
+    <RawTableId>IndividualConsumerProductUseFrequencies</RawTableId>
+    <Description>-</Description>
+    <TableGroup>ConsumerProductUseFrequencies</TableGroup>
+    <ParentScopeReferences>
+      <ParentScopeReference>
+        <IdField>idProduct</IdField>
+        <ReferencedScope>ConsumerProducts</ReferencedScope>
+      </ParentScopeReference>
+    </ParentScopeReferences>
+  </ScopingTypeDefinition>
+  
 </ScopingTypeDefinitions>

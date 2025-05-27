@@ -145,9 +145,7 @@ namespace MCRA.Data.Management {
         /// </summary>
         /// <returns></returns>
         public List<IndividualProperty> CovariableIndividualProperties =>
-            AllIndividualProperties.Values
-                .Where(ip => ip.PropertyType.GetPropertyType() == PropertyType.Covariable)
-                .ToList();
+            [.. AllIndividualProperties.Values.Where(ip => ip.PropertyType.GetPropertyType() == PropertyType.Covariable)];
 
         /// <summary>
         /// Returns the selected covariable property if this selection is made, otherwise null.
@@ -252,7 +250,7 @@ namespace MCRA.Data.Management {
                         var foodsAsMeasuredSubset = config.ModelledFoodSubset.Select(f => allFoods[f]).ToHashSet();
                         selectedFoodSamples = selectedFoodSamples.Where(s => foodsAsMeasuredSubset.Contains(s.Food));
                     }
-                    _selectedFoodSamples = selectedFoodSamples.ToList();
+                    _selectedFoodSamples = [.. selectedFoodSamples];
                 }
                 return _selectedFoodSamples;
             }
@@ -318,7 +316,7 @@ namespace MCRA.Data.Management {
         /// Returns all maximum residue limits.
         /// </summary>
         public ICollection<ConcentrationLimit> AllMaximumConcentrationLimits =>
-            _allMaximumConcentrationLimits ??= _dataManager.GetAllMaximumConcentrationLimits().ToHashSet();
+            _allMaximumConcentrationLimits ??= [.. _dataManager.GetAllMaximumConcentrationLimits()];
 
         /// <summary>
         /// Returns all residue definitions.
@@ -370,21 +368,21 @@ namespace MCRA.Data.Management {
         /// </summary>
         public ICollection<HazardCharacterisation> AllHazardCharacterisations => _dataManager.GetAllHazardCharacterisations();
 
-        public ICollection<ActiveSubstanceModel> AllActiveSubstances => _dataManager.GetAllActiveSubstanceModels().Values.ToList();
+        public ICollection<ActiveSubstanceModel> AllActiveSubstances => [.. _dataManager.GetAllActiveSubstanceModels().Values];
 
-        public ICollection<MolecularDockingModel> AllMolecularDockingModels => _dataManager.GetAllMolecularDockingModels().Values.ToList();
+        public ICollection<MolecularDockingModel> AllMolecularDockingModels => [.. _dataManager.GetAllMolecularDockingModels().Values];
 
-        public ICollection<QsarMembershipModel> AllQsarMembershipModels => _dataManager.GetAllQsarMembershipModels().Values.ToList();
+        public ICollection<QsarMembershipModel> AllQsarMembershipModels => [.. _dataManager.GetAllQsarMembershipModels().Values];
 
         /// <summary>
         /// Gets all human monitoring surveys.
         /// </summary>
-        public ICollection<HumanMonitoringSurvey> AllHumanMonitoringSurveys => _dataManager.GetAllHumanMonitoringSurveys().Values.ToList();
+        public ICollection<HumanMonitoringSurvey> AllHumanMonitoringSurveys => [.. _dataManager.GetAllHumanMonitoringSurveys().Values];
 
         /// <summary>
         /// Gets all human monitoring individuals.
         /// </summary>
-        public ICollection<Individual> AllHumanMonitoringIndividuals => _dataManager.GetAllHumanMonitoringIndividuals().Values.ToList();
+        public ICollection<Individual> AllHumanMonitoringIndividuals => [.. _dataManager.GetAllHumanMonitoringIndividuals().Values];
 
         /// <summary>
         /// Returns the all the individual properties present in the data source.
@@ -395,7 +393,7 @@ namespace MCRA.Data.Management {
         /// <summary>
         /// Returns all human monitoring samples.
         /// </summary>
-        public ICollection<HumanMonitoringSample> AllHumanMonitoringSamples => _dataManager.GetAllHumanMonitoringSamples().Values.ToList();
+        public ICollection<HumanMonitoringSample> AllHumanMonitoringSamples => [.. _dataManager.GetAllHumanMonitoringSamples().Values];
 
         /// <summary>
         /// Returns all human monitoring analytical methods.
@@ -411,7 +409,7 @@ namespace MCRA.Data.Management {
         /// <summary>
         /// Gets all populations.
         /// </summary>
-        public ICollection<Population> AllPopulations => _dataManager.GetAllPopulations().Values.ToList();
+        public ICollection<Population> AllPopulations => [.. _dataManager.GetAllPopulations().Values];
 
         /// <summary>
         /// Gets all inter-species factors.
@@ -426,16 +424,15 @@ namespace MCRA.Data.Management {
         public IList<ConcentrationDistribution> AllConcentrationDistributions => _dataManager.GetAllConcentrationDistributions();
 
         public List<Food> AvailableScenarioAnalysisFoods =>
-            AllConcentrationDistributions
+            [.. AllConcentrationDistributions
                 .Where(s => s.Limit != null && s.Percentile != null && s.Limit / s.Percentile < 1)
                 .Select(cd => cd.Food)
-                .Distinct()
-                .ToList();
+                .Distinct()];
 
         /// <summary>
         /// Returns all focal commodity foods.
         /// </summary>
-        public HashSet<Food> AllFocalCommodityFoods => _dataManager.GetAllFocalCommodityFoods().Values.ToHashSet();
+        public HashSet<Food> AllFocalCommodityFoods => [.. _dataManager.GetAllFocalCommodityFoods().Values];
 
         /// <summary>
         /// Returns all analytical methods of the focal commodity samples.
@@ -445,7 +442,7 @@ namespace MCRA.Data.Management {
         /// <summary>
         ///
         /// </summary>
-        public List<NonDietaryExposureSet> NonDietaryExposureSets => _dataManager.GetAllNonDietaryExposureSets().ToList();
+        public List<NonDietaryExposureSet> NonDietaryExposureSets => [.. _dataManager.GetAllNonDietaryExposureSets()];
 
         /// <summary>
         /// Returns all available dietary exposure models.
@@ -513,17 +510,17 @@ namespace MCRA.Data.Management {
         /// <summary>
         /// Gets all dose response experiments from the compiled data source.
         /// </summary>
-        public List<DoseResponseExperiment> AllDoseResponseExperiments => _dataManager.GetAllDoseResponseExperiments().Values.ToList();
+        public List<DoseResponseExperiment> AllDoseResponseExperiments => [.. _dataManager.GetAllDoseResponseExperiments().Values];
 
         /// <summary>
         /// Returns all test systems.
         /// </summary>
-        public List<TestSystem> AllTestSystems => _dataManager.GetAllTestSystems().Values.ToList();
+        public List<TestSystem> AllTestSystems => [.. _dataManager.GetAllTestSystems().Values];
 
         /// <summary>
         /// Returns all dose response models.
         /// </summary>
-        public List<DoseResponseModel> AllDoseResponseModels => _dataManager.GetAllDoseResponseModels().ToList();
+        public List<DoseResponseModel> AllDoseResponseModels => [.. _dataManager.GetAllDoseResponseModels()];
 
         /// <summary>
         /// Returns all available adverse outcome pathway networks.
@@ -545,13 +542,13 @@ namespace MCRA.Data.Management {
         /// </summary>
         public ICollection<KineticConversionFactor> AllKineticConversionFactors => _dataManager.GetAllKineticConversionFactors()?.ToList();
 
-        public List<FoodTranslation> AllFoodTranslations => _dataManager.GetAllFoodTranslations().ToList();
+        public List<FoodTranslation> AllFoodTranslations => [.. _dataManager.GetAllFoodTranslations()];
 
-        public List<TDSFoodSampleComposition> AllTDSFoodSampleCompositions => _dataManager.GetAllTDSFoodSampleCompositions().ToList();
+        public List<TDSFoodSampleComposition> AllTDSFoodSampleCompositions => [.. _dataManager.GetAllTDSFoodSampleCompositions()];
 
         public IDictionary<Food, ICollection<Food>> AllFoodExtrapolations => _dataManager.GetAllFoodExtrapolations();
 
-        public List<MarketShare> AllMarketShares => _dataManager.GetAllMarketShares().ToList();
+        public List<MarketShare> AllMarketShares => [.. _dataManager.GetAllMarketShares()];
 
         public ICollection<DeterministicSubstanceConversionFactor> AllDeterministicSubstanceConversionFactors => _dataManager.GetAllDeterministicSubstanceConversionFactors();
 
@@ -594,8 +591,13 @@ namespace MCRA.Data.Management {
         public IList<BurdenOfDisease> AllBurdensOfDisease => _dataManager.GetAllBurdensOfDisease();
 
         /// <summary>
-        /// Gets all foods of the compiled data source.
+        /// Gets all consumer products of the compiled data source.
         /// </summary>
         public ICollection<ConsumerProduct> AllConsumerProducts => _dataManager.GetAllConsumerProducts().Values.ToHashSet();
+        public ICollection<IndividualConsumerProductUseFrequency> AllIndividualConsumerProductUseFrequencies => _dataManager.GetAllIndividualConsumerProductUseFrequencies();
+        public IDictionary<string, ConsumerProductSurvey> AllConsumerProductSurveys => _dataManager.GetAllConsumerProductSurveys();
+        public ICollection<Individual> AllConsumerProductIndividuals => [.. _dataManager.GetAllConsumerProductIndividuals().Values];
+        public IDictionary<string, IndividualProperty> AllConsumerProductsIndividualProperties => _dataManager.GetAllConsumerProductIndividualProperties();
+
     }
 }

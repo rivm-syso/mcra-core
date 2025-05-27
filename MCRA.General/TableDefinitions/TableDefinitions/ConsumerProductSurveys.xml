@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition IsStrongEntity="true">
+  <Id>ConsumerProductSurveys</Id>
+  <Name>Consumer product surveys</Name>
+  <Description>The records of the consumer product surveys  table contain the ids, names, descriptions, and other relevant metadata of consumer product surveys.</Description>
+  <Aliases>
+    <string>ConsumerProductSurveys</string>
+    <string>CPSurveys</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawConsumerProductSurveys</string>
+  </HiddenAliases>
+  <TargetDataTable>RawConsumerProductSurveys</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition IsPrimaryKey="true" Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
+      <Id>Id</Id>
+      <Name>idSurvey</Name>
+      <Description>Unique identification code of the consumer product survey.</Description>
+      <Aliases>
+        <string>idSurvey</string>
+        <string>Survey</string>
+        <string>SurveyId</string>
+        <string>Id</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="100" IsNameColumn="true">
+      <Id>Name</Id>
+      <Description>The name of the consumer product survey.</Description>
+      <Aliases>
+        <string>Name</string>
+        <string>SurveyName</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldSize="200" FieldType="AlphaNumeric">
+      <Id>Description</Id>
+      <Description>
+        Description of the consumer product survey.
+      </Description>
+      <Aliases>
+        <string>Description</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldSize="50" FieldType="AlphaNumeric">
+      <Id>Country</Id>
+      <Description>
+        The location or country where the survey is held. It is recommended to use ISO Alpha-2 country codes.
+      </Description>
+      <Aliases>
+        <string>Location</string>
+        <string>Country</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="BodyWeightUnit">
+      <Id>BodyWeightUnit</Id>
+      <Description>The unit of bodyweight of the individuals of the survey: kg (default) or g.</Description>
+      <Aliases>
+        <string>BodyWeightUnit</string>
+        <string>UnitBodyWeight</string>
+        <string>WeightIn</string>
+      </Aliases>
+      <DefaultValue>Kilogram</DefaultValue>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" Deprecated="true">
+      <Id>AgeUnit</Id>
+      <Description>
+        The unit of age, i.e., year or month.
+      </Description>
+      <Aliases>
+        <string>UnitAge</string>
+        <string>agein</string>
+        <string>AgeUnit</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="ConsumptionUnit">
+      <Id>AmountUnit</Id>
+      <Description>
+        The unit of the amounts of consumer product use in the survey: g (default) or kg or CustomUnit (see table food consumption quantifications table).
+      </Description>
+      <Aliases>
+        <string>AmountUnit</string>
+        <string>UnitAmount</string>
+        <string>AmountUnit</string>
+        <string>ConsumptionUnit</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="DateTime">
+      <Id>StartDate</Id>
+      <Aliases>
+        <string>StartDate</string>
+      </Aliases>
+      <Description>
+        The start date of the survey.
+      </Description>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="DateTime">
+      <Id>EndDate</Id>
+      <Aliases>
+        <string>EndDate</string>
+      </Aliases>
+      <Description>
+        The end date of the survey.
+      </Description>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idPopulation</Id>
+      <Description>Unique identification code of the population.</Description>
+      <Aliases>
+        <string>IdPopulation</string>
+        <string>PopulationId</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Populations</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

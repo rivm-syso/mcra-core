@@ -92,5 +92,9 @@ namespace MCRA.Data.Management {
         IList<SoilIngestion> GetAllSoilIngestions();
         IList<BurdenOfDisease> GetAllBurdensOfDisease();
         IDictionary<string, ConsumerProduct> GetAllConsumerProducts();
+        IDictionary<string, ConsumerProductSurvey> GetAllConsumerProductSurveys();
+        IDictionary<string, Individual> GetAllConsumerProductIndividuals();
+        IDictionary<string, IndividualProperty> GetAllConsumerProductIndividualProperties();
+        IList<IndividualConsumerProductUseFrequency> GetAllIndividualConsumerProductUseFrequencies();
     }
 }

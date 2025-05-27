@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>ConsumerProductUseFrequencies</Id>
+  <Name>Consumer product use frequencies</Name>
+  <SourceTableGroup>ConsumerProductUseFrequencies</SourceTableGroup>
+  <Description>
+    Consumer product use frequencies are described by five table.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>ConsumerProductSurveys</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>Individuals</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>IndividualProperties</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>IndividualPropertyValues</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>IndividualConsumerProductUseFrequencies</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

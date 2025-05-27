@@ -135,6 +135,11 @@
         OutdoorAirConcentrations = 138,
         ErfSubgroups = 139,
         PopulationCharacteristics = 140,
-        ConsumerProducts = 141
+        ConsumerProducts = 141,
+        ConsumerProductUseFrequencies = 142,
+        ConsumerProductSurveys = 143,
+        ConsumerProductIndividuals = 144,
+        ConsumerProductIndividualProperties = 145,
+        ConsumerProductIndividualPropertyValues = 146,
     }
 }

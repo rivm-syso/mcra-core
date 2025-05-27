@@ -104,6 +104,7 @@ using MCRA.Simulation.Objects;
 using MCRA.Simulation.Calculators.FoodConversionCalculation;
 using MCRA.Simulation.Calculators.ExposureResponseFunctions;
 using MCRA.Simulation.Actions.ConsumerProducts;
+using MCRA.Simulation.Actions.ConsumerProductUseFrequencies;
 
 namespace MCRA.Simulation {
     public class ActionData {
@@ -1006,6 +1007,11 @@ namespace MCRA.Simulation {
         public ICollection<ConsumerProduct> AllConsumerProducts {
             get => GetOrCreateModuleOutputData<ConsumerProductsOutputData>(ActionType.ConsumerProducts).AllConsumerProducts;
             set => GetOrCreateModuleOutputData<ConsumerProductsOutputData>(ActionType.ConsumerProducts).AllConsumerProducts = value;
+        }
+
+        public ICollection<IndividualConsumerProductUseFrequency> AllIndividualConsumerProductUseFrequencies {
+            get => GetOrCreateModuleOutputData<ConsumerProductUseFrequenciesOutputData>(ActionType.ConsumerProductUseFrequencies).AllIndividualConsumerProductUseFrequencies;
+            set => GetOrCreateModuleOutputData<ConsumerProductUseFrequenciesOutputData>(ActionType.ConsumerProductUseFrequencies).AllIndividualConsumerProductUseFrequencies = value;
         }
 
         /// <summary>

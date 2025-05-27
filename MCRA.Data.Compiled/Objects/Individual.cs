@@ -25,6 +25,7 @@ namespace MCRA.Data.Compiled.Objects {
 
         public string Cofactor { get; set; }
 
+        //TODO rename to survey
         public string CodeFoodSurvey { get; set; }
 
         public IEnumerable<IndividualPropertyValue> IndividualPropertyValues => _individualPropertyValues;

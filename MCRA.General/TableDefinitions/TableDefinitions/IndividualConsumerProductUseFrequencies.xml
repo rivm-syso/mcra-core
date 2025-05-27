@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>IndividualConsumerProductUseFrequencies</Id>
+  <Name>Individual consumer product use frequencies</Name>
+  <Description>
+    Individual consumer product use frequencies are specified as a number of use per day for a consumer product (>= 0).
+  </Description>
+  <Aliases>
+    <string>UseFrequencies</string>
+    <string>CPUseFrequencies</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawIndividualConsumerProductUseFrequencies</string>
+  </HiddenAliases>
+  <TargetDataTable>RawIndividualConsumerProductUseFrequencies</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
+      <Id>idIndividual</Id>
+      <Description>The unique identification code of the consumer (individual).</Description>
+      <Aliases>
+        <string>idIndividual</string>
+        <string>IndividualId</string>
+        <string>Individual</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Individuals</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idProduct</Id>
+      <Description>The consumer product id or code.</Description>
+      <Aliases>
+        <string>idProduct</string>
+        <string>ProductId</string>
+        <string>Product</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>ConsumerProducts</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>Frequency</Id>
+      <Description>The frequency of use, a value equal or higher than zero (freq >= 0).</Description>
+      <Aliases>
+        <string>Frequency</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

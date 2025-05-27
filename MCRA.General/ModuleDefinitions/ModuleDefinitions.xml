@@ -85,6 +85,7 @@
       <xi:include href="Modules/AirExposureDeterminants.xml" />
       <xi:include href="Modules/AirExposures.xml" />
       <xi:include href="Modules/Individuals.xml" />
+      <xi:include href="Modules/ConsumerProductUseFrequencies.xml" />
     </Modules>
   </ModuleGroupDefinition>
   <ModuleGroupDefinition>

@@ -360,5 +360,17 @@ namespace MCRA.Simulation.Test.Mock {
         public IDictionary<string, ConsumerProduct> GetAllConsumerProducts() {
             return _data.AllConsumerProducts;
         }
+        public IDictionary<string, IndividualProperty> GetAllConsumerProductIndividualProperties() {
+            return _data.AllConsumerProductIndividualProperties;
+        }
+        public IList<IndividualConsumerProductUseFrequency> GetAllIndividualConsumerProductUseFrequencies() {
+            return _data.AllIndividualConsumerProductUseFrequencies;
+        }
+        public IDictionary<string, ConsumerProductSurvey> GetAllConsumerProductSurveys() {
+            return _data.AllConsumerProductSurveys;
+        }
+        public IDictionary<string, Individual> GetAllConsumerProductIndividuals() {
+            return _data.AllConsumerProductIndividuals;
+        }
     }
 }

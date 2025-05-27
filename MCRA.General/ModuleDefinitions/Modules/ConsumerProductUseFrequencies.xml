@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>ConsumerProductUseFrequencies</Id>
+  <Name>Consumer product use frequencies</Name>
+  <ActionType>ConsumerProductUseFrequencies</ActionType>
+  <ModuleType>DataModule</ModuleType>
+  <TableGroup>ConsumerProductUseFrequencies</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <AllowMultipleDataSources>true</AllowMultipleDataSources>
+  <Description>
+    Consumer product use frequencies specify the frequency of use for a consumer product (personal care product) per day.
+  </Description>
+  <ShortDescription>
+    Consumer product use frequencies specify the frequency of use.
+  </ShortDescription>
+  <DataDescription>
+    Consumer product use frequencies specify the frequency of use.
+  </DataDescription>
+  <Entities>
+    <Entity>Populations</Entity>
+    <Entity>ConsumerProducts</Entity>
+  </Entities>
+  </Module>

@@ -150,6 +150,8 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 writeAirVentilatoryFlowRatesToCsv(folderName, data.AllAirVentilatoryFlowRates);
                 writeAirIndoorFractionsToCsv(folderName, data.AllAirIndoorFractions);
                 writeConsumerProductsDataToCsv(folderName, data.AllConsumerProducts?.Values);
+                writeConsumerProductSurveyDataToCsv(folderName, data.AllConsumerProductSurveys?.Values);
+                writeIndividualConsumerProductUseFrequenciesToCsv(folderName, data.AllIndividualConsumerProductUseFrequencies);
             } catch (Exception) {
                 throw;
             }
