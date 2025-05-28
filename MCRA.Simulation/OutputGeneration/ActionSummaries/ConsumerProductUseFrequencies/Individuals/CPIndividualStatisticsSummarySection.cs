@@ -1,51 +1,50 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.Consumptions;
-using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData.Individuals;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class HbmIndividualStatisticsSummarySection : SummarySection {
+    public sealed class CPIndividualStatisticsSummarySection : SummarySection {
 
-        public List<HbmPopulationCharacteristicsDataRecord> HbmPopulationRecords { get; set; }
+        public List<CPPopulationCharacteristicsDataRecord> PopulationRecords { get; set; }
         public List<SelectedPropertyRecord> SelectedPropertyRecords { get; set; }
-        public IndividualsSummaryRecord individualsSummaryRecord { get; set; }
+        public IndividualsSummaryRecord IndividualsSummaryRecord { get; set; }
 
         public void Summarize(
-            ICollection<Individual> hbmIndividuals,
+            ICollection<Individual> individuals,
             Population population,
             IndividualSubsetType individualSubsetType,
-            List<string> selectedHbmSubsetProperties,
+            List<string> selectedSubsetProperties,
             bool skipPrivacySensitiveOutputs
         ) {
-            individualsSummaryRecord = new IndividualsSummaryRecord() {
-                NumberOfIndividuals = hbmIndividuals.Count
+            IndividualsSummaryRecord = new IndividualsSummaryRecord() {
+                NumberOfIndividuals = individuals.Count
             };
             SelectedPropertyRecords = summarizeSelectedProperties(
                 population,
                 individualSubsetType,
-                [.. selectedHbmSubsetProperties]
+                [.. selectedSubsetProperties]
             );
-            HbmPopulationRecords = getSummaryRecords(
-                hbmIndividuals,
+            PopulationRecords = getSummaryRecords(
+                individuals,
                 skipPrivacySensitiveOutputs
             );
         }
 
-        private List<HbmPopulationCharacteristicsDataRecord> getSummaryRecords(
-            ICollection<Individual> hbmIndividuals,
+        private static List<CPPopulationCharacteristicsDataRecord> getSummaryRecords(
+            ICollection<Individual> individuals,
             bool skipPrivacySensitiveOutputs
         ) {
             var percentages = new double[] { 25, 50, 75 };
-            var result = new List<HbmPopulationCharacteristicsDataRecord>();
-            var hbmIndividualsWithBw = hbmIndividuals.Where(i => !double.IsNaN(i.BodyWeight)).ToList();
-            if (hbmIndividualsWithBw.Any()) {
-                var samplingWeightsWithBw = hbmIndividualsWithBw.Select(c => c.SamplingWeight).ToList();
+            var result = new List<CPPopulationCharacteristicsDataRecord>();
+            var individualsWithBw = individuals.Where(i => !double.IsNaN(i.BodyWeight)).ToList();
+            if (individualsWithBw.Any()) {
+                var samplingWeightsWithBw = individualsWithBw.Select(c => c.SamplingWeight).ToList();
                 var totalSamplingWeightsWithBw = samplingWeightsWithBw.Sum();
-                var bodyWeights = hbmIndividualsWithBw.Select(i => i.BodyWeight).ToList();
+                var bodyWeights = individualsWithBw.Select(i => i.BodyWeight).ToList();
                 var percentiles = bodyWeights.PercentilesWithSamplingWeights(samplingWeightsWithBw, percentages);
-                var sum = hbmIndividualsWithBw.Sum(i => i.BodyWeight * i.SamplingWeight);
-                result.Add(new HbmPopulationCharacteristicsDataRecord {
+                var sum = individualsWithBw.Sum(i => i.BodyWeight * i.SamplingWeight);
+                result.Add(new CPPopulationCharacteristicsDataRecord {
                     Property = "Body weight",
                     Mean = sum / totalSamplingWeightsWithBw,
                     P25 = percentiles[0],
@@ -54,14 +53,14 @@ namespace MCRA.Simulation.OutputGeneration {
                     Min = !skipPrivacySensitiveOutputs ? bodyWeights.Min() : null,
                     Max = !skipPrivacySensitiveOutputs ? bodyWeights.Max() : null,
                     DistinctValues = bodyWeights.Distinct().Count(),
-                    Missing = hbmIndividuals.Count - hbmIndividualsWithBw.Count
+                    Missing = individuals.Count - individualsWithBw.Count
                 });
             }
-            var weights = hbmIndividuals.Select(c => c.SamplingWeight).ToList();
+            var weights = individuals.Select(c => c.SamplingWeight).ToList();
             if (weights.Any(c => c != 1d)) {
                 var totalSamplingWeights = weights.Sum();
                 var percentiles = weights.Percentiles(percentages);
-                result.Add(new HbmPopulationCharacteristicsDataRecord {
+                result.Add(new CPPopulationCharacteristicsDataRecord {
                     Property = "Sampling weight",
                     Mean = totalSamplingWeights/weights.Count,
                     P25 = percentiles[0],
@@ -73,18 +72,18 @@ namespace MCRA.Simulation.OutputGeneration {
                     Missing = 0
                 });
             }
-            var properties = hbmIndividuals.SelectMany(i => i.IndividualPropertyValues.Select(c => c.IndividualProperty))
+            var properties = individuals.SelectMany(i => i.IndividualPropertyValues.Select(c => c.IndividualProperty))
                 .Distinct()
                 .OrderBy(ip => ip.Name, StringComparer.OrdinalIgnoreCase)
                 .ToList();
             foreach (var property in properties) {
-                var propertyValues = hbmIndividuals
+                var propertyValues = individuals
                     .Select(r => (
                         Individual: r,
                         PropertyValue: r.GetPropertyValue(property)
                     ))
                     .ToList();
-                var samplingWeights = hbmIndividuals.Select(c => c.SamplingWeight).ToList();
+                var samplingWeights = individuals.Select(c => c.SamplingWeight).ToList();
                 var countDistinct = propertyValues
                     .Where(r => r.PropertyValue != null)
                     .Select(c => c.PropertyValue.DoubleValue)
@@ -108,7 +107,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
                     var sum = availableValues.Sum(r => r.Individual.SamplingWeight * r.PropertyValue.DoubleValue.Value);
                     result.Add(
-                        new HbmPopulationCharacteristicsDataRecord {
+                        new CPPopulationCharacteristicsDataRecord {
                             Property = property.Name,
                             Mean = sum / samplingWeights.Sum(),
                             P25 = percentiles[0],
@@ -120,7 +119,7 @@ namespace MCRA.Simulation.OutputGeneration {
                             Missing = totalSamplingWeightMissing
                         });
                 } else {
-                    var levels = hbmIndividuals
+                    var levels = individuals
                         .Select(r => (
                             Individual: r,
                             Value: r.GetPropertyValue(property)?.Value ?? "-"
@@ -132,7 +131,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         })
                         .OrderBy(r => r.Level, StringComparer.OrdinalIgnoreCase)
                         .ToList();
-                    result.Add(new HbmPopulationCharacteristicsDataRecord {
+                    result.Add(new CPPopulationCharacteristicsDataRecord {
                         Property = property.Name,
                         Levels = levels,
                         DistinctValues = levels.Count,

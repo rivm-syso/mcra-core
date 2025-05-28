@@ -1035,6 +1035,16 @@ namespace MCRA.Simulation {
             get => GetOrCreateModuleOutputData<ConsumerProductExposureDeterminantsOutputData>(ActionType.ConsumerProductExposureDeterminants).ConsumerProductApplicationAmounts;
             set => GetOrCreateModuleOutputData<ConsumerProductExposureDeterminantsOutputData>(ActionType.ConsumerProductExposureDeterminants).ConsumerProductApplicationAmounts = value;
         }
+
+        public ICollection<ConsumerProductSurvey> ConsumerProductSurveys {
+            get => GetOrCreateModuleOutputData<ConsumerProductUseFrequenciesOutputData>(ActionType.ConsumerProductUseFrequencies).ConsumerProductSurveys;
+            set => GetOrCreateModuleOutputData<ConsumerProductUseFrequenciesOutputData>(ActionType.ConsumerProductUseFrequencies).ConsumerProductSurveys = value;
+        }
+
+        public ICollection<Individual> ConsumerProductIndividuals {
+            get => GetOrCreateModuleOutputData<ConsumerProductUseFrequenciesOutputData>(ActionType.HumanMonitoringData).ConsumerProductIndividuals;
+            set => GetOrCreateModuleOutputData<ConsumerProductUseFrequenciesOutputData>(ActionType.HumanMonitoringData).ConsumerProductIndividuals = value;
+        }
         /// <summary>
         /// Creates a copy of the action data, to be used in bootstrap/uncertainty runs.
         /// </summary>

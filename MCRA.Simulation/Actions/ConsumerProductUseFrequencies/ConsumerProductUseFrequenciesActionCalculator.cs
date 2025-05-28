@@ -30,8 +30,8 @@ namespace MCRA.Simulation.Actions.ConsumerProductUseFrequencies {
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
-            var surveys = subsetManager.AllConsumerProductSurveys;
-            var individuals = subsetManager.AllConsumerProductIndividuals;
+            data.ConsumerProductSurveys = [.. subsetManager.AllConsumerProductSurveys.Values];
+            data.ConsumerProductIndividuals = subsetManager.AllConsumerProductIndividuals;
             data.AllIndividualConsumerProductUseFrequencies = subsetManager.AllIndividualConsumerProductUseFrequencies;
         }
 

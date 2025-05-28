@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using MCRA.Simulation.OutputGeneration.ActionSummaries;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class HbmSurveySummaryRecord {
+    public sealed class CPSurveySummaryRecord {
 
         [DisplayName("Survey name")]
         public string Name { get; set; }
@@ -22,12 +22,6 @@ namespace MCRA.Simulation.OutputGeneration {
 
         [DisplayName("Number of individuals in survey")]
         public int NumberOfIndividuals { get; set; }
-
-        [DisplayName("Number of days per individual")]
-        public int NumberOfSurveyDaysPerIndividual { get; set; }
-
-        [DisplayName("Number of individual days")]
-        public int NumberOfIndividualDays { get; set; }
 
         [Display(AutoGenerateField = false)]
         public List<SurveyPropertyRecord> SurveyProperties { get; set; }

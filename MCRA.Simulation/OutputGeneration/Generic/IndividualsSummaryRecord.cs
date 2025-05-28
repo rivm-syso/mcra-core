@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class HbmIndividualsSummaryRecord {
+    public sealed class IndividualsSummaryRecord {
 
         [DisplayName("Selected individuals")]
         public int NumberOfIndividuals { get; set; }

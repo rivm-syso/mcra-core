@@ -1,5 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.OutputGeneration;
+using MCRA.Simulation.OutputGeneration.ActionSummaries;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData.Individuals;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
@@ -53,9 +54,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
             var section = new HbmSurveySummarySection {
                 Record = new HbmSurveySummaryRecord() {
                     SurveyProperties = [
-                        new HbmSurveyPropertyRecord() {
+                        new SurveyPropertyRecord() {
                             Code= "survey",
-                            CovariateName ="age",
+                            CovariateName = "age",
                             Description= "descr",
                             Level = "1",
                             Maximum=99,

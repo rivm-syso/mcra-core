@@ -1,19 +1,19 @@
-﻿using MCRA.Utils.ProgressReporting;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Management;
-using MCRA.General.Action.ActionSettingsManagement;
 using MCRA.Data.Management.CompiledDataManagers.DataReadingSummary;
 using MCRA.General;
-using MCRA.General.Annotations;
+using MCRA.General.Action.ActionSettingsManagement;
 using MCRA.General.Action.Settings;
+using MCRA.General.Annotations;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
+using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Calculators.IndividualDaysGenerator;
 using MCRA.Simulation.Calculators.IndividualsSubsetCalculation;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Action.UncertaintyFactorial;
-using MCRA.Utils.Statistics;
 using MCRA.Utils.ExtensionMethods;
-using MCRA.General.ModuleDefinitions.Settings;
+using MCRA.Utils.ProgressReporting;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Actions.Consumptions {
 
