@@ -375,5 +375,11 @@ namespace MCRA.Simulation.Test.Mock {
         public IList<ConsumerProductConcentration> GetAllConsumerProductConcentrations() {
             return _data.AllConsumerProductConcentrations;
         }
+        public IList<ConsumerProductExposureFraction> GetAllConsumerProductExposureFractions() {
+            return _data.AllConsumerProductExposureFractions;
+        }
+        public IList<ConsumerProductApplicationAmount> GetAllConsumerProductApplicationAmounts() {
+            return _data.AllConsumerProductApplicationAmounts;
+        }
     }
 }

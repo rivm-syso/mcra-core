@@ -83,7 +83,7 @@
         <string>Compartment</string>
       </Aliases>
     </ColumnDefinition>
-    <ColumnDefinition Required="false" FieldType="AlphaNumeric" FieldSize="50">
+    <ColumnDefinition Required="false" FieldType="ExposureRoute">
       <Id>ExposureRoute</Id>
       <Name>ExposureRoute</Name>
       <Description>

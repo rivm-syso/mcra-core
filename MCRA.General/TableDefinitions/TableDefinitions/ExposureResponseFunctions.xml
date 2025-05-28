@@ -75,7 +75,7 @@
         <string>LevelTarget</string>
       </Aliases>
     </ColumnDefinition>
-    <ColumnDefinition Required="false" FieldType="AlphaNumeric" FieldSize="100">
+    <ColumnDefinition Required="false" FieldType="ExposureRoute">
       <Id>ExposureRoute</Id>
       <Name>ExposureRoute</Name>
       <Description>The exposure route(s) (only applicable if exposure level is external) for which this exposure response function is defined.</Description>

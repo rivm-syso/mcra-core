@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>ConsumerProductExposureDeterminants</Id>
+  <Name>Consumer product exposure determinants</Name>
+  <SourceTableGroup>ConsumerProductExposureDeterminants</SourceTableGroup>
+  <Description>
+    Distributions for exposure determinants of substances in consumer products.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>CPExposureFractions</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>CPApplicationAmounts</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

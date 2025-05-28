@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>ConsumerProductExposureDeterminants</Id>
+  <Name>Consumer product exposure determinants</Name>
+  <ModuleType>DataModule</ModuleType>
+  <ActionType>ConsumerProductExposureDeterminants</ActionType>
+  <TableGroup>ConsumerProductExposureDeterminants</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Consumer product exposure determinant data are distributions of chemical substances occurring in consumer products.
+    The distributions can differ per age group.
+  </Description>
+  <ShortDescription>
+    Consumer product exposure determinant data are distributions of chemical substances occurring in Consumer product.
+  </ShortDescription>
+  <DataDescription>
+    Consumer product exposure determinant data can be entered using the internal, relational data format.
+  </DataDescription>
+  <Entities>
+    <Entity>Substances</Entity>
+    <Entity>ConsumerProducts</Entity>
+  </Entities>
+</Module>

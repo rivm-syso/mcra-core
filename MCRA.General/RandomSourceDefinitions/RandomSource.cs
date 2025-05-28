@@ -70,5 +70,9 @@
         SIM_DrawIndividuals = 35,
         // Diet exposures: draw diet exposures
         DIE_DrawDietExposures= 36,
+        // Consumer product exposures: Consumer product exposure determinants
+        CPE_ConsumerProductExposureDeterminants = 37,
+        // Consumer product exposures: draw individuals
+        CPE_DrawIndividuals = 37,
     }
 }

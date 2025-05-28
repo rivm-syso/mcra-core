@@ -106,6 +106,7 @@ using MCRA.Simulation.Calculators.ExposureResponseFunctions;
 using MCRA.Simulation.Actions.ConsumerProducts;
 using MCRA.Simulation.Actions.ConsumerProductUseFrequencies;
 using MCRA.Simulation.Actions.ConsumerProductConcentrations;
+using MCRA.Simulation.Actions.ConsumerProductExposureDeterminants;
 
 namespace MCRA.Simulation {
     public class ActionData {
@@ -1023,6 +1024,16 @@ namespace MCRA.Simulation {
         public ConcentrationUnit ConsumerProductConcentrationUnit {
             get => GetOrCreateModuleOutputData<ConsumerProductConcentrationsOutputData>(ActionType.ConsumerProductConcentrations).ConsumerProductConcentrationUnit;
             set => GetOrCreateModuleOutputData<ConsumerProductConcentrationsOutputData>(ActionType.ConsumerProductConcentrations).ConsumerProductConcentrationUnit = value;
+        }
+
+        public IList<ConsumerProductExposureFraction> ConsumerProductExposureFractions {
+            get => GetOrCreateModuleOutputData<ConsumerProductExposureDeterminantsOutputData>(ActionType.ConsumerProductExposureDeterminants).ConsumerProductExposureFractions;
+            set => GetOrCreateModuleOutputData<ConsumerProductExposureDeterminantsOutputData>(ActionType.ConsumerProductExposureDeterminants).ConsumerProductExposureFractions = value;
+        }
+
+        public IList<ConsumerProductApplicationAmount> ConsumerProductApplicationAmounts {
+            get => GetOrCreateModuleOutputData<ConsumerProductExposureDeterminantsOutputData>(ActionType.ConsumerProductExposureDeterminants).ConsumerProductApplicationAmounts;
+            set => GetOrCreateModuleOutputData<ConsumerProductExposureDeterminantsOutputData>(ActionType.ConsumerProductExposureDeterminants).ConsumerProductApplicationAmounts = value;
         }
         /// <summary>
         /// Creates a copy of the action data, to be used in bootstrap/uncertainty runs.

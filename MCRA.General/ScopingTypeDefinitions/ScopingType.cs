@@ -142,5 +142,7 @@
         ConsumerProductIndividualProperties = 145,
         ConsumerProductIndividualPropertyValues = 146,
         ConsumerProductConcentrations = 147,
+        ConsumerProductExposureFractions = 148,
+        ConsumerProductApplicationAmounts = 149,
     }
 }

@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>CPExposureFractions</Id>
+  <Name>Consumer product exposure fractions</Name>
+  <Description>
+    Fractions of the substance used with the product to which a consumer is exposed.
+  </Description>
+  <Aliases>
+    <string>CPExposureFractions</string>
+    <string>ExposureFractions</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawConsumerProductExposureFractions</string>
+  </HiddenAliases>
+  <TargetDataTable>RawConsumerProductExposureFractions</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldSize="50" FieldType="AlphaNumeric">
+      <Id>idProduct</Id>
+      <Description>The consumer product.</Description>
+      <Aliases>
+        <string>idProduct</string>
+        <string>ProductId</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>ConsumerProducts</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idSubstance</Id>
+      <Name>idSubstance</Name>
+      <Description>The code of the substance.</Description>
+      <Aliases>
+        <string>idSubstance</string>
+        <string>SubstanceId</string>
+        <string>SubstanceCode</string>
+        <string>Substance</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Compounds</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="ExposureRoute">
+      <Id>ExposureRoute</Id>
+      <Name>ExposureRoute</Name>
+      <Description>The exposure route(s) (only applicable if exposure level is external) for which this exposure.</Description>
+      <Aliases>
+        <string>ExposureRoute</string>
+        <string>Route</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>ExposureFraction</Id>
+      <Description>Fraction between 0 and 1.</Description>
+      <Aliases>
+        <string>ExposureFraction</string>
+        <string>Fraction</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

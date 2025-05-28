@@ -56,9 +56,10 @@
     <GraphDefinition ActionType="AirExposureDeterminants" X="30" Y="48" Linebreaks="1"/>
     <GraphDefinition ActionType="AirExposures" X="32" Y="48" Linebreaks="1"/>
 
-    <GraphDefinition ActionType="ConsumerProducts" X="18" Y="48" Linebreaks="1"/>
-    <GraphDefinition ActionType="ConsumerProductUseFrequencies" X="20" Y="48" Linebreaks="1"/>
-    <GraphDefinition ActionType="ConsumerProductConcentrations" X="22" Y="48" Linebreaks="1"/>
+    <GraphDefinition ActionType="ConsumerProducts" X="16" Y="48" Linebreaks="1"/>
+    <GraphDefinition ActionType="ConsumerProductUseFrequencies" X="18" Y="48" Linebreaks="1"/>
+    <GraphDefinition ActionType="ConsumerProductConcentrations" X="20" Y="48" Linebreaks="1"/>
+    <GraphDefinition ActionType="ConsumerProductExposureDeterminants" X="22" Y="48" Linebreaks="1"/>
 
     <GraphDefinition ActionType="Individuals" X="30" Y="48" Linebreaks="0"/>
     <GraphDefinition ActionType="SingleValueRisks" X="110" Y="53" Linebreaks="0"/>

@@ -103,6 +103,8 @@ namespace MCRA.Data.Compiled {
         public IDictionary<string, Individual> AllConsumerProductIndividuals { get; set; }
         public IDictionary<string, IndividualProperty> AllConsumerProductIndividualProperties { get; set; }
         public IList<IndividualConsumerProductUseFrequency> AllIndividualConsumerProductUseFrequencies { get; set; }
+        public IList<ConsumerProductExposureFraction> AllConsumerProductExposureFractions { get; set; }
+        public IList<ConsumerProductApplicationAmount> AllConsumerProductApplicationAmounts { get; set; }
         public IList<ConsumerProductConcentration> AllConsumerProductConcentrations { get; set; }
 
         #region Methods

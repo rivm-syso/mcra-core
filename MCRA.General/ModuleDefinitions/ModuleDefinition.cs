@@ -69,19 +69,17 @@ namespace MCRA.General.ModuleDefinitions {
             McraTemplatesCollection.Instance.GetTiers(ActionType)?.ToDictionary(t => t.Tier);
 
         public HashSet<ActionType> PrimaryEntities =>
-            Entities.Select(r => McraModuleDefinitions.Instance.ModuleDefinitionsById[r].ActionType).ToHashSet();
+            [.. Entities.Select(r => McraModuleDefinitions.Instance.ModuleDefinitionsById[r].ActionType)];
 
         public HashSet<ActionType> DataInputs =>
-            SelectionInputs.Select(r => McraModuleDefinitions.Instance.ModuleDefinitionsById[r].ActionType).ToHashSet();
+            [.. SelectionInputs.Select(r => McraModuleDefinitions.Instance.ModuleDefinitionsById[r].ActionType)];
 
         public HashSet<ActionType> CalculatorInputs =>
-            CalculationInputs.Select(r => McraModuleDefinitions.Instance.ModuleDefinitionsById[r].ActionType).ToHashSet();
+            [.. CalculationInputs.Select(r => McraModuleDefinitions.Instance.ModuleDefinitionsById[r].ActionType)];
 
         public List<ActionType> Inputs {
             get {
-                return DataInputs
-                    .Union(CalculatorInputs)
-                    .ToList();
+                return [.. DataInputs.Union(CalculatorInputs)];
             }
         }
 
@@ -97,9 +95,7 @@ namespace MCRA.General.ModuleDefinitions {
         public List<SettingsItemType> SelectionSettingsItems {
             get {
                 if (SelectionSettings?.Count > 0) {
-                    return SelectionSettings
-                        .Select(r => Enum.Parse<SettingsItemType>(r))
-                        .ToList();
+                    return [.. SelectionSettings.Select(r => Enum.Parse<SettingsItemType>(r))];
                 }
                 return [];
             }
@@ -108,9 +104,7 @@ namespace MCRA.General.ModuleDefinitions {
         public List<SettingsItemType> CalculationSettingsItems {
             get {
                 if (CalculationSettings?.Count > 0) {
-                    return CalculationSettings
-                        .Select(r => Enum.Parse<SettingsItemType>(r))
-                        .ToList();
+                    return [.. CalculationSettings.Select(r => Enum.Parse<SettingsItemType>(r))];
                 }
                 return [];
             }
@@ -119,9 +113,7 @@ namespace MCRA.General.ModuleDefinitions {
         public List<SettingsItemType> UncertaintySettingsItems {
             get {
                 if (UncertaintySettings?.Count > 0) {
-                    return UncertaintySettings
-                        .Select(r => Enum.Parse<SettingsItemType>(r))
-                        .ToList();
+                    return [.. UncertaintySettings.Select(r => Enum.Parse<SettingsItemType>(r))];
                 }
                 return [];
             }
@@ -130,9 +122,7 @@ namespace MCRA.General.ModuleDefinitions {
         public List<SettingsItemType> OutputSettingsItems {
             get {
                 if (OutputSettings?.Count > 0) {
-                    return OutputSettings
-                        .Select(r => Enum.Parse<SettingsItemType>(r))
-                        .ToList();
+                    return [.. OutputSettings.Select(r => Enum.Parse<SettingsItemType>(r))];
                 }
                 return [];
             }
@@ -163,12 +153,10 @@ namespace MCRA.General.ModuleDefinitions {
             var template = McraTemplatesCollection.Instance.GetTemplate(selectedTier);
 
             if (recursive) {
-                result = template.ModuleConfigurations.SelectMany(s => s.Settings)
-                    .Select(s => s.Id)
-                    .ToHashSet();
+                result = [.. template.ModuleConfigurations.SelectMany(s => s.Settings).Select(s => s.Id)];
             } else {
                 if (template.ConfigurationsDictionary.TryGetValue(ActionType, out var config)) {
-                    result = config.Settings.Select(s => s.Id).ToHashSet();
+                    result = [.. config.Settings.Select(s => s.Id)];
                 }
             }
             return result;
