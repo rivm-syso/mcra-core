@@ -1,8 +1,8 @@
-﻿using MCRA.Data.Compiled.Objects;
-using MCRA.General;
+﻿using MCRA.General;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation;
+using MCRA.Simulation.Calculators.ExposureResponseFunctions;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
 
@@ -88,6 +88,17 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
                     subHeader
                 );
             }
+
+            if (data.EnvironmentalBurdenOfDiseases.Count > 0 &&
+                data.ExposureResponseFunctionModels.Count > 0) {
+                summarizeExposureResponseFunctionUncertainty(
+                    data.ExposureResponseFunctionModels,
+                    data.EnvironmentalBurdenOfDiseases,
+                    _configuration.UncertaintyLowerBound,
+                    _configuration.UncertaintyUpperBound,
+                    subHeader
+                );
+            }
         }
 
         private void summarizeAttributableBod(
@@ -135,17 +146,35 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
             var section = new ExposureResponseFunctionSummarySection() {
                 SectionLabel = getSectionLabel(EnvironmentalBurdenOfDiseaseSections.ExposureResponseFunctionSummarySection)
             };
-
-            section.Summarize(
-                data.ExposureResponseFunctionModels,
-                data.EnvironmentalBurdenOfDiseases
-            );
             var subHeader = header.AddSubSectionHeaderFor(
                 section,
                 "Exposure response function",
                 order
             );
+            section.Summarize(
+                data.ExposureResponseFunctionModels,
+                data.EnvironmentalBurdenOfDiseases
+            );
             subHeader.SaveSummarySection(section);
+        }
+        private void summarizeExposureResponseFunctionUncertainty(
+            ICollection<IExposureResponseFunctionModel> exposureResponseFunctionModels,
+            List<EnvironmentalBurdenOfDiseaseResultRecord> environmentalBurdenOfDiseases,
+            double lowerBound,
+            double upperBound,
+            SectionHeader header
+        ) {
+            var subHeader = header.GetSubSectionHeader<ExposureResponseFunctionSummarySection>();
+            if (subHeader != null) {
+                var section = subHeader.GetSummarySection() as ExposureResponseFunctionSummarySection;
+                section.SummarizeUncertainty(
+                    exposureResponseFunctionModels,
+                    environmentalBurdenOfDiseases,
+                    lowerBound,
+                    upperBound
+                );
+                subHeader.SaveSummarySection(section);
+            }
         }
 
         private List<ActionSummaryUnitRecord> collectUnits(List<EnvironmentalBurdenOfDiseaseResultRecord> environmentalBurdenOfDiseases) {

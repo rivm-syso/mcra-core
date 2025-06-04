@@ -1,10 +1,15 @@
 ﻿using MCRA.General;
 using MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation;
 using MCRA.Simulation.Calculators.ExposureResponseFunctions;
+using MCRA.Utils;
 using MCRA.Utils.ExtensionMethods;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class ExposureResponseFunctionSummarySection : SummarySection {
+        public override bool SaveTemporaryData => true;
+        public double UncertaintyLowerLimit { get; set; } = 2.5;
+        public double UncertaintyUpperLimit { get; set; } = 97.5;
 
         public List<ErfSummaryRecord> ErfSummaryRecords { get; set; }
 
@@ -30,15 +35,16 @@ namespace MCRA.Simulation.OutputGeneration {
                     })
                     .ToList();
                 var maxExposure = ebdBinRecords.Max(r => r.Exposure);
-                var functionDataPoints = new List<ExposureResponseDataPoint>();
-                for (double x = erf.CounterfactualValue; x <= maxExposure; x += 0.001 * erf.CounterfactualValue) {
-                    var functionDataPoint = new ExposureResponseDataPoint() {
-                        Exposure = x,
-                        ResponseValue = exposureResponseFunctionModel.Compute(x * doseUnitAlignmentFactor)
-                    };
-                    functionDataPoints.Add(functionDataPoint);
-                }
-                ;
+                var exposureResponseGridDataPoints = new UncertainDataPointCollection<double>();
+                var XValues = GriddingFunctions.Arange(
+                    erf.CounterfactualValue,
+                    maxExposure,
+                    n: 1000);
+                var YValues = XValues
+                    .Select(r => exposureResponseFunctionModel.Compute(r * doseUnitAlignmentFactor));
+                exposureResponseGridDataPoints.XValues = XValues;
+                exposureResponseGridDataPoints.ReferenceValues = YValues;
+
                 var record = new ErfSummaryRecord() {
                     ErfCode = erf.Code,
                     SubstanceName = erf.Substance.Name,
@@ -70,12 +76,37 @@ namespace MCRA.Simulation.OutputGeneration {
                     CounterfactualValue = erf.CounterfactualValue,
                     HasSubgroups = erf.HasErfSubGroups,
                     ExposureResponseDataPoints = dataPoints,
-                    ExposureResponseChartDataPoints = functionDataPoints
+                    ExposureResponseGridDataPoints = exposureResponseGridDataPoints
                 };
                 erfSummaryRecords.Add(record);
             }
-
             ErfSummaryRecords = erfSummaryRecords;
+        }
+
+        public void SummarizeUncertainty(
+           ICollection<IExposureResponseFunctionModel> exposureResponseFunctionModels,
+           List<EnvironmentalBurdenOfDiseaseResultRecord> environmentalBurdenOfDiseases,
+           double lowerBound,
+           double upperBound
+        ) {
+            foreach (var exposureResponseFunctionModel in exposureResponseFunctionModels) {
+                var erf = exposureResponseFunctionModel.ExposureResponseFunction;
+                var doseUnitAlignmentFactor = environmentalBurdenOfDiseases
+                    .Where(r => r.ExposureResponseFunction == erf)
+                    .SelectMany(r => r.EnvironmentalBurdenOfDiseaseResultBinRecords)
+                    .First()
+                    .ExposureResponseResultRecord.ErfDoseUnitAlignmentFactor;
+                var XValues = ErfSummaryRecords
+                    .Single(r => r.ErfCode == erf.Code)
+                    .ExposureResponseGridDataPoints.XValues;
+                var YValues = XValues
+                    .Select(r => exposureResponseFunctionModel.Compute(r * doseUnitAlignmentFactor));
+                ErfSummaryRecords
+                    .Single(r => r.ErfCode == erf.Code)
+                    .ExposureResponseGridDataPoints.AddUncertaintyValues(YValues);
+            }
+            UncertaintyLowerLimit = lowerBound;
+            UncertaintyUpperLimit = upperBound;
         }
     }
 }

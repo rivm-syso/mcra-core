@@ -12,7 +12,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
                 var chartCreator = new ExposureResponseFunctionChartCreator(
                     record,
-                    Model.SectionId
+                    Model.SectionId,
+                    Model.UncertaintyLowerLimit,
+                    Model.UncertaintyUpperLimit
                 );
 
                 var key = $"{record.ErfCode}";

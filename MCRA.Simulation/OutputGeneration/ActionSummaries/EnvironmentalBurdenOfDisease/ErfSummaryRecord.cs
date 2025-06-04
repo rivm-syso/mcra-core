@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
     public class ErfSummaryRecord {
@@ -86,6 +87,6 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<ExposureResponseDataPoint> ExposureResponseDataPoints { get; set; }
 
         [Display(AutoGenerateField = false)]
-        public List<ExposureResponseDataPoint> ExposureResponseChartDataPoints { get; set; }
+        public UncertainDataPointCollection<double> ExposureResponseGridDataPoints { get; set; }
     }
 }
