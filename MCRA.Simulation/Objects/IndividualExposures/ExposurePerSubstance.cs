@@ -1,4 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation;
 
 namespace MCRA.Simulation.Objects.IndividualExposures {
@@ -14,6 +15,8 @@ namespace MCRA.Simulation.Objects.IndividualExposures {
         /// The (aggregated) substance intake amount.
         /// </summary>
         public double Amount { get; set; }
+
+        ExposureRoute IIntakePerCompound.ExposureRoute => throw new NotImplementedException();
 
         /// <summary>
         /// The substance intake amount corrected for relative potency and

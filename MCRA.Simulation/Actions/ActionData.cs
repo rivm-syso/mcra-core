@@ -11,6 +11,11 @@ using MCRA.Simulation.Actions.ConcentrationDistributions;
 using MCRA.Simulation.Actions.ConcentrationLimits;
 using MCRA.Simulation.Actions.ConcentrationModels;
 using MCRA.Simulation.Actions.Concentrations;
+using MCRA.Simulation.Actions.ConsumerProductConcentrations;
+using MCRA.Simulation.Actions.ConsumerProductExposureDeterminants;
+using MCRA.Simulation.Actions.ConsumerProductExposures;
+using MCRA.Simulation.Actions.ConsumerProducts;
+using MCRA.Simulation.Actions.ConsumerProductUseFrequencies;
 using MCRA.Simulation.Actions.Consumptions;
 using MCRA.Simulation.Actions.ConsumptionsByModelledFood;
 using MCRA.Simulation.Actions.DeterministicSubstanceConversionFactors;
@@ -76,6 +81,7 @@ using MCRA.Simulation.Actions.UnitVariabilityFactors;
 using MCRA.Simulation.Calculators.AirExposureCalculation;
 using MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
+using MCRA.Simulation.Calculators.ConsumerProductExposureCalculation;
 using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.DustExposureCalculation;
 using MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation;
@@ -101,12 +107,6 @@ using MCRA.Simulation.Calculators.SingleValueRisksCalculation;
 using MCRA.Simulation.Calculators.SoilExposureCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.Objects;
-using MCRA.Simulation.Calculators.FoodConversionCalculation;
-using MCRA.Simulation.Calculators.ExposureResponseFunctions;
-using MCRA.Simulation.Actions.ConsumerProducts;
-using MCRA.Simulation.Actions.ConsumerProductUseFrequencies;
-using MCRA.Simulation.Actions.ConsumerProductConcentrations;
-using MCRA.Simulation.Actions.ConsumerProductExposureDeterminants;
 
 namespace MCRA.Simulation {
     public class ActionData {
@@ -1006,6 +1006,8 @@ namespace MCRA.Simulation {
             set => GetOrCreateModuleOutputData<IndividualsOutputData>(ActionType.Individuals).Individuals = value;
         }
 
+        //Consumer Products
+
         public ICollection<ConsumerProduct> AllConsumerProducts {
             get => GetOrCreateModuleOutputData<ConsumerProductsOutputData>(ActionType.ConsumerProducts).AllConsumerProducts;
             set => GetOrCreateModuleOutputData<ConsumerProductsOutputData>(ActionType.ConsumerProducts).AllConsumerProducts = value;
@@ -1044,6 +1046,19 @@ namespace MCRA.Simulation {
         public ICollection<Individual> ConsumerProductIndividuals {
             get => GetOrCreateModuleOutputData<ConsumerProductUseFrequenciesOutputData>(ActionType.HumanMonitoringData).ConsumerProductIndividuals;
             set => GetOrCreateModuleOutputData<ConsumerProductUseFrequenciesOutputData>(ActionType.HumanMonitoringData).ConsumerProductIndividuals = value;
+        }
+        public ICollection<ConsumerProductIndividualDayExposure> IndividualConsumerProductExposures {
+            get => GetOrCreateModuleOutputData<ConsumerProductExposuresOutputData>(ActionType.ConsumerProductExposures).IndividualConsumerProductExposures;
+            set => GetOrCreateModuleOutputData<ConsumerProductExposuresOutputData>(ActionType.ConsumerProductExposures).IndividualConsumerProductExposures = value;
+        }
+        public ExposureUnitTriple ConsumerProductExposureUnit {
+            get => GetOrCreateModuleOutputData<ConsumerProductExposuresOutputData>(ActionType.ConsumerProductExposures).ConsumerProductExposureUnit;
+            set => GetOrCreateModuleOutputData<ConsumerProductExposuresOutputData>(ActionType.ConsumerProductExposures).ConsumerProductExposureUnit = value;
+        }
+
+        public ICollection<ConsumerProductIndividualDayIntake> ConsumerProductIndividualDayIntakes {
+            get => GetOrCreateModuleOutputData<ConsumerProductExposuresOutputData>(ActionType.ConsumerProductExposures).ConsumerProductIndividualDayIntakes;
+            set => GetOrCreateModuleOutputData<ConsumerProductExposuresOutputData>(ActionType.ConsumerProductExposures).ConsumerProductIndividualDayIntakes = value;
         }
         /// <summary>
         /// Creates a copy of the action data, to be used in bootstrap/uncertainty runs.

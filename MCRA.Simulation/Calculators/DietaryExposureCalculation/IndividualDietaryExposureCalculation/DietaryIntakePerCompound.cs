@@ -1,4 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 
 namespace MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation {
 
@@ -79,5 +80,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDieta
                 return UnitIntakePortions?.Average(c => c.Concentration) ?? IntakePortion.Concentration;
             }
         }
+
+        ExposureRoute IIntakePerCompound.ExposureRoute => throw new NotImplementedException();
     }
 }

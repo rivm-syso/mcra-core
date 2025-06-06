@@ -1,4 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 
 namespace MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation {
 
@@ -18,5 +19,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDieta
         /// The total (substance) intake, calculated by summing over all portion.Intakes of the Portions property.
         /// </summary>
         double EquivalentSubstanceAmount(double rpf, double membershipProbability);
+
+        ExposureRoute ExposureRoute { get; }
     }
 }

@@ -88,6 +88,7 @@
       <xi:include href="Modules/Individuals.xml" />
       <xi:include href="Modules/ConsumerProductUseFrequencies.xml" />
       <xi:include href="Modules/ConsumerProductExposureDeterminants.xml" />
+      <xi:include href="Modules/ConsumerProductExposures.xml" />
     </Modules>
   </ModuleGroupDefinition>
   <ModuleGroupDefinition>
