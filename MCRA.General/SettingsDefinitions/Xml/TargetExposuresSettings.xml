@@ -80,6 +80,12 @@
     <ValueType>PopulationAlignmentMethod</ValueType>
   </SettingsItem>
   <SettingsItem>
+    <Id>ConsumerProductPopulationAlignmentMethod</Id>
+    <Name>CONSUMER-PRODUCT: Population alignment method consumer product exposures</Name>
+    <Description>Population aligment methods for consumer product exposure sources.</Description>
+    <ValueType>PopulationAlignmentMethod</ValueType>
+  </SettingsItem>
+  <SettingsItem>
     <Id>AirAgeAlignment</Id>
     <Name>Air: match at random based on age</Name>
     <Description>Air exposures are randomly matched on stratifying covariable age.</Description>
@@ -194,5 +200,31 @@
     <Name>Nondietary: match at random based on sex</Name>
     <Description>Match at random based on stratifying cofactor sex.</Description>
     <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ConsumerProductAgeAlignment</Id>
+    <Name>ConsumerProduct: match at random based on age</Name>
+    <Description>Consumer product exposures are randomly matched on stratifying covariable age.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ConsumerProductSexAlignment</Id>
+    <Name>Consumer product: match at random based on sex</Name>
+    <Description>Match at random based on stratifying cofactor sex.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ConsumerProductAgeAlignmentMethod</Id>
+    <Name>ConsumerProduct: matching method for age</Name>
+    <Description>Match at random based on age using user defined bins (in years) or fit to closest available set of ages.</Description>
+    <ValueType>AgeAlignmentMethod</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ConsumerProductAgeBins</Id>
+    <Name>Consumer product: specify bins:</Name>
+    <Description>Specify bins, e.g. 10 25 50 (space separated) in years.</Description>
+    <ValueType>Numeric</ValueType>
+    <IsList>true</IsList>
+    <DefaultValue>25,50,75,100</DefaultValue>
   </SettingsItem>
 </SettingsItems>

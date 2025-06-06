@@ -90,6 +90,21 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         section.SummarizeSetting(SettingsItemType.AirSexAlignment, _configuration.AirSexAlignment);
                     }
                 }
+                if (_configuration.ExposureSources.Contains(ExposureSource.ConsumerProduct)
+                   && _configuration.IndividualReferenceSet != ExposureSource.ConsumerProduct
+                ) {
+                    section.SummarizeSetting(SettingsItemType.ConsumerProductPopulationAlignmentMethod, _configuration.ConsumerProductPopulationAlignmentMethod);
+                    if (_configuration.ConsumerProductPopulationAlignmentMethod == PopulationAlignmentMethod.MatchRandom) {
+                        section.SummarizeSetting(SettingsItemType.ConsumerProductAgeAlignment, _configuration.ConsumerProductAgeAlignment);
+                        if (_configuration.ConsumerProductAgeAlignment) {
+                            section.SummarizeSetting(SettingsItemType.ConsumerProductAgeAlignmentMethod, _configuration.ConsumerProductAgeAlignmentMethod);
+                            if (_configuration.ConsumerProductAgeAlignmentMethod == AgeAlignmentMethod.AgeBins) {
+                                section.SummarizeSetting(SettingsItemType.ConsumerProductAgeBins, _configuration.ConsumerProductAgeBins);
+                            }
+                        }
+                        section.SummarizeSetting(SettingsItemType.ConsumerProductSexAlignment, _configuration.ConsumerProductSexAlignment);
+                    }
+                }
                 if (_configuration.ExposureSources.Contains(ExposureSource.Diet)
                     && _configuration.IndividualReferenceSet != ExposureSource.Diet
                 ) {

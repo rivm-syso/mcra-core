@@ -63,5 +63,16 @@
         <Alias>Other non-dietary</Alias>
       </Aliases>
     </Unit>
+    <Unit>
+      <Id>ConsumerProduct</Id>
+      <Name>Consumer product</Name>
+      <ShortName>Consumer product</ShortName>
+      <Description>
+        Consumer product exposure sources.
+      </Description>
+      <Aliases>
+        <Alias>ConsumerProduct</Alias>
+      </Aliases>
+    </Unit>
   </Units>
 </UnitDefinition>

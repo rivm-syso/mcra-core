@@ -10,6 +10,7 @@ using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.ActionComparison;
 using MCRA.Simulation.Calculators.CombinedExternalExposureCalculation;
 using MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.AirExposureGenerators;
+using MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.ConsumerProductExposureGenerators;
 using MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.DietExposureGenerator;
 using MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.DustExposureGenerators;
 using MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.NonDietaryExposureGenerators;
@@ -69,6 +70,11 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 ModuleConfig.ExposureSources.Contains(ExposureSource.Air);
             _actionInputRequirements[ActionType.AirExposures].IsRequired = requireAir;
             _actionInputRequirements[ActionType.AirExposures].IsVisible = requireAir;
+
+            var requireConsumerProduct = ModuleConfig.ExposureType == ExposureType.Chronic &&
+                ModuleConfig.ExposureSources.Contains(ExposureSource.ConsumerProduct);
+            _actionInputRequirements[ActionType.ConsumerProductExposures].IsRequired = requireConsumerProduct;
+            _actionInputRequirements[ActionType.ConsumerProductExposures].IsVisible = requireConsumerProduct;
 
             _actionInputRequirements[ActionType.KineticModels].IsRequired = false;
             _actionInputRequirements[ActionType.KineticModels].IsVisible = ModuleConfig.RequireAbsorptionFactors;
@@ -159,30 +165,26 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 var uncertaintyFactorialResponses = new List<double>();
                 if (ModuleConfig.ExposureType == ExposureType.Acute) {
                     uncertaintyFactorialResponses = (substances.Count > 1)
-                        ? result.AggregateIndividualDayExposures
+                        ? [.. result.AggregateIndividualDayExposures
                             .Select(c => c.GetTotalExposureAtTarget(
                                 data.TargetExposureUnit.Target,
                                 data.CorrectedRelativePotencyFactors,
                                 data.MembershipProbabilities
-                            ))
-                            .ToList()
-                        : result.AggregateIndividualDayExposures
+                            ))]
+                        : [.. result.AggregateIndividualDayExposures
                             .Select(c => c.GetSubstanceExposure(
-                                data.TargetExposureUnit.Target, substances.First()))
-                            .ToList();
+                                data.TargetExposureUnit.Target, substances.First()))];
                 } else {
                     uncertaintyFactorialResponses = (substances.Count > 1)
-                        ? result.AggregateIndividualExposures
+                        ? [.. result.AggregateIndividualExposures
                             .Select(c => c.GetTotalExposureAtTarget(
                                 data.TargetExposureUnit.Target,
                                 data.CorrectedRelativePotencyFactors,
                                 data.MembershipProbabilities
-                            ))
-                            .ToList()
-                        : result.AggregateIndividualExposures
+                            ))]
+                        : [.. result.AggregateIndividualExposures
                             .Select(c => c.GetSubstanceExposure(
-                                data.TargetExposureUnit.Target, substances.First()))
-                            .ToList();
+                                data.TargetExposureUnit.Target, substances.First()))];
                 }
 
                 // Save factorial results
@@ -301,27 +303,23 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             switch (ModuleConfig.IndividualReferenceSet) {
                 case ExposureSource.Diet:
                     externalExposureUnit = data.DietaryExposureUnit.ExposureUnit;
-                    referenceIndividualDays = data.DietaryIndividualDayIntakes
-                        .Cast<IIndividualDay>()
-                        .ToList();
+                    referenceIndividualDays = [.. data.DietaryIndividualDayIntakes.Cast<IIndividualDay>()];
                     break;
                 case ExposureSource.Air:
                     externalExposureUnit = data.AirExposureUnit;
-                    referenceIndividualDays = data.IndividualAirExposures
-                        .Cast<IIndividualDay>()
-                        .ToList();
+                    referenceIndividualDays = [.. data.IndividualAirExposures.Cast<IIndividualDay>()];
                     break;
                 case ExposureSource.Soil:
                     externalExposureUnit = data.SoilExposureUnit;
-                    referenceIndividualDays = data.IndividualSoilExposures
-                        .Cast<IIndividualDay>()
-                        .ToList();
+                    referenceIndividualDays = [.. data.IndividualSoilExposures.Cast<IIndividualDay>()];
                     break;
                 case ExposureSource.Dust:
                     externalExposureUnit = data.DustExposureUnit;
-                    referenceIndividualDays = data.IndividualDustExposures
-                        .Cast<IIndividualDay>()
-                        .ToList();
+                    referenceIndividualDays = [.. data.IndividualDustExposures.Cast<IIndividualDay>()];
+                    break;
+                case ExposureSource.ConsumerProduct:
+                    externalExposureUnit = data.ConsumerProductExposureUnit;
+                    referenceIndividualDays = [.. data.ConsumerProductIndividualDayIntakes.Cast<IIndividualDay>()];
                     break;
                 default:
                     throw new NotImplementedException();
@@ -431,8 +429,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 externalExposureCollections.Add(soilExposureCollection);
             }
 
+            // Align air exposures
             if (ModuleConfig.ExposureSources.Contains(ExposureSource.Air)) {
-                // Align air exposures
                 localProgress.Update("Matching air exposures");
                 var airExposureCalculator = AirExposureGeneratorFactory.Create(
                     ModuleConfig.AirPopulationAlignmentMethod,
@@ -452,6 +450,43 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         seedAirExposuresSampling
                     );
                 externalExposureCollections.Add(airExposureCollection);
+            }
+
+            // Align consumer product exposures
+            if (ModuleConfig.ExposureSources.Contains(ExposureSource.ConsumerProduct)) {
+                localProgress.Update("Matching consumer product exposures");
+                ExternalExposureCollection cpExposureCollection = null;
+                if (ModuleConfig.IndividualReferenceSet == ExposureSource.ConsumerProduct) {
+                    cpExposureCollection = new ExternalExposureCollection {
+                        SubstanceAmountUnit = targetUnit.SubstanceAmountUnit,
+                        ExposureSource = ExposureSource.ConsumerProduct,
+                        ExternalIndividualDayExposures = data.ConsumerProductIndividualDayIntakes
+                            .AsParallel()
+                            .Select(c => ExternalIndividualDayExposure.FromConsumerProductIndividualDayIntake(c, ModuleConfig.ExposureRoutes))
+                            .Cast<IExternalIndividualDayExposure>()
+                            .ToList()
+                    };
+                    externalExposureCollections.Add(cpExposureCollection);
+                } else {
+                    var cpExposureCalculator = ConsumerProductExposureGeneratorFactory.Create(
+                        ModuleConfig.ConsumerProductPopulationAlignmentMethod,
+                        ModuleConfig.ConsumerProductAgeAlignment,
+                        ModuleConfig.ConsumerProductSexAlignment,
+                        ModuleConfig.ConsumerProductAgeAlignmentMethod,
+                        ModuleConfig.ConsumerProductAgeBins
+                    );
+
+                    var seedCPExposuresSampling = RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.CPE_ConsumerProductExposureDeterminants);
+                    cpExposureCollection = cpExposureCalculator
+                        .Generate(
+                            referenceIndividualDays,
+                            data.ActiveSubstances,
+                            data.IndividualConsumerProductExposures,
+                            data.ConsumerProductExposureUnit.SubstanceAmountUnit,
+                            seedCPExposuresSampling
+                        );
+                    externalExposureCollections.Add(cpExposureCollection);
+                }
             }
 
             // Align dietary exposures

@@ -73,6 +73,8 @@
         // Consumer product exposures: Consumer product exposure determinants
         CPE_ConsumerProductExposureDeterminants = 37,
         // Consumer product exposures: draw individuals
-        CPE_DrawIndividuals = 37,
+        CPE_DrawIndividuals = 38,
+        // Consumer product exposures: draw consumer product exposures
+        CPE_DrawConsumerProductExposures = 39,
     }
 }

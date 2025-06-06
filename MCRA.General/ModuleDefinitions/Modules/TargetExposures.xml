@@ -28,6 +28,7 @@
   <Entities>
     <Entity>Populations</Entity>
     <Entity>Foods</Entity>
+    <Entity>ConsumerProducts</Entity>
     <Entity>Substances</Entity>
   </Entities>
   <CalculationInputs>
@@ -41,6 +42,7 @@
     <Input>KineticConversionFactors</Input>
     <Input>PbkModels</Input>
     <Input>AirExposures</Input>
+    <Input>ConsumerProductExposures</Input>
   </CalculationInputs>
   <LoopEntities>
     <LoopEntity>Compounds</LoopEntity>
@@ -104,6 +106,11 @@
     <CalculationSetting>NonDietaryPopulationAlignmentMethod</CalculationSetting>
     <CalculationSetting>NonDietarySexAlignment</CalculationSetting>
     <CalculationSetting>NonDietaryAgeAlignment</CalculationSetting>
+    <CalculationSetting>ConsumerProductPopulationAlignmentMethod</CalculationSetting>
+    <CalculationSetting>ConsumerProductSexAlignment</CalculationSetting>
+    <CalculationSetting>ConsumerProductAgeAlignment</CalculationSetting>
+    <CalculationSetting>ConsumerProductAgeAlignmentMethod</CalculationSetting>
+    <CalculationSetting>ConsumerProductAgeBins</CalculationSetting>
     <CalculationSetting source="PbkModels">NonStationaryPeriodInYears</CalculationSetting>
   </CalculationSettings>
   <UncertaintySettings>

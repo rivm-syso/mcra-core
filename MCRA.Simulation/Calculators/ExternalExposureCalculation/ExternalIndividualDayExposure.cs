@@ -2,6 +2,8 @@
 using MCRA.Simulation.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation;
+using MCRA.Simulation.Calculators.ConsumerProductExposureCalculation;
+using Microsoft.AspNetCore.Routing;
 
 namespace MCRA.Simulation.Calculators.ExternalExposureCalculation {
     public class ExternalIndividualDayExposure(
@@ -231,6 +233,21 @@ namespace MCRA.Simulation.Calculators.ExternalExposureCalculation {
             var exposuresPerPath = new Dictionary<ExposurePath, List<IIntakePerCompound>> {
                 [new(ExposureSource.Diet, ExposureRoute.Oral)] = [.. individualDay.GetTotalIntakesPerSubstance()]
             };
+            var result = new ExternalIndividualDayExposure(exposuresPerPath) {
+                SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId,
+                SimulatedIndividual = individualDay.SimulatedIndividual,
+                Day = individualDay.Day
+            };
+            return result;
+        }
+        public static ExternalIndividualDayExposure FromConsumerProductIndividualDayIntake(
+            ConsumerProductIndividualDayIntake individualDay,
+            ICollection<ExposureRoute> routes
+        ) {
+            var exposuresPerPath = new Dictionary<ExposurePath, List<IIntakePerCompound>>();
+            foreach (var route in routes) {
+                exposuresPerPath[new(ExposureSource.ConsumerProduct, route)] = [.. individualDay.GetTotalIntakesPerSubstance(route)];
+            }
             var result = new ExternalIndividualDayExposure(exposuresPerPath) {
                 SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId,
                 SimulatedIndividual = individualDay.SimulatedIndividual,
