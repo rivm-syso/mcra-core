@@ -200,5 +200,7 @@ namespace MCRA.General {
         ConsumerProducts = 75,
         [Display(Name = "Consumer product use frequencies")]
         ConsumerProductUseFrequencies = 76,
+        [Display(Name = "Consumer product concentrations")]
+        ConsumerProductConcentrations = 77,
     }
 }

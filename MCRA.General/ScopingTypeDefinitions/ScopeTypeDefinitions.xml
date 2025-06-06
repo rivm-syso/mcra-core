@@ -2038,5 +2038,23 @@
       </ParentScopeReference>
     </ParentScopeReferences>
   </ScopingTypeDefinition>
+
+  <ScopingTypeDefinition>
+    <Id>ConsumerProductConcentrations</Id>
+    <Name>Consumer product concentrations</Name>
+    <RawTableId>ConsumerProductConcentrations</RawTableId>
+    <Description>-</Description>
+    <TableGroup>ConsumerProductConcentrations</TableGroup>
+    <ParentScopeReferences>
+      <ParentScopeReference>
+        <IdField>idProduct</IdField>
+        <ReferencedScope>ConsumerProducts</ReferencedScope>
+      </ParentScopeReference>
+      <ParentScopeReference>
+        <IdField>idSubstance</IdField>
+        <ReferencedScope>Compounds</ReferencedScope>
+      </ParentScopeReference>
+    </ParentScopeReferences>
+  </ScopingTypeDefinition>
   
 </ScopingTypeDefinitions>

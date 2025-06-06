@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <DataGroupDefinition>
   <Id>ConsumerProducts</Id>
-  <Name>ConsumerProducts</Name>
+  <Name>Consumer products</Name>
   <SourceTableGroup>ConsumerProducts</SourceTableGroup>
   <Description>
     Consumer products are primary entities of the data model.

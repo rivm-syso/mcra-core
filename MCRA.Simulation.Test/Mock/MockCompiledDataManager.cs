@@ -372,5 +372,8 @@ namespace MCRA.Simulation.Test.Mock {
         public IDictionary<string, Individual> GetAllConsumerProductIndividuals() {
             return _data.AllConsumerProductIndividuals;
         }
+        public IList<ConsumerProductConcentration> GetAllConsumerProductConcentrations() {
+            return _data.AllConsumerProductConcentrations;
+        }
     }
 }

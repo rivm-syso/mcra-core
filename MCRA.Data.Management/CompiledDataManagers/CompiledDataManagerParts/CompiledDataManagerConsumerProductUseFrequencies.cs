@@ -112,7 +112,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                             using (var r = rdm.OpenDataReader<RawIndividualPropertyValues>(rawDataSourceId, out int[] fieldMap)) {
                                 while (r?.Read() ?? false) {
                                     var idIndividual = r.GetString(RawIndividualPropertyValues.IdIndividual, fieldMap);
-                                    var valid = CheckLinkSelected(ScopingType.HumanMonitoringIndividuals, idIndividual);
+                                    var valid = CheckLinkSelected(ScopingType.ConsumerProductIndividuals, idIndividual);
                                     if (valid) {
                                         var propertyName = r.GetString(RawIndividualPropertyValues.PropertyName, fieldMap);
                                         var individual = allConsumerProductIndividuals[idIndividual];

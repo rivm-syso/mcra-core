@@ -598,6 +598,8 @@ namespace MCRA.Data.Management {
         public IDictionary<string, ConsumerProductSurvey> AllConsumerProductSurveys => _dataManager.GetAllConsumerProductSurveys();
         public ICollection<Individual> AllConsumerProductIndividuals => [.. _dataManager.GetAllConsumerProductIndividuals().Values];
         public IDictionary<string, IndividualProperty> AllConsumerProductsIndividualProperties => _dataManager.GetAllConsumerProductIndividualProperties();
+        public IList<ConsumerProductConcentration> AllConsumerProductConcentrations => _dataManager.GetAllConsumerProductConcentrations();
+
 
     }
 }

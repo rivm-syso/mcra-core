@@ -105,6 +105,7 @@ using MCRA.Simulation.Calculators.FoodConversionCalculation;
 using MCRA.Simulation.Calculators.ExposureResponseFunctions;
 using MCRA.Simulation.Actions.ConsumerProducts;
 using MCRA.Simulation.Actions.ConsumerProductUseFrequencies;
+using MCRA.Simulation.Actions.ConsumerProductConcentrations;
 
 namespace MCRA.Simulation {
     public class ActionData {
@@ -1014,6 +1015,15 @@ namespace MCRA.Simulation {
             set => GetOrCreateModuleOutputData<ConsumerProductUseFrequenciesOutputData>(ActionType.ConsumerProductUseFrequencies).AllIndividualConsumerProductUseFrequencies = value;
         }
 
+        public ICollection<ConsumerProductConcentration> AllConsumerProductConcentrations {
+            get => GetOrCreateModuleOutputData<ConsumerProductConcentrationsOutputData>(ActionType.ConsumerProductConcentrations).AllConsumerProductConcentrations;
+            set => GetOrCreateModuleOutputData<ConsumerProductConcentrationsOutputData>(ActionType.ConsumerProductConcentrations).AllConsumerProductConcentrations = value;
+        }
+
+        public ConcentrationUnit ConsumerProductConcentrationUnit {
+            get => GetOrCreateModuleOutputData<ConsumerProductConcentrationsOutputData>(ActionType.ConsumerProductConcentrations).ConsumerProductConcentrationUnit;
+            set => GetOrCreateModuleOutputData<ConsumerProductConcentrationsOutputData>(ActionType.ConsumerProductConcentrations).ConsumerProductConcentrationUnit = value;
+        }
         /// <summary>
         /// Creates a copy of the action data, to be used in bootstrap/uncertainty runs.
         /// </summary>

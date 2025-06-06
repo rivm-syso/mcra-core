@@ -96,5 +96,6 @@ namespace MCRA.Data.Management {
         IDictionary<string, Individual> GetAllConsumerProductIndividuals();
         IDictionary<string, IndividualProperty> GetAllConsumerProductIndividualProperties();
         IList<IndividualConsumerProductUseFrequency> GetAllIndividualConsumerProductUseFrequencies();
+        IList<ConsumerProductConcentration> GetAllConsumerProductConcentrations();
     }
 }

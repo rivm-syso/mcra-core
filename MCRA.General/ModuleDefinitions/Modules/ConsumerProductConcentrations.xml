@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>ConsumerProductConcentrations</Id>
+  <Name>Consumer product concentrations</Name>
+  <ModuleType>DataModule</ModuleType>
+  <ActionType>ConsumerProductConcentrations</ActionType>
+  <TableGroup>ConsumerProductConcentrations</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Consumer product concentration (distributions) data are analytical measurements of chemical substances occurring in PCPs.
+    In their simplest form, concentration data can just be used as provided by datasets.
+  </Description>
+  <ShortDescription>
+    Consumer product concentration (distributions) data are analytical measurements of chemical substances occurring in dust samples.
+  </ShortDescription>
+  <DataDescription>
+    Consumer product concentration (distributions) data can be entered using the internal, relational data format.
+  </DataDescription>
+  <Entities>
+    <Entity>Substances</Entity>
+    <Entity>ConsumerProducts</Entity>
+  </Entities>
+</Module>
