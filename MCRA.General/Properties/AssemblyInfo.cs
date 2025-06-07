@@ -1,5 +1,18 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
+using Git = ThisAssembly.Git;
+using Ver = ThisAssembly.Git.BaseVersion;
+
+// Use the Git versioning using the GitInfo NuGet package
+// Create a version number like [Major].[Minor].[Patch].[Revision]
+// [Revision] is the number of commits since last release version tag
+// (for example "v10.1.20.17")
+[assembly: AssemblyVersion(
+    $"{Ver.Major}.{Ver.Minor}.{Ver.Patch}.{Git.Commits}")]
+[assembly: AssemblyFileVersion(
+    $"{Ver.Major}.{Ver.Minor}.{Ver.Patch}.{Git.Commits}")]
+[assembly: AssemblyInformationalVersion(
+    $"{Ver.Major}.{Ver.Minor}.{Ver.Patch}.{Git.Commits}-{Git.Branch}+{Git.Commit}")]
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
@@ -20,33 +33,3 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("2b570fdd-93b8-49f2-9151-3e8ac27e535c")]
-
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version
-//      Build Number
-//      Revision
-//
-// Use the Git versioning using the GitInfo NuGet package
-// Create a version number like [Major].[Minor].[Patch].[Revision]
-// [Revision] is the number of commits since last release version tag
-// (for example "v9.0.36")
-[assembly: AssemblyVersion(
-    ThisAssembly.Git.BaseVersion.Major + "." +
-    ThisAssembly.Git.BaseVersion.Minor + "." +
-    ThisAssembly.Git.BaseVersion.Patch + "." +
-    ThisAssembly.Git.Commits)]
-[assembly: AssemblyFileVersion(
-    ThisAssembly.Git.BaseVersion.Major + "." +
-    ThisAssembly.Git.BaseVersion.Minor + "." +
-    ThisAssembly.Git.BaseVersion.Patch + "." +
-    ThisAssembly.Git.Commits)]
-[assembly: AssemblyInformationalVersion(
-    ThisAssembly.Git.BaseVersion.Major + "." +
-    ThisAssembly.Git.BaseVersion.Minor + "." +
-    ThisAssembly.Git.BaseVersion.Patch + "." +
-    ThisAssembly.Git.Commits + "-" +
-    ThisAssembly.Git.Branch + "+" +
-    ThisAssembly.Git.Commit)]
-// i..e ^: 1.0.2.0-master+c218617
