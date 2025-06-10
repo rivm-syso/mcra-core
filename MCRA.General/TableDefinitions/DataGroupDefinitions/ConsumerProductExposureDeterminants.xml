@@ -8,10 +8,10 @@
   </Description>
   <DataGroupTables>
     <DataGroupTable>
-      <Id>CPExposureFractions</Id>
+      <Id>ConsumerProductExposureFractions</Id>
     </DataGroupTable>
     <DataGroupTable>
-      <Id>CPApplicationAmounts</Id>
+      <Id>ConsumerProductApplicationAmounts</Id>
     </DataGroupTable>
   </DataGroupTables>
 </DataGroupDefinition>

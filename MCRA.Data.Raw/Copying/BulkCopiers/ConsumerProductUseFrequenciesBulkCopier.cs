@@ -37,7 +37,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
 
         public override void TryCopy(IDataSourceReader dataSourceReader, ProgressState progressState) {
             var hasSurveys = tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.ConsumerProductSurveys);
-            var hasFrequencies = tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.IndividualConsumerProductUseFrequencies);
+            var hasFrequencies = tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.ConsumerProductUseFrequencies);
 
             if (hasSurveys && hasFrequencies) {
                 progressState.Update("Processing Individuals", 10);

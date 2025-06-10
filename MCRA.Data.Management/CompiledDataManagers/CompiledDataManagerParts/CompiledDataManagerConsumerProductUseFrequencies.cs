@@ -31,7 +31,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             Description = r.GetStringOrNull(RawConsumerProductSurveys.Description, fieldMap),
                                             Country = r.GetStringOrNull(RawConsumerProductSurveys.Country, fieldMap),
                                             BodyWeightUnit = r.GetEnum(RawConsumerProductSurveys.BodyWeightUnit, fieldMap, BodyWeightUnit.kg),
-                                            AgeUnitString = r.GetStringOrNull(RawConsumerProductSurveys.AgeUnit, fieldMap),
                                             StartDate = r.GetDateTimeOrNull(RawConsumerProductSurveys.StartDate, fieldMap),
                                             EndDate = r.GetDateTimeOrNull(RawConsumerProductSurveys.EndDate, fieldMap),
                                             IdPopulation = r.GetStringOrNull(RawConsumerProductSurveys.IdPopulation, fieldMap),
@@ -174,18 +173,18 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                     using (var rdm = _rawDataProvider.CreateRawDataManager()) {
                         // Read samples
                         foreach (var rawDataSourceId in rawDataSourceIds) {
-                            using (var r = rdm.OpenDataReader<RawIndividualConsumerProductUseFrequencies>(rawDataSourceId, out int[] fieldMap)) {
+                            using (var r = rdm.OpenDataReader<RawConsumerProductUseFrequencies>(rawDataSourceId, out int[] fieldMap)) {
                                 while (r?.Read() ?? false) {
-                                    var idIndividual = r.GetString(RawIndividualConsumerProductUseFrequencies.IdIndividual, fieldMap);
+                                    var idIndividual = r.GetString(RawConsumerProductUseFrequencies.IdIndividual, fieldMap);
                                     var valid = CheckLinkSelected(ScopingType.ConsumerProductIndividuals, idIndividual);
                                     if (valid) {
                                         var individual = _data.AllConsumerProductIndividuals[idIndividual];
-                                        var product = r.GetString(RawIndividualConsumerProductUseFrequencies.IdProduct, fieldMap);
+                                        var product = r.GetString(RawConsumerProductUseFrequencies.IdProduct, fieldMap);
                                         var consumerProduct = _data.AllConsumerProducts[product];
                                         var individualConsumerProductUseFrequency = new IndividualConsumerProductUseFrequency() {
                                             Individual = individual,
                                             Product = consumerProduct,
-                                            Frequency = r.GetDouble(RawIndividualConsumerProductUseFrequencies.Frequency, fieldMap),
+                                            Frequency = r.GetDouble(RawConsumerProductUseFrequencies.Frequency, fieldMap),
                                         };
                                         allIndividualConsumerProductUseFrequencies.Add(individualConsumerProductUseFrequency);
                                     }
@@ -214,7 +213,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 rowSv.WriteNonEmptyString(RawConsumerProductSurveys.Description, survey.Description);
                 rowSv.WriteNonEmptyString(RawConsumerProductSurveys.Country, survey.Country);
                 rowSv.WriteNonEmptyString(RawConsumerProductSurveys.BodyWeightUnit, survey.BodyWeightUnit.ToString());
-                rowSv.WriteNonEmptyString(RawConsumerProductSurveys.AgeUnit, survey.AgeUnitString);
                 rowSv.WriteNonEmptyString(RawConsumerProductSurveys.IdPopulation, survey.IdPopulation);
                 rowSv.WriteNonNullDateTime(RawConsumerProductSurveys.StartDate, survey.StartDate);
                 rowSv.WriteNonNullDateTime(RawConsumerProductSurveys.EndDate, survey.EndDate);
@@ -227,14 +225,14 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             if (!frequencies?.Any() ?? true) {
                 return;
             }
-            var tds = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.IndividualConsumerProductUseFrequencies);
+            var tds = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.ConsumerProductUseFrequencies);
             var dts = tds.CreateDataTable();
 
             foreach (var freq in frequencies) {
                 var rowSample = dts.NewRow();
-                rowSample.WriteNonEmptyString(RawIndividualConsumerProductUseFrequencies.IdIndividual, freq.Individual.Code);
-                rowSample.WriteNonEmptyString(RawIndividualConsumerProductUseFrequencies.IdProduct, freq.Product.Code);
-                rowSample.WriteNonNullDouble(RawIndividualConsumerProductUseFrequencies.Frequency, freq.Frequency);
+                rowSample.WriteNonEmptyString(RawConsumerProductUseFrequencies.IdIndividual, freq.Individual.Code);
+                rowSample.WriteNonEmptyString(RawConsumerProductUseFrequencies.IdProduct, freq.Product.Code);
+                rowSample.WriteNonNullDouble(RawConsumerProductUseFrequencies.Frequency, freq.Frequency);
                 dts.Rows.Add(rowSample);
             }
             writeToCsv(tempFolder, tds, dts);

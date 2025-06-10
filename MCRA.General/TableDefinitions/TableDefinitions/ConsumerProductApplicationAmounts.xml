@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TableDefinition>
-  <Id>CPApplicationAmounts</Id>
+  <Id>ConsumerProductApplicationAmounts</Id>
   <Name>Consumer product application amounts</Name>
   <Description>
     Distributions for application amounts can be dependent on e.g. age, sex.
@@ -9,6 +9,7 @@
     <string>CPApplicationAmounts</string>
     <string>ApplicationAmounts</string>
   </Aliases>
+  <PreferredAlias>CPApplicationAmounts</PreferredAlias>
   <HiddenAliases>
     <string>RawConsumerProductApplicationAmounts</string>
   </HiddenAliases>
@@ -28,7 +29,7 @@
     <ColumnDefinition FieldType="Numeric" FieldSize="50">
       <Id>AgeLower</Id>
       <Description>
-        Specifies the lower bound of the age interval (in years) of air ventilatory flow rate
+        Specifies the lower bound of the age interval (in years) of consumer product
         subgroup. Individuals belong to a subgroup when the age of the
         individual is equal or greater than the specified lower bound and smaller than the
         specified lower bound of the next subgroup.

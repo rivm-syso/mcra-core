@@ -60,17 +60,6 @@
       </Aliases>
       <DefaultValue>Kilogram</DefaultValue>
     </ColumnDefinition>
-    <ColumnDefinition FieldType="AlphaNumeric" Deprecated="true">
-      <Id>AgeUnit</Id>
-      <Description>
-        The unit of age, i.e., year or month.
-      </Description>
-      <Aliases>
-        <string>UnitAge</string>
-        <string>agein</string>
-        <string>AgeUnit</string>
-      </Aliases>
-    </ColumnDefinition>
     <ColumnDefinition FieldType="ConsumptionUnit">
       <Id>AmountUnit</Id>
       <Description>
@@ -79,8 +68,6 @@
       <Aliases>
         <string>AmountUnit</string>
         <string>UnitAmount</string>
-        <string>AmountUnit</string>
-        <string>ConsumptionUnit</string>
       </Aliases>
     </ColumnDefinition>
     <ColumnDefinition FieldType="DateTime">

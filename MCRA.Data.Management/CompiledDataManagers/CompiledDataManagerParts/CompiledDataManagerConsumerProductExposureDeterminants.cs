@@ -88,7 +88,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 return;
             }
 
-            var td = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.CPExposureFractions);
+            var td = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.ConsumerProductExposureFractions);
             var dt = td.CreateDataTable();
             var ccr = new int[Enum.GetNames(typeof(RawConsumerProductExposureFractions)).Length];
 
@@ -109,7 +109,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 return;
             }
 
-            var td = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.CPApplicationAmounts);
+            var td = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.ConsumerProductApplicationAmounts);
             var dt = td.CreateDataTable();
             var ccr = new int[Enum.GetNames(typeof(RawConsumerProductApplicationAmounts)).Length];
 

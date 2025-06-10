@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TableDefinition>
-  <Id>CPExposureFractions</Id>
+  <Id>ConsumerProductExposureFractions</Id>
   <Name>Consumer product exposure fractions</Name>
   <Description>
     Fractions of the substance used with the product to which a consumer is exposed.
@@ -9,6 +9,7 @@
     <string>CPExposureFractions</string>
     <string>ExposureFractions</string>
   </Aliases>
+  <PreferredAlias>CPExposureFractions</PreferredAlias>
   <HiddenAliases>
     <string>RawConsumerProductExposureFractions</string>
   </HiddenAliases>

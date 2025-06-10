@@ -2028,7 +2028,7 @@
   <ScopingTypeDefinition>
     <Id>ConsumerProductUseFrequencies</Id>
     <Name>Consumer product use frequencies</Name>
-    <RawTableId>IndividualConsumerProductUseFrequencies</RawTableId>
+    <RawTableId>ConsumerProductUseFrequencies</RawTableId>
     <Description>-</Description>
     <TableGroup>ConsumerProductUseFrequencies</TableGroup>
     <ParentScopeReferences>
@@ -2060,7 +2060,7 @@
   <ScopingTypeDefinition>
     <Id>ConsumerProductExposureFractions</Id>
     <Name>Consumer products exposure fractions</Name>
-    <RawTableId>CPExposureFractions</RawTableId>
+    <RawTableId>ConsumerProductExposureFractions</RawTableId>
     <Description>-</Description>
     <TableGroup>ConsumerProductExposureDeterminants</TableGroup>
     <ParentScopeReferences>
@@ -2077,7 +2077,7 @@
   <ScopingTypeDefinition>
     <Id>ConsumerProductApplicationAmounts</Id>
     <Name>Consumer product application amount</Name>
-    <RawTableId>CPApplicationAmounts</RawTableId>
+    <RawTableId>ConsumerProductApplicationAmounts</RawTableId>
     <Description>-</Description>
     <TableGroup>ConsumerProductExposureDeterminants</TableGroup>
     <ParentScopeReferences>

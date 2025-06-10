@@ -20,7 +20,7 @@
       <Id>IndividualPropertyValues</Id>
     </DataGroupTable>
     <DataGroupTable>
-      <Id>IndividualConsumerProductUseFrequencies</Id>
+      <Id>ConsumerProductUseFrequencies</Id>
     </DataGroupTable>
   </DataGroupTables>
 </DataGroupDefinition>

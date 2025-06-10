@@ -1,18 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TableDefinition>
-  <Id>IndividualConsumerProductUseFrequencies</Id>
+  <Id>ConsumerProductUseFrequencies</Id>
   <Name>Individual consumer product use frequencies</Name>
   <Description>
     Individual consumer product use frequencies are specified as a number of use per day for a consumer product (>= 0).
   </Description>
   <Aliases>
+    <string>ConsumerProductUseFrequencies</string>
     <string>UseFrequencies</string>
     <string>CPUseFrequencies</string>
   </Aliases>
+  <PreferredAlias>CPUseFrequencies</PreferredAlias>
   <HiddenAliases>
-    <string>RawIndividualConsumerProductUseFrequencies</string>
+    <string>RawConsumerProductUseFrequencies</string>
   </HiddenAliases>
-  <TargetDataTable>RawIndividualConsumerProductUseFrequencies</TargetDataTable>
+  <TargetDataTable>RawConsumerProductUseFrequencies</TargetDataTable>
   <ColumnDefinitions>
     <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
       <Id>idIndividual</Id>

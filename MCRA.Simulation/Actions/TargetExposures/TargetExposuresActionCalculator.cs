@@ -75,6 +75,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 ModuleConfig.ExposureSources.Contains(ExposureSource.ConsumerProduct);
             _actionInputRequirements[ActionType.ConsumerProductExposures].IsRequired = requireConsumerProduct;
             _actionInputRequirements[ActionType.ConsumerProductExposures].IsVisible = requireConsumerProduct;
+            _actionInputRequirements[ActionType.ConsumerProducts].IsRequired = requireConsumerProduct;
+            _actionInputRequirements[ActionType.ConsumerProducts].IsVisible = requireConsumerProduct;
 
             _actionInputRequirements[ActionType.KineticModels].IsRequired = false;
             _actionInputRequirements[ActionType.KineticModels].IsVisible = ModuleConfig.RequireAbsorptionFactors;

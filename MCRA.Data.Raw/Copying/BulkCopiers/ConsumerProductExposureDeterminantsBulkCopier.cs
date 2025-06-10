@@ -18,8 +18,8 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
 
         public override void TryCopy(IDataSourceReader dataSourceReader, ProgressState progressState) {
             progressState.Update("Processing consumer product exposure determinants");
-            var hasExposureFractions = tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.CPExposureFractions);
-            var ApplicationAmounts = tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.CPApplicationAmounts);
+            var hasExposureFractions = tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.ConsumerProductExposureFractions);
+            var ApplicationAmounts = tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.ConsumerProductApplicationAmounts);
             if (hasExposureFractions && ApplicationAmounts) {
                 registerTableGroup(SourceTableGroup.ConsumerProductExposureDeterminants);
             }
