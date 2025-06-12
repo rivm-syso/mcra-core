@@ -18,6 +18,7 @@ namespace MCRA.Simulation.Actions.ConsumerProductConcentrations {
 
         protected override void verify() {
             _actionDataLinkRequirements[ScopingType.ConsumerProductConcentrations][ScopingType.Compounds].AlertTypeMissingData = AlertType.Notification;
+            _actionDataLinkRequirements[ScopingType.ConsumerProductConcentrations][ScopingType.ConsumerProducts].AlertTypeMissingData = AlertType.Notification;
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {

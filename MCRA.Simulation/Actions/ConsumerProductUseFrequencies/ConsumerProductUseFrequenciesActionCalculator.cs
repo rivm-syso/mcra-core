@@ -22,6 +22,7 @@ namespace MCRA.Simulation.Actions.ConsumerProductUseFrequencies {
             _actionDataSelectionRequirements[ScopingType.ConsumerProductIndividualPropertyValues].AllowEmptyScope = true;
             _actionDataLinkRequirements[ScopingType.ConsumerProductSurveys][ScopingType.Populations].AlertTypeMissingData = AlertType.Notification;
             _actionDataLinkRequirements[ScopingType.ConsumerProductIndividualPropertyValues][ScopingType.ConsumerProductIndividuals].AlertTypeMissingData = AlertType.Notification;
+            _actionDataLinkRequirements[ScopingType.ConsumerProductUseFrequencies][ScopingType.ConsumerProducts].AlertTypeMissingData = AlertType.Notification;
         }
 
         protected override ActionSettingsSummary summarizeSettings() {

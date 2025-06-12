@@ -8,6 +8,9 @@ using MCRA.Simulation.Objects;
 namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
     public sealed class ConsumerProductIndividualIntake : IExternalIndividualExposure {
 
+        private double _sumIntakesPerConsumerProduct = double.NaN;
+        private double _totalExposurePerMassUnit = double.NaN;
+
         /// <summary>
         /// Identifier for a simulated individual day
         /// </summary>
@@ -87,6 +90,42 @@ namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
                 .Cast<IIntakePerCompound>()
                 .ToList();
             return intakesPerSubstance;
+        }
+
+        /// <summary>
+        /// Sums all (substance) consumer product exposures on this individual-day.
+        /// </summary>
+        /// <param name="relativePotencyFactors"></param>
+        /// <param name="membershipProbabilities"></param>
+        /// <returns></returns>
+        public double TotalExposure(
+            IDictionary<Compound, double> relativePotencyFactors,
+            IDictionary<Compound, double> membershipProbabilities
+        ) {
+            if (double.IsNaN(_sumIntakesPerConsumerProduct)) {
+                //_sumIntakesPerConsumerProduct = IntakesPerConsumerProduct.Sum(i => i.Intake(relativePotencyFactors, membershipProbabilities));
+                _sumIntakesPerConsumerProduct = 12;
+            }
+            return _sumIntakesPerConsumerProduct;
+        }
+
+        /// <summary>
+        /// Computes the total consumer product  (substance) exposures per unit body weight
+        /// on this individual-day.
+        /// </summary>
+        /// <param name="relativePotencyFactors"></param>
+        /// <param name="membershipProbabilities"></param>
+        /// <param name="isPerPerson"></param>
+        /// <returns></returns>
+        public double TotalExposurePerMassUnit(
+            IDictionary<Compound, double> relativePotencyFactors,
+            IDictionary<Compound, double> membershipProbabilities,
+            bool isPerPerson
+        ) {
+            if (double.IsNaN(_totalExposurePerMassUnit)) {
+                _totalExposurePerMassUnit = TotalExposure(relativePotencyFactors, membershipProbabilities) / (isPerPerson ? 1 : SimulatedIndividual.BodyWeight);
+            }
+            return _totalExposurePerMassUnit;
         }
 
         /// <summary>

@@ -1,4 +1,5 @@
 ﻿using MCRA.Data.Management;
+using MCRA.Data.Management.CompiledDataManagers.DataReadingSummary;
 using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
@@ -15,6 +16,8 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposureDeterminants {
         }
 
         protected override void verify() {
+            _actionDataLinkRequirements[ScopingType.ConsumerProductApplicationAmounts][ScopingType.ConsumerProducts].AlertTypeMissingData = AlertType.Notification;
+            _actionDataLinkRequirements[ScopingType.ConsumerProductExposureFractions][ScopingType.ConsumerProducts].AlertTypeMissingData = AlertType.Notification;
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
