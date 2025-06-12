@@ -16,12 +16,6 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     hiddenProperties.Add("DistributionType");
                     hiddenProperties.Add("CvVariability");
                 }
-                if (Model.Records.All(c => string.IsNullOrEmpty(c.Sex))) {
-                    hiddenProperties.Add("Sex");
-                }
-                if (Model.Records.All(c => c.AgeLower == null)) {
-                    hiddenProperties.Add("AgeLower");
-                }
 
                 // Table
                 sb.AppendTable(

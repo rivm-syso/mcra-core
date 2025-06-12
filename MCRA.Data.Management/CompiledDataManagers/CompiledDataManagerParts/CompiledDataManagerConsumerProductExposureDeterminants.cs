@@ -59,8 +59,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                     if (valid) {
                                         var applicationAmount = new ConsumerProductApplicationAmount {
                                             Product = _data.GetOrAddConsumerProduct(idProduct),
-                                            AgeLower = r.GetDoubleOrNull(RawConsumerProductApplicationAmounts.AgeLower, fieldMap),
-                                            Sex = r.GetEnum(RawConsumerProductApplicationAmounts.Sex, fieldMap, GenderType.Undefined),
                                             Amount = r.GetDouble(RawConsumerProductApplicationAmounts.Amount, fieldMap),
                                             DistributionType = r.GetEnum(RawConsumerProductApplicationAmounts.DistributionType, fieldMap, ApplicationAmountDistributionType.Constant),
                                             CvVariability = r.GetDoubleOrNull(RawConsumerProductApplicationAmounts.CvVariability, fieldMap),
@@ -113,8 +111,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             foreach (var amount in consumerProductApplicationAmount) {
                 var row = dt.NewRow();
                 row.WriteNonEmptyString(RawConsumerProductApplicationAmounts.IdProduct, amount.Product.Code, ccr);
-                row.WriteNonNullDouble(RawConsumerProductApplicationAmounts.AgeLower, amount.AgeLower, ccr);
-                row.WriteNonEmptyString(RawConsumerProductApplicationAmounts.Sex, amount.Sex.ToString(), ccr);
                 row.WriteNonNullDouble(RawConsumerProductApplicationAmounts.Amount, amount.Amount, ccr);
                 row.WriteNonEmptyString(RawConsumerProductApplicationAmounts.DistributionType, amount.DistributionType.ToString(), ccr);
                 row.WriteNonNullDouble(RawConsumerProductApplicationAmounts.CvVariability, amount.CvVariability, ccr);

@@ -13,8 +13,6 @@ namespace MCRA.Simulation.OutputGeneration {
                     return new ConsumerProductApplicationAmountRecord() {
                         ProductCode = c.Product.Code,
                         ProductName = c.Product.Name,
-                        AgeLower = c.AgeLower.HasValue ? c.AgeLower.Value : null,
-                        Sex = c.Sex != GenderType.Undefined ? c.Sex.ToString() : null,
                         Amount = c.Amount,
                         DistributionType = c.DistributionType != ApplicationAmountDistributionType.Constant ? c.DistributionType.ToString() : null,
                         CvVariability = c.CvVariability.HasValue ? c.CvVariability.Value : null

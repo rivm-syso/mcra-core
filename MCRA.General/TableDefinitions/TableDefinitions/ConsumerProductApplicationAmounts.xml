@@ -27,27 +27,6 @@
         <string>ConsumerProducts</string>
       </ForeignKeyTables>
     </ColumnDefinition>
-    <ColumnDefinition FieldType="Numeric" FieldSize="50">
-      <Id>AgeLower</Id>
-      <Description>
-        Specifies the lower bound of the age interval (in years) of consumer product
-        subgroup. Individuals belong to a subgroup when the age of the
-        individual is equal or greater than the specified lower bound and smaller than the
-        specified lower bound of the next subgroup.
-      </Description>
-      <Aliases>
-        <string>AgeLower</string>
-        <string>LowerAge</string>
-      </Aliases>
-    </ColumnDefinition>
-    <ColumnDefinition FieldType="GenderType">
-      <Id>Sex</Id>
-      <Description>The sex of the subgroup.</Description>
-      <Aliases>
-        <string>Sex</string>
-        <string>Gender</string>
-      </Aliases>
-    </ColumnDefinition>
     <ColumnDefinition Required="true" FieldType="Numeric">
       <Id>Amount</Id>
       <Description>
