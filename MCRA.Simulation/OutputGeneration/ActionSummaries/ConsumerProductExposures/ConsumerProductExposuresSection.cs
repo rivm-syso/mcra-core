@@ -11,7 +11,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public int TotalIndividuals { get; set; }
 
         public void Summarize(
-            ICollection<ConsumerProductIndividualDayExposure> cpIndividualDayExposures
+            ICollection<ConsumerProductIndividualIntake> cpIndividualDayExposures
         ) {
             var records = cpIndividualDayExposures
                 .AsParallel()
@@ -46,23 +46,11 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         public void SummarizeUncertainty(
-            ICollection<ConsumerProductIndividualDayExposure> individualConsumerProductExposures,
+            ICollection<ConsumerProductIndividualIntake> individualConsumerProductExposures,
             double lowerBound,
             double upperBound
         ) {
-            /*
-            individualConsumerProductExposures
-                .GroupBy(r => (r.Substance, r.ExposureRoute))
-                    .ForAll(g => {
-                        var record = ConsumerProductExposuresDataRecords
-                            .Where(r => r.SubstanceCode == g.Key.Substance.Code)
-                            .SingleOrDefault();
-                        if (record != null) {
-                            var meanExposure = g.Average(r => r.Exposure);
-                            record.ConsumerProductUncertaintyValues.Add(meanExposure);
-                        }
-                    });
-            */
+            // TODO
         }
     }
 }

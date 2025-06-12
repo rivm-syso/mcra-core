@@ -8,6 +8,7 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
     public enum ConsumerProductExposuresSections {
         ConsumerProductExposuresByRouteSection
     }
+
     public sealed class ConsumerProductExposuresSummarizer(ConsumerProductExposuresModuleConfig config)
         : ActionModuleResultsSummarizer<ConsumerProductExposuresModuleConfig, ConsumerProductExposuresActionResult>(config)
     {
@@ -29,7 +30,7 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
             var section = new ConsumerProductExposuresSection() {
                 SectionLabel = ActionType.ToString()
             };
-            section.Summarize(data.IndividualConsumerProductExposures);
+            section.Summarize(actionResult.ConsumerProductIndividualIntakes);
             var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
             subHeader.Units = collectUnits(data);
             subHeader.SaveSummarySection(section);
@@ -48,13 +49,7 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
             ActionData data,
             SectionHeader header
         ) {
-            var subHeader = header.GetSubSectionHeader<DustExposuresSection>();
-            //if (subHeader != null) {
-            //    summarizeDustExposureUncertainty(
-            //        data.IndividualDustExposures,
-            //        header
-            //    );
-            //}
+            // TODO
         }
 
         private List<ActionSummaryUnitRecord> collectUnits(ActionData data) {
@@ -68,27 +63,11 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
             return result;
         }
 
-        //private void summarizeDustExposureUncertainty(
-        //    ICollection<DustIndividualDayExposure> individualDustExposures,
-        //    SectionHeader header
-        //) {
-        //    var subHeader = header.GetSubSectionHeader<DustExposuresSection>();
-        //    if (subHeader != null) {
-        //        var section = subHeader.GetSummarySection() as DustExposuresSection;
-        //        section.SummarizeUncertainty(
-        //            individualDustExposures,
-        //           _configuration.UncertaintyLowerBound,
-        //           _configuration.UncertaintyUpperBound
-        //        );
-        //        subHeader.SaveSummarySection(section);
-        //    }
-        //}
-
         /// <summary>
-        /// Dust exposures by route and substance (boxplot and summary table).
+        /// Consumer product exposures by route and substance (boxplot and summary table).
         /// </summary>
         private void summarizeConsumerProductExposuresByRoute(
-            ConsumerProductExposuresActionResult actionResult,
+            ConsumerProductExposuresActionResult result,
             ActionData data,
             SectionHeader header,
             int order
@@ -98,17 +77,16 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
             };
             var subHeader = header.AddSubSectionHeaderFor(
                 section,
-                "Exposures by route by substance",
+                "Exposures by route and substance",
                 order
             );
             section.Summarize(
                 data.ActiveSubstances,
-                actionResult.ConsumerProductIndividualExposures,
+                result.ConsumerProductIndividualIntakes,
                 _configuration.VariabilityLowerPercentage,
                 _configuration.VariabilityUpperPercentage,
-                actionResult.ConsumerProductExposureUnit,
-                new List<ExposureRoute>() { ExposureRoute.Dermal}
-                //_configuration.SelectedExposureRoutes
+                result.ConsumerProductExposureUnit,
+                [ExposureRoute.Dermal]
             );
             subHeader.SaveSummarySection(section);
         }

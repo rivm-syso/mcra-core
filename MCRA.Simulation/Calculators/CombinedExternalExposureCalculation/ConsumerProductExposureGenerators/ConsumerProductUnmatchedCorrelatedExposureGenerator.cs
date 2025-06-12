@@ -37,35 +37,35 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.Consum
 
         protected override List<IExternalIndividualDayExposure> generate(
             ICollection<IIndividualDay> individualDays,
-            ICollection<ConsumerProductIndividualDayExposure> individualDayExposures,
+            ICollection<ConsumerProductIndividualIntake> individualExposures,
             ICollection<Compound> substances,
             IRandom generator
         ) {
-            var exposurePaths = individualDayExposures
+            var exposurePaths = individualExposures
                 .SelectMany(c => c.ExposuresPerPath.Keys)
                 .ToHashSet();
 
             var simulatedIndividual = individualDays.First().SimulatedIndividual;
             if (_matchOnSex) {
                 //check cofactor match (only sex)
-                individualDayExposures = getExposuresForSexLevel(
-                    individualDayExposures,
+                individualExposures = getExposuresForSexLevel(
+                    individualExposures,
                     simulatedIndividual
                 );
             }
             if (_matchOnAge) {
                 //check covariable match (only age)
-                individualDayExposures = getExposuresForAgeRange(
-                    individualDayExposures,
+                individualExposures = getExposuresForAgeRange(
+                    individualExposures,
                     simulatedIndividual,
                     _ageIntervals
                 );
             }
 
             var results = new List<IExternalIndividualDayExposure>();
-            if (individualDayExposures?.Count > 0) {
-                var ix = generator.Next(0, individualDayExposures.Count);
-                var selected = individualDayExposures.ElementAt(ix);
+            if (individualExposures?.Count > 0) {
+                var ix = generator.Next(0, individualExposures.Count);
+                var selected = individualExposures.ElementAt(ix);
                 foreach (var individualDay in individualDays) {
                     var result = createExternalIndividualDayExposure(individualDay, selected);
                     results.Add(result);
@@ -83,19 +83,20 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.Consum
         /// <summary>
         /// Check for sex level and select the right individual day exposures, if not found return null.
         /// </summary>
-        private static ICollection<ConsumerProductIndividualDayExposure> getExposuresForSexLevel(
-            ICollection<ConsumerProductIndividualDayExposure> individualDayExposures,
+        private static ICollection<ConsumerProductIndividualIntake> getExposuresForSexLevel(
+            ICollection<ConsumerProductIndividualIntake> individualDayExposures,
             SimulatedIndividual simulatedIndividual
         ) {
-            individualDayExposures = [.. individualDayExposures.Where(c => c.SimulatedIndividual.Gender == simulatedIndividual.Gender)];
+            individualDayExposures = [.. individualDayExposures
+                .Where(c => c.SimulatedIndividual.Gender == simulatedIndividual.Gender)];
             return individualDayExposures;
         }
 
         /// <summary>
         ///  Check for age range and select the right individual day exposures.
         /// </summary>
-        private static ICollection<ConsumerProductIndividualDayExposure> getExposuresForAgeRange(
-            ICollection<ConsumerProductIndividualDayExposure> individualDayExposures,
+        private static ICollection<ConsumerProductIndividualIntake> getExposuresForAgeRange(
+            ICollection<ConsumerProductIndividualIntake> individualDayExposures,
             SimulatedIndividual simulatedIndividual,
             List<(double left, double right)> intervals
         ) {

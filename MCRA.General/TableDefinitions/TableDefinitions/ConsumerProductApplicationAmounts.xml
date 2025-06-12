@@ -6,6 +6,7 @@
     Distributions for application amounts can be dependent on e.g. age, sex.
   </Description>
   <Aliases>
+    <string>ConsumerProductApplicationAmounts</string>
     <string>CPApplicationAmounts</string>
     <string>ApplicationAmounts</string>
   </Aliases>

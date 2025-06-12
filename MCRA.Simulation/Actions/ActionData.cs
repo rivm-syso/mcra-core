@@ -1007,7 +1007,6 @@ namespace MCRA.Simulation {
         }
 
         //Consumer Products
-
         public ICollection<ConsumerProduct> AllConsumerProducts {
             get => GetOrCreateModuleOutputData<ConsumerProductsOutputData>(ActionType.ConsumerProducts).AllConsumerProducts;
             set => GetOrCreateModuleOutputData<ConsumerProductsOutputData>(ActionType.ConsumerProducts).AllConsumerProducts = value;
@@ -1047,19 +1046,17 @@ namespace MCRA.Simulation {
             get => GetOrCreateModuleOutputData<ConsumerProductUseFrequenciesOutputData>(ActionType.HumanMonitoringData).ConsumerProductIndividuals;
             set => GetOrCreateModuleOutputData<ConsumerProductUseFrequenciesOutputData>(ActionType.HumanMonitoringData).ConsumerProductIndividuals = value;
         }
-        public ICollection<ConsumerProductIndividualDayExposure> IndividualConsumerProductExposures {
-            get => GetOrCreateModuleOutputData<ConsumerProductExposuresOutputData>(ActionType.ConsumerProductExposures).IndividualConsumerProductExposures;
-            set => GetOrCreateModuleOutputData<ConsumerProductExposuresOutputData>(ActionType.ConsumerProductExposures).IndividualConsumerProductExposures = value;
-        }
+
         public ExposureUnitTriple ConsumerProductExposureUnit {
             get => GetOrCreateModuleOutputData<ConsumerProductExposuresOutputData>(ActionType.ConsumerProductExposures).ConsumerProductExposureUnit;
             set => GetOrCreateModuleOutputData<ConsumerProductExposuresOutputData>(ActionType.ConsumerProductExposures).ConsumerProductExposureUnit = value;
         }
 
-        public ICollection<ConsumerProductIndividualDayIntake> ConsumerProductIndividualDayIntakes {
-            get => GetOrCreateModuleOutputData<ConsumerProductExposuresOutputData>(ActionType.ConsumerProductExposures).ConsumerProductIndividualDayIntakes;
-            set => GetOrCreateModuleOutputData<ConsumerProductExposuresOutputData>(ActionType.ConsumerProductExposures).ConsumerProductIndividualDayIntakes = value;
+        public ICollection<ConsumerProductIndividualIntake> ConsumerProductIndividualExposures {
+            get => GetOrCreateModuleOutputData<ConsumerProductExposuresOutputData>(ActionType.ConsumerProductExposures).ConsumerProductIndividualExposures;
+            set => GetOrCreateModuleOutputData<ConsumerProductExposuresOutputData>(ActionType.ConsumerProductExposures).ConsumerProductIndividualExposures = value;
         }
+
         /// <summary>
         /// Creates a copy of the action data, to be used in bootstrap/uncertainty runs.
         /// </summary>
@@ -1068,7 +1065,6 @@ namespace MCRA.Simulation {
             var newDataSource = new ActionData() {
                 ModuleOutputData = ModuleOutputData.ToDictionary(r => r.Key, r => r.Value.Copy())
             };
-
             return newDataSource;
         }
     }

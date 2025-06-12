@@ -70,10 +70,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             writeToCsv(tempFolder, td, dt, ccr);
         }
 
-        private ConsumerProduct getOrAddConsumerProduct(string id, string name = null) {
-            return getOrAddConsumerProduct(_data.AllConsumerProducts, id, name);
-        }
-
         private ConsumerProduct getOrAddConsumerProduct(
             IDictionary<string,
             ConsumerProduct> consumerProducts,

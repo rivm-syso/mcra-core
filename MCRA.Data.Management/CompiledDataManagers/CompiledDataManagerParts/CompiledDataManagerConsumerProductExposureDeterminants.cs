@@ -77,9 +77,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             return _data.AllConsumerProductApplicationAmounts;
         }
 
-
-
-
         private static void writeConsumerProductExposureFractions(
             string tempFolder,
             IEnumerable<ConsumerProductExposureFraction> consumerProductExposureFraction

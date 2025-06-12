@@ -19,8 +19,6 @@ namespace MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDieta
         /// </summary>
         public double Amount { get; set; }
 
-        ExposureRoute IIntakePerCompound.ExposureRoute => throw new NotImplementedException();
-
         /// <summary>
         /// The substance intake amount corrected for relative potency and
         /// assessment group membership.

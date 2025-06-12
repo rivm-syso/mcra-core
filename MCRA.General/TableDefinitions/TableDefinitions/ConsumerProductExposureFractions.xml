@@ -6,6 +6,7 @@
     Fractions of the substance used with the product to which a consumer is exposed.
   </Description>
   <Aliases>
+    <string>ConsumerProductExposureFractions</string>
     <string>CPExposureFractions</string>
     <string>ExposureFractions</string>
   </Aliases>

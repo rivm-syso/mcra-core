@@ -35,7 +35,7 @@
     <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
       <Id>Description</Id>
       <Description>
-        Substance description.
+        Description of the consumer product.
       </Description>
       <Aliases>
         <string>Description</string>
@@ -44,7 +44,7 @@
     <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50">
       <Id>idGroup</Id>
       <Description>
-        Consumer product groups.
+        Identifier of the parent product (i.e., the product group of which this product is a part).
       </Description>
       <Aliases>
         <string>idGroup</string>

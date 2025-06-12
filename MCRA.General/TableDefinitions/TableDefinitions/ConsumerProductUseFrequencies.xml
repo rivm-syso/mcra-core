@@ -7,8 +7,8 @@
   </Description>
   <Aliases>
     <string>ConsumerProductUseFrequencies</string>
-    <string>UseFrequencies</string>
     <string>CPUseFrequencies</string>
+    <string>UseFrequencies</string>
   </Aliases>
   <PreferredAlias>CPUseFrequencies</PreferredAlias>
   <HiddenAliases>

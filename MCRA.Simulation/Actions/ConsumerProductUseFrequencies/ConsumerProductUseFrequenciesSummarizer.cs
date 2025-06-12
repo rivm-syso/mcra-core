@@ -59,7 +59,7 @@ namespace MCRA.Simulation.Actions.ConsumerProductUseFrequencies {
             );
             var subHeader = header.AddSubSectionHeaderFor(
                 section,
-                "Consumer product study",
+                "Consumer product use frequency survey",
                 order
             );
             subHeader.SaveSummarySection(section);

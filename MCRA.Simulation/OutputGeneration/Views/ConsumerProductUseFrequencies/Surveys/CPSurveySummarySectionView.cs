@@ -15,7 +15,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     "ConsumerProductSurveySummaryTable",
                     ViewBag,
                     hiddenProperties: hiddenProperties,
-                    caption: "Consumer product study summary.",
+                    caption: "Consumer product use frequency survey summary.",
                     saveCsv: true,
                     header: true
                 );

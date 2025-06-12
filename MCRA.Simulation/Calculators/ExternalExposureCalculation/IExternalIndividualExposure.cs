@@ -8,7 +8,7 @@ namespace MCRA.Simulation.Calculators.ExternalExposureCalculation {
 
         SimulatedIndividual SimulatedIndividual { get; }
 
-        Dictionary<ExposurePath, List<IIntakePerCompound>> ExposuresPerPath { get; set; }
+        Dictionary<ExposurePath, List<IIntakePerCompound>> ExposuresPerPath { get; }
 
         /// <summary>
         /// Returns true if this individual exposure contains one or more positive amounts for a route and substance.

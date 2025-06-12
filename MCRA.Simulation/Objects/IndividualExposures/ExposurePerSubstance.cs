@@ -16,8 +16,6 @@ namespace MCRA.Simulation.Objects.IndividualExposures {
         /// </summary>
         public double Amount { get; set; }
 
-        ExposureRoute IIntakePerCompound.ExposureRoute => throw new NotImplementedException();
-
         /// <summary>
         /// The substance intake amount corrected for relative potency and
         /// assessment group membership.

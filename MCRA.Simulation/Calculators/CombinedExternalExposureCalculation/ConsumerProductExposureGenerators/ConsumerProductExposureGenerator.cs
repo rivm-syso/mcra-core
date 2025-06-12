@@ -16,22 +16,41 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.Consum
         public ExternalExposureCollection Generate(
             ICollection<IIndividualDay> individualDays,
             ICollection<Compound> substances,
-            ICollection<ConsumerProductIndividualDayExposure> cpIndividualDayExposures,
+            ICollection<ConsumerProductIndividualIntake> cpIndividualIntakes,
             SubstanceAmountUnit substanceAmountUnit,
             int seed
         ) {
+            /*
+            var cpIndividualDayExposures = cpIndividualIntakes
+                .Select(individualDay => {
+                    var exposuresPerPath = new Dictionary<ExposurePath, List<IIntakePerCompound>>();
+                    foreach (var route in exposureRoutes) {
+                        var intakesPerSubstance = individualDay.GetTotalIntakesPerSubstance(route).ToList();
+                        if (intakesPerSubstance.Any()) {
+                            exposuresPerPath[new(ExposureSource.ConsumerProduct, route)] = intakesPerSubstance;
+                        }
+                    }
+                    var individualDayExposure = new ConsumerProductIndividualDayExposure(exposuresPerPath) {
+                        SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId,
+                        SimulatedIndividual = individualDay.SimulatedIndividual,
+                    };
+                    return individualDayExposure;
+                })
+                .ToList();
+            */
+
             var cpIndividualExposures = individualDays
                 .AsParallel()
                 .GroupBy(r => r.SimulatedIndividual.Id)
                 .SelectMany(individualExposures => generate(
                     [.. individualExposures],
-                    cpIndividualDayExposures,
+                    cpIndividualIntakes,
                     substances,
                     new McraRandomGenerator(RandomUtils.CreateSeed(seed, individualExposures.Key))))
                 .ToList();
 
             // Check if success
-            if (cpIndividualExposures.Count == 0) {
+            if (cpIndividualIntakes.Count == 0) {
                 throw new Exception("Failed to match any consumer product exposure.");
             }
             var cpExposureCollection = new ExternalExposureCollection {
@@ -44,16 +63,16 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.Consum
 
         protected abstract List<IExternalIndividualDayExposure> generate(
             ICollection<IIndividualDay> individualDays,
-            ICollection<ConsumerProductIndividualDayExposure> cpIndividualDayExposures,
+            ICollection<ConsumerProductIndividualIntake> cpIndividualExposures,
             ICollection<Compound> substances,
             IRandom randomIndividual
         );
 
         protected static ExternalIndividualDayExposure createExternalIndividualDayExposure(
             IIndividualDay individualDay,
-            ConsumerProductIndividualDayExposure individualDayExposure
+            ConsumerProductIndividualIntake individualExposure
         ) {
-            return new ExternalIndividualDayExposure(individualDayExposure.ExposuresPerPath) {
+            return new ExternalIndividualDayExposure(individualExposure.ExposuresPerPath) {
                 SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId,
                 SimulatedIndividual = individualDay.SimulatedIndividual,
                 Day = individualDay.Day,
