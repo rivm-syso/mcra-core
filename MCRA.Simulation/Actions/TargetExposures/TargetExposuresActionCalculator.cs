@@ -321,7 +321,10 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     break;
                 case ExposureSource.ConsumerProduct:
                     externalExposureUnit = data.ConsumerProductExposureUnit;
-                    referenceIndividualDays = [.. data.ConsumerProductIndividualExposures.Cast<IIndividualDay>()];
+                    referenceIndividualDays = data.ConsumerProductIndividualExposures
+                        .Select(r => new SimulatedIndividualDay(r.SimulatedIndividual))
+                        .Cast<IIndividualDay>()
+                        .ToList();
                     break;
                 default:
                     throw new NotImplementedException();
@@ -464,7 +467,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         ExposureSource = ExposureSource.ConsumerProduct,
                         ExternalIndividualDayExposures = data.ConsumerProductIndividualExposures
                             .AsParallel()
-                            .Select(c => ExternalIndividualDayExposure.FromConsumerProductIndividualDayIntake(c, ModuleConfig.ExposureRoutes))
+                            .Select(c => ExternalIndividualDayExposure.FromConsumerProductIndividualIntake(c, ModuleConfig.ExposureRoutes))
                             .Cast<IExternalIndividualDayExposure>()
                             .ToList()
                     };

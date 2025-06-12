@@ -239,7 +239,8 @@ namespace MCRA.Simulation.Calculators.ExternalExposureCalculation {
             };
             return result;
         }
-        public static ExternalIndividualDayExposure FromConsumerProductIndividualDayIntake(
+
+        public static ExternalIndividualDayExposure FromConsumerProductIndividualIntake(
             ConsumerProductIndividualIntake individualDay,
             ICollection<ExposureRoute> routes
         ) {
@@ -248,8 +249,8 @@ namespace MCRA.Simulation.Calculators.ExternalExposureCalculation {
                 exposuresPerPath[new(ExposureSource.ConsumerProduct, route)] = [.. individualDay.GetTotalIntakesPerSubstance(route)];
             }
             var result = new ExternalIndividualDayExposure(exposuresPerPath) {
-                SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId,
-                SimulatedIndividual = individualDay.SimulatedIndividual,
+                SimulatedIndividualDayId = individualDay.SimulatedIndividual.Id,
+                SimulatedIndividual = individualDay.SimulatedIndividual
             };
             return result;
         }

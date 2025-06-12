@@ -50,7 +50,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 var records = cpIndividualExposures
                     .AsParallel()
                     .WithCancellation(cancelToken)
-                    .SelectMany(i => i.IntakesPerConsumerProduct,
+                    .SelectMany(i => i.IntakesPerProduct,
                         (i, ipcp) => (
                             SimulatedIndividualId: i.SimulatedIndividual.Id,
                             CPIndividualDayIntake: i,
@@ -147,7 +147,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var consumerProducts = cpIndividualIntakes
                 .AsParallel()
                 .WithCancellation(cancelToken)
-                .SelectMany(i => i.IntakesPerConsumerProduct).Select(c => c.Product).Distinct().ToList();
+                .SelectMany(i => i.IntakesPerProduct).Select(c => c.Product).Distinct().ToList();
 
             //Create foods hierarchy
             var consumerProductHierarchy = HierarchyUtilities.BuildHierarchy(consumerProducts, allConsumerProducts, (ConsumerProduct f) => f.Code, (ConsumerProduct f) => f.Parent?.Code);

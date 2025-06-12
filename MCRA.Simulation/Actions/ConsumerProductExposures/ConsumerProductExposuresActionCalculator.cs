@@ -81,52 +81,27 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
 
             // Create individual days
             localProgress.Update("Generating individual days", 30);
-            var individualsRandomGenerator = new McraRandomGenerator(
-                RandomUtils.CreateSeed(
-                    ModuleConfig.RandomSeed,
-                    (int)RandomSource.CPE_DrawIndividuals
-                )
-            );
 
-            var populationGeneratorFactory = new PopulationGeneratorFactory(
-                ExposureType.Chronic,
-                ModuleConfig.IsSurveySampling,
-                ModuleConfig.NumberOfMonteCarloIterations
-            );
-
-            var populationGenerator = populationGeneratorFactory.Create();
-            var consumerProductDays = data.AllIndividualConsumerProductUseFrequencies
-                .GroupBy(c => c.Individual)
-                .Select(c => new IndividualDay() {
-                    Individual = c.Key
-                })
-                .ToList();
-
-            var simulatedIndividualDays = populationGenerator.CreateSimulatedIndividualDays(
-                data.ConsumerProductIndividuals,
-                consumerProductDays,
-                individualsRandomGenerator
-            );
-
-            var simulatedIndividuals = simulatedIndividualDays
-                .Select(s => s.SimulatedIndividual)
+            var simulatedIndividuals = data.AllIndividualConsumerProductUseFrequencies
+                .Select(r => r.Individual)
                 .Distinct()
+                .Select((ind, ix) => new SimulatedIndividual(ind, ix))
                 .ToList();
 
             //TODO from interface
             var exposureRoutes = new List<ExposureRoute>() { ExposureRoute.Dermal, ExposureRoute.Oral, ExposureRoute.Inhalation };
             var exposureCalculator = new ConsumerProductExposureCalculator(
-                data.AllIndividualConsumerProductUseFrequencies,
                 data.ConsumerProductExposureFractions,
                 data.ConsumerProductApplicationAmounts,
-                data.AllConsumerProductConcentrations,
-                data.ActiveSubstances,
-                exposureRoutes
+                data.AllConsumerProductConcentrations
             );
 
             var consumerProductIndividualDayIntakes = exposureCalculator
                 .Compute(
-                    simulatedIndividualDays,
+                    simulatedIndividuals,
+                    data.AllIndividualConsumerProductUseFrequencies,
+                    exposureRoutes,
+                    data.ActiveSubstances,
                     new ProgressState(localProgress.CancellationToken)
                 );
 

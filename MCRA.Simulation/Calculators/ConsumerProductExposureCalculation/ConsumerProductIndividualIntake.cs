@@ -12,11 +12,6 @@ namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
         private double _totalExposurePerMassUnit = double.NaN;
 
         /// <summary>
-        /// Identifier for a simulated individual day
-        /// </summary>
-        public int SimulatedIndividualDayId { get; set; }
-
-        /// <summary>
         /// The original Individual entity.
         /// </summary>
         public SimulatedIndividual SimulatedIndividual { get; set; }
@@ -24,7 +19,7 @@ namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
         /// <summary>
         /// Intakes specified per food as eaten.
         /// </summary>
-        public List<IIntakePerConsumerProduct> IntakesPerConsumerProduct { get; set; }
+        public List<IIntakePerConsumerProduct> IntakesPerProduct { get; set; }
 
         /// <summary>
         /// Exposures per route and substance, aggregated over the products, grouped by
@@ -32,7 +27,7 @@ namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
         /// </summary>
         public Dictionary<ExposurePath, List<IIntakePerCompound>> ExposuresPerPath {
             get {
-                var routes = IntakesPerConsumerProduct
+                var routes = IntakesPerProduct
                     .SelectMany(r => r.IntakesPerSubstance.Keys)
                     .Distinct();
                 var result = routes
@@ -50,7 +45,7 @@ namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
             Compound substance,
             bool isPerPerson
         ) {
-            var totalAmount = IntakesPerConsumerProduct
+            var totalAmount = IntakesPerProduct
                 .Where(r => r.IntakesPerSubstance.ContainsKey(route))
                 .SelectMany(r => r.IntakesPerSubstance[route])
                 .Where(r => r.Compound == substance)
@@ -79,7 +74,7 @@ namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
         /// </summary>
         /// <returns></returns>
         public List<IIntakePerCompound> GetTotalIntakesPerSubstance(ExposureRoute route) {
-            var intakesPerSubstance = IntakesPerConsumerProduct
+            var intakesPerSubstance = IntakesPerProduct
                 .Where(r => r.IntakesPerSubstance.ContainsKey(route))
                 .SelectMany(ipc => ipc.IntakesPerSubstance[route])
                 .GroupBy(ipc => ipc.Compound)
@@ -133,7 +128,7 @@ namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
         /// route and substance.
         /// </summary>
         public bool HasPositives(ExposureRoute route, Compound substance) {
-            return IntakesPerConsumerProduct
+            return IntakesPerProduct
                 .Any(r => r.IntakesPerSubstance.TryGetValue(route, out var ipcs)
                     && ipcs.Any(ipc => ipc.Compound == substance && ipc.Amount > 0));
         }

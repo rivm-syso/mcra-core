@@ -6,26 +6,19 @@ using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
+
     public sealed class ConsumerProductExposureCalculator {
-        private readonly Dictionary<Individual, List<IndividualConsumerProductUseFrequency>> _cpIndividualDayCache;
-        private readonly Dictionary<ConsumerProduct, ConsumerProductSampleSubstanceCollections> _cpConcentrationCollections;
-        private readonly Dictionary<(ConsumerProduct, Compound), (double concentration, double occurrencePercentage)> _cpConcentrations;
-        private readonly Dictionary<(ConsumerProduct, Compound, ExposureRoute), double> _cpFractions;
-        private readonly Dictionary<ConsumerProduct, ConsumerProductApplicationAmount> _cpApplicationAmounts;
-        private readonly ICollection<Compound> _substances;
-        private readonly ICollection<ExposureRoute> _exposureRoutes;
+        private readonly Dictionary<ConsumerProduct, ConsumerProductSampleSubstanceCollections> _concentrationCollections;
+        private readonly Dictionary<(ConsumerProduct, Compound), (double concentration, double occurrencePercentage)> _concentrations;
+        private readonly Dictionary<(ConsumerProduct, Compound, ExposureRoute), double> _exposureFractions;
+        private readonly Dictionary<ConsumerProduct, ConsumerProductApplicationAmount> _applicationAmounts;
 
         public ConsumerProductExposureCalculator(
-            ICollection<IndividualConsumerProductUseFrequency> cpUseFrequencies,
             ICollection<ConsumerProductExposureFraction> cpExposureFractions,
             ICollection<ConsumerProductApplicationAmount> cpApplicationAmounts,
-            ICollection<ConsumerProductConcentration> cpConcentrations,
-            ICollection<Compound> substances,
-            ICollection<ExposureRoute> routes
+            ICollection<ConsumerProductConcentration> cpConcentrations
         ) {
-            _exposureRoutes = routes;
-            _substances = substances;
-            _cpConcentrationCollections = cpConcentrations
+            _concentrationCollections = cpConcentrations
                 .AsParallel()
                 .GroupBy(c => c.Product)
                 .Select(c => new ConsumerProductSampleSubstanceCollections() {
@@ -34,50 +27,51 @@ namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
                         .ToDictionary(c => c.Key, c => c.Select(r => r).ToList())
                 })
                 .ToDictionary(c => c.ConsumerProduct);
-
-            _cpIndividualDayCache = [];
-            foreach (var c in cpUseFrequencies) {
-                if (!_cpIndividualDayCache.TryGetValue(c.Individual, out var useFrequencies)) {
-                    _cpIndividualDayCache.Add(c.Individual, [c]);
-                } else {
-                    useFrequencies.Add(c);
-                }
-            }
-            _cpFractions = cpExposureFractions.ToDictionary(c => (c.Product, c.Substance, c.Route), c => c.ExposureFraction);
-            _cpApplicationAmounts = cpApplicationAmounts.ToDictionary(c => c.Product);
-            _cpConcentrations = [];
+            _exposureFractions = cpExposureFractions.ToDictionary(c => (c.Product, c.Substance, c.Route), c => c.ExposureFraction);
+            _applicationAmounts = cpApplicationAmounts.ToDictionary(c => c.Product);
+            _concentrations = [];
         }
 
         public List<ConsumerProductIndividualIntake> Compute(
-            List<SimulatedIndividualDay> simulatedIndividualDays,
+            ICollection<SimulatedIndividual> individuals,
+            ICollection<IndividualConsumerProductUseFrequency> cpUseFrequencies,
+            ICollection<ExposureRoute> routes,
+            ICollection<Compound> substances,
             ProgressState progressState
         ) {
-            var cpIndividualDayExposures = simulatedIndividualDays
-                .Select(calculateIndividualDayExposure)
+            var useFrequencyLookup = cpUseFrequencies.ToLookup(r => r.Individual);
+            var cpIndividualDayExposures = individuals
+                .Select(si => calculateIndividualDayExposure(
+                    si, 
+                    useFrequencyLookup.Contains(si.Individual) ? useFrequencyLookup[si.Individual].ToList() : [],
+                    [.. routes],
+                    [.. substances]
+                ))
                 .ToList();
             return cpIndividualDayExposures;
         }
 
-        private ConsumerProductIndividualIntake calculateIndividualDayExposure(SimulatedIndividualDay sid) {
-            if (!_cpIndividualDayCache.TryGetValue(sid.SimulatedIndividual.Individual, out var useFrequencies)) {
-                useFrequencies = [];
-            }
-
+        private ConsumerProductIndividualIntake calculateIndividualDayExposure(
+            SimulatedIndividual individual,
+            List<IndividualConsumerProductUseFrequency> useFrequencies,
+            List<ExposureRoute> routes,
+            List<Compound> substances
+        ) {
             var intakesPerConsumerProduct = new List<IIntakePerConsumerProduct>(useFrequencies.Count);
             foreach (var useFrequency in useFrequencies) {
                 var intakesPerRouteSubstance = new Dictionary<ExposureRoute, List<IIntakePerCompound>>();
-                foreach (var route in _exposureRoutes) {
+                foreach (var route in routes) {
                     var exposuresPerSubstance = new List<ConsumerProductExposurePerSubstance>();
-                    foreach (var substance in _substances) {
-                        if (_cpApplicationAmounts.TryGetValue(useFrequency.Product, out var cpApplicationAmount)
-                            && _cpFractions.TryGetValue((useFrequency.Product, substance, route), out var cpFraction)
-                            && _cpConcentrationCollections.TryGetValue(useFrequency.Product, out var cpCollection)
+                    foreach (var substance in substances) {
+                        if (_applicationAmounts.TryGetValue(useFrequency.Product, out var cpApplicationAmount)
+                            && _exposureFractions.TryGetValue((useFrequency.Product, substance, route), out var cpFraction)
+                            && _concentrationCollections.TryGetValue(useFrequency.Product, out var cpCollection)
                         ) {
                             double concentration;
                             double occurrencePercentage;
-                            if (!_cpConcentrations.TryGetValue((useFrequency.Product, substance), out var cpc)) {
+                            if (!_concentrations.TryGetValue((useFrequency.Product, substance), out var cpc)) {
                                 (concentration, occurrencePercentage) = getConcentration(substance, cpCollection);
-                                _cpConcentrations[(useFrequency.Product, substance)] = (concentration, occurrencePercentage);
+                                _concentrations[(useFrequency.Product, substance)] = (concentration, occurrencePercentage);
                             } else {
                                 concentration = cpc.concentration;
                                 occurrencePercentage = cpc.occurrencePercentage;
@@ -92,16 +86,15 @@ namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
                     }
                     intakesPerRouteSubstance.Add(route, [..exposuresPerSubstance.Cast<IIntakePerCompound>()]);
                 }
-                var intakePerCP = new IntakePerConsumerProduct() {
+                var intakePerProduct = new IntakePerConsumerProduct() {
                     Product = useFrequency.Product,
                     IntakesPerSubstance = intakesPerRouteSubstance,
                 };
-                intakesPerConsumerProduct.Add(intakePerCP);
+                intakesPerConsumerProduct.Add(intakePerProduct);
             }
             var consumerProductIndividualDayIntake = new ConsumerProductIndividualIntake() {
-                SimulatedIndividualDayId = sid.SimulatedIndividualDayId,
-                SimulatedIndividual = sid.SimulatedIndividual,
-                IntakesPerConsumerProduct = [.. intakesPerConsumerProduct.Cast<IIntakePerConsumerProduct>()],
+                SimulatedIndividual = individual,
+                IntakesPerProduct = [.. intakesPerConsumerProduct.Cast<IIntakePerConsumerProduct>()],
             };
 
             return consumerProductIndividualDayIntake;
