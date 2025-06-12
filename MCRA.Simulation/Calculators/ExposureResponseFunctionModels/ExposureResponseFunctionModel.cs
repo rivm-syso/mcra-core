@@ -10,6 +10,7 @@ namespace MCRA.Simulation.Calculators.ExposureResponseFunctions {
         Lower,
         Upper
     }
+
     public class ExposureResponseFunctionModel : IExposureResponseFunctionModel {
 
         private double _draw;

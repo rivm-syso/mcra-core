@@ -17,7 +17,7 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
 
         public override void Summarize(
             ActionModuleConfig sectionConfig,
-            EnvironmentalBurdenOfDiseaseActionResult actionResult,
+            EnvironmentalBurdenOfDiseaseActionResult result,
             ActionData data,
             SectionHeader header,
             int order
@@ -31,7 +31,7 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
             };
             var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
             section.Summarize(
-                data.EnvironmentalBurdenOfDiseases
+                result.EnvironmentalBurdenOfDiseases
             );
             subHeader.SaveSummarySection(section);
 
@@ -42,7 +42,7 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
                 && data.EnvironmentalBurdenOfDiseases.Count > 0
             ) {
                 summarizeAttributableBod(
-                    data.EnvironmentalBurdenOfDiseases,
+                    result.EnvironmentalBurdenOfDiseases,
                     subHeader,
                     subOrder++
                 );
@@ -53,7 +53,7 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
                 && data.EnvironmentalBurdenOfDiseases.Count > 0
             ) {
                 summarizeExposureResponseFunction(
-                    actionResult,
+                    result,
                     data,
                     subHeader,
                     subOrder++
@@ -62,7 +62,7 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
         }
 
         public void SummarizeUncertain(
-            EnvironmentalBurdenOfDiseaseActionResult actionResult,
+            EnvironmentalBurdenOfDiseaseActionResult result,
             ActionData data,
             SectionHeader header
         ) {
@@ -72,7 +72,7 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
             } else {
                 var section = subHeader.GetSummarySection() as EnvironmentalBurdenOfDiseaseSummarySection;
                 section.SummarizeUncertainty(
-                    data.EnvironmentalBurdenOfDiseases,
+                    result.EnvironmentalBurdenOfDiseases,
                     _configuration.UncertaintyLowerBound,
                     _configuration.UncertaintyUpperBound
                 );
@@ -82,7 +82,7 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
 
             if (data.EnvironmentalBurdenOfDiseases.Count > 0) {
                 summarizeAttributableBodUncertainty(
-                    data.EnvironmentalBurdenOfDiseases,
+                    result.EnvironmentalBurdenOfDiseases,
                     _configuration.UncertaintyLowerBound,
                     _configuration.UncertaintyUpperBound,
                     subHeader

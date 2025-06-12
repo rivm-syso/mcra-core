@@ -65,13 +65,13 @@ namespace MCRA.Simulation.OutputGeneration {
                     EffectMetric = erf.EffectMetric.GetDisplayName(),
                     ExposureResponseType = erf.ExposureResponseType.GetDisplayName(),
                     ExposureResponseSpecification = erf.ExposureResponseSpecification.ExpressionString,
-                    ExposureResponseSpecificationLower = erf.ExposureResponseSpecificationLower.ExpressionString.Length != 0
+                    ExposureResponseSpecificationLower = erf.ExposureResponseSpecificationLower?.ExpressionString.Length > 0
                         ? erf.ExposureResponseSpecificationLower.ExpressionString
                         : null,
-                    ExposureResponseSpecificationUpper = erf.ExposureResponseSpecificationUpper.ExpressionString.Length != 0
+                    ExposureResponseSpecificationUpper = erf.ExposureResponseSpecificationUpper?.ExpressionString.Length > 0
                         ? erf.ExposureResponseSpecificationUpper.ExpressionString
                         : null,
-                    ErfDoseUnit = erf.DoseUnit.GetShortDisplayName(),
+                    ErfDoseUnit = erf.ExposureUnit.GetShortDisplayName(),
                     ErfDoseAlignmentFactor = doseUnitAlignmentFactor,
                     CounterfactualValue = erf.CounterfactualValue,
                     HasSubgroups = erf.HasErfSubGroups,

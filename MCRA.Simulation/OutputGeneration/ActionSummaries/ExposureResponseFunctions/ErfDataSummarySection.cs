@@ -27,7 +27,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         BiologicalMatrix = r.BiologicalMatrix != BiologicalMatrix.Undefined
                             ? r.BiologicalMatrix.GetDisplayName()
                             : null,
-                        DoseUnit = r.DoseUnit.GetShortDisplayName(),
+                        DoseUnit = r.ExposureUnit.GetShortDisplayName(),
                         PopulationCharacteristic = r.PopulationCharacteristic != PopulationCharacteristicType.Undefined
                             ? r.PopulationCharacteristic.GetDisplayName()
                             : null,

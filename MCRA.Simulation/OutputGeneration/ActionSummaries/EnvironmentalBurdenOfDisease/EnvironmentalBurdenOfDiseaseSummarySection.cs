@@ -9,7 +9,7 @@ namespace MCRA.Simulation.OutputGeneration {
             List<EnvironmentalBurdenOfDiseaseResultRecord> environmentalBurdenOfDiseases
         ) {
             Records = environmentalBurdenOfDiseases
-                .Select(r => getEbdSummaryRecord(r))
+                .Select(getEbdSummaryRecord)
                 .ToList();
         }
 
@@ -19,10 +19,10 @@ namespace MCRA.Simulation.OutputGeneration {
             double upperBound
         ) {
             var resultsSummaryRecords = results
-                .Select(r => getEbdSummaryRecord(r))
+                .Select(getEbdSummaryRecord)
                 .ToList();
-            var lookup = resultsSummaryRecords.ToDictionary(r => (r.PopulationCode, r.BodIndicator, r.ErfCode));
-
+            var lookup = resultsSummaryRecords
+                .ToDictionary(r => (r.PopulationCode, r.BodIndicator, r.ErfCode));
             foreach (var record in Records) {
                 record.UncertaintyLowerBound = lowerBound;
                 record.UncertaintyUpperBound = upperBound;
@@ -32,16 +32,17 @@ namespace MCRA.Simulation.OutputGeneration {
                 );
             }
         }
+
         private static EnvironmentalBurdenOfDiseaseSummaryRecord getEbdSummaryRecord(
             EnvironmentalBurdenOfDiseaseResultRecord ebdResultRecord
         ) {
             var totalAttributableBod = ebdResultRecord.EnvironmentalBurdenOfDiseaseResultBinRecords.Sum(bin => bin.AttributableBod);
             var population = ebdResultRecord.BurdenOfDisease.Population;
             return new EnvironmentalBurdenOfDiseaseSummaryRecord {
-                PopulationSize = population.Size > 0 ? population.Size : double.NaN,
+                PopulationSize = population?.Size > 0 ? population.Size : double.NaN,
                 BodIndicator = ebdResultRecord.BurdenOfDisease.BodIndicator.GetShortDisplayName(),
-                PopulationCode = ebdResultRecord.BurdenOfDisease.Population.Code,
-                PopulationName = ebdResultRecord.BurdenOfDisease.Population.Name,
+                PopulationCode = ebdResultRecord.BurdenOfDisease.Population?.Code,
+                PopulationName = ebdResultRecord.BurdenOfDisease.Population?.Name,
                 ErfCode = ebdResultRecord.ExposureResponseFunction.Code,
                 ErfName = ebdResultRecord.ExposureResponseFunction.Name,
                 TotalAttributableBod = totalAttributableBod,

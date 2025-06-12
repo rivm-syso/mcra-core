@@ -85,17 +85,19 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             exposureResponseType
                                         );
 
+                                        var exposureTarget = targetLevel == TargetLevelType.External
+                                            ? new ExposureTarget(exposureRoute)
+                                            : new ExposureTarget(biologicalMatrix, expressionType);
+                                        var doseUnit = DoseUnitConverter.FromString(doseUnitString);
+
                                         var record = new ExposureResponseFunction() {
                                             Code = idModel,
                                             Name = r.GetStringOrNull(RawExposureResponseFunctions.Name, fieldMap),
                                             Description = r.GetStringOrNull(RawExposureResponseFunctions.Description, fieldMap),
                                             Substance = _data.GetOrAddSubstance(idSubstance),
                                             Effect = _data.GetOrAddEffect(idEffect),
-                                            TargetLevel = targetLevel,
-                                            ExposureRoute = exposureRoute,
-                                            BiologicalMatrix = biologicalMatrix,
-                                            DoseUnit = DoseUnitConverter.FromString(doseUnitString),
-                                            ExpressionType = expressionType,
+                                            ExposureTarget = exposureTarget,
+                                            ExposureUnit = ExposureUnitTriple.FromDoseUnit(doseUnit),
                                             EffectMetric = effectMetric,
                                             ExposureResponseType = exposureResponseType,
                                             ExposureResponseSpecification = exposureResponseSpecification,
@@ -181,7 +183,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 r.WriteNonEmptyString(RawExposureResponseFunctions.TargetLevel, erf.TargetLevel.ToString(), ccr);
                 r.WriteNonEmptyString(RawExposureResponseFunctions.ExposureRoute, erf.ExposureRoute.ToString(), ccr);
                 r.WriteNonEmptyString(RawExposureResponseFunctions.BiologicalMatrix, erf.BiologicalMatrix.ToString(), ccr);
-                r.WriteNonEmptyString(RawExposureResponseFunctions.DoseUnit, erf.DoseUnit.ToString(), ccr);
+                r.WriteNonEmptyString(RawExposureResponseFunctions.DoseUnit, erf.ExposureUnit.GetShortDisplayName(), ccr);
                 r.WriteNonEmptyString(RawExposureResponseFunctions.ExpressionType, erf.ExpressionType.ToString(), ccr);
                 r.WriteNonEmptyString(RawExposureResponseFunctions.EffectMetric, erf.EffectMetric.ToString(), ccr);
                 r.WriteNonEmptyString(RawExposureResponseFunctions.ExposureResponseType, erf.ExposureResponseType.ToString(), ccr);

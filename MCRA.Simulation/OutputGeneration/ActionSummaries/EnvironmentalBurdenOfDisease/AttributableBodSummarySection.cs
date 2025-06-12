@@ -50,9 +50,9 @@ namespace MCRA.Simulation.OutputGeneration {
             var records = environmentalBurdenOfDiseaseResultBinRecords
                 .Select(r => new AttributableBodSummaryRecord {
                     ExposureBinId = r.ExposureBinId,
-                    PopulationCode = population.Code,
-                    PopulationName = population.Name,
-                    PopulationSize = population.Size > 0 ? population.Size : double.NaN,
+                    PopulationCode = population?.Code,
+                    PopulationName = population?.Name,
+                    PopulationSize = population?.Size > 0 ? population.Size : double.NaN,
                     BodIndicator = ebdResultRecord.BurdenOfDisease.BodIndicator.GetShortDisplayName(),
                     ErfCode = ebdResultRecord.ExposureResponseFunction.Code,
                     BinPercentage = r.ExposurePercentileBin.Percentage,

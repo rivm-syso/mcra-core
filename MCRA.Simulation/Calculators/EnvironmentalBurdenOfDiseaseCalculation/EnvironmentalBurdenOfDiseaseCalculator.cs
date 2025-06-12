@@ -27,7 +27,7 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
         }
 
         public EnvironmentalBurdenOfDiseaseResultRecord Compute() {
-            var populationSize = Population.Size;
+            var populationSize = Population?.Size ?? double.NaN;
             var environmentalBurdenOfDiseaseResultBinRecords = ExposureResponseResults
                 .Select(compute)
                 .ToList();
@@ -46,7 +46,7 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
             var result = new EnvironmentalBurdenOfDiseaseResultRecord {
                 BurdenOfDisease = BurdenOfDisease,
                 ExposureResponseFunction = ExposureResponseResults.First().ExposureResponseFunction,
-                ErfDoseUnit = ExposureResponseResults.First().ExposureResponseFunction.DoseUnit,
+                ErfDoseUnit = ExposureResponseResults.First().ExposureResponseFunction.ExposureUnit,
                 TargetUnit = ExposureResponseResults.First().TargetUnit,
                 EnvironmentalBurdenOfDiseaseResultBinRecords = environmentalBurdenOfDiseaseResultBinRecords
             };
