@@ -90,8 +90,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         section.SummarizeSetting(SettingsItemType.AirSexAlignment, _configuration.AirSexAlignment);
                     }
                 }
-                if (_configuration.ExposureSources.Contains(ExposureSource.ConsumerProduct)
-                   && _configuration.IndividualReferenceSet != ExposureSource.ConsumerProduct
+                if (_configuration.ExposureSources.Contains(ExposureSource.ConsumerProducts)
+                   && _configuration.IndividualReferenceSet != ExposureSource.ConsumerProducts
                 ) {
                     section.SummarizeSetting(SettingsItemType.ConsumerProductPopulationAlignmentMethod, _configuration.ConsumerProductPopulationAlignmentMethod);
                     if (_configuration.ConsumerProductPopulationAlignmentMethod == PopulationAlignmentMethod.MatchRandom) {

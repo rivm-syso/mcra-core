@@ -20,6 +20,17 @@
       </Aliases>
     </Unit>
     <Unit>
+      <Id>Air</Id>
+      <Name>Air</Name>
+      <ShortName>Air</ShortName>
+      <Description>
+        Air exposure sources.
+      </Description>
+      <Aliases>
+        <Alias>Air</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
       <Id>Dust</Id>
       <Name>Dust</Name>
       <ShortName>Dust</ShortName>
@@ -42,14 +53,14 @@
       </Aliases>
     </Unit>
     <Unit>
-      <Id>Air</Id>
-      <Name>Air</Name>
-      <ShortName>Air</ShortName>
+      <Id>ConsumerProducts</Id>
+      <Name>Consumer products</Name>
+      <ShortName>Consumer products</ShortName>
       <Description>
-        Air exposure sources.
+        Consumer product exposure sources.
       </Description>
       <Aliases>
-        <Alias>Air</Alias>
+        <Alias>ConsumerProducts</Alias>
       </Aliases>
     </Unit>
     <Unit>
@@ -61,17 +72,6 @@
       </Description>
       <Aliases>
         <Alias>Other non-dietary</Alias>
-      </Aliases>
-    </Unit>
-    <Unit>
-      <Id>ConsumerProduct</Id>
-      <Name>Consumer product</Name>
-      <ShortName>Consumer product</ShortName>
-      <Description>
-        Consumer product exposure sources.
-      </Description>
-      <Aliases>
-        <Alias>ConsumerProduct</Alias>
       </Aliases>
     </Unit>
   </Units>

@@ -72,7 +72,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             _actionInputRequirements[ActionType.AirExposures].IsVisible = requireAir;
 
             var requireConsumerProduct = ModuleConfig.ExposureType == ExposureType.Chronic &&
-                ModuleConfig.ExposureSources.Contains(ExposureSource.ConsumerProduct);
+                ModuleConfig.ExposureSources.Contains(ExposureSource.ConsumerProducts);
             _actionInputRequirements[ActionType.ConsumerProductExposures].IsRequired = requireConsumerProduct;
             _actionInputRequirements[ActionType.ConsumerProductExposures].IsVisible = requireConsumerProduct;
             _actionInputRequirements[ActionType.ConsumerProducts].IsRequired = requireConsumerProduct;
@@ -319,7 +319,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     externalExposureUnit = data.DustExposureUnit;
                     referenceIndividualDays = [.. data.IndividualDustExposures.Cast<IIndividualDay>()];
                     break;
-                case ExposureSource.ConsumerProduct:
+                case ExposureSource.ConsumerProducts:
                     externalExposureUnit = data.ConsumerProductExposureUnit;
                     referenceIndividualDays = data.ConsumerProductIndividualExposures
                         .Select(r => new SimulatedIndividualDay(r.SimulatedIndividual))
@@ -458,13 +458,13 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             }
 
             // Align consumer product exposures
-            if (ModuleConfig.ExposureSources.Contains(ExposureSource.ConsumerProduct)) {
+            if (ModuleConfig.ExposureSources.Contains(ExposureSource.ConsumerProducts)) {
                 localProgress.Update("Matching consumer product exposures");
                 ExternalExposureCollection cpExposureCollection = null;
-                if (ModuleConfig.IndividualReferenceSet == ExposureSource.ConsumerProduct) {
+                if (ModuleConfig.IndividualReferenceSet == ExposureSource.ConsumerProducts) {
                     cpExposureCollection = new ExternalExposureCollection {
                         SubstanceAmountUnit = targetUnit.SubstanceAmountUnit,
-                        ExposureSource = ExposureSource.ConsumerProduct,
+                        ExposureSource = ExposureSource.ConsumerProducts,
                         ExternalIndividualDayExposures = data.ConsumerProductIndividualExposures
                             .AsParallel()
                             .Select(c => ExternalIndividualDayExposure.FromConsumerProductIndividualIntake(c, ModuleConfig.ExposureRoutes))

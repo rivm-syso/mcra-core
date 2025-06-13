@@ -246,7 +246,7 @@ namespace MCRA.Simulation.Calculators.ExternalExposureCalculation {
         ) {
             var exposuresPerPath = new Dictionary<ExposurePath, List<IIntakePerCompound>>();
             foreach (var route in routes) {
-                exposuresPerPath[new(ExposureSource.ConsumerProduct, route)] = [.. individualDay.GetTotalIntakesPerSubstance(route)];
+                exposuresPerPath[new(ExposureSource.ConsumerProducts, route)] = [.. individualDay.GetTotalIntakesPerSubstance(route)];
             }
             var result = new ExternalIndividualDayExposure(exposuresPerPath) {
                 SimulatedIndividualDayId = individualDay.SimulatedIndividual.Id,

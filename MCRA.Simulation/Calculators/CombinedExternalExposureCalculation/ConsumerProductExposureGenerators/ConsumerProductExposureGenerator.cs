@@ -55,7 +55,7 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.Consum
             }
             var cpExposureCollection = new ExternalExposureCollection {
                 SubstanceAmountUnit = substanceAmountUnit,
-                ExposureSource = ExposureSource.ConsumerProduct,
+                ExposureSource = ExposureSource.ConsumerProducts,
                 ExternalIndividualDayExposures = cpIndividualExposures
             };
             return cpExposureCollection;

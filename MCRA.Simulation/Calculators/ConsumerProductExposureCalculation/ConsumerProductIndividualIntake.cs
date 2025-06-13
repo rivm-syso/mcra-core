@@ -31,7 +31,7 @@ namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
                     .SelectMany(r => r.IntakesPerSubstance.Keys)
                     .Distinct();
                 var result = routes
-                    .ToDictionary(r => new ExposurePath(ExposureSource.ConsumerProduct, r), GetTotalIntakesPerSubstance);
+                    .ToDictionary(r => new ExposurePath(ExposureSource.ConsumerProducts, r), GetTotalIntakesPerSubstance);
                 return result;
             }
         }
