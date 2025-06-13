@@ -141,7 +141,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         .GroupBy(r => r.Value)
                         .Select(g => new PopulationLevelStatisticRecord() {
                             Level = g.Key,
-                            Frequency = g.Sum(r => r.Individual.SamplingWeight)
+                            Frequency = g.Count()
                         })
                         .OrderBy(r => r.Level, StringComparer.OrdinalIgnoreCase)
                         .ToList();
