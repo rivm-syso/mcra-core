@@ -8,13 +8,10 @@
   <IsAdvancedActionType>true</IsAdvancedActionType>
   <AllowMultipleDataSources>false</AllowMultipleDataSources>
   <Description>
-    Deterministic substance conversion factors.
+    Data module for deterministic substance conversion factors. These are (possibly food specific) conversion factors for expressing measured substance concentrations to equivalent active substance concentrations.
   </Description>
-  <ShortDescription>
-    Deterministic substance conversion factors.
-  </ShortDescription>
   <DataDescription>
-    Deterministic substance conversion factors.
+    Deterministic substance conversion factors are (possibly food specific) conversion factors for expressing measured substance concentrations to equivalent active substance concentrations.
   </DataDescription>
   <Entities>
     <Entity>Substances</Entity>

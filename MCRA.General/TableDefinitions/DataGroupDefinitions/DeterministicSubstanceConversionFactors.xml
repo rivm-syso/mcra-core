@@ -4,7 +4,7 @@
   <Name>Deterministic substance conversion factors</Name>
   <SourceTableGroup>DeterministicSubstanceConversionFactors</SourceTableGroup>
   <Description>
-    Deterministic substance conversion factors. Foods are optional.
+    Deterministic substance conversion factors are (possibly food specific) conversion factors for expressing measured substance concentrations to equivalent active substance concentrations.
   </Description>
   <DataGroupTables>
     <DataGroupTable>
