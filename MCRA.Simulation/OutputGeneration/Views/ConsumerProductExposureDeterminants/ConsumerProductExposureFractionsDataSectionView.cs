@@ -21,6 +21,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     ViewBag,
                     caption: "Percentage exposure fraction.",
                     saveCsv: true,
+                    displayLimit: 20,
                     hiddenProperties: hiddenProperties
                 );
             } else {

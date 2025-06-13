@@ -4,7 +4,7 @@ using MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders;
 using System.Text;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
-    public class TotalConsumerProductsSectionView : SectionView<TotalConsumerProductsSection> {
+    public class ConsumerProductExposuresTotalDistributionSectionView : SectionView<ConsumerProductExposuresTotalDistributionSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
 
             var hiddenProperties = new List<string>();
@@ -37,7 +37,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         .BuildHierarchy(Model.Records, nodes, f => f.__Id, f => f.__IdParent)
                         .ToList();
 
-                    Func<DistributionConsumerProductRecord, string> orderByExtractor = (DistributionConsumerProductRecord f) => {
+                    string orderByExtractor(ConsumerProductExposureRecord f) {
                         if (f.__IsSummaryRecord) {
                             return "2" + f.ConsumerProductName;
                         } else if (f.__Id != null) {
@@ -45,7 +45,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         } else {
                             return "0" + f.ConsumerProductName;
                         }
-                    };
+                    }
                     var sortedHierarchicalRecords = hierarchicalRecords.GetTreeOrderedList(orderByExtractor).ToList();
 
                     // Get contributions per hierarchical level
@@ -54,7 +54,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         .Where(c => string.IsNullOrEmpty(c.Node.__IdParent))
                         .Select(c => c.Node.__Id)
                         .ToList();
-                    var resultsCollection = new List<List<DistributionConsumerProductRecord>>();
+                    var resultsCollection = new List<List<ConsumerProductExposureRecord>>();
                     while (selectedIds.Any()) {
                         var treeResults = allFoodSubTrees
                             .Where(c => selectedIds.Contains(c.Node.__Id))
@@ -69,26 +69,26 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
                     var counter = 0;
                     var panelBuilder = new HtmlTabPanelBuilder();
-                    //foreach (var results in resultsCollection) {
-                    //    var title = counter == 0
-                    //        ? "Main level"
-                    //        : $"Level {counter}";
-                    //    panelBuilder.AddPanel(
-                    //        id: $"level-{counter}",
-                    //        title: title,
-                    //        hoverText: $"Hierarchy level {counter}",
-                    //        content: ChartHelpers.Chart(
-                    //            $"TotalDistributionConsumerProductChart {counter}",
-                    //            Model,
-                    //            ViewBag,
-                    //            new TotalDistributionFoodAsMeasuredPieChartCreator(Model, results, isUncertainty, counter: counter),
-                    //            ChartFileType.Svg,
-                    //            true,
-                    //            $"Hierarchy level {counter}."
-                    //        ));
-                    //    counter++;
-                    //}
-                    //panelBuilder.RenderPanel(sb);
+                    foreach (var results in resultsCollection) {
+                        var title = counter == 0
+                            ? "Main level"
+                            : $"Level {counter}";
+                        panelBuilder.AddPanel(
+                            id: $"level-{counter}",
+                            title: title,
+                            hoverText: $"Hierarchy level {counter}",
+                            content: ChartHelpers.Chart(
+                                $"TotalDistributionConsumerProductChart {counter}",
+                                Model,
+                                ViewBag,
+                                new ConsumerProductExposuresTotalDistributionPieChartCreator(Model, results, isUncertainty, counter: counter),
+                                ChartFileType.Svg,
+                                true,
+                                $"Hierarchy level {counter}."
+                            ));
+                        counter++;
+                    }
+                    panelBuilder.RenderPanel(sb);
 
                     sb.AppendTable(
                          Model,
@@ -98,25 +98,25 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                          "__Id",
                          "__IdParent",
                          "__IsSummaryRecord",
-                         caption: "Exposure statistics by modelled food (total distribution).",
+                         caption: "Exposure statistics by consumer product (total distribution).",
                          saveCsv: true,
                          displayLimit: 20,
                          hiddenProperties: hiddenProperties,
                          isHierarchical: true
                     );
                 } else {
-                    //if (Model.Records.Count > 1) {
-                    //    var chartCreator = new TotalDistributionFoodAsMeasuredPieChartCreator(Model, Model.Records, isUncertainty);
-                    //    sb.AppendChart(
-                    //        "TotalDistributionFoodAsMeasuredChart",
-                    //        chartCreator,
-                    //        ChartFileType.Svg,
-                    //        Model,
-                    //        ViewBag,
-                    //        chartCreator.Title,
-                    //        true
-                    //    );
-                    //}
+                    if (Model.Records.Count > 1) {
+                        var chartCreator = new ConsumerProductExposuresTotalDistributionPieChartCreator(Model, Model.Records, isUncertainty);
+                        sb.AppendChart(
+                            "TotalDistributionConsumerProductChart",
+                            chartCreator,
+                            ChartFileType.Svg,
+                            Model,
+                            ViewBag,
+                            chartCreator.Title,
+                            true
+                        );
+                    }
 
                     sb.AppendTable(
                         Model,

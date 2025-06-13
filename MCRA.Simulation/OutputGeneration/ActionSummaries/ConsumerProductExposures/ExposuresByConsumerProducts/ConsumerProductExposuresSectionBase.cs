@@ -1,16 +1,17 @@
-﻿using MCRA.Utils.Hierarchies;
-using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
-using MCRA.Simulation.Calculators.ConsumerProductExposureCalculation;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.Simulation.Calculators.ConsumerProductExposureCalculation;
+using MCRA.Utils.ExtensionMethods;
+using MCRA.Utils.Hierarchies;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public class DistributionConsumerProductsSectionBase : SummarySection {
+    public class ConsumerProductExposuresSectionBase : SummarySection {
         public override bool SaveTemporaryData => true;
         protected double[] Percentages { get; set; }
-        public List<DistributionConsumerProductRecord> Records { get; set; }
+        public List<ConsumerProductExposureRecord> Records { get; set; }
 
-        public List<DistributionConsumerProductRecord> HierarchicalNodes { get; set; }
+        public List<ConsumerProductExposureRecord> HierarchicalNodes { get; set; }
 
         /// <summary>
         /// Returns whether this section has hierarchical data or not.
@@ -24,6 +25,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public void SummarizeChronic(
             ICollection<ConsumerProduct> allConsumerProducts,
             ICollection<ConsumerProductIndividualExposure> cpIndividualExposures,
+            ICollection<Compound> substances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             ICollection<ExposureRoute> routes,
@@ -34,53 +36,59 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Select(c => c.SimulatedIndividual.Id)
                 .Distinct()
                 .ToList();
-            var individualDayCountLookup = cpIndividualExposures
-                .GroupBy(c => c.SimulatedIndividual.Id)
-                .ToDictionary(c => c.Key, c => c.Count());
-            var totalIntake = cpIndividualExposures
-                .GroupBy(c => c.SimulatedIndividual.Id)
-                .Select(c => c.Sum(i => i.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) * i.SimulatedIndividual.SamplingWeight) / c.Count())
-                .Sum();
-
-            var sumSamplingWeights = cpIndividualExposures.GroupBy(c => c.SimulatedIndividual.Id)
-                .Sum(c => c.First().SimulatedIndividual.SamplingWeight);
-            Records = [];
-            //TODO, when a consumer product has more than one route, this goes wrong 
+            var totalIntake = 0d;
             foreach (var route in routes) {
-                var records = cpIndividualExposures
+                //TODO Overleg dit even met Tijmen of Johannes
+
+                //foreach (var substance in substances) {
+                //    totalIntake += cpIndividualExposures
+                //    .Select(c => c.GetExposure(route, substance, isPerPerson)
+                //        * c.SimulatedIndividual.SamplingWeight * relativePotencyFactors[substance] * membershipProbabilities[substance])
+                //    .Sum();
+                //}
+                totalIntake += substances.Sum(substance => cpIndividualExposures
+                    .Sum(c => c.GetExposure(route, substance, isPerPerson)
+                        * c.SimulatedIndividual.SamplingWeight * relativePotencyFactors[substance] * membershipProbabilities[substance]));
+
+            }
+            var sumSamplingWeights = cpIndividualExposures.
+                Sum(c => c.SimulatedIndividual.SamplingWeight);
+
+            Records = [];
+
+            //Aggregate over routes
+            var records = routes
+                .SelectMany(route => cpIndividualExposures
                     .AsParallel()
                     .WithCancellation(cancelToken)
                     .SelectMany(i => i.IntakesPerProduct,
                         (i, ipcp) => (
-                            SimulatedIndividualId: i.SimulatedIndividual.Id,
-                            CPIndividualDayIntake: i,
+                            SimulatedIndividual: i.SimulatedIndividual,
                             IntakePerConsumerProduct: ipcp
                         ))
-                    .GroupBy(ipcp => (ipcp.CPIndividualDayIntake, ipcp.IntakePerConsumerProduct.Product))
+                    .GroupBy(ipcp => (ipcp.SimulatedIndividual, ipcp.IntakePerConsumerProduct.Product))
                     .Select(g => (
-                        SimulatedIndividualId: g.First().SimulatedIndividualId,
-                        NumberOfDaysInSurvey: individualDayCountLookup[g.First().SimulatedIndividualId],
-                        ConsumerProduct: g.Key.Product,
+                        SimulatedIndividual: g.Key.SimulatedIndividual,
+                        Product: g.Key.Product,
                         IntakePerMassUnit: g.Sum(ipf => ipf.IntakePerConsumerProduct.IntakesPerSubstance[route].Sum(c => c.EquivalentSubstanceAmount(relativePotencyFactors[c.Compound], membershipProbabilities[c.Compound])))
-                            / (isPerPerson ? 1 : g.Key.CPIndividualDayIntake.SimulatedIndividual.BodyWeight),
-                        SamplingWeight: g.Key.CPIndividualDayIntake.SimulatedIndividual.SamplingWeight,
-                        DistinctSubstances: g.SelectMany(ipf => ipf.IntakePerConsumerProduct.IntakesPerSubstance[route].Select(c => c.Compound)).Distinct()
-                    ))
-                    .GroupBy(gr => (gr.ConsumerProduct, gr.SimulatedIndividualId))
-                    .Select(c => (
-                        Product: c.Key.ConsumerProduct,
-                        IntakePerMassUnit: c.Sum(ipf => ipf.IntakePerMassUnit) / c.First().NumberOfDaysInSurvey,
-                        SamplingWeight: c.First().SamplingWeight,
-                        SimulatedIndividualId: c.First().SimulatedIndividualId,
-                        DistinctSubstances: c.SelectMany(d => d.DistinctSubstances).Distinct()
-                    ))
-                    .GroupBy(g => g.Product)
+                            / (isPerPerson ? 1 : g.Key.SimulatedIndividual.BodyWeight),
+                        Substances: g.SelectMany(ipf => ipf.IntakePerConsumerProduct.IntakesPerSubstance[route].Select(c => c.Compound))
+                    )))
+                    .GroupBy(ipcp => (ipcp.SimulatedIndividual, ipcp.Product))
+                    .Select(g => (
+                        Product: g.Key.Product,
+                        IntakePerMassUnit: g.Sum(ipf => ipf.IntakePerMassUnit),
+                        SamplingWeight: g.Key.SimulatedIndividual.SamplingWeight,
+                        Substances: g.SelectMany(ipf => ipf.Substances)
+                        )
+                    )
+                    .GroupBy(ipcp => ipcp.Product)
                     .Select(g => {
                         var allIntakes = g.Where(c => c.IntakePerMassUnit > 0)
                            .Select(gr => (
                                IntakePerMassUnit: gr.IntakePerMassUnit,
                                SamplingWeight: gr.SamplingWeight,
-                               DistinctSubstances: gr.DistinctSubstances.Distinct().ToList()
+                               Substances: gr.Substances
                            ))
                         .ToList();
 
@@ -95,11 +103,13 @@ namespace MCRA.Simulation.OutputGeneration {
                            .PercentilesAdditionalZeros(weights, Percentages, samplingWeightsZeros);
 
                         var percentiles = allIntakes
+                            .Where(c => c.IntakePerMassUnit > 0)
                            .Select(ipf => ipf.IntakePerMassUnit)
                            .PercentilesWithSamplingWeights(weights, Percentages);
 
                         var total = allIntakes.Sum(ipf => ipf.IntakePerMassUnit * ipf.SamplingWeight);
-                        return new DistributionConsumerProductRecord {
+
+                        return new ConsumerProductExposureRecord {
                             __Id = g.Key.Code,
                             __IdParent = g.Key.Parent?.Code,
                             __IsSummaryRecord = false,
@@ -116,18 +126,23 @@ namespace MCRA.Simulation.OutputGeneration {
                             Percentile75All = percentilesAll[2],
                             Mean = total / weights.Sum(),
                             FractionPositive = Convert.ToDouble(weights.Count) / Convert.ToDouble(individualIds.Count),
-                            NumberOfSubstances = allIntakes.SelectMany(c => c.DistinctSubstances).Distinct().Count(),
+                            NumberOfSubstances = allIntakes.SelectMany(c => c.Substances).ToHashSet().Count(),
                             NumberOfIndividualDays = weights.Count,
                         };
                     })
-                    .Where(c => c.Contribution > 0)
-                    .ToList();
-                Records.AddRange(records);
-            }
+                .Where(c => c.Contribution > 0)
+                .ToList();
 
-            Records.OrderBy(c =>c.Contribution).ToList();
+            Records.AddRange(records);
 
-            HierarchicalNodes = getHierarchicalRecords(allConsumerProducts, cpIndividualExposures, Records, cancelToken);
+            _ = Records.OrderBy(c => c.Contribution).ToList();
+
+            HierarchicalNodes = getHierarchicalRecords(
+                allConsumerProducts,
+                cpIndividualExposures,
+                Records,
+                cancelToken
+            );
         }
 
 
@@ -138,10 +153,10 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="cpIndividualIntakes"></param>
         /// <param name="distributionConsumerProductRecords"></param>
         /// <param name="cancelToken"></param>
-        private List<DistributionConsumerProductRecord> getHierarchicalRecords(
+        private List<ConsumerProductExposureRecord> getHierarchicalRecords(
             ICollection<ConsumerProduct> allConsumerProducts,
             ICollection<ConsumerProductIndividualExposure> cpIndividualIntakes,
-            List<DistributionConsumerProductRecord> distributionConsumerProductRecords,
+            List<ConsumerProductExposureRecord> distributionConsumerProductRecords,
             CancellationToken cancelToken
         ) {
             var consumerProducts = cpIndividualIntakes
@@ -152,7 +167,6 @@ namespace MCRA.Simulation.OutputGeneration {
             //Create foods hierarchy
             var consumerProductHierarchy = HierarchyUtilities.BuildHierarchy(consumerProducts, allConsumerProducts, (ConsumerProduct f) => f.Code, (ConsumerProduct f) => f.Parent?.Code);
             var allConsumerProductSubTrees = consumerProductHierarchy.Traverse().ToList();
-
             var exposuresPerConsumerProductLookup = distributionConsumerProductRecords.ToLookup(r => r.ConsumerProductCode);
             // Create summary records
             var hierarchicalNodes = allConsumerProductSubTrees
@@ -180,16 +194,15 @@ namespace MCRA.Simulation.OutputGeneration {
                     }
                 }
             }
-
             return [.. hierarchicalNodes];
         }
 
-        private DistributionConsumerProductRecord summarizeHierarchicalExposures(
-                ConsumerProduct consumerProduct,
-                IEnumerable<DistributionConsumerProductRecord> records,
-                bool isSummaryRecord
-            ) {
-            return new DistributionConsumerProductRecord() {
+        private static ConsumerProductExposureRecord summarizeHierarchicalExposures(
+            ConsumerProduct consumerProduct,
+            IEnumerable<ConsumerProductExposureRecord> records,
+            bool isSummaryRecord
+        ) {
+            return new ConsumerProductExposureRecord() {
                 __Id = consumerProduct.Code,
                 __IdParent = consumerProduct.Parent?.Code,
                 __IsSummaryRecord = isSummaryRecord,

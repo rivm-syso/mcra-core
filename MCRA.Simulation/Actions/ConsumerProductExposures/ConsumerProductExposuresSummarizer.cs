@@ -1,16 +1,12 @@
-﻿using System.Collections.Generic;
-using DocumentFormat.OpenXml.Drawing.Charts;
-using MCRA.Data.Compiled.Objects;
-using MCRA.General;
+﻿using MCRA.General;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
-using MCRA.Simulation.Calculators.ConsumerProductExposureCalculation;
-using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.Actions.ConsumerProductExposures {
     public enum ConsumerProductExposuresSections {
+        ConsumerProductExposuresByRouteSubstanceSection,
         ConsumerProductExposuresByRouteSection,
         ConsumerProductsSection
     }
@@ -40,8 +36,19 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
             subHeader.Units = collectUnits(data);
             subHeader.SaveSummarySection(section);
 
-            // Exposures by exposure route contributions, summary and boxplot
-            if (outputSettings.ShouldSummarize(ConsumerProductExposuresSections.ConsumerProductExposuresByRouteSection)) {
+            // Exposures by exposure route and substance: contributions, summary and boxplot
+            if (outputSettings.ShouldSummarize(ConsumerProductExposuresSections.ConsumerProductExposuresByRouteSubstanceSection)) {
+                summarizeConsumerProductExposuresByRouteSubstance(
+                    actionResult,
+                    data,
+                    subHeader,
+                    order++
+                );
+            }
+
+            if (data.ActiveSubstances.Count >  0
+                && outputSettings.ShouldSummarize(ConsumerProductExposuresSections.ConsumerProductExposuresByRouteSection)
+            ) {
                 summarizeConsumerProductExposuresByRoute(
                     actionResult,
                     data,
@@ -49,7 +56,7 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
                     order++
                 );
             }
-            // Exposures by consumer product: contributions, summary and boxplot
+            // Exposures by consumer products: contributions, summary and boxplot
             if (outputSettings.ShouldSummarize(ConsumerProductExposuresSections.ConsumerProductsSection)) {
                 summarizeConsumerProducts(
                     actionResult,
@@ -82,14 +89,14 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
         /// <summary>
         /// Consumer product exposures by route and substance (boxplot and summary table).
         /// </summary>
-        private void summarizeConsumerProductExposuresByRoute(
+        private void summarizeConsumerProductExposuresByRouteSubstance(
             ConsumerProductExposuresActionResult result,
             ActionData data,
             SectionHeader header,
             int order
         ) {
-            var section = new ConsumerProductExposuresByRouteSection() {
-                SectionLabel = getSectionLabel(ConsumerProductExposuresSections.ConsumerProductExposuresByRouteSection)
+            var section = new ConsumerProductExposuresByRouteSubstanceSection() {
+                SectionLabel = getSectionLabel(ConsumerProductExposuresSections.ConsumerProductExposuresByRouteSubstanceSection)
             };
             var subHeader = header.AddSubSectionHeaderFor(
                 section,
@@ -102,11 +109,44 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
                 _configuration.VariabilityLowerPercentage,
                 _configuration.VariabilityUpperPercentage,
                 result.ConsumerProductExposureUnit,
-                [ExposureRoute.Dermal]
+                _configuration.SelectedExposureRoutes
             );
             subHeader.SaveSummarySection(section);
         }
 
+        /// <summary>
+        /// Consumer product exposures by route (boxplot and summary table).
+        /// </summary>
+        private void summarizeConsumerProductExposuresByRoute(
+            ConsumerProductExposuresActionResult result,
+            ActionData data,
+            SectionHeader header,
+            int order
+        ) {
+            var section = new ConsumerProductExposuresByRouteSection() {
+                SectionLabel = getSectionLabel(ConsumerProductExposuresSections.ConsumerProductExposuresByRouteSection)
+            };
+            var subHeader = header.AddSubSectionHeaderFor(
+                section,
+                "Exposures by route",
+                order
+            );
+            section.SummarizeChronic(
+                data.AllConsumerProducts,
+                data.ConsumerProductIndividualExposures,
+                data.ActiveSubstances,
+                data.CorrectedRelativePotencyFactors,
+                data.MembershipProbabilities,
+                _configuration.SelectedExposureRoutes,
+                ExposureType.Chronic,
+                _configuration.VariabilityLowerPercentage,
+                _configuration.VariabilityUpperPercentage,
+                _configuration.UncertaintyLowerBound,
+                _configuration.UncertaintyUpperBound,
+                _configuration.IsPerPerson
+            );
+            subHeader.SaveSummarySection(section);
+        }
 
         private void summarizeConsumerProducts(
             ConsumerProductExposuresActionResult actionResult,
@@ -114,7 +154,7 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
             SectionHeader header,
             int order
         )  {
-            var section = new TotalConsumerProductsSection() {
+            var section = new ConsumerProductExposuresTotalDistributionSection() {
                 SectionLabel = getSectionLabel(ConsumerProductExposuresSections.ConsumerProductsSection)
             };
             var subHeader = header.AddSubSectionHeaderFor(
@@ -128,15 +168,13 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
                 data.CorrectedRelativePotencyFactors,
                 data.MembershipProbabilities,
                 data.ActiveSubstances,
-                [ExposureRoute.Dermal],
+                _configuration.SelectedExposureRoutes,
                 ExposureType.Chronic,
-                25,
-                75, 5, 95, false
-            //   double lowerPercentage,
-            //   double upperPercentage,
-            //   double uncertaintyLowerBound,
-            //   double uncertaintyUpperBound,
-            //   bool isPerPerson
+                _configuration.VariabilityLowerPercentage,
+                _configuration.VariabilityUpperPercentage,
+                _configuration.UncertaintyLowerBound,
+                _configuration.UncertaintyUpperBound,
+                _configuration.IsPerPerson
             );
             subHeader.SaveSummarySection(section);
         }

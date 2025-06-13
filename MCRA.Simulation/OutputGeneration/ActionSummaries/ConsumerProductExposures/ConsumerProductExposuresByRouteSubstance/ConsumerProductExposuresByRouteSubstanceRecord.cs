@@ -4,7 +4,7 @@ using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
 
-    public sealed class ConsumerProductExposuresByRouteRecord {
+    public sealed class ConsumerProductExposuresByRouteSubstanceRecord {
 
         [Display(AutoGenerateField = false)]
         public double LowerUncertaintyBound { get; set; }

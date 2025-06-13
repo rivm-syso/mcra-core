@@ -15,17 +15,11 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
 
         public override ActionSettingsSummary Summarize(ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
-
-            //section.SummarizeSetting(
-            //    SettingsItemType.SelectedExposureRoutes,
-            //    string.Join(", ", _configuration.SelectedExposureRoutes),
-            //    _configuration.SelectedExposureRoutes.Count > 0
-            //);
-            //section.SummarizeSetting(SettingsItemType.DustExposuresIndividualGenerationMethod, _configuration.DustExposuresIndividualGenerationMethod);
-
-            //if (_configuration.SelectedExposureRoutes.Contains(ExposureRoute.Dermal)) {
-            //    section.SummarizeSetting(SettingsItemType.DustTimeExposed, _configuration.DustTimeExposed);
-            //}
+            section.SummarizeSetting(
+                SettingsItemType.SelectedExposureRoutes,
+                string.Join(", ", _configuration.SelectedExposureRoutes),
+                _configuration.SelectedExposureRoutes.Count > 0
+            );
 
             return section;
         }

@@ -13,6 +13,7 @@ using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.RandomGenerators;
+using SQLitePCL;
 
 namespace MCRA.Simulation.Actions.ConsumerProductExposures {
 
@@ -34,7 +35,6 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
         ) {
             var localProgress = progressReport.NewProgressState(100);
 
-            // Random generator for computation of dust exposure determinants
             var determinantsRandomGenerator = new McraRandomGenerator(
                 RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.CPE_ConsumerProductExposureDeterminants)
             );
@@ -89,7 +89,6 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
                 .ToList();
 
             //TODO from interface
-            var exposureRoutes = new List<ExposureRoute>() { ExposureRoute.Dermal, ExposureRoute.Oral, ExposureRoute.Inhalation };
             var exposureCalculator = new ConsumerProductExposureCalculator(
                 data.ConsumerProductExposureFractions,
                 data.ConsumerProductApplicationAmounts,
@@ -100,7 +99,7 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
                 .Compute(
                     simulatedIndividuals,
                     data.AllIndividualConsumerProductUseFrequencies,
-                    exposureRoutes,
+                    ModuleConfig.SelectedExposureRoutes,
                     data.ActiveSubstances,
                     new ProgressState(localProgress.CancellationToken)
                 );

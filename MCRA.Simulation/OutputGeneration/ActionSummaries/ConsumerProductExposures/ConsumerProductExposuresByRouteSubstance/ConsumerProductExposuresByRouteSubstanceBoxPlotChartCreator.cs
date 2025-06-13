@@ -4,7 +4,7 @@ using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class ConsumerProductExposuresByRouteBoxPlotChartCreator : BoxPlotChartCreatorBase {
+    public sealed class ConsumerProductExposuresByRouteSubstanceBoxPlotChartCreator : BoxPlotChartCreatorBase {
 
         private readonly List<ConsumerProductExposuresPercentilesRecord> _records;
         private readonly ExposureRoute _route;
@@ -14,7 +14,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public override string Title => $"Lower whiskers: p5, p10; box: p25, p50, p75; upper whiskers: p90 and p95.";
 
-        public ConsumerProductExposuresByRouteBoxPlotChartCreator(
+        public ConsumerProductExposuresByRouteSubstanceBoxPlotChartCreator(
             List<ConsumerProductExposuresPercentilesRecord> records,
             ExposureRoute route,
             string sectionId,

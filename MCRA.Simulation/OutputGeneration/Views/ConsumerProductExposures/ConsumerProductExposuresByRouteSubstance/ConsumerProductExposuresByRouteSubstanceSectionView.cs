@@ -4,12 +4,12 @@ using MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders;
 using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
-    public class ConsumerProductExposuresByRouteSectionView : SectionView<ConsumerProductExposuresByRouteSection> {
+    public class ConsumerProductExposuresByRouteSubstanceSectionView : SectionView<ConsumerProductExposuresByRouteSubstanceSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
-            var positivesRecords = Model.ConsumerProductExposuresByRouteRecords
+            var positivesRecords = Model.ConsumerProductExposuresByRouteSubstanceRecords
                 .Where(r => r.MeanPositives > 0)
                 .ToList();
-            var missingRouteData = Model.ConsumerProductExposuresByRouteRecords
+            var missingRouteData = Model.ConsumerProductExposuresByRouteSubstanceRecords
                 .GroupBy(r => r.ExposureRoute)
                 .Where(records => records.All(r => r.ExposureRoute == null))
                 .ToList();
@@ -28,13 +28,13 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     var unit = boxPlotRecord.Value.FirstOrDefault().Unit;
 
                     var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
-                        name: $"ConsumerProductExposuresByRoutePercentiles{targetCode}",
+                        name: $"ConsumerProductExposuresByRouteSubstancePercentiles{targetCode}",
                         section: Model,
                         items: boxPlotRecord.Value,
                         viewBag: ViewBag
                     );
 
-                    var chartCreator = new ConsumerProductExposuresByRouteBoxPlotChartCreator(
+                    var chartCreator = new ConsumerProductExposuresByRouteSubstanceBoxPlotChartCreator(
                         Model.ConsumerProductExposuresBoxPlotRecords[boxPlotRecord.Key],
                         boxPlotRecord.Key,
                         Model.SectionId,
@@ -50,7 +50,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         title: $"{targetName} ({numberOfRecords})",
                         hoverText: targetName,
                         content: ChartHelpers.Chart(
-                            name: $"ConsumerProductExposuresByRouteBoxPlotChart{targetCode}",
+                            name: $"ConsumerProductExposuresByRouteSubstanceBoxPlotChart{targetCode}",
                             section: Model,
                             viewBag: ViewBag,
                             chartCreator: chartCreator,
@@ -65,7 +65,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
                 var hiddenProperties = new List<string>();
 
-                if (Model.ConsumerProductExposuresByRouteRecords.All(r => double.IsNaN(r.MedianAllLowerBoundPercentile))) {
+                if (Model.ConsumerProductExposuresByRouteSubstanceRecords.All(r => double.IsNaN(r.MedianAllLowerBoundPercentile))) {
                     hiddenProperties.Add("MedianAllMedianPercentile");
                     hiddenProperties.Add("MedianAllLowerBoundPercentile");
                     hiddenProperties.Add("MedianAllUpperBoundPercentile");
@@ -76,9 +76,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 sb.AppendTable(
                     Model,
                     positivesRecords,
-                    "ConsumerProductExposuresByRouteTable",
+                    "ConsumerProductExposuresByRouteSubstanceTable",
                     ViewBag,
-                    caption: $"Exposures by route by substance.",
+                    caption: $"Exposures by route and substance.",
                     saveCsv: true,
                     header: true,
                     hiddenProperties: hiddenProperties

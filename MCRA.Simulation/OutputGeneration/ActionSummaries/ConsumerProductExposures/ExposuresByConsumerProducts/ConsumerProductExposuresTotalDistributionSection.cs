@@ -1,9 +1,10 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using System.Collections.Generic;
+using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ConsumerProductExposureCalculation;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class TotalConsumerProductsSection : DistributionConsumerProductsSectionBase {
+    public sealed class ConsumerProductExposuresTotalDistributionSection : ConsumerProductExposuresSectionBase {
         public void Summarize(
             ICollection<ConsumerProduct> allConsumerProducts,
             ICollection<ConsumerProductIndividualExposure> consumerProductIndividualExposures,
@@ -25,6 +26,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 SummarizeChronic(
                     allConsumerProducts,
                     consumerProductIndividualExposures,
+                    substances,
                     relativePotencyFactors,
                     membershipProbabilities,
                     routes,

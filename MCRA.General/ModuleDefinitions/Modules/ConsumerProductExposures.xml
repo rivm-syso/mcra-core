@@ -9,12 +9,12 @@
   <HasUncertaintyAnalysis>true</HasUncertaintyAnalysis>
   <Description>
     Consumer product exposures are the amounts of substances, expressed per kg bodyweight, to which individuals
-    in a population are exposed from consumer product usage per day. Consumer product exposures are long-term/chronic exposures,
+    in a population are exposed from average consumer product usage per individual. Consumer product exposures are long-term/chronic exposures,
     they represent the average exposure per day over an unspecified longer time period.
   </Description>
   <ShortDescription>
     Consumer product exposures are the amounts of substances, expressed per kg bodyweight, to which individuals
-    in a population are exposed from consumer product usage per day.
+    in a population are exposed from average consumer product usage per individual.
   </ShortDescription>
   <CalculationDescription>
     Consumer product exposures are calculated from consumer product concentration, use frequencies and amount models.
@@ -28,9 +28,8 @@
     <Input>ActiveSubstances</Input>
   </SelectionInputs>
   <CalculationSettings>
+    <CalculationSetting>SelectedExposureRoutes</CalculationSetting>
     <CalculationSetting source="Action">RandomSeed</CalculationSetting>
-    <CalculationSetting>NumberOfMonteCarloIterations</CalculationSetting>
-    <CalculationSetting>IsSurveySampling</CalculationSetting>
   </CalculationSettings>
   <OutputSettings>
     <OutputSetting source="Action">VariabilityLowerPercentage</OutputSetting>

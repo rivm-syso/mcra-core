@@ -14,7 +14,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     .Count();
                 var numberOfIndividuals = Model.TotalIndividuals;
 
-                sb.AppendParagraph($"Simulated consumer product exposures for {numberOfSubstances} substances for {numberOfIndividuals} individuals.");
+                sb.AppendParagraph($"Simulated consumer product exposures (n = {numberOfIndividuals} individuals) for {numberOfSubstances} substances.");
             }
         }
     }

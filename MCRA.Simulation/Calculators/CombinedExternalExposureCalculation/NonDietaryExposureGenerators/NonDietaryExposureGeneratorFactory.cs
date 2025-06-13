@@ -19,7 +19,7 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.NonDie
                             alignOnSex
                         )
                     : new NonDietaryUnmatchedExposureGenerator(nonDietaryExposureSets),
-                PopulationAlignmentMethod.MatchRandom => throw new NotImplementedException("Match at random not implemented"),
+                PopulationAlignmentMethod.MatchRandom => throw new NotImplementedException("Match at random not implemented for non-dietary exposures"),
                 _ => throw new NotImplementedException()
             };
             return result;
