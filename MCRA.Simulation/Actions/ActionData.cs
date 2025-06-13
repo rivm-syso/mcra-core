@@ -1052,7 +1052,7 @@ namespace MCRA.Simulation {
             set => GetOrCreateModuleOutputData<ConsumerProductExposuresOutputData>(ActionType.ConsumerProductExposures).ConsumerProductExposureUnit = value;
         }
 
-        public ICollection<ConsumerProductIndividualIntake> ConsumerProductIndividualExposures {
+        public ICollection<ConsumerProductIndividualExposure> ConsumerProductIndividualExposures {
             get => GetOrCreateModuleOutputData<ConsumerProductExposuresOutputData>(ActionType.ConsumerProductExposures).ConsumerProductIndividualExposures;
             set => GetOrCreateModuleOutputData<ConsumerProductExposuresOutputData>(ActionType.ConsumerProductExposures).ConsumerProductIndividualExposures = value;
         }

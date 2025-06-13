@@ -19,7 +19,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public void Summarize(
             ICollection<Compound> substances,
-            ICollection<ConsumerProductIndividualIntake> cpIndividualDayExposures,
+            ICollection<ConsumerProductIndividualExposure> cpIndividualDayExposures,
             double lowerPercentage,
             double upperPercentage,
             ExposureUnitTriple exposureUnit,
@@ -61,7 +61,7 @@ namespace MCRA.Simulation.OutputGeneration {
         private static ConsumerProductExposuresByRouteRecord getSummaryRecord(
             double[] percentages,
             ExposureRoute route,
-            ICollection<ConsumerProductIndividualIntake> cpIndividualDayExposures,
+            ICollection<ConsumerProductIndividualExposure> cpIndividualDayExposures,
             Compound substance,
             ExposureUnitTriple exposureUnit
         ) {
@@ -124,7 +124,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         private static List<ConsumerProductExposuresPercentilesRecord> getBoxPlotRecords(
             ExposureRoute dustExposureRoute,
-            ICollection<ConsumerProductIndividualIntake> cpIndividualDayExposures,
+            ICollection<ConsumerProductIndividualExposure> cpIndividualDayExposures,
             ICollection<Compound> substances,
             ExposureUnitTriple exposureUnit
         ) {

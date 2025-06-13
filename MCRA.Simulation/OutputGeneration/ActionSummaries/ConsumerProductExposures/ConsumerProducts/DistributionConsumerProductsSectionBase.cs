@@ -23,7 +23,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public void SummarizeChronic(
             ICollection<ConsumerProduct> allConsumerProducts,
-            ICollection<ConsumerProductIndividualIntake> cpIndividualExposures,
+            ICollection<ConsumerProductIndividualExposure> cpIndividualExposures,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             ICollection<ExposureRoute> routes,
@@ -140,7 +140,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="cancelToken"></param>
         private List<DistributionConsumerProductRecord> getHierarchicalRecords(
             ICollection<ConsumerProduct> allConsumerProducts,
-            ICollection<ConsumerProductIndividualIntake> cpIndividualIntakes,
+            ICollection<ConsumerProductIndividualExposure> cpIndividualIntakes,
             List<DistributionConsumerProductRecord> distributionConsumerProductRecords,
             CancellationToken cancelToken
         ) {

@@ -32,7 +32,7 @@ namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
             _concentrations = [];
         }
 
-        public List<ConsumerProductIndividualIntake> Compute(
+        public List<ConsumerProductIndividualExposure> Compute(
             ICollection<SimulatedIndividual> individuals,
             ICollection<IndividualConsumerProductUseFrequency> cpUseFrequencies,
             ICollection<ExposureRoute> routes,
@@ -51,7 +51,7 @@ namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
             return cpIndividualDayExposures;
         }
 
-        private ConsumerProductIndividualIntake calculateIndividualDayExposure(
+        private ConsumerProductIndividualExposure calculateIndividualDayExposure(
             SimulatedIndividual individual,
             List<IndividualConsumerProductUseFrequency> useFrequencies,
             List<ExposureRoute> routes,
@@ -92,7 +92,7 @@ namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
                 };
                 intakesPerConsumerProduct.Add(intakePerProduct);
             }
-            var consumerProductIndividualDayIntake = new ConsumerProductIndividualIntake() {
+            var consumerProductIndividualDayIntake = new ConsumerProductIndividualExposure() {
                 SimulatedIndividual = individual,
                 IntakesPerProduct = [.. intakesPerConsumerProduct.Cast<IIntakePerConsumerProduct>()],
             };

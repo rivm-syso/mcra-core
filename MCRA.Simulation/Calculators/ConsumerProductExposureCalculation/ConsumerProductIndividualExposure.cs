@@ -6,7 +6,7 @@ using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Objects;
 
 namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
-    public sealed class ConsumerProductIndividualIntake : IExternalIndividualExposure {
+    public sealed class ConsumerProductIndividualExposure : IExternalIndividualExposure {
 
         private double _sumIntakesPerConsumerProduct = double.NaN;
         private double _totalExposurePerMassUnit = double.NaN;

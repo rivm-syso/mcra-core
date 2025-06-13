@@ -16,7 +16,7 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.Consum
         public ExternalExposureCollection Generate(
             ICollection<IIndividualDay> individualDays,
             ICollection<Compound> substances,
-            ICollection<ConsumerProductIndividualIntake> cpIndividualIntakes,
+            ICollection<ConsumerProductIndividualExposure> cpIndividualIntakes,
             SubstanceAmountUnit substanceAmountUnit,
             int seed
         ) {
@@ -63,14 +63,14 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.Consum
 
         protected abstract List<IExternalIndividualDayExposure> generate(
             ICollection<IIndividualDay> individualDays,
-            ICollection<ConsumerProductIndividualIntake> cpIndividualExposures,
+            ICollection<ConsumerProductIndividualExposure> cpIndividualExposures,
             ICollection<Compound> substances,
             IRandom randomIndividual
         );
 
         protected static ExternalIndividualDayExposure createExternalIndividualDayExposure(
             IIndividualDay individualDay,
-            ConsumerProductIndividualIntake individualExposure
+            ConsumerProductIndividualExposure individualExposure
         ) {
             return new ExternalIndividualDayExposure(individualExposure.ExposuresPerPath) {
                 SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId,

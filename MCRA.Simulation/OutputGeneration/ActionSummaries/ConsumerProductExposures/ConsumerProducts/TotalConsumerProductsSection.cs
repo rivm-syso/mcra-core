@@ -6,7 +6,7 @@ namespace MCRA.Simulation.OutputGeneration {
     public sealed class TotalConsumerProductsSection : DistributionConsumerProductsSectionBase {
         public void Summarize(
             ICollection<ConsumerProduct> allConsumerProducts,
-            ICollection<ConsumerProductIndividualIntake> consumerProductIndividualExposures,
+            ICollection<ConsumerProductIndividualExposure> consumerProductIndividualExposures,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             ICollection<Compound> substances,

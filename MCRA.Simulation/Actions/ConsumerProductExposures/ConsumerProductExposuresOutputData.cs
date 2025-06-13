@@ -5,7 +5,7 @@ using MCRA.Simulation.Calculators.ConsumerProductExposureCalculation;
 namespace MCRA.Simulation.Actions.ConsumerProductExposures {
     public class ConsumerProductExposuresOutputData : IModuleOutputData {
 
-        public ICollection<ConsumerProductIndividualIntake> ConsumerProductIndividualExposures { get; set; }
+        public ICollection<ConsumerProductIndividualExposure> ConsumerProductIndividualExposures { get; set; }
         public ExposureUnitTriple ConsumerProductExposureUnit { get; set; }
         public IModuleOutputData Copy() {
             return new ConsumerProductExposuresOutputData() {

@@ -241,7 +241,7 @@ namespace MCRA.Simulation.Calculators.ExternalExposureCalculation {
         }
 
         public static ExternalIndividualDayExposure FromConsumerProductIndividualIntake(
-            ConsumerProductIndividualIntake individualDay,
+            ConsumerProductIndividualExposure individualDay,
             ICollection<ExposureRoute> routes
         ) {
             var exposuresPerPath = new Dictionary<ExposurePath, List<IIntakePerCompound>>();

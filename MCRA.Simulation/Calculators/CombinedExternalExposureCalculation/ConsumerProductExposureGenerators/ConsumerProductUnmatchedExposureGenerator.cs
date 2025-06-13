@@ -13,7 +13,7 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.Consum
         /// </summary>
         protected override List<IExternalIndividualDayExposure> generate(
             ICollection<IIndividualDay> individualDays,
-            ICollection<ConsumerProductIndividualIntake> cpIndividualDayExposures,
+            ICollection<ConsumerProductIndividualExposure> cpIndividualDayExposures,
             ICollection<Compound> substances,
             IRandom generator
         ) {

@@ -11,7 +11,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public int TotalIndividuals { get; set; }
 
         public void Summarize(
-            ICollection<ConsumerProductIndividualIntake> cpIndividualDayExposures
+            ICollection<ConsumerProductIndividualExposure> cpIndividualDayExposures
         ) {
             var records = cpIndividualDayExposures
                 .AsParallel()
@@ -46,7 +46,7 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         public void SummarizeUncertainty(
-            ICollection<ConsumerProductIndividualIntake> individualConsumerProductExposures,
+            ICollection<ConsumerProductIndividualExposure> individualConsumerProductExposures,
             double lowerBound,
             double upperBound
         ) {

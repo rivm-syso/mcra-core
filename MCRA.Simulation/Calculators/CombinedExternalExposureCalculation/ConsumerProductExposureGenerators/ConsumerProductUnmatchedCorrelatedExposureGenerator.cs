@@ -37,7 +37,7 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.Consum
 
         protected override List<IExternalIndividualDayExposure> generate(
             ICollection<IIndividualDay> individualDays,
-            ICollection<ConsumerProductIndividualIntake> individualExposures,
+            ICollection<ConsumerProductIndividualExposure> individualExposures,
             ICollection<Compound> substances,
             IRandom generator
         ) {
@@ -83,8 +83,8 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.Consum
         /// <summary>
         /// Check for sex level and select the right individual day exposures, if not found return null.
         /// </summary>
-        private static ICollection<ConsumerProductIndividualIntake> getExposuresForSexLevel(
-            ICollection<ConsumerProductIndividualIntake> individualDayExposures,
+        private static ICollection<ConsumerProductIndividualExposure> getExposuresForSexLevel(
+            ICollection<ConsumerProductIndividualExposure> individualDayExposures,
             SimulatedIndividual simulatedIndividual
         ) {
             individualDayExposures = [.. individualDayExposures
@@ -95,8 +95,8 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.Consum
         /// <summary>
         ///  Check for age range and select the right individual day exposures.
         /// </summary>
-        private static ICollection<ConsumerProductIndividualIntake> getExposuresForAgeRange(
-            ICollection<ConsumerProductIndividualIntake> individualDayExposures,
+        private static ICollection<ConsumerProductIndividualExposure> getExposuresForAgeRange(
+            ICollection<ConsumerProductIndividualExposure> individualDayExposures,
             SimulatedIndividual simulatedIndividual,
             List<(double left, double right)> intervals
         ) {
