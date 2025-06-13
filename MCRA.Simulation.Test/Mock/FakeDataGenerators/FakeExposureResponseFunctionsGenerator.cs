@@ -1,4 +1,5 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using System.Globalization;
+using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ExposureResponseFunctions;
 using MCRA.Utils.ExtensionMethods;
@@ -125,11 +126,11 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                 case ExposureResponseType.Constant:
                 default:
                     var erfValue = random.NextDouble(1, 2);
-                    erfString = erfValue.ToString();
+                    erfString = erfValue.ToString(CultureInfo.InvariantCulture);
                     if (hasUncertainty) {
                         var deviation = random.NextDouble(0.01, .1);
-                        erfStringLower = ((1D - deviation) * erfValue).ToString();
-                        erfStringUpper = ((1D + deviation) * erfValue).ToString();
+                        erfStringLower = ((1D - deviation) * erfValue).ToString(CultureInfo.InvariantCulture);
+                        erfStringUpper = ((1D + deviation) * erfValue).ToString(CultureInfo.InvariantCulture);
                     }
                     break;
             }
