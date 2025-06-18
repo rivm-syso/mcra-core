@@ -1,9 +1,10 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.Simulation.Calculators.ConsumerProductAplicationAmountCalculation;
 using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Objects;
-using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
+using MCRA.Utils.Statistics.RandomGenerators;
 
 namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
 
@@ -36,16 +37,16 @@ namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
             ICollection<SimulatedIndividual> individuals,
             ICollection<IndividualConsumerProductUseFrequency> cpUseFrequencies,
             ICollection<ExposureRoute> routes,
-            ICollection<Compound> substances,
-            ProgressState progressState
+            ICollection<Compound> substances
         ) {
             var useFrequencyLookup = cpUseFrequencies.ToLookup(r => r.Individual);
             var cpIndividualDayExposures = individuals
                 .Select(si => calculateIndividualDayExposure(
-                    si, 
-                    useFrequencyLookup.Contains(si.Individual) ? useFrequencyLookup[si.Individual].ToList() : [],
-                    [.. routes],
-                    [.. substances]
+                    si,
+                    useFrequencyLookup.Contains(si.Individual) ? [.. useFrequencyLookup[si.Individual]] : [],
+                    routes,
+                    substances,
+                    new McraRandomGenerator(RandomUtils.CreateSeed(si.Id, (int)RandomSource.CPE_ConsumerProductExposureDeterminants))
                 ))
                 .ToList();
             return cpIndividualDayExposures;
@@ -54,8 +55,9 @@ namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
         private ConsumerProductIndividualExposure calculateIndividualDayExposure(
             SimulatedIndividual individual,
             List<IndividualConsumerProductUseFrequency> useFrequencies,
-            List<ExposureRoute> routes,
-            List<Compound> substances
+            ICollection<ExposureRoute> routes,
+            ICollection<Compound> substances,
+            IRandom random
         ) {
             var intakesPerConsumerProduct = new List<IIntakePerConsumerProduct>(useFrequencies.Count);
             foreach (var useFrequency in useFrequencies) {
@@ -63,12 +65,13 @@ namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
                 foreach (var route in routes) {
                     var exposuresPerSubstance = new List<ConsumerProductExposurePerSubstance>();
                     foreach (var substance in substances) {
-                        if (_applicationAmounts.TryGetValue(useFrequency.Product, out var cpApplicationAmount)
+                        if (_applicationAmounts.TryGetValue(useFrequency.Product, out var cpApplication)
                             && _exposureFractions.TryGetValue((useFrequency.Product, substance, route), out var cpFraction)
                             && _concentrationCollections.TryGetValue(useFrequency.Product, out var cpCollection)
                         ) {
-                            double concentration;
+                            var distribution = ApplicationAmountProbabilityDistributionFactory.createProbabilityDistribution(cpApplication);
                             double occurrencePercentage;
+                            double concentration;
                             if (!_concentrations.TryGetValue((useFrequency.Product, substance), out var cpc)) {
                                 (concentration, occurrencePercentage) = getConcentration(substance, cpCollection);
                                 _concentrations[(useFrequency.Product, substance)] = (concentration, occurrencePercentage);
@@ -76,15 +79,18 @@ namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
                                 concentration = cpc.concentration;
                                 occurrencePercentage = cpc.occurrencePercentage;
                             }
+                            var applicationAmount = cpApplication.DistributionType == ApplicationAmountDistributionType.Constant
+                                ? cpApplication.Amount
+                                : distribution.Draw(random);
                             var ipc = new ConsumerProductExposurePerSubstance() {
-                                UseAmount = useFrequency.Frequency * cpApplicationAmount.Amount * cpFraction,
+                                UseAmount = useFrequency.Frequency * applicationAmount * cpFraction,
                                 Concentration = concentration * occurrencePercentage,
                                 Compound = substance
                             };
                             exposuresPerSubstance.Add(ipc);
                         }
                     }
-                    intakesPerRouteSubstance.Add(route, [..exposuresPerSubstance.Cast<IIntakePerCompound>()]);
+                    intakesPerRouteSubstance.Add(route, [.. exposuresPerSubstance.Cast<IIntakePerCompound>()]);
                 }
                 var intakePerProduct = new IntakePerConsumerProduct() {
                     Product = useFrequency.Product,
@@ -102,6 +108,7 @@ namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
 
         private static (double, double) getConcentration(Compound substance, ConsumerProductSampleSubstanceCollections cpc) {
             var concentration = cpc.SubstanceSampleCollection[substance].Average(c => c.Concentration);
+            //TODO maybe a separate table is needed for occurence percentages, see issue #2223
             var occurrencePercentage = cpc.SubstanceSampleCollection[substance]
                 .Average(c => c.OccurrencePercentage ?? 100d) / 100d;
             return (concentration, occurrencePercentage);

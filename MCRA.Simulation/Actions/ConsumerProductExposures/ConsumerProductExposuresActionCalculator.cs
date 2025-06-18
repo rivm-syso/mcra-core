@@ -41,9 +41,7 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
 
             return compute(
                 data,
-                localProgress,
-                determinantsRandomGenerator
-            );
+                localProgress);
         }
 
         protected override ConsumerProductExposuresActionResult runUncertain(
@@ -54,13 +52,9 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
         ) {
             var localProgress = progressReport.NewProgressState(100);
 
-            // Random generator for computation of dust exposure determinants
-            var determinantsRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.CPE_ConsumerProductExposureDeterminants));
-
             return compute(
                 data,
                 localProgress,
-                determinantsRandomGenerator,
                 factorialSet,
                 uncertaintySourceGenerators
             );
@@ -73,7 +67,6 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
         private ConsumerProductExposuresActionResult compute(
             ActionData data,
             ProgressState localProgress,
-            IRandom determinantsRandomGenerator,
             UncertaintyFactorialSet factorialSet = null,
             Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators = null
         ) {
@@ -88,7 +81,6 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
                 .Select((ind, ix) => new SimulatedIndividual(ind, ix))
                 .ToList();
 
-            //TODO from interface
             var exposureCalculator = new ConsumerProductExposureCalculator(
                 data.ConsumerProductExposureFractions,
                 data.ConsumerProductApplicationAmounts,
@@ -100,8 +92,7 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
                     simulatedIndividuals,
                     data.AllIndividualConsumerProductUseFrequencies,
                     ModuleConfig.SelectedExposureRoutes,
-                    data.ActiveSubstances,
-                    new ProgressState(localProgress.CancellationToken)
+                    data.ActiveSubstances
                 );
 
             // For now, we assume consumer product exposures to be expressed in
