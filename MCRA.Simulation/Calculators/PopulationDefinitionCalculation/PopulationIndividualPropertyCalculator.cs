@@ -32,7 +32,7 @@ namespace MCRA.Simulation.Calculators.PopulationDefinitionCalculation {
         /// </summary>
         /// <param name="individualsSubsetDefinitions"></param>
         /// <returns></returns>
-        private static Dictionary<string, PopulationIndividualPropertyValue> CalculateIndividualProperties(
+        public static Dictionary<string, PopulationIndividualPropertyValue> CalculateIndividualProperties(
             List<IndividualsSubsetDefinition> individualsSubsetDefinitions
         ) {
             if (individualsSubsetDefinitions.Count == 0) {

@@ -1,4 +1,5 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using DocumentFormat.OpenXml.Office2013.Excel;
+using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Management;
 using MCRA.Data.Management.CompiledDataManagers.DataReadingSummary;
 using MCRA.General;
@@ -81,25 +82,17 @@ namespace MCRA.Simulation.Actions.Consumptions {
 
             var selectedFoodSurvey = selectedFoodSurveys.First();
             var selectedFoodConsumptions = subsetManager.AllFoodConsumptions.ToList();
-            var availableIndividuals = subsetManager
-                .AllIndividuals
-                .Values
-                .Where(c => selectedFoodSurvey.Code == c.CodeFoodSurvey)
-                .ToList();
 
-            // Create individual (subset) filters
-            var individualsSubsetCalculator = new IndividualsSubsetFiltersBuilder();
-            var individualFilters = individualsSubsetCalculator.Create(
-                data.SelectedPopulation,
+
+            //TODO use IndividualSubsetCalculator class instead
+            var individuals = IndividualSubsetCalculator.GetIndividualSubsets(
+                subsetManager.AllIndividuals.Values,
                 subsetManager.AllIndividualProperties,
+                data.SelectedPopulation,
+                selectedFoodSurvey.Code,
                 ModuleConfig.MatchIndividualSubsetWithPopulation,
-                ModuleConfig.SelectedFoodSurveySubsetProperties
-            );
-
-            // Get the individuals from individual subset
-            var individuals = IndividualsSubsetCalculator.ComputeIndividualsSubset(
-                availableIndividuals,
-                individualFilters
+                ModuleConfig.SelectedFoodSurveySubsetProperties,
+                !ModuleConfig.IsDefaultSamplingWeight
             );
 
             // Filter individuals with < n survey days
@@ -109,13 +102,6 @@ namespace MCRA.Simulation.Actions.Consumptions {
                     throw new Exception($"The specified number of nominal survey days for exclusion of individuals is {ModuleConfig.MinimumNumberOfDays}. Specify a value lower or equal to {maximumNumberOfDaysInSurvey}. ");
                 }
                 individuals = individuals.Where(c => c.NumberOfDaysInSurvey >= ModuleConfig.MinimumNumberOfDays).ToList();
-            }
-
-            // Overwrite sampling weight
-            if (ModuleConfig.IsDefaultSamplingWeight) {
-                foreach (var individual in individuals) {
-                    individual.SamplingWeight = 1D;
-                }
             }
 
             // Fill individual cofactor and covariable fields

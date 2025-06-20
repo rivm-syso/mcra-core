@@ -1,19 +1,15 @@
-﻿using MCRA.Data.Compiled.Objects;
-using MCRA.General;
+﻿using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Calculators.ConsumerProductExposureCalculation;
-using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation;
-using MCRA.Simulation.Calculators.PopulationGeneration;
 using MCRA.Simulation.Objects;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.RandomGenerators;
-using SQLitePCL;
 
 namespace MCRA.Simulation.Actions.ConsumerProductExposures {
 

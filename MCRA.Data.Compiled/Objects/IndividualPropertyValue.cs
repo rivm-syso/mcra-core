@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using MCRA.General;
 
 namespace MCRA.Data.Compiled.Objects {
     public sealed class IndividualPropertyValue : IEquatable<IndividualPropertyValue> {
@@ -6,7 +7,8 @@ namespace MCRA.Data.Compiled.Objects {
         public double? DoubleValue { get; set; }
         public IndividualProperty IndividualProperty { get; set; }
 
-        public string Value => TextValue ?? DoubleValue?.ToString(CultureInfo.InvariantCulture) ?? "";
+        public string Value => (IndividualProperty.IsSexProperty ? GenderTypeConverter.FromString(TextValue, GenderType.Undefined, true).ToString() : TextValue) 
+            ?? DoubleValue?.ToString(CultureInfo.InvariantCulture) ?? "";
 
         public bool IsNumeric() => string.IsNullOrEmpty(TextValue) || DoubleValue.HasValue;
 

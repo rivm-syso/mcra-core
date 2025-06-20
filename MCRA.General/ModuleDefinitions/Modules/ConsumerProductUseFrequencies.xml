@@ -8,7 +8,7 @@
   <IsAdvancedActionType>true</IsAdvancedActionType>
   <AllowMultipleDataSources>true</AllowMultipleDataSources>
   <Description>
-    Consumer product use frequencies specify the frequency of use for a consumer product (personal care product) per day.
+    Consumer product use frequencies specify the frequency of use for a consumer product (personal care, do-it-yourself, cleaning product) per day.
   </Description>
   <ShortDescription>
     Consumer product use frequencies specify the frequency of use.
@@ -20,4 +20,11 @@
     <Entity>Populations</Entity>
     <Entity>ConsumerProducts</Entity>
   </Entities>
+  <SelectionSettings>
+    <SelectionSetting source="Populations">IndividualsSubsetDefinitions</SelectionSetting>
+    <SelectionSetting source="Populations">PopulationSubsetSelection</SelectionSetting>
+    <SelectionSetting>MatchCPIndividualSubsetWithPopulation</SelectionSetting>
+    <SelectionSetting>UseCPSamplingWeights</SelectionSetting>
+    <SelectionSetting>SelectedCPSurveySubsetProperties</SelectionSetting>
+  </SelectionSettings>
 </Module>

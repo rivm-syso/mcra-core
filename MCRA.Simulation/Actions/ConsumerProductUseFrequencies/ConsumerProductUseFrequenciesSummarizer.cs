@@ -11,8 +11,9 @@ namespace MCRA.Simulation.Actions.ConsumerProductUseFrequencies {
         IndividualStatisticsSection,
         ConsumerProductUseFrequenciesSection,
     }
-    public sealed class ConsumerProductUseFrequenciesSummarizer : ActionResultsSummarizerBase<IConsumerProductUseFrequenciesActionResult> {
-
+        public sealed class ConsumerProductUseFrequenciesSummarizer : ActionModuleResultsSummarizer<ConsumerProductUseFrequenciesModuleConfig, IConsumerProductUseFrequenciesActionResult> {
+        public ConsumerProductUseFrequenciesSummarizer(ConsumerProductUseFrequenciesModuleConfig config) : base(config) {
+        }
         public override ActionType ActionType => ActionType.ConsumerProductUseFrequencies;
 
         public override void Summarize(ActionModuleConfig sectionConfig, IConsumerProductUseFrequenciesActionResult result, ActionData data, SectionHeader header, int order) {
@@ -29,6 +30,7 @@ namespace MCRA.Simulation.Actions.ConsumerProductUseFrequencies {
             if (outputSettings.ShouldSummarize(ConsumerProductUseFrequenciesSections.SurveysSection)) {
                 summarizeSurveys(
                     data.ConsumerProductSurveys.First(),
+                    _configuration.PopulationSubsetSelection,
                     data.SelectedPopulation,
                     subHeader,
                     subOrder++
@@ -46,6 +48,7 @@ namespace MCRA.Simulation.Actions.ConsumerProductUseFrequencies {
         }
         private void summarizeSurveys(
             ConsumerProductSurvey survey,
+            bool populationSubsetSelection,
             Population population,
             SectionHeader header,
             int order
@@ -77,11 +80,8 @@ namespace MCRA.Simulation.Actions.ConsumerProductUseFrequencies {
             section.Summarize(
                 individuals,
                 population,
-                //_configuration.MatchHbmIndividualSubsetWithPopulation,
-                //_configuration.SelectedHbmSurveySubsetProperties,
-                //_configuration.SkipPrivacySensitiveOutputs
-                IndividualSubsetType.IgnorePopulationDefinition, 
-                [], 
+                _configuration.MatchCPIndividualSubsetWithPopulation,
+                _configuration.SelectedCPSurveySubsetProperties, 
                 false
             );
             var subHeader = header.AddSubSectionHeaderFor(

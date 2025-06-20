@@ -1,30 +1,29 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.Simulation.Calculators.IndividualsSubsetCalculation;
 
-namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.IndividualDaysGenerator {
-    public static class HbmIndividualSubsetCalculator {
+namespace MCRA.Simulation.Calculators.IndividualsSubsetCalculation {
+    public static class IndividualSubsetCalculator {
         public static ICollection<Individual> GetIndividualSubsets(
-            ICollection<Individual> allHumanMonitoringIndividuals,
-            IDictionary<string, IndividualProperty> allHumanMonitoringIndividualProperties,
+            ICollection<Individual> allIndividuals,
+            IDictionary<string, IndividualProperty> allIndividualProperties,
             Population selectedPopulation,
-            HumanMonitoringSurvey survey,
-            IndividualSubsetType matchHbmIndividualSubsetWithPopulation,
-            List<string> selectedHbmSurveySubsetProperties,
-            bool useHbmSamplingWeights
+            string surveyCode,
+            IndividualSubsetType matchIndividualSubsetWithPopulation,
+            List<string> selectedSurveySubsetProperties,
+            bool useSamplingWeights
         ) {
             // Get individuals
-            var availableIndividuals = allHumanMonitoringIndividuals
-                .Where(r => r.CodeFoodSurvey.Equals(survey.Code, StringComparison.OrdinalIgnoreCase))
+            var availableIndividuals = allIndividuals
+                .Where(r => r.CodeFoodSurvey.Equals(surveyCode, StringComparison.OrdinalIgnoreCase))
                 .ToList();
 
             // Create individual (subset) filters
             var individualsSubsetCalculator = new IndividualsSubsetFiltersBuilder();
             var individualFilters = individualsSubsetCalculator.Create(
                 selectedPopulation,
-                allHumanMonitoringIndividualProperties,
-                matchHbmIndividualSubsetWithPopulation,
-                selectedHbmSurveySubsetProperties
+                allIndividualProperties,
+                matchIndividualSubsetWithPopulation,
+                selectedSurveySubsetProperties
             );
 
             // Get the individuals from individual subset
@@ -35,7 +34,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.IndividualDaysG
                 );
 
             // Overwrite sampling weight
-            if (!useHbmSamplingWeights) {
+            if (!useSamplingWeights) {
                 foreach (var individual in individuals) {
                     individual.SamplingWeight = 1D;
                 }

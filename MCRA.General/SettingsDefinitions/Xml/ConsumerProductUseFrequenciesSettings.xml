@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsItems>
+  <!-- Consumer product use frequencies settings  -->
+  <SettingsItem>
+    <Id>MatchCPIndividualSubsetWithPopulation</Id>
+    <Name>Match consumer product individuals selection to population definition options</Name>
+    <Description>
+      Match consumer product individuals selection to population definition. Use population definitions (default), ignore
+      all population definitions or use a selection of properties.
+    </Description>
+    <ValueType>IndividualSubsetType</ValueType>
+    <DefaultValue>MatchToPopulationDefinition</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>SelectedCPSurveySubsetProperties</Id>
+    <Name>Select one or more individual properties to filter the population</Name>
+    <Description>Select one or more individual properties to filter the individuals in the population.</Description>
+    <ValueType>AlphaNumeric</ValueType>
+    <IsList>true</IsList>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>UseCPSamplingWeights</Id>
+    <Name>Use sampling weights</Name>
+    <Description>
+      If checked, individual sampling weights are used. If unchecked, the individual sampling weights are not
+      in the calculations.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+   <SettingsItem>
+    <Id>ResampleCPIndividuals</Id>
+    <Name>Resample consumer product individuals</Name>
+    <Description>
+      Consumer product individual data are resampled from the original database using the bootstrap methodology (Efron 1979, Efron &amp; Tibshirani 1993).
+    </Description>
+    <ValueType>Boolean</ValueType>
+    <DefaultValue>true</DefaultValue>
+  </SettingsItem>
+</SettingsItems>

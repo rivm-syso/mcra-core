@@ -7,8 +7,8 @@ using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.CompleteSamplesCalculation;
-using MCRA.Simulation.Calculators.HumanMonitoringCalculation.IndividualDaysGenerator;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
+using MCRA.Simulation.Calculators.IndividualsSubsetCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.ProgressReporting;
@@ -81,14 +81,15 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
                 throw new Exception("No measurements / time points selected!");
             }
 
-            var individuals = HbmIndividualSubsetCalculator.GetIndividualSubsets(
+            var individuals = IndividualSubsetCalculator.GetIndividualSubsets(
                 subsetManager.AllHumanMonitoringIndividuals,
                 subsetManager.AllHumanMonitoringIndividualProperties,
                 data.SelectedPopulation,
-                survey,
+                survey.Code,
                 ModuleConfig.MatchHbmIndividualSubsetWithPopulation,
                 ModuleConfig.SelectedHbmSurveySubsetProperties,
-                ModuleConfig.UseHbmSamplingWeights);
+                ModuleConfig.UseHbmSamplingWeights
+            );
 
             // Get the HBM samples
             var allSamples = subsetManager.AllHumanMonitoringSamples
