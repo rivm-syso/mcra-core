@@ -125,10 +125,10 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.IndividualFilters {
             propertyValue.TextValue = "M";
             Assert.IsTrue(filter.Passes(individual));
 
-            // Note: the subset definition filter does not account for gender types;
-            // if such functionality is desired, a specific type property individual
-            // filter should be used (e.g., gender type property individual filter).
             propertyValue.TextValue = "male";
+            Assert.IsTrue(filter.Passes(individual));
+
+            propertyValue.TextValue = "xxx";
             Assert.IsFalse(filter.Passes(individual));
 
             propertyValue.TextValue = "F";
