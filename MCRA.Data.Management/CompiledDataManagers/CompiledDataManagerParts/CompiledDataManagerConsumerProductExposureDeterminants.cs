@@ -1,4 +1,5 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using System.Linq;
+using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Extensions;
 using MCRA.General.TableDefinitions;
@@ -54,7 +55,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                         foreach (var rawDataSourceId in rawDataSourceIds) {
                             using (var r = rdm.OpenDataReader<RawConsumerProductApplicationAmounts>(rawDataSourceId, out int[] fieldMap)) {
                                 while (r?.Read() ?? false) {
-                                    var idProduct = r.GetString(RawConsumerProductExposureFractions.IdProduct, fieldMap);
+                                    var idProduct = r.GetString(RawConsumerProductApplicationAmounts.IdProduct, fieldMap);
                                     var valid = CheckLinkSelected(ScopingType.ConsumerProducts, idProduct);
                                     if (valid) {
                                         var applicationAmount = new ConsumerProductApplicationAmount {
@@ -62,6 +63,8 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             Amount = r.GetDouble(RawConsumerProductApplicationAmounts.Amount, fieldMap),
                                             DistributionType = r.GetEnum(RawConsumerProductApplicationAmounts.DistributionType, fieldMap, ApplicationAmountDistributionType.Constant),
                                             CvVariability = r.GetDoubleOrNull(RawConsumerProductApplicationAmounts.CvVariability, fieldMap),
+                                            AgeLower = r.GetDoubleOrNull(RawConsumerProductApplicationAmounts.AgeLower, fieldMap),
+                                            Sex = r.GetEnum(RawConsumerProductApplicationAmounts.Sex, fieldMap, GenderType.Undefined),
                                         };
                                         allConsumerProductApplicationAmounts.Add(applicationAmount);
                                     }
@@ -70,7 +73,9 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                         }
                     }
                 }
-                _data.AllConsumerProductApplicationAmounts = allConsumerProductApplicationAmounts;
+                _data.AllConsumerProductApplicationAmounts = [.. allConsumerProductApplicationAmounts
+                    .OrderBy(c => c.Product.Code)
+                    .ThenBy(c => c.AgeLower)];
             }
             return _data.AllConsumerProductApplicationAmounts;
         }
@@ -114,6 +119,8 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 row.WriteNonNullDouble(RawConsumerProductApplicationAmounts.Amount, amount.Amount, ccr);
                 row.WriteNonEmptyString(RawConsumerProductApplicationAmounts.DistributionType, amount.DistributionType.ToString(), ccr);
                 row.WriteNonNullDouble(RawConsumerProductApplicationAmounts.CvVariability, amount.CvVariability, ccr);
+                row.WriteNonNullDouble(RawConsumerProductApplicationAmounts.AgeLower, amount.AgeLower, ccr);
+                row.WriteNonEmptyString(RawConsumerProductApplicationAmounts.Sex, amount.Sex.ToString(), ccr);
                 dt.Rows.Add(row);
             }
             writeToCsv(tempFolder, td, dt, ccr);

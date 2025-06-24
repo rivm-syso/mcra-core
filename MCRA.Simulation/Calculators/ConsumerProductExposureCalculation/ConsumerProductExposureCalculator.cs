@@ -1,6 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.Simulation.Calculators.ConsumerProductAplicationAmountCalculation;
+using MCRA.Simulation.Calculators.ConsumerProductApplicationAmountCalculation;
 using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Objects;
 using MCRA.Utils.Statistics;
@@ -12,7 +12,7 @@ namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
         private readonly Dictionary<ConsumerProduct, ConsumerProductSampleSubstanceCollections> _concentrationCollections;
         private readonly Dictionary<(ConsumerProduct, Compound), (double concentration, double occurrencePercentage)> _concentrations;
         private readonly Dictionary<(ConsumerProduct, Compound, ExposureRoute), double> _exposureFractions;
-        private readonly Dictionary<ConsumerProduct, ConsumerProductApplicationAmount> _applicationAmounts;
+        private readonly Dictionary<ConsumerProduct, ConsumerProductApplicationAmountSGs> _applicationAmounts;
 
         public ConsumerProductExposureCalculator(
             ICollection<ConsumerProductExposureFraction> cpExposureFractions,
@@ -29,7 +29,21 @@ namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
                 })
                 .ToDictionary(c => c.ConsumerProduct);
             _exposureFractions = cpExposureFractions.ToDictionary(c => (c.Product, c.Substance, c.Route), c => c.ExposureFraction);
-            _applicationAmounts = cpApplicationAmounts.ToDictionary(c => c.Product);
+
+            _applicationAmounts = cpApplicationAmounts
+                 .GroupBy(c => c.Product)
+                 .Select(c => {
+                     var subgroups = c.Where(r => r.AgeLower.HasValue || r.Sex != GenderType.Undefined).ToList();
+                     var hasSubgroups = subgroups.Any();
+                     var fallbackApplicationAmount = c.FirstOrDefault(r => !r.AgeLower.HasValue && r.Sex == GenderType.Undefined);
+                     return new ConsumerProductApplicationAmountSGs() {
+                         Product = c.Key,
+                         Amount = hasSubgroups ? fallbackApplicationAmount?.Amount : c.First().Amount,
+                         CvVariability = hasSubgroups ? fallbackApplicationAmount?.CvVariability : c.First().CvVariability,
+                         DistributionType = fallbackApplicationAmount?.DistributionType ?? c.First().DistributionType,
+                         CPAASubgroups = hasSubgroups ? subgroups: []
+                     };
+                 }).ToDictionary(c => c.Product);
             _concentrations = [];
         }
 
@@ -61,15 +75,18 @@ namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
         ) {
             var intakesPerConsumerProduct = new List<IIntakePerConsumerProduct>(useFrequencies.Count);
             foreach (var useFrequency in useFrequencies) {
+                IConsumerProductApplicationAmountModel model = null;
+                if (_applicationAmounts.TryGetValue(useFrequency.Product, out var cpApplicationAmount)) {
+                    model = ConsumerProductApplicationAmountCalculatorFactory.Create(cpApplicationAmount);
+                }
                 var intakesPerRouteSubstance = new Dictionary<ExposureRoute, List<IIntakePerCompound>>();
                 foreach (var route in routes) {
                     var exposuresPerSubstance = new List<ConsumerProductExposurePerSubstance>();
                     foreach (var substance in substances) {
-                        if (_applicationAmounts.TryGetValue(useFrequency.Product, out var cpApplication)
-                            && _exposureFractions.TryGetValue((useFrequency.Product, substance, route), out var cpFraction)
-                            && _concentrationCollections.TryGetValue(useFrequency.Product, out var cpCollection)
+                        if (model != null
+                                && _exposureFractions.TryGetValue((useFrequency.Product, substance, route), out var cpFraction)
+                                && _concentrationCollections.TryGetValue(useFrequency.Product, out var cpCollection)
                         ) {
-                            var distribution = ApplicationAmountProbabilityDistributionFactory.createProbabilityDistribution(cpApplication);
                             double occurrencePercentage;
                             double concentration;
                             if (!_concentrations.TryGetValue((useFrequency.Product, substance), out var cpc)) {
@@ -79,11 +96,9 @@ namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
                                 concentration = cpc.concentration;
                                 occurrencePercentage = cpc.occurrencePercentage;
                             }
-                            var applicationAmount = cpApplication.DistributionType == ApplicationAmountDistributionType.Constant
-                                ? cpApplication.Amount
-                                : distribution.Draw(random);
+                            var applicationAmount = model.Draw(random, useFrequency.Individual.Age, useFrequency.Individual.Gender);
                             var ipc = new ConsumerProductExposurePerSubstance() {
-                                UseAmount = useFrequency.Frequency * applicationAmount * cpFraction,
+                                UseAmount = useFrequency.Frequency * (double)applicationAmount * cpFraction,
                                 Concentration = concentration * occurrencePercentage,
                                 Compound = substance
                             };

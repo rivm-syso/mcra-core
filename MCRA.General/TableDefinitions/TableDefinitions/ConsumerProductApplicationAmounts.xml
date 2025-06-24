@@ -3,7 +3,7 @@
   <Id>ConsumerProductApplicationAmounts</Id>
   <Name>Consumer product application amounts</Name>
   <Description>
-    Distributions for application amounts can be dependent on e.g. age, sex.
+    Distributions of consumer product application amounts represent the quantities used or applied during a single use. These distributions can be characterized for the general population or for specific subgroups based on age and/or sex.
   </Description>
   <Aliases>
     <string>ConsumerProductApplicationAmounts</string>
@@ -18,7 +18,7 @@
   <ColumnDefinitions>
     <ColumnDefinition Required="true" FieldSize="50" FieldType="AlphaNumeric">
       <Id>idProduct</Id>
-      <Description>The consumer product.</Description>
+      <Description>Identifier/code of the consumer product.</Description>
       <Aliases>
         <string>idProduct</string>
         <string>ProductId</string>
@@ -26,6 +26,24 @@
       <ForeignKeyTables>
         <string>ConsumerProducts</string>
       </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="Numeric" FieldSize="50">
+      <Id>AgeLower</Id>
+      <Description>
+        Specifies the lower bound of the age interval (in years) of the application amount in case the distribution applies to a specific population age subgroup. Individuals belong to a subgroup when the age of the individual is equal or greater than the specified lower bound and smaller than the specified lower age of the next subgroup.
+      </Description>
+      <Aliases>
+        <string>AgeLower</string>
+        <string>LowerAge</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="GenderType">
+      <Id>Sex</Id>
+      <Description>Specifies the sex associated with this application amount in case the distribution applies to a specific population sex subgroup.</Description>
+      <Aliases>
+        <string>Sex</string>
+        <string>Gender</string>
+      </Aliases>
     </ColumnDefinition>
     <ColumnDefinition Required="true" FieldType="Numeric">
       <Id>Amount</Id>
@@ -40,8 +58,7 @@
     <ColumnDefinition FieldType="ApplicationAmountDistributionType">
       <Id>DistributionType</Id>
       <Description>
-        Distribution type (LogNormal).
-        If not specified, the application amount is assumed to be constant.
+        Type of the distribution. If not specified, the application amount is assumed to be constant.
       </Description>
       <Aliases>
         <string>DistributionType</string>
@@ -53,7 +70,7 @@
     </ColumnDefinition>
     <ColumnDefinition FieldType="Numeric">
       <Id>CvVariability</Id>
-      <Description>Coefficient of variation.</Description>
+      <Description>Coefficient of variation of the distribution.</Description>
       <Aliases>
         <string>CvVariability</string>
         <string>Sd</string>
