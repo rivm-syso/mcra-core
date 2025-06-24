@@ -1,6 +1,8 @@
 ﻿using MCRA.Utils.ExtensionMethods;
 using MCRA.Data.Compiled.Objects;
 using MCRA.General.Action.Settings;
+using MCRA.General;
+using System.Linq;
 
 namespace MCRA.Simulation.Filters.IndividualFilters {
 
@@ -45,7 +47,19 @@ namespace MCRA.Simulation.Filters.IndividualFilters {
                     return false;
                 }
                 var keywords = _individualSubsetDefinition.GetQueryKeywords();
-                return keywords?.Contains(propertyValue.Value) ?? false;
+                if (keywords?.Any() ?? false) {
+                    if (keywords.Contains(propertyValue.Value)) {
+                        return true;
+                    }
+                    if (propertyValue.IndividualProperty.IsSexProperty) {
+                        return keywords
+                            .Any(r => GenderTypeConverter.FromString(r, GenderType.Undefined, true)
+                                .ToString()
+                                .Equals(propertyValue.Value, StringComparison.OrdinalIgnoreCase)
+                        );
+                    }
+                }
+                return  false;
             } else if (queryDefinitionType == QueryDefinitionType.Range) {
                 if (propertyValue == null) {
                     return false;

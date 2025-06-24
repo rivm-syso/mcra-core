@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <UnitDefinition>
   <Id>GenderType</Id>
-  <Name>Gender type</Name>
+  <Name>Sex type</Name>
   <UndefinedValue>-1</UndefinedValue>
   <Description>
-    Accepted gender types. Controlled terminology.
+    Controlled vocabulary for biological sex (at birth).
   </Description>
   <Units>
     <Unit>
