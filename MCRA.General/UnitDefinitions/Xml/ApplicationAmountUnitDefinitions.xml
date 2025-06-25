@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>ApplicationAmountUnit</Id>
+  <Name>Application amount unit</Name>
+  <Description>
+    Accepted units for consumer product application amounts.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>kg</Id>
+      <Name>kilogram</Name>
+      <ShortName>kg</ShortName>
+      <Aliases>
+        <Alias>kg</Alias>
+        <Alias>kilograms</Alias>
+        <Alias>kilogr</Alias>
+        <Alias>G167A</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>g</Id>
+      <Name>gram</Name>
+      <ShortName>g</ShortName>
+      <Aliases>
+        <Alias>g</Alias>
+        <Alias>grams</Alias>
+        <Alias>gr</Alias>
+        <Alias>G148A</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>mg</Id>
+      <Name>milligram</Name>
+      <ShortName>mg</ShortName>
+      <Aliases>
+        <Alias>mg</Alias>
+        <Alias>milligrams</Alias>
+        <Alias>milligram</Alias>
+      </Aliases>
+    </Unit>
+  </Units>
+</UnitDefinition>

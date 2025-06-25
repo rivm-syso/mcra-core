@@ -1057,6 +1057,11 @@ namespace MCRA.Simulation {
             set => GetOrCreateModuleOutputData<ConsumerProductExposuresOutputData>(ActionType.ConsumerProductExposures).ConsumerProductIndividualExposures = value;
         }
 
+        public ApplicationAmountUnit CPApplicationAmountUnit {
+            get => GetOrCreateModuleOutputData<ConsumerProductExposureDeterminantsOutputData>(ActionType.ConsumerProductExposureDeterminants).CPApplicationAmountUnit;
+            set => GetOrCreateModuleOutputData<ConsumerProductExposureDeterminantsOutputData>(ActionType.ConsumerProductExposureDeterminants).CPApplicationAmountUnit = value;
+        }
+
         /// <summary>
         /// Creates a copy of the action data, to be used in bootstrap/uncertainty runs.
         /// </summary>

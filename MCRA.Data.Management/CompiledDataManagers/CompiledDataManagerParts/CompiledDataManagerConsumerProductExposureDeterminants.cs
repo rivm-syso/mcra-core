@@ -58,6 +58,8 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                     var idProduct = r.GetString(RawConsumerProductApplicationAmounts.IdProduct, fieldMap);
                                     var valid = CheckLinkSelected(ScopingType.ConsumerProducts, idProduct);
                                     if (valid) {
+                                        var unitString = r.GetStringOrNull(RawConsumerProductApplicationAmounts.Unit, fieldMap);
+                                        var unit = ApplicationAmountUnitConverter.FromString(unitString, ApplicationAmountUnit.g);
                                         var applicationAmount = new ConsumerProductApplicationAmount {
                                             Product = _data.GetOrAddConsumerProduct(idProduct),
                                             Amount = r.GetDouble(RawConsumerProductApplicationAmounts.Amount, fieldMap),
@@ -65,6 +67,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             CvVariability = r.GetDoubleOrNull(RawConsumerProductApplicationAmounts.CvVariability, fieldMap),
                                             AgeLower = r.GetDoubleOrNull(RawConsumerProductApplicationAmounts.AgeLower, fieldMap),
                                             Sex = r.GetEnum(RawConsumerProductApplicationAmounts.Sex, fieldMap, GenderType.Undefined),
+                                            Unit = unit
                                         };
                                         allConsumerProductApplicationAmounts.Add(applicationAmount);
                                     }

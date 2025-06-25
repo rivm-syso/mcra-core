@@ -1,6 +1,5 @@
 ﻿using MCRA.General;
 using MCRA.General.ModuleDefinitions.Settings;
-using MCRA.General.OpexProductDefinitions.Dto;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
@@ -26,6 +25,7 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposureDeterminants {
             };
             var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
             subHeader.SaveSummarySection(section);
+            subHeader.Units = collectUnits(data, sectionConfig);
 
             int subOrder = 0;
 
@@ -64,6 +64,13 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposureDeterminants {
                 data.ConsumerProductApplicationAmounts
             );
             subHeader.SaveSummarySection(section);
+        }
+
+        private static List<ActionSummaryUnitRecord> collectUnits(ActionData data, ActionModuleConfig sectionConfig) {
+            var result = new List<ActionSummaryUnitRecord> {
+                new("ApplicationAmountUnit", data.CPApplicationAmountUnit.GetShortDisplayName()),
+            };
+            return result;
         }
     }
 }

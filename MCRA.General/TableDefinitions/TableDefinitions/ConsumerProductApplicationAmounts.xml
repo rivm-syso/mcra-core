@@ -48,7 +48,7 @@
     <ColumnDefinition Required="true" FieldType="Numeric">
       <Id>Amount</Id>
       <Description>
-        Mean of the distribution.
+        Mean of the distribution. Amounts are in kg (default unit).
       </Description>
       <Aliases>
         <string>Amount</string>
@@ -72,8 +72,18 @@
       <Id>CvVariability</Id>
       <Description>Coefficient of variation of the distribution.</Description>
       <Aliases>
+        <string>Cv</string>
         <string>CvVariability</string>
-        <string>Sd</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="ApplicationAmountUnit">
+      <Id>Unit</Id>
+      <Description>
+        The unit for the consumer product application amount. When not specified, then a default unit of g (gram) is assumed.
+      </Description>
+      <Aliases>
+        <string>Unit</string>
+        <string>ApplicationAmountUnit</string>
       </Aliases>
     </ColumnDefinition>
   </ColumnDefinitions>

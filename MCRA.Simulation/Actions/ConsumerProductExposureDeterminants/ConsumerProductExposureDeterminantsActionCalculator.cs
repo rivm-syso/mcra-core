@@ -1,4 +1,5 @@
-﻿using MCRA.Data.Management;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Management;
 using MCRA.Data.Management.CompiledDataManagers.DataReadingSummary;
 using MCRA.General;
 using MCRA.General.Action.Settings;
@@ -21,8 +22,25 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposureDeterminants {
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
+            var applicationAmountUnit = ApplicationAmountUnit.g;
+            var consumerProductsApplicationAmounts = subsetManager.AllConsumerProductApplicationAmounts
+                .Select(r => {
+                    var alignmentFactor = r.Unit.GetMultiplicationFactor(applicationAmountUnit);
+                    return new ConsumerProductApplicationAmount() {
+                        Product = r.Product,
+                        AgeLower = r.AgeLower,
+                        Sex = r.Sex,
+                        CvVariability = r.CvVariability,
+                        DistributionType = r.DistributionType,
+                        Amount = r.Amount * alignmentFactor,
+                        Unit = applicationAmountUnit
+                    };
+                })
+                .ToList();
+
             data.ConsumerProductExposureFractions = [.. subsetManager.AllConsumerProductExposureFractions];
-            data.ConsumerProductApplicationAmounts = [.. subsetManager.AllConsumerProductApplicationAmounts];
+            data.ConsumerProductApplicationAmounts = [..consumerProductsApplicationAmounts];
+            data.CPApplicationAmountUnit = applicationAmountUnit;   
         }
 
         protected override void summarizeActionResult(IConsumerProductExposureDeterminantsActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {

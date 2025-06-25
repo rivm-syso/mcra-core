@@ -8,6 +8,6 @@ namespace MCRA.Data.Compiled.Objects {
         public double Amount { get; set; }
         public ApplicationAmountDistributionType DistributionType { get; set; }
         public double? CvVariability {  get; set; }
-
+        public ApplicationAmountUnit Unit { get; set; } = ApplicationAmountUnit.g;
     }
 }

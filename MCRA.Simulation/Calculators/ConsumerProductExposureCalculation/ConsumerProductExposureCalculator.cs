@@ -43,7 +43,8 @@ namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
                          DistributionType = fallbackApplicationAmount?.DistributionType ?? c.First().DistributionType,
                          CPAASubgroups = hasSubgroups ? subgroups: []
                      };
-                 }).ToDictionary(c => c.Product);
+                 })
+                 .ToDictionary(c => c.Product);
             _concentrations = [];
         }
 
@@ -84,8 +85,8 @@ namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
                     var exposuresPerSubstance = new List<ConsumerProductExposurePerSubstance>();
                     foreach (var substance in substances) {
                         if (model != null
-                                && _exposureFractions.TryGetValue((useFrequency.Product, substance, route), out var cpFraction)
-                                && _concentrationCollections.TryGetValue(useFrequency.Product, out var cpCollection)
+                            && _exposureFractions.TryGetValue((useFrequency.Product, substance, route), out var cpFraction)
+                            && _concentrationCollections.TryGetValue(useFrequency.Product, out var cpCollection)
                         ) {
                             double occurrencePercentage;
                             double concentration;
