@@ -48,7 +48,7 @@
     <ColumnDefinition Required="true" FieldType="Numeric">
       <Id>Amount</Id>
       <Description>
-        Mean of the distribution. Amounts are in kg (default unit).
+        Mean of the distribution. Amounts are in g (gram, default unit).
       </Description>
       <Aliases>
         <string>Amount</string>
