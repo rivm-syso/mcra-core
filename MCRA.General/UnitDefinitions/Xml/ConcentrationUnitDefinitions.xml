@@ -3,7 +3,7 @@
   <Id>ConcentrationUnit</Id>
   <Name>Concentration unit</Name>
   <Description>
-    Accepted units for substance concentrations. Controlled terminology.
+    Accepted units for substance concentrations.
   </Description>
   <Units>
     <Unit>

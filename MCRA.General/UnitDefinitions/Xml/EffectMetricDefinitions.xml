@@ -4,7 +4,7 @@
   <Name>Effect metric</Name>
   <UndefinedValue Id="Undefined">-1</UndefinedValue>
   <Description>
-    Accepted types of effect metrics. Controlled terminology.
+    Accepted types of effect metrics.
   </Description>
   <Units>
     <Unit>

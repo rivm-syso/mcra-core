@@ -3,7 +3,7 @@
   <Id>ExposureType</Id>
   <Name>Exposure type</Name>
   <Description>
-    Accepted exposure types. Controlled terminology.
+    Accepted exposure types.
   </Description>
   <Units>
     <Unit>

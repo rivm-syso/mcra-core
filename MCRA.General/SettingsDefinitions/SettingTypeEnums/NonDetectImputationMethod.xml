@@ -3,7 +3,7 @@
   <Id>NonDetectImputationMethod</Id>
   <Name>Nondetect imputation method types</Name>
   <Description>
-    Accepted nondetect imputation method types. Controlled terminology.
+    Accepted nondetect imputation method types.
   </Description>
   <Units>
     <Unit>

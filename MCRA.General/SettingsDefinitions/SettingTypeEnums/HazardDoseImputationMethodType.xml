@@ -3,7 +3,7 @@
   <Id>HazardDoseImputationMethodType</Id>
   <Name>Hazard dose imputation method types</Name>
   <Description>
-    Accepted Hazard dose imputation method types. Controlled terminology.
+    Accepted Hazard dose imputation method types.
   </Description>
   <Units>
     <Unit>

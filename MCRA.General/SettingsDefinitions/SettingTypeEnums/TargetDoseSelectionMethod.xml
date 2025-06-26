@@ -3,7 +3,7 @@
   <Id>TargetDoseSelectionMethod</Id>
   <Name>Target dose selection method types</Name>
   <Description>
-    Accepted Target dose selection method types. Controlled terminology.
+    Accepted Target dose selection method types.
   </Description>
   <Units>
     <Unit>

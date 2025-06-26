@@ -4,7 +4,7 @@
   <Name>Biological organisation type</Name>
   <UndefinedValue Id="Unspecified">0</UndefinedValue>
   <Description>
-    Accepted biological organisation types. Controlled terminology.
+    Accepted biological organisation types.
   </Description>
   <Units>
     <Unit>

@@ -3,7 +3,7 @@
   <Id>MeanValueCorrectionType</Id>
   <Name>Mean value correction types</Name>
   <Description>
-    Accepted Mean value correction types. Controlled terminology.
+    Accepted Mean value correction types.
   </Description>
   <Units>
     <Unit>

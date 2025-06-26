@@ -3,7 +3,7 @@
   <Id>StandardiseUrineMethod</Id>
   <Name>Standardise/normalise urine concentration method</Name>
   <Description>
-    Accepted Standardise urine concentration methods based on creatinine. Controlled terminology.
+    Accepted Standardise urine concentration methods based on creatinine.
   </Description>
   <Units>
     <Unit>

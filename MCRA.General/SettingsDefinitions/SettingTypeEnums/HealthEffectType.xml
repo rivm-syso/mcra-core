@@ -3,7 +3,7 @@
   <Id>HealthEffectType</Id>
   <Name>Health effect types</Name>
   <Description>
-    Accepted Health effect types. Controlled terminology.
+    Accepted Health effect types.
   </Description>
   <Units>
     <Unit>

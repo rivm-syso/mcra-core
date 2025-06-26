@@ -3,7 +3,7 @@
   <Id>RiskMetricCalculationType</Id>
   <Name>Riskmetric calculation types</Name>
   <Description>
-    Accepted Riskmetric calculation types. Controlled terminology.
+    Accepted Riskmetric calculation types.
   </Description>
   <Units>
     <Unit>

@@ -3,7 +3,7 @@
   <Id>ClusterMethodType</Id>
   <Name>Cluster method type</Name>
   <Description>
-    Accepted cluster method types. Controlled terminology.
+    Accepted cluster method types.
   </Description>
   <Units>
     <Unit>

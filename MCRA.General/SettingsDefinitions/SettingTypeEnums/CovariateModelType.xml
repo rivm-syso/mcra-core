@@ -3,7 +3,7 @@
   <Id>CovariateModelType</Id>
   <Name>Covariate model types</Name>
   <Description>
-    Accepted Covariate model types. Controlled terminology.
+    Accepted Covariate model types.
   </Description>
   <Units>
     <Unit>

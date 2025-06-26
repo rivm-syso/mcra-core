@@ -4,7 +4,7 @@
   <Name>Point of departure type</Name>
   <UndefinedValue Id="Unspecified" Name="Unspecified PoD">0</UndefinedValue>
   <Description>
-    Accepted point of departure types. Controlled terminology.
+    Accepted point of departure types.
   </Description>
   <Units>
     <Unit>

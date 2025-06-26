@@ -3,7 +3,7 @@
   <Id>ProcessingDistributionType</Id>
   <Name>Processing distribution type</Name>
   <Description>
-    Accepted processing distribution types. Controlled terminology.
+    Accepted processing distribution types.
   </Description>
   <Units>
     <Unit>

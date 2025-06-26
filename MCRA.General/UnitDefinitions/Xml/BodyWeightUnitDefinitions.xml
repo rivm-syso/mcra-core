@@ -3,7 +3,7 @@
   <Id>BodyWeightUnit</Id>
   <Name>Body weight unit</Name>
   <Description>
-    Accepted units for person body weights. Controlled terminology.
+    Accepted units for person body weights.
   </Description>
   <Units>
     <Unit>

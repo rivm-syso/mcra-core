@@ -3,7 +3,7 @@
   <Id>AirConcentrationUnit</Id>
   <Name>Concentration volume unit</Name>
   <Description>
-    Accepted units for substance concentration volumes. Controlled terminology.
+    Accepted units for substance concentration volumes.
   </Description>
   <Units>
     <Unit>

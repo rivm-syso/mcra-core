@@ -4,7 +4,7 @@
   <Name>Concentration value type</Name>
   <UndefinedValue>-1</UndefinedValue>
   <Description>
-    Accepted concentration value type. Controlled terminology.
+    Accepted concentration value type.
   </Description>
   <Units>
     <Unit>

@@ -3,7 +3,7 @@
   <Id>ConsumptionUnit</Id>
   <Name>Consumption unit</Name>
   <Description>
-    Accepted units for consumption amounts. Controlled terminology.
+    Accepted units for consumption amounts.
   </Description>
   <Units>
     <Unit>

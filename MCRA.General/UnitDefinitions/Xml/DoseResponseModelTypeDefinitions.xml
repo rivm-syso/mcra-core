@@ -4,7 +4,7 @@
   <Name>Dose response model type</Name>
   <UndefinedValue Id="Unknown">-1</UndefinedValue>
   <Description>
-    Accepted dose response model types. Controlled terminology.
+    Accepted dose response model types.
   </Description>
   <Units>
     <Unit>

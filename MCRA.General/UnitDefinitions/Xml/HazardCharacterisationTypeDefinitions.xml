@@ -4,7 +4,7 @@
   <Name>Hazard characterisation type</Name>
   <UndefinedValue Id="Unspecified" Name="Unspecified PoD">0</UndefinedValue>
   <Description>
-    Accepted hazard characterisation types. Controlled terminology.
+    Accepted hazard characterisation types.
   </Description>
   <Units>
     <Unit>

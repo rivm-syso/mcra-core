@@ -4,7 +4,7 @@
   <Name>Expression type</Name>
   <Description>
     Expression types define the way in which a substance amount may be standardised, or possible other way expressed. For example,
-    a substance in urine may be expressed in terms of a creatinine standardisation. Controlled terminology.
+    a substance in urine may be expressed in terms of a creatinine standardisation.
   </Description>
   <Units>
     <Unit>

@@ -4,7 +4,7 @@
   <Name>Harvest application type</Name>
   <UndefinedValue>-1</UndefinedValue>
   <Description>
-    Accepted harvest application types. Controlled terminology.
+    Accepted harvest application types.
   </Description>
   <Units>
     <Unit>

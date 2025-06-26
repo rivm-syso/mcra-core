@@ -3,7 +3,7 @@
   <Id>NetworkAnalysisType</Id>
   <Name>Network analysis type</Name>
   <Description>
-    Accepted Network analysis types. Controlled terminology.
+    Accepted Network analysis types.
   </Description>
   <Units>
     <Unit>

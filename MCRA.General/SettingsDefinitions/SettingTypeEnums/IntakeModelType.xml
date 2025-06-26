@@ -3,7 +3,7 @@
   <Id>IntakeModelType</Id>
   <Name>Intake model types</Name>
   <Description>
-    Accepted Intake model types. Controlled terminology.
+    Accepted Intake model types.
   </Description>
   <Units>
     <Unit>

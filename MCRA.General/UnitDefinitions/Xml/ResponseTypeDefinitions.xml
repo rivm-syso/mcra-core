@@ -3,7 +3,7 @@
   <Id>ResponseType</Id>
   <Name>Response type</Name>
   <Description>
-    Accepted response types. Controlled terminology.
+    Accepted response types.
   </Description>
   <Units>
     <Unit>
