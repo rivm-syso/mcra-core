@@ -81,7 +81,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
                 throw new Exception("No measurements / time points selected!");
             }
 
-            var individuals = IndividualSubsetCalculator.GetIndividualSubsets(
+            var individuals = IndividualsSubsetCalculator.GetIndividualSubsets(
                 subsetManager.AllHumanMonitoringIndividuals,
                 subsetManager.AllHumanMonitoringIndividualProperties,
                 data.SelectedPopulation,

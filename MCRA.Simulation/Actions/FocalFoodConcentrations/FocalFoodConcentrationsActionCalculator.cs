@@ -5,8 +5,8 @@ using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
+using MCRA.Simulation.Calculators.FoodSampleFilters;
 using MCRA.Simulation.Calculators.SampleCompoundCollections;
-using MCRA.Simulation.Filters.FoodSampleFilters;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;
 

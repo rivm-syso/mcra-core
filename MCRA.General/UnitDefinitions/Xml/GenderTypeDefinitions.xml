@@ -16,6 +16,8 @@
       <Aliases>
         <Alias>Female</Alias>
         <Alias>F</Alias>
+        <Alias>Femme</Alias>
+        <Alias>Frau</Alias>
       </Aliases>
     </Unit>
     <Unit>
@@ -27,6 +29,8 @@
       <Aliases>
         <Alias>Male</Alias>
         <Alias>M</Alias>
+        <Alias>Homme</Alias>
+        <Alias>Mann</Alias>
       </Aliases>
     </Unit>
   </Units>

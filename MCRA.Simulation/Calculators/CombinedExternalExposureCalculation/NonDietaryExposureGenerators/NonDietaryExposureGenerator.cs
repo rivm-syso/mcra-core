@@ -3,7 +3,6 @@ using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
-using MCRA.Simulation.Filters.IndividualFilters;
 using MCRA.Simulation.Objects;
 using MCRA.Simulation.Objects.IndividualExposures;
 using MCRA.Utils.Statistics;

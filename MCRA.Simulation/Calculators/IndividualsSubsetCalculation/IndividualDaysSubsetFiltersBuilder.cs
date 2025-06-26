@@ -2,7 +2,7 @@
 using MCRA.Data.Compiled.ObjectExtensions;
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.Simulation.Filters.IndividualDayFilters;
+using MCRA.Simulation.Calculators.IndividualsSubsetCalculation.IndividualDayFilters;
 
 namespace MCRA.Simulation.Calculators.IndividualsSubsetCalculation {
     public sealed class IndividualDaysSubsetFiltersBuilder {
@@ -12,31 +12,46 @@ namespace MCRA.Simulation.Calculators.IndividualsSubsetCalculation {
         /// population and the subset settings that can be used to filter
         /// or subset individual days.
         /// </summary>
-        /// <param name="population"></param>
-        /// <param name="individualSubsetType"></param>
-        /// <param name="selectedFilterPropertyKeys"></param>
-        /// <param name="includeMissingValueRecords"></param>
-        /// <returns></returns>
         public List<IPropertyIndividualDayFilter> Create(
             Population population,
             IndividualSubsetType individualSubsetType,
             ICollection<string> selectedFilterPropertyKeys,
             bool includeMissingValueRecords
         ) {
-            if (individualSubsetType == IndividualSubsetType.IgnorePopulationDefinition) {
+            return Create(
+                population?.PopulationIndividualPropertyValues?.Values,
+                individualSubsetType,
+                selectedFilterPropertyKeys,
+                includeMissingValueRecords
+            );
+        }
+
+        /// <summary>
+        /// Creates a collection of individual day filters based on the
+        /// provided population individual properties and the subset settings
+        /// that can be used to filter or subset individual days.
+        /// </summary>
+        public List<IPropertyIndividualDayFilter> Create(
+            ICollection<PopulationIndividualPropertyValue> populationIndividualProperties,
+            IndividualSubsetType individualSubsetType,
+            ICollection<string> selectedFilterPropertyKeys,
+            bool includeMissingValueRecords
+        ) {
+            if (individualSubsetType == IndividualSubsetType.IgnorePopulationDefinition
+                || populationIndividualProperties == null
+            ) {
                 return null;
             }
-            var populationIndividualDayProperties = population
-                .PopulationIndividualPropertyValues
-                .Where(c => c.Value.IndividualProperty.PropertyLevel == PropertyLevelType.IndividualDay)
+            var populationIndividualDayProperties = populationIndividualProperties
+                .Where(c => c.IndividualProperty.PropertyLevel == PropertyLevelType.IndividualDay)
                 .ToList();
             if (individualSubsetType == IndividualSubsetType.MatchToPopulationDefinitionUsingSelectedProperties) {
                 populationIndividualDayProperties = populationIndividualDayProperties
-                    .Where(r => selectedFilterPropertyKeys.Contains(r.Key))
+                    .Where(r => selectedFilterPropertyKeys.Contains(r.IndividualProperty.Code))
                     .ToList();
             }
             var result = populationIndividualDayProperties
-                .Select(r => createIndividualDayFilter(r.Value, includeMissingValueRecords))
+                .Select(r => createIndividualDayFilter(r, includeMissingValueRecords))
                 .ToList();
             return result;
         }

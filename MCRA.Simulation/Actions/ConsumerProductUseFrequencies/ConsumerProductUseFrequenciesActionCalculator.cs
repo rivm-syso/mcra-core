@@ -38,7 +38,7 @@ namespace MCRA.Simulation.Actions.ConsumerProductUseFrequencies {
             data.ConsumerProductSurveys = [.. subsetManager.AllConsumerProductSurveys.Values];
 
             var allConsumerProductsIndividualProperties = subsetManager.AllConsumerProductIndividualProperties;
-            var individuals = IndividualSubsetCalculator.GetIndividualSubsets(
+            var individuals = IndividualsSubsetCalculator.GetIndividualSubsets(
                 subsetManager.AllConsumerProductIndividuals,
                 subsetManager.AllConsumerProductIndividualProperties,
                 data.SelectedPopulation,

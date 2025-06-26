@@ -1,6 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.Simulation.Filters.IndividualFilters;
+using MCRA.Simulation.Calculators.IndividualsSubsetCalculation.IndividualFilters;
 
 namespace MCRA.Simulation.Calculators.IndividualsSubsetCalculation {
     public sealed class IndividualsSubsetFiltersBuilder {
@@ -9,28 +9,41 @@ namespace MCRA.Simulation.Calculators.IndividualsSubsetCalculation {
         /// Creates a collection of individual filters from the property ranges
         /// specified by the population.
         /// </summary>
-        /// <param name="population"></param>
-        /// <param name="individualProperties"></param>
-        /// <param name="individualSubsetType"></param>
-        /// <param name="selectedFilterProperties"></param>
-        /// <returns></returns>
         public ICollection<IPropertyIndividualFilter> Create(
             Population population,
-            IDictionary<string, IndividualProperty> individualProperties,
+            ICollection<IndividualProperty> surveyIndividualProperties,
             IndividualSubsetType individualSubsetType,
-            ICollection<string> selectedFilterProperties
+            ICollection<string> selectedFilterProperties = null
+        ) {
+            return Create(
+                population?.PopulationIndividualPropertyValues?.Values,
+                surveyIndividualProperties,
+                individualSubsetType,
+                selectedFilterProperties
+            );
+        }
+
+        /// <summary>
+        /// Creates a collection of individual filters from the property ranges
+        /// specified by the population.
+        /// </summary>
+        public ICollection<IPropertyIndividualFilter> Create(
+            ICollection<PopulationIndividualPropertyValue> populationIndividualProperties,
+            ICollection<IndividualProperty> surveyIndividualProperties,
+            IndividualSubsetType individualSubsetType,
+            ICollection<string> selectedFilterProperties = null
         ) {
             if (individualSubsetType == IndividualSubsetType.IgnorePopulationDefinition
-                || individualProperties == null
+                || surveyIndividualProperties == null
+                || populationIndividualProperties == null
             ) {
                 return null;
             }
             var result = new List<IPropertyIndividualFilter>();
 
-            var surveyIndividualProperties = individualProperties.Values;
             var matchSelectedProperties = individualSubsetType == IndividualSubsetType.MatchToPopulationDefinitionUsingSelectedProperties;
-            foreach (var individualProperty in population.PopulationIndividualPropertyValues) {
-                var property = individualProperty.Value.IndividualProperty;
+            foreach (var individualProperty in populationIndividualProperties) {
+                var property = individualProperty.IndividualProperty;
                 if (property.PropertyLevel != PropertyLevelType.Individual) {
                     continue;
                 }
@@ -41,43 +54,69 @@ namespace MCRA.Simulation.Calculators.IndividualsSubsetCalculation {
                 // TODO: Matching is now based on identical codes.
                 // It should also include controlled terminology aliases
                 var matchedProperty = surveyIndividualProperties
-                    .FirstOrDefault(r => string.Equals(individualProperty.Key, r.Code, StringComparison.OrdinalIgnoreCase));
+                    .FirstOrDefault(r => string.Equals(individualProperty.IndividualProperty.Code, r.Code, StringComparison.OrdinalIgnoreCase));
 
                 if (matchedProperty != null) {
-                    IPropertyIndividualFilter filter = null;
-                    if (property.PropertyType == IndividualPropertyType.Gender) {
-                        filter = new GenderPropertyIndividualFilter(matchedProperty, individualProperty.Value.CategoricalLevels);
-                    } else if (property.PropertyType == IndividualPropertyType.Boolean) {
-                        filter = new BooleanPropertyIndividualFilter(matchedProperty, individualProperty.Value.CategoricalLevels);
-                    } else if (property.PropertyType == IndividualPropertyType.Numeric
-                        || property.PropertyType == IndividualPropertyType.Integer
-                        || property.PropertyType == IndividualPropertyType.Nonnegative
-                        || property.PropertyType == IndividualPropertyType.NonnegativeInteger
-                    ) {
-                        filter = new NumericPropertyIndividualFilter(matchedProperty, individualProperty.Value.MinValue, individualProperty.Value.MaxValue);
-                    } else if (property.PropertyType == IndividualPropertyType.Location) {
-                        // Skip location; should be filtered by survey.
-                        continue;
-                    } else if (property.PropertyType == IndividualPropertyType.Categorical) {
-                        if (string.IsNullOrEmpty(individualProperty.Value?.Value)) {
-                            // No levels; skip this filter
-                            continue;
-                        }
-                        filter = new CategoricalPropertyIndividualFilter(matchedProperty, individualProperty.Value.CategoricalLevels);
-                    } else if (property.PropertyType == IndividualPropertyType.DateTime) {
-                        // TODO
-                        throw new NotImplementedException($"Individual filter for property of type {property.PropertyType} not implemented.");
-                    } else if (property.PropertyType == IndividualPropertyType.Month) {
-                        // TODO
-                        throw new NotImplementedException($"Individual filter for property of type {property.PropertyType} not implemented.");
-                    } else {
-                        throw new NotImplementedException($"Individual filter for property of type {property.PropertyType} not implemented.");
+                    var filter = Create(
+                        property,
+                        individualProperty.CategoricalLevels,
+                        individualProperty.MinValue,
+                        individualProperty.MaxValue
+                    );
+                    if (filter != null) {
+                        result.Add(filter);
                     }
-
-                    result.Add(filter);
                 }
             }
             return result;
+        }
+
+        /// <summary>
+        /// Creates a property individual filter for the specified individual property
+        /// based on the provided categorical levels and min- and max value.
+        /// </summary>
+        public static IPropertyIndividualFilter Create(
+            IndividualProperty property,
+            HashSet<string> categoricalLevels,
+            double? minValue,
+            double? maxValue
+        ) {
+            if (property.IsSexProperty) {
+                return new GenderPropertyIndividualFilter(
+                    property,
+                    categoricalLevels
+                );
+            } else if (property.PropertyType == IndividualPropertyType.Boolean) {
+                return new BooleanPropertyIndividualFilter(
+                    property,
+                    categoricalLevels
+                );
+            } else if (property.PropertyType == IndividualPropertyType.Numeric
+                || property.PropertyType == IndividualPropertyType.Integer
+                || property.PropertyType == IndividualPropertyType.Nonnegative
+                || property.PropertyType == IndividualPropertyType.NonnegativeInteger
+            ) {
+                return new NumericPropertyIndividualFilter(
+                    property,
+                    minValue,
+                    maxValue
+                );
+            } else if (property.PropertyType == IndividualPropertyType.Location) {
+                // Skip location; should be filtered by survey.
+                return null;
+            } else if (property.PropertyType == IndividualPropertyType.Categorical) {
+                if (categoricalLevels?.Count > 0) {
+                    return new CategoricalPropertyIndividualFilter(
+                        property,
+                        categoricalLevels
+                    );
+                } else {
+                    // No levels; skip this filter
+                    return null;
+                }
+            } else {
+                throw new NotImplementedException($"Individual filter for property of type {property.PropertyType} not implemented.");
+            }
         }
     }
 }

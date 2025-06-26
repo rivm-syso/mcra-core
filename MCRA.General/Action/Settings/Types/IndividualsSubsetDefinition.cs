@@ -85,7 +85,7 @@ namespace MCRA.General.Action.Settings {
                         max = val;
                     }
                 }
-                var smallerEqualString = IndividualPropertyQuery.GetGreaterEqualString();
+                var smallerEqualString = IndividualPropertyQuery.GetSmallerEqualString();
                 if (!string.IsNullOrEmpty(smallerEqualString)) {
                     var val = double.Parse(smallerEqualString.Replace("-", string.Empty));
                     if (val > max || double.IsNaN(max)) {

@@ -1,7 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.IndividualsSubsetCalculation;
-using MCRA.Simulation.Filters.IndividualFilters;
+using MCRA.Simulation.Calculators.IndividualsSubsetCalculation.IndividualFilters;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -58,15 +58,13 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IndividualsSubsetCalculatio
                 genderProperty,
                 categoricalProperty,
                 booleanProperty
-            }.ToDictionary(c =>c.Code, c=> c);
-            var subsetDefinitions = new List<string>();
+            };
 
             var builder = new IndividualsSubsetFiltersBuilder();
             var filters = builder.Create(
                 population,
                 surveyIndividualProperties,
-                IndividualSubsetType.MatchToPopulationDefinition,
-                subsetDefinitions
+                IndividualSubsetType.MatchToPopulationDefinition
             );
             Assert.AreEqual(4, filters.Count);
 
@@ -111,15 +109,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IndividualsSubsetCalculatio
             };
 
             // Empty list
-            var surveyIndividualProperties = new Dictionary<string, IndividualProperty>();
-            var subsetDefinitions = new List<string>();
             var builder = new IndividualsSubsetFiltersBuilder();
-            var filters = builder.Create(
-                population,
-                surveyIndividualProperties,
-                IndividualSubsetType.MatchToPopulationDefinition,
-                subsetDefinitions
-            );
+            var filters = builder.Create(population, [], IndividualSubsetType.MatchToPopulationDefinition, []);
 
             // Should pass, no filters should be added
             Assert.AreEqual(0, filters.Count);

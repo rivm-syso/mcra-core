@@ -7,11 +7,6 @@ namespace MCRA.Simulation.Calculators.PopulationDefinitionCalculation {
         /// <summary>
         /// Creates a population from specified settings and subset-definitions.
         /// </summary>
-        /// <param name="nominalBodyWeight"></param>
-        /// <param name="definitionFromSubsetSettings"></param>
-        /// <param name="individualsSubsetDefinitions"></param>
-        /// <param name="individualDaySubsetDefinition"></param>
-        /// <returns></returns>
         public Population Create(
             double nominalBodyWeight,
             bool definitionFromSubsetSettings,
@@ -23,7 +18,7 @@ namespace MCRA.Simulation.Calculators.PopulationDefinitionCalculation {
                 NominalBodyWeight = nominalBodyWeight
             };
 
-            //Get explicit population individual properties for Compute setting
+            // Get explicit population individual properties for compute setting
             if (definitionFromSubsetSettings) {
                 var populationIndividualPropertyValues = PopulationIndividualPropertyCalculator
                     .Compute(individualsSubsetDefinitions, individualDaySubsetDefinition);
@@ -31,7 +26,6 @@ namespace MCRA.Simulation.Calculators.PopulationDefinitionCalculation {
             } else {
                 result.PopulationIndividualPropertyValues = [];
             }
-
             return result;
         }
     }

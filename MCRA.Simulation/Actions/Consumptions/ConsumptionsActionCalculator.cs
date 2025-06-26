@@ -85,7 +85,7 @@ namespace MCRA.Simulation.Actions.Consumptions {
 
 
             //TODO use IndividualSubsetCalculator class instead
-            var individuals = IndividualSubsetCalculator.GetIndividualSubsets(
+            var individuals = IndividualsSubsetCalculator.GetIndividualSubsets(
                 subsetManager.AllIndividuals.Values,
                 subsetManager.AllIndividualProperties,
                 data.SelectedPopulation,

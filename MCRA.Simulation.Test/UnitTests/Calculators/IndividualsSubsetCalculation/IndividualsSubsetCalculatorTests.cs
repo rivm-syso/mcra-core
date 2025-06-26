@@ -1,9 +1,11 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Calculators.IndividualsSubsetCalculation;
-using MCRA.Simulation.Filters.IndividualFilters;
+using MCRA.Simulation.Calculators.IndividualsSubsetCalculation.IndividualFilters;
+using MCRA.Simulation.Calculators.PopulationDefinitionCalculation;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
+using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.IndividualsSubsetCalculation {
@@ -13,6 +15,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IndividualsSubsetCalculatio
     /// </summary>
     [TestClass]
     public class IndividualsSubsetCalculatorTests {
+
 
         /// <summary>
         /// Test calculation of individuals subset by gender.
@@ -28,11 +31,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IndividualsSubsetCalculatio
             setIndividualPropertyTextValues(individuals, property, values);
 
             var subsetDefinition = new IndividualsSubsetDefinition("gender", "'F'");
-            var filter = new IndividualSubsetDefinitionFilter(property, subsetDefinition);
+            var filters = createFilters([property], [subsetDefinition]);
 
             var subset = IndividualsSubsetCalculator.ComputeIndividualsSubset(
                 individuals,
-                [filter]
+                filters
             );
 
             Assert.AreEqual(6, subset.Count);
@@ -51,15 +54,15 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IndividualsSubsetCalculatio
             var values = new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
             setIndividualPropertyNumericValues(individuals, property, values);
 
-            var subsetDefinition = new IndividualsSubsetDefinition("age", "0-4");
-            var filter = new IndividualSubsetDefinitionFilter(property, subsetDefinition);
+            var subsetDefinition = new IndividualsSubsetDefinition("age", "2-4");
+            var filters = createFilters([property], [subsetDefinition]);
 
             var subset = IndividualsSubsetCalculator.ComputeIndividualsSubset(
                 individuals,
-                [filter]
+                filters
             );
 
-            Assert.AreEqual(4, subset.Count);
+            Assert.AreEqual(3, subset.Count);
         }
 
         /// <summary>
@@ -76,14 +79,38 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IndividualsSubsetCalculatio
             setIndividualPropertyNumericValues(individuals, property, values);
 
             var subsetDefinition = new IndividualsSubsetDefinition("age", "-4");
-            var filter = new IndividualSubsetDefinitionFilter(property, subsetDefinition);
+            var filters = createFilters([property], [subsetDefinition]);
 
             var subset = IndividualsSubsetCalculator.ComputeIndividualsSubset(
                 individuals,
-                [filter]
+                filters
             );
 
             Assert.AreEqual(4, subset.Count);
+        }
+
+        /// <summary>
+        /// Test calculation of individuals subset by age (upper bound only).
+        /// </summary>
+        [TestMethod]
+        public void IndividualSubsetFilter_TestAgeLowerBoundSubset() {
+            var seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var individuals = FakeIndividualsGenerator.Create(10, 2, random);
+
+            var property = FakeIndividualPropertiesGenerator.FakeAgeProperty;
+            var values = new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+            setIndividualPropertyNumericValues(individuals, property, values);
+
+            var subsetDefinition = new IndividualsSubsetDefinition("age", "4-");
+            var filters = createFilters([property], [subsetDefinition]);
+
+            var subset = IndividualsSubsetCalculator.ComputeIndividualsSubset(
+                individuals,
+                filters
+            );
+
+            Assert.AreEqual(7, subset.Count);
         }
 
         /// <summary>
@@ -103,16 +130,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IndividualsSubsetCalculatio
             var ageValues = new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
             setIndividualPropertyNumericValues(individuals, ageProperty, ageValues);
 
-            var filters = new [] {
-                new IndividualSubsetDefinitionFilter(
-                    genderProperty,
-                    new IndividualsSubsetDefinition(genderProperty.Code, "'F'")
-                ),
-                new IndividualSubsetDefinitionFilter(
-                    ageProperty,
-                    new IndividualsSubsetDefinition(ageProperty.Code, "3-6")
-                ),
-            };
+            var ageSubset = new IndividualsSubsetDefinition(ageProperty.Code, "3-6");
+            var sexSubset = new IndividualsSubsetDefinition(genderProperty.Code, "'F'");
+            var filters = createFilters(
+                [ageProperty, genderProperty],
+                [ageSubset, sexSubset]
+            );
 
             var subset = IndividualsSubsetCalculator.ComputeIndividualsSubset(
                 individuals,
@@ -140,6 +163,32 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IndividualsSubsetCalculatio
             for (int i = 0; i < individuals.Count; i++) {
                 individuals[i].SetPropertyValue(property, doubleValue: values[i]);
             }
+        }
+
+        private static ICollection<IPropertyIndividualFilter> createFilters(
+            ICollection<IndividualProperty> properties,
+            List<IndividualsSubsetDefinition> subsetDefinitions,
+            IndividualSubsetType individualSubsetType = IndividualSubsetType.MatchToPopulationDefinition,
+            ICollection<string> selectedSurveySubsetProperties = null
+        ) {
+            var populationBuilder = new PopulationDefinitionBuilder();
+            var population = populationBuilder.Create(
+                double.NaN,
+                true,
+                subsetDefinitions,
+                null
+            );
+
+            // Create individual (subset) filters
+            var individualsSubsetCalculator = new IndividualsSubsetFiltersBuilder();
+            var filters = individualsSubsetCalculator
+                .Create(
+                    population,
+                    properties,
+                    individualSubsetType,
+                    selectedSurveySubsetProperties
+                );
+            return filters;
         }
     }
 }
