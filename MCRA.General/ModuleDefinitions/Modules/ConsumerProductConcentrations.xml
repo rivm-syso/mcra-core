@@ -20,4 +20,8 @@
     <Entity>Substances</Entity>
     <Entity>ConsumerProducts</Entity>
   </Entities>
+  <OutputSettings>
+    <OutputSetting source="Action">VariabilityLowerPercentage</OutputSetting>
+    <OutputSetting source="Action">VariabilityUpperPercentage</OutputSetting>
+  </OutputSettings>
 </Module>

@@ -1,4 +1,5 @@
-﻿using MCRA.General;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
@@ -6,10 +7,11 @@ using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.Actions.ConsumerProductConcentrations {
     public enum ConsumerProductConcentrationsSections {
-        //No sub-sections
+        ConsumerProductConcentrationsSection
     }
-    public class ConsumerProductConcentrationsSummarizer : ActionResultsSummarizerBase<IConsumerProductConcentrationsActionResult> {
-
+    public sealed class ConsumerProductConcentrationsSummarizer : ActionModuleResultsSummarizer<ConsumerProductConcentrationsModuleConfig, IConsumerProductConcentrationsActionResult> {
+        public ConsumerProductConcentrationsSummarizer(ConsumerProductConcentrationsModuleConfig config) : base(config) {
+        }
         public override ActionType ActionType => ActionType.ConsumerProductConcentrations;
 
         public override void Summarize(ActionModuleConfig sectionConfig, IConsumerProductConcentrationsActionResult actionResult, ActionData data, SectionHeader header, int order) {
@@ -18,26 +20,50 @@ namespace MCRA.Simulation.Actions.ConsumerProductConcentrations {
                 return;
             }
 
-            //var section = new DustConcentrationDistributionsSummarySection() {
-            //    SectionLabel = ActionType.ToString()
-            //};
-            //var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
-            //subHeader.Units = collectUnits(data, sectionConfig);
+            var subHeader = header.AddEmptySubSectionHeader(ActionType.GetDisplayName(), order, ActionType.ToString());
+            var subOrder = 0;
 
-            //section.Summarize(
-            //    data.DustConcentrationDistributions,
-            //    data.DustConcentrationUnit,
-            //    sectionConfig.VariabilityLowerPercentage,
-            //    sectionConfig.VariabilityUpperPercentage
-            //);
-            //subHeader.SaveSummarySection(section);
+            subHeader.Units = collectUnits(data, sectionConfig);
+
+            if (outputSettings.ShouldSummarize(ConsumerProductConcentrationsSections.ConsumerProductConcentrationsSection)) {
+                summarizeConsumerProductConcentration(
+                    data.AllConsumerProductConcentrations,
+                    data.ConsumerProductConcentrationUnit,
+                    subHeader,
+                    subOrder++
+                );
+            }
         }
         private static List<ActionSummaryUnitRecord> collectUnits(ActionData data, ActionModuleConfig sectionConfig) {
             var result = new List<ActionSummaryUnitRecord> {
                 new("LowerPercentage", $"p{sectionConfig.VariabilityLowerPercentage}"),
-                new("UpperPercentage", $"p{sectionConfig.VariabilityUpperPercentage}")
+                new("UpperPercentage", $"p{sectionConfig.VariabilityUpperPercentage}"),
+                new("ConcentrationUnit", data.ConsumerProductConcentrationUnit.GetShortDisplayName())
             };
             return result;
+        }
+
+        private void summarizeConsumerProductConcentration(
+           ICollection<ConsumerProductConcentration> consumerProductConcentrations,
+           ConcentrationUnit consumerProductConcentrationUnit,
+           SectionHeader header,
+           int order
+       ) {
+            var section = new ConsumerProductConcentrationsSection() {
+                SectionLabel = getSectionLabel(ConsumerProductConcentrationsSections.ConsumerProductConcentrationsSection)
+            };
+            section.Summarize(
+                consumerProductConcentrations,
+                consumerProductConcentrationUnit,
+                _configuration.VariabilityLowerPercentage,
+                _configuration.VariabilityUpperPercentage
+            );
+            var subHeader = header.AddSubSectionHeaderFor(
+                section,
+                "Samples per substance and consumer product",
+                order
+            );
+            subHeader.SaveSummarySection(section);
         }
     }
 }
