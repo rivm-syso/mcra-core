@@ -27,4 +27,8 @@
     <SelectionSetting>UseCPSamplingWeights</SelectionSetting>
     <SelectionSetting>SelectedCPSurveySubsetProperties</SelectionSetting>
   </SelectionSettings>
+  <OutputSettings>
+    <OutputSetting source="Action">VariabilityLowerPercentage</OutputSetting>
+    <OutputSetting source="Action">VariabilityUpperPercentage</OutputSetting>
+  </OutputSettings>
 </Module>

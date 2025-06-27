@@ -34,14 +34,16 @@ namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
                  .GroupBy(c => c.Product)
                  .Select(c => {
                      var subgroups = c.Where(r => r.AgeLower.HasValue || r.Sex != GenderType.Undefined).ToList();
-                     var hasSubgroups = subgroups.Any();
+                     if (c.Select(c => c.DistributionType).Distinct().Count() > 1) {
+                         throw new Exception($"For product {c.Key.Name} {c.Key.Code} more than one distribution types are defined.");
+                     }
                      var fallbackApplicationAmount = c.FirstOrDefault(r => !r.AgeLower.HasValue && r.Sex == GenderType.Undefined);
                      return new ConsumerProductApplicationAmountSGs() {
                          Product = c.Key,
-                         Amount = hasSubgroups ? fallbackApplicationAmount?.Amount : c.First().Amount,
-                         CvVariability = hasSubgroups ? fallbackApplicationAmount?.CvVariability : c.First().CvVariability,
+                         Amount = fallbackApplicationAmount?.Amount,
+                         CvVariability = fallbackApplicationAmount?.CvVariability,
                          DistributionType = fallbackApplicationAmount?.DistributionType ?? c.First().DistributionType,
-                         CPAASubgroups = hasSubgroups ? subgroups: []
+                         CPAASubgroups = subgroups
                      };
                  })
                  .ToDictionary(c => c.Product);

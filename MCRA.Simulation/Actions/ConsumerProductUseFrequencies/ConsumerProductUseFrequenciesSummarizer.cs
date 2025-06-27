@@ -11,7 +11,7 @@ namespace MCRA.Simulation.Actions.ConsumerProductUseFrequencies {
         IndividualStatisticsSection,
         ConsumerProductUseFrequenciesSection,
     }
-        public sealed class ConsumerProductUseFrequenciesSummarizer : ActionModuleResultsSummarizer<ConsumerProductUseFrequenciesModuleConfig, IConsumerProductUseFrequenciesActionResult> {
+    public sealed class ConsumerProductUseFrequenciesSummarizer : ActionModuleResultsSummarizer<ConsumerProductUseFrequenciesModuleConfig, IConsumerProductUseFrequenciesActionResult> {
         public ConsumerProductUseFrequenciesSummarizer(ConsumerProductUseFrequenciesModuleConfig config) : base(config) {
         }
         public override ActionType ActionType => ActionType.ConsumerProductUseFrequencies;
@@ -21,10 +21,8 @@ namespace MCRA.Simulation.Actions.ConsumerProductUseFrequencies {
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }
-            var section = new CPDataSummarySection() {
-                SectionLabel = ActionType.ToString()
-            };
             var subHeader = header.AddEmptySubSectionHeader(ActionType.GetDisplayName(), order, ActionType.ToString());
+            subHeader.Units = collectUnits(data, sectionConfig);
             var subOrder = 0;
 
             if (outputSettings.ShouldSummarize(ConsumerProductUseFrequenciesSections.SurveysSection)) {
@@ -45,6 +43,14 @@ namespace MCRA.Simulation.Actions.ConsumerProductUseFrequencies {
                 );
             }
 
+            if (outputSettings.ShouldSummarize(ConsumerProductUseFrequenciesSections.ConsumerProductUseFrequenciesSection)) {
+                summarizeUseFrequencies(
+                    data.AllIndividualConsumerProductUseFrequencies,
+                    data.ConsumerProductIndividuals,
+                    subHeader,
+                    subOrder++
+                );
+            }
         }
         private void summarizeSurveys(
             ConsumerProductSurvey survey,
@@ -81,7 +87,7 @@ namespace MCRA.Simulation.Actions.ConsumerProductUseFrequencies {
                 individuals,
                 population,
                 _configuration.MatchCPIndividualSubsetWithPopulation,
-                _configuration.SelectedCPSurveySubsetProperties, 
+                _configuration.SelectedCPSurveySubsetProperties,
                 false
             );
             var subHeader = header.AddSubSectionHeaderFor(
@@ -90,6 +96,36 @@ namespace MCRA.Simulation.Actions.ConsumerProductUseFrequencies {
                 order
             );
             subHeader.SaveSummarySection(section);
+        }
+        private void summarizeUseFrequencies(
+            ICollection<IndividualConsumerProductUseFrequency> consumerProductUseFrequencies,
+            ICollection<Individual> individuals,
+            SectionHeader header,
+            int order
+        ) {
+            var section = new UseFrequenciesSection() {
+                SectionLabel = getSectionLabel(ConsumerProductUseFrequenciesSections.ConsumerProductUseFrequenciesSection)
+            };
+            section.Summarize(
+                consumerProductUseFrequencies,
+                individuals,
+                _configuration.VariabilityLowerPercentage,
+                _configuration.VariabilityUpperPercentage
+            );
+            var subHeader = header.AddSubSectionHeaderFor(
+                section,
+                "Use frequency statistics",
+                order
+            );
+            subHeader.SaveSummarySection(section);
+        }
+
+        private static List<ActionSummaryUnitRecord> collectUnits(ActionData data, ActionModuleConfig sectionConfig) {
+            var result = new List<ActionSummaryUnitRecord> {
+                new("LowerPercentage", $"p{sectionConfig.VariabilityLowerPercentage}"),
+                new("UpperPercentage", $"p{sectionConfig.VariabilityUpperPercentage}")
+            };
+            return result;
         }
     }
 }
