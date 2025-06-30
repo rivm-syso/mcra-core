@@ -56,6 +56,7 @@
       <xi:include href="Modules/FoodExtrapolations.xml" />
       <xi:include href="Modules/ExposureBiomarkerConversions.xml" />
       <xi:include href="Modules/ConsumerProductConcentrations.xml" />
+      <xi:include href="Modules/ConsumerProductConcentrationDistributions.xml" />
     </Modules>
   </ModuleGroupDefinition>
   <ModuleGroupDefinition>

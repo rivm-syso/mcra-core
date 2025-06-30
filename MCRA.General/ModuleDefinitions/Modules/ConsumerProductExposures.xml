@@ -41,7 +41,7 @@
     <UncertaintySetting source="Action">UncertaintyUpperBound</UncertaintySetting>
   </UncertaintySettings>
   <CalculationInputs>
-    <Input>ConsumerProductConcentrations</Input>
+    <Input>ConsumerProductConcentrationDistributions</Input>
     <Input>ConsumerProductUseFrequencies</Input>
     <Input>ConsumerProductExposureDeterminants</Input>
   </CalculationInputs>

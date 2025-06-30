@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <DataGroupDefinition>
   <Id>ConsumerProductConcentrations</Id>
-  <Name>Consumer products concentrations</Name>
+  <Name>Consumer product concentrations</Name>
   <SourceTableGroup>ConsumerProductConcentrations</SourceTableGroup>
   <Description>
-    Consumer products concentrations.
+    Consumer product concentrations.
   </Description>
   <DataGroupTables>
     <DataGroupTable>

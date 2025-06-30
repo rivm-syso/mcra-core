@@ -1,5 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
 using MCRA.Simulation.Calculators.ConsumerProductApplicationAmountCalculation;
 using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Objects;
@@ -9,27 +10,18 @@ using MCRA.Utils.Statistics.RandomGenerators;
 namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
 
     public sealed class ConsumerProductExposureCalculator {
-        private readonly Dictionary<ConsumerProduct, ConsumerProductSampleSubstanceCollections> _concentrationCollections;
-        private readonly Dictionary<(ConsumerProduct, Compound), (double concentration, double occurrencePercentage)> _concentrations;
+        private readonly IDictionary<(ConsumerProduct, Compound), ConcentrationModel> _concentrationModels;
         private readonly Dictionary<(ConsumerProduct, Compound, ExposureRoute), double> _exposureFractions;
         private readonly Dictionary<ConsumerProduct, ConsumerProductApplicationAmountSGs> _applicationAmounts;
 
         public ConsumerProductExposureCalculator(
             ICollection<ConsumerProductExposureFraction> cpExposureFractions,
             ICollection<ConsumerProductApplicationAmount> cpApplicationAmounts,
-            ICollection<ConsumerProductConcentration> cpConcentrations
+            IDictionary<(ConsumerProduct, Compound), ConcentrationModel> cpConcentrationModels
         ) {
-            _concentrationCollections = cpConcentrations
-                .AsParallel()
-                .GroupBy(c => c.Product)
-                .Select(c => new ConsumerProductSampleSubstanceCollections() {
-                    ConsumerProduct = c.Key,
-                    SubstanceSampleCollection = c.GroupBy(c => c.Substance)
-                        .ToDictionary(c => c.Key, c => c.Select(r => r).ToList())
-                })
-                .ToDictionary(c => c.ConsumerProduct);
-            _exposureFractions = cpExposureFractions.ToDictionary(c => (c.Product, c.Substance, c.Route), c => c.ExposureFraction);
+            _concentrationModels = cpConcentrationModels;
 
+            _exposureFractions = cpExposureFractions.ToDictionary(c => (c.Product, c.Substance, c.Route), c => c.ExposureFraction);
             _applicationAmounts = cpApplicationAmounts
                  .GroupBy(c => c.Product)
                  .Select(c => {
@@ -47,7 +39,6 @@ namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
                      };
                  })
                  .ToDictionary(c => c.Product);
-            _concentrations = [];
         }
 
         public List<ConsumerProductIndividualExposure> Compute(
@@ -88,21 +79,13 @@ namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
                     foreach (var substance in substances) {
                         if (model != null
                             && _exposureFractions.TryGetValue((useFrequency.Product, substance, route), out var cpFraction)
-                            && _concentrationCollections.TryGetValue(useFrequency.Product, out var cpCollection)
+                            && _concentrationModels.TryGetValue((useFrequency.Product, substance), out var cpcModel)
                         ) {
-                            double occurrencePercentage;
-                            double concentration;
-                            if (!_concentrations.TryGetValue((useFrequency.Product, substance), out var cpc)) {
-                                (concentration, occurrencePercentage) = getConcentration(substance, cpCollection);
-                                _concentrations[(useFrequency.Product, substance)] = (concentration, occurrencePercentage);
-                            } else {
-                                concentration = cpc.concentration;
-                                occurrencePercentage = cpc.occurrencePercentage;
-                            }
+                            (var concentration, var occurrenceFraction) = getConcentration(substance, cpcModel);
                             var applicationAmount = model.Draw(random, useFrequency.Individual.Age, useFrequency.Individual.Gender);
                             var ipc = new ConsumerProductExposurePerSubstance() {
                                 UseAmount = useFrequency.Frequency * (double)applicationAmount * cpFraction,
-                                Concentration = concentration * occurrencePercentage,
+                                Concentration = concentration * occurrenceFraction,
                                 Compound = substance
                             };
                             exposuresPerSubstance.Add(ipc);
@@ -124,11 +107,9 @@ namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
             return consumerProductIndividualDayIntake;
         }
 
-        private static (double, double) getConcentration(Compound substance, ConsumerProductSampleSubstanceCollections cpc) {
-            var concentration = cpc.SubstanceSampleCollection[substance].Average(c => c.Concentration);
-            //TODO maybe a separate table is needed for occurence percentages, see issue #2223
-            var occurrencePercentage = cpc.SubstanceSampleCollection[substance]
-                .Average(c => c.OccurrencePercentage ?? 100d) / 100d;
+        private static (double, double) getConcentration(Compound substance, ConcentrationModel model) {
+            var concentration = model.GetDistributionMean(NonDetectsHandlingMethod.ReplaceByZero);
+            var occurrencePercentage = model.CorrectedWeightedAgriculturalUseFraction;
             return (concentration, occurrencePercentage);
         }
     }

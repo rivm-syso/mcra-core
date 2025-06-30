@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>ConsumerProductConcentrationDistributions</Id>
+  <Name>Consumer product concentration distributions</Name>
+  <SourceTableGroup>ConsumerProductConcentrationDistributions</SourceTableGroup>
+  <Description>
+    Consumer product concentration distributions.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>ConsumerProductConcentrationDistributions</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

@@ -61,6 +61,8 @@
     <GraphDefinition ActionType="ConsumerProductConcentrations" X="20" Y="48" Linebreaks="1"/>
     <GraphDefinition ActionType="ConsumerProductExposureDeterminants" X="22" Y="48" Linebreaks="1"/>
     <GraphDefinition ActionType="ConsumerProductExposures" X="24" Y="48" Linebreaks="1"/>
+    <GraphDefinition ActionType="ConsumerProductConcentrationDistributions" X="26" Y="48" Linebreaks="1"/>
+
 
     <GraphDefinition ActionType="Individuals" X="30" Y="48" Linebreaks="0"/>
     <GraphDefinition ActionType="SingleValueRisks" X="110" Y="53" Linebreaks="0"/>

@@ -80,7 +80,7 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
             var exposureCalculator = new ConsumerProductExposureCalculator(
                 data.ConsumerProductExposureFractions,
                 data.ConsumerProductApplicationAmounts,
-                data.AllConsumerProductConcentrations
+                data.ConsumerProductConcentrationModels
             );
 
             var consumerProductIndividualDayIntakes = exposureCalculator

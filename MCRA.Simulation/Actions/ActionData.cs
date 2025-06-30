@@ -11,6 +11,7 @@ using MCRA.Simulation.Actions.ConcentrationDistributions;
 using MCRA.Simulation.Actions.ConcentrationLimits;
 using MCRA.Simulation.Actions.ConcentrationModels;
 using MCRA.Simulation.Actions.Concentrations;
+using MCRA.Simulation.Actions.ConsumerProductConcentrationDistributions;
 using MCRA.Simulation.Actions.ConsumerProductConcentrations;
 using MCRA.Simulation.Actions.ConsumerProductExposureDeterminants;
 using MCRA.Simulation.Actions.ConsumerProductExposures;
@@ -1022,6 +1023,7 @@ namespace MCRA.Simulation {
             set => GetOrCreateModuleOutputData<ConsumerProductConcentrationsOutputData>(ActionType.ConsumerProductConcentrations).AllConsumerProductConcentrations = value;
         }
 
+
         public ConcentrationUnit ConsumerProductConcentrationUnit {
             get => GetOrCreateModuleOutputData<ConsumerProductConcentrationsOutputData>(ActionType.ConsumerProductConcentrations).ConsumerProductConcentrationUnit;
             set => GetOrCreateModuleOutputData<ConsumerProductConcentrationsOutputData>(ActionType.ConsumerProductConcentrations).ConsumerProductConcentrationUnit = value;
@@ -1062,6 +1064,16 @@ namespace MCRA.Simulation {
             set => GetOrCreateModuleOutputData<ConsumerProductExposureDeterminantsOutputData>(ActionType.ConsumerProductExposureDeterminants).CPApplicationAmountUnit = value;
         }
 
+
+        public ICollection<ConsumerProductConcentrationDistribution> AllConsumerProductConcentrationDistributions {
+            get => GetOrCreateModuleOutputData<ConsumerProductConcentrationDistributionsOutputData>(ActionType.ConsumerProductConcentrationDistributions).AllConsumerProductConcentrationDistributions;
+            set => GetOrCreateModuleOutputData<ConsumerProductConcentrationDistributionsOutputData>(ActionType.ConsumerProductConcentrationDistributions).AllConsumerProductConcentrationDistributions = value;
+        }
+
+        public IDictionary<(ConsumerProduct, Compound), ConcentrationModel> ConsumerProductConcentrationModels {
+            get => GetOrCreateModuleOutputData<ConsumerProductConcentrationDistributionsOutputData>(ActionType.ConsumerProductConcentrationDistributions).ConsumerProductConcentrationModels;
+            set => GetOrCreateModuleOutputData<ConsumerProductConcentrationDistributionsOutputData>(ActionType.ConsumerProductConcentrationDistributions).ConsumerProductConcentrationModels = value;
+        }
         /// <summary>
         /// Creates a copy of the action data, to be used in bootstrap/uncertainty runs.
         /// </summary>

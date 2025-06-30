@@ -206,5 +206,7 @@ namespace MCRA.General {
         ConsumerProductExposureDeterminants = 78,
         [Display(Name = "Consumer product exposures")]
         ConsumerProductExposures = 79,
+        [Display(Name = "Consumer product concentration distributions")]
+        ConsumerProductConcentrationDistributions = 80,
     }
 }

@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>ConsumerProductConcentrationDistributions</Id>
+  <Name>Consumer product concentration distributions</Name>
+  <Description>
+    Consumer product concentration distributions specified in the form of summary statistics: mean and a coefficient of variation, and a occurrence percentage.
+  </Description>
+  <Aliases>
+    <string>ConsumerProductConcentrationDistributions</string>
+    <string>CPConcentrationDistributions</string>
+  </Aliases>
+  <PreferredAlias>CPConcentrationDistributions</PreferredAlias>
+  <HiddenAliases>
+    <string>RawConsumerProductConcentrationDistributions</string>
+  </HiddenAliases>
+  <TargetDataTable>RawConsumerProductConcentrationDistributions</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idProduct</Id>
+      <Description>The consumer product.</Description>
+      <Aliases>
+        <string>idProduct</string>
+        <string>ProductId</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>ConsumerProducts</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idSubstance</Id>
+      <Name>idSubstance</Name>
+      <Description>The code of the substance.</Description>
+      <Aliases>
+        <string>idSubstance</string>
+        <string>SubstanceId</string>
+        <string>SubstanceCode</string>
+        <string>Substance</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Compounds</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>Mean</Id>
+      <Description>The substance mean value of the consumer product.</Description>
+      <Aliases>
+        <string>Concentration</string>
+        <string>Value</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="ConcentrationUnit">
+      <Id>Unit</Id>
+      <Description>
+        The unit for the substance concentrations. When not specified, then a default unit of ug/kg is assumed.
+      </Description>
+      <Aliases>
+        <string>Unit</string>
+        <string>ConcentrationUnit</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="ConsumerProductConcentrationDistributionType">
+      <Id>DistributionType</Id>
+      <Description>
+        Distribution type (LogNormal).
+        If not specified, the concentration is assumed to be a constant factor.
+      </Description>
+      <Aliases>
+        <string>DistributionType</string>
+        <string>Distribution</string>
+      </Aliases>
+      <PossibleValues>
+        <PossibleValue>Uniform</PossibleValue>
+        <PossibleValue>LogNormal</PossibleValue>
+      </PossibleValues>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric">
+      <Id>CvVariability</Id>
+      <Description>Coefficient of variation.</Description>
+      <Aliases>
+        <string>CvVariability</string>
+        <string>CV</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric">
+      <Id>OccurrencePercentage</Id>
+      <Description>
+        Percentage (%) of the consumer product with substance (default 100%).
+      </Description>
+      <Aliases>
+        <string>OccurrencePercentage</string>
+        <string>Percentage</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

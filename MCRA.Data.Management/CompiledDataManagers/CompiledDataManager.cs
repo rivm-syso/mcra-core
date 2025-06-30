@@ -153,6 +153,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 writeConsumerProductSurveyDataToCsv(folderName, data.AllConsumerProductSurveys?.Values);
                 writeIndividualConsumerProductUseFrequenciesToCsv(folderName, data.AllIndividualConsumerProductUseFrequencies);
                 writeConsumerProductConcentrations(folderName, data.AllConsumerProductConcentrations);
+                writeConsumerProductConcentrationDistributions(folderName, data.AllConsumerProductConcentrationDistributions);
                 writeConsumerProductExposureFractions(folderName, data.AllConsumerProductExposureFractions);
                 writeConsumerProductApplicationAmounts(folderName, data.AllConsumerProductApplicationAmounts);
             } catch (Exception) {

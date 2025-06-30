@@ -318,6 +318,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 AllConsumerProductIndividuals = new Dictionary<string, Individual>(),
                 AllConsumerProductIndividualProperties = new Dictionary<string, IndividualProperty>(),
                 AllConsumerProductConcentrations = [],
+                AllConsumerProductConcentrationDistributions = [],
                 AllConsumerProductExposureFractions = [],
                 AllConsumerProductApplicationAmounts = [],
                 AllDeterministicSubstanceConversionFactors = [],

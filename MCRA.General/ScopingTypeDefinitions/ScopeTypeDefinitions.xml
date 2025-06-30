@@ -2058,6 +2058,24 @@
   </ScopingTypeDefinition>
 
   <ScopingTypeDefinition>
+    <Id>ConsumerProductConcentrationDistributions</Id>
+    <Name>Consumer product concentration distributions</Name>
+    <RawTableId>ConsumerProductConcentrationDistributions</RawTableId>
+    <Description>-</Description>
+    <TableGroup>ConsumerProductConcentrationDistributions</TableGroup>
+    <ParentScopeReferences>
+      <ParentScopeReference>
+        <IdField>idProduct</IdField>
+        <ReferencedScope>ConsumerProducts</ReferencedScope>
+      </ParentScopeReference>
+      <ParentScopeReference>
+        <IdField>idSubstance</IdField>
+        <ReferencedScope>Compounds</ReferencedScope>
+      </ParentScopeReference>
+    </ParentScopeReferences>
+  </ScopingTypeDefinition>
+
+  <ScopingTypeDefinition>
     <Id>ConsumerProductExposureFractions</Id>
     <Name>Consumer products exposure fractions</Name>
     <RawTableId>ConsumerProductExposureFractions</RawTableId>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>ConsumerProductConcentrationDistributions</Id>
+  <Name>Consumer product concentration distributions</Name>
+  <ActionType>ConsumerProductConcentrationDistributions</ActionType>
+  <ModuleType>CalculatorModule</ModuleType>
+  <CanCompute>true</CanCompute>
+  <TableGroup>ConsumerProductConcentrationDistributions</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Consumer product concentration distributions are specified by a mean, cv and distribution type (lognormal). 
+    Specify the occurrence percentage i.c. the percentage of the consumer product with positive concentrations.
+  </Description>
+  <ShortDescription>
+    Consumer product concentration distributions are specified by summary statistics.
+    Consumer product concentration distributions can be given as data or computed from consumer product concentrations.
+  </ShortDescription>
+  <DataDescription>
+    Data are provided in the form of summary statistics for a specific consumer product and substance.
+  </DataDescription>
+  <CalculationDescription>
+    Consumer product concentration distributions are computed from consumer product concentrations.
+  </CalculationDescription>
+  <Entities>
+    <Entity>Substances</Entity>
+    <Entity>ConsumerProducts</Entity>
+  </Entities>
+  <CalculationInputs>
+    <Input>ConsumerProductConcentrations</Input>
+  </CalculationInputs>
+  <OutputSettings>
+    <OutputSetting source="Action">RandomSeed</OutputSetting>
+  </OutputSettings>
+</Module>

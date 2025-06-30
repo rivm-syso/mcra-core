@@ -99,5 +99,6 @@ namespace MCRA.Data.Management {
         IList<ConsumerProductExposureFraction> GetAllConsumerProductExposureFractions();
         IList<ConsumerProductApplicationAmount> GetAllConsumerProductApplicationAmounts();
         IList<ConsumerProductConcentration> GetAllConsumerProductConcentrations();
+        IList<ConsumerProductConcentrationDistribution> GetAllConsumerProductConcentrationDistributions();
     }
 }

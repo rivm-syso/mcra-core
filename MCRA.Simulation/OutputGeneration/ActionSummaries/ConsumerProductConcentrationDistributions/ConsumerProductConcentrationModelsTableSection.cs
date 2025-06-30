@@ -1,0 +1,28 @@
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
+using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
+using MCRA.Simulation.OutputGeneration.ActionSummaries.ConsumerProductConcentrationDistributions;
+
+namespace MCRA.Simulation.OutputGeneration {
+    public sealed class ConsumerProductConcentrationModelsTableSection : ConsumerProductConcentrationModelBase {
+
+        public override bool SaveTemporaryData => true;
+
+        public List<ConsumerProductConcentrationModelRecord> Records { get; set; }
+
+        public void Summarize(
+            IDictionary<(ConsumerProduct Product, Compound Substance), ConcentrationModel> concentrationModels
+        ) {
+            Records = concentrationModels
+                .Where(c => c.Value.ModelType != ConcentrationModelType.Empirical || c.Value.Residues.NumberOfResidues > 0)
+                .AsParallel()
+                .Select(r => {
+                    var record = SummarizeBase(r.Key.Product, r.Key.Substance, r.Value, false);
+                    return record;
+                })
+                .OrderBy(r => r.SubstanceName, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(r => r.ConsumerProductName, StringComparer.OrdinalIgnoreCase)
+                .ToList();
+        }
+    }
+}

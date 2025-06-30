@@ -601,6 +601,8 @@ namespace MCRA.Data.Management {
         public IList<ConsumerProductConcentration> AllConsumerProductConcentrations => _dataManager.GetAllConsumerProductConcentrations();
         public IList<ConsumerProductExposureFraction> AllConsumerProductExposureFractions => _dataManager.GetAllConsumerProductExposureFractions();
         public IList<ConsumerProductApplicationAmount> AllConsumerProductApplicationAmounts => _dataManager.GetAllConsumerProductApplicationAmounts();
+        public IList<ConsumerProductConcentrationDistribution> AllConsumerProductConcentrationDistributions => _dataManager.GetAllConsumerProductConcentrationDistributions();
+
 
     }
 }

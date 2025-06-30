@@ -60,7 +60,7 @@ namespace MCRA.Simulation.Actions.ConsumerProductConcentrations {
             );
             var subHeader = header.AddSubSectionHeaderFor(
                 section,
-                "Samples per substance and consumer product",
+                "Concentrations per substance and consumer product",
                 order
             );
             subHeader.SaveSummarySection(section);
