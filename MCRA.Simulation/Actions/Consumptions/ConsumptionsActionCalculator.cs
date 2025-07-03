@@ -94,7 +94,9 @@ namespace MCRA.Simulation.Actions.Consumptions {
                 ModuleConfig.SelectedFoodSurveySubsetProperties,
                 !ModuleConfig.IsDefaultSamplingWeight
             );
-
+            if (individuals.Count == 0) {
+                throw new Exception($"The original number of individuals is {subsetManager.AllIndividuals.Values.Count}, after subset selection no individuals are left. Reconsider your subset criteria.");
+            }
             // Filter individuals with < n survey days
             if (ModuleConfig.ExposureType == ExposureType.Chronic && ModuleConfig.ExcludeIndividualsWithLessThanNDays) {
                 var maximumNumberOfDaysInSurvey = individuals.Max(c => c.NumberOfDaysInSurvey);
