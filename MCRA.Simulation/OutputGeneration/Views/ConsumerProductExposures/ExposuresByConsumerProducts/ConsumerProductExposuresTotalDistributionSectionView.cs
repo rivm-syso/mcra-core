@@ -1,7 +1,7 @@
-﻿using MCRA.Utils.Hierarchies;
+﻿using System.Text;
 using MCRA.Simulation.OutputGeneration.Helpers;
 using MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders;
-using System.Text;
+using MCRA.Utils.Hierarchies;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class ConsumerProductExposuresTotalDistributionSectionView : SectionView<ConsumerProductExposuresTotalDistributionSection> {
@@ -28,7 +28,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 sb.AppendDescriptionParagraph($"Total {Model.Records.Count} consumer products.");
 
                 if (Model.HasHierarchicalData) {
-                    // Returns all food-as-measured lists from the hierarchy as a flat list, with different flags for
+                    // Returns all consumer product lists from the hierarchy as a flat list, with different flags for
                     // summary nodes containing data, summary nodes not containing data, and leaf nodes. This list
                     // is ordered based on the hierarchy; child nodes directly follow their parents.
                     var nodes = Model.HierarchicalNodes.Union(Model.Records).ToList();
@@ -49,19 +49,19 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     var sortedHierarchicalRecords = hierarchicalRecords.GetTreeOrderedList(orderByExtractor).ToList();
 
                     // Get contributions per hierarchical level
-                    var allFoodSubTrees = hierarchicalRecords.Traverse();
-                    var selectedIds = allFoodSubTrees
+                    var allSubTrees = hierarchicalRecords.Traverse();
+                    var selectedIds = allSubTrees
                         .Where(c => string.IsNullOrEmpty(c.Node.__IdParent))
                         .Select(c => c.Node.__Id)
                         .ToList();
                     var resultsCollection = new List<List<ConsumerProductExposureRecord>>();
                     while (selectedIds.Any()) {
-                        var treeResults = allFoodSubTrees
+                        var treeResults = allSubTrees
                             .Where(c => selectedIds.Contains(c.Node.__Id))
                             .Select(c => c.Node)
                             .ToList();
                         resultsCollection.Add(treeResults);
-                        selectedIds = allFoodSubTrees
+                        selectedIds = allSubTrees
                             .Where(c => selectedIds.Contains(c.Node.__IdParent))
                             .Select(c => c.Node.__Id)
                             .ToList();
@@ -73,6 +73,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         var title = counter == 0
                             ? "Main level"
                             : $"Level {counter}";
+                        var caption = counter == 0
+                                    ? $"Hierarchy main (n = {results.Count})."
+                                    : $"Hierarchy level {counter} (n = {results.Count}).";
                         panelBuilder.AddPanel(
                             id: $"level-{counter}",
                             title: title,
@@ -84,7 +87,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                                 new ConsumerProductExposuresTotalDistributionPieChartCreator(Model, results, isUncertainty, counter: counter),
                                 ChartFileType.Svg,
                                 true,
-                                $"Hierarchy level {counter}."
+                                caption
                             ));
                         counter++;
                     }
@@ -98,7 +101,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                          "__Id",
                          "__IdParent",
                          "__IsSummaryRecord",
-                         caption: "Exposure statistics by consumer product (total distribution).",
+                         caption: "Exposure statistics for consumer products (total distribution).",
                          saveCsv: true,
                          displayLimit: 20,
                          hiddenProperties: hiddenProperties,
@@ -123,13 +126,12 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         Model.Records,
                         "TotalDistributionConsumerProductTable",
                         ViewBag,
-                        caption: "Exposure statistics by consumer product (total distribution).",
+                        caption: "Exposure statistics for consumer products (total distribution).",
                         saveCsv: true,
                         displayLimit: 20,
                         hiddenProperties: hiddenProperties
                     );
                 }
-
             } else {
                 sb.AppendParagraph("No positive exposures found", "warning");
             }
