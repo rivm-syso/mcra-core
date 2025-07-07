@@ -33,9 +33,7 @@ namespace MCRA.Simulation.Actions.ConsumerProductConcentrations {
                         Substance = r.Substance,
                         Concentration = conc,
                         Unit = consumerProductConcentrationUnit,
-                        DistributionType = r.DistributionType,
-                        CvVariability = r.CvVariability,
-                        OccurrencePercentage = r.OccurrencePercentage,
+                        SamplingWeight = r.SamplingWeight,
                     };
                 })
                 .OrderBy(c => c.Product.Code)

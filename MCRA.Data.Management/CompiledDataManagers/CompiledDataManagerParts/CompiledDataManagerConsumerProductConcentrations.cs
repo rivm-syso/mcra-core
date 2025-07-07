@@ -31,9 +31,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             Substance = _data.GetOrAddSubstance(idSubstance),
                                             Concentration = r.GetDouble(RawConsumerProductConcentrations.Concentration, fieldMap),
                                             Unit = unit,
-                                            DistributionType = r.GetEnum(RawConsumerProductConcentrations.DistributionType, fieldMap, ConsumerProductConcentrationDistributionType.Constant),
-                                            CvVariability = r.GetDoubleOrNull(RawConsumerProductConcentrations.CvVariability, fieldMap),
-                                            OccurrencePercentage = r.GetDoubleOrNull(RawConsumerProductConcentrations.OccurrencePercentage, fieldMap),
+                                            SamplingWeight = r.GetDoubleOrNull(RawConsumerProductConcentrations.SamplingWeight, fieldMap),
                                         };
                                         allConsumerProductConcentrations.Add(consumerProductConcentration);
                                     }
@@ -62,9 +60,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 row.WriteNonEmptyString(RawConsumerProductConcentrations.IdSubstance, concentration.Substance.Code, ccr);
                 row.WriteNonNaNDouble(RawConsumerProductConcentrations.Concentration, concentration.Concentration, ccr);
                 row.WriteNonEmptyString(RawConsumerProductConcentrations.Unit, concentration.Unit.ToString(), ccr);
-                row.WriteNonNullDouble(RawConsumerProductConcentrations.CvVariability, concentration.CvVariability, ccr); 
-                row.WriteNonEmptyString(RawConsumerProductConcentrations.DistributionType, concentration.DistributionType.ToString(), ccr);
-                row.WriteNonNullDouble(RawConsumerProductConcentrations.OccurrencePercentage, concentration.OccurrencePercentage, ccr);
+                row.WriteNonNullDouble(RawConsumerProductConcentrations.SamplingWeight, concentration.SamplingWeight, ccr);
                 dt.Rows.Add(row);
             }
             writeToCsv(tempFolder, td, dt, ccr);

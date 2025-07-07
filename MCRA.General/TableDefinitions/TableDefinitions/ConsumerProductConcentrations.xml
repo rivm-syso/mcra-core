@@ -57,37 +57,11 @@
         <string>ConcentrationUnit</string>
       </Aliases>
     </ColumnDefinition>
-    <ColumnDefinition FieldType="ConsumerProductConcentrationDistributionType">
-      <Id>DistributionType</Id>
-      <Description>
-        Distribution type (Uniform, or LogNormal).
-        If not specified, the concentration is assumed to be a constant factor.
-      </Description>
-      <Aliases>
-        <string>DistributionType</string>
-        <string>Distribution</string>
-      </Aliases>
-      <PossibleValues>
-        <PossibleValue>Uniform</PossibleValue>
-        <PossibleValue>LogNormal</PossibleValue>
-      </PossibleValues>
-    </ColumnDefinition>
     <ColumnDefinition FieldType="Numeric">
-      <Id>CvVariability</Id>
-      <Description>Coefficient of variation.</Description>
+      <Id>SamplingWeight</Id>
+      <Description>The sampling weight for a concentration (default = 1).</Description>
       <Aliases>
-        <string>CvVariability</string>
-        <string>CV</string>
-      </Aliases>
-    </ColumnDefinition>
-    <ColumnDefinition FieldType="Numeric">
-      <Id>OccurrencePercentage</Id>
-      <Description>
-        Percentage (%) of consumer products with substance (default 100%).
-      </Description>
-      <Aliases>
-        <string>OccurrencePercentage</string>
-        <string>Percentage</string>
+        <string>SamplingWeight</string>
       </Aliases>
     </ColumnDefinition>
   </ColumnDefinitions>
