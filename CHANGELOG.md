@@ -1,5 +1,23 @@
 # Change Log
 
+## Version 10.2.0 (2025-07-07)
+
+### Added
+
+- Implement ConsumerProducts module (#2148)
+- Add biological matrix term for feces (#2205)
+- Show uncertainty in exposure response function plot (#2206)
+
+### Changed
+
+- Rename BaselineBodIndicators to BurdensOfDisease (#2209)
+- Rename baseline to counterfactualValue in erf data (#2210)
+
+### Fixed
+
+- Correct conversion of erf evaluations (#2208)
+- Throw exception with more specific information when no individuals are left after subset selection (#2230)
+
 ## Version 10.1.10 (2025-05-08)
 
 ### Added
