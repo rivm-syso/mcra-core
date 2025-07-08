@@ -18,11 +18,7 @@ namespace MCRA.Simulation.Actions.SubstanceAuthorisations {
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }
-            var section = new SubstanceAuthorisationsSummarySection() {
-                SectionLabel = ActionType.ToString()
-            };
-            var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
-            subHeader.SaveSummarySection(section);
+            var subHeader = header.AddEmptySubSectionHeader(ActionType.GetDisplayName(), order, ActionType.ToString());
             var subOrder = 0;
             summarizeByFoodSubstance(
                 data.SubstanceAuthorisations,

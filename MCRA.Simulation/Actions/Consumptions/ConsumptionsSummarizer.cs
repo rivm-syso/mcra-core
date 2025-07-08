@@ -20,12 +20,9 @@ namespace MCRA.Simulation.Actions.Consumptions {
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }
-            var section = new ConsumptionsSummarySection() {
-                SectionLabel = ActionType.ToString()
-            };
-            var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
+
+            var subHeader = header.AddEmptySubSectionHeader(ActionType.GetDisplayName(), order, ActionType.ToString());
             subHeader.Units = collectUnits(data);
-            subHeader.SaveSummarySection(section);
 
             summarizePopulationStatistics(data, subHeader, order++);
 

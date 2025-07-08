@@ -18,14 +18,8 @@ namespace MCRA.Simulation.Actions.SoilExposureDeterminants {
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }
-
-            var section = new SoilExposureDeterminantsDataSection() {
-                SectionLabel = ActionType.ToString()
-            };
-            var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
-            subHeader.SaveSummarySection(section);
-
-            int subOrder = 0;
+            var subHeader = header.AddEmptySubSectionHeader(ActionType.GetDisplayName(), order, ActionType.ToString());
+            var subOrder = 0;
 
             // Summarize soil ingestion data.
             if (data.SoilIngestions != null) {

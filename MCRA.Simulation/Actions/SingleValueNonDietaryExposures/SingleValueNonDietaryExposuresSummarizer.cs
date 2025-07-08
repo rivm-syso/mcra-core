@@ -26,10 +26,7 @@ namespace MCRA.Simulation.Actions.SingleValueNonDietaryExposures {
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }
-            var section = new SingleValueNonDietaryDataSummarySection() {
-                SectionLabel = ActionType.ToString()
-            };
-            var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
+            var subHeader = header.AddEmptySubSectionHeader(ActionType.GetDisplayName(), order, ActionType.ToString());
             subHeader.Units = collectUnits(data);
 
             var subOrder = 0;
@@ -54,8 +51,6 @@ namespace MCRA.Simulation.Actions.SingleValueNonDietaryExposures {
                     subOrder++
                 );
             }
-
-            subHeader.SaveSummarySection(section);
         }
 
         private static List<ActionSummaryUnitRecord> collectUnits(ActionData data) {

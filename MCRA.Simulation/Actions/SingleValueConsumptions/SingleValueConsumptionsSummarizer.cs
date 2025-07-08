@@ -18,14 +18,10 @@ namespace MCRA.Simulation.Actions.SingleValueConsumptions {
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }
-            var consumptionInputSection = new ConsumptionsSummarySection() {
-                SectionLabel = ActionType.ToString()
-            };
-            var subHeader = header.AddSubSectionHeaderFor(consumptionInputSection, ActionType.GetDisplayName(), order);
-            subHeader.Units = collectUnits(data);
-            subHeader.SaveSummarySection(consumptionInputSection);
 
+            var subHeader = header.AddEmptySubSectionHeader(ActionType.GetDisplayName(), order, ActionType.ToString()); subHeader.Units = collectUnits(data);
             var subOrder = 0;
+
             if (data.SingleValueConsumptionModels != null && outputSettings.ShouldSummarize(SingleValueConsumptionsSections.SingleValueConsumptionsSection)) {
                 summarizeConsumptionsByFoodAsMeasured(data, subHeader, subOrder++);
             }

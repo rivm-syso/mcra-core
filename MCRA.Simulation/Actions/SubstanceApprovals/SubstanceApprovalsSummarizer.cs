@@ -18,11 +18,7 @@ namespace MCRA.Simulation.Actions.SubstanceApprovals {
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }
-            var section = new SubstanceApprovalsSummarySection() {
-                SectionLabel = ActionType.ToString()
-            };
-            var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
-            subHeader.SaveSummarySection(section);
+            var subHeader = header.AddEmptySubSectionHeader(ActionType.GetDisplayName(), order, ActionType.ToString());
             var subOrder = 0;
             summarizeBySubstance(
                 data.SubstanceApprovals,

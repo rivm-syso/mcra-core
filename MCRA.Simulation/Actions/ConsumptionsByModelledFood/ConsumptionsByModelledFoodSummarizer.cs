@@ -37,34 +37,31 @@ namespace MCRA.Simulation.Actions.ConsumptionsByModelledFood {
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }
-            var consumptionInputSection = new ConsumptionsSummarySection() {
-                SectionLabel = ActionType.ToString()
-            };
-            var sub1Header = header.AddSubSectionHeaderFor(consumptionInputSection, ActionType.GetDisplayName(), order++);
-            sub1Header.Units = collectUnits(data);
-            sub1Header.SaveSummarySection(consumptionInputSection);
+
+            var subHeader = header.AddEmptySubSectionHeader(ActionType.GetDisplayName(), order, ActionType.ToString());
+            subHeader.Units = collectUnits(data);
 
             if (result.ConsumptionsFoodsAsEaten != null && outputSettings.ShouldSummarize(ConsumptionsByModelledFoodSections.ConsumptionStatisticsSection)) {
-                summarizeStatistics(data, result, sub1Header, order++);
-                summarizeConsumptionStatistics(data, sub1Header, order++);
+                summarizeStatistics(data, result, subHeader, order++);
+                summarizeConsumptionStatistics(data, subHeader, order++);
             }
 
             if (result.ConsumptionsFoodsAsEaten != null && outputSettings.ShouldSummarize(ConsumptionsByModelledFoodSections.ConsumptionsFoodsAsEatenSection)) {
-                summarizeFoodsAsEaten(data, result, sub1Header, order++);
+                summarizeFoodsAsEaten(data, result, subHeader, order++);
             }
 
             if (result.ConsumptionsByModelledFood != null && outputSettings.ShouldSummarize(ConsumptionsByModelledFoodSections.ConsumptionsModelledFoodsSection)) {
-                summarizeModelledFoods(data, result, sub1Header, order++);
+                summarizeModelledFoods(data, result, subHeader, order++);
             }
 
             if (result.ConsumptionsByModelledFood != null
                 && (data.ProcessingTypes?.Count > 0)
                 && outputSettings.ShouldSummarize(ConsumptionsByModelledFoodSections.ConsumptionsProcessedModelledFoodsSection)) {
-                summarizeProcessedModelledFoods(data, result, sub1Header, order++);
+                summarizeProcessedModelledFoods(data, result, subHeader, order++);
             }
 
             if (result.ConsumptionsByModelledFood.Any(c => c.IsBrand) && outputSettings.ShouldSummarize(ConsumptionsByModelledFoodSections.MarketSharesSection)) {
-                summarizeMarketShares(result, sub1Header, order++);
+                summarizeMarketShares(result, subHeader, order++);
             }
         }
 

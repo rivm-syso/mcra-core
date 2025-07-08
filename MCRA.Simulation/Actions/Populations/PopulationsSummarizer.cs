@@ -24,10 +24,8 @@ namespace MCRA.Simulation.Actions.Populations {
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }
-            var section = new PopulationsSummarySection() {
-                SectionLabel = ActionType.ToString()
-            };
-            var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
+            var subHeader = header.AddEmptySubSectionHeader(ActionType.GetDisplayName(), order, ActionType.ToString());
+
             subHeader.Units = collectUnits(data);
 
             if (outputSettings.ShouldSummarize(PopulationsSections.PopulationsSummarySection)

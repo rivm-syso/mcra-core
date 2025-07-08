@@ -27,10 +27,7 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
                 return;
             }
 
-            var outputSummary = new ExposureMixturesSummarySection() {
-                SectionLabel = ActionType.ToString()
-            };
-            var subHeader = header.AddSubSectionHeaderFor(outputSummary, ActionType.GetDisplayName(), order);
+            var subHeader = header.AddEmptySubSectionHeader(ActionType.GetDisplayName(), order, ActionType.ToString());
             var subOrder = 0;
 
             if (outputSettings.ShouldSummarize(ExposureMixturesSections.SubstanceContributionsToComponentSection)) {

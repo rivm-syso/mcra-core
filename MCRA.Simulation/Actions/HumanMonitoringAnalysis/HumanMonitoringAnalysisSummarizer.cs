@@ -32,13 +32,9 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }
-            var outputSummary = new HumanMonitoringAnalysisSummarySection() {
-                SectionLabel = ActionType.ToString()
-            };
-            var subHeader = header.AddSubSectionHeaderFor(outputSummary, ActionType.GetDisplayName(), order);
-            subHeader.Units = CollectUnits(data);
-            subHeader.SaveSummarySection(outputSummary);
 
+            var subHeader = header.AddEmptySubSectionHeader(ActionType.GetDisplayName(), order, ActionType.ToString());
+            subHeader.Units = CollectUnits(data);
             var subOrder = 0;
 
             // HBM cumulative concentrations
@@ -163,10 +159,6 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
            ActionData data,
            SectionHeader header
         ) {
-            var subHeader = header.GetSubSectionHeader<HumanMonitoringAnalysisSummarySection>();
-            if (subHeader == null) {
-                return;
-            }
             if (data.HbmCumulativeIndividualCollection != null || data.HbmCumulativeIndividualDayCollection != null) {
                 summarizeCumulativeConcentrationseUncertainty(
                     data.HbmCumulativeIndividualDayCollection,

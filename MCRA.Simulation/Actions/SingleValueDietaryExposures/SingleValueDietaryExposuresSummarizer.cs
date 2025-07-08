@@ -25,12 +25,8 @@ namespace MCRA.Simulation.Actions.SingleValueDietaryExposures {
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }
-            var section = new SingleValueDietaryExposuresSummarySection() {
-                SectionLabel = ActionType.ToString()
-            };
-            var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
+            var subHeader = header.AddEmptySubSectionHeader(ActionType.GetDisplayName(), order, ActionType.ToString());
             subHeader.Units = collectUnits(data);
-            subHeader.SaveSummarySection(section);
 
             if (result.Exposures?.Count > 0) {
                 summarizeSingleValueDietaryExposuresByFoodSubstance(

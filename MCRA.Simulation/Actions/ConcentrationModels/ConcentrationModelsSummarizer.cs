@@ -23,13 +23,8 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
                 return;
             }
 
-            var section = new ConcentrationModelsSection() {
-                SectionLabel = ActionType.ToString()
-            };
-            var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
+            var subHeader = header.AddEmptySubSectionHeader(ActionType.GetDisplayName(), order, ActionType.ToString());
             subHeader.Units = collectUnits(data);
-            subHeader.SaveSummarySection(section);
-
             var subOrder = 0;
 
             if (outputSettings.ShouldSummarize(ConcentrationModelsSections.ConcentrationModelsTableSection)
@@ -62,15 +57,11 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }
-
-            var subHeader = header.GetSubSectionHeader<ConcentrationModelsSection>();
-            if (subHeader != null) {
-                summarizeConcentrationModelsUncertain(
-                    actionResult.ConcentrationModels,
-                    actionResult.CumulativeConcentrationModels,
-                    subHeader
-                );
-            }
+            summarizeConcentrationModelsUncertain(
+                actionResult.ConcentrationModels,
+                actionResult.CumulativeConcentrationModels,
+                header
+            );
         }
 
         private void summarizeConcentrationModelsTableSection(

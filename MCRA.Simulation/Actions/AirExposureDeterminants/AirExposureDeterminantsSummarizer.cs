@@ -20,13 +20,8 @@ namespace MCRA.Simulation.Actions.AirExposureDeterminants {
                 return;
             }
 
-            var section = new AirExposureDeterminantsDataSection() {
-                SectionLabel = ActionType.ToString()
-            };
-            var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
-            subHeader.SaveSummarySection(section);
-
-            int subOrder = 0;
+            var subHeader = header.AddEmptySubSectionHeader(ActionType.GetDisplayName(), order, ActionType.ToString());
+            var subOrder = 0;
 
             // Summarize air indoor fractions.
             if (data.AirIndoorFractions != null) {

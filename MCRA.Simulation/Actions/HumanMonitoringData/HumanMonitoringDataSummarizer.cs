@@ -24,10 +24,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }
-            var section = new HbmDataSummarySection() {
-                SectionLabel = ActionType.ToString()
-            };
-
+            var subHeader = header.AddEmptySubSectionHeader(ActionType.GetDisplayName(), order, ActionType.ToString());
             var nonAnalysedSamples = calculateNonAnalysedSamples(
                 data.HbmAllSamples,
                 data.HbmSampleSubstanceCollections,
@@ -35,7 +32,6 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
                 _configuration.ExcludedSubstancesFromSamplingMethodSubset
             );
 
-            var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
             var subOrder = 0;
             subHeader.Units = collectUnits();
             if (outputSettings.ShouldSummarize(HumanMonitoringDataSections.SurveysSection)) {
@@ -68,7 +64,6 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
                     subOrder++
                 );
             }
-            subHeader.SaveSummarySection(section);
         }
 
         private List<ActionSummaryUnitRecord> collectUnits() {

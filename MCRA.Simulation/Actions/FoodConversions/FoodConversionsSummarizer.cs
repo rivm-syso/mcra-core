@@ -22,12 +22,9 @@ namespace MCRA.Simulation.Actions.FoodConversions {
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }
-            var conversionSummary = new ConversionSummary() {
-                SectionLabel = ActionType.ToString()
-            };
-            var subHeader = header.AddSubSectionHeaderFor(conversionSummary, ActionType.GetDisplayName(), order);
 
-            int subOrder = 0;
+            var subHeader = header.AddEmptySubSectionHeader(ActionType.GetDisplayName(), order, ActionType.ToString());
+            var subOrder = 0;
 
             if (outputSettings.ShouldSummarize(FoodConversionsSections.ConversionSummarySection)) {
                 summarizeConversionSummary(result, data, subHeader, subOrder++);

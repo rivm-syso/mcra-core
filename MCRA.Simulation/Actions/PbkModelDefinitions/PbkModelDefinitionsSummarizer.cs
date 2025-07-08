@@ -24,12 +24,7 @@ namespace MCRA.Simulation.Actions.PbkModelDefinitions {
                 return;
             }
 
-            var section = new PbkModelDefinitionsSummarySection() {
-                SectionLabel = ActionType.ToString()
-            };
-            var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
-            subHeader.SaveSummarySection(section);
-
+            var subHeader = header.AddEmptySubSectionHeader(ActionType.GetDisplayName(), order, ActionType.ToString());
             summarizeSbmlModelDefinitions(subHeader, data);
         }
 

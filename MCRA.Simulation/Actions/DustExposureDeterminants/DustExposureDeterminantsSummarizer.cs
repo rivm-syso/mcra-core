@@ -20,12 +20,7 @@ namespace MCRA.Simulation.Actions.DustExposureDeterminants {
                 return;
             }
 
-            var section = new DustExposureDeterminantsDataSection() {
-                SectionLabel = ActionType.ToString()
-            };
-            var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
-            subHeader.SaveSummarySection(section);
-
+            var subHeader = header.AddEmptySubSectionHeader(ActionType.GetDisplayName(), order, ActionType.ToString());
             int subOrder = 0;
 
             // Summarize dust ingestion data.

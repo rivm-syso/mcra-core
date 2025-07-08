@@ -20,14 +20,9 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposureDeterminants {
                 return;
             }
 
-            var section = new ConsumerProductExposureDeterminantsDataSection() {
-                SectionLabel = ActionType.ToString()
-            };
-            var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
-            subHeader.SaveSummarySection(section);
+            var subHeader = header.AddEmptySubSectionHeader(ActionType.GetDisplayName(), order, ActionType.ToString());
             subHeader.Units = collectUnits(data, sectionConfig);
-
-            int subOrder = 0;
+            var subOrder = 0;
 
             //Summarize exposure fractions.
             if (data.ConsumerProductExposureFractions != null) {
