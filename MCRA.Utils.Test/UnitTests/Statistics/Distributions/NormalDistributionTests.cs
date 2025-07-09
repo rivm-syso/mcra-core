@@ -83,8 +83,6 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.Distributions {
         [TestMethod]
         [DataRow(0D, 1D, 0D)]
         [DataRow(0D, 1D, 6D)]
-        [DataRow(0D, 1D, 6D)]
-        [DataRow(-6D, 1D, 6D)]
         [DataRow(-6D, 1D, 6D)]
         [DataRow(100D, 5D, 0D)]
         public void NormalDistribution_TestPdf(double mu, double sigma, double x) {
