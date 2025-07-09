@@ -524,9 +524,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         [DataRow(false, StandardiseUrineMethod.SpecificGravity)]
         [DataRow(true, StandardiseUrineMethod.SpecificGravity)]
         [DataRow(true, StandardiseUrineMethod.CreatinineStandardisation)]
-        [DataRow(false, StandardiseUrineMethod.SpecificGravity)]
-        [DataRow(true, StandardiseUrineMethod.SpecificGravity)]
-        [DataRow(true, StandardiseUrineMethod.CreatinineStandardisation)]
         [TestMethod]
         public void HumanMonitoringAnalysisActionCalculator_TestAcuteCumulative_StandardisedUrine(
             bool standardiseUrine,
@@ -639,9 +636,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         [DataRow(false, StandardiseBloodMethod.GravimetricAnalysis)]
         [DataRow(true, StandardiseBloodMethod.EnzymaticSummation)]
         [DataRow(true, StandardiseBloodMethod.GravimetricAnalysis)]
-        [DataRow(false, StandardiseBloodMethod.GravimetricAnalysis)]
-        [DataRow(true, StandardiseBloodMethod.EnzymaticSummation)]
-        [DataRow(true, StandardiseBloodMethod.GravimetricAnalysis)]
         [TestMethod]
         public void HumanMonitoringAnalysisActionCalculator_TestAcuteCumulative_StandardisedBlood(
             bool standardiseBlood,
@@ -738,7 +732,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                     .Sum(c => c.sampleSubstance.Value.Residue * conversionFactor);
             }
 
-            Assert.AreEqual((expectedCumulativeTarget + expectedCumulativeOther), actualCumulative, 1e-6);
+            Assert.AreEqual(expectedCumulativeTarget + expectedCumulativeOther, actualCumulative, 1e-6);
         }
 
         [TestMethod]

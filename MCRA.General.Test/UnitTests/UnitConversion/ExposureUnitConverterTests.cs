@@ -134,8 +134,6 @@ namespace MCRA.General.Test.UnitTests.UnitConversion {
         [DataRow(ExternalExposureUnit.ugPerKgBWPerDay, ConcentrationMassUnit.Kilograms)]
         [DataRow(ExternalExposureUnit.gPerGBWPerDay, ConcentrationMassUnit.Grams)]
         [DataRow(ExternalExposureUnit.fgPerKgBWPerDay, ConcentrationMassUnit.Kilograms)]
-        [DataRow(ExternalExposureUnit.pgPerKgBWPerDay, ConcentrationMassUnit.Kilograms)]
-        [DataRow(ExternalExposureUnit.ugPerKgBWPerDay, ConcentrationMassUnit.Kilograms)]
         [DataRow(ExternalExposureUnit.mgPerGBWPerDay, ConcentrationMassUnit.Grams)]
         [DataRow(ExternalExposureUnit.ugPerGBWPerDay, ConcentrationMassUnit.Grams)]
         public void ExposureUnitConverter_TestGetConcentrationMassUnit(
