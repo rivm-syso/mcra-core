@@ -77,6 +77,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 project.OccurrencePatternsSettings.RecomputeOccurrencePatterns = true;
                 project.ConcentrationModelsSettings.ResampleConcentrations = true;
                 project.ConsumptionsSettings.ResampleIndividuals = true;
+                project.IndividualsSettings.ResampleSimulatedIndividuals = true;
                 project.HumanMonitoringDataSettings.ResampleHbmIndividuals = true;
                 project.ConsumptionsSettings.ResamplePortions = true;
                 project.DietaryExposuresSettings.ResampleImputationExposureDistributions = true;

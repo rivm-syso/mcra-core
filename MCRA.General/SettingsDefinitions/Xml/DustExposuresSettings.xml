@@ -30,4 +30,14 @@
     <ValueType>Numeric</ValueType>
     <DefaultValue>24</DefaultValue>
   </SettingsItem>
+  <SettingsItem>
+    <Id>ResampleSimulatedIndividuals</Id>
+    <Name>Resample simulated individuals</Name>
+    <Description>
+      Simulated individuals are resampled from the set of original simulated individuals (air, soil and dust modules) using the bootstrap methodology (Efron 1979,
+      Efron &amp; Tibshirani 1993).
+    </Description>
+    <ValueType>Boolean</ValueType>
+    <DefaultValue>true</DefaultValue>
+  </SettingsItem>
 </SettingsItems>

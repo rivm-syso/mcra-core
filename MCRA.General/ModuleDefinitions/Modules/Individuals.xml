@@ -23,4 +23,10 @@
     <CalculationSetting>NumberOfSimulatedIndividuals</CalculationSetting>
     <CalculationSetting source="Action">RandomSeed</CalculationSetting>
   </CalculationSettings>
+  <UncertaintySettings>
+    <UncertaintySetting>ResampleSimulatedIndividuals</UncertaintySetting>
+  </UncertaintySettings>
+  <UncertaintySources>
+    <UncertaintySource>SimulatedIndividuals</UncertaintySource>
+  </UncertaintySources>
 </Module>

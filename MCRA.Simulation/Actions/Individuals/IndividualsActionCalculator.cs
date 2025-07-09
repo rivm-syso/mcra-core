@@ -6,7 +6,9 @@ using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Calculators.IndividualDaysGenerator;
 using MCRA.Simulation.Calculators.PopulationGeneration;
+using MCRA.Simulation.Objects;
 using MCRA.Simulation.OutputGeneration;
+using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.RandomGenerators;
@@ -20,6 +22,14 @@ namespace MCRA.Simulation.Actions.Individuals {
         protected override void verify() {
         }
 
+        public override ICollection<UncertaintySource> GetRandomSources() {
+            var result = new List<UncertaintySource>();
+            if (ModuleConfig.ResampleSimulatedIndividuals) {
+                result.Add(UncertaintySource.SimulatedIndividuals);
+            }
+            return result;
+        }
+
         protected override ActionSettingsSummary summarizeSettings() {
             var summarizer = new IndividualsSettingsSummarizer(ModuleConfig);
             return summarizer.Summarize(_project);
@@ -30,37 +40,6 @@ namespace MCRA.Simulation.Actions.Individuals {
             CompositeProgressState progressReport
         ) {
             var localProgress = progressReport.NewProgressState(100);
-            return compute(
-                data,
-                localProgress
-            );
-        }
-
-        protected override IndividualsActionResult runUncertain(
-          ActionData data,
-          UncertaintyFactorialSet factorialSet,
-          Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators,
-          CompositeProgressState progressReport
-        ) {
-            var localProgress = progressReport.NewProgressState(100);
-            return compute(
-                data,
-                localProgress,
-                factorialSet,
-                uncertaintySourceGenerators
-            );
-        }
-
-        protected override void updateSimulationData(ActionData data, IndividualsActionResult result) {
-            data.Individuals = result.Individuals;
-        }
-        
-        private IndividualsActionResult compute(
-            ActionData data,
-            ProgressState localProgress,
-            UncertaintyFactorialSet factorialSet = null,
-            Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators = null
-        ) {
             var result = new IndividualsActionResult();
             var individualsRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.SIM_DrawIndividuals));
             var individualsGenerator = new IndividualsGenerator();
@@ -75,6 +54,32 @@ namespace MCRA.Simulation.Actions.Individuals {
             result.Individuals = IndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             localProgress.Update(100);
             return result;
+        }
+
+        protected override IndividualsActionResult runUncertain(
+          ActionData data,
+          UncertaintyFactorialSet factorialSet,
+          Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators,
+          CompositeProgressState progressReport
+        ) {
+            var localProgress = progressReport.NewProgressState(100);
+            var result = new IndividualsActionResult();
+            if (factorialSet.Contains(UncertaintySource.SimulatedIndividuals)) {
+                localProgress.Update("Resampling individuals");
+                var simulatedIndividual = data.Individuals
+                    .Select(c => c.SimulatedIndividual)
+                    .Resample(uncertaintySourceGenerators[UncertaintySource.SimulatedIndividuals])
+                    .Select((ind, ix) => new SimulatedIndividual(ind.Individual, ix))
+                    .ToList();
+                result.Individuals = IndividualDaysGenerator.CreateSimulatedIndividualDays(simulatedIndividual);
+            } else {
+                result.Individuals = data.Individuals;
+            }
+            return result;
+        }
+
+        protected override void updateSimulationData(ActionData data, IndividualsActionResult result) {
+            data.Individuals = result.Individuals;
         }
 
         protected override void summarizeActionResult(IndividualsActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {

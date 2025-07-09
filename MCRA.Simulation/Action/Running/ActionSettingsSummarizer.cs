@@ -170,7 +170,12 @@ namespace MCRA.Simulation.Action {
                         project.ConsumptionsSettings.ResampleIndividuals
                     );
                 }
-
+                if (activeUncertaintySettings.Contains(SettingsItemType.ResampleSimulatedIndividuals)) {
+                    section.SummarizeSetting(
+                        SettingsItemType.ResampleSimulatedIndividuals,
+                        project.IndividualsSettings.ResampleSimulatedIndividuals
+                    );
+                }
                 if (activeUncertaintySettings.Contains(SettingsItemType.ResampleProcessingFactors)) {
                     section.SummarizeSetting(
                         SettingsItemType.ResampleProcessingFactors,

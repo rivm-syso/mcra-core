@@ -64,5 +64,7 @@ namespace MCRA.General {
         DustExposures = 30,
         [Display(Name = "Exposure response functions")]
         ExposureResponseFunctions = 31,
+        [Display(Name = "Simulate individuals")]
+        SimulatedIndividuals = 32,
     }
 }
