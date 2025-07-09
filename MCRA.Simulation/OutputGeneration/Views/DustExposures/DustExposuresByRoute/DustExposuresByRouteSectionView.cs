@@ -78,7 +78,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     positivesRecords,
                     "DustExposuresByRouteTable",
                     ViewBag,
-                    caption: $"Exposures by route by substance.",
+                    caption: $"Exposures by route and substance.",
                     saveCsv: true,
                     header: true,
                     hiddenProperties: hiddenProperties

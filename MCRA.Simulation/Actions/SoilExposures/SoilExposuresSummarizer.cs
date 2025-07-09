@@ -98,7 +98,7 @@ namespace MCRA.Simulation.Actions.SoilExposures {
             };
             var subHeader = header.AddSubSectionHeaderFor(
                 section,
-                "Exposures by route by substance",
+                "Exposures by route and substance",
                 order
             );
             section.Summarize(

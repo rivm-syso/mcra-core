@@ -3,6 +3,7 @@ using MCRA.General;
 using MCRA.Simulation.Calculators.ConsumerProductExposureCalculation;
 using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Objects;
+using RDotNet;
 
 namespace MCRA.Simulation.Calculators.ExternalExposureCalculation {
     public class ExternalIndividualDayExposure(
@@ -56,13 +57,14 @@ namespace MCRA.Simulation.Calculators.ExternalExposureCalculation {
         ) {
             var result = ExposuresPerPath
                 .Sum(r => r.Value
-                    .Sum(ipc => kineticConversionFactors[(r.Key.Route, ipc.Compound)]
+                    .Sum(ipc => getKineticConversionFactor(r.Key.Route, ipc.Compound, kineticConversionFactors)
                         * ipc.EquivalentSubstanceAmount(rpfs[ipc.Compound], memberships[ipc.Compound])
                 ));
             return isPerPerson
                 ? result
                 : result / SimulatedIndividual.BodyWeight;
         }
+
 
         /// <summary>
         /// Gets the total external exposure for the specified substance multiplied by the kinetic conversion factors.
@@ -76,13 +78,25 @@ namespace MCRA.Simulation.Calculators.ExternalExposureCalculation {
                 .Sum(r => r.Value
                     .Where(r => r.Compound == substance)
                     .Sum(ipc => ipc.Amount > 0
-                        ? ipc.Amount * kineticConversionFactors[(r.Key.Route, substance)]
+                        ? ipc.Amount * getKineticConversionFactor(r.Key.Route, ipc.Compound, kineticConversionFactors)
                         : 0
                     )
                 );
             return isPerPerson
                 ? result
                 : result / SimulatedIndividual.BodyWeight;
+        }
+
+        private double getKineticConversionFactor(
+            ExposureRoute route,
+            Compound substance,
+            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors
+        ) {
+            if (kineticConversionFactors.TryGetValue((route, substance), out var factor)) {
+                return factor;
+            } else {
+                throw new Exception($"For exposure route {route} and substance {substance.Name} ({substance.Code}) no kinetic conversion factor is available.");
+            }
         }
 
         /// <summary>
@@ -143,7 +157,7 @@ namespace MCRA.Simulation.Calculators.ExternalExposureCalculation {
                 .Sum(r => {
                     var exposure = r.EquivalentSubstanceAmount(rpfs[r.Compound], memberships[r.Compound]);
                     return exposure > 0
-                        ? exposure * kineticConversionFactors[(route, r.Compound)]
+                        ? exposure * getKineticConversionFactor(route, r.Compound, kineticConversionFactors)
                         : 0;
                 });
             return isPerPerson ? totalIntake : totalIntake / SimulatedIndividual.BodyWeight;

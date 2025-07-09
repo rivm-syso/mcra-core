@@ -11,7 +11,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<ExternalExposureDistributionRouteRecord> Records { get; set; }
         public double LowPercentileValue { get; set; }
         public double HighPercentileValue { get; set; }
-        public int NRecords { get; set; }
+        public int NumberOfIntakes { get; set; }
 
         public void Summarize(
             ExternalExposureCollection externalExposureCollection,
@@ -60,8 +60,8 @@ namespace MCRA.Simulation.OutputGeneration {
                     membershipProbabilities, 
                     externalExposureRoutes, 
                     isPerPerson);
-                NRecords = upperExposures.Count;
-                if (NRecords > 0) {
+                NumberOfIntakes = upperExposures.Count;
+                if (NumberOfIntakes > 0) {
                     var externalUpperExposures = upperExposures
                         .Select(c => c.GetExposure(
                             relativePotencyFactors, 
@@ -78,8 +78,8 @@ namespace MCRA.Simulation.OutputGeneration {
                     membershipProbabilities, 
                     externalExposureRoutes, 
                     isPerPerson);
-                NRecords = upperExposures.Select(c => c.SimulatedIndividual.Id).Distinct().Count();
-                if (NRecords > 0) {
+                NumberOfIntakes = upperExposures.Select(c => c.SimulatedIndividual.Id).Distinct().Count();
+                if (NumberOfIntakes > 0) {
                     var oims = upperExposures
                         .GroupBy(c => c.SimulatedIndividual.Id)
                         .Select(c => c.Average(i => i.GetExposure(

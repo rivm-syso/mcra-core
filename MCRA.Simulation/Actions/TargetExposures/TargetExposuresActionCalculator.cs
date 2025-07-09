@@ -635,6 +635,20 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         targetUnit,
                         kineticModelParametersRandomGenerator
                     );
+
+                //See  https://git.wur.nl/Biometris/mcra-dev/MCRA-Issues/-/issues/2227
+                //This solves the problem for the moment but needs further discussion
+                var allRoutes = externalIndividualExposures
+                    .SelectMany(c => c.ExposuresPerPath.Keys)
+                    .Select(c => c.Route)
+                    .ToHashSet();
+                foreach (var substance in data.ActiveSubstances) {
+                    foreach (var route in allRoutes) {
+                        if (!kineticConversionFactors.TryGetValue((route, substance), out var factor)) {
+                            kineticConversionFactors[(route, substance)] = 0;
+                        }
+                    }
+                }
                 result.KineticConversionFactors = kineticConversionFactors;
             }
 

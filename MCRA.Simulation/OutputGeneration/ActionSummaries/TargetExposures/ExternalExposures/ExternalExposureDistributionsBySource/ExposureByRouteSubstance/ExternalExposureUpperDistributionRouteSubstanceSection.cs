@@ -12,7 +12,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public double HighPercentileValue { get; set; }
         public double? UpperPercentage { get; set; } = null;
         public double CalculatedUpperPercentage { get; set; }
-        public int NRecords { get; set; }
+        public int NumberOfIntakes { get; set; }
 
         public void Summarize(
             ICollection<Compound> substances,
@@ -57,8 +57,8 @@ namespace MCRA.Simulation.OutputGeneration {
                         externalExposureRoutes,
                         isPerPerson
                     );
-                    NRecords = upperIntakes.Count;
-                    if (NRecords > 0) {
+                    NumberOfIntakes = upperIntakes.Count;
+                    if (NumberOfIntakes > 0) {
                         var externalExposureUpperIntakes = upperIntakes
                             .Select(c => c.GetExposure(relativePotencyFactors, membershipProbabilities, isPerPerson))
                             .ToList();
@@ -76,8 +76,8 @@ namespace MCRA.Simulation.OutputGeneration {
                         externalExposureRoutes,
                         isPerPerson
                     );
-                    NRecords = upperIntakes.Select(c => c.SimulatedIndividual.Id).Distinct().Count();
-                    if (NRecords > 0) {
+                    NumberOfIntakes = upperIntakes.Select(c => c.SimulatedIndividual.Id).Distinct().Count();
+                    if (NumberOfIntakes > 0) {
                         var oims = upperIntakes
                             .GroupBy(c => c.SimulatedIndividual.Id)
                             .Select(c => c.Average(i => i.GetExposure(relativePotencyFactors, membershipProbabilities, isPerPerson)))

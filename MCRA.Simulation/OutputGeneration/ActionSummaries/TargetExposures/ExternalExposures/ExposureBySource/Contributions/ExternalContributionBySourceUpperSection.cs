@@ -95,7 +95,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .PercentilesWithSamplingWeights(weights, percentageForUpperTail);
 
             var upperExposures = totalExposures
-               .Where(c => c.Exposure > intakeValue)
+               .Where(c => c.Exposure >= intakeValue)
                .Select(c => (
                    c.Exposure,
                    c.SimulatedIndividual

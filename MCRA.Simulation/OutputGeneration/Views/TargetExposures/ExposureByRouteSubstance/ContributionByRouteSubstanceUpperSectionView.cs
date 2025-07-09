@@ -25,9 +25,10 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add("UpperContributionPercentage");
             }
             if (records.Count > 0) {
-                sb.AppendParagraph($"Exposure: upper tail {Model.CalculatedUpperPercentage:F1}% ({Model.NumberOfIntakes} records), " +
-                $"minimum {Model.LowPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}, " +
-                $"maximum {Model.HighPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}");
+                var individualString = Model.NumberOfIntakes == 1 ? $"1 individual" : $"{Model.NumberOfIntakes} individuals";
+                sb.AppendParagraph($"Exposure: upper tail {Model.CalculatedUpperPercentage:F1}% ({individualString}), " +
+                    $"minimum {Model.LowPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}, " +
+                    $"maximum {Model.HighPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}");
 
                 if (records.Count > 1) {
                     var chartCreator = new ContributionByRouteSubstanceUpperPieChartCreator(Model, isUncertainty);
