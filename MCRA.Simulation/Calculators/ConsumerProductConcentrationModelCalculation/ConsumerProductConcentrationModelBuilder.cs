@@ -13,10 +13,6 @@ namespace MCRA.Simulation.Calculators.ConsumerProductConcentrationModelCalculati
         /// <summary>
         /// Creates concentration models for consumer product concentrations.
         /// </summary>
-        /// <param name="cpConcentrations"></param>
-        /// <param name="nonDetectsHandlingMethod"></param>
-        /// <param name="lorReplacementFactor"></param>
-        /// <returns></returns>
         public IDictionary<(ConsumerProduct, Compound), ConcentrationModel> Create(
             ICollection<ConsumerProductConcentration> cpConcentrations,
             NonDetectsHandlingMethod nonDetectsHandlingMethod,
@@ -26,13 +22,12 @@ namespace MCRA.Simulation.Calculators.ConsumerProductConcentrationModelCalculati
             var groups = cpConcentrations
                 .GroupBy(c => (c.Product, c.Substance))
                 .ToList();
-
             foreach (var group in groups) {
                 var concentrationModel = createConcentrationModel(
-                        group,
-                        nonDetectsHandlingMethod,
-                        lorReplacementFactor
-                    );
+                    group,
+                    nonDetectsHandlingMethod,
+                    lorReplacementFactor
+                );
                 concentrationModels[(group.Key.Product, group.Key.Substance)] = concentrationModel;
             }
             return concentrationModels;
@@ -41,8 +36,6 @@ namespace MCRA.Simulation.Calculators.ConsumerProductConcentrationModelCalculati
         /// <summary>
         /// Fit Empirical distribution
         /// </summary>
-        /// <param name="concentrations"></param>
-        /// <returns></returns>
         private ConcentrationModel createConcentrationModel(
             IEnumerable<ConsumerProductConcentration> concentrations,
             NonDetectsHandlingMethod nonDetectsHandlingMethod,
@@ -81,17 +74,12 @@ namespace MCRA.Simulation.Calculators.ConsumerProductConcentrationModelCalculati
         /// <summary>
         /// Creates concentration models for consumer product concentrations.
         /// </summary>
-        /// <param name="cpConcentrations"></param>
-        /// <param name="nonDetectsHandlingMethod"></param>
-        /// <param name="lorReplacementFactor"></param>
-        /// <returns></returns>
         public IDictionary<(ConsumerProduct, Compound), ConcentrationModel> Create(
             ICollection<ConsumerProductConcentrationDistribution> concentrationDistributions,
             NonDetectsHandlingMethod nonDetectsHandlingMethod,
             double lorReplacementFactor
         ) {
             var concentrationModels = new Dictionary<(ConsumerProduct, Compound), ConcentrationModel>();
-
             foreach (var distribution in concentrationDistributions) {
                 var concentrationModel = createConcentrationModel(
                     distribution,
@@ -114,10 +102,8 @@ namespace MCRA.Simulation.Calculators.ConsumerProductConcentrationModelCalculati
             double lorReplacementFactor
         ) {
             var substanceResidueCollection = new CompoundResidueCollection();
-
             var concentrationModel = new CMSummaryStatistics() {
                 NonDetectsHandlingMethod = nonDetectsHandlingMethod,
-                //Residues = substanceResidueCollection,
                 FractionOfLor = lorReplacementFactor,
                 CorrectedWeightedAgriculturalUseFraction = distribution.OccurrencePercentage.HasValue
                     ? distribution.OccurrencePercentage.Value / 100

@@ -47,7 +47,6 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
           CompositeProgressState progressReport
         ) {
             var localProgress = progressReport.NewProgressState(100);
-
             return compute(
                 data,
                 localProgress,

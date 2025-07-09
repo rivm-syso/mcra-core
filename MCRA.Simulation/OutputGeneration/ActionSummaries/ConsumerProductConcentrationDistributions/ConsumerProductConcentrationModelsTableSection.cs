@@ -4,12 +4,7 @@ using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationMod
 using MCRA.Simulation.OutputGeneration.ActionSummaries.ConsumerProductConcentrationDistributions;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class ConsumerProductConcentrationModelsTableSection : ConsumerProductConcentrationModelBase {
-
-        public override bool SaveTemporaryData => true;
-
-        public List<ConsumerProductConcentrationModelRecord> Records { get; set; }
-
+    public sealed class ConsumerProductConcentrationModelsTableSection : ConsumerProductConcentrationModelSectionBase {
         public void Summarize(
             IDictionary<(ConsumerProduct Product, Compound Substance), ConcentrationModel> concentrationModels
         ) {

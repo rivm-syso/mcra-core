@@ -5,7 +5,6 @@ using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationMod
 
 namespace MCRA.Simulation.Actions.ConsumerProductConcentrationDistributions {
     public class ConsumerProductConcentrationDistributionsActionResult : IActionResult {
-
         public IDictionary<(ConsumerProduct, Compound), ConcentrationModel> ConsumerProductConcentrationModels { get; set; }
         public IUncertaintyFactorialResult FactorialResult { get; set; }
     }

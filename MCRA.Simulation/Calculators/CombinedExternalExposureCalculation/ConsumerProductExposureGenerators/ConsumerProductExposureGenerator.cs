@@ -20,25 +20,6 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.Consum
             SubstanceAmountUnit substanceAmountUnit,
             int seed
         ) {
-            /*
-            var cpIndividualDayExposures = cpIndividualIntakes
-                .Select(individualDay => {
-                    var exposuresPerPath = new Dictionary<ExposurePath, List<IIntakePerCompound>>();
-                    foreach (var route in exposureRoutes) {
-                        var intakesPerSubstance = individualDay.GetTotalIntakesPerSubstance(route).ToList();
-                        if (intakesPerSubstance.Any()) {
-                            exposuresPerPath[new(ExposureSource.ConsumerProduct, route)] = intakesPerSubstance;
-                        }
-                    }
-                    var individualDayExposure = new ConsumerProductIndividualDayExposure(exposuresPerPath) {
-                        SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId,
-                        SimulatedIndividual = individualDay.SimulatedIndividual,
-                    };
-                    return individualDayExposure;
-                })
-                .ToList();
-            */
-
             var cpIndividualExposures = individualDays
                 .AsParallel()
                 .GroupBy(r => r.SimulatedIndividual.Id)

@@ -1,13 +1,10 @@
-﻿using MCRA.Utils;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
+using System.Xml.Serialization;
+using MCRA.General;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.Histograms;
-using MCRA.Data.Compiled.Objects;
-using MCRA.General;
-using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
-using System.Text.Json.Serialization;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Xml.Serialization;
 
 namespace MCRA.Simulation.OutputGeneration {
 
@@ -26,9 +23,6 @@ namespace MCRA.Simulation.OutputGeneration {
             get { return _id.ToString(); }
             set { _id = new Guid(value); }
         }
-
-        [Display(AutoGenerateField = false)]
-        public string IdSubstance { get; set; }
 
         [DisplayName("Substance name")]
         public string SubstanceName { get; set; }

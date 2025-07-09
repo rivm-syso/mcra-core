@@ -7,13 +7,14 @@ using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.Actions.ConsumerProductConcentrationDistributions {
+
     public enum ConsumerProductConcentrationDistributionsSections {
         ConsumerProductConcentrationModelsSection,
         ConsumerProductConcentrationModelGraphsSection
     }
+
     public sealed class ConsumerProductConcentrationDistributionsSummarizer : ActionResultsSummarizerBase<ConsumerProductConcentrationDistributionsActionResult> {
-        //public ConsumerProductConcentrationDistributionsSummarizer(ConsumerProductConcentrationDistributionsModuleConfig config) : base(config) {
-        //}
+
         public override ActionType ActionType => ActionType.ConsumerProductConcentrationDistributions;
 
         public override void Summarize(ActionModuleConfig sectionConfig, ConsumerProductConcentrationDistributionsActionResult actionResult, ActionData data, SectionHeader header, int order) {
@@ -24,7 +25,6 @@ namespace MCRA.Simulation.Actions.ConsumerProductConcentrationDistributions {
 
             var subHeader = header.AddEmptySubSectionHeader(ActionType.GetDisplayName(), order, ActionType.ToString());
             var subOrder = 0;
-
             subHeader.Units = collectUnits(data, sectionConfig);
 
             if (outputSettings.ShouldSummarize(ConsumerProductConcentrationDistributionsSections.ConsumerProductConcentrationModelsSection)
@@ -46,6 +46,7 @@ namespace MCRA.Simulation.Actions.ConsumerProductConcentrationDistributions {
                 );
             }
         }
+
         private static List<ActionSummaryUnitRecord> collectUnits(ActionData data, ActionModuleConfig sectionConfig) {
             var result = new List<ActionSummaryUnitRecord> {
                 new("LowerPercentage", $"p{sectionConfig.VariabilityLowerPercentage}"),

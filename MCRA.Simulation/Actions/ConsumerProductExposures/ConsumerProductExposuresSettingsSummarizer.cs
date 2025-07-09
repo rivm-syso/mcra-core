@@ -7,9 +7,8 @@ using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.Actions.ConsumerProductExposures {
 
-    public sealed class ConsumerProductExposuresSettingsSummarizer : ActionModuleSettingsSummarizer<ConsumerProductExposuresModuleConfig> {
-        public ConsumerProductExposuresSettingsSummarizer(ConsumerProductExposuresModuleConfig config) : base(config) {
-        }
+    public sealed class ConsumerProductExposuresSettingsSummarizer(ConsumerProductExposuresModuleConfig config) 
+        : ActionModuleSettingsSummarizer<ConsumerProductExposuresModuleConfig>(config) {
 
         public override ActionType ActionType => ActionType.ConsumerProductExposures;
 
@@ -20,7 +19,6 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
                 string.Join(", ", _configuration.SelectedExposureRoutes),
                 _configuration.SelectedExposureRoutes.Count > 0
             );
-
             return section;
         }
     }

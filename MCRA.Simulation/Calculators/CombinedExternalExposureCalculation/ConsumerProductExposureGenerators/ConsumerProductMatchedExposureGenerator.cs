@@ -28,4 +28,3 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.Consum
         }
     }
 }
-

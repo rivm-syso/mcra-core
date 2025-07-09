@@ -12,9 +12,8 @@ using MCRA.Utils.ProgressReporting;
 namespace MCRA.Simulation.Actions.ConsumerProductConcentrationDistributions {
 
     [ActionType(ActionType.ConsumerProductConcentrationDistributions)]
-    public sealed class ConsumerProductConcentrationDistributionsActionCalculator : ActionCalculatorBase<ConsumerProductConcentrationDistributionsActionResult> {
-        public ConsumerProductConcentrationDistributionsActionCalculator(ProjectDto project) : base(project) {
-        }
+    public sealed class ConsumerProductConcentrationDistributionsActionCalculator(ProjectDto project)
+        : ActionCalculatorBase<ConsumerProductConcentrationDistributionsActionResult>(project) {
 
         protected override void verify() {
             _actionDataLinkRequirements[ScopingType.ConsumerProductConcentrationDistributions][ScopingType.Compounds].AlertTypeMissingData = AlertType.Notification;
@@ -67,8 +66,10 @@ namespace MCRA.Simulation.Actions.ConsumerProductConcentrationDistributions {
             var result = new ConsumerProductConcentrationDistributionsActionResult() {
                 ConsumerProductConcentrationModels = concentrationModels,
             };
+            localProgress.Update(100);
             return result;
         }
+
         protected override void summarizeActionResult(ConsumerProductConcentrationDistributionsActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
             localProgress.Update("Summarizing consumer product concentration distributions", 0);

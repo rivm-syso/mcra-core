@@ -5,7 +5,10 @@ using MCRA.Utils;
 using MCRA.Utils.Statistics.Histograms;
 
 namespace MCRA.Simulation.OutputGeneration.ActionSummaries.ConsumerProductConcentrationDistributions {
-    public class ConsumerProductConcentrationModelBase : SummarySection {
+    public class ConsumerProductConcentrationModelSectionBase : SummarySection {
+
+        public List<ConsumerProductConcentrationModelRecord> Records { get; set; }
+
         protected static ConsumerProductConcentrationModelRecord SummarizeBase(
             ConsumerProduct product,
             Compound substance,
@@ -13,7 +16,6 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.ConsumerProductConcen
             bool createHistogramBins = true
         ) {
             var record = new ConsumerProductConcentrationModelRecord {
-                IdSubstance = substance.Code,
                 SubstanceCode = substance.Code,
                 SubstanceName = substance.Name,
                 IdConsumerProduct = product.Code,

@@ -9,9 +9,8 @@ namespace MCRA.Simulation.OutputGeneration {
             ConsumerProductConcentrationModelRecord record,
             int height,
             int width,
-            bool showTitle)
-            : base(record, height, width, showTitle
-            ) {
+            bool showTitle
+        ) : base(record, height, width, showTitle) {
         }
 
         public override string ChartId {

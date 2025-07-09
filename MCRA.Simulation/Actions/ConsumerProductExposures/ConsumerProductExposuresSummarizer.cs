@@ -46,6 +46,7 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
                 );
             }
 
+            // Exposures by route: contributions, summary and boxplot
             if (data.ActiveSubstances.Count >  0
                 && outputSettings.ShouldSummarize(ConsumerProductExposuresSections.ConsumerProductExposuresByRouteSection)
             ) {
@@ -56,6 +57,7 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
                     order++
                 );
             }
+
             // Exposures by consumer products: contributions, summary and boxplot
             if (outputSettings.ShouldSummarize(ConsumerProductExposuresSections.ConsumerProductsSection)) {
                 summarizeConsumerProducts(
