@@ -28,8 +28,8 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             List<double> sigma = null,
             double fractionZeros = 0
         ) {
-            mu = mu ?? substances.Select(r => 0D).ToList();
-            sigma = sigma ?? substances.Select(r => 1D).ToList();
+            mu = mu ?? [.. substances.Select(r => 0D)];
+            sigma = sigma ?? [.. substances.Select(r => 1D)];
             var result = simulatedIndividualDays
                 .Select(r => new AggregateIndividualExposure() {
                     SimulatedIndividual = r.SimulatedIndividual,
@@ -90,13 +90,16 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                     paths,
                     random.Next()
                 );
+            var routes = paths.Select(p => p.Route).ToHashSet();
             var aggregateIndividualExposures = CombinedExternalExposuresCalculator
-                .CreateCombinedExternalIndividualExposures(externalIndividualDayExposures);
+                .CreateCombinedExternalIndividualExposures(
+                externalIndividualDayExposures,
+                routes
+            );
 
             var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(
                 kineticModelCalculators
             );
-            var routes = paths.Select(p => p.Route).Distinct().ToList();
             var result = internalTargetExposuresCalculator
                 .ComputeChronic(
                     aggregateIndividualExposures,
@@ -108,7 +111,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                     new ProgressState()
                 );
 
-            return result.ToList();
+            return [.. result];
         }
     }
 }

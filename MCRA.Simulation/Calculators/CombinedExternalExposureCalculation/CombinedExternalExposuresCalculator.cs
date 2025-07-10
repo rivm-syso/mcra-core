@@ -49,15 +49,29 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation {
         /// a collection of aggregate individual exposures.
         /// </summary>
         public static List<IExternalIndividualExposure> CreateCombinedExternalIndividualExposures(
-            List<IExternalIndividualDayExposure> externalIndividualDayExposures
+            List<IExternalIndividualDayExposure> externalIndividualDayExposures,
+            ICollection<ExposureRoute> routes
         ) {
             var result = externalIndividualDayExposures
                .GroupBy(c => c.SimulatedIndividual)
                .Select(c => {
-                   var exposuresPerRouteSubstance = collectIndividualExposurePerRouteSubstance([.. c]);
+                   var exposuresPerRouteSubstance = collectIndividualExposurePerRouteSubstance([.. c])
+                       .Where(c => routes.Contains(c.Key.Route))
+                       .ToDictionary((c => c.Key), c => c.Value);
+
                    return new ExternalIndividualExposure(c.Key) {
                        ExposuresPerPath = exposuresPerRouteSubstance,
-                       ExternalIndividualDayExposures = [.. c.Cast<IExternalIndividualDayExposure>()],
+                       ExternalIndividualDayExposures = [.. c
+                           .Select(r => new ExternalIndividualDayExposure(
+                               r.ExposuresPerPath
+                                   .Where(c => routes.Contains(c.Key.Route))
+                                   .ToDictionary((c => c.Key), c => c.Value)
+                            ) {
+                               SimulatedIndividualDayId = r.SimulatedIndividualDayId,
+                               SimulatedIndividual = r.SimulatedIndividual,
+                               Day = r.Day,
+                           })
+                           .Cast<IExternalIndividualDayExposure>()],
                    };
                })
                .OrderBy(r => r.SimulatedIndividual.Id)
@@ -77,9 +91,9 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation {
                 targetUnit
             );
             return new ExternalIndividualDayExposure(exposuresPerPath) {
-                SimulatedIndividual = externalExposures.First().Item2.SimulatedIndividual,
-                Day = externalExposures.First().Item2.Day,
-                SimulatedIndividualDayId = externalExposures.First().Item2.SimulatedIndividualDayId
+                SimulatedIndividual = externalExposures.First().IndividualDayExposure.SimulatedIndividual,
+                Day = externalExposures.First().IndividualDayExposure.Day,
+                SimulatedIndividualDayId = externalExposures.First().IndividualDayExposure.SimulatedIndividualDayId
             };
         }
 
@@ -132,10 +146,10 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation {
             IEnumerable<IExternalIndividualDayExposure> externalIndividualDayExposures
         ) {
             var intakesPerRoute = new Dictionary<ExposurePath, List<IIntakePerCompound>>();
-            var routes = externalIndividualDayExposures.First().ExposuresPerPath.Keys;
-            foreach (var route in routes) {
+            var exposurePaths = externalIndividualDayExposures.First().ExposuresPerPath.Keys;
+            foreach (var path in exposurePaths) {
                 var routeExposures = externalIndividualDayExposures
-                    .SelectMany(r => r.ExposuresPerPath[route], (r, i) => (r.SimulatedIndividual, i.Compound, i.Amount))
+                    .SelectMany(r => r.ExposuresPerPath[path], (r, i) => (r.SimulatedIndividual, i.Compound, i.Amount))
                     .GroupBy(c => c.Compound)
                     .Select(c => new AggregateIntakePerCompound() {
                         Compound = c.Key,
@@ -143,7 +157,7 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation {
                     })
                     .Cast<IIntakePerCompound>()
                     .ToList();
-                intakesPerRoute[route] = routeExposures;
+                intakesPerRoute[path] = routeExposures;
             }
             return intakesPerRoute;
         }
