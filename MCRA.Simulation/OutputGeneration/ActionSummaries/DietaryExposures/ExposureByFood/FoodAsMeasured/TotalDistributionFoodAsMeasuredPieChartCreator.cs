@@ -35,7 +35,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public override string Title => "Contribution to total exposure distribution for modelled foods.";
 
         public override PlotModel Create() {
-            var pieSlices = _section.Records.Select(
+            var pieSlices = _records.Select(
                 r => (
                     r.FoodName,
                     Contribution: _isUncertainty ? r.MeanContribution : r.Contribution

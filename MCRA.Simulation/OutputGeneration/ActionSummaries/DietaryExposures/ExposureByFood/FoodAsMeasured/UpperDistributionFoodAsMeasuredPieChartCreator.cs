@@ -34,7 +34,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public override string Title => $"Contribution of modelled foods to the upper {_section.UpperPercentage:F1}% of the exposure distribution.";
 
         public override PlotModel Create() {
-            var pieSlices = _section.Records.Select(
+            var pieSlices = _records.Select(
                 r => (
                     r.FoodName,
                     Contribution: _isUncertainty ? r.MeanContribution : r.Contribution
