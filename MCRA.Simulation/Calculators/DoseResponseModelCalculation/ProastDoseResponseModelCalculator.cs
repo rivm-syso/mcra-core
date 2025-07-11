@@ -128,14 +128,11 @@ namespace MCRA.Simulation.Calculators.DoseResponseModelCalculation {
                     "}");
                     R.EvaluateNoReturn("f.press.key.to.continue <-function(...) { cat(\"f.press.key.to.continue\n\"); return (invisible()) }");
                     R.EvaluateNoReturn("f.overlap <-function(...) { cat(\"f.overlap\n\"); return (invisible()) }");
-                    R.EvaluateNoReturn($"rlang::env_unlock(env = asNamespace('proast{ProastVersion}'))");
                     R.EvaluateNoReturn($"rlang::env_binding_unlock(env = asNamespace('proast{ProastVersion}'))");
                     R.EvaluateNoReturn($"assign('f.press.key.to.continue', f.press.key.to.continue, envir = asNamespace('proast{ProastVersion}'))");
                     R.EvaluateNoReturn($"assign('f.overlap', f.overlap, envir = asNamespace('proast{ProastVersion}'))");
                     R.EvaluateNoReturn($"rlang::env_binding_lock(env = asNamespace('proast{ProastVersion}'))");
                     R.EvaluateNoReturn($"rlang::env_lock(asNamespace('proast{ProastVersion}'))");
-
-
 
                     R.SetSymbol("mydata", dataTable);
                     R.SetSymbol("ans.all", "f.ini(mydata)");

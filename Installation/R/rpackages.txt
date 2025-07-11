@@ -1,4 +1,5 @@
 proast71.1
+svglite
 deSolve
 factoextra
 glasso

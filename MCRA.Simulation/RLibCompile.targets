@@ -117,7 +117,7 @@
 
     <PropertyGroup Condition="'$(CranRExe)' == ''">
       <!-- We probe the default place, with the first matching one winning -->
-      <CranRExe Condition="'$(CranRExe)' == '' And Exists('C:\Program Files\R\R-4.4.1\bin\x64\R.exe')">"C:\Program Files\R\R-4.4.1\bin\x64\R.exe"</CranRExe>
+      <CranRExe Condition="'$(CranRExe)' == '' And Exists('C:\Program Files\R\R-4.5.1\bin\x64\R.exe')">"C:\Program Files\R\R-4.5.1\bin\x64\R.exe"</CranRExe>
       <CranRExe Condition="'$(CranRExe)' == ''">"R"</CranRExe>
     </PropertyGroup>
 
