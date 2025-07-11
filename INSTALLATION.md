@@ -6,7 +6,7 @@ These are the instructions for building MCRA Core and the command-line (CLI) uti
 
 ## **System requirements**
 
-### Supported Operating System
+### Supported Operating Systems
 
 Windows 10, Windows 11, Windows Server 2016, Windows Server 2019, Windows Server 2022
 
@@ -16,7 +16,7 @@ The following software is needed to successfully compile the software. Install t
 
 |Software                   |Version      |Purpose                                           |Download URLs                                                                      |Required?   |
 |---------------------------|-------------|--------------------------------------------------|-----------------------------------------------------------------------------------|------------|
-|.NET SDK                   | 8.0         |Tools to build and run C# .NET applications       |[Website Microsoft](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)        |Required    |
+|.NET SDK                   | 9.0         |Tools to build and run C# .NET applications       |[Website Microsoft](https://dotnet.microsoft.com/en-us/download/dotnet/9.0)        |Required    |
 |R                          | R-4.4.1     |Statistical Analysis                              |[R Project site](https://cran.r-project.org/bin/windows/base/old/4.4.1/)           |Required    |
 |RTools                     | 4.4         |To build R PBK model binaries                     |[RTools site](https://cran.r-project.org/bin/windows/Rtools/)                      |Required    |
 |Python (and libRoadRunner) | 3.12        |To run PBK models based on SBML                   |[Python downloads site](https://www.python.org/downloads/)                         |Required    |
@@ -33,7 +33,7 @@ The following software is needed to successfully compile the software. Install t
 
 ### .NET SDK
 
-* Download .NET 8.0 SDK, version Windows x64, from [Microsoft website](https://dotnet.microsoft.com/en-us/download/dotnet/8.0).
+* Download .NET 9.0 SDK, version Windows x64, from [Microsoft website](https://dotnet.microsoft.com/en-us/download/dotnet/9.0).
 * Run the installer and accept all defaults.
 
 ### R
