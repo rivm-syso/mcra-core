@@ -43,6 +43,7 @@ namespace MCRA.General.ModuleDefinitions.Settings {
                  ?? moduleDoc.SelectSingleNode("Module/Id").InnerText;
 
     var modName = moduleDoc.SelectSingleNode("Module/Name").InnerText;
+    var canCompute = bool.Parse(moduleDoc.SelectSingleNode("Module/CanCompute")?.InnerText ?? "false");
 
     var allSettings = new List<XmlNode>();
     allSettings.AddRange(moduleDoc.DocumentElement.SelectNodes("SelectionSettings/SelectionSetting").Cast<XmlNode>());
@@ -50,7 +51,7 @@ namespace MCRA.General.ModuleDefinitions.Settings {
     allSettings.AddRange(moduleDoc.DocumentElement.SelectNodes("UncertaintySettings/UncertaintySetting").Cast<XmlNode>());
     allSettings.AddRange(moduleDoc.DocumentElement.SelectNodes("OutputSettings/OutputSetting").Cast<XmlNode>());
 
-    if(allSettings.Count > 0) {
+    if(allSettings.Count > 0 || canCompute) {
       var propertyDefinitions = new List<string>(allSettings.Count);
       var applySettingsLines = new List<string>(allSettings.Count);
       var getValueLines = new List<string>(allSettings.Count);

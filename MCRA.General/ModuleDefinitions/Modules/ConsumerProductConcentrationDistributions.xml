@@ -28,7 +28,4 @@
   <CalculationInputs>
     <Input>ConsumerProductConcentrations</Input>
   </CalculationInputs>
-  <OutputSettings>
-    <OutputSetting source="Action">RandomSeed</OutputSetting>
-  </OutputSettings>
 </Module>

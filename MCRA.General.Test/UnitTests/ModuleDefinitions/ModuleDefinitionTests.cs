@@ -1,4 +1,5 @@
-﻿using MCRA.General.ModuleDefinitions;
+﻿using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions;
 using MCRA.Utils.ExtensionMethods;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -94,8 +95,12 @@ namespace MCRA.General.Test.UnitTests.ModuleDefinitions {
             var definitions = definitionsInstance.ModuleDefinitions.Values
                 .Where(r => r.ModuleType == ModuleType.CalculatorModule)
                 .ToList();
+
+            var project = new ProjectDto();
             foreach (var definition in definitions) {
                 Assert.IsTrue(definition.CanCompute);
+                //Check whether module config has been created
+                Assert.IsNotNull(project.GetModuleConfiguration(definition.ActionType));
             }
         }
     }
