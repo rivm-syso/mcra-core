@@ -8,7 +8,6 @@ namespace MCRA.Simulation.OutputGeneration {
 
         private readonly ConsumerProductExposuresByRouteSection _section;
         private readonly bool _isUncertainty;
-        private readonly int _counter;
 
         public ConsumerProductExposuresByRoutePieChartCreator(
             ConsumerProductExposuresByRouteSection section,
