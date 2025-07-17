@@ -1,4 +1,6 @@
-﻿namespace MCRA.General {
+﻿using MCRA.Utils.Sbml.Objects;
+
+namespace MCRA.General {
     public static class TimeUnitExtensions {
 
         /// <summary>
@@ -27,6 +29,29 @@
                 (TimeUnit.Seconds, TimeUnit.Seconds) => 1,
                 _ => throw new Exception($"No time unit multiplier for {resolutionType}."),
             };
+        }
+
+        /// <summary>
+        /// Creates a <see cref="TimeUnit"/> from a <see cref="SbmlTimeUnit"/>.
+        /// </summary>
+        /// <param name="sbmlTimeUnit"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public static TimeUnit ToTimeUnit(this SbmlTimeUnit sbmlTimeUnit) {
+            switch (sbmlTimeUnit) {
+                case SbmlTimeUnit.NotSpecified:
+                    return TimeUnit.NotSpecified;
+                case SbmlTimeUnit.Seconds:
+                    return TimeUnit.Seconds;
+                case SbmlTimeUnit.Minutes:
+                    return TimeUnit.Minutes;
+                case SbmlTimeUnit.Hours:
+                    return TimeUnit.Hours;
+                case SbmlTimeUnit.Days:
+                    return TimeUnit.Days;
+                default:
+                    throw new NotImplementedException();
+            }
         }
     }
 }

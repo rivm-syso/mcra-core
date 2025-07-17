@@ -79,6 +79,11 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                         section.SummarizeSetting(SettingsItemType.NumberOfDosesPerDayNonDietaryInhalation, _configuration.NumberOfDosesPerDayNonDietaryInhalation);
                     }
                 }
+
+                section.SummarizeSetting(SettingsItemType.PbkOutputResolutionTimeUnit, _configuration.PbkOutputResolutionTimeUnit);
+                if (_configuration.PbkOutputResolutionTimeUnit != PbkModelOutputResolutionTimeUnit.ModelTimeUnit) {
+                    section.SummarizeSetting(SettingsItemType.PbkOutputResolutionStepSize, _configuration.PbkOutputResolutionStepSize);
+                }
             }
             return section;
         }

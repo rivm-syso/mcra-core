@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>PbkModelOutputResolutionTimeUnit</Id>
+  <Name>PBK output resolution time unit</Name>
+  <Description>
+    Time unit for specification of the evaluation/output resolution of PBK model simulations.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>ModelTimeUnit</Id>
+      <Name>Use model time unit</Name>
+      <ShortName>Model resolution</ShortName>
+      <Description>
+        Use model time resolution.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>Minutes</Id>
+      <Name>Minutes</Name>
+      <ShortName>Minutes</ShortName>
+      <Description>
+        PBK simulation output resolution is specified in minutes.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>Hours</Id>
+      <Name>Hours</Name>
+      <ShortName>Hours</ShortName>
+      <Description>
+        PBK simulation output resolution is specified in hours.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>Days</Id>
+      <Name>Days</Name>
+      <ShortName>Days</ShortName>
+      <Description>
+        PBK simulation output resolution is specified in days.
+      </Description>
+    </Unit>
+  </Units>
+</UnitDefinition>

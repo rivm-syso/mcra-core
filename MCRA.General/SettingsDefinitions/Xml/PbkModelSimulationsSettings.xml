@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsItems>
+  <!-- PBK simulation settings -->
+  <SettingsItem>
+    <Id>PbkOutputResolutionTimeUnit</Id>
+    <Name>PBK output resolution time unit</Name>
+    <Description>Time unit in which the output resolution of PBK model simulations is specified.</Description>
+    <ValueType>PbkModelOutputResolutionTimeUnit</ValueType>
+    <DefaultValue>ModelTimeUnit</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>PbkOutputResolutionStepSize</Id>
+    <Name>PBK output resolution step size</Name>
+    <Description>PBK model simulation output step size/length, specifying the evaluation resolution in terms of the step length (period) between two evaluations. For example, a step length of 12 with a resolution time unit of hours is interpreted as every 12 hours.</Description>
+    <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <DefaultValue>1</DefaultValue>
+  </SettingsItem>
+</SettingsItems>

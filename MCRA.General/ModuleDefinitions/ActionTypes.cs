@@ -30,6 +30,8 @@ namespace MCRA.General {
     }
 
     public enum ActionType {
+        [Display(Name = "PBK model simulations")]
+        PbkModelSimulations = -3,
         [Display(Name = "Action global settings")]
         Action = -2,
         [Display(Name = "Unknown")]

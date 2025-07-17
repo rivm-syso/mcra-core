@@ -52,7 +52,7 @@ namespace MCRA.General {
         /// <summary>
         /// The kinetic model resolution.
         /// </summary>
-        public string Resolution { get; set; }
+        public TimeUnit Resolution { get; set; }
 
         /// <summary>
         /// The evaluation frequency per resolution.
@@ -102,15 +102,6 @@ namespace MCRA.General {
         /// <returns></returns>
         public ICollection<ExposureRoute> GetExposureRoutes() {
             return Forcings.OrderBy(c => c.Order).Select(c => c.Route).ToList();
-        }
-
-        /// <summary>
-        /// The time scale considered by the model.
-        /// </summary>
-        public TimeUnit TimeScale {
-            get {
-                return TimeUnitConverter.FromString(Resolution);
-            }
         }
 
         /// <summary>

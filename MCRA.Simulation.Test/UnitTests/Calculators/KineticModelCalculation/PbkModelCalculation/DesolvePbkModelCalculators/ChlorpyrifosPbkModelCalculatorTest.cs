@@ -18,7 +18,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
     /// KineticModelCalculation calculator
     /// </summary>
     [TestClass]
-    public class ChlorpyrifosPbkModelCalculatorTest : PbkModelCalculatorBaseTests {
+    public class ChlorpyrifosPbkModelCalculatorTest : PbkModelCalculatorTestsBase {
 
         protected override KineticModelInstance getDefaultInstance(
             params Compound[] substances

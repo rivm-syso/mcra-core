@@ -29,13 +29,14 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             var modelExposureRoutes = KineticModelInstance.KineticModelDefinition.GetExposureRoutes();
 
             // Get time resolution
-            var timeUnitMultiplier = TimeUnit.Days.GetTimeUnitMultiplier(KineticModelDefinition.TimeScale);
-            var stepLength = 1d / KineticModelDefinition.EvaluationFrequency;
+            var timeUnitMultiplier = TimeUnit.Days.GetTimeUnitMultiplier(KineticModelDefinition.Resolution);
+            var stepsPerDay = getSimulationStepsPerDay();
+            var stepLength = (1d / stepsPerDay) * timeUnitMultiplier;
 
             // Initialise exposure events generator
             var exposureEventsGenerator = new ExposureEventsGenerator(
                 SimulationSettings,
-                KineticModelDefinition.TimeScale,
+                KineticModelDefinition.Resolution,
                 exposureUnit,
                 KineticModelDefinition.Forcings
                     .ToDictionary(
@@ -49,13 +50,15 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
 
             var individualResults = new Dictionary<int, List<SubstanceTargetExposurePattern>>();
             using (var runner = new SbmlModelRunner(KineticModelInstance, outputMappings)) {
+
                 // Loop over individuals
                 foreach (var id in externalIndividualExposures.Keys) {
                     var individual = externalIndividualExposures[id].First().SimulatedIndividual;
 
                     // Get simulation period
-                    var evaluationPeriod = getEvaluationPeriod(timeUnitMultiplier, individual.Age);
-                    var simulationSteps = evaluationPeriod * KineticModelDefinition.EvaluationFrequency + 1;
+                    var numberOfDays = getSimulationDuration(individual.Age);
+                    var duration = (int)(timeUnitMultiplier * numberOfDays);
+                    var simulationSteps = (int)(numberOfDays * stepsPerDay) + 1;
 
                     // Create exposure events
                     var exposureEvents = exposureEventsGenerator
@@ -72,11 +75,11 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
 
                     // If we have positive exposures, then run simulation
                     SimulationOutput output = null;
-                    if (exposureEvents.Any()) {
+                    if (exposureEvents.Count != 0) {
                         output = runner.Run(
                             exposureEvents,
                             parameters,
-                            evaluationPeriod,
+                            duration,
                             simulationSteps,
                             SimulationSettings.BodyWeightCorrected,
                             KineticModelDefinition.IdBodyWeightParameter
@@ -97,27 +100,25 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                         if (outputTimeSeries != null && outputTimeSeries.Average() > 0) {
                             if (outputMapping.OutputType == KineticModelOutputType.Concentration) {
                                 // Use volume correction if necessary
-                                exposures = outputTimeSeries
+                                exposures = [.. outputTimeSeries
                                     .Select((r, i) => {
                                         var alignmentFactor = outputMapping.GetUnitAlignmentFactor(compartmentWeight);
                                         var bodyWeight = outputTimeSeriesBodyWeight?.ElementAt(i);
                                         var result = new TargetExposurePerTimeUnit(i * stepLength, r * alignmentFactor, bodyWeight);
                                         return result;
-                                    })
-                                    .ToList();
+                                    })];
                             } else {
                                 // The cumulative amounts are reverted to differences between timepoints
                                 // (according to the specified resolution, in general hours).
                                 var runningSum = 0D;
-                                exposures = outputTimeSeries
+                                exposures = [.. outputTimeSeries
                                     .Select((r, i) => {
                                         var alignmentFactor = outputMapping.GetUnitAlignmentFactor(compartmentWeight);
                                         var bodyWeight = outputTimeSeriesBodyWeight?.ElementAt(i);
                                         var exposure = alignmentFactor * r - runningSum;
                                         runningSum += exposure;
                                         return new TargetExposurePerTimeUnit(i * stepLength, exposure, bodyWeight);
-                                    })
-                                    .ToList();
+                                    })];
                             }
                         }
 

@@ -44,7 +44,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 )
                 .ToList();
             ExposureType = exposureType;
-            TimeScale = kineticModelInstance.KineticModelDefinition.TimeScale;
+            TimeScale = kineticModelInstance.KineticModelDefinition.Resolution;
             EvaluationFrequency = kineticModelInstance.KineticModelDefinition.EvaluationFrequency;
             ModelCode = kineticModelInstance.IdModelDefinition;
             NumberOfDaysSkipped = nonStationaryPeriod;

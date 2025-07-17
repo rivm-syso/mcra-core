@@ -556,6 +556,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 UseParameterVariability = ModuleConfig.UseParameterVariability,
                 SpecifyEvents = ModuleConfig.SpecifyEvents,
                 SelectedEvents = [.. ModuleConfig.SelectedEvents],
+                OutputResolutionTimeUnit = ModuleConfig.PbkOutputResolutionTimeUnit,
+                OutputResolutionStepSize = ModuleConfig.PbkOutputResolutionStepSize,
                 PbkSimulationMethod = ModuleConfig.PbkSimulationMethod,
                 LifetimeYears = ModuleConfig.LifetimeYears,
                 BodyWeightCorrected = ModuleConfig.BodyWeightCorrected,

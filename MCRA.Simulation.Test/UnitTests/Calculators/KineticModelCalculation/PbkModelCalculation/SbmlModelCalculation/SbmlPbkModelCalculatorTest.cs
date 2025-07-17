@@ -13,7 +13,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
     /// SBML KineticModelCalculation calculator tests.
     /// </summary>
     [TestClass]
-    public class SbmlPbkModelCalculatorTest : PbkModelCalculatorBaseTests {
+    public class SbmlPbkModelCalculatorTest : PbkModelCalculatorTestsBase {
 
         protected virtual KineticModelDefinition GetModelDefinition() {
             return KineticModelDefinition.FromSbmlFile(

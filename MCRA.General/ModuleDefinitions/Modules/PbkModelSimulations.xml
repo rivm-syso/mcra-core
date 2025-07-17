@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>PbkModelSimulations</Id>
+  <Name>PBK model simulations</Name>
+  <ActionType>PbkModelSimulations</ActionType>
+  <ModuleType>SupportModule</ModuleType>
+  <Description>
+    Support module with settings for PBK model simulations.
+  </Description>
+  <ShortDescription>
+    Support module with settings for PBK model simulations.
+  </ShortDescription>
+  <DataDescription>
+    Support module with settings for PBK model simulations.
+  </DataDescription>
+  <CalculationSettings>
+    <CalculationSetting>PbkOutputResolutionTimeUnit</CalculationSetting>
+    <CalculationSetting>PbkOutputResolutionStepSize</CalculationSetting>
+  </CalculationSettings>
+</Module>

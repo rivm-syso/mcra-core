@@ -83,6 +83,8 @@
     <CalculationSetting source="PbkModels">PbkSimulationMethod</CalculationSetting>
     <CalculationSetting source="PbkModels">LifetimeYears</CalculationSetting>
     <CalculationSetting source="PbkModels">BodyWeightCorrected</CalculationSetting>
+    <CalculationSetting source="PbkModelSimulations">PbkOutputResolutionTimeUnit</CalculationSetting>
+    <CalculationSetting source="PbkModelSimulations">PbkOutputResolutionStepSize</CalculationSetting>
     <CalculationSetting>DietPopulationAlignmentMethod</CalculationSetting>
     <CalculationSetting>DietSexAlignment</CalculationSetting>
     <CalculationSetting>DietAgeAlignment</CalculationSetting>

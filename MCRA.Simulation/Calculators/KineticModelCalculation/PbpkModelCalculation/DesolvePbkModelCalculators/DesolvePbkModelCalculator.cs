@@ -72,10 +72,11 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             var modelExposureRoutes = KineticModelInstance.KineticModelDefinition.GetExposureRoutes();
 
             // Get time resolution
+            var timeUnitMultiplier = (int)TimeUnit.Days.GetTimeUnitMultiplier(KineticModelDefinition.Resolution);
             var numberOfSimulatedDays = SimulationSettings.NumberOfSimulatedDays;
-            var timeUnitMultiplier = (int)TimeUnit.Days.GetTimeUnitMultiplier(KineticModelDefinition.TimeScale);
-            var stepLength = 1d / KineticModelDefinition.EvaluationFrequency;
-            var evaluationPeriod = numberOfSimulatedDays * timeUnitMultiplier;
+            var duration = timeUnitMultiplier * numberOfSimulatedDays;
+            var stepsPerDay = getSimulationStepsPerDay();
+            var stepLength = (1d / stepsPerDay) * timeUnitMultiplier;
 
             var nominalInputParameters = getNominalParameter();
 
@@ -92,7 +93,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             // Initialise exposure events generator
             var exposureEventsGenerator = new ExposureEventsGenerator(
                 SimulationSettings,
-                KineticModelDefinition.TimeScale,
+                KineticModelDefinition.Resolution,
                 exposureUnit,
                 KineticModelDefinition.Forcings
                     .ToDictionary(
@@ -109,7 +110,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                 R.LoadLibrary("deSolve", null, true);
                 R.EvaluateNoReturn($"dyn.load(paste('{_modelFilePath}', .Platform$dynlib.ext, sep = ''))");
                 try {
-                    R.EvaluateNoReturn($"times <- seq(from=0, to={evaluationPeriod}, by={stepLength.ToString(CultureInfo.InvariantCulture)})");
+                    R.EvaluateNoReturn($"times <- seq(from=0, to={duration}, by={stepLength.ToString(CultureInfo.InvariantCulture)})");
                     foreach (var id in externalIndividualExposures.Keys) {
                         var individual = externalIndividualExposures[id].First().SimulatedIndividual;
 

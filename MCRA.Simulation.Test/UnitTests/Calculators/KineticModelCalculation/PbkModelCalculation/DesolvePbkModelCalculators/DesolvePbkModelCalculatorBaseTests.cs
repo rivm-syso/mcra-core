@@ -14,7 +14,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
     /// KineticModelCalculation calculator
     /// </summary>
     [TestClass]
-    public abstract class DesolvePbkModelCalculatorBaseTests : PbkModelCalculatorBaseTests {
+    public abstract class DesolvePbkModelCalculatorBaseTests : PbkModelCalculatorTestsBase {
 
         protected override PbkSimulationSettings getDefaultSimulationSettings() {
             return new PbkSimulationSettings() {
@@ -69,7 +69,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
                     );
                 var targetExposurePattern = internalExposures as SubstanceTargetExposurePattern;
                 var timePoints = simulationSettings.NumberOfSimulatedDays
-                    * TimeUnit.Days.GetTimeUnitMultiplier(instance.KineticModelDefinition.TimeScale)
+                    * TimeUnit.Days.GetTimeUnitMultiplier(instance.KineticModelDefinition.Resolution)
                     * instance.KineticModelDefinition.EvaluationFrequency
                     + 1;
                 Assert.AreEqual(timePoints, targetExposurePattern.TargetExposuresPerTimeUnit.Count);

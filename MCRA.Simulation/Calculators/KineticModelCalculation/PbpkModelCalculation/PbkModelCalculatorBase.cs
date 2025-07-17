@@ -32,7 +32,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             SimulationSettings = simulationSettings;
 
             // Lookups/dictionaries for model definition elements
-            _modelParameterDefinitions = KineticModelDefinition.Parameters
+            _modelParameterDefinitions = KineticModelDefinition.Parameters?
                 .ToDictionary(r => r.Id, StringComparer.OrdinalIgnoreCase);
 
             // Check if model matches settings
@@ -539,24 +539,51 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         }
 
         /// <summary>
-        /// Gets the evaluation time of the model.
+        /// Gets the duration of the simulation in days.
         /// </summary>
-        protected int getEvaluationPeriod(
-            double timeUnitMultiplier,
+        protected double getSimulationDuration(
             double? currentAge
         ) {
             switch (SimulationSettings.PbkSimulationMethod) {
                 case PbkSimulationMethod.Standard:
-                    return (int)(SimulationSettings.NumberOfSimulatedDays * timeUnitMultiplier);
+                    return (int)(SimulationSettings.NumberOfSimulatedDays);
                 case PbkSimulationMethod.LifetimeToSpecifiedAge:
-                    return (int)(SimulationSettings.LifetimeYears * 365.25 * timeUnitMultiplier);
+                    return (int)(SimulationSettings.LifetimeYears * 365.25);
                 case PbkSimulationMethod.LifetimeToCurrentAge:
                     if (!currentAge.HasValue) {
                         throw new Exception("Cannot run PBK model simulation to current age for individuals with undefined age.");
                     }
-                    return (int)(timeUnitMultiplier * currentAge.Value * 365.25);
+                    return currentAge.Value * 365.25;
                 default:
                     throw new NotImplementedException();
+            }
+        }
+
+        /// <summary>
+        /// Gets the number of evaluations per day.
+        /// </summary>
+        protected double getSimulationStepsPerDay() {
+            if (SimulationSettings.PbkSimulationMethod == PbkSimulationMethod.LifetimeToSpecifiedAge
+                || SimulationSettings.PbkSimulationMethod == PbkSimulationMethod.LifetimeToCurrentAge
+            ) {
+                // For lifetime models, use one evaluation per day
+                return 1;
+            }
+            if (SimulationSettings.OutputResolutionTimeUnit == PbkModelOutputResolutionTimeUnit.ModelTimeUnit) {
+                // Use model resolution and frequency
+                var modelTimeUnitMultiplier = TimeUnit.Days.GetTimeUnitMultiplier(KineticModelDefinition.Resolution);
+                return modelTimeUnitMultiplier * KineticModelDefinition.EvaluationFrequency;
+            } else {
+                // Compute number of evaluations per day
+                if (SimulationSettings.OutputResolutionTimeUnit == PbkModelOutputResolutionTimeUnit.Minutes) {
+                    return 24D * 60 / SimulationSettings.OutputResolutionStepSize;
+                } else if (SimulationSettings.OutputResolutionTimeUnit == PbkModelOutputResolutionTimeUnit.Hours) {
+                    return 24D / SimulationSettings.OutputResolutionStepSize;
+                } else if (SimulationSettings.OutputResolutionTimeUnit == PbkModelOutputResolutionTimeUnit.Days) {
+                    return 1D / SimulationSettings.OutputResolutionStepSize;
+                } else {
+                    throw new NotImplementedException();
+                }
             }
         }
 

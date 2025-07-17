@@ -280,7 +280,9 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 NonStationaryPeriod = ModuleConfig.NonStationaryPeriod,
                 UseParameterVariability = ModuleConfig.UseParameterVariability,
                 SpecifyEvents = ModuleConfig.SpecifyEvents,
-                SelectedEvents = [.. ModuleConfig.SelectedEvents]
+                SelectedEvents = [.. ModuleConfig.SelectedEvents],
+                OutputResolutionTimeUnit = ModuleConfig.PbkOutputResolutionTimeUnit,
+                OutputResolutionStepSize = ModuleConfig.PbkOutputResolutionStepSize,
             };
             var kineticConversionFactorCalculator = new KineticConversionFactorCalculator(
                 kineticModelFactory,

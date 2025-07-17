@@ -17,7 +17,7 @@ namespace MCRA.General.Sbml {
             result.Name = sbmlModel.Name ?? sbmlModel.Id;
             result.Format = KineticModelType.SBML;
             result.EvaluationFrequency = 1;
-            result.Resolution = sbmlModel.TimeUnit.ToString();
+            result.Resolution = sbmlModel.TimeUnit.ToTimeUnit();
 
             var routes = new List<ExposureRoute>() {
                 ExposureRoute.Oral,

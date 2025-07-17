@@ -26,7 +26,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 Routes = string.Join(", ", routes.Select(c => c.GetShortDisplayName())),
                 Output = targetUnit.Target.GetDisplayName(),
                 OutputUnit = targetUnit.GetShortDisplayName(),
-                TimeUnit = kineticModelInstance.KineticModelDefinition.TimeScale.GetShortDisplayName()
+                TimeUnit = kineticModelInstance.KineticModelDefinition.Resolution.GetShortDisplayName()
             };
             KineticModelRecords.Add(kineticModelRecord);
         }
