@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 namespace MCRA.Simulation.OutputGeneration {
     public class BurdensOfDiseaseSummaryRecord {
 
@@ -16,7 +17,8 @@ namespace MCRA.Simulation.OutputGeneration {
 
         [Description("The value of the burden of disease indicator.")]
         [DisplayName("Value")]
-        public string Value { get; set; }
+        [DisplayFormat(DataFormatString = "{0:N2}")]
+        public double Value { get; set; }
     }
 }
 

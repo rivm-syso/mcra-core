@@ -2,6 +2,7 @@
 using MCRA.Simulation.OutputGeneration.Helpers;
 using MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders;
 using Microsoft.AspNetCore.Html;
+using static System.FormattableString;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class AttributableBodSummarySectionView : SectionView<AttributableBodSummarySection> {
@@ -91,7 +92,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     
                     var populationSize = group.FirstOrDefault().PopulationSize;
                     if (!double.IsNaN(populationSize)) {
-                        panelSb.AppendDescriptionParagraph($"Population size: {populationSize}");
+                        panelSb.AppendDescriptionParagraph(Invariant($"Population size: {populationSize:N3}"));
                     }
 
                     // Create copy of viewbag and fill with (local) BodIndicator

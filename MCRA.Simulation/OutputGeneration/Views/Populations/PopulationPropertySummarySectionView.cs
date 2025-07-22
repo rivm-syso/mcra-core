@@ -1,10 +1,10 @@
 ﻿using MCRA.Simulation.OutputGeneration.Helpers;
 using System.Text;
+using static System.FormattableString;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class PopulationPropertySummarySectionView : SectionView<PopulationPropertySummarySection> {
         public override void RenderSectionHtml(StringBuilder sb) {
-            //Render HTML
             var hiddenProperties = new List<string> {
                 "PopulationName",
                 "PopulationCode",
@@ -56,7 +56,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (double.IsNaN(Model.PopulationSize)) {
                 sb.AppendDescriptionParagraph($"No population size specified.");
             } else {
-                sb.AppendDescriptionParagraph($"Population size: {Model.PopulationSize}.");
+                sb.AppendDescriptionParagraph(Invariant($"Population size: {Model.PopulationSize:N0}."));
             }
 
             if (Model.Records.Count != 0) {

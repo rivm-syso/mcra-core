@@ -17,7 +17,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         Population = r.Population.Code,
                         Effect = r.Effect.Name,
                         BodIndicator = r.BodIndicator.GetDisplayName(),
-                        Value = r.Value.ToString()
+                        Value = r.Value
                     };
                     return record;
                 })
