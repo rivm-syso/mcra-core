@@ -1,5 +1,25 @@
 # Change Log
 
+## Version 10.2.1 (2025-07-25)
+
+### Added
+
+- Implementation of bootstrap of individuals (uncertainty) in Individuals module for air, dust and soil (#2056)
+- Add functionality to specify output resolution for PBK model simulations (#2117)
+- Implementation ConsumerProductConcentrationDistributions module (#2223)
+
+### Changed
+
+- Remove DistributionType, CvVariability, rename OccurrencePercentage from table ConsumerProductConcentrations (#2229)
+- Updated target .NET framework of MCRA Core to .NET 9.0
+- Updated R version for MCRA to 4.5.1 (#2234)
+
+### Fixed
+
+- Specified routes in InternalExposures conflict with routes of input modules (#2227)
+- Missing ModuleConfig for calculator module without configuration settings (#2228)
+- Food hierarchy is not shown in output
+
 ## Version 10.2.0 (2025-07-07)
 
 ### Added
