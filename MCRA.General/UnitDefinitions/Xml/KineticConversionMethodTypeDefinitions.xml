@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>KineticConversionMethodType</Id>
+  <Name>Kinetic conversion method type</Name>
+  <Description>
+    Methods/approaches for kinetic conversion; use PBK model, conversion factor model, or both.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>ConversionFactorModel</Id>
+      <Name>Use kinetic conversion factors</Name>
+      <ShortName>ConversionFactorModel</ShortName>
+      <Description>Use (low-tier) kinetic conversion factor models.</Description>
+      <Aliases>
+        <Alias>ConversionFactorModel</Alias>
+        <Alias>ConversionFactor</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>PbkModel</Id>
+      <Name>Use PBK models only</Name>
+      <ShortName>PBKModel only</ShortName>
+      <Description>Use (high-tier) PBK models.</Description>
+      <Aliases>
+        <Alias>PBKModelOnly</Alias>
+        <Alias>PBKOnly</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>PbkWithFallback</Id>
+      <Name>Use PBK models with fallback on kinetic conversion factors</Name>
+      <ShortName>PBKModel</ShortName>
+      <Description>Use (high-tier) PBK models with fallback on (low-tier) kinetic conversion factors.</Description>
+      <Aliases>
+        <Alias>PBKModel</Alias>
+        <Alias>PBK</Alias>
+      </Aliases>
+    </Unit>
+  </Units>
+</UnitDefinition>

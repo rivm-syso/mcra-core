@@ -26,11 +26,13 @@
     <Input>RelativePotencyFactors</Input>
     <Input>KineticConversionFactors</Input>
     <Input>ExposureBiomarkerConversions</Input>
+    <Input>PbkModels</Input>
   </CalculationInputs>
   <UncertaintySources>
     <UncertaintySource>HbmNonDetectImputation</UncertaintySource>
     <UncertaintySource>HbmMissingValueImputation</UncertaintySource>
     <UncertaintySource>ExposureBiomarkerConversion</UncertaintySource>
+    <UncertaintySource>KineticConversionFactors</UncertaintySource>
   </UncertaintySources>
   <LoopEntities>
     <LoopEntity>Compounds</LoopEntity>
@@ -68,6 +70,21 @@
     <CalculationSetting>ApplyExposureBiomarkerConversions</CalculationSetting>
     <CalculationSetting>TargetMatrix</CalculationSetting>
     <CalculationSetting>SpecificGravityConversionFactor</CalculationSetting>
+    <CalculationSetting>HbmKineticConversionMethod</CalculationSetting>
+    <CalculationSetting source="PbkModels">ExposureEventsGenerationMethod</CalculationSetting>
+    <CalculationSetting source="PbkModels">NumberOfDays</CalculationSetting>
+    <CalculationSetting source="PbkModels">NonStationaryPeriod</CalculationSetting>
+    <CalculationSetting source="PbkModels">UseParameterVariability</CalculationSetting>
+    <CalculationSetting source="PbkModels">NumberOfDosesPerDayNonDietaryDermal</CalculationSetting>
+    <CalculationSetting source="PbkModels">NumberOfDosesPerDayNonDietaryInhalation</CalculationSetting>
+    <CalculationSetting source="PbkModels">NumberOfDosesPerDayNonDietaryOral</CalculationSetting>
+    <CalculationSetting source="PbkModels">SelectedEvents</CalculationSetting>
+    <CalculationSetting source="PbkModels">SpecifyEvents</CalculationSetting>
+    <CalculationSetting source="PbkModels">PbkSimulationMethod</CalculationSetting>
+    <CalculationSetting source="PbkModels">LifetimeYears</CalculationSetting>
+    <CalculationSetting source="PbkModels">BodyWeightCorrected</CalculationSetting>
+    <CalculationSetting source="PbkModelSimulations">PbkOutputResolutionTimeUnit</CalculationSetting>
+    <CalculationSetting source="PbkModelSimulations">PbkOutputResolutionStepSize</CalculationSetting>
   </CalculationSettings>
   <UncertaintySettings>
     <UncertaintySetting source="Action">UncertaintyLowerBound</UncertaintySetting>

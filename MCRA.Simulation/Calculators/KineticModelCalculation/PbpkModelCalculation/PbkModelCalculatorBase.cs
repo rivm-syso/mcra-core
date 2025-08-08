@@ -1,10 +1,11 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Simulation.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation.PbkModelParameterDistributionModels;
+using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation.ReverseDoseCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
+using MCRA.Simulation.Objects;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 
@@ -206,7 +207,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                 BodyWeight = externalIndividualExposures.Average(c => c.SimulatedIndividual.BodyWeight),
             };
             individual.SetPropertyValue(
-                property: new () {
+                property: new() {
                     PropertyType = IndividualPropertyType.Numeric,
                     Name = "Age"
                 },
@@ -291,9 +292,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         }
 
         /// <summary>
-        /// Override: uses bisection search to find the external dose corresponding to
-        /// the specified internal dose. The kinetic model is applied using nominal
-        /// values (i.e., without variability).
+        /// Override: find the external dose corresponding to the specified internal dose.
         /// </summary>
         public double Reverse(
             SimulatedIndividual individual,
@@ -304,31 +303,19 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             ExposureType exposureType,
             IRandom generator
         ) {
-            var precision = SimulationSettings.PrecisionReverseDoseCalculation;
-            var xLower = 10E-6 * dose;
-            var xUpper = 10E6 * dose;
-            var xMiddle = double.NaN;
-            for (var i = 0; i < 1000; i++) {
-                xMiddle = (xLower + xUpper) / 2;
-                var fMiddle = Forward(
-                    individual,
-                    xMiddle,
-                    externalExposureRoute,
-                    externalExposureUnit,
-                    internalDoseUnit,
-                    exposureType,
-                    generator
-                );
-                if (Math.Abs(fMiddle - dose) < precision) {
-                    break;
-                }
-                if (fMiddle > dose) {
-                    xUpper = xMiddle;
-                } else {
-                    xLower = xMiddle;
-                }
-            }
-            return xMiddle;
+            var reverseDoseCalculator = new ReverseDoseCalculator() {
+                Precision = SimulationSettings.PrecisionReverseDoseCalculation
+            };
+            return reverseDoseCalculator.Reverse(
+                this,
+                individual,
+                dose,
+                internalDoseUnit,
+                externalExposureRoute,
+                externalExposureUnit,
+                exposureType,
+                generator
+            );
         }
 
         /// <summary>

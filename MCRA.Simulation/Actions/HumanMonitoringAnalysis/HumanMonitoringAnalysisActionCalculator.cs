@@ -21,6 +21,7 @@ using MCRA.Simulation.Calculators.HumanMonitoringCalculation.MissingValueImputat
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.NonDetectsImputationCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCombinationCalculation;
 using MCRA.Simulation.Calculators.IndividualDaysGenerator;
+using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.ProgressReporting;
@@ -30,25 +31,25 @@ using MCRA.Utils.Statistics.RandomGenerators;
 namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
 
     [ActionType(ActionType.HumanMonitoringAnalysis)]
-    public class HumanMonitoringAnalysisActionCalculator : ActionCalculatorBase<HumanMonitoringAnalysisActionResult> {
+    public class HumanMonitoringAnalysisActionCalculator(ProjectDto project) : ActionCalculatorBase<HumanMonitoringAnalysisActionResult>(project) {
         private HumanMonitoringAnalysisModuleConfig ModuleConfig => (HumanMonitoringAnalysisModuleConfig)_moduleSettings;
-
-        public HumanMonitoringAnalysisActionCalculator(ProjectDto project) : base(project) {
-        }
 
         protected override void verify() {
             var isMultiple = ModuleConfig.MultipleSubstances;
             var isCumulative = isMultiple && ModuleConfig.Cumulative;
             var isRiskBasedMcr = isMultiple && ModuleConfig.McrAnalysis
                 && ModuleConfig.McrExposureApproachType == ExposureApproachType.RiskBased;
-            var useKineticModels = ModuleConfig.ApplyKineticConversions;
+            var useKineticConversionFactorModels = ModuleConfig.UseKineticConversionFactorModels();
+            var usePbkModels = ModuleConfig.UsePbkModels();
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsRequired = isCumulative || isRiskBasedMcr;
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsVisible = isCumulative || isRiskBasedMcr;
             var applyExposureBiomarkerConversions = ModuleConfig.ApplyExposureBiomarkerConversions;
             _actionInputRequirements[ActionType.ExposureBiomarkerConversions].IsRequired = applyExposureBiomarkerConversions;
             _actionInputRequirements[ActionType.ExposureBiomarkerConversions].IsVisible = applyExposureBiomarkerConversions;
-            _actionInputRequirements[ActionType.KineticConversionFactors].IsRequired = useKineticModels;
-            _actionInputRequirements[ActionType.KineticConversionFactors].IsVisible = useKineticModels;
+            _actionInputRequirements[ActionType.KineticConversionFactors].IsRequired = useKineticConversionFactorModels;
+            _actionInputRequirements[ActionType.KineticConversionFactors].IsVisible = useKineticConversionFactorModels;
+            _actionInputRequirements[ActionType.PbkModels].IsRequired = usePbkModels;
+            _actionInputRequirements[ActionType.PbkModels].IsVisible = usePbkModels;
         }
 
         public override ICollection<UncertaintySource> GetRandomSources() {
@@ -57,6 +58,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 result.Add(UncertaintySource.HbmNonDetectImputation);
                 result.Add(UncertaintySource.HbmMissingValueImputation);
                 result.Add(UncertaintySource.ExposureBiomarkerConversion);
+                result.Add(UncertaintySource.KineticConversionFactors);
             }
             return result;
         }
@@ -74,8 +76,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             ActionData data,
             CompositeProgressState progressReport
         ) {
-            var localProgress = progressReport.NewProgressState(100);
-            return compute(data, localProgress, true);
+            return compute(data, progressReport, true);
         }
 
         protected override HumanMonitoringAnalysisActionResult runUncertain(
@@ -84,17 +85,18 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators,
             CompositeProgressState progressReport
         ) {
-            var localProgress = progressReport.NewProgressState(100);
-            return compute(data, localProgress, false, factorialSet, uncertaintySourceGenerators);
+            return compute(data, progressReport, false, factorialSet, uncertaintySourceGenerators);
         }
 
         private HumanMonitoringAnalysisActionResult compute(
             ActionData data,
-            ProgressState localProgress,
+            CompositeProgressState progressState,
             bool isMcrAnalyis,
             UncertaintyFactorialSet factorialSet = null,
             Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators = null
         ) {
+            var localProgress = progressState.NewProgressState(1);
+
             // Create HBM concentration models
             var concentrationModelsBuilder = new HbmConcentrationModelBuilder();
             var concentrationModels = ModuleConfig.NonDetectImputationMethod != NonDetectImputationMethod.ReplaceByLimit
@@ -188,8 +190,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
 
             var result = new HumanMonitoringAnalysisActionResult();
 
+            var conversionProgress = progressState.NewCompositeState(99);
             if (ModuleConfig.ApplyExposureBiomarkerConversions || ModuleConfig.ApplyKineticConversions) {
-
                 // Before conversion, filter on complete cases
                 hbmIndividualDayCollections = GetCompleteCases(
                     hbmIndividualDayCollections,
@@ -215,33 +217,74 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 if (ModuleConfig.ApplyKineticConversions) {
                     var substances = data.ActiveSubstances ?? data.AllCompounds;
 
+                    // Initialize kinetic conversion calculator factory
+                    var usePbkModels = ModuleConfig.UsePbkModels();
+                    var useKineticConversionFactorModels = ModuleConfig.UseKineticConversionFactorModels();
+                    var kineticConversionCalculatorFactory = () => new TargetMatrixKineticConversionCalculator(
+                        useKineticConversionFactorModels ? data.KineticConversionFactorModels : null,
+                        usePbkModels ? data.KineticModelInstances : null,
+                        usePbkModels
+                            ? new PbkSimulationSettings() {
+                                NumberOfSimulatedDays = ModuleConfig.NumberOfDays,
+                                UseRepeatedDailyEvents = ModuleConfig.ExposureEventsGenerationMethod == ExposureEventsGenerationMethod.DailyAverageEvents,
+                                NumberOfOralDosesPerDay = ModuleConfig.NumberOfDosesPerDayNonDietaryOral,
+                                NumberOfDermalDosesPerDay = ModuleConfig.NumberOfDosesPerDayNonDietaryDermal,
+                                NumberOfInhalationDosesPerDay = ModuleConfig.NumberOfDosesPerDayNonDietaryInhalation,
+                                NonStationaryPeriod = ModuleConfig.NonStationaryPeriodInDays,
+                                UseParameterVariability = ModuleConfig.UseParameterVariability,
+                                SpecifyEvents = ModuleConfig.SpecifyEvents,
+                                SelectedEvents = [.. ModuleConfig.SelectedEvents],
+                                OutputResolutionTimeUnit = ModuleConfig.PbkOutputResolutionTimeUnit,
+                                OutputResolutionStepSize = ModuleConfig.PbkOutputResolutionStepSize,
+                                PbkSimulationMethod = ModuleConfig.PbkSimulationMethod,
+                                LifetimeYears = ModuleConfig.LifetimeYears,
+                                BodyWeightCorrected = ModuleConfig.BodyWeightCorrected,
+                            }
+                            : null
+                    );
+
+                    var kineticConversionRandomGenerator = usePbkModels ?
+                        new McraRandomGenerator(
+                            RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.BME_DrawKineticModelParameters)
+                        )
+                        : null;
+
                     if (ModuleConfig.HbmConvertToSingleTargetMatrix) {
                         // Kinetic conversions to a single target
                         hbmIndividualDayCollections = HbmSingleTargetExtrapolationCalculator
                             .Calculate(
-                                hbmIndividualDayCollections,
-                                data.KineticConversionFactorModels,
                                 simulatedIndividualDays,
+                                hbmIndividualDayCollections,
                                 substances,
+                                ModuleConfig.ExposureType,
                                 ModuleConfig.TargetDoseLevelType,
-                                ModuleConfig.TargetMatrix
+                                ModuleConfig.TargetMatrix,
+                                kineticConversionCalculatorFactory,
+                                kineticConversionRandomGenerator,
+                                conversionProgress
                             );
                     } else {
+                        if (usePbkModels) {
+                            throw new NotImplementedException("Support for multiple target extrapolation using PBK models not yet implemented.");
+                        }
                         // Kinetic conversions for different from-to matrix combinations
                         hbmIndividualDayCollections = HbmMultipleTargetExtrapolationCalculator
                             .Calculate(
                                 hbmIndividualDayCollections,
                                 data.KineticConversionFactorModels,
                                 simulatedIndividualDays,
-                                substances
+                                substances,
+                                ModuleConfig.ExposureType,
+                                conversionProgress
                             );
                     }
                 }
             }
+            conversionProgress.MarkCompleted();
 
             // Filter on active substances
             var activeSubstances = data.ActiveSubstances;
-            hbmIndividualDayCollections = hbmIndividualDayCollections.Select(c => c.Clone()).ToList();
+            hbmIndividualDayCollections = [.. hbmIndividualDayCollections.Select(c => c.Clone())];
             hbmIndividualDayCollections.ForEach(collection => {
                 foreach (var item in collection.HbmIndividualDayConcentrations) {
                     item.ConcentrationsBySubstance = item.ConcentrationsBySubstance.Where(i => activeSubstances.Contains(i.Key)).ToDictionary(d => d.Key, d => d.Value);

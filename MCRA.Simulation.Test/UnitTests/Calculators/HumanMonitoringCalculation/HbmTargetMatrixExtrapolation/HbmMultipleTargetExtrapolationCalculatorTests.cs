@@ -5,6 +5,7 @@ using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayCon
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversions;
 using MCRA.Simulation.Calculators.KineticConversionFactorModels;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
+using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -102,7 +103,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                     hbmIndividualDayCollections,
                     kineticConversionFactorModels,
                     individualDays,
-                    substances
+                    substances,
+                    ExposureType.Chronic,
+                    new CompositeProgressState()
                 );
 
             // Assert
@@ -245,7 +248,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                     hbmIndividualDayCollections,
                     kineticConversionFactorModels,
                     individualDays,
-                    substances
+                    substances,
+                    ExposureType.Chronic,
+                    new CompositeProgressState()
                 );
 
             // Assert

@@ -1,7 +1,11 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Simulation.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.KineticConversionFactorModels;
+using MCRA.Simulation.Calculators.KineticModelCalculation;
+using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
+using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation.ReverseDoseCalculation;
+using MCRA.Simulation.Objects;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversions {
 
@@ -12,96 +16,183 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
     /// that is the same for all biological matrices other than the target
     /// biological matrix.
     /// </summary>
-    public class TargetMatrixKineticConversionCalculator : ITargetMatrixConversionCalculator {
+    public class TargetMatrixKineticConversionCalculator {
 
         /// <summary>
-        /// Dictionary with relevant kinetic conversion models
+        /// Dictionary with relevant kinetic conversion factor models
         /// </summary>
-        private readonly ILookup<(Compound, ExposureTarget), IKineticConversionFactorModel> _kineticConversionModels;
+        private readonly ILookup<(Compound, ExposureTarget, ExposureTarget), IKineticConversionFactorModel> _kineticConversionModels;
 
-        private readonly TargetUnit _targetUnit;
+        /// <summary>
+        /// Dictionary with relevant PBK models
+        /// </summary>
+        private readonly Dictionary<Compound, IKineticModelCalculator> _kineticModelCalculators;
+
+        /// <summary>
+        /// Reverse dose calculator.
+        /// </summary>
+        private readonly ReverseDoseCalculator _reverseDoseCalculator;
+
+        /// <summary>
+        /// Default (intermediate) external exposure route for reverse PBK model calculations
+        /// translating one internal target concentration to another internal target concentration.
+        /// </summary>
+        private readonly ExposureRoute _reverseDoseDefaultExposureRoute;
 
         /// <summary>
         /// Creates a new instance of a <see cref="TargetMatrixKineticConversionCalculator"/>.
         /// Select only the conversion records for the given target biological matrix
         /// </summary>
-        /// <param name="kineticConversionFactors"></param>
-        /// <param name="targetUnit"></param>
         public TargetMatrixKineticConversionCalculator(
             ICollection<IKineticConversionFactorModel> kineticConversionFactors,
-            TargetUnit targetUnit
+            ICollection<KineticModelInstance> kineticModelInstances = null,
+            PbkSimulationSettings pbkSimulationSettings = null
         ) {
-            _targetUnit = targetUnit;
+            _reverseDoseDefaultExposureRoute = ExposureRoute.Oral;
             _kineticConversionModels = kineticConversionFactors?
-                .Where(c => c.ConversionRule.TargetTo == targetUnit.Target)
                 .ToLookup(c => (
                     c.ConversionRule.SubstanceFrom,
-                    c.ConversionRule.TargetFrom
+                    c.ConversionRule.TargetFrom,
+                    c.ConversionRule.TargetTo
                 ));
+            var kmcFactory = new KineticModelCalculatorFactory(kineticModelInstances);
+            _kineticModelCalculators = kineticModelInstances?
+                .Select(c => kmcFactory.CreateHumanKineticModelCalculator(c.InputSubstance, pbkSimulationSettings))
+                .ToDictionary(c => c.Substance);
+            if (kineticModelInstances != null) {
+                _reverseDoseCalculator = new ReverseDoseCalculator() {
+                    Precision = pbkSimulationSettings.PrecisionReverseDoseCalculation
+                };
+            }
         }
 
         public ICollection<HbmSubstanceTargetExposure> GetSubstanceTargetExposures(
             HbmSubstanceTargetExposure sourceExposure,
             SimulatedIndividualDay individualDay,
-            TargetUnit sourceExposureUnit,
-            double compartmentWeight
+            TargetUnit sourceUnit,
+            ExposureType exposureType,
+            TargetUnit targetUnit,
+            double compartmentWeight,
+            IRandom kineticModelParametersRandomGenerator,
+            bool expectCompleteConversion
         ) {
-            var result = new List<HbmSubstanceTargetExposure>();
             var substance = sourceExposure.Substance;
-            if (sourceExposureUnit.Target == _targetUnit.Target) {
-                // If source equals target, then no matrix conversion
-
-                // Alignment factor for source-unit of concentration to target unit
-                var unitAlignmentFactor = sourceExposureUnit.GetAlignmentFactor(
-                    _targetUnit,
-                    substance.MolecularMass,
-                    double.NaN
-                );
-                var record = new HbmSubstanceTargetExposure() {
+            var result = new List<HbmSubstanceTargetExposure>();
+            if (_kineticModelCalculators?.TryGetValue(substance, out var instance) ?? false) {
+                var resultRecord = new HbmSubstanceTargetExposure() {
                     SourceSamplingMethods = sourceExposure.SourceSamplingMethods,
-                    Exposure = unitAlignmentFactor * sourceExposure.Exposure,
+                    Exposure = convertPbkModel(
+                        individualDay.SimulatedIndividual,
+                        sourceExposure.Exposure,
+                        sourceUnit,
+                        exposureType,
+                        substance,
+                        targetUnit,
+                        instance as PbkModelCalculatorBase,
+                        kineticModelParametersRandomGenerator
+                    ),
                     IsAggregateOfMultipleSamplingMethods = sourceExposure.IsAggregateOfMultipleSamplingMethods,
-                    Substance = sourceExposure.Substance
+                    Substance = substance
                 };
-                result.Add(record);
-            } else if (_kineticConversionModels.Contains((substance, sourceExposureUnit.Target))) {
-                var conversions = _kineticConversionModels[(substance, sourceExposureUnit.Target)];
-                var age = individualDay.SimulatedIndividual?.Age;
-                var genderType = individualDay.SimulatedIndividual?.Gender ?? GenderType.Undefined;
+                result.Add(resultRecord);
+            } else if (_kineticConversionModels?.Contains((substance, sourceUnit.Target, targetUnit.Target)) ?? false) {
+                var conversions = _kineticConversionModels[(substance, sourceUnit.Target, targetUnit.Target)];
                 var resultRecords = conversions
                     .Select(c => new HbmSubstanceTargetExposure() {
                         SourceSamplingMethods = sourceExposure.SourceSamplingMethods,
-                        Exposure = convertMatrixConcentration(
+                        Exposure = convertConversionFactorModel(
+                            individualDay.SimulatedIndividual,
                             sourceExposure.Exposure,
-                            sourceExposureUnit.ExposureUnit,
+                            sourceUnit,
+                            targetUnit,
                             c,
                             compartmentWeight
-                        ) * c.GetConversionFactor(age, genderType),
+                        ),
                         IsAggregateOfMultipleSamplingMethods = sourceExposure.IsAggregateOfMultipleSamplingMethods,
                         Substance = c.ConversionRule.SubstanceTo
                     })
                     .ToList();
                 result.AddRange(resultRecords);
+            } else if (expectCompleteConversion) {
+                var msg = $"For substance {substance.Name}, code {substance.Code} no kinetic conversion factor or PBK model to convert matrix is found.";
+                throw new Exception(msg);
             }
             return result;
         }
 
-        private double convertMatrixConcentration(
+        /// <summary>
+        /// Kinetic conversion based on PBK model.
+        /// </summary>
+        /// <returns></returns>
+        private double convertPbkModel(
+            SimulatedIndividual individual,
             double concentration,
-            ExposureUnitTriple sourceExposureUnit,
-            IKineticConversionFactorModel record,
-            double compartmentWeight
+            TargetUnit sourceUnit,
+            ExposureType exposureType,
+            Compound substance,
+            TargetUnit targetUnit,
+            PbkModelCalculatorBase kineticModelCalculator,
+            IRandom kineticModelParametersRandomGenerator
         ) {
+            // Determine (intermediate) external unit
+            var externalTargetUnit = (targetUnit.TargetLevelType == TargetLevelType.External)
+                ? targetUnit
+                : TargetUnit.FromExternalDoseUnit(DoseUnit.ugPerKgBWPerDay, _reverseDoseDefaultExposureRoute);
+
+            // Compute external dose leading to source concentration
+            var externalDose = _reverseDoseCalculator
+                .Reverse(
+                    kineticModelCalculator,
+                    individual,
+                    concentration,
+                    sourceUnit,
+                    externalTargetUnit.ExposureRoute,
+                    externalTargetUnit.ExposureUnit,
+                    exposureType,
+                    kineticModelParametersRandomGenerator
+                );
+            if (externalTargetUnit == targetUnit) {
+                // Target is external -> return result
+                return externalDose;
+            } else {
+                // Compute target exposure based on the found external dose
+                var resultForward = kineticModelCalculator
+                    .Forward(
+                        individual,
+                        externalDose,
+                        externalTargetUnit.ExposureRoute,
+                        externalTargetUnit.ExposureUnit,
+                        targetUnit,
+                        exposureType,
+                        kineticModelParametersRandomGenerator
+                    );
+                return resultForward;
+            }
+        }
+
+        private double convertConversionFactorModel(
+           SimulatedIndividual individual,
+           double concentration,
+           TargetUnit sourceExposureUnit,
+           TargetUnit targetUnit,
+           IKineticConversionFactorModel record,
+           double compartmentWeight
+       ) {
             // Alignment factor for source-unit of concentration with from-unit of conversion record
-            var sourceUnitAlignmentFactor = sourceExposureUnit.GetAlignmentFactor(
+            var sourceUnitAlignmentFactor = sourceExposureUnit.ExposureUnit.GetAlignmentFactor(
                 record.ConversionRule.DoseUnitFrom,
                 record.ConversionRule.SubstanceFrom.MolecularMass,
                 double.NaN
             );
 
+            // Get conversion factor
+            var age = individual.Age;
+            var genderType = individual.Gender;
+            var conversionFactor = record.GetConversionFactor(age, genderType);
+
             // Alignment factor for to-unit of the conversion record with the target unit
             var targetUnitAlignmentFactor = record.ConversionRule.DoseUnitTo.GetAlignmentFactor(
-                _targetUnit.ExposureUnit,
+                targetUnit.ExposureUnit,
                 record.ConversionRule.SubstanceTo.MolecularMass,
                 compartmentWeight
             );
@@ -110,7 +201,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
             // Compute the result by aligning the (source) concentration with the dose-unit-from,
             // applying the conversion factor, and then aligning the result with the alignment
             // factor of the dose-unit-to with the target unit.
-            var result = concentration * sourceUnitAlignmentFactor * targetUnitAlignmentFactor;
+            var result = concentration * sourceUnitAlignmentFactor * conversionFactor * targetUnitAlignmentFactor;
             return result;
         }
     }

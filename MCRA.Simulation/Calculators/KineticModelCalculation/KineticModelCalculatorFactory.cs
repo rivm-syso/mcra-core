@@ -27,9 +27,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
                 var simpleKineticConversionFactors = absorptionFactors
                     .Select((c, ix) => KineticConversionFactor.FromDefaultAbsorptionFactor(c.ExposureRoute, c.Substance, c.AbsorptionFactor))
                     .ToList();
-                _kineticConversionFactorModels = simpleKineticConversionFactors
-                    .Select(c => KineticConversionFactorCalculatorFactory.Create(c, false))
-                    .ToList();
+                _kineticConversionFactorModels = [.. simpleKineticConversionFactors.Select(c => KineticConversionFactorCalculatorFactory.Create(c, false))];
             } else {
                 if (internalModelType == InternalModelType.ConversionFactorModel
                     || internalModelType == InternalModelType.PBKModel
@@ -42,6 +40,9 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
             }
         }
 
+        public KineticModelCalculatorFactory(ICollection<KineticModelInstance> kineticModelInstances) {
+            _kineticModelInstances = kineticModelInstances;
+        }
 
         public IKineticModelCalculator CreateHumanKineticModelCalculator(
             Compound substance,

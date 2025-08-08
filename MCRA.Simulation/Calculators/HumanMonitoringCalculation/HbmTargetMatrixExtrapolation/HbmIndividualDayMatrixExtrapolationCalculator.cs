@@ -1,16 +1,20 @@
-﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Simulation.Objects;
+﻿using System.Diagnostics;
+using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
+using MCRA.Simulation.Objects;
+using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversions {
     public sealed class HbmIndividualDayMatrixExtrapolationCalculator {
 
-        public ITargetMatrixConversionCalculator BiologicalMatrixConversionCalculator { get; set; }
+        private readonly TargetMatrixKineticConversionCalculator _targetMatrixConversionCalculator;
 
-        public HbmIndividualDayMatrixExtrapolationCalculator(ITargetMatrixConversionCalculator targetMatrixConversionCalculator) {
-            BiologicalMatrixConversionCalculator = targetMatrixConversionCalculator;
+        public HbmIndividualDayMatrixExtrapolationCalculator(
+            TargetMatrixKineticConversionCalculator targetMatrixConversionCalculator
+        ) {
+            _targetMatrixConversionCalculator = targetMatrixConversionCalculator;
         }
 
         /// <summary>
@@ -22,12 +26,18 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
             HbmIndividualDayCollection targetIndividualDayCollection,
             ICollection<HbmIndividualDayCollection> hbmIndividualDayCollections,
             ICollection<SimulatedIndividualDay> individualDays,
-            ICollection<Compound> substances
+            ICollection<Compound> substances,
+            ExposureType exposureType,
+            CompositeProgressState progress,
+            IRandom kineticModelParametersRandomGenerator = null
         ) {
             var otherMatrixImputationRecords = collectConvertedOtherMatrixIndividualDayConcentrationCollections(
                 hbmIndividualDayCollections,
                 individualDays,
-                targetIndividualDayCollection.TargetUnit
+                targetIndividualDayCollection.TargetUnit,
+                exposureType,
+                kineticModelParametersRandomGenerator,
+                progress
             );
 
             var targetIndividualDayCollectionClone = targetIndividualDayCollection.Clone();
@@ -49,7 +59,10 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
         private Dictionary<SimulatedIndividualDay, List<HbmIndividualDayConcentration>> collectConvertedOtherMatrixIndividualDayConcentrationCollections(
             ICollection<HbmIndividualDayCollection> hbmIndividualDayCollections,
             ICollection<SimulatedIndividualDay> individualDays,
-            TargetUnit targetUnit
+            TargetUnit targetUnit,
+            ExposureType exposureType,
+            IRandom kineticModelParametersRandomGenerator,
+            CompositeProgressState progress
         ) {
             // Note that this collection is not equal to all collections except the main (it is
             // all except all the collections equal to the target biological matrix)
@@ -63,13 +76,17 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
                     r => r,
                     r => new List<HbmIndividualDayConcentration>()
                 );
+            for (int i = 0; i < otherHbmIndividualDayCollections.Count; i++) {
+                var collection = otherHbmIndividualDayCollections[i];
 
-            foreach (var collection in otherHbmIndividualDayCollections) {
                 // Compute HBM individual day concentrations for all collections
-                var individualConcentrations = collectOtherMatrixHbmIndividualDayConcentrations(
+                var individualConcentrations = collectOtherMatrixIndividualDayConcentrations(
                     collection,
                     individualDays,
-                    targetUnit
+                    targetUnit,
+                    exposureType,
+                    kineticModelParametersRandomGenerator,
+                    progress.NewProgressState(100D / otherHbmIndividualDayCollections.Count)
                 );
 
                 // Store the calculated HBM individual day concentrations
@@ -83,10 +100,13 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
             return otherMatrixImputationRecords;
         }
 
-        private IDictionary<SimulatedIndividualDay, HbmIndividualDayConcentration> collectOtherMatrixHbmIndividualDayConcentrations(
+        private IDictionary<SimulatedIndividualDay, HbmIndividualDayConcentration> collectOtherMatrixIndividualDayConcentrations(
             HbmIndividualDayCollection collection,
             ICollection<SimulatedIndividualDay> individualDays,
-            TargetUnit targetUnit
+            TargetUnit targetUnit,
+            ExposureType exposureType,
+            IRandom kineticModelParametersRandomGenerator,
+            ProgressState localProgress
         ) {
             var result = new Dictionary<SimulatedIndividualDay, HbmIndividualDayConcentration>();
 
@@ -94,28 +114,39 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
             var hbmIndividualDayConcentrationsLookup = collection.HbmIndividualDayConcentrations
                 .ToDictionary(r => r.SimulatedIndividualDayId);
 
-            foreach (var individualDay in individualDays) {
-                if (hbmIndividualDayConcentrationsLookup.TryGetValue(individualDay.SimulatedIndividualDayId, out var hbmIndividualDayConcentration)) {
+            // Initialise progress logger
+            var progressTracker = ProgressTracker.CreateAndStart(individualDays.Count);
 
-
+            for (int i = 0; i < individualDays.Count; i++) {
+                var individualDay = individualDays.ElementAt(i);
+                if (hbmIndividualDayConcentrationsLookup.TryGetValue(
+                    individualDay.SimulatedIndividualDayId,
+                    out var hbmIndividualDayConcentration)
+                ) {
                     // If target is external, then the compartment weight is the bodyweight
                     var compartmentWeight = targetUnit.TargetLevelType == TargetLevelType.External
                         ? individualDay.SimulatedIndividual.BodyWeight
                         : double.NaN;
 
-                    var concentrationsBySubstance = hbmIndividualDayConcentration.ConcentrationsBySubstance
-                        .SelectMany(r => BiologicalMatrixConversionCalculator
-                            .GetSubstanceTargetExposures(
-                                r.Value,
-                                individualDay,
-                                collection.TargetUnit,
-                                compartmentWeight
-                            )
-                        )
+                    var concentrationsBySubstance = new Dictionary<Compound, HbmSubstanceTargetExposure>();
+                    concentrationsBySubstance = hbmIndividualDayConcentration.ConcentrationsBySubstance
+                        .SelectMany(r => {
+                            return _targetMatrixConversionCalculator
+                                .GetSubstanceTargetExposures(
+                                    r.Value,
+                                    individualDay,
+                                    collection.TargetUnit,
+                                    exposureType,
+                                    targetUnit,
+                                    compartmentWeight,
+                                    kineticModelParametersRandomGenerator,
+                                    false
+                                );
+                        })
                         .GroupBy(r => r.Substance)
                         .ToDictionary(
                             g => g.Key,
-                            g => combineHbmSubstanceTargetExposures(g.ToList())
+                            g => combineHbmSubstanceTargetExposures([.. g])
                         );
 
                     var individualDayConcentration = new HbmIndividualDayConcentration() {
@@ -126,18 +157,23 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
                             .ToDictionary(o => o.Key, o => o.Value)
                     };
                     result.Add(individualDay, individualDayConcentration);
+
+                    // Update progress
+                    progressTracker.Update(localProgress, i);
                 }
             }
+
+            localProgress.MarkCompleted();
             return result;
         }
 
         private HbmSubstanceTargetExposure combineHbmSubstanceTargetExposures(
-            ICollection<HbmSubstanceTargetExposure> exposures
+            IEnumerable<HbmSubstanceTargetExposure> exposures
         ) {
             return new HbmSubstanceTargetExposure() {
                 Exposure = exposures.Sum(r => r.Exposure),
                 IsAggregateOfMultipleSamplingMethods = exposures.Any(r => r.IsAggregateOfMultipleSamplingMethods),
-                SourceSamplingMethods = exposures.SelectMany(r => r.SourceSamplingMethods).Distinct().ToList(),
+                SourceSamplingMethods = [.. exposures.SelectMany(r => r.SourceSamplingMethods).Distinct()],
                 Substance = exposures.First().Substance
             };
         }
@@ -191,10 +227,10 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
                     }
                 }
             }
-            return individualDayConcentrations.Values.ToList();
+            return [.. individualDayConcentrations.Values];
         }
 
-        private double getAverageConcentration(
+        private static double getAverageConcentration(
             List<HbmSubstanceTargetExposure> imputationValues
         ) {
             var conversionConcentration = new List<double>();
@@ -202,6 +238,47 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
                 conversionConcentration.Add(record.Exposure);
             }
             return conversionConcentration.Average();
+        }
+
+        internal class ProgressTracker {
+            private readonly Stopwatch _sw;
+            private readonly int _totalCount;
+
+            public ProgressTracker(int totalCount) {
+                _totalCount = totalCount;
+                _sw = new Stopwatch();
+            }
+
+            public void Start() {
+                _sw.Start();
+            }
+
+            public void Update(ProgressState progressState, int ix) {
+                _sw.Stop();
+                var progress = (double)(ix+1) / _totalCount;
+#if DEBUG
+                var debugMode = true;
+                if (debugMode) {
+                    var expectedTotalSeconds = (int)(_sw.Elapsed.TotalSeconds / progress);
+                    var expectedRemainingSeconds = (int)(expectedTotalSeconds - _sw.Elapsed.TotalSeconds);
+                    var expectedRemaining = TimeSpan.FromSeconds(expectedRemainingSeconds);
+                    var expectedTotal = TimeSpan.FromSeconds(expectedTotalSeconds);
+                    var message = $"Kinetic conversion modeling. Done processing individual {ix + 1} (out of {_totalCount}). "
+                        + $"Expected total processing time: {expectedTotal:c}. "
+                        + $"Expected time to finish: {expectedRemaining:c}.";
+                    progressState.Update(message);
+                    Debug.WriteLine(message);
+                }
+#endif
+                progressState.Update(progress * 100D);
+                _sw.Start();
+            }
+
+            public static ProgressTracker CreateAndStart(int totalCount) {
+                var result = new ProgressTracker(totalCount);
+                result.Start();
+                return result;
+            }
         }
     }
 }

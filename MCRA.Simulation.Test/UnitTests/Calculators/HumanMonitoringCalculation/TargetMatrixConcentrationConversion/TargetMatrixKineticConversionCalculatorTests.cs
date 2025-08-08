@@ -59,8 +59,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
 
             var conversionFactorModel = KineticConversionFactorCalculatorFactory.Create(fakeConversionFactor, false);
             var converter = new TargetMatrixKineticConversionCalculator(
-                [conversionFactorModel],
-                targetUnit
+                [conversionFactorModel]
             );
 
             var rec = new HbmSubstanceTargetExposure() {
@@ -69,14 +68,19 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                 SourceSamplingMethods = [],
                 Substance = substance
             };
-            var individualDay = new SimulatedIndividualDay(null);
+            var simulatedIndividual = FakeIndividualsGenerator.CreateSingle();
+            var individualDay = new SimulatedIndividualDay(simulatedIndividual);
             var result = converter
                 .GetSubstanceTargetExposures(
                     rec,
                     individualDay,
                     sourceTargetUnit,
-                    double.NaN
-                ); ;
+                    ExposureType.Chronic,
+                    targetUnit,
+                    double.NaN,
+                    null,
+                    true
+                );
 
             Assert.AreEqual(expected, result.First().Exposure);
         }

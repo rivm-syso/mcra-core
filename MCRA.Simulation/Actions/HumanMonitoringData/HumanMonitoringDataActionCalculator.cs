@@ -61,9 +61,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
             if (ModuleConfig.CodesHumanMonitoringSamplingMethods?.Count > 0) {
                 var selectedSamplingMethodCodes = ModuleConfig.CodesHumanMonitoringSamplingMethods
                     .ToHashSet(StringComparer.OrdinalIgnoreCase);
-                samplingMethods = samplingMethods
-                    .Where(r => selectedSamplingMethodCodes.Contains(r.Code))
-                    .ToList();
+                samplingMethods = [.. samplingMethods.Where(r => selectedSamplingMethodCodes.Contains(r.Code))];
             }
             if (!samplingMethods.Any()) {
                 throw new Exception("Specified sampling method not found!");
@@ -103,16 +101,15 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
                    .GroupBy(c => c.SamplingMethodCode)
                    .ToDictionary(c => c.Key, c => c.Select(n => n.SubstanceCode).ToList())
                 : [];
-
-            var samples = allSamples;
+            var samples = allSamples.ToList();
+            samples = [.. samples];
             if (ModuleConfig.UseCompleteAnalysedSamples) {
-                samples = CompleteSamplesCalculator
+                samples = [.. CompleteSamplesCalculator
                     .FilterCompleteAnalysedSamples(
                         allSamples,
                         samplingMethods,
                         excludedSubstanceMethods
-                    )
-                    .ToList();
+                    )];
                 individuals = samples
                     .Select(r => r.Individual)
                     .ToHashSet();
@@ -157,14 +154,11 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
             // Bootstrap hbm individuals
             if (factorialSet.Contains(UncertaintySource.HbmIndividuals)) {
                 localProgress.Update("Resampling hbm individuals");
-                data.HbmIndividuals = data.HbmIndividuals
-                    .Resample(uncertaintySourceGenerators[UncertaintySource.HbmIndividuals])
-                    .ToList();
+                data.HbmIndividuals = [.. data.HbmIndividuals.Resample(uncertaintySourceGenerators[UncertaintySource.HbmIndividuals])];
 
-                data.HbmAllSamples = data.HbmAllSamples
+                data.HbmAllSamples = [.. data.HbmAllSamples
                     .Where(r => data.HbmIndividuals.Contains(r.Individual))
-                    .Where(r => data.HbmSamplingMethods.Contains(r.SamplingMethod))
-                    .ToList();
+                    .Where(r => data.HbmSamplingMethods.Contains(r.SamplingMethod))];
 
                 var hbmSampleSubstanceCollections = new List<HumanMonitoringSampleSubstanceCollection>();
                 foreach (var collection in data.HbmSampleSubstanceCollections) {

@@ -1,19 +1,23 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Simulation.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
-using MCRA.Simulation.Calculators.KineticConversionFactorModels;
+using MCRA.Simulation.Objects;
+using MCRA.Utils.ProgressReporting;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversions {
     public static class HbmSingleTargetExtrapolationCalculator {
 
         public static List<HbmIndividualDayCollection> Calculate(
-           List<HbmIndividualDayCollection> hbmIndividualDayCollections,
-           ICollection<IKineticConversionFactorModel> kineticConversionFactorModels,
            List<SimulatedIndividualDay> simulatedIndividualDays,
+           List<HbmIndividualDayCollection> hbmIndividualDayCollections,
            ICollection<Compound> substances,
+           ExposureType exposureType,
            TargetLevelType targetLevelType,
-           BiologicalMatrix targetMatrix
+           BiologicalMatrix targetMatrix,
+           Func<TargetMatrixKineticConversionCalculator> matrixConversionCalculatorFactory,
+           IRandom generator,
+           CompositeProgressState progress
         ) {
             // Here we assume that we have selected one matrix to which we want to convert all
             // concentrations. However, notice that we could still end up with multiple target units
@@ -25,10 +29,9 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
             if (targetLevelType == TargetLevelType.External) {
                 targets.Add(new ExposureTarget(ExposureRoute.Oral));
             } else {
-                targets = hbmIndividualDayCollections
+                targets = [.. hbmIndividualDayCollections
                     .Where(r => r.Target.BiologicalMatrix == targetMatrix)
-                    .Select(r => r.Target)
-                    .ToList();
+                    .Select(r => r.Target)];
                 if (!targets.Any()) {
                     targets.Add(new ExposureTarget(targetMatrix));
                 }
@@ -49,19 +52,24 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
 
             // Loop over the target collections and do the imputation via kinetic conversion
             var convertedHbmIndividualDayCollections = new List<HbmIndividualDayCollection>();
+            var collection = new HbmIndividualDayCollection();
+
+            // Initialize kinetic model calculators
+            var matrixConversionCalculator = matrixConversionCalculatorFactory();
+
             foreach (var targetHbmIndividualDayCollection in targetHbmIndividualDayCollections) {
-                var matrixConversionCalculator = new TargetMatrixKineticConversionCalculator(
-                    kineticConversionFactorModels,
-                    targetHbmIndividualDayCollection.TargetUnit);
                 var monitoringOtherIndividualDayCalculator = new HbmIndividualDayMatrixExtrapolationCalculator(
                     matrixConversionCalculator
                 );
-                var collection = monitoringOtherIndividualDayCalculator
+                collection = monitoringOtherIndividualDayCalculator
                     .Calculate(
                         targetHbmIndividualDayCollection,
                         hbmIndividualDayCollections,
                         simulatedIndividualDays,
-                        substances
+                        substances,
+                        exposureType,
+                        progress.NewCompositeState(100D / targetHbmIndividualDayCollections.Count),
+                        generator
                     );
                 convertedHbmIndividualDayCollections.Add(collection);
             }

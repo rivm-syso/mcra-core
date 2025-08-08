@@ -43,6 +43,14 @@
     <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>
+    <Id>HbmKineticConversionMethod</Id>
+    <Name>Kinetic conversion method</Name>
+    <Description>
+      Method for kinetic conversion. Use kinetic conversion factor models, PBK models, or a combination of both to convert substance concentrations from other biological matrices.
+    </Description>
+    <ValueType>KineticConversionMethodType</ValueType>
+  </SettingsItem>
+  <SettingsItem>
     <Id>HbmConvertToSingleTargetMatrix</Id>
     <Name>Convert to single exposure surface (biological matrix or external route)</Name>
     <Description>

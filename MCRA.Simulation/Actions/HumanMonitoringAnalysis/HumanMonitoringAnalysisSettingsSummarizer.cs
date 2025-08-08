@@ -38,6 +38,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             section.SummarizeSetting(SettingsItemType.ApplyExposureBiomarkerConversions, _configuration.ApplyExposureBiomarkerConversions);
             section.SummarizeSetting(SettingsItemType.ApplyKineticConversions, _configuration.ApplyKineticConversions);
             if (_configuration.ApplyKineticConversions) {
+                section.SummarizeSetting(SettingsItemType.HbmKineticConversionMethod, _configuration.HbmKineticConversionMethod);
                 section.SummarizeSetting(SettingsItemType.HbmConvertToSingleTargetMatrix, _configuration.HbmConvertToSingleTargetMatrix);
                 if (_configuration.HbmConvertToSingleTargetMatrix) {
                     section.SummarizeSetting(SettingsItemType.TargetDoseLevelType, _configuration.TargetDoseLevelType);
