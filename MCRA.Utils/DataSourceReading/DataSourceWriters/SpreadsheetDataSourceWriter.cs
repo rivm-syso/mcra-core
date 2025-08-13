@@ -54,10 +54,15 @@ namespace MCRA.Utils.DataFileReading {
         public void Write(
             DataTable table,
             string destinationTableName,
-            TableDefinition tableDefinition
+            TableDefinition tableDefinition = null
         ) {
             Open();
-            WriteSpreadsheetTable(_spreadsheetDocument, _sheetIndex++, tableDefinition.TableName, table);
+            WriteSpreadsheetTable(
+                _spreadsheetDocument,
+                _sheetIndex++,
+                tableDefinition?.TableName ?? destinationTableName,
+                table
+            );
         }
 
         /// <summary>
@@ -296,8 +301,12 @@ namespace MCRA.Utils.DataFileReading {
                         if (colDef.DataType.IsSubclassOf(typeof(Enum))) {
                             xlDataValue = new CellValue(string.Format(CultureInfo.InvariantCulture, "{0}", ((Enum)dsrow[col]).GetDisplayName()));
                         } else if (colDef.DataType.IsNumeric()) {
+                            //convert to double, check for NaN or Infinity
                             xlDataType = CellValues.Number;
-                            xlDataValue = new CellValue(Convert.ToDouble(dsrow[col]));
+                            var doubleVal = Convert.ToDouble(dsrow[col]);
+                            if (!double.IsNaN(doubleVal) && !double.IsInfinity(doubleVal)) {
+                                xlDataValue = new CellValue(doubleVal);
+                            }
                         } else if (colDef.DataType == typeof(bool)) {
                             xlDataType = CellValues.Number;
                             xlDataValue = new CellValue(Convert.ToBoolean(dsrow[col]) ? 1 : 0);
