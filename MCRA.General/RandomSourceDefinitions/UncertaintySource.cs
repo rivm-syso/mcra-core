@@ -66,5 +66,9 @@ namespace MCRA.General {
         ExposureResponseFunctions = 31,
         [Display(Name = "Simulate individuals")]
         SimulatedIndividuals = 32,
+        [Display(Name = "Consumer product concentrations")]
+        ConsumerProductConcentrations = 33,
+        [Display(Name = "Consumer product concentration models")]
+        CPConcentrationModelling = 34,
     }
 }

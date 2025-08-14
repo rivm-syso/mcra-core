@@ -5,9 +5,11 @@ using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
 using MCRA.Simulation.Action;
+using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Calculators.ConsumerProductConcentrationModelCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Actions.ConsumerProductConcentrationDistributions {
 
@@ -70,6 +72,26 @@ namespace MCRA.Simulation.Actions.ConsumerProductConcentrationDistributions {
             return result;
         }
 
+        protected override ConsumerProductConcentrationDistributionsActionResult runUncertain(
+            ActionData data,
+            UncertaintyFactorialSet factorialSet,
+            Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators,
+            CompositeProgressState progressReport
+        ) {
+            var localProgress = progressReport.NewProgressState(100);
+            var concentrationModelsBuilder = new ConsumerProductConcentrationModelBuilder();
+            var concentrationModels = concentrationModelsBuilder.Create(
+                data.AllConsumerProductConcentrations,
+                NonDetectsHandlingMethod.ReplaceByZero,
+                0
+            );
+            var result = new ConsumerProductConcentrationDistributionsActionResult() {
+                ConsumerProductConcentrationModels = concentrationModels,
+            };
+            localProgress.Update(100);
+            return result;
+        }
+
         protected override void summarizeActionResult(ConsumerProductConcentrationDistributionsActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
             localProgress.Update("Summarizing consumer product concentration distributions", 0);
@@ -80,6 +102,16 @@ namespace MCRA.Simulation.Actions.ConsumerProductConcentrationDistributions {
 
         protected override void updateSimulationData(ActionData data, ConsumerProductConcentrationDistributionsActionResult result) {
             data.ConsumerProductConcentrationModels = result.ConsumerProductConcentrationModels;
+        }
+
+        protected override void updateSimulationDataUncertain(ActionData data, ConsumerProductConcentrationDistributionsActionResult result) {
+            data.ConsumerProductConcentrationModels = result.ConsumerProductConcentrationModels;
+        }
+        protected override void summarizeActionResultUncertain(UncertaintyFactorialSet factorialSet, ConsumerProductConcentrationDistributionsActionResult actionResult, ActionData data, SectionHeader header, CompositeProgressState progressReport) {
+            var localProgress = progressReport.NewProgressState(100);
+            //var summarizer = new ConcentrationModelsSummarizer();
+            //summarizer.SummarizeUncertain(_actionSettings, actionResult, header);
+            localProgress.Update(100);
         }
     }
 }

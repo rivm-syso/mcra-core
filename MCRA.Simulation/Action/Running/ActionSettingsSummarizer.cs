@@ -119,9 +119,6 @@ namespace MCRA.Simulation.Action {
         public ActionSettingsSummary SummarizeRunSettings(ProjectDto project) {
             var section = new ActionSettingsSummary("Initialisation seed");
             section.SummarizeSetting(SettingsItemType.RandomSeed, project.ActionSettings.RandomSeed);
-            //var uss = project.UncertaintyAnalysisSettings;
-            //section.SummarizeSetting(SettingsItemType.DoUncertaintyAnalysis, uss.DoUncertaintyAnalysis);
-            //section.SummarizeSetting(SettingsItemType.DoUncertaintyFactorial, uss.DoUncertaintyFactorial);
             return section;
         }
 
@@ -162,6 +159,10 @@ namespace MCRA.Simulation.Action {
                             project.OccurrencePatternsSettings.RecomputeOccurrencePatterns
                         );
                     }
+                }
+
+                if (activeUncertaintySettings.Contains(SettingsItemType.ResampleCPConcentrations)) {
+                    section.SummarizeSetting(SettingsItemType.ResampleCPConcentrations, project.ConsumerProductConcentrationDistributionsSettings.ResampleCPConcentrations);
                 }
 
                 if (activeUncertaintySettings.Contains(SettingsItemType.ResampleIndividuals)) {

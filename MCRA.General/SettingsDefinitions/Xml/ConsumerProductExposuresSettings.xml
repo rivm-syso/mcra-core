@@ -36,4 +36,14 @@
     <ValueType>Boolean</ValueType>
     <DefaultValue>true</DefaultValue>
   </SettingsItem>
+  <!-- Consumer product concentration settings  -->
+  <SettingsItem>
+    <Id>ResampleCPConcentrations</Id>
+    <Name>Resample consumer product concentrations</Name>
+    <Description>
+      Consumer product concentration data are resampled from the original database using the bootstrap methodology (Efron 1979, Efron &amp; Tibshirani 1993).
+    </Description>
+    <ValueType>Boolean</ValueType>
+    <DefaultValue>false</DefaultValue>
+  </SettingsItem>
 </SettingsItems>

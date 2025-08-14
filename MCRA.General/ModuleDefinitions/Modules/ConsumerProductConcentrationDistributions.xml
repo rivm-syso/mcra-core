@@ -28,4 +28,10 @@
   <CalculationInputs>
     <Input>ConsumerProductConcentrations</Input>
   </CalculationInputs>
+  <UncertaintySettings>
+    <UncertaintySetting source="ConsumerProductConcentrations">ResampleCPConcentrations</UncertaintySetting>
+  </UncertaintySettings>
+  <UncertaintySources>
+    <UncertaintySource>CPConcentrationModelling</UncertaintySource>
+  </UncertaintySources>
 </Module>

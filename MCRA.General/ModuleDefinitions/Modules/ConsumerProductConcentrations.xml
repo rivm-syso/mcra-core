@@ -24,4 +24,10 @@
     <OutputSetting source="Action">VariabilityLowerPercentage</OutputSetting>
     <OutputSetting source="Action">VariabilityUpperPercentage</OutputSetting>
   </OutputSettings>
+  <UncertaintySettings>
+    <UncertaintySetting>ResampleCPConcentrations</UncertaintySetting>
+  </UncertaintySettings>
+  <UncertaintySources>
+    <UncertaintySource>ConsumerProductConcentrations</UncertaintySource>
+  </UncertaintySources>
 </Module>
