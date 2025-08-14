@@ -1,4 +1,6 @@
 ﻿using MCRA.Simulation.OutputManagement;
+using MCRA.Utils.DataFileReading;
+using System.Data;
 using System.Xml.Serialization;
 
 namespace MCRA.Simulation.OutputGeneration {
@@ -102,6 +104,65 @@ namespace MCRA.Simulation.OutputGeneration {
             string filename
         ) {
             sectionManager.WriteCsvDataToFile(SectionId, filename);
+        }
+
+        /// <summary>
+        /// Saves the data file in spreadsheet (Excel) format to the file name specified.
+        /// </summary>
+        /// <param name="sectionManager"></param>
+        /// <param name="filename">Full path and name of file to write to</param>
+        /// <param name="workDir">Optional working directory to create the temporary CSV file</param>
+        public void SaveSpreadsheetFile(
+            ISectionManager sectionManager,
+            string fileName,
+            string inputCsvFile = null,
+            string workDir = null
+        ) {
+            if(string.IsNullOrEmpty(workDir) || !Directory.Exists(workDir)) {
+                workDir = Path.GetTempPath();
+            }
+            var csvInputExists = !string.IsNullOrEmpty(inputCsvFile) && File.Exists(inputCsvFile);
+            var csvFileName = csvInputExists
+                ? inputCsvFile
+                : Path.Combine(workDir, $"mcra-{Guid.NewGuid():N}.csv");
+
+            if(!csvInputExists) {
+                //write the data to CSV
+                sectionManager.WriteCsvDataToFile(SectionId, csvFileName);
+            }
+
+            //tablename: remove ending [Data]Table from name
+            //and crop to max 31 chars (excel limit)
+            var tableName = Name;
+            if (tableName.EndsWith("Table")) {
+                tableName = tableName[..^5];
+            }
+            if (tableName.EndsWith("Data")) {
+                tableName = tableName[..^4];
+            }
+            if (tableName.Length > 31) {
+                tableName = tableName[..31];
+            }
+
+            var columnTypes = GetTypes();
+            using var fs = File.OpenRead(csvFileName);
+            using var rdr = new CsvDataReader(fs, fieldTypes: columnTypes);
+            var colNames = rdr.GetColumnNames();
+
+            //max excel tablename length
+            var table = new DataTable(tableName);
+            foreach (var (colName, colType) in rdr.GetColumnNames().Zip(columnTypes)) {
+                var column = new DataColumn(colName, colType);
+                table.Columns.Add(column);
+            }
+            table.Load(rdr);
+            using (var xlWriter = new SpreadsheetDataSourceWriter(fileName)) {
+                xlWriter.Write(table, tableName);
+            }
+            //delete original csv file if it was created temporarily
+            if(!csvInputExists){
+                File.Delete(csvFileName);
+            }
         }
 
         /// <summary>

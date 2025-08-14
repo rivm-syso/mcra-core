@@ -168,6 +168,6 @@ ul {
  * Hide non-print parts
  */
 
-.toolbar, .table_info, .tab-panel-header {
+.toolbar, .table_info, .tab-panel-header, .hide-in-print {
     display: none;
 }

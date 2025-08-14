@@ -29,5 +29,8 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
         [Option('r', "randomseed", Default = null, HelpText = "Use this value as the Monte Carlo random seed for the project.")]
         public int? RandomSeed { get; set; }
 
+        [Option('t', "filetype", Default = "csv", HelpText = "Output data file type (csv or excel)")]
+        public string FileType { get; set; } = "csv";
+
     }
 }

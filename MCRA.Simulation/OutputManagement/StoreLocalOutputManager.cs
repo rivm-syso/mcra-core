@@ -13,7 +13,8 @@ namespace MCRA.Simulation.OutputManagement {
 
         public bool WriteTocCsv { get; set; } = true;
         public bool WriteReport { get; set; } = false;
-        public bool WriteCsvFiles { get; set; } = true;
+        public bool WriteDataFiles { get; set; } = true;
+        public bool WriteAsSpreadsheet { get; set; } = false;
         public bool WriteChartFiles { get; set; } = true;
 
         private string _outputPath;
@@ -65,8 +66,8 @@ namespace MCRA.Simulation.OutputManagement {
 
             var csvFileIndex = new Dictionary<Guid, (string FileName, string TitlePath)>();
             // Save created CSV files
-            if (WriteCsvFiles || WriteReport) {
-                var dataFolder = new DirectoryInfo(Path.Combine(_outputPath, "Data"));
+            var dataFolder = new DirectoryInfo(Path.Combine(_outputPath, "Data"));
+            if (WriteDataFiles || WriteReport) {
                 toc.SaveTablesAsCsv(dataFolder, sectionManager, csvFileIndex);
                 var csvIndexFileName = Path.Combine(outputFolder.FullName, "Metadata", "CsvFileIndex.txt");
                 using (var sw = new StreamWriter(csvIndexFileName)) {
@@ -98,6 +99,24 @@ namespace MCRA.Simulation.OutputManagement {
                 var reportBuilder = new ReportBuilder(toc);
                 var html = reportBuilder.RenderDisplayReport(null, true, outputFolder.FullName, csvIndex: csvFileIndex, svgIndex: svgFileIndex);
                 File.WriteAllText(reportFileName, html);
+            }
+
+            if (WriteAsSpreadsheet && (WriteReport || WriteDataFiles)) {
+                //Use data folder to write spreadsheet files using the toc and the file index
+                foreach (var dh in toc.DataHeaders) {
+                    if (csvFileIndex.TryGetValue(dh.SectionId, out var idx)) {
+                        var xlsFile = Path.Combine(
+                            dataFolder.FullName,
+                            $"{Path.GetFileNameWithoutExtension(idx.FileName)}.xlsx"
+                        );
+                        var csvFile = Path.Combine(dataFolder.FullName, idx.FileName);
+                        dh.SaveSpreadsheetFile(sectionManager, xlsFile, csvFile);
+                        //remove the CSV output file in the output folder
+                        if (File.Exists(csvFile)) {
+                            File.Delete(csvFile);
+                        }
+                    }
+                }
             }
         }
 

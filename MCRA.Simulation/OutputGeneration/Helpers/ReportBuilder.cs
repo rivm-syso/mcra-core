@@ -914,10 +914,10 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
                                 $"This table shows only the first {limitRows} rows. " +
                                 "To view all data, <span class='hide-in-print'>click the sort button ";
                     if (isTempFolder) {
-                        truncateMsg += "or </span>download the CSV file.</td></tr>";
+                        truncateMsg += "or </span>download it as Excel or CSV file.</td></tr>";
                     } else {
-                        var rawCsvFile = Path.GetFileName(fileName);
-                        truncateMsg += $"or <a href='../Data/{rawCsvFile}'>click here</a> to </span>see the file '{rawCsvFile}'.</td></tr>";
+                        var dataFileName = Path.GetFileNameWithoutExtension(fileName);
+                        truncateMsg += $"or </span>open the file '{dataFileName}' in the 'Data' subfolder.</td></tr>";
                     }
                     sb.Insert(truncateInfoInsertPosition, truncateMsg);
                 }
@@ -1172,8 +1172,8 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
                     }
                     if (fileName != null) {
                         var tableRowsHtml = rotate
-                                          ? RetrieveCsvRotatedTableContentsHtml(tableId, fileName, caption, columnOrder)
-                                          : RetrieveCsvTableContentsHtml(tableId, maxRows, fileName, true, caption, columnOrder);
+                            ? RetrieveCsvRotatedTableContentsHtml(tableId, fileName, caption, columnOrder)
+                            : RetrieveCsvTableContentsHtml(tableId, maxRows, fileName, true, caption, columnOrder);
                         n.InnerXml = tableRowsHtml;
                     } else {
                         n.InnerXml = string.Empty;

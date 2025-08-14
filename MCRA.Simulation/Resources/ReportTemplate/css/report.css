@@ -270,6 +270,7 @@ ul {
  */
 .toolbar,
 .table_info,
-.tab-panel-header {
+.tab-panel-header,
+.hide-in-print {
   display: none;
 }

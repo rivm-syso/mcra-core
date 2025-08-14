@@ -208,9 +208,11 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
                 });
 
                 // Create output manager
+
                 var outputManager = new StoreLocalOutputManager(outputFolderName) {
                     WriteReport = !options.SkipReport,
-                    WriteCsvFiles = !options.SkipTables,
+                    WriteDataFiles = !options.SkipTables,
+                    WriteAsSpreadsheet = options.FileType.Contains('x', StringComparison.OrdinalIgnoreCase),
                     WriteChartFiles = !options.SkipCharts
                 };
 

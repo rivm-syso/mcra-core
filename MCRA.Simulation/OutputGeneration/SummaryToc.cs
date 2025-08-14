@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Data;
 using System.Text.Json.Serialization;
 using System.Xml.Serialization;
 using MCRA.Simulation.OutputManagement;
@@ -275,17 +276,19 @@ namespace MCRA.Simulation.OutputGeneration {
 
             var tempDataDir = dataDir.FullName;
             Directory.CreateDirectory(tempDataDir);
+            var outputNames = new HashSet<string>();
+
             foreach (var dh in csvDataHeaders) {
-                var csvName = $"{dh.Name}.csv";
-                var fileName = Path.Combine(tempDataDir, csvName);
-                //TODO: solution for duplicate output csv file names, make them unique
+                var outputName = $"{dh.Name}";
+                //TODO: solution for duplicate output file names, make them unique
                 var i = 1;
-                while (File.Exists(fileName)) {
-                    csvName = $"{dh.Name}-{i++}.csv";
-                    fileName = Path.Combine(tempDataDir, csvName);
+                while (outputNames.Contains(outputName)) {
+                    outputName = $"{dh.Name}-{i++}";
                 }
+                outputNames.Add(outputName);
+                var csvName = $"{outputName}.csv";
+                dh.SaveCsvFile(sectionManager, Path.Combine(tempDataDir, csvName));
                 tableFiles.Add(dh.SectionId, (csvName, dh.TitlePath));
-                dh.SaveCsvFile(sectionManager, fileName);
             }
             return tableFiles;
         }
@@ -367,12 +370,12 @@ namespace MCRA.Simulation.OutputGeneration {
             foreach (var (prefix, list) in entries) {
                 using (var sw = new StreamWriter(Path.Combine(path, $"{prefix}.{ext}"))) {
                     sw.WriteLine(header);
-                    foreach (var dataHeader in list.OrderBy(v => v.TitlePath, StringComparer.OrdinalIgnoreCase).ThenBy(v => v.Name, StringComparer.OrdinalIgnoreCase)) {
+                    foreach (var dh in list.OrderBy(v => v.TitlePath, StringComparer.OrdinalIgnoreCase).ThenBy(v => v.Name, StringComparer.OrdinalIgnoreCase)) {
                         var values = new[] {
-                            dataHeader.Name,
-                            dataHeader.TitlePath,
-                            dataHeader.SectionLabel,
-                            dataHeader.SectionId.ToString()
+                            dh.Name,
+                            dh.TitlePath,
+                            dh.SectionLabel,
+                            dh.SectionId.ToString()
                         };
                         sw.WriteLine(string.Join(",", values.Select(r => $"\"{r}\"")));
                     }
