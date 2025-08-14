@@ -92,11 +92,11 @@
         }
 
         public static bool operator <(QualifiedValue val1, QualifiedValue val2) {
-            return val1.CompareTo(val2) < 0;
+            return val1?.CompareTo(val2) < 0;
         }
 
         public static bool operator >(QualifiedValue val1, QualifiedValue val2) {
-            return val1.CompareTo(val2) > 0;
+            return val1?.CompareTo(val2) > 0;
         }
 
         public override int GetHashCode() {
