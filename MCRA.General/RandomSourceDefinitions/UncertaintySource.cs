@@ -70,5 +70,7 @@ namespace MCRA.General {
         ConsumerProductConcentrations = 33,
         [Display(Name = "Consumer product concentration models")]
         CPConcentrationModelling = 34,
+        [Display(Name = "Air concentration")]
+        AirConcentrations = 35,
     }
 }

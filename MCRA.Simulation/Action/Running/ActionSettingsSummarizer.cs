@@ -164,6 +164,9 @@ namespace MCRA.Simulation.Action {
                 if (activeUncertaintySettings.Contains(SettingsItemType.ResampleCPConcentrations)) {
                     section.SummarizeSetting(SettingsItemType.ResampleCPConcentrations, project.ConsumerProductConcentrationDistributionsSettings.ResampleCPConcentrations);
                 }
+                if (activeUncertaintySettings.Contains(SettingsItemType.ResampleAirConcentrations)) {
+                    section.SummarizeSetting(SettingsItemType.ResampleAirConcentrations, project.IndoorAirConcentrationsSettings.ResampleAirConcentrations);
+                }
 
                 if (activeUncertaintySettings.Contains(SettingsItemType.ResampleIndividuals)) {
                     section.SummarizeSetting(

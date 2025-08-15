@@ -19,4 +19,10 @@
   <Entities>
     <Entity>Substances</Entity>
   </Entities>
+  <UncertaintySettings>
+    <UncertaintySetting>ResampleAirConcentrations</UncertaintySetting>
+  </UncertaintySettings>
+  <UncertaintySources>
+    <UncertaintySource>AirConcentrations</UncertaintySource>
+  </UncertaintySources>
 </Module>

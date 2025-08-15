@@ -7,4 +7,14 @@
     <Description>Method for generating individual set for generation of air exposures.</Description>
     <ValueType>AirExposuresIndividualGenerationMethod</ValueType>
   </SettingsItem>
+  <!-- Air concentration settings  -->
+  <SettingsItem>
+    <Id>ResampleAirConcentrations</Id>
+    <Name>Resample indoor/outdoor air concentrations</Name>
+    <Description>
+      Air concentration data (indoor and outdoor) are resampled from the original database using the bootstrap methodology (Efron 1979, Efron &amp; Tibshirani 1993).
+    </Description>
+    <ValueType>Boolean</ValueType>
+    <DefaultValue>false</DefaultValue>
+  </SettingsItem>
 </SettingsItems>
