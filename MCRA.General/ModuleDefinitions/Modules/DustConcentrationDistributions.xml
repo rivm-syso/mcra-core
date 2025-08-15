@@ -19,4 +19,10 @@
   <Entities>
     <Entity>Substances</Entity>
   </Entities>
+  <UncertaintySettings>
+    <UncertaintySetting>ResampleDustConcentrations</UncertaintySetting>
+  </UncertaintySettings>
+  <UncertaintySources>
+    <UncertaintySource>DustConcentrations</UncertaintySource>
+  </UncertaintySources>
 </Module>

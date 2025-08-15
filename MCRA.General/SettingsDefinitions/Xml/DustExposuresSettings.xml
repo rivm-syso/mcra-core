@@ -40,4 +40,14 @@
     <ValueType>Boolean</ValueType>
     <DefaultValue>true</DefaultValue>
   </SettingsItem>
+  <!-- Dust concentration settings  -->
+  <SettingsItem>
+    <Id>ResampleDustConcentrations</Id>
+    <Name>Resample dust concentrations</Name>
+    <Description>
+      Dust concentration data are resampled from the original database using the bootstrap methodology (Efron 1979, Efron &amp; Tibshirani 1993).
+    </Description>
+    <ValueType>Boolean</ValueType>
+    <DefaultValue>false</DefaultValue>
+  </SettingsItem>
 </SettingsItems>

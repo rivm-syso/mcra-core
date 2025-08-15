@@ -72,5 +72,7 @@ namespace MCRA.General {
         CPConcentrationModelling = 34,
         [Display(Name = "Air concentration")]
         AirConcentrations = 35,
+        [Display(Name = "Dust concentration")]
+        DustConcentrations = 36,
     }
 }
