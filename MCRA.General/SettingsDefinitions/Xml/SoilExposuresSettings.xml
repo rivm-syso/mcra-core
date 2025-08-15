@@ -7,4 +7,14 @@
     <Description>Method for generating individual set for generation of soil exposures.</Description>
     <ValueType>SoilExposuresIndividualGenerationMethod</ValueType>
   </SettingsItem>
+  <!-- Soil concentration settings  -->
+  <SettingsItem>
+    <Id>ResampleSoilConcentrations</Id>
+    <Name>Resample soil concentrations</Name>
+    <Description>
+      Soil concentration data are resampled from the original database using the bootstrap methodology (Efron 1979, Efron &amp; Tibshirani 1993).
+    </Description>
+    <ValueType>Boolean</ValueType>
+    <DefaultValue>false</DefaultValue>
+  </SettingsItem>
 </SettingsItems>

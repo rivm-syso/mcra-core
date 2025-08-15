@@ -168,8 +168,13 @@ namespace MCRA.Simulation.Action {
                 if (activeUncertaintySettings.Contains(SettingsItemType.ResampleAirConcentrations)) {
                     section.SummarizeSetting(SettingsItemType.ResampleAirConcentrations, project.IndoorAirConcentrationsSettings.ResampleAirConcentrations);
                 }
+
                 if (activeUncertaintySettings.Contains(SettingsItemType.ResampleDustConcentrations)) {
                     section.SummarizeSetting(SettingsItemType.ResampleDustConcentrations, project.DustConcentrationDistributionsSettings.ResampleDustConcentrations);
+                }
+
+                if (activeUncertaintySettings.Contains(SettingsItemType.ResampleSoilConcentrations)) {
+                    section.SummarizeSetting(SettingsItemType.ResampleSoilConcentrations, project.SoilConcentrationDistributionsSettings.ResampleSoilConcentrations);
                 }
 
                 if (activeUncertaintySettings.Contains(SettingsItemType.ResampleIndividuals)) {
