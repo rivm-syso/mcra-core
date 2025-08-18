@@ -1,7 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Action.Settings;
-using MCRA.Simulation.Actions.DustExposures;
+using MCRA.Simulation.Actions.AirExposures;
 using MCRA.Simulation.Calculators.IndividualDaysGenerator;
 using MCRA.Simulation.Calculators.PopulationGeneration;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
@@ -9,18 +9,18 @@ using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace MCRA.Simulation.Test.UnitTests.Actions.DustExposures {
+namespace MCRA.Simulation.Test.UnitTests.Actions.AirExposures {
     /// <summary>
-    /// Runs the DustExposures action
+    /// Runs the AirExposures action
     /// </summary>
     [TestClass]
-    public class DustExposuresActionCalculatorTests : ActionCalculatorTestsBase {
+    public class AirExposuresActionCalculatorTests : ActionCalculatorTestsBase {
 
         /// <summary>
-        /// Runs the DustExposures action: simulate individuals
+        /// Runs the AirExposures action: simulate individuals
         /// </summary>
         [TestMethod]
-        public void DustExposuresActionCalculator_TestSimulate() {
+        public void AirExposuresActionCalculator_TestSimulate() {
             var seed = 1;
             var numberOfIndividuals = 10;
             var random = new McraRandomGenerator(seed);
@@ -49,59 +49,55 @@ namespace MCRA.Simulation.Test.UnitTests.Actions.DustExposures {
 
             selectedPopulation.PopulationIndividualPropertyValues = populationIndividualPropertyValues;
 
-            var dustConcentrations = FakeDustConcentrationDistributionsGenerator.Create(substances, seed);
-            var dustIngestions = FakeDustIngestionsGenerator.Create(seed);
-            var dustAdherenceAmounts = FakeDustAdherenceAmountsGenerator.Create(seed);
-            var dustAvailabilityFractions = FakeDustAvailabilityFractionsGenerator.Create(substances, seed);
+            var indoorAirConcentrations = FakeAirConcentrationDistributionsGenerator.CreateIndoor(substances, seed);
+            var outdoorAirConcentrations = FakeAirConcentrationDistributionsGenerator.CreateOutdoor(substances, seed);
+
 
             var project = new ProjectDto();
-            var config = project.DustExposuresSettings;
-            config.SelectedExposureRoutes = [ExposureRoute.Dermal, ExposureRoute.Oral];
-            config.DustExposuresIndividualGenerationMethod = DustExposuresIndividualGenerationMethod.Simulate;
+            var config = project.AirExposuresSettings;
+            config.SelectedExposureRoutes = [ExposureRoute.Inhalation, ExposureRoute.Oral];
+            config.AirExposuresIndividualGenerationMethod = AirExposuresIndividualGenerationMethod.Simulate;
             var individualPropertyValues = new Dictionary<string, PopulationIndividualPropertyValue>();
             var individualsGenerator = new IndividualsGenerator();
-            var individuals = individualsGenerator
+            var simIndividuals = individualsGenerator
                 .GenerateSimulatedIndividuals(
                     new Population() { PopulationIndividualPropertyValues = individualPropertyValues },
                     numberOfIndividuals,
                     1,
                     random
                 );
+            var individuals = simIndividuals.Select(c => c.Individual).ToList();
             var sexes = individuals.Select(c => c.Gender).Distinct().ToList();
             var ages = individuals.Select(c => c.Age).Distinct().ToList();
-            var soilIngestions = FakeSoilIngestionsGenerator.Create(sexes, ages, seed);
-            var dustBodyExposureFractions = FakeDustBodyExposureFractionsGenerator.Create(sexes, ages, seed);
+            var airIndoorFractions = FakeAirIndoorFractionsGenerator.Create(ages, seed);
+            var airVentilatoryFlowRates = FakeAirVentilatoryFlowRatesGenerator.Create(sexes, ages, seed);
 
             var data = new ActionData() {
                 AllCompounds = substances,
                 ActiveSubstances = substances,
                 SelectedPopulation = selectedPopulation,
-                DustConcentrationDistributions = dustConcentrations,
-                DustIngestions = dustIngestions,
-                DustBodyExposureFractions = dustBodyExposureFractions,
-                DustAdherenceAmounts = dustAdherenceAmounts,
-                DustAvailabilityFractions = dustAvailabilityFractions,
-                DustConcentrationUnit = dustConcentrations.FirstOrDefault().Unit,
-                DustIngestionUnit = dustIngestions.FirstOrDefault().ExposureUnit,
-                Individuals = IndividualDaysGenerator.CreateSimulatedIndividualDays(individuals),
+                IndoorAirConcentrations = indoorAirConcentrations,
+                OutdoorAirConcentrations = outdoorAirConcentrations,
+                AirVentilatoryFlowRates = airVentilatoryFlowRates,
+                AirIndoorFractions = airIndoorFractions,
+                IndoorAirConcentrationUnit = indoorAirConcentrations.FirstOrDefault().Unit,
+                Individuals = IndividualDaysGenerator.CreateSimulatedIndividualDays(simIndividuals),
             };
 
-            var calculator = new DustExposuresActionCalculator(project);
-            TestRunUpdateSummarizeNominal(project, calculator, data, "TestDustExposures");
-            var result = calculator.Run(data, new CompositeProgressState());
+            var calculator = new AirExposuresActionCalculator(project);
+            TestRunUpdateSummarizeNominal(project, calculator, data, "TestAirExposures");
+            _ = calculator.Run(data, new CompositeProgressState());
 
-            var numberOfSimulatedDustIndividualDayExposures = numberOfIndividuals;
-
-            Assert.IsNotNull(data.IndividualDustExposures);
-            Assert.IsNotNull(data.DustExposureUnit);
-            Assert.AreEqual(numberOfIndividuals, data.IndividualDustExposures.Count);
+            Assert.IsNotNull(data.IndividualAirExposures);
+            Assert.IsNotNull(data.AirExposureUnit);
+            Assert.AreEqual(numberOfIndividuals, data.IndividualAirExposures.Count);
         }
 
         /// <summary>
-        /// Runs the DustExposures action: use individuals from dietary exposures
+        /// Runs the AirExposures action: use individuals from dietary exposures
         /// </summary>
         [TestMethod]
-        public void DustExposuresActionCalculator_TestDietary() {
+        public void AirExposuresActionCalculator_TestDietary() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var numberOfIndividuals = 10;
@@ -120,39 +116,37 @@ namespace MCRA.Simulation.Test.UnitTests.Actions.DustExposures {
             var foodsAsMeasured = FakeFoodsGenerator.Create(3);
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var dietaryIndividualDayIntakes = FakeDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);
+
+            var indoorAirConcentrations = FakeAirConcentrationDistributionsGenerator.CreateIndoor(substances, seed);
+            var outdoorAirConcentrations = FakeAirConcentrationDistributionsGenerator.CreateOutdoor(substances, seed);
             var sexes = individuals.Select(c => c.Gender).Distinct().ToList();
             var ages = individuals.Select(c => c.Age).Distinct().ToList();
-            var dustConcentrations = FakeDustConcentrationDistributionsGenerator.Create(substances, seed);
-            var dustIngestions = FakeDustIngestionsGenerator.Create(seed);
-            var dustBodyExposureFractions = FakeDustBodyExposureFractionsGenerator.Create(sexes, ages, seed);
-            var dustAdherenceAmounts = FakeDustAdherenceAmountsGenerator.Create(seed);
-            var dustAvailabilityFractions = FakeDustAvailabilityFractionsGenerator.Create(substances, seed);
+            var airIndoorFractions = FakeAirIndoorFractionsGenerator.Create(ages, seed);
+            var airVentilatoryFlowRates = FakeAirVentilatoryFlowRatesGenerator.Create(sexes, ages, seed);
 
             var project = new ProjectDto();
-            var config = project.DustExposuresSettings;
+            var config = project.AirExposuresSettings;
             config.SelectedExposureRoutes = [ExposureRoute.Dermal, ExposureRoute.Oral];
-            config.DustExposuresIndividualGenerationMethod = DustExposuresIndividualGenerationMethod.UseDietaryExposures;
+            config.AirExposuresIndividualGenerationMethod = AirExposuresIndividualGenerationMethod.UseDietaryExposures;
 
             var data = new ActionData() {
                 AllCompounds = substances,
                 ActiveSubstances = substances,
                 DietaryIndividualDayIntakes = dietaryIndividualDayIntakes,
-                DustConcentrationDistributions = dustConcentrations,
-                DustIngestions = dustIngestions,
-                DustBodyExposureFractions = dustBodyExposureFractions,
-                DustAdherenceAmounts = dustAdherenceAmounts,
-                DustAvailabilityFractions = dustAvailabilityFractions,
-                DustConcentrationUnit = dustConcentrations.FirstOrDefault().Unit,
-                DustIngestionUnit = dustIngestions.FirstOrDefault().ExposureUnit
+                IndoorAirConcentrations = indoorAirConcentrations,
+                OutdoorAirConcentrations = outdoorAirConcentrations,
+                AirIndoorFractions = airIndoorFractions,
+                AirVentilatoryFlowRates = airVentilatoryFlowRates,
+                IndoorAirConcentrationUnit = indoorAirConcentrations.FirstOrDefault().Unit,
             };
+                
+            var calculator = new AirExposuresActionCalculator(project);
+            TestRunUpdateSummarizeNominal(project, calculator, data, "TestAirExposures");
+            _ = calculator.Run(data, new CompositeProgressState());
 
-            var calculator = new DustExposuresActionCalculator(project);
-            TestRunUpdateSummarizeNominal(project, calculator, data, "TestDustExposures");
-            var result = calculator.Run(data, new CompositeProgressState());
-
-            Assert.IsNotNull(data.IndividualDustExposures);
-            Assert.IsNotNull(data.DustExposureUnit);
-            Assert.AreEqual(numberOfIndividuals, data.IndividualDustExposures.Count);
+            Assert.IsNotNull(data.IndividualAirExposures);
+            Assert.IsNotNull(data.AirExposureUnit);
+            Assert.AreEqual(numberOfIndividuals, data.IndividualAirExposures.Count);
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Action.Settings;
-using MCRA.Simulation.Actions.DustExposures;
+using MCRA.Simulation.Actions.SoilExposures;
 using MCRA.Simulation.Calculators.IndividualDaysGenerator;
 using MCRA.Simulation.Calculators.PopulationGeneration;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
@@ -9,18 +9,18 @@ using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace MCRA.Simulation.Test.UnitTests.Actions.DustExposures {
+namespace MCRA.Simulation.Test.UnitTests.Actions.SoilExposures {
     /// <summary>
-    /// Runs the DustExposures action
+    /// Runs the SoilExposures action
     /// </summary>
     [TestClass]
-    public class DustExposuresActionCalculatorTests : ActionCalculatorTestsBase {
+    public class ExposuresActionCalculatorTests : ActionCalculatorTestsBase {
 
         /// <summary>
-        /// Runs the DustExposures action: simulate individuals
+        /// Runs the SoilExposures action: simulate individuals
         /// </summary>
         [TestMethod]
-        public void DustExposuresActionCalculator_TestSimulate() {
+        public void SoilExposuresActionCalculator_TestSimulate() {
             var seed = 1;
             var numberOfIndividuals = 10;
             var random = new McraRandomGenerator(seed);
@@ -49,15 +49,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions.DustExposures {
 
             selectedPopulation.PopulationIndividualPropertyValues = populationIndividualPropertyValues;
 
-            var dustConcentrations = FakeDustConcentrationDistributionsGenerator.Create(substances, seed);
-            var dustIngestions = FakeDustIngestionsGenerator.Create(seed);
-            var dustAdherenceAmounts = FakeDustAdherenceAmountsGenerator.Create(seed);
-            var dustAvailabilityFractions = FakeDustAvailabilityFractionsGenerator.Create(substances, seed);
+            var soilConcentrations = FakeSoilConcentrationDistributionsGenerator.Create(substances, seed);
 
             var project = new ProjectDto();
-            var config = project.DustExposuresSettings;
-            config.SelectedExposureRoutes = [ExposureRoute.Dermal, ExposureRoute.Oral];
-            config.DustExposuresIndividualGenerationMethod = DustExposuresIndividualGenerationMethod.Simulate;
+            var config = project.SoilExposuresSettings;
+            config.SoilExposuresIndividualGenerationMethod = SoilExposuresIndividualGenerationMethod.Simulate;
             var individualPropertyValues = new Dictionary<string, PopulationIndividualPropertyValue>();
             var individualsGenerator = new IndividualsGenerator();
             var individuals = individualsGenerator
@@ -70,44 +66,37 @@ namespace MCRA.Simulation.Test.UnitTests.Actions.DustExposures {
             var sexes = individuals.Select(c => c.Gender).Distinct().ToList();
             var ages = individuals.Select(c => c.Age).Distinct().ToList();
             var soilIngestions = FakeSoilIngestionsGenerator.Create(sexes, ages, seed);
-            var dustBodyExposureFractions = FakeDustBodyExposureFractionsGenerator.Create(sexes, ages, seed);
 
             var data = new ActionData() {
                 AllCompounds = substances,
                 ActiveSubstances = substances,
                 SelectedPopulation = selectedPopulation,
-                DustConcentrationDistributions = dustConcentrations,
-                DustIngestions = dustIngestions,
-                DustBodyExposureFractions = dustBodyExposureFractions,
-                DustAdherenceAmounts = dustAdherenceAmounts,
-                DustAvailabilityFractions = dustAvailabilityFractions,
-                DustConcentrationUnit = dustConcentrations.FirstOrDefault().Unit,
-                DustIngestionUnit = dustIngestions.FirstOrDefault().ExposureUnit,
+                SoilConcentrationDistributions = soilConcentrations,
+                SoilIngestions = soilIngestions,
+                SoilConcentrationUnit = soilConcentrations.FirstOrDefault().Unit,
+                SoilIngestionUnit = soilIngestions.FirstOrDefault().ExposureUnit,
                 Individuals = IndividualDaysGenerator.CreateSimulatedIndividualDays(individuals),
             };
 
-            var calculator = new DustExposuresActionCalculator(project);
-            TestRunUpdateSummarizeNominal(project, calculator, data, "TestDustExposures");
-            var result = calculator.Run(data, new CompositeProgressState());
+            var calculator = new SoilExposuresActionCalculator(project);
+            TestRunUpdateSummarizeNominal(project, calculator, data, "TestSoilExposures1");
+            _ = calculator.Run(data, new CompositeProgressState());
 
-            var numberOfSimulatedDustIndividualDayExposures = numberOfIndividuals;
-
-            Assert.IsNotNull(data.IndividualDustExposures);
-            Assert.IsNotNull(data.DustExposureUnit);
-            Assert.AreEqual(numberOfIndividuals, data.IndividualDustExposures.Count);
+            Assert.IsNotNull(data.IndividualSoilExposures);
+            Assert.IsNotNull(data.SoilExposureUnit);
+            Assert.AreEqual(numberOfIndividuals, data.IndividualSoilExposures.Count);
         }
 
         /// <summary>
-        /// Runs the DustExposures action: use individuals from dietary exposures
+        /// Runs the SoilExposures action: use individuals from dietary exposures
         /// </summary>
         [TestMethod]
-        public void DustExposuresActionCalculator_TestDietary() {
+        public void SoilExposuresActionCalculator_TestDietary() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var numberOfIndividuals = 10;
 
             var substances = FakeSubstancesGenerator.Create(1);
-
             var properties = FakeIndividualPropertiesGenerator.Create();
             properties.Add(FakeIndividualPropertiesGenerator.CreateFake(
                 "BSA",
@@ -120,39 +109,31 @@ namespace MCRA.Simulation.Test.UnitTests.Actions.DustExposures {
             var foodsAsMeasured = FakeFoodsGenerator.Create(3);
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var dietaryIndividualDayIntakes = FakeDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);
-            var sexes = individuals.Select(c => c.Gender).Distinct().ToList();
-            var ages = individuals.Select(c => c.Age).Distinct().ToList();
-            var dustConcentrations = FakeDustConcentrationDistributionsGenerator.Create(substances, seed);
-            var dustIngestions = FakeDustIngestionsGenerator.Create(seed);
-            var dustBodyExposureFractions = FakeDustBodyExposureFractionsGenerator.Create(sexes, ages, seed);
-            var dustAdherenceAmounts = FakeDustAdherenceAmountsGenerator.Create(seed);
-            var dustAvailabilityFractions = FakeDustAvailabilityFractionsGenerator.Create(substances, seed);
+            var soilConcentrations = FakeSoilConcentrationDistributionsGenerator.Create(substances, seed);
 
             var project = new ProjectDto();
-            var config = project.DustExposuresSettings;
-            config.SelectedExposureRoutes = [ExposureRoute.Dermal, ExposureRoute.Oral];
-            config.DustExposuresIndividualGenerationMethod = DustExposuresIndividualGenerationMethod.UseDietaryExposures;
-
+            var config = project.SoilExposuresSettings;
+            config.SoilExposuresIndividualGenerationMethod = SoilExposuresIndividualGenerationMethod.UseDietaryExposures;
+            var sexes = individuals.Select(c => c.Gender).Distinct().ToList();
+            var ages = individuals.Select(c => c.Age).Distinct().ToList();
+            var soilIngestions = FakeSoilIngestionsGenerator.Create(sexes, ages, seed);
             var data = new ActionData() {
                 AllCompounds = substances,
                 ActiveSubstances = substances,
                 DietaryIndividualDayIntakes = dietaryIndividualDayIntakes,
-                DustConcentrationDistributions = dustConcentrations,
-                DustIngestions = dustIngestions,
-                DustBodyExposureFractions = dustBodyExposureFractions,
-                DustAdherenceAmounts = dustAdherenceAmounts,
-                DustAvailabilityFractions = dustAvailabilityFractions,
-                DustConcentrationUnit = dustConcentrations.FirstOrDefault().Unit,
-                DustIngestionUnit = dustIngestions.FirstOrDefault().ExposureUnit
+                SoilConcentrationDistributions = soilConcentrations,
+                SoilIngestions = soilIngestions,
+                SoilConcentrationUnit = soilConcentrations.FirstOrDefault().Unit,
+                SoilIngestionUnit = soilIngestions.FirstOrDefault().ExposureUnit
             };
 
-            var calculator = new DustExposuresActionCalculator(project);
-            TestRunUpdateSummarizeNominal(project, calculator, data, "TestDustExposures");
-            var result = calculator.Run(data, new CompositeProgressState());
+            var calculator = new SoilExposuresActionCalculator(project);
+            TestRunUpdateSummarizeNominal(project, calculator, data, "TestSoilExposures2");
+            _ = calculator.Run(data, new CompositeProgressState());
 
-            Assert.IsNotNull(data.IndividualDustExposures);
-            Assert.IsNotNull(data.DustExposureUnit);
-            Assert.AreEqual(numberOfIndividuals, data.IndividualDustExposures.Count);
+            Assert.IsNotNull(data.IndividualSoilExposures);
+            Assert.IsNotNull(data.SoilExposureUnit);
+            Assert.AreEqual(numberOfIndividuals, data.IndividualSoilExposures.Count);
         }
     }
 }

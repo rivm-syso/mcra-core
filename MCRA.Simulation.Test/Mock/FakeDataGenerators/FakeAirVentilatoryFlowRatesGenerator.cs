@@ -5,34 +5,34 @@ using MCRA.Utils.Statistics;
 namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
 
     /// <summary>
-    /// Class for generating fake dust body exposure fractions.
+    /// Class for generating fake air ventilatory flow rates.
     /// </summary>
-    public static class FakeDustBodyExposureFractionsGenerator {
+    public static class FakeAirVentilatoryFlowRatesGenerator {
 
         /// <summary>
-        /// Generates fake dust body exposure fractions.
+        /// Generates fake air ventilatory flow rates.
         /// </summary>
-        public static List<DustBodyExposureFraction> Create(
+        public static List<AirVentilatoryFlowRate> Create(
             List<GenderType> sexes,
             List<double?> ages,
             int seed = 1
         ) {
             var random = new McraRandomGenerator(seed);
-            var dustBodyExposureFractions = new List<DustBodyExposureFraction>();
+            var airVentilatoryFlowRates = new List<AirVentilatoryFlowRate>();
+            var value = random.NextDouble(0.85, 0.99);
             var i = 0;
             foreach (var sex in sexes) {
                 foreach (var age in ages) {
-                    var value = random.NextDouble(0.6, 0.7);
-                    dustBodyExposureFractions.Add(new DustBodyExposureFraction() {
+                    airVentilatoryFlowRates.Add(new AirVentilatoryFlowRate() {
                         idSubgroup = i.ToString(),
-                        Sex = sex,
                         AgeLower = age,
+                        Sex = sex,
                         Value = value
                     });
                     i++;
                 }
             }
-            return dustBodyExposureFractions;
+            return airVentilatoryFlowRates;
         }
     }
 }
