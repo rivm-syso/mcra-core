@@ -66,6 +66,27 @@ namespace MCRA.Utils.DataFileReading {
         }
 
         /// <summary>
+        /// Write the data to a worksheet
+        /// </summary>
+        /// <param name="table"></param>
+        /// <param name="destinationTableName"></param>
+        /// <param name="headerNames"></param>
+        public void Write(
+            DataTable table,
+            string destinationTableName,
+            string[] headerNames
+        ) {
+            Open();
+            WriteSpreadsheetTable(
+                _spreadsheetDocument,
+                _sheetIndex++,
+                destinationTableName,
+                table,
+                headerNames
+            );
+        }
+
+        /// <summary>
         /// Writes the source table to the destination table.
         /// </summary>
         /// <param name="sourceTableReader"></param>
@@ -218,15 +239,19 @@ namespace MCRA.Utils.DataFileReading {
         /// <param name="workbook"></param>
         /// <param name="sheetId"></param>
         /// <param name="sheetName"></param>
-        /// <param name="table"></param>
+        /// <param name="table">Data table with contents to write to excel</param>
+        /// <param name="headerNames">Use the names in this collection instead of data table column names for the headers</param>
         /// <exception cref="Exception"></exception>
-        public static void WriteSpreadsheetTable(SpreadsheetDocument workbook, uint sheetId, string sheetName, DataTable table) {
+        public static void WriteSpreadsheetTable(
+            SpreadsheetDocument workbook,
+            uint sheetId,
+            string sheetName,
+            DataTable table,
+            string[] headerNames = null
+        ) {
             try {
                 // Get column names from data table
-                var colNames = new List<string>();
-                foreach (DataColumn column in table.Columns) {
-                    colNames.Add(column.ColumnName);
-                }
+                var colNames = headerNames ?? [.. table.Columns.Cast<DataColumn>().Select(d => d.ColumnName)];
 
                 // Try to find existing worksheet with the name sheetName
                 var sheet = workbook.WorkbookPart.Workbook
@@ -288,34 +313,34 @@ namespace MCRA.Utils.DataFileReading {
                 // Fill or append table data to sheet
                 foreach (DataRow dsrow in table.Rows) {
                     var row = new Row();
-                    foreach (var col in colNames) {
-                        if (dsrow.IsNull(col)) {
+                    for (int colIdx = 0; colIdx < colNames.Length; colIdx++) {
+                        if (dsrow.IsNull(colIdx)) {
                             row.AppendChild(new Cell());
                             continue;
                         }
 
-                        var colDef = table.Columns[col];
+                        var colDef = table.Columns[colIdx];
                         var xlDataType = CellValues.String;
                         var styleIndex = 0U;
                         CellValue xlDataValue = null;
                         if (colDef.DataType.IsSubclassOf(typeof(Enum))) {
-                            xlDataValue = new CellValue(string.Format(CultureInfo.InvariantCulture, "{0}", ((Enum)dsrow[col]).GetDisplayName()));
+                            xlDataValue = new CellValue(string.Format(CultureInfo.InvariantCulture, "{0}", ((Enum)dsrow[colIdx]).GetDisplayName()));
                         } else if (colDef.DataType.IsNumeric()) {
                             //convert to double, check for NaN or Infinity
                             xlDataType = CellValues.Number;
-                            var doubleVal = Convert.ToDouble(dsrow[col]);
+                            var doubleVal = Convert.ToDouble(dsrow[colIdx]);
                             if (!double.IsNaN(doubleVal) && !double.IsInfinity(doubleVal)) {
                                 xlDataValue = new CellValue(doubleVal);
                             }
                         } else if (colDef.DataType == typeof(bool)) {
                             xlDataType = CellValues.Number;
-                            xlDataValue = new CellValue(Convert.ToBoolean(dsrow[col]) ? 1 : 0);
+                            xlDataValue = new CellValue(Convert.ToBoolean(dsrow[colIdx]) ? 1 : 0);
                         } else if (colDef.DataType == typeof(DateTime)) {
                             xlDataType = CellValues.Number;
-                            xlDataValue = new CellValue(Convert.ToDateTime(dsrow[col]).ToOADate());
+                            xlDataValue = new CellValue(Convert.ToDateTime(dsrow[colIdx]).ToOADate());
                             styleIndex = 2U;
                         } else {
-                            xlDataValue = new CellValue(dsrow[col].ToString());
+                            xlDataValue = new CellValue(dsrow[colIdx].ToString());
                         }
 
                         var cell = new Cell {

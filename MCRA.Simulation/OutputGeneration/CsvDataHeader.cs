@@ -1,7 +1,7 @@
-﻿using MCRA.Simulation.OutputManagement;
-using MCRA.Utils.DataFileReading;
-using System.Data;
+﻿using System.Data;
 using System.Xml.Serialization;
+using MCRA.Simulation.OutputManagement;
+using MCRA.Utils.DataFileReading;
 
 namespace MCRA.Simulation.OutputGeneration {
 
@@ -118,7 +118,7 @@ namespace MCRA.Simulation.OutputGeneration {
             string inputCsvFile = null,
             string workDir = null
         ) {
-            if(string.IsNullOrEmpty(workDir) || !Directory.Exists(workDir)) {
+            if (string.IsNullOrEmpty(workDir) || !Directory.Exists(workDir)) {
                 workDir = Path.GetTempPath();
             }
             var csvInputExists = !string.IsNullOrEmpty(inputCsvFile) && File.Exists(inputCsvFile);
@@ -126,7 +126,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 ? inputCsvFile
                 : Path.Combine(workDir, $"mcra-{Guid.NewGuid():N}.csv");
 
-            if(!csvInputExists) {
+            if (!csvInputExists) {
                 //write the data to CSV
                 sectionManager.WriteCsvDataToFile(SectionId, csvFileName);
             }
@@ -146,21 +146,31 @@ namespace MCRA.Simulation.OutputGeneration {
 
             var columnTypes = GetTypes();
             using var fs = File.OpenRead(csvFileName);
-            using var rdr = new CsvDataReader(fs, fieldTypes: columnTypes);
+            using var rdr = new CsvDataReader(
+                fs,
+                fieldTypes: columnTypes,
+                allowDuplicateHeaders: true
+            );
             var colNames = rdr.GetColumnNames();
 
-            //max excel tablename length
+            //create a data table and add the columns
+            //Note: columns from data reader can contain duplicates
             var table = new DataTable(tableName);
-            foreach (var (colName, colType) in rdr.GetColumnNames().Zip(columnTypes)) {
-                var column = new DataColumn(colName, colType);
+            foreach (var (colName, colType) in colNames.Zip(columnTypes)) {
+                var i = 0;
+                var dataTableColumnName = colName;
+                while (table.Columns.Contains(dataTableColumnName)) {
+                    dataTableColumnName = $"{colName}{i++}";
+                }
+                var column = new DataColumn(dataTableColumnName, colType);
                 table.Columns.Add(column);
             }
             table.Load(rdr);
             using (var xlWriter = new SpreadsheetDataSourceWriter(fileName)) {
-                xlWriter.Write(table, tableName);
+                xlWriter.Write(table, tableName, [.. colNames]);
             }
             //delete original csv file if it was created temporarily
-            if(!csvInputExists){
+            if (!csvInputExists) {
                 File.Delete(csvFileName);
             }
         }
