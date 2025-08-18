@@ -58,7 +58,7 @@ namespace MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders {
                 Section.DataSections.Add(dataSection);
                 sectionGuid = dataSection.SectionGuid;
                 //Write the CSV to the temp file
-                var csvWriter = new CsvWriter();
+                var csvWriter = CsvOutputWriterFactory.Create();
                 csvWriter.WriteToCsvFile(items, dataSection.CsvFileName, ShowHeader, createHeaderFormatter(), visibleProperties);
             }
 

@@ -69,6 +69,12 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
                     outDirName += $"-r{options.RandomSeed}";
                 }
 
+                // If an override is given for the amount of significant digits to print
+                // for numerical values (e.g. use 5 for regression test output for easy file diffs)
+                if(options.SignificantDigits > 0) {
+                    CsvOutputWriterFactory.DefaultOptions.SignificantDigits = options.SignificantDigits;
+                }
+
                 // Get output folder
                 var outputBaseFolder = !string.IsNullOrEmpty(options.OutputPath)
                     ? options.OutputPath

@@ -5,7 +5,7 @@
         /// Set the amount of significant digits the CSV writer will use to write
         /// double values to the CSV file output, '0' means same as input, not rounded
         /// </summary>
-        public int SignificantDigits { get; set; } = 5;
+        public int SignificantDigits { get; set; } = 0;
 
         /// <summary>
         /// If true, write enums using the display names when available.

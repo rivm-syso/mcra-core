@@ -32,5 +32,8 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
         [Option('t', "filetype", Default = "csv", HelpText = "Output data file type (csv or excel)")]
         public string FileType { get; set; } = "csv";
 
+        [Option('d', "digits", Default = 0, HelpText = "Significant digits for numerical values printed in output files (default 0=all)")]
+        public int SignificantDigits { get; set; } = 0;
+
     }
 }
