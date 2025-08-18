@@ -129,12 +129,10 @@ namespace MCRA.Simulation.Calculators.SingleValueDietaryExposuresCalculation {
                     var iestiSpecialCase = _iestiSpecialCases?.FirstOrDefault(r => r.Food == baseFood && r.Substance == substance);
 
                     // IESTI Case
-                    // if either unit weight of RAC or EP is null, use the other value (if it exists)
-                    // TODO: Determine whether to use RAC and/or EP for calculation of IESTI using correct IESTI case
                     var iestiCase = getIESTICase(
                         largePortion,
-                        unitWeightRac ?? unitWeightEp,
-                        unitWeightEp ?? unitWeightRac,
+                        unitWeightRac,
+                        unitWeightEp,
                         isBulkingBlending
                     );
                     iestiCase = getIESTISpecialCase(iestiCase, iestiSpecialCase);
