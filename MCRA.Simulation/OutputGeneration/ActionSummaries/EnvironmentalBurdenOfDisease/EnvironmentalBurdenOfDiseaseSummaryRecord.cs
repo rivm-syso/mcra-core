@@ -57,23 +57,23 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:G4}")]
         public double UpperTotalAttributableBod { get { return TotalAttributableBods.Percentile(UncertaintyUpperBound); } }
 
-        [Description("Standardised total attributable burden of disease for the whole population (AttrBoD / Population size * 100.000) .")]
-        [DisplayName("Standardised total attributable BoD per 100.000")]
+        [Description("Standardised total EBD per 100,000 for the whole population (AttrBoD / Population size * 100,000) .")]
+        [DisplayName("EBD per 100,000")]
         [DisplayFormat(DataFormatString = "{0:G4}")]
         public double StandardisedTotalAttributableBod { get { return TotalAttributableBod / PopulationSize * 1e5; } }
 
-        [Description("Median standardised total attributable burden of disease for the whole population.")]
-        [DisplayName("Standardised total attributable BoD median")]
+        [Description("Median EBD per 100,000 for the whole population.")]
+        [DisplayName("EBD per 100,000 median")]
         [DisplayFormat(DataFormatString = "{0:G4}")]
         public double MedianStandardisedTotalAttributableBod { get { return MedianTotalAttributableBod / PopulationSize * 1e5; } }
 
-        [Description("Lower uncertainty bound standardised total attributable burden of disease for the whole population.")]
-        [DisplayName("Standardised total attributable BoD lower bound (LowerBound)")]
+        [Description("Lower uncertainty bound EBD per 100,000 for the whole population.")]
+        [DisplayName("EBD per 100,000 lower bound (LowerBound)")]
         [DisplayFormat(DataFormatString = "{0:G4}")]
         public double LowerStandardisedTotalAttributableBod { get { return LowerTotalAttributableBod / PopulationSize * 1e5; } }
 
-        [Description("Upper uncertainty bound standardised total attributable burden of disease for the whole population.")]
-        [DisplayName("Standardised total attributable BoD upper bound (UpperBound)")]
+        [Description("Upper uncertainty bound EBD per 100,000 for the whole population.")]
+        [DisplayName("EBD per 100,000 upper bound (UpperBound)")]
         [DisplayFormat(DataFormatString = "{0:G4}")]
         public double UpperStandardisedTotalAttributableBod { get { return UpperTotalAttributableBod / PopulationSize * 1e5; } }
     }
