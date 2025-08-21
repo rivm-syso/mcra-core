@@ -49,6 +49,9 @@ namespace MCRA.Simulation.TaskExecution.TaskExecuters {
 
                 localProgress.Update("Creating combined output calculator", 5);
 
+                //deserialize main task settings as input for the calculator factory
+                var projectSettings = ProjectSettingsSerializer.ImportFromXmlString(task.SettingsXml, task.DataSourceConfiguration, false, out _);
+
                 // Collect one or more different action results, for each output
                 var collectedComparisons = new Dictionary<ActionType, Dictionary<IOutput, IActionComparisonData>>();
 
@@ -64,26 +67,25 @@ namespace MCRA.Simulation.TaskExecution.TaskExecuters {
                         }
 
                         var actionType = compiledDataManager.Key.Value;
-                        var calculator = ActionCalculatorProvider.Create(actionType);
+                        var calculator = ActionCalculatorProvider.Create(actionType, projectSettings, false);
                         var comparisonData = calculator.LoadActionComparisonData(
                                 compiledDataManager.Value,
                                 subTaskOutput.id.ToString(),
                                 subTaskOutput.Description
                             );
                         if (comparisonData != null) {
-                            if (!collectedComparisons.ContainsKey(actionType)) {
-                                collectedComparisons.Add(actionType, []);
+                            if (!collectedComparisons.TryGetValue(actionType, out var collectedResults)) {
+                                collectedResults = [];
+                                collectedComparisons.Add(actionType, collectedResults);
                             }
 
-                            var collectedResults = collectedComparisons[actionType];
                             collectedResults.Add(subTaskOutput, comparisonData);
                         }
                     }
                 }
 
                 // Only create output if there are results
-                if (collectedComparisons.Any()) {
-
+                if (collectedComparisons.Count != 0) {
                     // Create output
                     var output = _outputManager.CreateOutput(task.id);
                     var reportSectionManager = _outputManager.CreateSectionManager(output);
@@ -93,7 +95,6 @@ namespace MCRA.Simulation.TaskExecution.TaskExecuters {
                     var summaryToc = new SummaryToc(reportSectionManager);
 
                     // Sort comparisons according to the module mappings, main module first
-                    var projectSettings = ProjectSettingsSerializer.ImportFromXmlString(task.SettingsXml, task.DataSourceConfiguration, false, out _);
                     var moduleMappings = ActionMappingFactory.Create(projectSettings, task.ActionType).GetModuleMappings();
                     var sortedComparisons = collectedComparisons.OrderByDescending(kv => {
                         var moduleMapping = moduleMappings.FirstOrDefault(m => m.ActionType == kv.Key);
