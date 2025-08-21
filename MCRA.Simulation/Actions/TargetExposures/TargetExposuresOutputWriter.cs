@@ -75,7 +75,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         Name = config.Name,
                         Description = config.Description,
                         TargetUnit = data.TargetExposureUnit,
-                        Substance = data.ReferenceSubstance,
+                        Substance = data.ActiveSubstances.Count == 1 ? data.ActiveSubstances.First() : data.ReferenceSubstance,
                         SamplingWeights = individualExposures.Select(c => c.SimulatedIndividual.SamplingWeight).ToList()
                     };
                     if (data.ActiveSubstances.Count > 1) {
@@ -123,7 +123,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         Name = config.Name,
                         Description = config.Description,
                         TargetUnit = data.TargetExposureUnit,
-                        Substance = data.ReferenceSubstance,
+                        Substance = data.ActiveSubstances.Count == 1 ? data.ActiveSubstances.First() : data.ReferenceSubstance,
                         Intakes = intakes,
                         SamplingWeights = weights
                     };
