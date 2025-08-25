@@ -145,6 +145,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 writeSoilConcentrationDistributionsToCsv(folderName, data.AllSoilConcentrationDistributions);
                 writeSoilIngestionsToCsv(folderName, data.AllSoilIngestions);
                 writeBurdensOfDiseaseDataToCsv(folderName, data.AllBurdensOfDisease);
+                writeBodIndicatorConversionDataToCsv(folderName, data.AllBodIndicatorConversions);
                 writeOutdoorAirConcentrationsToCsv(folderName, data.AllOutdoorAirConcentrations);
                 writeIndoorAirConcentrationsToCsv(folderName, data.AllIndoorAirConcentrations);
                 writeAirVentilatoryFlowRatesToCsv(folderName, data.AllAirVentilatoryFlowRates);

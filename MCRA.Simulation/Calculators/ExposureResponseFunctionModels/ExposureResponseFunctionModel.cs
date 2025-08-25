@@ -11,19 +11,13 @@ namespace MCRA.Simulation.Calculators.ExposureResponseFunctions {
         Upper
     }
 
-    public class ExposureResponseFunctionModel : IExposureResponseFunctionModel {
+    public class ExposureResponseFunctionModel(ExposureResponseFunction exposureResponseFunction) : IExposureResponseFunctionModel {
 
         private double _draw;
-        public bool IsNominal { get; private set; }
+        private bool _useErfBins;
+        public bool IsNominal { get; private set; } = true;
 
-        public ExposureResponseFunction ExposureResponseFunction { get; set; }
-
-        public ExposureResponseFunctionModel(
-            ExposureResponseFunction exposureResponseFunction
-        ) {
-            IsNominal = true;
-            ExposureResponseFunction = exposureResponseFunction;
-        }
+        public ExposureResponseFunction ExposureResponseFunction { get; set; } = exposureResponseFunction;
 
         public virtual void ResampleModelParameters(IRandom random) {
             var rnd = new McraRandomGenerator(random.Next());
@@ -31,7 +25,8 @@ namespace MCRA.Simulation.Calculators.ExposureResponseFunctions {
             IsNominal = false;
         }
 
-        public double Compute(double x) {
+        public double Compute(double x, bool useErfBins) {
+            _useErfBins = useErfBins;
             if (IsNominal) {
                 return compute(x, FunctionLevel.Nominal);
             } else {
@@ -55,7 +50,7 @@ namespace MCRA.Simulation.Calculators.ExposureResponseFunctions {
             }
 
             Expression erfSpecification;
-            if (erf.HasErfSubGroups) {
+            if (erf.HasErfSubGroups && _useErfBins) {
                 var erfSubGroups = erf.ErfSubgroups
                     .OrderBy(r => r.ExposureUpper ?? double.PositiveInfinity)
                     .ToList();
@@ -88,7 +83,10 @@ namespace MCRA.Simulation.Calculators.ExposureResponseFunctions {
             }
         }
 
-        private static Expression getErfSpecification(FunctionLevel functionLevel, ExposureResponseFunction erf) {
+        private static Expression getErfSpecification(
+            FunctionLevel functionLevel,
+            ExposureResponseFunction erf
+        ) {
             Expression erfSpecification;
             switch (functionLevel) {
                 case FunctionLevel.Lower:
@@ -109,7 +107,11 @@ namespace MCRA.Simulation.Calculators.ExposureResponseFunctions {
             return erfSpecification;
         }
 
-        private static Expression getSubgroupErfSpecification(FunctionLevel functionLevel, List<ErfSubgroup> erfSubGroups, int i) {
+        private static Expression getSubgroupErfSpecification(
+            FunctionLevel functionLevel,
+            List<ErfSubgroup> erfSubGroups,
+            int i
+        ) {
             Expression erfSpecification;
             switch (functionLevel) {
                 case FunctionLevel.Lower:

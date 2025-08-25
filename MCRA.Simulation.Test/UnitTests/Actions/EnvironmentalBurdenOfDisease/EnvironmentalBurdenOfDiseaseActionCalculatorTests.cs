@@ -20,6 +20,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var config = project.EnvironmentalBurdenOfDiseaseSettings;
             config.TargetDoseLevelType = TargetLevelType.Internal;
             config.ExposureCalculationMethod = ExposureCalculationMethod.MonitoringConcentration;
+            config.BodIndicators = [BodIndicator.DALY];
 
             var data = fakeActionData(random);
 
@@ -39,6 +40,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var config = project.EnvironmentalBurdenOfDiseaseSettings;
             config.TargetDoseLevelType = TargetLevelType.Internal;
             config.ExposureCalculationMethod = ExposureCalculationMethod.MonitoringConcentration;
+            config.BodIndicators = [BodIndicator.DALY];
 
             var data = fakeActionData(random);
             var calculator = new EnvironmentalBurdenOfDiseaseActionCalculator(project);

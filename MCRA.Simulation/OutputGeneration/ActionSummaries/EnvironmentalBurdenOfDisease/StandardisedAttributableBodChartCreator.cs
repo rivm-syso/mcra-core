@@ -10,7 +10,7 @@ namespace MCRA.Simulation.OutputGeneration {
         ) : base(records, sectionId) {
         }
 
-        public override string Title => "Standardised attributable burden &amp; cumulative percentage.";
+        public override string Title => "EBD per 100,000 &amp; cumulative percentage.";
 
         public override string ChartId {
             get {
@@ -20,21 +20,19 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         public override PlotModel Create() => create(
-            bars: _records
+            bars: [.. _records
                 .Select(c => (
                     Value: c.StandardisedAttributableBod,
                     Lower: c.LowerStandardisedAttributableBod,
                     Upper: c.UpperStandardisedAttributableBod
-                ))
-                .ToList(),
-            cumulative: _records
+                ))],
+            cumulative: [.. _records
                 .Select(c => (
                     Value: c.CumulativeAttributableBod,
                     Lower: c.LowerCumulativeAttributableBod,
                     Upper: c.UpperCumulativeAttributableBod
-                ))
-                .ToList(),
-            labels: _records.Select(c => c.ExposureBin).ToList(),
+                ))],
+            labels: [.. _records.Select(c => c.ExposureBin)],
             unit: _unit,
             leftYAxisTitle: $"Attributable Burden ({_bodIndicator} per 100k)",
             uncertainty: _records.SelectMany(c => c.AttributableBods).Any()

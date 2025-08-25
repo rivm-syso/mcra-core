@@ -25,10 +25,41 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Population name")]
         public string PopulationName { get; set; }
 
+        [Description("The code of the substance.")]
+        [DisplayName("Substance code")]
+        public string SubstanceCode { get; set; }
+
+        [Description("The name of the substance.")]
+        [DisplayName("Substance name")]
+        public string SubstanceName { get; set; }
+
+        [Description("The code of the effect.")]
+        [DisplayName("Effect code")]
+        public string EffectCode { get; set; }
+
+        [Description("The name of the effect.")]
+        [DisplayName("Effect name")]
+        public string EffectName { get; set; }
+
         [Description("Burden of disease indicator.")]
         [DisplayName("Bod indicator")]
         [Display(AutoGenerateField = false)]
         public string BodIndicator { get; set; }
+
+        [Description("Intermediate/source indicators from which this BoD was derived (using BoD indicator conversions).")]
+        [DisplayName("Source indicator(s)")]
+        public string SourceIndicators {
+            get {
+                if (SourceIndicatorList?.Count > 0) {
+                    return string.Join(", ", SourceIndicatorList);
+                } else {
+                    return string.Empty;
+                }
+            }
+        }
+
+        [Display(AutoGenerateField = false)]
+        public List<string> SourceIndicatorList { get; set; }
 
         [Description("The code of the exposure response function.")]
         [DisplayName("ERF Code")]
@@ -69,6 +100,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         [Description("Lower uncertainty bound exposure.")]
         [DisplayName("Exposure lower bound (LowerBound)")]
+        [DisplayFormat(DataFormatString = "{0:G3}")]
         public double LowerBoundExposure { get { return Exposures.Percentile(UncertaintyLowerBound); } }
 
         [Description("Upper uncertainty bound exposure.")]
@@ -173,17 +205,17 @@ namespace MCRA.Simulation.OutputGeneration {
         public double StandardisedAttributableBod { get { return AttributableBod / PopulationSize * 1e5; } }
 
         [Description("Median standardised burden of disease attributable to part of population identified by exposure bin per 100.000 ({BodIndicator}).")]
-        [DisplayName("Standardised attributable BoD median ({BodIndicator})")]
+        [DisplayName("EBD per 100,000 median ({BodIndicator})")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double MedianStandardisedAttributableBod { get { return AttributableBods.Count != 0 ? AttributableBods.Percentile(50) / PopulationSize * 1e5 : double.NaN; } }
 
         [Description("Lower uncertainty bound standardised burden of disease attributable to part of population per 100.000 ({BodIndicator}).")]
-        [DisplayName("Standardised attributable BoD lower bound (LowerBound) ({BodIndicator})")]
+        [DisplayName("EBD per 100,000lower bound (LowerBound) ({BodIndicator})")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double LowerStandardisedAttributableBod { get { return AttributableBods.Percentile(UncertaintyLowerBound) / PopulationSize * 1e5; } }
 
         [Description("Upper uncertainty bound standardised burden of disease attributable to part of population per 100.000 ({BodIndicator}).")]
-        [DisplayName("Standardised attributable BoD upper bound (UpperBound) ({BodIndicator})")]
+        [DisplayName("EBD per 100,000 upper bound (UpperBound) ({BodIndicator})")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double UpperStandardisedAttributableBod { get { return AttributableBods.Percentile(UncertaintyUpperBound) / PopulationSize * 1e5; } }
 
@@ -233,5 +265,21 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:F1}")]
         public double UpperCumulativeStandardisedExposedAttributableBod { get { return CumulativeStandardisedExposedAttributableBods.Percentile(UncertaintyUpperBound); } }
 
+        public string GetGroupKey() {
+            if (SourceIndicatorList?.Count > 0) {
+                var sourceKey = string.Join("_", SourceIndicatorList);
+                return $"{PopulationCode}_{BodIndicator}_{sourceKey}_{ErfCode}";
+            } else {
+                return $"{PopulationCode}_{BodIndicator}_{ErfCode}";
+            }
+        }
+
+        public string GetGroupDisplayName() {
+            if (SourceIndicatorList?.Count > 0) {
+                return $"{EffectName} {SubstanceName} {PopulationName} ({BodIndicator} from {SourceIndicators})";
+            } else {
+                return $"{EffectName} {SubstanceName} {PopulationName} ({BodIndicator})";
+            }
+        }
     }
 }

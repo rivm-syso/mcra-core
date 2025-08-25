@@ -1893,6 +1893,13 @@
     </ParentScopeReferences>
   </ScopingTypeDefinition>
   <ScopingTypeDefinition>
+    <Id>BodIndicatorConversions</Id>
+    <Name>Bod indicator conversions</Name>
+    <RawTableId>BodIndicatorConversions</RawTableId>
+    <Description>-</Description>
+    <TableGroup>BurdensOfDisease</TableGroup>
+  </ScopingTypeDefinition>
+  <ScopingTypeDefinition>
     <Id>IndoorAirConcentrations</Id>
     <Name>Indoor air concentrations</Name>
     <RawTableId>IndoorAirConcentrations</RawTableId>

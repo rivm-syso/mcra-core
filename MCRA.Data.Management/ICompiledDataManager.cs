@@ -91,6 +91,7 @@ namespace MCRA.Data.Management {
         IList<SoilConcentrationDistribution> GetAllSoilConcentrationDistributions();
         IList<SoilIngestion> GetAllSoilIngestions();
         IList<BurdenOfDisease> GetAllBurdensOfDisease();
+        IList<BodIndicatorConversion> GetAllBodIndicatorConversions();
         IDictionary<string, ConsumerProduct> GetAllConsumerProducts();
         IDictionary<string, ConsumerProductSurvey> GetAllConsumerProductSurveys();
         IDictionary<string, Individual> GetAllConsumerProductIndividuals();

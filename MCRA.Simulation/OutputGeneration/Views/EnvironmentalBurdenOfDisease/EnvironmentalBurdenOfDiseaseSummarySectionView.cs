@@ -9,7 +9,6 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (Model.Records.All(c => double.IsInfinity(c.StandardisedTotalAttributableBod))) {
                 hiddenProperties.Add("StandardisedTotalAttributableBod");
             }
-
             var isUncertainty = Model.Records.FirstOrDefault()?.TotalAttributableBods.Any() ?? false;
             if (isUncertainty) {
                 hiddenProperties.Add("TotalAttributableBod");
@@ -32,15 +31,15 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             }
 
             sb.AppendTable(
-            Model,
-            Model.Records,
-            "EnvironmentalBurdenOfDiseaseSummaryTable",
-            ViewBag,
-            caption: "Environmental burden of disease summary table.",
-            saveCsv: true,
-            sortable: false,
-            hiddenProperties: hiddenProperties
-        );
+                Model,
+                Model.Records,
+                "EnvironmentalBurdenOfDiseaseSummaryTable",
+                ViewBag,
+                caption: "Environmental burden of disease summary table.",
+                saveCsv: true,
+                sortable: false,
+                hiddenProperties: hiddenProperties
+            );
         }
     }
 }

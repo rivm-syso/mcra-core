@@ -11,17 +11,14 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<BurdensOfDiseaseSummaryRecord> Records { get; set; }
 
         public void Summarize(List<BurdenOfDisease> burdensOfDisease) {
-            Records = burdensOfDisease
-                .Select(r => {
-                    var record = new BurdensOfDiseaseSummaryRecord {
-                        Population = r.Population.Code,
-                        Effect = r.Effect.Name,
-                        BodIndicator = r.BodIndicator.GetDisplayName(),
-                        Value = r.Value
-                    };
-                    return record;
-                })
-                .ToList();
+            Records = [.. burdensOfDisease
+                .Select(r => new BurdensOfDiseaseSummaryRecord {
+                    Population = r.Population.Code,
+                    Effect = r.Effect.Name,
+                    BodIndicator = r.BodIndicator.GetDisplayName(),
+                    Value = r.Value
+                }
+            )];
         }
     }
 }

@@ -6,7 +6,7 @@ namespace MCRA.Simulation.Calculators.ExposureResponseFunctions {
     public interface IExposureResponseFunctionModel {
         ExposureResponseFunction ExposureResponseFunction { get; set; }
 
-        double Compute(double x);
+        double Compute(double x, bool useErfBins);
 
         void ResampleModelParameters(IRandom random);
     }

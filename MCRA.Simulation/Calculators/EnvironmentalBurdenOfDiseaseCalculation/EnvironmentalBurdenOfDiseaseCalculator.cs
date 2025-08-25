@@ -1,35 +1,80 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.DustExposureCalculation;
+using MCRA.Simulation.Calculators.ExposureResponseFunctions;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 
 namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
 
     public class EnvironmentalBurdenOfDiseaseCalculator {
 
-        public List<ExposureResponseResultRecord> ExposureResponseResults { get; set; }
-
-        public BurdenOfDisease BurdenOfDisease { get; set; }
-
-        public Population Population { get; set; }
-
-        public BodApproach BodApproach { get; set; }
+        private readonly BodApproach _bodApproach;
+        private readonly List<double> _defaultBinBoundaries;
+        private readonly ExposureGroupingMethod _exposureGroupingMethod;
 
         public EnvironmentalBurdenOfDiseaseCalculator(
-            List<ExposureResponseResultRecord> exposureResponseResults = null,
-            BurdenOfDisease burdenOfDisease = null,
-            Population population = null,
-            BodApproach bodApproach = BodApproach.TopDown
+            BodApproach bodApproach,
+            ExposureGroupingMethod exposureGroupingMethod,
+            List<double> defaultBinBoundaries
         ) {
-            ExposureResponseResults = exposureResponseResults;
-            BurdenOfDisease = burdenOfDisease;
-            Population = population;
-            BodApproach = bodApproach;
+            _bodApproach = bodApproach;
+            _exposureGroupingMethod = exposureGroupingMethod;
+            _defaultBinBoundaries = defaultBinBoundaries;
         }
 
-        public EnvironmentalBurdenOfDiseaseResultRecord Compute() {
-            var populationSize = Population?.Size ?? double.NaN;
-            var environmentalBurdenOfDiseaseResultBinRecords = ExposureResponseResults
-                .Select(compute)
+        public List<EnvironmentalBurdenOfDiseaseResultRecord> Compute(
+            Dictionary<ExposureTarget, (List<ITargetIndividualExposure> Exposures, TargetUnit Unit)> exposuresCollections,
+            List<BurdenOfDisease> burdensOfDisease,
+            Population selectedPopulation,
+            ICollection<IExposureResponseFunctionModel> exposureResponseFunctionModels
+        ) {
+            var environmentalBurdenOfDiseases = new List<EnvironmentalBurdenOfDiseaseResultRecord>();
+            var percentileIntervals = generatePercentileIntervals(_defaultBinBoundaries);
+            foreach (var exposureResponseFunctionModel in exposureResponseFunctionModels) {
+                var erf = exposureResponseFunctionModel.ExposureResponseFunction;
+
+                // Get exposures for target
+                if (!exposuresCollections.TryGetValue(erf.ExposureTarget, out var targetExposures)) {
+                    var msg = $"Failed to compute effects for exposure response function {erf.Code}: missing estimates for target {erf.ExposureTarget.GetDisplayName()}.";
+                    throw new Exception(msg);
+                }
+                (var exposures, var exposureUnit) = (targetExposures.Exposures, targetExposures.Unit);
+
+                // Compute exposure response results
+                var exposureResponseCalculator = new ExposureResponseCalculator(exposureResponseFunctionModel);
+                var exposureResponseResults = exposureResponseCalculator
+                    .Compute(
+                        exposures,
+                        exposureUnit,
+                        percentileIntervals,
+                        _exposureGroupingMethod
+                    );
+
+                // Compute EBDs for burdens of disease for effect of ERF
+                var effectBurdensOfDisease = burdensOfDisease
+                    .Where(r => r.Effect == erf.Effect)
+                    .ToList();
+                foreach (var burdenOfDisease in effectBurdensOfDisease) {
+                    var resultRecord = computeSingle(
+                        exposureResponseResults,
+                        burdenOfDisease,
+                        selectedPopulation
+                    );
+                    environmentalBurdenOfDiseases.Add(resultRecord);
+                }
+            }
+
+            return environmentalBurdenOfDiseases;
+        }
+
+        private EnvironmentalBurdenOfDiseaseResultRecord computeSingle(
+            List<ExposureResponseResultRecord> exposureResponseResults,
+            BurdenOfDisease burdenOfDisease,
+            Population population
+        ) {
+            var populationSize = population?.Size ?? double.NaN;
+            var environmentalBurdenOfDiseaseResultBinRecords = exposureResponseResults
+                .Select(r => compute(r, population, burdenOfDisease, _bodApproach))
                 .ToList();
             var sum = environmentalBurdenOfDiseaseResultBinRecords.Sum(c => c.AttributableBod);
             var cumulative = 0d;
@@ -44,19 +89,44 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
                 record.CumulativeStandardisedExposedAttributableBod = cumulativeExposed / sumExposed * 100;
             }
             var result = new EnvironmentalBurdenOfDiseaseResultRecord {
-                BurdenOfDisease = BurdenOfDisease,
-                ExposureResponseFunction = ExposureResponseResults.First().ExposureResponseFunction,
-                ErfDoseUnit = ExposureResponseResults.First().ExposureResponseFunction.ExposureUnit,
-                TargetUnit = ExposureResponseResults.First().TargetUnit,
+                BurdenOfDisease = burdenOfDisease,
+                ExposureResponseFunction = exposureResponseResults.First().ExposureResponseFunction,
+                ErfDoseUnit = exposureResponseResults.First().ExposureResponseFunction.ExposureUnit,
+                TargetUnit = exposureResponseResults.First().TargetUnit,
                 EnvironmentalBurdenOfDiseaseResultBinRecords = environmentalBurdenOfDiseaseResultBinRecords
             };
             return result;
         }
 
+        private List<PercentileInterval> generatePercentileIntervals(List<double> binBoundaries) {
+            if (binBoundaries.Any(r => r <= 0 || r >= 100)) {
+                throw new Exception("Incorrect bin boundaries specified for EBD calculations, all bin boundaries should be greater than 0 and less than 100.");
+            }
+
+            // Make sure the specified boundaries are ordered
+            binBoundaries = [.. binBoundaries
+                .Where(r => r > 0 && r < 100)
+                .Order()
+            ];
+
+            var lowerBinBoudaries = new List<double>(binBoundaries);
+            lowerBinBoudaries.Insert(0, 0D);
+            var upperBinBoudaries = new List<double>(binBoundaries) { 100D };
+
+            var percentileIntervals = lowerBinBoudaries
+                .Zip(upperBinBoudaries)
+                .Select(r => new PercentileInterval(r.First, r.Second))
+                .ToList();
+            return percentileIntervals;
+        }
+
         private EnvironmentalBurdenOfDiseaseResultBinRecord compute(
-            ExposureResponseResultRecord exposureResponseResultRecord
+            ExposureResponseResultRecord exposureResponseResultRecord,
+            Population population,
+            BurdenOfDisease burdenOfDisease,
+            BodApproach bodApproach
         ) {
-            var totalBod = BurdenOfDisease.Value
+            var totalBod = burdenOfDisease.Value
                 * exposureResponseResultRecord.PercentileInterval.Percentage / 100;
             var responseValue = exposureResponseResultRecord.PercentileSpecificRisk;
             var result = new EnvironmentalBurdenOfDiseaseResultBinRecord {
@@ -68,12 +138,16 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
                 ResponseValue = responseValue,
                 ExposureResponseResultRecord = exposureResponseResultRecord
             };
-            if (BodApproach == BodApproach.TopDown) {
-                var attributableFraction = computeAttributableFraction(exposureResponseResultRecord, responseValue);
+            if (bodApproach == BodApproach.TopDown) {
+                var attributableFraction = computeAttributableFraction(
+                    exposureResponseResultRecord,
+                    population,
+                    responseValue
+                );
                 result.AttributableFraction = attributableFraction;
                 result.AttributableBod = totalBod * attributableFraction;
             } else {
-                result.AttributableBod = totalBod * responseValue * Population.Size;
+                result.AttributableBod = totalBod * responseValue * population.Size;
             }
 
             return result;
@@ -81,6 +155,7 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
 
         private double computeAttributableFraction(
             ExposureResponseResultRecord exposureResponseResultRecord,
+            Population population,
             double responseValue
         ) {
             var attributableFraction = 0D;
@@ -94,7 +169,7 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
                     }
                     break;
                 case EffectMetric.NegativeShift: {
-                        var characteristic = Population.PopulationCharacteristics
+                        var characteristic = population.PopulationCharacteristics
                             .Single(r => r.Characteristic == exposureResponseResultRecord.ExposureResponseFunction.PopulationCharacteristic);
                         var thresholdLower = (double)exposureResponseResultRecord.ExposureResponseFunction.EffectThresholdLower;
                         var distribution = PopulationCharacteristicDistributionFactory
@@ -105,7 +180,7 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
                     }
                     break;
                 case EffectMetric.PositiveShift: {
-                        var characteristic = Population.PopulationCharacteristics
+                        var characteristic = population.PopulationCharacteristics
                             .Single(r => r.Characteristic == exposureResponseResultRecord.ExposureResponseFunction.PopulationCharacteristic);
                         var thresholdUpper = (double)exposureResponseResultRecord.ExposureResponseFunction.EffectThresholdUpper;
                         var distribution = PopulationCharacteristicDistributionFactory

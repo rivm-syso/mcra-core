@@ -9,9 +9,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public void Summarize(
             List<EnvironmentalBurdenOfDiseaseResultRecord> environmentalBurdenOfDiseases
         ) {
-            Records = environmentalBurdenOfDiseases
-                .SelectMany(r => getAttributableBodSummaryRecords(r))
-                .ToList();
+            Records = [.. environmentalBurdenOfDiseases.SelectMany(getAttributableBodSummaryRecords)];
         }
 
         public void SummarizeUncertainty(
@@ -22,12 +20,12 @@ namespace MCRA.Simulation.OutputGeneration {
             var resultsSummaryRecords = results
                 .SelectMany(r => getAttributableBodSummaryRecords(r))
                 .ToList();
-            var lookup = resultsSummaryRecords.ToDictionary(r => (r.PopulationCode, r.BodIndicator, r.ErfCode, r.ExposureBinId));
+            var lookup = resultsSummaryRecords.ToDictionary(r => (r.PopulationCode, r.BodIndicator, r.SourceIndicators, r.ErfCode, r.ExposureBinId));
 
             foreach (var record in Records) {
                 record.UncertaintyLowerBound = lowerBound;
                 record.UncertaintyUpperBound = upperBound;
-                var resultSummaryRecord = lookup[(record.PopulationCode, record.BodIndicator, record.ErfCode, record.ExposureBinId)];
+                var resultSummaryRecord = lookup[(record.PopulationCode, record.BodIndicator, record.SourceIndicators, record.ErfCode, record.ExposureBinId)];
                 record.UncertaintyLowerBound = lowerBound;
                 record.UncertaintyUpperBound = upperBound;
                 record.ResponseValues.Add(resultSummaryRecord.ResponseValue);
@@ -45,6 +43,8 @@ namespace MCRA.Simulation.OutputGeneration {
         private static List<AttributableBodSummaryRecord> getAttributableBodSummaryRecords(
             EnvironmentalBurdenOfDiseaseResultRecord ebdResultRecord
         ) {
+            var multiplicator = 1d;
+            var nameIndicator = ebdResultRecord.BurdenOfDisease.BodIndicator.GetShortDisplayName();
             var environmentalBurdenOfDiseaseResultBinRecords = ebdResultRecord.EnvironmentalBurdenOfDiseaseResultBinRecords;
             var population = ebdResultRecord.BurdenOfDisease.Population;
             var records = environmentalBurdenOfDiseaseResultBinRecords
@@ -53,7 +53,16 @@ namespace MCRA.Simulation.OutputGeneration {
                     PopulationCode = population?.Code,
                     PopulationName = population?.Name,
                     PopulationSize = population?.Size > 0 ? population.Size : double.NaN,
+                    SubstanceCode = r.ExposureResponseResultRecord.Substance.Code,
+                    SubstanceName = r.ExposureResponseResultRecord.Substance.Name,
+                    EffectCode = r.ExposureResponseResultRecord.ExposureResponseFunction.Effect.Code,
+                    EffectName = r.ExposureResponseResultRecord.ExposureResponseFunction.Effect.Name,
                     BodIndicator = ebdResultRecord.BurdenOfDisease.BodIndicator.GetShortDisplayName(),
+                    SourceIndicatorList = (ebdResultRecord.BurdenOfDisease is DerivedBurdenOfDisease)
+                        ? (ebdResultRecord.BurdenOfDisease as DerivedBurdenOfDisease).Conversions
+                            .Select(r => r.FromIndicator.GetShortDisplayName())
+                            .ToList()
+                        : [],
                     ErfCode = ebdResultRecord.ExposureResponseFunction.Code,
                     BinPercentage = r.ExposurePercentileBin.Percentage,
                     BinPercentages = [],
@@ -67,14 +76,14 @@ namespace MCRA.Simulation.OutputGeneration {
                     AttributableFraction = r.AttributableFraction,
                     AttributableFractions = [],
                     TotalBod = r.TotalBod,
-                    AttributableBod = r.AttributableBod,
+                    AttributableBod = r.AttributableBod * multiplicator,
                     AttributableBods = [],
                     StandardisedExposedAttributableBods = [],
                     TotalBods = [],
                     CumulativeAttributableBod = r.CumulativeAttributableBod,
                     CumulativeAttributableBods = [],
                     CumulativeStandardisedExposedAttributableBod = r.CumulativeStandardisedExposedAttributableBod,
-                    CumulativeStandardisedExposedAttributableBods = [],
+                    CumulativeStandardisedExposedAttributableBods = []
                 })
                 .ToList();
             return records;

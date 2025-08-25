@@ -24,10 +24,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             );
             section.SummarizeSetting(SettingsItemType.BodApproach, _configuration.BodApproach);
             section.SummarizeSetting(SettingsItemType.ExposureGroupingMethod, _configuration.ExposureGroupingMethod);
-            if (_configuration.ExposureGroupingMethod == ExposureGroupingMethod.CustomBins) {
-                section.SummarizeSetting(SettingsItemType.BinBoundaries, _configuration.BinBoundaries);
-            }
-
+            section.SummarizeSetting(SettingsItemType.BinBoundaries, _configuration.BinBoundaries);
             return section;
         }
     }

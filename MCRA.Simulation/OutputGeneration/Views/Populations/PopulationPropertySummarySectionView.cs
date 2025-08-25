@@ -56,7 +56,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (double.IsNaN(Model.PopulationSize)) {
                 sb.AppendDescriptionParagraph($"No population size specified.");
             } else {
-                sb.AppendDescriptionParagraph(Invariant($"Population size: {Model.PopulationSize:N0}."));
+                sb.AppendDescriptionParagraph($"Population size: {string.Format("{0:N0}", Model.PopulationSize)}.");
             }
 
             if (Model.Records.Count != 0) {

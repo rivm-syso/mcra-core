@@ -2,25 +2,36 @@
 using MCRA.Simulation.OutputGeneration.Helpers;
 using MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders;
 using Microsoft.AspNetCore.Html;
-using static System.FormattableString;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class AttributableBodSummarySectionView : SectionView<AttributableBodSummarySection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>() {
+                "SourceIndicators",
                 "ErfCode",
+                "EffectCode",
+                "EffectName",
+                "SubstanceCode",
+                "SubstanceName",
                 "Unit",
                 "PopulationCode",
-                "PopulationName"
+                "PopulationName",
+                // Hide all columns with standardized EXPOSED attributable BoD
+                "UpperCumulativeStandardisedExposedAttributableBod",
+                "LowerCumulativeStandardisedExposedAttributableBod",
+                "MedianCumulativeStandardisedExposedAttributableBod",
+                "CumulativeStandardisedExposedAttributableBod",
+                "UpperStandardisedExposedAttributableBod",
+                "LowerStandardisedExposedAttributableBod",
+                "MedianStandardisedExposedAttributableBod",
+                "StandardisedExposedAttributableBod"
             };
             var isUncertainty = Model.Records.FirstOrDefault()?.AttributableBods.Any() ?? false;
 
             if (isUncertainty) {
                 hiddenProperties.Add("AttributableBod");
                 hiddenProperties.Add("StandardisedAttributableBod");
-                hiddenProperties.Add("StandardisedExposedAttributableBod");
                 hiddenProperties.Add("CumulativeAttributableBod");
-                hiddenProperties.Add("CumulativeStandardisedExposedAttributableBod");
                 hiddenProperties.Add("BinPercentage");
                 hiddenProperties.Add("Exposure");
                 hiddenProperties.Add("ResponseValue");
@@ -33,15 +44,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add("LowerStandardisedAttributableBod");
                 hiddenProperties.Add("UpperStandardisedAttributableBod");
                 hiddenProperties.Add("MedianStandardisedAttributableBod");
-                hiddenProperties.Add("LowerStandardisedExposedAttributableBod");
-                hiddenProperties.Add("UpperStandardisedExposedAttributableBod");
-                hiddenProperties.Add("MedianStandardisedExposedAttributableBod");
                 hiddenProperties.Add("LowerCumulativeAttributableBod");
                 hiddenProperties.Add("UpperCumulativeAttributableBod");
                 hiddenProperties.Add("MedianCumulativeAttributableBod");
-                hiddenProperties.Add("LowerCumulativeStandardisedExposedAttributableBod");
-                hiddenProperties.Add("UpperCumulativeStandardisedExposedAttributableBod");
-                hiddenProperties.Add("MedianCumulativeStandardisedExposedAttributableBod");
                 hiddenProperties.Add("LowerBoundExposure");
                 hiddenProperties.Add("UpperBoundExposure");
                 hiddenProperties.Add("MedianExposure");
@@ -83,21 +88,23 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 .Where(r => (!isUncertainty && !(r.TotalBod == 0D && r.CumulativeAttributableBod == 100D)) ||
                     (isUncertainty && !(r.UpperAttributableBod == 0D && r.MedianCumulativeAttributableBod == 100D))
                 )
-                .GroupBy(r => (r.PopulationName, r.BodIndicator, r.ErfCode));
+                .GroupBy(r => r.GetGroupKey());
 
             foreach (var group in panelGroup) {
-                var key = $"{group.Key.PopulationName}-{group.Key.BodIndicator}-{group.Key.ErfCode}";
+                var key = group.Key;
+                var name = group.First().GetGroupDisplayName();
+
                 var panelSb = new StringBuilder();
                 if (!group.All(g => g.AttributableBod == 0D)) {
                     
                     var populationSize = group.FirstOrDefault().PopulationSize;
                     if (!double.IsNaN(populationSize)) {
-                        panelSb.AppendDescriptionParagraph(Invariant($"Population size: {populationSize:N3}"));
+                        panelSb.AppendDescriptionParagraph($"Population size: {string.Format("{0:N0}", populationSize)}");
                     }
 
                     // Create copy of viewbag and fill with (local) BodIndicator
                     var viewBag = ViewBag.Clone();
-                    viewBag.UnitsDictionary.Add("BodIndicator", group.Key.BodIndicator ?? string.Empty);
+                    viewBag.UnitsDictionary.Add("BodIndicator", group.First().BodIndicator ?? string.Empty);
 
                     panelSb.AppendTable(
                         Model,
@@ -105,7 +112,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         $"AttributableBodTable_{key}",
                         viewBag,
                         header: true,
-                        caption: $"Attributable burden of disease {key}.",
+                        caption: $"Attributable burden of disease {name}.",
                         saveCsv: true,
                         sortable: true,
                         hiddenProperties: hiddenProperties
@@ -116,7 +123,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     );
 
                     var chart = ChartHelpers.Chart(
-                        name: $"AttributableBodChart{key}",
+                        name: $"AttributableBodChart_{key}",
                         section: Model,
                         viewBag: ViewBag,
                         caption: chartCreator.Title,
@@ -137,8 +144,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                             Model.SectionId
                         );
 
-                        chartStandardised = ChartHelpers.Chart(
-                               name: $"StandardisedAttributableBodChart{key}",
+                        chartStandardised = ChartHelpers
+                            .Chart(
+                               name: $"StandardisedAttributableBodChart_{key}",
                                section: Model,
                                viewBag: ViewBag,
                                caption: chartCreatorStandardised.Title,
@@ -147,15 +155,16 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                                saveChartFile: true
                            ).ToString();
 
-                        chartExposed = ChartHelpers.Chart(
-                               name: $"ExposedAttributableBodChart{key}",
-                               section: Model,
-                               viewBag: ViewBag,
-                               caption: chartCreatorExposed.Title,
-                               chartCreator: chartCreatorExposed,
-                               fileType: ChartFileType.Svg,
-                               saveChartFile: true
-                           ).ToString();
+                        // Hide charts with standardized EXPOSED attributable BoD
+                        //chartExposed = ChartHelpers.Chart(
+                        //       name: $"ExposedAttributableBodChart{key}{id}",
+                        //       section: Model,
+                        //       viewBag: ViewBag,
+                        //       caption: chartCreatorExposed.Title,
+                        //       chartCreator: chartCreatorExposed,
+                        //       fileType: ChartFileType.Svg,
+                        //       saveChartFile: true
+                        //   ).ToString();
                     }
 
                     var contentPanel = new HtmlString(
@@ -167,16 +176,15 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
                     panelBuilder.AddPanel(
                         id: $"Panel_{key}",
-                        title: $"{key}",
+                        title: name,
                         hoverText: key,
                         content: contentPanel
                     );
                 } else {
                     panelSb.AppendNotification($"No attributable burden of disease above the threshold for {key}.");
-
                     panelBuilder.AddPanel(
                         id: $"Panel_{key}",
-                        title: $"{key}",
+                        title: name,
                         hoverText: key,
                         content: new HtmlString(panelSb.ToString())
                     );

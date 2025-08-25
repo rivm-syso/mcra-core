@@ -12,7 +12,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.EnvironmentalBurdenOfDiseas
                 ExposureResponseSpecification = new NCalc.Expression("5.01")
             };
             var erfModel = new ExposureResponseFunctionModel(erf);
-            var result = erfModel.Compute(42);
+            var result = erfModel.Compute(42, true);
             Assert.AreEqual(5.01, result);
         }
     }

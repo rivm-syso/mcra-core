@@ -98,6 +98,7 @@ namespace MCRA.Data.Compiled {
         public IList<SoilConcentrationDistribution> AllSoilConcentrationDistributions { get; set; }
         public IList<SoilIngestion> AllSoilIngestions { get; set; }
         public IList<BurdenOfDisease> AllBurdensOfDisease { get; set; }
+        public IList<BodIndicatorConversion> AllBodIndicatorConversions { get; set; }
         public IDictionary<string, ConsumerProduct> AllConsumerProducts { get; set; }
         public IDictionary<string, ConsumerProductSurvey> AllConsumerProductSurveys { get; set; }
         public IDictionary<string, Individual> AllConsumerProductIndividuals { get; set; }

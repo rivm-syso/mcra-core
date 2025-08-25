@@ -1,4 +1,5 @@
-﻿using MCRA.General;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
 using MCRA.General.ModuleDefinitions.Settings;
@@ -71,59 +72,47 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
                 throw new Exception("Population size is required for bottom-up burden of disease computations.");
             }
 
-            var percentileIntervals = generatePercentileIntervals(ModuleConfig.BinBoundaries);
-
-            var result = new EnvironmentalBurdenOfDiseaseActionResult();
-            var environmentalBurdenOfDiseases = new List<EnvironmentalBurdenOfDiseaseResultRecord>();
-
-            var exposureResponseFunctions = data.ExposureResponseFunctionModels
-                .Select(r => r.ExposureResponseFunction)
-                .ToList();
-            var burdenOfDiseaseIndicators = ModuleConfig.BodIndicators?.Count > 0
-                ? data.BurdensOfDisease
-                    .Where(r => ModuleConfig.BodIndicators.Contains(r.BodIndicator))
-                    .ToList()
-                : data.BurdensOfDisease;
-
             // Get exposures per target
             var exposuresCollections = getExposures(data);
 
-            foreach (var exposureResponseFunctionModel in data.ExposureResponseFunctionModels) {
-                var erf = exposureResponseFunctionModel.ExposureResponseFunction;
+            // Get burdens of disease
+            var burdensOfDisease = data.BurdensOfDisease;
 
-                var target = erf.ExposureTarget;
-
-                // Get exposures for target
-                if (!exposuresCollections.TryGetValue(target, out var targetExposures)) {
-                    var msg = $"Failed to compute effects for exposure response function {erf.Code}: missing estimates for target {target.GetDisplayName()}.";
-                    throw new Exception(msg);
-                }
-                (var exposures, var exposureUnit) = (targetExposures.Exposures, targetExposures.Unit);
-
-                var exposureResponseCalculator = new ExposureResponseCalculator(exposureResponseFunctionModel);
-                var exposureResponseResults = exposureResponseCalculator
-                    .Compute(
-                        exposures,
-                        exposureUnit,
-                        percentileIntervals,
-                        ModuleConfig.ExposureGroupingMethod
+            if (data.BodIndicatorConversions != null) {
+                // Get derived burdens of disease from BoD indicator conversions
+                var bodIndicatorConversionsCalculator = new BoDConversionsCalculator();
+                var derivedBodIndicators = bodIndicatorConversionsCalculator
+                    .GetDerivedBurdensOfDisease(
+                        data.BurdensOfDisease,
+                        data.BodIndicatorConversions
                     );
-
-                var bodIndicators = burdenOfDiseaseIndicators.Where(r => r.Effect == erf.Effect);
-                foreach (var burdenOfDiseaseIndicator in bodIndicators) {
-                    var totalBurdenOfDisease = burdenOfDiseaseIndicator.Value;
-                    var ebdCalculator = new EnvironmentalBurdenOfDiseaseCalculator(
-                        exposureResponseResults,
-                        burdenOfDiseaseIndicator,
-                        data.SelectedPopulation,
-                        ModuleConfig.BodApproach
-                    );
-                    var resultRecord = ebdCalculator.Compute();
-                    environmentalBurdenOfDiseases.Add(resultRecord);
-                }
+                burdensOfDisease = [.. burdensOfDisease.Union(derivedBodIndicators)];
             }
 
-            result.EnvironmentalBurdenOfDiseases = environmentalBurdenOfDiseases;
+            // Only keep BoDs for selected indicators
+            burdensOfDisease = [.. burdensOfDisease.Where(r => ModuleConfig.BodIndicators.Contains(r.BodIndicator))];
+
+            // Create EBD calculator and compute
+            var ebdCalculator = new EnvironmentalBurdenOfDiseaseCalculator(
+                ModuleConfig.BodApproach,
+                ModuleConfig.ExposureGroupingMethod,
+                ModuleConfig.BinBoundaries
+            );
+            var environmentalBurdenOfDiseases = ebdCalculator.Compute(
+                exposuresCollections,
+                burdensOfDisease,
+                data.SelectedPopulation,
+                data.ExposureResponseFunctionModels
+            );
+
+            if (environmentalBurdenOfDiseases.Count == 0) {
+                throw new Exception($"No burden of diseases are found in table or through indicator conversion for selected Bod indicators.");
+            }
+
+            var result = new EnvironmentalBurdenOfDiseaseActionResult {
+                EnvironmentalBurdenOfDiseases = environmentalBurdenOfDiseases
+            };
+
             localProgress.Update(100);
             return result;
         }
@@ -193,22 +182,6 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
                     );
             }
             return result;
-        }
-
-        private List<PercentileInterval> generatePercentileIntervals(List<double> binBoundaries) {
-            binBoundaries = [.. binBoundaries.Order()];
-
-            var lowerBinBoudaries = new List<double>(binBoundaries);
-            lowerBinBoudaries.Insert(0, 0D);
-            var upperBinBoudaries = new List<double>(binBoundaries) {
-                    100D
-                };
-
-            var percentileIntervals = lowerBinBoudaries
-                .Zip(upperBinBoudaries)
-                .Select(r => new PercentileInterval(r.First, r.Second))
-                .ToList();
-            return percentileIntervals;
         }
     }
 }

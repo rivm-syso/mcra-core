@@ -145,5 +145,6 @@
         ConsumerProductExposureFractions = 148,
         ConsumerProductApplicationAmounts = 149,
         ConsumerProductConcentrationDistributions = 150,
+        BodIndicatorConversions = 151
     }
 }

@@ -17,14 +17,19 @@
   <SettingsItem>
     <Id>ExposureGroupingMethod</Id>
     <Name>Specify the exposure grouping method</Name>
-    <Description>Specify the method by which the exposures are grouped in bins.</Description>
+    <Description>Specify the method by which the exposures are grouped in bins. For 'Custom bins', the 
+      specified bins are used for all exposure response functions. For 'ERF-defined bins', the bins defined 
+      for subgroups are used and for exposure response functions without subgroups, the specified custom bins are used.
+    </Description>
     <ValueType>ExposureGroupingMethod</ValueType>
   </SettingsItem>
   <SettingsItem>
     <Id>BinBoundaries</Id>
     <Name>Specify the bin boundaries.</Name>
     <Description>
-      Specify the boundaries of the bins by which the exposures are grouped.
+      Specify the boundaries (%) of the bins by which the exposures are grouped.For 'Custom bins', the
+      specified bins are used for all exposure response functions. For 'ERF-defined bins', the bins defined
+      for subgroups are used and for exposure response functions without subgroups, the specified custom bins are used.
     </Description>
     <ValueType>Numeric</ValueType>
     <IsList>true</IsList>

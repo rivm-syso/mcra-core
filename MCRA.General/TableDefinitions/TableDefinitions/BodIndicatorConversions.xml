@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>BodIndicatorConversions</Id>
+  <Name>Burden of disease indicator conversions</Name>
+  <Description></Description>
+  <Aliases>
+    <string>BodIndicatorConversions</string>
+    <string>BodIndicatorConversion</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawBodIndicatorConversions</string>
+    <string>BodIndicatorConversions</string>
+    <string>BodIndicatorConversion</string>
+  </HiddenAliases>
+  <TargetDataTable>RawBodIndicatorConversions</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldType="BodIndicator">
+      <Id>FromIndicator</Id>
+      <Description>The source burden of disease indicator (from).</Description>
+      <Aliases>
+        <string>FromIndicator</string>
+        <string>FromBod</string>
+        <string>From</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50">
+      <Id>FromUnit</Id>
+      <Description>The unit of the burden of disease indicator (from).</Description>
+      <Aliases>
+        <string>FromUnit</string>
+        <string>UnitFrom</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="BodIndicator">
+      <Id>ToIndicator</Id>
+      <Description>The target burden of disease indicator (to).</Description>
+      <Aliases>
+        <string>ToIndicator</string>
+        <string>ToBod</string>
+        <string>To</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50">
+      <Id>ToUnit</Id>
+      <Description>The unit of the burden of disease indicator (to).</Description>
+      <Aliases>
+        <string>ToUnit</string>
+        <string>UnitTo</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>Value</Id>
+      <Description>The value/conversion factor for converting from source to target.</Description>
+      <Aliases>
+        <string>Value</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

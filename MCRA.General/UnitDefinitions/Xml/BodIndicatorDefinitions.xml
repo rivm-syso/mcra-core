@@ -33,5 +33,14 @@
         <Alias>Cases</Alias>
       </Aliases>
     </Unit>
+    <Unit>
+      <Id>Costs</Id>
+      <Name>Costs</Name>
+      <ShortName>Costs</ShortName>
+      <Description>Costs.</Description>
+      <Aliases>
+        <Alias>Costs</Alias>
+      </Aliases>
+    </Unit>
   </Units>
 </UnitDefinition>

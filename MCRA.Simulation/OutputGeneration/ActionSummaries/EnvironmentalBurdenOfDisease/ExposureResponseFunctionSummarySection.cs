@@ -41,7 +41,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     maxExposure,
                     n: 1000);
                 var YValues = XValues
-                    .Select(r => exposureResponseFunctionModel.Compute(r * doseUnitAlignmentFactor));
+                    .Select(r => exposureResponseFunctionModel.Compute(r * doseUnitAlignmentFactor, false));
                 exposureResponseGridDataPoints.XValues = XValues;
                 exposureResponseGridDataPoints.ReferenceValues = YValues;
 
@@ -100,7 +100,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     .Single(r => r.ErfCode == erf.Code)
                     .ExposureResponseGridDataPoints.XValues;
                 var YValues = XValues
-                    .Select(r => exposureResponseFunctionModel.Compute(r * doseUnitAlignmentFactor));
+                    .Select(r => exposureResponseFunctionModel.Compute(r * doseUnitAlignmentFactor, false));
                 ErfSummaryRecords
                     .Single(r => r.ErfCode == erf.Code)
                     .ExposureResponseGridDataPoints.AddUncertaintyValues(YValues);

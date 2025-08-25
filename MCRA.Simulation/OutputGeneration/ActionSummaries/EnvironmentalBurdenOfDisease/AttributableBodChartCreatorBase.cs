@@ -11,6 +11,7 @@ namespace MCRA.Simulation.OutputGeneration {
         protected readonly string _sectionId;
         protected readonly string _population;
         protected readonly string _bodIndicator;
+        protected readonly string _sourceIndicators;
         protected readonly string _erfCode;
         protected readonly string _unit;
 
@@ -25,6 +26,7 @@ namespace MCRA.Simulation.OutputGeneration {
             _unit = records.First().TargetUnit;
             _population = records.First().PopulationName;
             _bodIndicator = records.First().BodIndicator;
+            _sourceIndicators = records.First().SourceIndicators;
             _erfCode = records.First().ErfCode;
         }
 

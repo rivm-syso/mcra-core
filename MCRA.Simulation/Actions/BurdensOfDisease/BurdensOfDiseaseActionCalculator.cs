@@ -10,23 +10,19 @@ using MCRA.Utils.ProgressReporting;
 namespace MCRA.Simulation.Actions.BurdensOfDisease {
 
     [ActionType(ActionType.BurdensOfDisease)]
-    public class BurdensOfDiseaseActionCalculator : ActionCalculatorBase<IIBurdensOfDiseaseActionResult> {
-
-        public BurdensOfDiseaseActionCalculator(ProjectDto project) : base(project) {
-        }
-
+    public class BurdensOfDiseaseActionCalculator(ProjectDto project) : ActionCalculatorBase<IIBurdensOfDiseaseActionResult>(project) {
         protected override void verify() {
             _actionDataLinkRequirements[ScopingType.BurdensOfDisease][ScopingType.Effects].AlertTypeMissingData = AlertType.Notification;
             _actionDataLinkRequirements[ScopingType.BurdensOfDisease][ScopingType.Populations].AlertTypeMissingData = AlertType.Notification;
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
-            data.BurdensOfDisease = subsetManager.AllBurdensOfDisease
+            data.BurdensOfDisease = [.. subsetManager.AllBurdensOfDisease
                 .Where(r => r.Population == null
                     || data.SelectedPopulation.Code == "Generated"
                     || r.Population == data.SelectedPopulation
-                )
-                .ToList();
+                )];
+            data.BodIndicatorConversions = [.. subsetManager.AllBodIndicatorConversions];
         }
 
         protected override void summarizeActionResult(IIBurdensOfDiseaseActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {

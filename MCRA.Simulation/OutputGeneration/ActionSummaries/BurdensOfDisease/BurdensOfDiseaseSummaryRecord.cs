@@ -16,9 +16,10 @@ namespace MCRA.Simulation.OutputGeneration {
         public string BodIndicator { get; set; }
 
         [Description("The value of the burden of disease indicator.")]
+        [DisplayFormat(DataFormatString = "{0:G3}")]
         [DisplayName("Value")]
-        [DisplayFormat(DataFormatString = "{0:N2}")]
         public double Value { get; set; }
+
     }
 }
 

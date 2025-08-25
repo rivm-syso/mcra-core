@@ -23,14 +23,36 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Population name")]
         public string PopulationName { get; set; }
 
+        [Description("The code of the substance.")]
+        [DisplayName("Substance code")]
+        public string SubstanceCode { get; set; }
+
+        [Description("The name of the substance.")]
+        [DisplayName("Substance name")]
+        public string SubstanceName { get; set; }
+
+        [Description("The code of the effect.")]
+        [DisplayName("Effect code")]
+        public string EffectCode { get; set; }
+
+        [Description("The name of the effect.")]
+        [DisplayName("Effect name")]
+        public string EffectName { get; set; }
+
         [Description("Burden of disease indicator.")]
         [DisplayName("BoD indicator")]
         public string BodIndicator { get; set; }
 
+        [Description("Intermediate/source indicators from which this BoD was derived (using BoD indicator conversions).")]
+        [DisplayName("Source indicator(s)")]
+        public string SourceIndicators { get; set; }
+
+        [Display(AutoGenerateField = false)]
         [Description("The code of the exposure response function.")]
         [DisplayName("ERF code")]
         public string ErfCode { get; set; }
 
+        [Display(AutoGenerateField = false)]
         [Description("The name of the exposure response function.")]
         [DisplayName("ERF name")]
         public string ErfName { get; set; }
@@ -39,6 +61,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Total attributable BoD")]
         [DisplayFormat(DataFormatString = "{0:G4}")]
         public double TotalAttributableBod { get; set; }
+
         [Display(AutoGenerateField = false)]
         public List<double> TotalAttributableBods { get; set; }
 

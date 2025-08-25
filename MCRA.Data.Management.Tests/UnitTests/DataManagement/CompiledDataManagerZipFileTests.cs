@@ -309,6 +309,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 AllAnalyticalMethods = new Dictionary<string, AnalyticalMethod>(),
                 AllActiveSubstanceModels = new Dictionary<string, ActiveSubstanceModel>(),
                 AllBurdensOfDisease = [],
+                AllBodIndicatorConversions = [],
                 AllConcentrationDistributions = [],
                 AllConcentrationSingleValues = [],
                 AllConsumerProducts = new Dictionary<string, ConsumerProduct>(),

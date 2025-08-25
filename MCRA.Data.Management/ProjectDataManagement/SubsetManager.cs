@@ -589,6 +589,7 @@ namespace MCRA.Data.Management {
         public IList<SoilIngestion> AllSoilIngestions => _dataManager.GetAllSoilIngestions();
 
         public IList<BurdenOfDisease> AllBurdensOfDisease => _dataManager.GetAllBurdensOfDisease();
+        public IList<BodIndicatorConversion> AllBodIndicatorConversions => _dataManager.GetAllBodIndicatorConversions();
 
         /// <summary>
         /// Gets all consumer products of the compiled data source.

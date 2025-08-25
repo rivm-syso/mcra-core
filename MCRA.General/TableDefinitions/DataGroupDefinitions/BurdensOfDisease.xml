@@ -9,5 +9,8 @@
     <DataGroupTable>
       <Id>BurdensOfDisease</Id>
     </DataGroupTable>
+    <DataGroupTable>
+      <Id>BodIndicatorConversions</Id>
+    </DataGroupTable>
   </DataGroupTables>
 </DataGroupDefinition>

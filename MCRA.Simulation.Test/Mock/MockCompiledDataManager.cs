@@ -343,7 +343,9 @@ namespace MCRA.Simulation.Test.Mock {
         public IList<BurdenOfDisease> GetAllBurdensOfDisease() {
             return _data.AllBurdensOfDisease;
         }
-
+        public IList<BodIndicatorConversion> GetAllBodIndicatorConversions() {
+            return _data.AllBodIndicatorConversions;
+        }
         public IList<IndoorAirConcentration> GetAllIndoorAirConcentrations() {
             return _data.AllIndoorAirConcentrations;
         }

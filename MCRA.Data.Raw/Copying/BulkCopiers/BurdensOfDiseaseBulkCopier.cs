@@ -19,6 +19,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
         public override void TryCopy(IDataSourceReader dataSourceReader, ProgressState progressState) {
             progressState.Update("Processing burden of disease");
             var hasBurdensOfDisease = tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.BurdensOfDisease);
+            tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.BodIndicatorConversions);
             if (hasBurdensOfDisease) {
                 registerTableGroup(SourceTableGroup.BurdensOfDisease);
             }

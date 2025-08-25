@@ -80,6 +80,7 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
             var upperBounds = new List<double> {
                 erf.CounterfactualValue * unitAlignmentFactor
             };
+            var maximum = allExposures.Max();
             if (erf.HasErfSubGroups) {
                 upperBounds.AddRange(
                     erf.ErfSubgroups
@@ -87,6 +88,7 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
                         .Select(r => r.ExposureUpper * unitAlignmentFactor ?? double.NaN)
                     );
             }
+
             var exposureLevels = allExposures
                 .PercentagesWithSamplingWeights(weights, upperBounds)
                 .ToList();
@@ -109,6 +111,7 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
                 lower = upper;
                 lowerPercentile = upperPercentile;
             }
+
             return result;
         }
 
@@ -170,7 +173,7 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
                 ExposureLevel = exposureLevel,
                 ErfDoseUnitAlignmentFactor = unitAlignmentFactor,
                 PercentileSpecificRisk = ExposureResponseFunctionModel
-                    .Compute(exposureLevel * unitAlignmentFactor),
+                    .Compute(exposureLevel * unitAlignmentFactor, useErfBins),
                 TargetUnit = targetUnit,
                 Substance = erf.Substance,
                 EffectMetric = erf.EffectMetric
