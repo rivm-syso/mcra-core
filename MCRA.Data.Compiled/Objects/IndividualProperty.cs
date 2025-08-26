@@ -26,5 +26,17 @@ namespace MCRA.Data.Compiled.Objects {
 
         private bool nameEquals(params string[] compareValues) =>
             compareValues.Any(s => string.Equals(Name, s, StringComparison.OrdinalIgnoreCase));
+
+        public bool MatchesIndividualProperty(IndividualProperty other) {
+            // TODO: Matching is now based mostly based on identical codes.
+            // It should also include controlled terminology aliases.
+            if (IsAgeProperty && other.IsAgeProperty) {
+                return true;
+            }
+            if (IsSexProperty && other.IsSexProperty) {
+                return true;
+            }
+            return string.Equals(Code, other.Code, StringComparison.OrdinalIgnoreCase);
+        }
     }
 }

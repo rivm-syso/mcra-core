@@ -66,8 +66,7 @@ namespace MCRA.Data.Compiled.Objects {
         public string GetTextValue(IndividualProperty property) => GetPropertyValue(property)?.TextValue;
 
         public IndividualPropertyValue GetPropertyValue(IndividualProperty property) =>
-            _individualPropertyValues.FirstOrDefault(v => v.IndividualProperty.Code.Equals(property.Code,
-                StringComparison.OrdinalIgnoreCase));
+            _individualPropertyValues.FirstOrDefault(v => v.IndividualProperty.MatchesIndividualProperty(property));
 
         public double? Age { get; private set; }
 

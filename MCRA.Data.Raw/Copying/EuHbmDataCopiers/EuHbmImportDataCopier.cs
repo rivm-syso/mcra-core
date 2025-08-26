@@ -470,7 +470,7 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                     individualProperties.Add(new RawIndividualProperty() {
                         idIndividualProperty = "ControlType",
                         Name = "Control type",
-                        Description = "Indicates whether subject is a  within company (1) or outwith company control(2)",
+                        Description = "Indicates whether subject is a within company (1) or outwith company control (2)",
                         PropertyLevel = PropertyLevelType.Individual.ToString(),
                         Type = IndividualPropertyType.Categorical.ToString()
                     });

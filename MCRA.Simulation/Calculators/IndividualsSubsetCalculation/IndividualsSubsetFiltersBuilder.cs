@@ -42,8 +42,8 @@ namespace MCRA.Simulation.Calculators.IndividualsSubsetCalculation {
             var result = new List<IPropertyIndividualFilter>();
 
             var matchSelectedProperties = individualSubsetType == IndividualSubsetType.MatchToPopulationDefinitionUsingSelectedProperties;
-            foreach (var individualProperty in populationIndividualProperties) {
-                var property = individualProperty.IndividualProperty;
+            foreach (var propertyValue in populationIndividualProperties) {
+                var property = propertyValue.IndividualProperty;
                 if (property.PropertyLevel != PropertyLevelType.Individual) {
                     continue;
                 }
@@ -51,17 +51,14 @@ namespace MCRA.Simulation.Calculators.IndividualsSubsetCalculation {
                     continue;
                 }
 
-                // TODO: Matching is now based on identical codes.
-                // It should also include controlled terminology aliases
                 var matchedProperty = surveyIndividualProperties
-                    .FirstOrDefault(r => string.Equals(individualProperty.IndividualProperty.Code, r.Code, StringComparison.OrdinalIgnoreCase));
-
+                    .FirstOrDefault(r => r.MatchesIndividualProperty(propertyValue.IndividualProperty));
                 if (matchedProperty != null) {
                     var filter = Create(
                         property,
-                        individualProperty.CategoricalLevels,
-                        individualProperty.MinValue,
-                        individualProperty.MaxValue
+                        propertyValue.CategoricalLevels,
+                        propertyValue.MinValue,
+                        propertyValue.MaxValue
                     );
                     if (filter != null) {
                         result.Add(filter);
