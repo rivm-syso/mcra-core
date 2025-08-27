@@ -117,7 +117,7 @@ namespace MCRA.Utils.Test.UnitTests {
 
             cancelSource.Cancel();
 
-            Assert.ThrowsException<OperationCanceledException>(() => subState1.Update("State1", 50));
+            Assert.ThrowsExactly<OperationCanceledException>(() => subState1.Update("State1", 50));
         }
 
         /// <summary>
@@ -125,21 +125,22 @@ namespace MCRA.Utils.Test.UnitTests {
         /// </summary>
         [TestMethod]
         [TestCategory("Sandbox Tests")]
-        [ExpectedException(typeof(OperationCanceledException))]
         public void ProgressReportTest6() {
-            for (int j = 0; j < 100; j++) {
-                var cancelSource = new CancellationTokenSource();
-                var progressReport = new ProgressReport(cancelSource.Token);
-                var numberOfStates = 500000;
-                var incrementAmount = 100D / numberOfStates;
-                for (int i = 0; i < numberOfStates; i++) {
-                    var subState = progressReport.NewProgressState(100);
-                    subState.Increment($"State {i}", incrementAmount);
-                    if (i == numberOfStates - 2) {
-                        cancelSource.Cancel();
+            Assert.ThrowsExactly<OperationCanceledException>(() => {
+                for (int j = 0; j < 100; j++) {
+                    var cancelSource = new CancellationTokenSource();
+                    var progressReport = new ProgressReport(cancelSource.Token);
+                    var numberOfStates = 500000;
+                    var incrementAmount = 100D / numberOfStates;
+                    for (int i = 0; i < numberOfStates; i++) {
+                        var subState = progressReport.NewProgressState(100);
+                        subState.Increment($"State {i}", incrementAmount);
+                        if (i == numberOfStates - 2) {
+                            cancelSource.Cancel();
+                        }
                     }
                 }
-            }
+            });
         }
 
         /// <summary>
@@ -178,7 +179,7 @@ namespace MCRA.Utils.Test.UnitTests {
         [TestMethod]
         public void ProgressReportTest9() {
             var progressReport = new ProgressReport();
-            var compositeState = progressReport.NewCompositeState(50);
+            _ = progressReport.NewCompositeState(50);
             Assert.AreEqual(0D, progressReport.Progress);
         }
 
@@ -188,7 +189,7 @@ namespace MCRA.Utils.Test.UnitTests {
         [TestMethod]
         public void ProgressReportTest10() {
             var progressReport = new ProgressReport();
-            var compositeState = progressReport.NewProgressState(100);
+            _ = progressReport.NewProgressState(100);
             Assert.AreEqual(0D, progressReport.Progress);
         }
     }

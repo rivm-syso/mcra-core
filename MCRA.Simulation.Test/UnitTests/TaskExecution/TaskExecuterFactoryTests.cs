@@ -30,7 +30,7 @@ namespace MCRA.Simulation.Test.UnitTests.TaskExecution {
         /// </summary>
         [TestMethod]
         public void TaskExecuterFactory_TestRunDataSourceCompilationTest() {
-            Assert.ThrowsException<Exception>(() => TaskExecuterFactory.CreateTaskExecuter(MCRATaskType.DataSourceCompilation, null, null, string.Empty));
+            Assert.ThrowsExactly<Exception>(() => TaskExecuterFactory.CreateTaskExecuter(MCRATaskType.DataSourceCompilation, null, null, string.Empty));
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace MCRA.Simulation.Test.UnitTests.TaskExecution {
         /// </summary>
         [TestMethod]
         public void TaskExecuterFactory_TestRunFoodConversionTest() {
-            Assert.ThrowsException<Exception>(() => TaskExecuterFactory.CreateTaskExecuter(MCRATaskType.FoodConversion, null, null, string.Empty));
+            Assert.ThrowsExactly<Exception>(() => TaskExecuterFactory.CreateTaskExecuter(MCRATaskType.FoodConversion, null, null, string.Empty));
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace MCRA.Simulation.Test.UnitTests.TaskExecution {
         /// </summary>
         [TestMethod]
         public void TaskExecuterFactory_TestRunConcentrationModellingTest() {
-            Assert.ThrowsException<Exception>(() => TaskExecuterFactory.CreateTaskExecuter(MCRATaskType.ConcentrationModelling, null, null, string.Empty));
+            Assert.ThrowsExactly<Exception>(() => TaskExecuterFactory.CreateTaskExecuter(MCRATaskType.ConcentrationModelling, null, null, string.Empty));
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace MCRA.Simulation.Test.UnitTests.TaskExecution {
         /// </summary>
         [TestMethod]
         public void TaskExecuterFactory_TestRunExposureScreeningTest() {
-            Assert.ThrowsException<Exception>(() => TaskExecuterFactory.CreateTaskExecuter(MCRATaskType.ExposureScreening, null, null, string.Empty));
+            Assert.ThrowsExactly<Exception>(() => TaskExecuterFactory.CreateTaskExecuter(MCRATaskType.ExposureScreening, null, null, string.Empty));
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace MCRA.Simulation.Test.UnitTests.TaskExecution {
         /// </summary>
         [TestMethod]
         public void TaskExecuterFactory_TestRunIntakeCalculationTest() {
-            Assert.ThrowsException<Exception>(() => TaskExecuterFactory.CreateTaskExecuter(MCRATaskType.IntakeCalculation, null, null, string.Empty));
+            Assert.ThrowsExactly<Exception>(() => TaskExecuterFactory.CreateTaskExecuter(MCRATaskType.IntakeCalculation, null, null, string.Empty));
         }
     }
 }

@@ -32,7 +32,7 @@ namespace MCRA.Utils.Tests.UnitTests.DataReading.ValueConversion {
         [DataRow("123x")]
         public void FloatValueConverter_TestFail(string str) {
             var converter = new FloatValueConverter();
-            Assert.ThrowsException<FormatException>(() => converter.Convert(str));
+            Assert.ThrowsExactly<FormatException>(() => converter.Convert(str));
         }
     }
 }

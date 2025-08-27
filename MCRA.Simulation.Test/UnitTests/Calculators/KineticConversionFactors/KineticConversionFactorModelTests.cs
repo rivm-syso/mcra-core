@@ -106,7 +106,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticConversionFactors {
                 ConversionFactor = .4,
                 Distribution = KineticConversionFactorDistributionType.LogNormal,
             };
-            Assert.ThrowsException<Exception>(() => KineticConversionFactorCalculatorFactory.Create(conversion, false));
+            Assert.ThrowsExactly<Exception>(() => KineticConversionFactorCalculatorFactory.Create(conversion, false));
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticConversionFactors {
                     }
                 ]
             };
-            Assert.ThrowsException<Exception>(() => KineticConversionFactorCalculatorFactory.Create(conversion, true));
+            Assert.ThrowsExactly<Exception>(() => KineticConversionFactorCalculatorFactory.Create(conversion, true));
         }
 
         [TestMethod]

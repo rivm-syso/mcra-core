@@ -58,7 +58,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var data = new ActionData();
             var calculator = new SubstancesActionCalculator(project);
 
-            Assert.ThrowsException<Exception>(() => TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoad"));
+            Assert.ThrowsExactly<Exception>(() => TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoad"));
         }
 
         /// <summary>

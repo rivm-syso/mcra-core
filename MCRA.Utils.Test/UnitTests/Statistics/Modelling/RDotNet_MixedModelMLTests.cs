@@ -10,7 +10,7 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.Modelling {
             var yR = new List<double>();
             var indR = new List<int>();
             var distinctLevels = new List<int>();
-            Assert.ThrowsException<ParameterFitException>(() => MixedModelCalculator.MLRandomModel(yR, indR, distinctLevels));
+            Assert.ThrowsExactly<ParameterFitException>(() => MixedModelCalculator.MLRandomModel(yR, indR, distinctLevels));
         }
 
         [TestMethod]

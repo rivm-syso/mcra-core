@@ -26,7 +26,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FoodConversionCalculation {
                 SubstanceIncludeNonDetects = true
             };
             var calculator = new FoodConversionCalculator(settings, null, null, null);
-            Assert.ThrowsException<Exception>(() => calculator.CalculateFoodConversions(foods, substances));
+            Assert.ThrowsExactly<Exception>(() => calculator.CalculateFoodConversions(foods, substances));
         }
 
         /// <summary>

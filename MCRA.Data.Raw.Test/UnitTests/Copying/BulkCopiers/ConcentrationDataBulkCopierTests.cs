@@ -113,7 +113,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
             using (var reader = new CsvFolderReader(TestUtils.GetResource("Concentrations/SSD-MissingConcentration"))) {
                 reader.Open();
                 var bulkCopier = new ConcentrationsBulkCopier(dataSourceWriter, null, null);
-                Assert.ThrowsException<RawDataSourceBulkCopyException>(() => bulkCopier.TryCopy(reader, new ProgressState()));
+                Assert.ThrowsExactly<RawDataSourceBulkCopyException>(() => bulkCopier.TryCopy(reader, new ProgressState()));
             }
         }
 

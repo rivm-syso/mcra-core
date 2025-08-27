@@ -26,7 +26,7 @@ namespace MCRA.Utils.Tests.UnitTests.DataReading.ValueConversion {
         [DataRow("1e-1")]
         public void Int64ValueConverter_TestFail(string str) {
             var converter = new Int64ValueConverter();
-            Assert.ThrowsException<FormatException>(() => converter.Convert(str));
+            Assert.ThrowsExactly<FormatException>(() => converter.Convert(str));
         }
     }
 }

@@ -29,7 +29,7 @@ namespace MCRA.Utils.Tests.UnitTests.DataReading.ValueConversion {
         [DataRow("f")]
         public void BoolValueConverter_TestFail(string str) {
             var converter = new BoolValueConverter();
-            Assert.ThrowsException<FormatException>(() => converter.Convert(str));
+            Assert.ThrowsExactly<FormatException>(() => converter.Convert(str));
         }
     }
 }

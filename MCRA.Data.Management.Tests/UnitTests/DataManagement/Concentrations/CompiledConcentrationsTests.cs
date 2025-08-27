@@ -236,7 +236,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             CollectionAssert.AreEquivalent(new[] { "Z" }, compoundCodes);
         }
 
-        [TestMethod, ExpectedException(typeof(KeyNotFoundException))]
+        [TestMethod]
         public void CompiledConcentrations_TestMissingMethodCompounds() {
             _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
             _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
@@ -251,8 +251,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             var foods = _getFoodsDelegate.Invoke();
             var compounds = _getSubstancesDelegate.Invoke();
             //an exception will be thrown when the samples are loaded as part of getting the analyticalmethods
-            var analyticalMethods = _getAnalyticalMethodsDelegate.Invoke();
-
+            Assert.ThrowsExactly<KeyNotFoundException>(_getAnalyticalMethodsDelegate.Invoke);
         }
 
 

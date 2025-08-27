@@ -86,7 +86,7 @@ namespace MCRA.Utils.Test.UnitTests.DataSourceReading.DataReaders {
             using (var reader = new StreamReader(csvFilePath)) {
                 var stream = reader.BaseStream;
                 var csvReader = new CsvDataReader(stream);
-                Assert.ThrowsException<FormatException>(() => ReadAllColumnValues<DateTime>(csvReader, "DateField"));
+                Assert.ThrowsExactly<FormatException>(() => ReadAllColumnValues<DateTime>(csvReader, "DateField"));
             }
         }
 
@@ -118,7 +118,7 @@ namespace MCRA.Utils.Test.UnitTests.DataSourceReading.DataReaders {
             using (var reader = new StreamReader(csvFilePath)) {
                 var stream = reader.BaseStream;
                 var csvReader = new CsvDataReader(stream);
-                Assert.ThrowsException<FormatException>(() => ReadAllColumnValues<double>(csvReader, "NumericField"));
+                Assert.ThrowsExactly<FormatException>(() => ReadAllColumnValues<double>(csvReader, "NumericField"));
             }
         }
 
@@ -139,7 +139,7 @@ namespace MCRA.Utils.Test.UnitTests.DataSourceReading.DataReaders {
             using (var reader = new StreamReader(csvFilePath)) {
                 var stream = reader.BaseStream;
                 var csvReader = new CsvDataReader(stream, fieldTypes: [typeof(int)]);
-                Assert.ThrowsException<FormatException>(() => ReadAllColumnValues<int?>(csvReader, "IntField"));
+                Assert.ThrowsExactly<FormatException>(() => ReadAllColumnValues<int?>(csvReader, "IntField"));
             }
         }
 

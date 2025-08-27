@@ -28,7 +28,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying {
         [TestMethod]
         public void RawDataSourceBulkCopier_NullTest() {
             var copier = new RawDataSourceBulkCopier(null);
-            Assert.ThrowsException<ArgumentNullException>(() => copier.CopyFromDataSourceReader(null, allowEmptyDataSource: true));
+            Assert.ThrowsExactly<ArgumentNullException>(() => copier.CopyFromDataSourceReader(null, allowEmptyDataSource: true));
         }
 
         /// <summary>
@@ -286,7 +286,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying {
             var cancelToken = new CancellationToken(true);
             var progressState = new CompositeProgressState(cancelToken);
 
-            Assert.ThrowsException<OperationCanceledException>(() => copier.CopyFromDataSourceReader(
+            Assert.ThrowsExactly<OperationCanceledException>(() => copier.CopyFromDataSourceReader(
                 readerMock.Object,
                 allowEmptyDataSource: true,
                 progressState
@@ -302,7 +302,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying {
             var writerMock = new Mock<IDataSourceWriter>();
 
             var copier = new RawDataSourceBulkCopier(writerMock.Object);
-            Assert.ThrowsException<IOException>(() => copier.CopyFromDataFile("test.mdb"));
+            Assert.ThrowsExactly<IOException>(() => copier.CopyFromDataFile("test.mdb"));
         }
 
         /// <summary>
@@ -328,7 +328,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying {
             var copier = new RawDataSourceBulkCopier(writerMock.Object);
 
             // Use an empty data table as data source, this should not throw an exception
-            Assert.ThrowsException<RawDataSourceBulkCopyException>(() => copier.CopyFromDataTables([], allowEmptyDataSource: false));
+            Assert.ThrowsExactly<RawDataSourceBulkCopyException>(() => copier.CopyFromDataTables([], allowEmptyDataSource: false));
         }
 
         /// <summary>

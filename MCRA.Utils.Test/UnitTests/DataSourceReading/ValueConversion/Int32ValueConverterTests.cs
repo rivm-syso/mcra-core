@@ -27,7 +27,7 @@ namespace MCRA.Utils.Tests.UnitTests.DataReading.ValueConversion {
         [DataRow("-23.45")]
         public void Int32ValueConverter_TestFail(string str) {
             var converter = new Int32ValueConverter();
-            Assert.ThrowsException<FormatException>(() => converter.Convert(str));
+            Assert.ThrowsExactly<FormatException>(() => converter.Convert(str));
         }
     }
 }

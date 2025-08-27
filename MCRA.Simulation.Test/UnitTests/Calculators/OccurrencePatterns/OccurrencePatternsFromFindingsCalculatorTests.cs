@@ -442,7 +442,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
 
             });
             var calculator = new OccurrencePatternsFromFindingsCalculator(settings);
-            Assert.ThrowsException<AggregateException>(() => calculator.Compute(foods, collection).ToList());
+            Assert.ThrowsExactly<AggregateException>(() => calculator.Compute(foods, collection).ToList());
         }
 
         /// <summary>

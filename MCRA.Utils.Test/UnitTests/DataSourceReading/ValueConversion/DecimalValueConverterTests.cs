@@ -34,7 +34,7 @@ namespace MCRA.Utils.Tests.UnitTests.DataReading.ValueConversion {
         [DataRow("-infinity")]
         public void DecimalValueConverter_TestFail(string str) {
             var converter = new DecimalValueConverter();
-            Assert.ThrowsException<FormatException>(() => converter.Convert(str));
+            Assert.ThrowsExactly<FormatException>(() => converter.Convert(str));
         }
     }
 }

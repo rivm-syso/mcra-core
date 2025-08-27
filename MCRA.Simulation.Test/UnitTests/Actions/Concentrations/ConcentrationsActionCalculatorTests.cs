@@ -189,7 +189,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var calculator = new ConcentrationsActionCalculator(project);
             if (exception) {
-                Assert.ThrowsException<AggregateException>(() => TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoadFocal0"));
+                Assert.ThrowsExactly<AggregateException>(() => TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoadFocal0"));
             } else {
                 TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoadFocal0");
             }
@@ -356,7 +356,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var calculator = new ConcentrationsActionCalculator(project);
             if (focalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByLimitValue)
-                Assert.ThrowsException<Exception>(() => TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoadFocal2"));
+                Assert.ThrowsExactly<Exception>(() => TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoadFocal2"));
             else {
                 TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoadFocal2");
             }

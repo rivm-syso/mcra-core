@@ -54,7 +54,7 @@ namespace MCRA.Simulation.Test.UnitTests.Objects {
             };
 
             // Cannot add exposure path with the same key
-            Assert.ThrowsException<ArgumentException>(() => pathDictionary.Add(p1_clone, "Exposure path 1 clone"));
+            Assert.ThrowsExactly<ArgumentException>(() => pathDictionary.Add(p1_clone, "Exposure path 1 clone"));
 
             // Check that p1 and p1_clone behave as the same key
             Assert.IsTrue(pathDictionary.ContainsKey(p1_clone));

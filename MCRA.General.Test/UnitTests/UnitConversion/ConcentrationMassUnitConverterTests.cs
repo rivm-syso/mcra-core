@@ -14,12 +14,12 @@
 
         [TestMethod]
         public void ConcentrationMassUnitConverter_Test2() {
-            Assert.ThrowsException<Exception>(() => ConcentrationMassUnit.Grams.GetMultiplicationFactor(ConcentrationMassUnit.PerUnit));
+            Assert.ThrowsExactly<Exception>(() => ConcentrationMassUnit.Grams.GetMultiplicationFactor(ConcentrationMassUnit.PerUnit));
         }
 
         [TestMethod]
         public void ConcentrationMassUnitConverter_Test3() {
-            Assert.ThrowsException<Exception>(() => ConcentrationMassUnit.PerUnit.GetMultiplicationFactor(ConcentrationMassUnit.Grams));
+            Assert.ThrowsExactly<Exception>(() => ConcentrationMassUnit.PerUnit.GetMultiplicationFactor(ConcentrationMassUnit.Grams));
         }
 
         [TestMethod]

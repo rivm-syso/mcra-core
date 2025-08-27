@@ -35,7 +35,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
                       .Callback(gdrByDefCallback)
                       .Returns(() => tableId == "AdverseOutcomePathwayNetworks" ? table.CreateDataReader() : null);
 
-            Assert.ThrowsException<RawDataSourceBulkCopyException>(() => copier.CopyFromDataSourceReader(
+            Assert.ThrowsExactly<RawDataSourceBulkCopyException>(() => copier.CopyFromDataSourceReader(
                 readerMock.Object,
                 tableGroups: [SourceTableGroup.AdverseOutcomePathwayNetworks],
                 allowEmptyDataSource: true

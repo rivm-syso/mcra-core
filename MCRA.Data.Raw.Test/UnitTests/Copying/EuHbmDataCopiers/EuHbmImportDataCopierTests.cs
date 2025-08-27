@@ -65,7 +65,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.EuHbmDataCopiers {
                 using (var reader = new ExcelFileReader(TestUtils.GetResource(testFile))) {
                     reader.Open();
                     var bulkCopier = new EuHbmImportDataCopier(dataSourceWriter, parsedTableGroups, parsedTables);
-                    Assert.ThrowsException<Exception>(() => bulkCopier.TryCopy(reader, new ProgressState()));
+                    Assert.ThrowsExactly<Exception>(() => bulkCopier.TryCopy(reader, new ProgressState()));
                 }
             }
         }

@@ -103,7 +103,7 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.Distributions {
         [TestMethod()]
         public void DirichletDistribution_TestSampleEmptyArray() {
             var prob = Array.Empty<double>();
-            Assert.ThrowsException<ArgumentException>(() => DirichletDistribution.Sample(prob, 1));
+            Assert.ThrowsExactly<ArgumentException>(() => DirichletDistribution.Sample(prob, 1));
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.Distributions {
         [TestMethod()]
         public void DirichletDistribution_TestSampleArrayOfZeroes() {
             var prob = new double[] { 0, 0, 0, 0 };
-            Assert.ThrowsException<ArgumentException>(() => DirichletDistribution.Sample(prob, 1));
+            Assert.ThrowsExactly<ArgumentException>(() => DirichletDistribution.Sample(prob, 1));
         }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.Distributions {
         /// </summary>
         [TestMethod()]
         public void DirichletDistribution_TestSampleNullArray() {
-            Assert.ThrowsException<NullReferenceException>(() => DirichletDistribution.Sample(null, 1));
+            Assert.ThrowsExactly<NullReferenceException>(() => DirichletDistribution.Sample(null, 1));
         }
     }
 }

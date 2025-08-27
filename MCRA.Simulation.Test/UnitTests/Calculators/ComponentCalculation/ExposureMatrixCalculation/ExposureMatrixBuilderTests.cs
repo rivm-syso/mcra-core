@@ -287,7 +287,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
                 totalExposureCutOff: 0,
                 ratioCutOff: 0
             );
-            Assert.ThrowsException<Exception>(() => builder.Compute(
+            Assert.ThrowsExactly<Exception>(() => builder.Compute(
                 null,
                 individualDayExposures,
                 TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay)

@@ -26,7 +26,7 @@ namespace MCRA.Data.Compiled.Test {
             var value = new PopulationIndividualPropertyValue() {
                 Value = "XXX"
             };
-            Assert.ThrowsException<Exception>(() => value.GetMonths());
+            Assert.ThrowsExactly<Exception>(() => value.GetMonths());
         }
 
         [TestMethod]
