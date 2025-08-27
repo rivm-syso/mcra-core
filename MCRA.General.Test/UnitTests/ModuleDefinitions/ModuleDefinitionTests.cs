@@ -1,7 +1,6 @@
 ﻿using MCRA.General.Action.Settings;
 using MCRA.General.ModuleDefinitions;
 using MCRA.Utils.ExtensionMethods;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.General.Test.UnitTests.ModuleDefinitions {
     [TestClass]

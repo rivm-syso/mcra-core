@@ -10,7 +10,6 @@ using MCRA.Utils.DataFileReading;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Xml;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
 

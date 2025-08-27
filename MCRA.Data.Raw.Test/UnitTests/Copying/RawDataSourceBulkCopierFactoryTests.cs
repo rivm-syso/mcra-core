@@ -2,7 +2,6 @@
 using MCRA.Data.Raw.Copying.EuHbmDataCopiers;
 using MCRA.General;
 using MCRA.Utils.DataFileReading;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Reflection;
 

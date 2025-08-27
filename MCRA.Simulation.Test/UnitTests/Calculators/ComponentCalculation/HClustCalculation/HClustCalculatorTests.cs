@@ -2,7 +2,6 @@
 using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
 using MCRA.Simulation.Calculators.ComponentCalculation.HClustCalculation;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MCRA.Utils;
 using MCRA.General;
 

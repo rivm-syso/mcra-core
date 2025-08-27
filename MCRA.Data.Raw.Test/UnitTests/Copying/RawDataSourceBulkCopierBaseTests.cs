@@ -2,7 +2,6 @@
 using MCRA.Utils.ProgressReporting;
 using MCRA.Data.Raw.Copying;
 using MCRA.General;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Data;
 using static MCRA.Data.Raw.Test.UnitTests.Copying.RawDataSourceBulkCopierTests;

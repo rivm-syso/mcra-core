@@ -6,7 +6,6 @@ using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Actions.AOPNetworks;
 using MCRA.Simulation.Test.Mock;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
     /// <summary>

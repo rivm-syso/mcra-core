@@ -1,7 +1,6 @@
 ﻿using System.Xml;
 using MCRA.General.Action.Serialization;
 using MCRA.General.Action.Settings;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.General.Test.UnitTests.Action.Serialization {
     [TestClass]

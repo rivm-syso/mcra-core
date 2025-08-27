@@ -1,6 +1,5 @@
 ﻿using MCRA.General.Action.Serialization;
 using MCRA.General.Action.Settings;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ModuleSettingsType = (string moduleId, (string key, string value)[])[];
 
 namespace MCRA.General.Test.UnitTests.Action.Serialization {

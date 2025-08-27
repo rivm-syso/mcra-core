@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculation {
+﻿namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculation {
     /// <summary>
     /// ResidueGeneration calculator
     /// </summary>

@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace MCRA.Simulation.Test.UnitTests.Calculators.UncertaintyFactorialCalculation {
+﻿namespace MCRA.Simulation.Test.UnitTests.Calculators.UncertaintyFactorialCalculation {
     /// <summary>
     /// UncertaintyFactorialCalculation calculator
     /// </summary>

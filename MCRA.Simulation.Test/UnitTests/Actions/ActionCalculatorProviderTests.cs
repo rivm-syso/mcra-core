@@ -3,7 +3,6 @@ using MCRA.General.Action.Settings;
 using MCRA.General.SettingsDefinitions;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Actions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
     /// <summary>

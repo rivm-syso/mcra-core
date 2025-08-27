@@ -2,7 +2,6 @@
 using MCRA.Simulation.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ModelledFoodsCalculation;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.ModelledFoodsCalculation {
     /// <summary>

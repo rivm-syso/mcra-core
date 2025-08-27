@@ -2,7 +2,6 @@
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Calculators.IntakeModelling;
 using MCRA.Simulation.Calculators.IntakeModelling.IntakeModels.OIMCalculation;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
     /// <summary>

@@ -1,6 +1,5 @@
 ﻿using MCRA.Simulation.Calculators.MarketSharesCalculation;
 using MCRA.Utils.Statistics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.MarketSharesCalculation {
     [TestClass()]

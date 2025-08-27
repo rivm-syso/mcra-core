@@ -4,7 +4,6 @@ using MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers;
 using MCRA.General;
 using MCRA.Utils.DataFileReading;
 using MCRA.Utils.ProgressReporting;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Data.Raw.Test.UnitTests.Copying.EuHbmDataCopiers {
     [TestClass]

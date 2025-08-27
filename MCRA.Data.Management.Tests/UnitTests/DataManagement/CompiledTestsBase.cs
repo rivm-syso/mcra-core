@@ -1,6 +1,5 @@
 ﻿using MCRA.Data.Management.CompiledDataManagers;
 using MCRA.Data.Management.RawDataProviders;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
     [TestClass]

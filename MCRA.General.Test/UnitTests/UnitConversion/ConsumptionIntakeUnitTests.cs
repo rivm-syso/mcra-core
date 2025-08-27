@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace MCRA.General.Test.UnitTests.UnitConversion {
+﻿namespace MCRA.General.Test.UnitTests.UnitConversion {
 
     [TestClass]
     public class ConsumptionIntakeUnitTests {

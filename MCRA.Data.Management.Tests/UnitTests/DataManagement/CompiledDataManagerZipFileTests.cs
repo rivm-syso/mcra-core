@@ -2,7 +2,6 @@
 using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Management.CompiledDataManagers;
 using MCRA.General;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO.Compression;
 
 namespace MCRA.Data.Management.Test.UnitTests.DataManagement {

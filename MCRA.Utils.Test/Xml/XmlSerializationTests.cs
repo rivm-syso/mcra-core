@@ -1,5 +1,4 @@
 ﻿using MCRA.Utils.TestReporting;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Utils.Xml {
 

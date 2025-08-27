@@ -1,5 +1,4 @@
 ﻿using MCRA.Simulation.Calculators.IntakeModelling;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.IntakeModelling {
     /// <summary>

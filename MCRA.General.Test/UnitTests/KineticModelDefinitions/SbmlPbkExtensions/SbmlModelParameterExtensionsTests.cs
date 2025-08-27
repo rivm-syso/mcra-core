@@ -1,6 +1,5 @@
 ﻿using MCRA.General.Sbml;
 using MCRA.Utils.Sbml.Objects;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.General.Test.UnitTests.KineticModelDefinitions.SbmlPbkExtensions {
     [TestClass]

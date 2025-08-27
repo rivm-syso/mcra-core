@@ -2,7 +2,6 @@
 using MCRA.General;
 using MCRA.Simulation.Calculators.KineticConversionFactorModels;
 using MCRA.Utils.Statistics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticConversionFactors {
     [TestClass]

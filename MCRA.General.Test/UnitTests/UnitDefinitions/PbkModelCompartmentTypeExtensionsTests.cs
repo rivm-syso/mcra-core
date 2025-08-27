@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace MCRA.General.Test.UnitTests.UnitDefinitions {
+﻿namespace MCRA.General.Test.UnitTests.UnitDefinitions {
     [TestClass]
     public class PbkModelCompartmentTypeExtensionsTests {
 

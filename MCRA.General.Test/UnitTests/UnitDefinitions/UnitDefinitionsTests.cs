@@ -1,7 +1,6 @@
 ﻿using MCRA.General.SettingsDefinitions;
 using MCRA.General.TableDefinitions;
 using MCRA.Utils.DataFileReading;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.General.Test.UnitTests.UnitDefinitions {
     [TestClass]

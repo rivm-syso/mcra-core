@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace MCRA.Simulation.Test.UnitTests.Calculators.ConsumptionUnitWeightGeneration {
+﻿namespace MCRA.Simulation.Test.UnitTests.Calculators.ConsumptionUnitWeightGeneration {
     /// <summary>
     /// ConsumptionUnitWeightGeneration calculator
     /// </summary>

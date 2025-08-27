@@ -1,5 +1,4 @@
 ﻿using MCRA.Utils.DataSourceReading.ValueConversion;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Utils.Tests.UnitTests.DataReading.ValueConversion {
     [TestClass]

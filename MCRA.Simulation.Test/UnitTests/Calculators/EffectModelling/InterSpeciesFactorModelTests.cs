@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace MCRA.Simulation.Test.UnitTests.Calculators.EffectModelling {
+﻿namespace MCRA.Simulation.Test.UnitTests.Calculators.EffectModelling {
     /// <summary>
     /// EffectModelling calculator
     /// </summary>

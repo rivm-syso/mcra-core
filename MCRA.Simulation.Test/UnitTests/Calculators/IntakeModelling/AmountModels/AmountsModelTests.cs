@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
+﻿namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
     /// <summary>
     /// IntakeModelling calculator
     /// </summary>

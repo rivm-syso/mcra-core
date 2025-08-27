@@ -2,7 +2,6 @@
 using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.IntakeModelling.IndividualAmountCalculation;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling.IndividualAmountsCalculation {
 

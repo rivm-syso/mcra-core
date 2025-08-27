@@ -1,7 +1,6 @@
 ﻿using MCRA.Data.Raw.Copying.BulkCopiers.DoseResponseModels;
 using MCRA.Data.Raw.Objects.RawTableGroups;
 using MCRA.General;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Data.Management.Test.DataReaders {
 

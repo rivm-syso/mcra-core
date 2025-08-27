@@ -7,7 +7,6 @@ using MCRA.Simulation.Actions.IntraSpeciesFactors;
 using MCRA.Simulation.Test.Mock;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
 

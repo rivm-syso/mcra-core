@@ -1,7 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using MCRA.General.SettingsDefinitions;
 using MCRA.Utils.ExtensionMethods;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.General.Test.UnitTests.SettingsDefinitions {
     [TestClass]

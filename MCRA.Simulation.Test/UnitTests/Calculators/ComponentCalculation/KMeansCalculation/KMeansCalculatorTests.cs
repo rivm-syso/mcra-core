@@ -4,7 +4,6 @@ using MCRA.Simulation.Calculators.ComponentCalculation.KMeansCalculation;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils;
 using MCRA.Utils.Statistics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
 

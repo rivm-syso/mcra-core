@@ -1,7 +1,6 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.Simulation.Calculators.IntakeModelling;
 using MCRA.Simulation.OutputGeneration;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.DietaryExposures {
     /// <summary>

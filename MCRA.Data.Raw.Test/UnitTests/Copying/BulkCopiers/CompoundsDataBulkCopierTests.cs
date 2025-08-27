@@ -5,7 +5,6 @@ using MCRA.Data.Raw.Copying.BulkCopiers;
 using MCRA.Data.Raw.Test.Helpers;
 using MCRA.General;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
 

@@ -6,7 +6,6 @@ using MCRA.Simulation.Calculators.IndividualsSubsetCalculation.IndividualFilters
 using MCRA.Simulation.Calculators.PopulationDefinitionCalculation;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.IndividualsSubsetCalculation {
 

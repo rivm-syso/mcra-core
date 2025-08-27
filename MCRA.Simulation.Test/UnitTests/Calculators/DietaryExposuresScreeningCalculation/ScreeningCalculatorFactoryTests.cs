@@ -1,7 +1,6 @@
 ﻿using MCRA.General;
 using MCRA.Simulation.Calculators.HighExposureFoodSubstanceCombinations;
 using MCRA.Simulation.Calculators.HighExposureFoodSubstanceCombinationsCalculation;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.DietaryExposuresScreeningCalculation {
 

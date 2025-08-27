@@ -1,7 +1,6 @@
 ﻿using MCRA.Utils.DataFileReading;
 using MCRA.Data.Raw.Copying;
 using MCRA.General;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Data;
 

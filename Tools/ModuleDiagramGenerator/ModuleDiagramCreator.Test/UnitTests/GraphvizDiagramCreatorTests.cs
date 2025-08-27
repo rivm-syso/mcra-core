@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ModuleDiagramCreator.DiagramCreators;
+﻿using ModuleDiagramCreator.DiagramCreators;
 using ModuleDiagramCreator.Test.Helpers;
 
 namespace ModuleDiagramCreator.Test.IntegrationTests {

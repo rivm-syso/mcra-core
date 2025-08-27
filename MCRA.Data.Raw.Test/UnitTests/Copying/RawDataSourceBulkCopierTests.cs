@@ -5,7 +5,6 @@ using MCRA.General;
 using MCRA.General.TableDefinitions;
 using MCRA.Utils.DataFileReading;
 using MCRA.Utils.ProgressReporting;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace MCRA.Data.Raw.Test.UnitTests.Copying {

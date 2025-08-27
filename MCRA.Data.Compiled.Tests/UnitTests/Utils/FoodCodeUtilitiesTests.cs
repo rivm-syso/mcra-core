@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MCRA.Data.Compiled.Utils;
+﻿using MCRA.Data.Compiled.Utils;
 
 namespace MCRA.Data.Compiled.Test {
     [TestClass]

@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace MCRA.General.Test.UnitTests.ModuleDefinitions {
+﻿namespace MCRA.General.Test.UnitTests.ModuleDefinitions {
     [TestClass]
     public class KineticModelDefinitionTests {
 

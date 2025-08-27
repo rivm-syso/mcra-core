@@ -5,7 +5,6 @@ using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.SingleValueConcentrations;
 using MCRA.Simulation.Test.Mock;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MCRA.General;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {

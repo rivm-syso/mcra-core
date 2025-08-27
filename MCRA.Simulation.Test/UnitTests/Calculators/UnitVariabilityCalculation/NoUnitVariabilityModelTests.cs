@@ -2,7 +2,6 @@
 using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.UnitVariabilityCalculation;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.UnitVariabilityCalculation {
     /// <summary>

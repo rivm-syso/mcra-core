@@ -3,7 +3,6 @@ using MCRA.Utils.ProgressReporting;
 using MCRA.Data.Raw.Copying.BulkCopiers;
 using MCRA.Data.Raw.Test.Helpers;
 using MCRA.General;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Data;
 
 namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {

@@ -7,7 +7,6 @@ using MCRA.General.DoseResponseModels;
 using MCRA.Simulation.Calculators.DoseResponseModelCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Helpers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.DoseResponseModelCalculation {
     /// <summary>

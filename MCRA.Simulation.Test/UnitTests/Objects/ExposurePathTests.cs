@@ -1,6 +1,5 @@
 ﻿using MCRA.General;
 using MCRA.Simulation.Objects;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Objects {
     [TestClass]

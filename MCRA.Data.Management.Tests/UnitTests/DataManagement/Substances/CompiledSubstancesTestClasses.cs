@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
+﻿namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
     /// <summary>
     /// Runs all tests for compiled substances when using CompiledDataManager.GetAllCompounds
     /// to retrieve the substances

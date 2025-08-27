@@ -1,6 +1,5 @@
 ﻿using MCRA.General.ScopingTypeDefinitions;
 using MCRA.General.TableDefinitions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.General.Test.UnitTests.ScopeTypeDefinitions {
 

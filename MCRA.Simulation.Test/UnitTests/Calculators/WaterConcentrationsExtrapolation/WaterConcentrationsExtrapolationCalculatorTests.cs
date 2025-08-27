@@ -3,7 +3,6 @@ using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.FoodExtrapolationsCalculation;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MCRA.General.ModuleDefinitions.Interfaces;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.WaterConcentrationsExtrapolation {

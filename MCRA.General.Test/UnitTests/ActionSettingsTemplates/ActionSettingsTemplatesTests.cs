@@ -7,7 +7,6 @@ using MCRA.General.Action.Settings;
 using MCRA.General.ActionSettingsTemplates;
 using MCRA.General.ModuleDefinitions;
 using MCRA.General.SettingsDefinitions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MCRA.General.Test.Helpers;
 
 namespace MCRA.General.Test.UnitTests.SettingTemplates {

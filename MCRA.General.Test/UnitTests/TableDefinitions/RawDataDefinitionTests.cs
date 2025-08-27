@@ -1,6 +1,5 @@
 ﻿using MCRA.Data.Raw.Constants;
 using MCRA.General.TableDefinitions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TableEnums = MCRA.General.TableDefinitions.RawTableFieldEnums;
 
 namespace MCRA.General.Test.UnitTests.TableDefinitions {

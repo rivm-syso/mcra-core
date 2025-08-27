@@ -2,7 +2,6 @@
 using MCRA.Simulation.Objects;
 using MCRA.Simulation.Calculators.IntakeModelling.PredictionLevelsCalculation;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
 

@@ -1,7 +1,6 @@
 ﻿using MCRA.Utils;
 using MCRA.Utils.Statistics;
 using MCRA.Simulation.Calculators.IntakeModelling;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.IntakeModelling.IntakeTransformers {
     /// <summary>

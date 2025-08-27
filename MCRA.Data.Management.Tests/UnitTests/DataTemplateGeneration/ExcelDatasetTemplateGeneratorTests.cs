@@ -5,7 +5,6 @@ using MCRA.Data.Management.Test.Helpers;
 using MCRA.General;
 using MCRA.General.ModuleDefinitions;
 using MCRA.General.TableDefinitions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Data.Management.Test.UnitTests.DataTemplateGeneration {
 

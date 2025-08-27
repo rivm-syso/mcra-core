@@ -4,7 +4,6 @@ using MCRA.Simulation.Calculators.OccurrencePatternsCalculation;
 using MCRA.Simulation.Calculators.SampleOriginCalculation;
 using MCRA.Simulation.Objects;
 using MCRA.Simulation.OutputGeneration;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Globalization;
 using MCO = MCRA.Data.Compiled.Objects;
 

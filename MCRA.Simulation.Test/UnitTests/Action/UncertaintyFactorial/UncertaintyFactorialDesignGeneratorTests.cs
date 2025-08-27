@@ -1,6 +1,5 @@
 ﻿using MCRA.General;
 using MCRA.Simulation.Action.UncertaintyFactorial;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Action.UncertaintyFactorial {
 

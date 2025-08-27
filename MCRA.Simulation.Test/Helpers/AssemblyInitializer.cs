@@ -1,6 +1,5 @@
 ﻿using MCRA.Utils.R.REngines;
 using Microsoft.Extensions.Configuration;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.Helpers {
     /// <summary>

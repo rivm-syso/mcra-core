@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace MCRA.Simulation.Test.UnitTests.Calculators.ConsumptionAmountGeneration {
+﻿namespace MCRA.Simulation.Test.UnitTests.Calculators.ConsumptionAmountGeneration {
     /// <summary>
     /// ConsumptionAmountGeneration calculator
     /// </summary>

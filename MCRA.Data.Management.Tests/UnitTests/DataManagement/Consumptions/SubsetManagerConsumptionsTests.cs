@@ -1,5 +1,4 @@
 ﻿using MCRA.General;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Data.Management.Test.UnitTests.DataManagement.Consumptions {
 

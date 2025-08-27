@@ -10,7 +10,6 @@ using MCRA.Utils.Logger;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.R.REngines;
 using MCRA.Utils.Statistics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.PbkModelCalculation.DesolvePbkModelCalculators {
 

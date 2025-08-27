@@ -8,7 +8,6 @@ using MCRA.Simulation.Actions.SingleValueConsumptions;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Mock;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
     /// <summary>

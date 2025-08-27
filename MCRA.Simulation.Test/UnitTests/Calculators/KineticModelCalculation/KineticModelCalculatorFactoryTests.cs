@@ -1,6 +1,5 @@
 ﻿using MCRA.General;
 using MCRA.Simulation.Calculators.KineticModelCalculation;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Reflection;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {

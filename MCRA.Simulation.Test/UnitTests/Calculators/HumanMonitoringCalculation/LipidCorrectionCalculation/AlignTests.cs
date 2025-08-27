@@ -1,5 +1,4 @@
 ﻿using MCRA.General;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.LipidCorrectionCalculation {
     [TestClass]

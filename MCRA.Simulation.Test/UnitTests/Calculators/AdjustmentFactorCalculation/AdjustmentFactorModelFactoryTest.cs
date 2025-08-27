@@ -1,7 +1,6 @@
 ﻿using MCRA.General;
 using MCRA.Simulation.Calculators.AdjustmentFactorCalculation;
 using MCRA.Utils.Statistics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.AdjustmentFactorCalculation {
 

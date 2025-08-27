@@ -3,7 +3,6 @@ using MCRA.Utils.Statistics;
 using MCRA.General;
 using MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregationCalculation;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.KineticConversionFactorModels;
 

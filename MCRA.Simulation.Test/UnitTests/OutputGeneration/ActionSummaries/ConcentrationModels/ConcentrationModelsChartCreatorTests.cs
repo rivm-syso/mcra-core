@@ -6,7 +6,6 @@ using MCRA.Simulation.OutputGeneration.Helpers;
 using MCRA.Utils;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.Histograms;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.ConcentrationModels {
     /// <summary>

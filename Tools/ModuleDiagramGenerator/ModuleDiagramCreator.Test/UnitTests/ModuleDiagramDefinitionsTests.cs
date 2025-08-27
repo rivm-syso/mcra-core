@@ -1,5 +1,4 @@
 ﻿using MCRA.General.ModuleDefinitions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ModuleDiagramCreator.Resources;
 
 namespace ModuleDiagramCreator.Test.UnitTests {

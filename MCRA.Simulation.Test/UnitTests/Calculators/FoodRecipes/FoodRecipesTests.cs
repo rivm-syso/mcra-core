@@ -1,5 +1,4 @@
 ﻿using MCRA.Utils.ExtensionMethods;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.FoodRecipes {
     /// <summary>

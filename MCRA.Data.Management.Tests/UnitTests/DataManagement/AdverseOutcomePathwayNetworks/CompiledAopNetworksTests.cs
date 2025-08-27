@@ -1,6 +1,5 @@
 ﻿using MCRA.General;
 using MCRA.Data.Compiled.Objects;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
     public class CompiledAopNetworksTests : CompiledTestsBase {

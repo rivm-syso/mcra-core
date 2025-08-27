@@ -1,10 +1,6 @@
-﻿using MCRA.Data.Compiled.Objects;
-using MCRA.General;
-using MCRA.General.Action.Settings;
-using MCRA.Simulation.Calculators.IndividualsSubsetCalculation.IndividualFilters;
+﻿using MCRA.General.Action.Settings;
 using MCRA.Simulation.Calculators.PopulationDefinitionCalculation;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.PopulationDefinitionCalculation {
 

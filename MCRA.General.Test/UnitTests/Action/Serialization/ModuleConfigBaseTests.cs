@@ -4,7 +4,6 @@ using MCRA.General.Action.Settings;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.General.SettingsDefinitions;
 using MCRA.Utils.Xml;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.General.Test.UnitTests.Action.Serialization {
     [TestClass]

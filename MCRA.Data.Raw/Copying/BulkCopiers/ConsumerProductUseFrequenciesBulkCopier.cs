@@ -1,10 +1,6 @@
 ﻿using MCRA.Utils.DataFileReading;
-using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.ProgressReporting;
-using MCRA.Data.Raw.Copying.BulkCopiers.HumanMonitoring;
 using MCRA.General;
-using System.Data;
-using System.Globalization;
 using MCRA.General.TableDefinitions.RawTableObjects;
 
 namespace MCRA.Data.Raw.Copying.BulkCopiers {

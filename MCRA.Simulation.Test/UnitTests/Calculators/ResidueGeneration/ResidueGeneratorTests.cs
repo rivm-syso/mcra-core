@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace MCRA.Simulation.Test.UnitTests.Calculators.ResidueGeneration {
+﻿namespace MCRA.Simulation.Test.UnitTests.Calculators.ResidueGeneration {
     /// <summary>
     /// ResidueGeneration calculator
     /// </summary>

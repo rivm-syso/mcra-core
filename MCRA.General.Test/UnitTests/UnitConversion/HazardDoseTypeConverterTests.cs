@@ -1,5 +1,4 @@
 ﻿using MCRA.Utils.ExtensionMethods;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.General.Test.UnitTests.UnitConversion {
 

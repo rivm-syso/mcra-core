@@ -1,7 +1,6 @@
 ﻿using MCRA.General;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Simulation.OutputGeneration;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
 

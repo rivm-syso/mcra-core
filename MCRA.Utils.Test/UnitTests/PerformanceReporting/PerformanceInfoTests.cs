@@ -1,5 +1,4 @@
 ﻿using MCRA.Utils.PerformanceReporting;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Utils.Test.UnitTests.PerformanceReporting {
     [TestClass]
