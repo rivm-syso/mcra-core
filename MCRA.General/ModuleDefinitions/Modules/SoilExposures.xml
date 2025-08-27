@@ -37,6 +37,7 @@
     <OutputSetting source="DietaryExposures">IsPerPerson</OutputSetting>
   </OutputSettings>
   <UncertaintySettings>
+    <UncertaintySetting source ="SoilConcentrationDistributions">ResampleSoilConcentrations</UncertaintySetting>
     <UncertaintySetting source="Action">UncertaintyLowerBound</UncertaintySetting>
     <UncertaintySetting source="Action">UncertaintyUpperBound</UncertaintySetting>
   </UncertaintySettings>

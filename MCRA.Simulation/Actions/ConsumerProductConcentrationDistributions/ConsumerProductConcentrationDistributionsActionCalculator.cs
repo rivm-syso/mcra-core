@@ -4,6 +4,7 @@ using MCRA.Data.Management.CompiledDataManagers.DataReadingSummary;
 using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Calculators.ConsumerProductConcentrationModelCalculation;
@@ -16,7 +17,6 @@ namespace MCRA.Simulation.Actions.ConsumerProductConcentrationDistributions {
     [ActionType(ActionType.ConsumerProductConcentrationDistributions)]
     public sealed class ConsumerProductConcentrationDistributionsActionCalculator(ProjectDto project)
         : ActionCalculatorBase<ConsumerProductConcentrationDistributionsActionResult>(project) {
-
         protected override void verify() {
             _actionDataLinkRequirements[ScopingType.ConsumerProductConcentrationDistributions][ScopingType.Compounds].AlertTypeMissingData = AlertType.Notification;
             _actionDataLinkRequirements[ScopingType.ConsumerProductConcentrationDistributions][ScopingType.ConsumerProducts].AlertTypeMissingData = AlertType.Notification;

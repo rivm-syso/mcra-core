@@ -94,6 +94,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 project.ConcentrationsSettings.ExtrapolateConcentrations = true;
                 project.SingleValueRisksSettings.UseAdjustmentFactors = true;
                 project.ExposureResponseFunctionsSettings.ResampleExposureResponseFunctions = true;
+                project.ConsumerProductConcentrationsSettings.ResampleCPConcentrations = true;
+                project.DustExposuresSettings.ResampleDustConcentrations = true;
+                project.SoilExposuresSettings.ResampleSoilConcentrations = true;
+                project.IndoorAirConcentrationsSettings.ResampleAirConcentrations = true;
                 var calculator = ActionCalculatorProvider.Create(definition.ActionType, project, false);
 
                 var sources = calculator.GetRandomSources();

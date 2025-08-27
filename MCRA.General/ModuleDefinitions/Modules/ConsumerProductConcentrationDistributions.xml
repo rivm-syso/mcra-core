@@ -31,7 +31,4 @@
   <UncertaintySettings>
     <UncertaintySetting source="ConsumerProductConcentrations">ResampleCPConcentrations</UncertaintySetting>
   </UncertaintySettings>
-  <UncertaintySources>
-    <UncertaintySource>CPConcentrationModelling</UncertaintySource>
-  </UncertaintySources>
 </Module>
