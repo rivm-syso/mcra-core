@@ -75,7 +75,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 $"\r\nSummarized not used:\r\n+{string.Join("\r\n+", summarizedSettingsNotUsed)}");
 
             // Check for missing module settings
-            var moduleSettings = calculator.ModuleDefinition.AllModuleSettings.ToHashSet();
+            var moduleSettings = calculator.ModuleDefinition.AllModuleSettings;
             var undefinedModuleSettings = summarizedSettings.Where(r => !moduleSettings.Contains(r)).ToList();
             Assert.IsTrue(!undefinedModuleSettings.Any(), $"The following settings were not defined in the module definition:\r\n-{string.Join("\r\n-", undefinedModuleSettings)}");
 

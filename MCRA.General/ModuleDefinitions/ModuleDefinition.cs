@@ -3,6 +3,19 @@ using MCRA.General.ActionSettingsTemplates;
 using MCRA.General.SettingsDefinitions;
 
 namespace MCRA.General.ModuleDefinitions {
+
+    public abstract class ModuleSettingItem {
+        [XmlAttribute("source")]
+        public string Source { get; set; }
+        [XmlText]
+        public string Setting { get; set; }
+    }
+    public class SelectionSetting : ModuleSettingItem { }
+    public class CalculationSetting : ModuleSettingItem { }
+    public class OutputSetting : ModuleSettingItem { }
+    public class UncertaintySetting : ModuleSettingItem { }
+
+
     public sealed class ModuleDefinition {
 
         private string _shortDescription { get; set; }
@@ -38,17 +51,13 @@ namespace MCRA.General.ModuleDefinitions {
         public bool HasUncertaintyAnalysis { get; set; }
         public bool HasUncertaintyFactorial { get; set; }
 
-        [XmlArrayItem("SelectionSetting")]
-        public List<string> SelectionSettings { get; set; }
+        public HashSet<SelectionSetting> SelectionSettings { get; set; }
 
-        [XmlArrayItem("CalculationSetting")]
-        public List<string> CalculationSettings { get; set; }
+        public HashSet<CalculationSetting> CalculationSettings { get; set; }
 
-        [XmlArrayItem("OutputSetting")]
-        public List<string> OutputSettings { get; set; }
+        public HashSet<OutputSetting> OutputSettings { get; set; }
 
-        [XmlArrayItem("UncertaintySetting")]
-        public List<string> UncertaintySettings { get; set; }
+        public HashSet<UncertaintySetting> UncertaintySettings { get; set; }
 
         [XmlArrayItem("Entity")]
         public HashSet<string> Entities { get; set; }
@@ -92,50 +101,40 @@ namespace MCRA.General.ModuleDefinitions {
             }
         }
 
-        public List<SettingsItemType> SelectionSettingsItems {
-            get {
-                if (SelectionSettings?.Count > 0) {
-                    return [.. SelectionSettings.Select(r => Enum.Parse<SettingsItemType>(r))];
-                }
-                return [];
-            }
-        }
+        public ICollection<SettingsItemType> SelectionSettingsItems =>
+            [.. SelectionSettings?.Select(r => Enum.Parse<SettingsItemType>(r.Setting)) ?? []];
 
-        public List<SettingsItemType> CalculationSettingsItems {
-            get {
-                if (CalculationSettings?.Count > 0) {
-                    return [.. CalculationSettings.Select(r => Enum.Parse<SettingsItemType>(r))];
-                }
-                return [];
-            }
-        }
+        public ICollection<SettingsItemType> CalculationSettingsItems =>
+            [.. CalculationSettings?.Select(r => Enum.Parse<SettingsItemType>(r.Setting)) ?? []];
 
-        public List<SettingsItemType> UncertaintySettingsItems {
-            get {
-                if (UncertaintySettings?.Count > 0) {
-                    return [.. UncertaintySettings.Select(r => Enum.Parse<SettingsItemType>(r))];
-                }
-                return [];
-            }
-        }
+        public ICollection<SettingsItemType> UncertaintySettingsItems =>
+            [.. UncertaintySettings?.Select(r => Enum.Parse<SettingsItemType>(r.Setting)) ?? []];
 
-        public List<SettingsItemType> OutputSettingsItems {
-            get {
-                if (OutputSettings?.Count > 0) {
-                    return [.. OutputSettings.Select(r => Enum.Parse<SettingsItemType>(r))];
-                }
-                return [];
-            }
-        }
+        public ICollection<SettingsItemType> OutputSettingsItems =>
+            [.. OutputSettings?.Select(r => Enum.Parse<SettingsItemType>(r.Setting)) ?? []];
 
-        public List<SettingsItemType> AllModuleSettings {
+        public ICollection<SettingsItemType> AllModuleSettings =>
+            [.. SelectionSettingsItems
+                .Concat(CalculationSettingsItems)
+                .Concat(UncertaintySettingsItems)
+                .Concat(OutputSettingsItems)
+            ];
+
+        private HashSet<ActionType> _sourceActionTypes;
+        public ICollection<ActionType> SourceActionTypes {
             get {
-                var result = new List<SettingsItemType>();
-                result.AddRange(SelectionSettingsItems);
-                result.AddRange(CalculationSettingsItems);
-                result.AddRange(OutputSettingsItems);
-                result.AddRange(UncertaintySettingsItems);
-                return result;
+                if (_sourceActionTypes == null) {
+                    var settings = SelectionSettings.Select(r => r.Source)
+                        .Concat(CalculationSettings.Select(r => r.Source))
+                        .Concat(OutputSettings.Select(r => r.Source))
+                        .Concat(UncertaintySettings.Select(r => r.Source));
+
+                    _sourceActionTypes = [.. settings
+                        .Where(t => !string.IsNullOrEmpty(t))
+                        .Select(Enum.Parse<ActionType>)
+                    ];
+                }
+                return _sourceActionTypes;
             }
         }
 
