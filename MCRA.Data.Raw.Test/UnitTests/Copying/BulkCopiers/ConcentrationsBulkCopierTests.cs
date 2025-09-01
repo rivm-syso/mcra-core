@@ -10,14 +10,12 @@ using MCRA.Utils.DataFileReading;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Xml;
+using RTA = MCRA.General.TableDefinitions.RawTableObjects;
 
 namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
 
-    /// <summary>
-    /// CompoundsDataBulkCopierTests
-    /// </summary>
     [TestClass]
-    public class ConcentrationDataBulkCopierTests : BulkCopierTestsBase {
+    public class ConcentrationsBulkCopierTests : BulkCopierTestsBase {
 
         /// <summary>
         /// Test concentration data bulk copier. Copy relational data.
@@ -59,7 +57,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
         }
 
         /// <summary>
-        /// ConcentrationDataBulkCopier_TestBulkCopySSD
+        /// Test copying of SSD concentration data.
         /// </summary>
         [TestMethod]
         public void ConcentrationDataBulkCopier_TestBulkCopySsd() {
@@ -102,7 +100,6 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
             }
         }
 
-
         /// <summary>
         /// Test bulkcopying of SSD data with additional sample properties specified
         /// in separate tables.
@@ -117,6 +114,69 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
             }
         }
 
+        /// <summary>
+        /// Test bulkcopying of SSD data with multiple sample analyses for some samples,
+        /// specified via the sampAnId field.
+        /// </summary>
+        [TestMethod]
+        public void ConcentrationDataBulkCopier_TestCopySSDSampAnId() {
+            var dataSourceWriter = new DataTableDataSourceWriter();
+            using (var reader = new CsvFolderReader(TestUtils.GetResource("Concentrations/SSD-sampAnId"))) {
+                reader.Open();
+                var bulkCopier = new ConcentrationsBulkCopier(dataSourceWriter, null, null);
+                bulkCopier.TryCopy(reader, new ProgressState());
+
+                // Get generated raw tables from writer
+                var tables = dataSourceWriter.DataTables;
+                
+                var rawFoodSamples = getRawDataRecords<RTA.RawFoodSample>(tables["RawFoodSamples"]);
+                Assert.AreEqual(20, rawFoodSamples.Count);
+
+                var rawSampleAnalyses = getRawDataRecords<RTA.RawAnalysisSample>(tables["RawAnalysisSamples"]);
+                Assert.AreEqual(22, rawSampleAnalyses.Count);
+
+                var rawSampleConcentrations = getRawDataRecords<RTA.RawConcentrationsPerSample>(tables["RawConcentrationsPerSample"]);
+
+                // First sample has two sample analyses
+                Assert.AreEqual(
+                    expected: 2,
+                    actual: rawSampleAnalyses.Where(r => r.idFoodSample == "FS01").Count()
+                );
+
+                // First sample has two sample analyses
+                CollectionAssert.AreEquivalent(
+                    expected: new [] { "SA1", "SA2" },
+                    actual: rawSampleAnalyses
+                        .Where(r => r.idFoodSample == "FS01")
+                        .Select(r => r.idAnalysisSample)
+                        .ToArray()
+                );
+
+                // Sample analysis IDs renamed for SA1 and SA2 of FS02
+                CollectionAssert.AreEquivalent(
+                    expected: new[] { "SA1:1", "SA2:1" },
+                    actual: rawSampleAnalyses
+                        .Where(r => r.idFoodSample == "FS02")
+                        .Select(r => r.idAnalysisSample)
+                        .ToArray()
+                );
+
+                // When not specified, sample analysis ID is equal to food sample
+                Assert.AreEqual(
+                    expected: "FS03",
+                    actual: rawSampleAnalyses.Single(r => r.idFoodSample == "FS03").idAnalysisSample
+                );
+
+                // Assert sample concentration record counts
+                var concentrationRecordCounts = rawSampleConcentrations
+                    .GroupBy(r => r.idAnalysisSample)
+                    .ToDictionary(r => r.Key, r => r.Count());
+                Assert.AreEqual(concentrationRecordCounts["SA1"], 3);
+                Assert.AreEqual(concentrationRecordCounts["SA2"], 2);
+                Assert.AreEqual(concentrationRecordCounts["SA1:1"], 3);
+                Assert.AreEqual(concentrationRecordCounts["SA2:1"], 3);
+            }
+        }
 
         /// <summary>
         /// Test bulkcopying of SSD data with additional sample properties specified

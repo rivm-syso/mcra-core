@@ -14,11 +14,8 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
     [TestClass]
     public class CompoundsDataBulkCopierTests : BulkCopierTestsBase {
 
-        /// <summary>
-        /// ConcentrationDataBulkCopier_TestBulkCopySSD
-        /// </summary>
         [TestMethod]
-        public void ConcentrationDataBulkCopier_TestBulkCopyCompoundsFromSsd() {
+        public void CompoundsBulkCopier_TestBulkCopyCompoundsFromSsd() {
             var dataSourceWriter = new DataTableDataSourceWriter();
             using (var reader = new ExcelFileReader(TestUtils.GetResource("Concentrations/ConcentrationsSSD.xls"))) {
                 reader.Open();
@@ -38,11 +35,8 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
             }
         }
 
-        /// <summary>
-        /// ConcentrationDataBulkCopier_TestBulkCopySSD
-        /// </summary>
         [TestMethod]
-        public void ConcentrationDataBulkCopier_TestBulkCopyCompoundsFromSsdWithRecoding() {
+        public void CompoundsBulkCopier_TestBulkCopyCompoundsFromSsdWithRecoding() {
             var substanceCodeConversions = new EntityCodeConversionsCollection() {
                 IdEntity = "Compounds",
                 ConversionTuples = [

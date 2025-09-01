@@ -1,7 +1,8 @@
-﻿using MCRA.Utils.DataFileReading;
+﻿using System.Data;
+using System.Reflection;
 using MCRA.General;
 using MCRA.General.TableDefinitions;
-using System.Data;
+using MCRA.Utils.DataFileReading;
 
 namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
 
@@ -12,7 +13,10 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
         /// </summary>
         /// <param name="tableDef">Table definition</param>
         /// <param name="sourceTableName"></param>
-        public delegate void GetDataReaderByDefinitionDelegate(TableDefinition tableDef, out string sourceTableName);
+        public delegate void GetDataReaderByDefinitionDelegate(
+            TableDefinition tableDef,
+            out string sourceTableName
+        );
 
         protected static TableDefinition getTableDefinition(RawDataSourceTableID tableId) {
             return McraTableDefinitions.Instance.GetTableDefinition(tableId);
@@ -40,7 +44,48 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
             return result;
         }
 
-        protected static DataTable getRawDataSourceTable(RawDataSourceTableID tableId, Dictionary<string, DataTable> tables) {
+        protected static List<T> getRawDataRecords<T>(
+            DataTable table
+        ) where T : IRawDataTableRecord, new() {
+            var records = new List<T>();
+
+            if (table == null || table.Rows.Count == 0) {
+                return records;
+            }
+
+            // Create property lookup
+            var props = typeof(T)
+                .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(p => p.CanWrite)
+                .ToDictionary(p => p.Name.ToLower(), p => p);
+
+            foreach (DataRow row in table.Rows) {
+                var obj = new T();
+                foreach (DataColumn col in table.Columns) {
+                    var colName = col.ColumnName.ToLower();
+                    if (props.TryGetValue(colName, out PropertyInfo prop)) {
+                        var value = row[col];
+                        if (value == DBNull.Value) {
+                            continue;
+                        }
+
+                        // Handle nullable types
+                        var targetType = Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType;
+                        var safeValue = Convert.ChangeType(value, targetType);
+                        prop.SetValue(obj, safeValue);
+                    }
+                }
+
+                records.Add(obj);
+            }
+
+            return records;
+        }
+
+        protected static DataTable getRawDataSourceTable(
+            RawDataSourceTableID tableId,
+            Dictionary<string, DataTable> tables
+        ) {
             var tableDefinition = McraTableDefinitions.Instance.TableDefinitions[tableId];
             return tables[tableDefinition.TargetDataTable];
         }

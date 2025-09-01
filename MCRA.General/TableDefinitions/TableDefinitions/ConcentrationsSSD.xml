@@ -19,7 +19,7 @@
     <string>SSDConcentrations</string>
   </Aliases>
   <ColumnDefinitions>
-    <ColumnDefinition IsUnique="true" Required="true" FieldType="AlphaNumeric" FieldSize="30">
+    <ColumnDefinition IsUnique="true" Required="true" FieldType="AlphaNumeric" FieldSize="40">
       <Id>labSampCode</Id>
       <Description>Code of the laboratory sample. MCRA will use the combination of labSampCode and labSubSampCode as unique code for a sample.</Description>
       <Aliases>
@@ -75,6 +75,13 @@
       <Description>Field trial type code.</Description>
       <Aliases>
         <string>fieldTrialType</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50">
+      <Id>sampAnId</Id>
+      <Description>Sample analysed identification code.</Description>
+      <Aliases>
+        <string>sampAnId</string>
       </Aliases>
     </ColumnDefinition>
     <ColumnDefinition FieldType="Integer" FieldSize="4">

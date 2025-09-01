@@ -1,10 +1,13 @@
-﻿using MCRA.Utils.DataFileReading;
-using MCRA.Utils.ProgressReporting;
+﻿using System.Data;
+using System.Drawing;
+using DocumentFormat.OpenXml.EMMA;
+using DocumentFormat.OpenXml.Spreadsheet;
 using MCRA.General;
 using MCRA.General.Extensions;
 using MCRA.General.TableDefinitions;
-using System.Data;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
+using MCRA.Utils.DataFileReading;
+using MCRA.Utils.ProgressReporting;
 
 namespace MCRA.Data.Raw.Copying.BulkCopiers {
     public sealed class ConcentrationsBulkCopier : RawDataSourceBulkCopierBase {
@@ -15,7 +18,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
 
         private const string _tempSsdTableCreateSql =
             @"CREATE TABLE samples (
-                [labSampCode] nvarchar(30) NULL,
+                [labSampCode] nvarchar(40) NULL,
                 [labSubSampCode] [nvarchar](4) NULL,
                 [sampCountry] [nvarchar](2) NULL,
                 [sampArea] [nvarchar](5) NULL,
@@ -23,6 +26,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                 [prodProdMeth] [nvarchar](5) NULL,
                 [sampStrategy] [nvarchar](50) NULL,
                 [fieldTrialType] [nvarchar](50) NULL,
+                [sampAnId] [nvarchar](50) NULL,
                 [sampY] [int] NULL,
                 [sampM] [int] NULL,
                 [sampD] [int] NULL,
@@ -40,8 +44,8 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
 
         private const string _tempSsdSelectSql =
             @"SELECT labSampCode, labSubSampCode, sampCountry, sampArea, prodCode, prodProdMeth, sampStrategy, fieldTrialType,
-                sampY, sampM, sampD, analysisY, analysisM, analysisD, paramCode, resUnit, resLOD, resLOQ, resVal, resType
-            FROM samples ORDER BY labSampCode, labSubSampCode, sampCountry, sampY, sampM, sampD, prodCode, paramCode";
+                sampAnId, sampY, sampM, sampD, analysisY, analysisM, analysisD, paramCode, resUnit, resLOD, resLOQ, resVal, resType
+            FROM samples ORDER BY labSampCode, labSubSampCode, sampCountry, sampY, sampM, sampD, prodCode, sampAnId, paramCode";
 
         private const string _tempTabulatedCreateSql =
             @"CREATE TABLE samples (
@@ -79,6 +83,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
             prodProdMeth,
             sampStrategy,
             fieldTrialType,
+            sampAnId,
             sampY,
             sampM,
             sampD,
@@ -126,6 +131,12 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
             }
         }
 
+        private class SSDSampleAnalysisRecord {
+            public string Code { get; set; }
+            public string SampleCode { get; set; }
+            public DateTime? AnalysisDate { get; set; }
+        }
+
         private class SSDSampleRecord {
             public string Code { get; set; }
             public int SubSampleCount { get; set; }
@@ -136,7 +147,6 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
             public string ProgramStrategyCode { get; set; }
             public string FieldTrialType { get; set; }
             public DateTime? SamplingDate { get; set; }
-            public DateTime? AnalysisDate { get; set; }
         }
 
         #endregion
@@ -454,29 +464,92 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                     var rawSamplePropertiesTable = concTables[RawDataSourceTableID.SampleProperties];
                     var rawSamplePropertyValuesTable = concTables[RawDataSourceTableID.SamplePropertyValues];
 
-                    //fill the raw sample properties with predefined values
+                    // Fill the raw sample properties with predefined values
                     rawSamplePropertiesTable.Rows.Add(SamplingStrategyPropertyName, "Sampling strategy code");
                     rawSamplePropertiesTable.Rows.Add(FieldTrialTypePropertyName, "Field trial type");
 
                     using (var command = tmpDatabaseWriter.CreateSQLiteCommand(_tempSsdSelectSql)) {
                         using (var reader = command.ExecuteReader()) {
-
                             SSDSampleRecord currentSample = null;
+                            SSDSampleAnalysisRecord currentSampleAnalysis = null;
                             var currentMethod = new List<SSDMethodRecord>();
                             var anMethodsByHash = new Dictionary<ulong, string>();
                             var anMethCounter = 0;
                             var currentSampleCode = string.Empty;
+                            var currentSampleAnalysisCode = string.Empty;
                             var currentProdCode = string.Empty;
                             var currentCountry = string.Empty;
                             DateTime? currentSampleDate = null;
                             var sampleCount = 0;
-                            var uniqueSampleCode = string.Empty;
                             var sampleCodeDuplicates = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+                            var sampleAnalysisCodeDuplicates = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
 
-                            bool addSampleAndMethod() {
-                                //add last sample and method:
-                                //analytical method, if there is a current sample
-                                if (currentSample != null) {
+                            SSDSampleAnalysisRecord initialiseCurrentSampleAnalysis(
+                                string currentSampleCode,
+                                string sampleAnalysisCode,
+                                DateTime? analysisDate
+                            ) {
+                                var uniqueSampleAnalysisCode = string.Empty;
+
+                                // Check whether sample code is equal to the previous code, if so, we have a
+                                // duplicate based on either prodCode, country, sampleDate and/or analysisDate
+                                // Now we need to create a new uniqueSampleCode: use the dictionary
+                                if (sampleAnalysisCodeDuplicates.TryGetValue(sampleAnalysisCode, out var duplicate)) {
+                                    sampleAnalysisCodeDuplicates[sampleAnalysisCode] = ++duplicate;
+                                    // Create the unique sample analysis code using the duplicate counter for the
+                                    // current sample analysis code.
+                                    uniqueSampleAnalysisCode = $"{sampleAnalysisCode}:{duplicate}";
+                                } else {
+                                    sampleAnalysisCodeDuplicates[sampleAnalysisCode] = 0;
+                                    uniqueSampleAnalysisCode = sampleAnalysisCode;
+                                }
+
+                                return new SSDSampleAnalysisRecord {
+                                    SampleCode = currentSampleCode,
+                                    AnalysisDate = analysisDate,
+                                    Code = uniqueSampleAnalysisCode
+                                };
+                            }
+
+                            SSDSampleRecord initialiseCurrentSampleRecord(
+                                string sampleCode,
+                                string foodCode,
+                                string location,
+                                string region,
+                                string productionMethod,
+                                string programStrategyCode,
+                                string fieldTrialType,
+                                DateTime? sampleDate
+                            ) {
+                                var uniqueSampleCode = string.Empty;
+
+                                // Check whether sample code is equal to the previous code, if so, we have a
+                                // duplicate based on either prodCode, country, sampleDate and/or analysisDate
+                                // Now we need to create a new uniqueSampleCode: use the dictionary
+                                if (currentSampleCode.Equals(sampleCode, StringComparison.OrdinalIgnoreCase)) {
+                                    sampleCodeDuplicates.TryGetValue(sampleCode, out var duplicate);
+                                    sampleCodeDuplicates[sampleCode] = ++duplicate;
+                                    // Create the unique sample code using the duplicate counter for the current sample code
+                                    uniqueSampleCode = $"{sampleCode}:{duplicate}";
+                                } else {
+                                    uniqueSampleCode = sampleCode;
+                                }
+
+                                return new SSDSampleRecord {
+                                    Code = uniqueSampleCode,
+                                    FoodCode = foodCode,
+                                    Location = location,
+                                    Region = region,
+                                    ProductionMethod = productionMethod,
+                                    ProgramStrategyCode = programStrategyCode,
+                                    FieldTrialType = fieldTrialType,
+                                    SamplingDate = sampleDate
+                                };
+                            }
+
+                            bool processCurrentSampleAnalysis() {
+                                // Add last sample, analysis and method if there is a current sample
+                                if (currentSampleAnalysis != null) {
                                     // Get a hash for the current analytical method that has been built up so far, by creating a string
                                     // of the analyticalmethodcompound records in the current method,
                                     // the records are already sorted on compound code so similar lists will result in similar hashes
@@ -509,16 +582,23 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                                         }
                                         currentMethod = [];
                                     }
-                                    sampleCount++;
 
                                     var rasRow = rawAnalysisSamplesTable.NewRow();
-                                    rasRow[nameof(RawAnalysisSamples.IdAnalysisSample)] = currentSample.Code;
+                                    rasRow[nameof(RawAnalysisSamples.IdAnalysisSample)] = currentSampleAnalysis.Code;
                                     rasRow[nameof(RawAnalysisSamples.IdFoodSample)] = currentSample.Code;
                                     rasRow[nameof(RawAnalysisSamples.IdAnalyticalMethod)] = cachedMethod;
-                                    if (currentSample.AnalysisDate.HasValue) {
-                                        rasRow[nameof(RawAnalysisSamples.DateAnalysis)] = currentSample.AnalysisDate;
+                                    if (currentSampleAnalysis.AnalysisDate.HasValue) {
+                                        rasRow[nameof(RawAnalysisSamples.DateAnalysis)] = currentSampleAnalysis.AnalysisDate;
                                     }
                                     rawAnalysisSamplesTable.Rows.Add(rasRow);
+                                }
+                                return true;
+                            }
+
+                            bool processCurrentSample() {
+                                // Add last sample, analysis and method if there is a current sample
+                                if (currentSample != null) {
+                                    sampleCount++;
 
                                     var rfsRow = rawFoodSamplesTable.NewRow();
                                     rfsRow[nameof(RawFoodSamples.IdFoodSample)] = currentSample.Code;
@@ -531,7 +611,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                                     }
                                     rawFoodSamplesTable.Rows.Add(rfsRow);
 
-                                    //add sample property values (if any)
+                                    // Add sample property values (if any)
                                     if (!string.IsNullOrEmpty(currentSample.ProgramStrategyCode)) {
                                         var rspvRow = rawSamplePropertyValuesTable.NewRow();
                                         rspvRow[nameof(RawSamplePropertyValues.IdSample)] = currentSample.Code;
@@ -546,6 +626,9 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                                         rspvRow[nameof(RawSamplePropertyValues.TextValue)] = currentSample.FieldTrialType;
                                         rawSamplePropertyValuesTable.Rows.Add(rspvRow);
                                     }
+
+                                    // Also process current sample analysis
+                                    processCurrentSampleAnalysis();
                                 }
                                 return true;
                             }
@@ -571,6 +654,9 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                                     (reader.IsDBNull(SSDFields.labSubSampCode, mapper)
                                         ? "" : "_" + reader.GetString(SSDFields.labSubSampCode, mapper));
 
+                                var sampleAnalysisCode = reader.GetStringOrNull(SSDFields.sampAnId, mapper)
+                                    ?? sampleCode;
+
                                 var prodCode = reader.GetString(SSDFields.prodCode, mapper);
                                 var paramCode = reader.GetString(SSDFields.paramCode, mapper);
                                 var sampCountry = reader.GetStringOrNull(SSDFields.sampCountry, mapper) ?? string.Empty;
@@ -589,62 +675,65 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                                     && currentCountry.Equals(sampCountry, StringComparison.OrdinalIgnoreCase)
                                     && currentSampleDate == sampleDate
                                 ) {
+                                    // Current record is same sample as current sample
 
-                                    // Add current concentration record to current sample
-                                    if (currentSample != null) {
-                                        // Current analytical method
-                                        // add current record to analytical method
-                                        currentMethod.Add(new SSDMethodRecord {
-                                            CompoundCode = paramCode,
-                                            ConcentrationUnit = unit,
-                                            LOD = lod,
-                                            LOQ = loq,
-                                        });
+                                    if (!currentSampleAnalysisCode
+                                        .Equals(sampleAnalysisCode, StringComparison.OrdinalIgnoreCase)
+                                    ) {
+                                        // New sample analysis: process current sample analysis record and (re)initialise
+                                        processCurrentSampleAnalysis();
+
+                                        // Initialise a new current sample analysis record
+                                        currentSampleAnalysis = initialiseCurrentSampleAnalysis(
+                                            currentSample.Code,
+                                            sampleAnalysisCode,
+                                            analysisDate
+                                        );
+                                        currentSampleAnalysisCode = sampleAnalysisCode;
+
+                                        // Initialise current method
+                                        currentMethod = [];
                                     }
                                 } else {
-                                    // Analytical method, if there is a current sample
-                                    addSampleAndMethod();
+                                    // New sample record: process current sample record
+                                    // (and sample analysis) and (re)initialise
+                                    processCurrentSample();
 
-                                    // Check whether sample code is equal to the previous code, if so, we have a
-                                    // duplicate based on either prodCode, country, sampleDate and/or analysisDate
-                                    // Now we need to create a new uniqueSampleCode: use the dictionary
-                                    if (currentSampleCode.Equals(sampleCode, StringComparison.OrdinalIgnoreCase)) {
-                                        sampleCodeDuplicates.TryGetValue(sampleCode, out var duplicate);
-                                        sampleCodeDuplicates[sampleCode] = ++duplicate;
-                                        // Create the unique sample code using the duplicate counter for the current sample code
-                                        // Use a ` (backtick) quote to separate the counter value
-                                        uniqueSampleCode = $"{sampleCode}:{duplicate}";
-                                    } else {
-                                        uniqueSampleCode = sampleCode;
-                                    }
+                                    // Initialise new current sample record
+                                    currentSample = initialiseCurrentSampleRecord(
+                                        sampleCode: sampleCode,
+                                        foodCode : reader.GetString(SSDFields.prodCode, mapper),
+                                        location: reader.GetStringOrNull(SSDFields.sampCountry, mapper),
+                                        region: reader.GetStringOrNull(SSDFields.sampArea, mapper),
+                                        productionMethod: reader.GetStringOrNull(SSDFields.prodProdMeth, mapper),
+                                        programStrategyCode: reader.GetStringOrNull(SSDFields.sampStrategy, mapper),
+                                        fieldTrialType: reader.GetStringOrNull(SSDFields.fieldTrialType, mapper),
+                                        sampleDate: sampleDate
+                                    );
 
-                                    currentSample = new SSDSampleRecord {
-                                        Code = uniqueSampleCode,
-                                        FoodCode = reader.GetString(SSDFields.prodCode, mapper),
-                                        Location = reader.GetStringOrNull(SSDFields.sampCountry, mapper),
-                                        Region = reader.GetStringOrNull(SSDFields.sampArea, mapper),
-                                        ProductionMethod = reader.GetStringOrNull(SSDFields.prodProdMeth, mapper),
-                                        ProgramStrategyCode = reader.GetStringOrNull(SSDFields.sampStrategy, mapper),
-                                        FieldTrialType = reader.GetStringOrNull(SSDFields.fieldTrialType, mapper),
-                                        SamplingDate = sampleDate,
-                                        AnalysisDate = analysisDate
-                                    };
-
-                                    currentMethod = [
-                                        new SSDMethodRecord {
-                                            CompoundCode = paramCode,
-                                            ConcentrationUnit = unit,
-                                            LOD = lod,
-                                            LOQ = loq,
-                                        }
-                                    ];
+                                    // Initialise a new current sample analysis record
+                                    currentSampleAnalysis = initialiseCurrentSampleAnalysis(
+                                        currentSample.Code,
+                                        sampleAnalysisCode,
+                                        analysisDate
+                                    );
 
                                     // Set the current values to compare the next record
                                     currentSampleCode = sampleCode;
                                     currentProdCode = prodCode;
                                     currentCountry = sampCountry;
                                     currentSampleDate = sampleDate;
+                                    currentSampleAnalysisCode = sampleAnalysisCode;
+                                    currentMethod = [];
                                 }
+
+                                // Add current substance to analytical method
+                                currentMethod.Add(new SSDMethodRecord {
+                                    CompoundCode = paramCode,
+                                    ConcentrationUnit = unit,
+                                    LOD = lod,
+                                    LOQ = loq,
+                                });
 
                                 var resType = reader.GetString(SSDFields.resType, mapper);
                                 var isValue = resType.Equals("VAL", StringComparison.OrdinalIgnoreCase);
@@ -665,12 +754,12 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                                         throw new Exception($"Missing LOQ for result specified with ResType 'LOQ'");
                                     }
 
-                                    //Only save Values and LOD values explicitly in table
-                                    //LOQ values are implied when a concentration is not in the concentrationsPerSample data
-                                    //they are taken from the AnalyticalMethodCompounds as LOQ by default
+                                    // Only save Values and LOD values explicitly in table
+                                    // LOQ values are implied when a concentration is not in the concentrationsPerSample data
+                                    // they are taken from the AnalyticalMethodCompounds as LOQ by default
                                     if (!isLoq) {
                                         var rcRow = rawConcentrationsTable.NewRow();
-                                        rcRow[nameof(RawConcentrationsPerSample.IdAnalysisSample)] = uniqueSampleCode;
+                                        rcRow[nameof(RawConcentrationsPerSample.IdAnalysisSample)] = currentSampleAnalysis.Code;
                                         rcRow[nameof(RawConcentrationsPerSample.IdCompound)] = paramCode;
                                         if (resVal.HasValue) {
                                             rcRow[nameof(RawConcentrationsPerSample.Concentration)] = resVal.Value;
@@ -683,9 +772,10 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                                     throw new Exception($"Specified ResType '{resType}' not supported.");
                                 }
                             }
+
                             // Add last sample and method:
                             // Analytical method, if there is a current sample
-                            addSampleAndMethod();
+                            processCurrentSample();
                         }
                     }
 
