@@ -130,10 +130,10 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
                 var tables = dataSourceWriter.DataTables;
                 
                 var rawFoodSamples = getRawDataRecords<RTA.RawFoodSample>(tables["RawFoodSamples"]);
-                Assert.AreEqual(20, rawFoodSamples.Count);
+                Assert.HasCount(20, rawFoodSamples);
 
                 var rawSampleAnalyses = getRawDataRecords<RTA.RawAnalysisSample>(tables["RawAnalysisSamples"]);
-                Assert.AreEqual(22, rawSampleAnalyses.Count);
+                Assert.HasCount(22, rawSampleAnalyses);
 
                 var rawSampleConcentrations = getRawDataRecords<RTA.RawConcentrationsPerSample>(tables["RawConcentrationsPerSample"]);
 
@@ -171,10 +171,10 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
                 var concentrationRecordCounts = rawSampleConcentrations
                     .GroupBy(r => r.idAnalysisSample)
                     .ToDictionary(r => r.Key, r => r.Count());
-                Assert.AreEqual(concentrationRecordCounts["SA1"], 3);
-                Assert.AreEqual(concentrationRecordCounts["SA2"], 2);
-                Assert.AreEqual(concentrationRecordCounts["SA1:1"], 3);
-                Assert.AreEqual(concentrationRecordCounts["SA2:1"], 3);
+                Assert.AreEqual(3, concentrationRecordCounts["SA1"]);
+                Assert.AreEqual(2, concentrationRecordCounts["SA2"]);
+                Assert.AreEqual(3, concentrationRecordCounts["SA1:1"]);
+                Assert.AreEqual(3, concentrationRecordCounts["SA2:1"]);
             }
         }
 

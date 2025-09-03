@@ -1,7 +1,5 @@
 ﻿using System.Data;
-using System.Drawing;
-using DocumentFormat.OpenXml.EMMA;
-using DocumentFormat.OpenXml.Spreadsheet;
+using System.Text;
 using MCRA.General;
 using MCRA.General.Extensions;
 using MCRA.General.TableDefinitions;
@@ -18,30 +16,30 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
 
         private const string _tempSsdTableCreateSql =
             @"CREATE TABLE samples (
-                [labSampCode] nvarchar(40) NULL,
-                [labSubSampCode] [nvarchar](4) NULL,
-                [sampCountry] [nvarchar](2) NULL,
-                [sampArea] [nvarchar](5) NULL,
-                [prodCode] [varchar](50) NOT NULL,
-                [prodProdMeth] [nvarchar](5) NULL,
-                [sampStrategy] [nvarchar](50) NULL,
-                [fieldTrialType] [nvarchar](50) NULL,
-                [sampAnId] [nvarchar](50) NULL,
-                [anPortSeq] [nvarchar](50) NULL,
-                [sampY] [int] NULL,
-                [sampM] [int] NULL,
-                [sampD] [int] NULL,
-                [analysisY] [int] NULL,
-                [analysisM] [int] NULL,
-                [analysisD] [int] NULL,
-                [paramCode] [nvarchar](50) NOT NULL,
-                [resUnit] [nvarchar](5) NOT NULL,
-                [resLOD] [float] NULL,
-                [resLOQ] [float] NULL,
-                [resVal] [float] NULL,
-                [resType] [nvarchar](3) NULL);
-              CREATE UNIQUE INDEX ix_primary_tempssd
-              ON samples (labSampCode, labSubSampCode, sampCountry, sampY, sampM, sampD, prodCode, paramCode);";
+                [labSampCode] [VARCHAR](40) NOT NULL ON CONFLICT REPLACE DEFAULT '',
+                [labSubSampCode] [VARCHAR](4) NOT NULL ON CONFLICT REPLACE DEFAULT '',
+                [sampCountry] [VARCHAR](2) NOT NULL ON CONFLICT REPLACE DEFAULT '',
+                [sampArea] [VARCHAR](5) NULL,
+                [prodCode] [VARCHAR](50) NOT NULL,
+                [prodProdMeth] [VARCHAR](5) NULL,
+                [sampStrategy] [VARCHAR](50) NULL,
+                [fieldTrialType] [VARCHAR](50) NULL,
+                [sampAnId] [VARCHAR](50) NOT NULL ON CONFLICT REPLACE DEFAULT '',
+                [anPortSeq] [VARCHAR](50) NOT NULL ON CONFLICT REPLACE DEFAULT '',
+                [sampY] [INTEGER] NOT NULL ON CONFLICT REPLACE DEFAULT 0,
+                [sampM] [INTEGER] NOT NULL ON CONFLICT REPLACE DEFAULT 0,
+                [sampD] [INTEGER] NOT NULL ON CONFLICT REPLACE DEFAULT 0,
+                [analysisY] [INTEGER] NULL,
+                [analysisM] [INTEGER] NULL,
+                [analysisD] [INTEGER] NULL,
+                [paramCode] [VARCHAR](50) NOT NULL,
+                [resUnit] [VARCHAR](5) NOT NULL,
+                [resLOD] [FLOAT] NULL,
+                [resLOQ] [FLOAT] NULL,
+                [resVal] [FLOAT] NULL,
+                [resType] [VARCHAR](3) NULL,
+                PRIMARY KEY (labSampCode, labSubSampCode, sampCountry, sampY, sampM, sampD, prodCode, sampAnId, anPortSeq, paramCode)
+             ) WITHOUT ROWID;";
 
         private const string _tempSsdSelectSql =
             @"SELECT labSampCode, labSubSampCode, sampCountry, sampArea, prodCode, prodProdMeth, sampStrategy, fieldTrialType,
@@ -50,17 +48,17 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
 
         private const string _tempTabulatedCreateSql =
             @"CREATE TABLE samples (
-                [GUID] [nvarchar](50) NULL,
-                [idCompound] [nvarchar](50) NOT NULL,
-                [idFood] [nvarchar](50) NOT NULL,
-                [Year] [nvarchar](50) NULL,
-                [Month] [nvarchar](50) NULL,
-                [SamplingType] [nvarchar](50) NULL,
-                [Location] [nvarchar](50) NULL,
-                [NumberOfSamples] [int] NOT NULL,
-                [Concentration] [float] NOT NULL,
-                [DateSampling] [nvarchar](10) NULL,
-                [ConcentrationUnit] nvarchar(50) NULL);";
+                [GUID] [VARCHAR](50) NULL,
+                [idCompound] [VARCHAR](50) NOT NULL,
+                [idFood] [VARCHAR](50) NOT NULL,
+                [Year] [VARCHAR](50) NULL,
+                [Month] [VARCHAR](50) NULL,
+                [SamplingType] [VARCHAR](50) NULL,
+                [Location] [VARCHAR](50) NULL,
+                [NumberOfSamples] [INTEGER] NOT NULL,
+                [Concentration] [FLOAT] NOT NULL,
+                [DateSampling] [VARCHAR](10) NULL,
+                [ConcentrationUnit] [VARCHAR](50) NULL);";
 
         private const string _tempTabulatedSelectSql =
             @"SELECT [GUID], [idCompound], [idFood], [Year], [Month], [SamplingType], [Location],
@@ -157,10 +155,10 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
             IDataSourceWriter dataSourceWriter,
             HashSet<SourceTableGroup> parsedTableGroups,
             HashSet<RawDataSourceTableID> parsedDataTables)
-            : base(
-                  dataSourceWriter,
-                  parsedTableGroups,
-                  parsedDataTables
+        : base(
+            dataSourceWriter,
+            parsedTableGroups,
+            parsedDataTables
         ) {
         }
 
@@ -289,7 +287,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
 
                                 // Add to analyticalMethods and analyticalMethodCompounds tables
                                 var ram = rawAnalyticalMethodsTable.NewRow();
-                                ram[nameof(RawAnalyticalMethods.IdAnalyticalMethod)]= methodCode;
+                                ram[nameof(RawAnalyticalMethods.IdAnalyticalMethod)] = methodCode;
                                 ram[nameof(RawAnalyticalMethods.Description)] = concentration > 0
                                     ? $"{methodCode} from tabulated import positive concentration records"
                                     : $"{methodCode} from tabulated import censored value records";
@@ -392,7 +390,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                                     //only add concentration data where the concentration is positive
                                     if (concentration > 0) {
                                         var rc = rawConcentrationsTable.NewRow();
-                                        rc[nameof(RawConcentrationsPerSample.IdAnalysisSample)]= analysisSampleCode;
+                                        rc[nameof(RawConcentrationsPerSample.IdAnalysisSample)] = analysisSampleCode;
                                         rc[nameof(RawConcentrationsPerSample.IdCompound)] = compoundCode;
                                         rc[nameof(RawConcentrationsPerSample.Concentration)] = concentration;
                                         rc[nameof(RawConcentrationsPerSample.ResType)] = ResType.VAL.ToString();
@@ -436,6 +434,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
 
             string sourceTableName = null;
             var sqliteDbFileName = Path.Combine(Path.GetTempPath(), $"_tempSSDCopy{Guid.NewGuid():N}.sqlite");
+
             try {
                 var ssdTableDefinition = _tableDefinitions[RawDataSourceTableID.ConcentrationsSSD];
                 using var ssdTableReader = dataSourceReader.GetDataReaderByDefinition(ssdTableDefinition, out sourceTableName);
@@ -541,7 +540,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                                 return new SSDSampleRecord {
                                     Code = uniqueSampleCode,
                                     FoodCode = foodCode,
-                                    Location = location,
+                                    Location = (location?.Length ?? 0) > 0 ? location : null,
                                     Region = region,
                                     ProductionMethod = productionMethod,
                                     ProgramStrategyCode = programStrategyCode,
@@ -644,7 +643,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                             progressState.Update("Processing raw SSD data", 40);
                             var ntrans = 0;
                             while (reader.Read()) {
-                                if (++ntrans % 92551 == 0) {
+                                if (++ntrans % 261337 == 0) {
                                     if (progressState.CancellationToken.IsCancellationRequested) {
                                         progressState.Update("Processing raw SSD data cancelled...");
                                         return false;
@@ -653,25 +652,26 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                                 }
 
                                 int[] mapper = null;
-                                var sampleCode = reader.GetStringOrNull(SSDFields.labSampCode, mapper) +
-                                    (reader.IsDBNull(SSDFields.labSubSampCode, mapper)
-                                        ? "" : "_" + reader.GetString(SSDFields.labSubSampCode, mapper));
 
-                                var sampAnId = reader.GetStringOrNull(SSDFields.sampAnId, mapper);
-                                var sampleAnalysisCode = sampAnId ?? sampleCode;
+                                var subSampCode = reader.GetString(SSDFields.labSubSampCode, mapper);
+                                var sampleCode = reader.GetString(SSDFields.labSampCode, mapper) +
+                                    (subSampCode.Length == 0 ? "" : $"_{subSampCode}");
 
-                                var anPortSeq = reader.GetStringOrNull(SSDFields.anPortSeq, mapper);
-                                if (!string.IsNullOrEmpty(anPortSeq)) {
+                                var sampAnId = reader.GetString(SSDFields.sampAnId, mapper);
+                                var sampleAnalysisCode = sampAnId.Length > 0 ? sampAnId : sampleCode;
+
+                                var anPortSeq = reader.GetString(SSDFields.anPortSeq, mapper);
+                                if (anPortSeq.Length > 0) {
                                     sampleAnalysisCode = $"{sampleAnalysisCode}:{anPortSeq}";
                                 }
 
                                 var prodCode = reader.GetString(SSDFields.prodCode, mapper);
                                 var paramCode = reader.GetString(SSDFields.paramCode, mapper);
-                                var sampCountry = reader.GetStringOrNull(SSDFields.sampCountry, mapper) ?? string.Empty;
+                                var sampCountry = reader.GetString(SSDFields.sampCountry, mapper);
                                 var sampArea = reader.GetStringOrNull(SSDFields.sampArea, mapper) ?? string.Empty;
                                 var prodMeth = reader.GetStringOrNull(SSDFields.prodProdMeth, mapper) ?? string.Empty;
 
-                                var sampleDate = FromSsdYmd(reader.GetIntOrNull(SSDFields.sampY, mapper), reader.GetIntOrNull(SSDFields.sampM, mapper), reader.GetIntOrNull(SSDFields.sampD, mapper));
+                                var sampleDate = FromSsdYmd(reader.GetInt32(SSDFields.sampY, mapper), reader.GetInt32(SSDFields.sampM, mapper), reader.GetInt32(SSDFields.sampD, mapper));
                                 var analysisDate = FromSsdYmd(reader.GetIntOrNull(SSDFields.analysisY, mapper), reader.GetIntOrNull(SSDFields.analysisM, mapper), reader.GetIntOrNull(SSDFields.analysisD, mapper));
 
                                 var loq = reader.GetDoubleOrNull(SSDFields.resLOQ, mapper);
@@ -710,7 +710,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                                     // Initialise new current sample record
                                     currentSample = initialiseCurrentSampleRecord(
                                         sampleCode: sampleCode,
-                                        foodCode : reader.GetString(SSDFields.prodCode, mapper),
+                                        foodCode: reader.GetString(SSDFields.prodCode, mapper),
                                         location: reader.GetStringOrNull(SSDFields.sampCountry, mapper),
                                         region: reader.GetStringOrNull(SSDFields.sampArea, mapper),
                                         productionMethod: reader.GetStringOrNull(SSDFields.prodProdMeth, mapper),
@@ -786,7 +786,6 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                             processCurrentSample();
                         }
                     }
-
                     //Datatables are filled, now simply bulk copy to SQL Server tables
                     saveConcentrationTables(concTables, progressState);
 
@@ -808,17 +807,26 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
         }
 
         private static DateTime? FromSsdYmd(int? year, int? month, int? day) {
-            if (!year.HasValue) {
+            if ((year ?? 0) == 0) {
                 return null;
             }
             // Addeddays based on given day parameter: should be between 1 and 31
             // Subtract 1 to get days-to-add to first of month
-            var addedDays = day.HasValue ? (day.Value < 1 ? 1 : (day.Value > 31 ? 31 : day.Value)) - 1 : 0;
+            var addedDays = day.HasValue
+                ? (day.Value < 1 ? 1 : (day.Value > 31 ? 31 : day.Value)) - 1
+                : 0;
             // Select year between 1900 and 3000
             // month between 1 and 12
             // Add addedDays to first of the month: an invalid day will still yield a valid DateTime
-            return new DateTime(year < 1900 ? 1900 : (year > 3000 ? 3000 : year.Value),
-                                month.HasValue ? (month < 1 ? 1 : (month > 12 ? 12 : month.Value)) : 1, 1).AddDays(addedDays);
+            return new DateTime(
+                year < 1900
+                    ? 1900
+                    : (year > 3000 ? 3000 : year.Value),
+                month.HasValue
+                    ? (month < 1 ? 1 : (month > 12 ? 12 : month.Value))
+                    : 1,
+                1
+            ).AddDays(addedDays);
         }
 
         private static readonly RawDataSourceTableID[] _rawDataSourceTableIDs = [
@@ -836,7 +844,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
 
         private static IDictionary<RawDataSourceTableID, DataTable> createConcentrationTables() {
             // Create data tables as a dictionary
-            var dict = _rawDataSourceTableIDs.Select(t => new KeyValuePair<RawDataSourceTableID, DataTable> (
+            var dict = _rawDataSourceTableIDs.Select(t => new KeyValuePair<RawDataSourceTableID, DataTable>(
                 t, McraTableDefinitions.Instance.GetTableDefinition(t).CreateDataTable()
             )).ToDictionary();
 
