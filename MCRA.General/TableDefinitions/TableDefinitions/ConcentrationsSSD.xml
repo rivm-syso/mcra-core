@@ -84,6 +84,13 @@
         <string>sampAnId</string>
       </Aliases>
     </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50">
+      <Id>anPortSeq</Id>
+      <Description>Sample analysedportion sequence.</Description>
+      <Aliases>
+        <string>anPortSeq</string>
+      </Aliases>
+    </ColumnDefinition>
     <ColumnDefinition FieldType="Integer" FieldSize="4">
       <Id>sampY</Id>
       <Description>Year of sampling.</Description>

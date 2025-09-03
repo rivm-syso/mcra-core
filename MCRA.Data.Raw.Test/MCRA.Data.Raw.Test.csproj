@@ -67,6 +67,9 @@
     <None Update="Resources\Concentrations\Relational\SampleAnalyses.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\Concentrations\SSD-anPortSeq\ConcentrationsSSD.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\Concentrations\SSD-Complete\ConcentrationsSSD.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

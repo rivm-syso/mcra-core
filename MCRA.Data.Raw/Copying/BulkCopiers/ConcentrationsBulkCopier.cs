@@ -27,6 +27,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                 [sampStrategy] [nvarchar](50) NULL,
                 [fieldTrialType] [nvarchar](50) NULL,
                 [sampAnId] [nvarchar](50) NULL,
+                [anPortSeq] [nvarchar](50) NULL,
                 [sampY] [int] NULL,
                 [sampM] [int] NULL,
                 [sampD] [int] NULL,
@@ -44,8 +45,8 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
 
         private const string _tempSsdSelectSql =
             @"SELECT labSampCode, labSubSampCode, sampCountry, sampArea, prodCode, prodProdMeth, sampStrategy, fieldTrialType,
-                sampAnId, sampY, sampM, sampD, analysisY, analysisM, analysisD, paramCode, resUnit, resLOD, resLOQ, resVal, resType
-            FROM samples ORDER BY labSampCode, labSubSampCode, sampCountry, sampY, sampM, sampD, prodCode, sampAnId, paramCode";
+                sampAnId, anPortSeq, sampY, sampM, sampD, analysisY, analysisM, analysisD, paramCode, resUnit, resLOD, resLOQ, resVal, resType
+            FROM samples ORDER BY labSampCode, labSubSampCode, sampCountry, sampY, sampM, sampD, prodCode, sampAnId, anPortSeq, paramCode";
 
         private const string _tempTabulatedCreateSql =
             @"CREATE TABLE samples (
@@ -84,6 +85,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
             sampStrategy,
             fieldTrialType,
             sampAnId,
+            anPortSeq,
             sampY,
             sampM,
             sampD,
@@ -280,8 +282,8 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                                 var concUnit = reader.GetStringOrNull(TabulatedMethodFields.ConcentrationUnit, null);
 
                                 var methodKey = concentration > 0
-                                              ? $"{idCompound}{_sep}{concUnit}"
-                                              : $"{idCompound}{_sep}{concUnit}{_sep}{concentration}";
+                                    ? $"{idCompound}{_sep}{concUnit}"
+                                    : $"{idCompound}{_sep}{concUnit}{_sep}{concentration}";
 
                                 methodIdDictionary.Add(methodKey, methodCode);
 
@@ -356,8 +358,9 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                                 //create the key for the analytical method, based on the substance code,
                                 //concentration unit and optionally the concentration (if it's a LOR)
                                 var methodKey = concentration > 0
-                                              ? $"{compoundCode}{_sep}{unit}"
-                                              : $"{compoundCode}{_sep}{unit}{_sep}{concentration}";
+                                    ? $"{compoundCode}{_sep}{unit}"
+                                    : $"{compoundCode}{_sep}{unit}{_sep}{concentration}";
+
                                 //get the already added method based on the key
                                 var methodCode = methodIdDictionary[methodKey];
                                 var sampleCode = reader.GetStringOrNull(TabulatedFields.Guid, mapper);
@@ -654,8 +657,13 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                                     (reader.IsDBNull(SSDFields.labSubSampCode, mapper)
                                         ? "" : "_" + reader.GetString(SSDFields.labSubSampCode, mapper));
 
-                                var sampleAnalysisCode = reader.GetStringOrNull(SSDFields.sampAnId, mapper)
-                                    ?? sampleCode;
+                                var sampAnId = reader.GetStringOrNull(SSDFields.sampAnId, mapper);
+                                var sampleAnalysisCode = sampAnId ?? sampleCode;
+
+                                var anPortSeq = reader.GetStringOrNull(SSDFields.anPortSeq, mapper);
+                                if (!string.IsNullOrEmpty(anPortSeq)) {
+                                    sampleAnalysisCode = $"{sampleAnalysisCode}:{anPortSeq}";
+                                }
 
                                 var prodCode = reader.GetString(SSDFields.prodCode, mapper);
                                 var paramCode = reader.GetString(SSDFields.paramCode, mapper);

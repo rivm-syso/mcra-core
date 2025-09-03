@@ -179,6 +179,69 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
         }
 
         /// <summary>
+        /// Test bulkcopying of SSD data with multiple sample analyses for some samples,
+        /// specified via the sampAnId and/or anPortSeq field.
+        /// </summary>
+        [TestMethod]
+        public void ConcentrationDataBulkCopier_TestCopySSDAnPortSeq() {
+            var dataSourceWriter = new DataTableDataSourceWriter();
+            using (var reader = new CsvFolderReader(TestUtils.GetResource("Concentrations/SSD-anPortSeq"))) {
+                reader.Open();
+                var bulkCopier = new ConcentrationsBulkCopier(dataSourceWriter, null, null);
+                bulkCopier.TryCopy(reader, new ProgressState());
+
+                // Get generated raw tables from writer
+                var tables = dataSourceWriter.DataTables;
+
+                var rawFoodSamples = getRawDataRecords<RTA.RawFoodSample>(tables["RawFoodSamples"]);
+                Assert.AreEqual(4, rawFoodSamples.Count);
+
+                var rawSampleAnalyses = getRawDataRecords<RTA.RawAnalysisSample>(tables["RawAnalysisSamples"]);
+                Assert.AreEqual(7, rawSampleAnalyses.Count);
+
+                var rawSampleConcentrations = getRawDataRecords<RTA.RawConcentrationsPerSample>(tables["RawConcentrationsPerSample"]);
+
+                // First sample has three sample analyses
+                CollectionAssert.AreEquivalent(
+                    expected: new[] { "SA1:1", "SA1:2", "SA2" },
+                    actual: rawSampleAnalyses
+                        .Where(r => r.idFoodSample == "FS01")
+                        .Select(r => r.idAnalysisSample)
+                        .ToArray()
+                );
+
+                // Sample analysis IDs of FS02 based on sample ID and anPortSeq
+                CollectionAssert.AreEquivalent(
+                    expected: new[] { "FS02:1", "FS02:2" },
+                    actual: rawSampleAnalyses
+                        .Where(r => r.idFoodSample == "FS02")
+                        .Select(r => r.idAnalysisSample)
+                        .ToArray()
+                );
+
+                // When only anPortSeq is specified, sample analysis ID is equal to food sample and anPortSeq
+                Assert.AreEqual(
+                    expected: "FS03:1",
+                    actual: rawSampleAnalyses.Single(r => r.idFoodSample == "FS03").idAnalysisSample
+                );
+
+                // When anPortSeq and sampAnId not specified, sample analysis ID is equal to food sample
+                Assert.AreEqual(
+                    expected: "FS04",
+                    actual: rawSampleAnalyses.Single(r => r.idFoodSample == "FS04").idAnalysisSample
+                );
+
+                // Assert sample concentration record counts
+                var concentrationRecordCounts = rawSampleConcentrations
+                    .GroupBy(r => r.idAnalysisSample)
+                    .ToDictionary(r => r.Key, r => r.Count());
+                Assert.AreEqual(concentrationRecordCounts["SA1:1"], 3);
+                Assert.AreEqual(concentrationRecordCounts["SA1:2"], 3);
+                Assert.AreEqual(concentrationRecordCounts["SA2"], 2);
+            }
+        }
+
+        /// <summary>
         /// Test bulkcopying of SSD data with additional sample properties specified
         /// in separate tables.
         /// </summary>
