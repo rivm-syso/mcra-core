@@ -79,6 +79,9 @@
     <None Update="Resources\Concentrations\SSD-Complete\SamplePropertyValues.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\Concentrations\SSD-InvalidUnit\ConcentrationsSSD.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\Concentrations\SSD-MissingConcentration\ConcentrationsSSD.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

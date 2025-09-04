@@ -640,6 +640,13 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                                 return false;
                             }
 
+                            //cache valid concentration unit definitions and aliases
+                            //don't check the UndefinedAliases, because the field is mandatory
+                            var concentrationUnit = McraUnitDefinitions.Instance.UnitDefinitions[nameof(ConcentrationUnit)];
+                            var validConcentrationUnitValues = concentrationUnit.Units
+                                .SelectMany(r => r.AcceptedFormats)
+                                .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
                             progressState.Update("Processing raw SSD data", 40);
                             var ntrans = 0;
                             while (reader.Read()) {
@@ -677,6 +684,11 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                                 var loq = reader.GetDoubleOrNull(SSDFields.resLOQ, mapper);
                                 var lod = reader.GetDoubleOrNull(SSDFields.resLOD, mapper);
                                 var unit = reader.GetString(SSDFields.resUnit, mapper);
+
+                                if (!validConcentrationUnitValues.Contains(unit)) {
+                                    //unit value can't be processed by MCRA so throw an exception here
+                                    throw new Exception($"Unit '{unit}' is not a valid MCRA concentration unit");
+                                }
 
                                 if (currentSampleCode.Equals(sampleCode, StringComparison.OrdinalIgnoreCase)
                                     && currentProdCode.Equals(prodCode, StringComparison.OrdinalIgnoreCase)

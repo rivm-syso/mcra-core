@@ -115,6 +115,20 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
         }
 
         /// <summary>
+        /// Test bulkcopying of SSD data with additional sample properties specified
+        /// in separate tables.
+        /// </summary>
+        [TestMethod]
+        public void ConcentrationDataBulkCopier_TestFail_InvalidConcentrationUnit() {
+            var dataSourceWriter = new DataTableDataSourceWriter();
+            using (var reader = new CsvFolderReader(TestUtils.GetResource("Concentrations/SSD-InvalidUnit"))) {
+                reader.Open();
+                var bulkCopier = new ConcentrationsBulkCopier(dataSourceWriter, null, null);
+                Assert.ThrowsExactly<RawDataSourceBulkCopyException>(() => bulkCopier.TryCopy(reader, new ProgressState()));
+            }
+        }
+
+        /// <summary>
         /// Test bulkcopying of SSD data with multiple sample analyses for some samples,
         /// specified via the sampAnId field.
         /// </summary>
