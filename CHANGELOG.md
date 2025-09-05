@@ -1,5 +1,39 @@
 # Change Log
 
+## Version 10.2.3 (2025-09-05)
+
+### Added
+
+- Refactor reverse dose calculation and implement use of PBKmodels in HBM analysis (#2235)
+- Implementation bootstrap concentrations for indoor/outdoor air, dust and soil (#2237)
+- Implement support for SSD2 sampAnId and anPortSeq fields in concentrations bulk copier (#2267)
+
+### Changed
+
+- Don't allow uploading an SSD concentrations file with invalid concentration units
+
+### Fixed
+
+- Correct individual subset selection on sex/gender (#2262)
+- Tier-defined settings are editable in some front end settings panels (#2266)
+
+## Version 10.2.2 (2025-08-21)
+
+### Added
+
+- Add unit tests for air, dust, soil and consumer products (#2238)
+- Add command line option in MCRA ClI to save data files as Excel or CSV(default) (#2246)
+
+### Changed
+
+- Rename 'standardised attributable bod' to 'EBD per 100,000' (#2211)
+
+### Fixed
+
+- MCRA output CSV tables always truncate floating point numbers to 5 significant digits (#1964)
+- Loop calculation throws 'Exception has been thrown by the target of an invocation' (#2260)
+- Loop calculation fails with 'idSubstance column is required' (#2261)
+
 ## Version 10.2.1 (2025-07-25)
 
 ### Added
