@@ -3,9 +3,9 @@
   <Id>NonDietarySurveys</Id>
   <Name>Non-dietary surveys</Name>
   <Description>
-        This table provides detail about non-dietary surveys (source of non-dietary exposure): description, location, date
-        and unit of exposure).
-      </Description>
+    This table provides detail about non-dietary surveys (source of non-dietary exposure): description, location, date
+    and unit of exposure).
+  </Description>
   <Aliases>
     <string>NonDietarySurveys</string>
     <string>NonDietarySurvey</string>
@@ -17,10 +17,12 @@
   <ColumnDefinitions>
     <ColumnDefinition IsPrimaryKey="true" Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
       <Id>idNonDietarySurvey</Id>
+      <Name>idNonDietarySurvey</Name>
       <Description>
-            The survey identification number.
-          </Description>
+        The survey identification number.
+      </Description>
       <Aliases>
+        <string>idSurvey</string>
         <string>idNonDietarySurvey</string>
       </Aliases>
     </ColumnDefinition>
@@ -34,8 +36,8 @@
     <ColumnDefinition Required="false" FieldType="AlphaNumeric" FieldSize="200">
       <Id>Description</Id>
       <Description>
-            Description of non-dietary survey.
-          </Description>
+        Description of non-dietary survey.
+      </Description>
       <Aliases>
         <string>Description</string>
       </Aliases>
@@ -47,24 +49,27 @@
       </Description>
       <Aliases>
         <string>Location</string>
+        <string>Country</string>
       </Aliases>
     </ColumnDefinition>
     <ColumnDefinition Required="false" FieldType="DateTime">
       <Id>Date</Id>
       <Description>
-          The date of survey.
-        </Description>
+        The date of survey.
+      </Description>
       <Aliases>
         <string>Date</string>
       </Aliases>
     </ColumnDefinition>
     <ColumnDefinition Required="true" FieldType="ExternalExposureUnit">
       <Id>NonDietaryIntakeUnit</Id>
+      <Name>NonDietaryIntakeUnit</Name>
       <Description>
-          The unit of the non-dietary exposure.
-        </Description>
+        The unit of the non-dietary exposure.
+      </Description>
       <Aliases>
         <string>Unit</string>
+        <string>ExposureUnit</string>
         <string>NonDietaryIntakeUnit</string>
         <string>NonDietaryExposureUnit</string>
       </Aliases>
@@ -82,8 +87,8 @@
     <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50">
       <Id>idPopulation</Id>
       <Description>
-            Unique identification code of the population.
-          </Description>
+        Unique identification code of the population.
+      </Description>
       <Aliases>
         <string>IdPopulation</string>
         <string>PopulationId</string>
