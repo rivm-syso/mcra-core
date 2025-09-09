@@ -122,11 +122,11 @@ namespace MCRA.Simulation.Actions.RelativePotencyFactors {
         ) {
             var localProgress = progressReport.NewProgressState(100);
             if (factorialSet.Contains(UncertaintySource.RPFs) && data.RawRelativePotencyFactors != null) {
-                var compounds = data.ActiveSubstances;
-                var reference = compounds.First(r => r.Code == ModuleConfig.CodeReferenceSubstance);
+                var substances = data.ActiveSubstances;
+                var reference = substances.First(r => r.Code.Equals(ModuleConfig.CodeReferenceSubstance, StringComparison.OrdinalIgnoreCase));
                 var rawRelativePotencyFactors = data.RawRelativePotencyFactors;
                 var correctedRpfs = resampleRelativePotencyFactors(
-                    compounds,
+                    substances,
                     reference,
                     rawRelativePotencyFactors,
                     uncertaintySourceGenerators[UncertaintySource.RPFs]
