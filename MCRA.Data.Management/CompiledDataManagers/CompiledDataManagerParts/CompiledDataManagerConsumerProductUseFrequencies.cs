@@ -176,11 +176,13 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                             using (var r = rdm.OpenDataReader<RawConsumerProductUseFrequencies>(rawDataSourceId, out int[] fieldMap)) {
                                 while (r?.Read() ?? false) {
                                     var idIndividual = r.GetString(RawConsumerProductUseFrequencies.IdIndividual, fieldMap);
-                                    var valid = CheckLinkSelected(ScopingType.ConsumerProductIndividuals, idIndividual);
+                                    var idProduct = r.GetString(RawConsumerProductUseFrequencies.IdProduct, fieldMap);
+                                    var valid = CheckLinkSelected(ScopingType.ConsumerProductIndividuals, idIndividual)
+                                        && IsCodeSelected(ScopingType.ConsumerProducts, idProduct); ;
                                     if (valid) {
                                         var individual = _data.AllConsumerProductIndividuals[idIndividual];
-                                        var product = r.GetString(RawConsumerProductUseFrequencies.IdProduct, fieldMap);
-                                        var consumerProduct = _data.AllConsumerProducts[product];
+
+                                        var consumerProduct = _data.AllConsumerProducts[idProduct];
                                         var individualConsumerProductUseFrequency = new IndividualConsumerProductUseFrequency() {
                                             Individual = individual,
                                             Product = consumerProduct,
