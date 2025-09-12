@@ -27,9 +27,10 @@
     <Id>BinBoundaries</Id>
     <Name>Specify the bin boundaries.</Name>
     <Description>
-      Specify the boundaries (%) of the bins by which the exposures are grouped.For 'Custom bins', the
+      Specify the boundaries (%) of the bins by which the exposures are grouped. For 'Custom bins', the
       specified bins are used for all exposure response functions. For 'ERF-defined bins', the bins defined
       for subgroups are used and for exposure response functions without subgroups, the specified custom bins are used.
+      Boundaries should be greater than 0 and smaller than 100%.
     </Description>
     <ValueType>Numeric</ValueType>
     <IsList>true</IsList>
