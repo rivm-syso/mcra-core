@@ -118,7 +118,6 @@
     <CalculationSetting source="Action">McrPlotRatioCutOff</CalculationSetting>
     <CalculationSetting source="Action">McrPlotPercentiles</CalculationSetting>
     <CalculationSetting source="Action">McrPlotMinimumPercentage</CalculationSetting>
-    <CalculationSetting source="HazardCharacterisations">TargetDoseLevelType</CalculationSetting>
     <CalculationSetting source="Action">RandomSeed</CalculationSetting>
     <CalculationSetting>DietPopulationAlignmentMethod</CalculationSetting>
   </CalculationSettings>

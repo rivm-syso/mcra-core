@@ -351,7 +351,6 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             localProgress.Update(100);
 
             if (substances.Count > 1 && data.CorrectedRelativePotencyFactors != null
-                && ModuleConfig.TargetDoseLevelType == TargetLevelType.External
                 && ModuleConfig.McrAnalysis
             ) {
                 var exposureMatrixBuilder = new ExposureMatrixBuilder(

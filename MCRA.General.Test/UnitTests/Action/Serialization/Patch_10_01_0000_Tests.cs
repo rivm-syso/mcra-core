@@ -390,7 +390,6 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.AreEqual(55.555D, modSettings.McrPlotRatioCutOff);
             Assert.AreEqual("95 99 99.55", string.Join(' ', modSettings.McrPlotPercentiles.Select(t => t.ToString(CultureInfo.InvariantCulture))));
             Assert.AreEqual(44.444D, modSettings.McrPlotMinimumPercentage);
-            Assert.AreEqual(TargetLevelType.Internal, modSettings.TargetDoseLevelType);
             Assert.AreEqual(987654, modSettings.RandomSeed);
             Assert.IsTrue(modSettings.ResampleImputationExposureDistributions);
             Assert.IsTrue(modSettings.ResamplePortions);
