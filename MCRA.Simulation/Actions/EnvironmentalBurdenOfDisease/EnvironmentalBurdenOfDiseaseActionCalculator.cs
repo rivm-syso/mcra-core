@@ -102,7 +102,8 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
                 exposuresCollections,
                 burdensOfDisease,
                 data.SelectedPopulation,
-                data.ExposureResponseFunctionModels
+                data.ExposureResponseFunctionModels,
+                data.CounterFactualValueModels
             );
 
             if (environmentalBurdenOfDiseases.Count == 0) {

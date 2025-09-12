@@ -19,8 +19,10 @@
   </Entities>
   <UncertaintySources>
     <UncertaintySource>ExposureResponseFunctions</UncertaintySource>
+    <UncertaintySource>CounterFactualValues</UncertaintySource>
   </UncertaintySources>
   <UncertaintySettings>
     <UncertaintySetting>ResampleExposureResponseFunctions</UncertaintySetting>
+    <UncertaintySetting>ResampleCounterFactualValues</UncertaintySetting>
   </UncertaintySettings>  
 </Module>

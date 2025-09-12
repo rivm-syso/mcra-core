@@ -6,6 +6,7 @@ using MCRA.General.Annotations;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
+using MCRA.Simulation.Calculators.CounterFactualValueModels;
 using MCRA.Simulation.Calculators.ExposureResponseFunctions;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;
@@ -32,15 +33,23 @@ namespace MCRA.Simulation.Actions.ExposureResponseFunctions {
             if (ModuleConfig.ResampleExposureResponseFunctions) {
                 result.Add(UncertaintySource.ExposureResponseFunctions);
             }
+            if (ModuleConfig.ResampleCounterFactualValues) {
+                result.Add(UncertaintySource.CounterFactualValues);
+            }
             return result;
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
             var exposureResponseFunctions = subsetManager.AllExposureResponseFunctions;
-            data.ExposureResponseFunctionModels = exposureResponseFunctions
+            data.ExposureResponseFunctionModels = [.. exposureResponseFunctions
                 .Select(r => new ExposureResponseFunctionModel(r))
-                .Cast<IExposureResponseFunctionModel>()
+                .Cast<IExposureResponseFunctionModel>()];
+
+            var counterFactualValueModels = exposureResponseFunctions
+                .Select(CounterFactualValueCalculatorFactory.Create)
                 .ToList();
+
+            data.CounterFactualValueModels = counterFactualValueModels;
         }
 
         protected override void summarizeActionResult(IExposureResponseFunctionsActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {
@@ -62,6 +71,15 @@ namespace MCRA.Simulation.Actions.ExposureResponseFunctions {
                 if (data.ExposureResponseFunctionModels?.Count > 0) {
                     var random = uncertaintySourceGenerators[UncertaintySource.ExposureResponseFunctions];
                     foreach (var model in data.ExposureResponseFunctionModels) {
+                        model.ResampleModelParameters(random);
+                    }
+                }
+            }
+            if (data.ExposureResponseFunctionModels != null && factorialSet.Contains(UncertaintySource.CounterFactualValues)) {
+                localProgress.Update("Resampling counter factual values.");
+                if (data.ExposureResponseFunctionModels?.Count > 0) {
+                    var random = uncertaintySourceGenerators[UncertaintySource.CounterFactualValues];
+                    foreach (var model in data.CounterFactualValueModels) {
                         model.ResampleModelParameters(random);
                     }
                 }

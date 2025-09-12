@@ -263,6 +263,12 @@ namespace MCRA.Simulation.Action {
                         project.ExposureResponseFunctionsSettings.ResampleExposureResponseFunctions
                     );
                 }
+                if (activeUncertaintySettings.Contains(SettingsItemType.ResampleCounterFactualValues)) {
+                    section.SummarizeSetting(
+                        SettingsItemType.ResampleCounterFactualValues,
+                        project.ExposureResponseFunctionsSettings.ResampleCounterFactualValues
+                    );
+                }
 
                 section.SummarizeSetting(SettingsItemType.UncertaintyLowerBound, actionConfig.UncertaintyLowerBound);
                 section.SummarizeSetting(SettingsItemType.UncertaintyUpperBound, actionConfig.UncertaintyUpperBound);

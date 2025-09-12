@@ -83,6 +83,7 @@ using MCRA.Simulation.Calculators.AirExposureCalculation;
 using MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
 using MCRA.Simulation.Calculators.ConsumerProductExposureCalculation;
+using MCRA.Simulation.Calculators.CounterFactualValueModels;
 using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.DustExposureCalculation;
 using MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation;
@@ -1078,6 +1079,12 @@ namespace MCRA.Simulation {
         public IDictionary<(ConsumerProduct, Compound), ConcentrationModel> ConsumerProductConcentrationModels {
             get => GetOrCreateModuleOutputData<ConsumerProductConcentrationDistributionsOutputData>(ActionType.ConsumerProductConcentrationDistributions).ConsumerProductConcentrationModels;
             set => GetOrCreateModuleOutputData<ConsumerProductConcentrationDistributionsOutputData>(ActionType.ConsumerProductConcentrationDistributions).ConsumerProductConcentrationModels = value;
+        }
+
+
+        public ICollection<ICounterFactualValueModel> CounterFactualValueModels {
+            get => GetOrCreateModuleOutputData<ExposureResponseFunctionsOutputData>(ActionType.ExposureResponseFunctions).CounterFactualValueModels;
+            set => GetOrCreateModuleOutputData<ExposureResponseFunctionsOutputData>(ActionType.ExposureResponseFunctions).CounterFactualValueModels = value;
         }
         /// <summary>
         /// Creates a copy of the action data, to be used in bootstrap/uncertainty runs.

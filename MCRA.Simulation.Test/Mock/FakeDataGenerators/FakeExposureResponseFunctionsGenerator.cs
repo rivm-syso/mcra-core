@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.Simulation.Calculators.CounterFactualValueModels;
 using MCRA.Simulation.Calculators.ExposureResponseFunctions;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
@@ -49,6 +50,14 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                 }
             }
             return result;
+        }
+
+        public static List<ICounterFactualValueModel> FakeCounterFactualValueModel(List<IExposureResponseFunctionModel> erfModels) {
+            var exposureResponseFunctions = erfModels.Select(c => c.ExposureResponseFunction).ToList();
+            var counterFactualValueModels = exposureResponseFunctions
+                .Select(CounterFactualValueCalculatorFactory.Create)
+                .ToList();
+            return counterFactualValueModels;
         }
 
         public static ExposureResponseFunction FakeExposureResponseFunction(

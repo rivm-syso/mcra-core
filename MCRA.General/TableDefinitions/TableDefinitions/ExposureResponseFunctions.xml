@@ -214,5 +214,32 @@
         <string>Baseline</string>
       </Aliases>
     </ColumnDefinition>
+    <ColumnDefinition FieldType="CounterFactualValueDistributionType">
+      <Id>CFVUncertaintyDistribution</Id>
+      <Description>
+        Distribution type (Uniform, or LogNormal).
+        If not specified, the counter factual value is assumed to be a constant factor.
+      </Description>
+      <Aliases>
+        <string>CFVUncertaintyDistribution</string>
+        <string>CFVDistribution</string>
+      </Aliases>
+      <PossibleValues>
+        <PossibleValue>Uniform</PossibleValue>
+        <PossibleValue>LogNormal</PossibleValue>
+      </PossibleValues>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric">
+      <Id>CFVUpper</Id>
+      <Description>
+        The upper value of the distribution. If the distribution is uniform, then it is the upper bound of the uniform distribution.
+        If the distribution is lognormal, then the upper value is assumed to correspond with the p95 percentile of the distribution.
+        For the uniform and lognormal distribution, this value should be greater than the counter factual value.
+      </Description>
+      <Aliases>
+        <string>CFVUpper</string>
+        <string>CFVUncertaintyUpper</string>
+      </Aliases>
+    </ColumnDefinition>
   </ColumnDefinitions>
 </TableDefinition>

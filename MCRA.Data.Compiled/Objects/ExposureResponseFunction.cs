@@ -30,7 +30,8 @@ namespace MCRA.Data.Compiled.Objects {
         public BiologicalMatrix BiologicalMatrix => ExposureTarget.BiologicalMatrix;
         public ExpressionType ExpressionType => ExposureTarget.ExpressionType;
         public TargetUnit TargetUnit => new(ExposureTarget, ExposureUnit);
-
+        public CounterFactualValueDistributionType CFVUncertaintyDistribution { get; set; } = CounterFactualValueDistributionType.Constant;
+        public double? CFVUncertaintyUpper { get; set; }
         public bool HasErfSubGroups => ErfSubgroups != null && ErfSubgroups.Count > 0;
     }
 }

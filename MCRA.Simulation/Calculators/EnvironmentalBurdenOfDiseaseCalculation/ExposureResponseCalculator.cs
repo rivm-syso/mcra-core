@@ -1,4 +1,5 @@
 ﻿using MCRA.General;
+using MCRA.Simulation.Calculators.CounterFactualValueModels;
 using MCRA.Simulation.Calculators.ExposureResponseFunctions;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Utils.Statistics;
@@ -8,10 +9,11 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
     public class ExposureResponseCalculator {
 
         public IExposureResponseFunctionModel ExposureResponseFunctionModel { get; set; }
-        public List<ExposureInterval> ExposureIntervals { get; set; }
+        public ICounterFactualValueModel CounterFactualValueModel { get; set; }
 
-        public ExposureResponseCalculator(IExposureResponseFunctionModel exposureResponseFunctionModel) {
+        public ExposureResponseCalculator(IExposureResponseFunctionModel exposureResponseFunctionModel, ICounterFactualValueModel counterFactualValueModel) {
             ExposureResponseFunctionModel = exposureResponseFunctionModel;
+            CounterFactualValueModel = counterFactualValueModel;
         }
 
         public List<ExposureResponseResultRecord> Compute(
@@ -77,8 +79,9 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
             var allExposures = exposures
                 .Select(c => c.GetSubstanceExposure(substance))
                 .ToList();
+
             var upperBounds = new List<double> {
-                erf.CounterfactualValue * unitAlignmentFactor
+                CounterFactualValueModel.GetCounterFactualValue() * unitAlignmentFactor
             };
             var maximum = allExposures.Max();
             if (erf.HasErfSubGroups) {

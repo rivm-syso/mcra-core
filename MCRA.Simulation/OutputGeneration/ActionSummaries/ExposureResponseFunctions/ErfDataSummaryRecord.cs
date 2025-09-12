@@ -82,6 +82,15 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double CounterfactualValue { get; set; }
 
+        [Description("The counterfactual value uncertainty distribution.")]
+        [DisplayName("CFV uncertainty distribution")]
+        public string UncertaintyDistribution { get; set; }
+
+        [Description("The counterfactual value upper value of the uncertainty distribution.")]
+        [DisplayName("CFV uncertainty upper")]
+        [DisplayFormat(DataFormatString = "{0:G3}")]
+        public double? UncertaintyUpper { get; set; }
+
         [Description("Specifies whether this ERF is composed of multiple exposure subgroups/bins.")]
         [DisplayName("Has subgroups")]
         [DisplayFormat(DataFormatString = "{0:G3}")]

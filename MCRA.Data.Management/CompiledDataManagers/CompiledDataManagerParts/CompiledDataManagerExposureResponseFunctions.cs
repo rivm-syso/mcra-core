@@ -89,7 +89,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             ? new ExposureTarget(exposureRoute)
                                             : new ExposureTarget(biologicalMatrix, expressionType);
                                         var doseUnit = DoseUnitConverter.FromString(doseUnitString);
-
+                                        var distributionTypeString = r.GetStringOrNull(RawExposureResponseFunctions.CFVUncertaintyDistribution, fieldMap);
                                         var record = new ExposureResponseFunction() {
                                             Code = idModel,
                                             Name = r.GetStringOrNull(RawExposureResponseFunctions.Name, fieldMap),
@@ -106,7 +106,9 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             CounterfactualValue = r.GetDouble(RawExposureResponseFunctions.CounterfactualValue, fieldMap),
                                             PopulationCharacteristic = populationCharacteristicType,
                                             EffectThresholdLower = r.GetDoubleOrNull(RawExposureResponseFunctions.EffectThresholdLower, fieldMap),
-                                            EffectThresholdUpper = r.GetDoubleOrNull(RawExposureResponseFunctions.EffectThresholdUpper, fieldMap)
+                                            EffectThresholdUpper = r.GetDoubleOrNull(RawExposureResponseFunctions.EffectThresholdUpper, fieldMap),
+                                            CFVUncertaintyDistribution = CounterFactualValueDistributionTypeConverter.FromString(distributionTypeString, CounterFactualValueDistributionType.Constant),
+                                            CFVUncertaintyUpper = r.GetDoubleOrNull(RawExposureResponseFunctions.CFVUpper, fieldMap)
                                         };
                                         allExposureResponseFunctions.Add(record);
                                     }
@@ -193,7 +195,8 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 r.WriteNonEmptyString(RawExposureResponseFunctions.CounterfactualValue, erf.CounterfactualValue.ToString(), ccr);
                 r.WriteNonEmptyString(RawExposureResponseFunctions.PopulationCharacteristic, erf.PopulationCharacteristic.ToString(), ccr);
                 r.WriteNonEmptyString(RawExposureResponseFunctions.EffectThresholdLower, erf.EffectThresholdLower.ToString(), ccr);
-                r.WriteNonEmptyString(RawExposureResponseFunctions.EffectThresholdUpper, erf.EffectThresholdUpper.ToString(), ccr);
+                r.WriteNonEmptyString(RawExposureResponseFunctions.CFVUncertaintyDistribution, erf.CFVUncertaintyDistribution.ToString(), ccr); 
+                r.WriteNonNullDouble(RawExposureResponseFunctions.CFVUpper, erf.CFVUncertaintyUpper, ccr);
                 dtAExposureResponseFunctions.Rows.Add(r);
             }
             writeToCsv(tempFolder, tdExposureResponseFunctions, dtAExposureResponseFunctions);

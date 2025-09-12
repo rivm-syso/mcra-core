@@ -1,5 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.Simulation.Calculators.CounterFactualValueModels;
 using MCRA.Simulation.Calculators.DustExposureCalculation;
 using MCRA.Simulation.Calculators.ExposureResponseFunctions;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
@@ -26,13 +27,14 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
             Dictionary<ExposureTarget, (List<ITargetIndividualExposure> Exposures, TargetUnit Unit)> exposuresCollections,
             List<BurdenOfDisease> burdensOfDisease,
             Population selectedPopulation,
-            ICollection<IExposureResponseFunctionModel> exposureResponseFunctionModels
+            ICollection<IExposureResponseFunctionModel> exposureResponseFunctionModels,
+            ICollection<ICounterFactualValueModel> counterFactualModels
         ) {
             var environmentalBurdenOfDiseases = new List<EnvironmentalBurdenOfDiseaseResultRecord>();
             var percentileIntervals = generatePercentileIntervals(_defaultBinBoundaries);
             foreach (var exposureResponseFunctionModel in exposureResponseFunctionModels) {
                 var erf = exposureResponseFunctionModel.ExposureResponseFunction;
-
+                var cfvModel = counterFactualModels.FirstOrDefault(c => c.ExposureResponseFunction == erf);
                 // Get exposures for target
                 if (!exposuresCollections.TryGetValue(erf.ExposureTarget, out var targetExposures)) {
                     var msg = $"Failed to compute effects for exposure response function {erf.Code}: missing estimates for target {erf.ExposureTarget.GetDisplayName()}.";
@@ -41,7 +43,10 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
                 (var exposures, var exposureUnit) = (targetExposures.Exposures, targetExposures.Unit);
 
                 // Compute exposure response results
-                var exposureResponseCalculator = new ExposureResponseCalculator(exposureResponseFunctionModel);
+                var exposureResponseCalculator = new ExposureResponseCalculator(
+                    exposureResponseFunctionModel,
+                    cfvModel
+                );
                 var exposureResponseResults = exposureResponseCalculator
                     .Compute(
                         exposures,

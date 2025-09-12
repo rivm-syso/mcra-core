@@ -12,7 +12,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Select(r => r.ExposureResponseFunction)
                 .ToList();
 
-            Records = exposureResponseFunctions
+            Records = [.. exposureResponseFunctions
                 .Select(r => {
                     var record = new ErfDataSummaryRecord {
                         ExposureResponseFunctionCode = r.Code,
@@ -46,11 +46,12 @@ namespace MCRA.Simulation.OutputGeneration {
                             ? r.ExposureResponseSpecificationUpper.ExpressionString
                             : null,
                         CounterfactualValue = r.CounterfactualValue,
-                        HasSubgroups = r.HasErfSubGroups
+                        UncertaintyDistribution = r.CFVUncertaintyDistribution.GetShortDisplayName(),
+                        UncertaintyUpper = r.CFVUncertaintyUpper ?? double.NaN,
+                        HasSubgroups = r.HasErfSubGroups,
                     };
                     return record;
-                })
-                .ToList();
+                })];
         }
     }
 }

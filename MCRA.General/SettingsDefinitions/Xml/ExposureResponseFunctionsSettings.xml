@@ -8,4 +8,10 @@
     <ValueType>Boolean</ValueType>
     <DefaultValue>true</DefaultValue>
   </SettingsItem>
+  <SettingsItem>
+    <Id>ResampleCounterFactualValues</Id>
+    <Name>Resample counter factual values</Name>
+    <Description>Specifies whether the counter factual values are resampled from a parametric uncertainty distribution.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
 </SettingsItems>

@@ -76,5 +76,7 @@ namespace MCRA.General {
         DustConcentrations = 36,
         [Display(Name = "Soil concentration")]
         SoilConcentrations = 37,
+        [Display(Name = "Counter factual values")]
+        CounterFactualValues = 38,
     }
 }
