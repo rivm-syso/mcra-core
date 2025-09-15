@@ -96,10 +96,7 @@ namespace MCRA.Simulation.Calculators.ActiveSubstanceAllocation {
                                 newSampleCompounds.AddRange(conversionRecord.ActiveSubstanceSampleCompounds);
                                 authorised &= conversionRecord.Authorised;
                             } else {
-                                authorised &= (!sampleCompound.IsPositiveResidue
-                                    || (_substanceAuthorisations?.ContainsKey((food, measuredSubstance)) ?? true)
-                                    || (food.BaseFood != null && (_substanceAuthorisations?.ContainsKey((food.BaseFood, measuredSubstance)) ?? true))
-                                    );
+                                authorised &= !sampleCompound.IsPositiveResidue || getAuthorisation(food, measuredSubstance);
                                 newSampleCompounds.Add(sampleCompound.Clone());
                             }
                         }
@@ -159,5 +156,10 @@ namespace MCRA.Simulation.Calculators.ActiveSubstanceAllocation {
 
             return result;
         }
+
+        protected bool getAuthorisation(Food food, Compound substance) =>
+            _substanceAuthorisations == null
+            || _substanceAuthorisations.ContainsKey((food, substance))
+            || (food.BaseFood != null && _substanceAuthorisations.ContainsKey((food.BaseFood, substance)));
     }
 }

@@ -5,11 +5,13 @@ using MCRA.General;
 using MCRA.Simulation.Calculators.SubstanceConversionsCalculation;
 
 namespace MCRA.Simulation.Calculators.ActiveSubstanceAllocation {
-    public sealed class MostToxicActiveSubstanceAllocationCalculator : ActiveSubstanceAllocationCalculatorBase {
+    public sealed class ToxicityActiveSubstanceAllocationCalculator : ActiveSubstanceAllocationCalculatorBase {
 
-        private IDictionary<Compound, double> _relativePotencyFactors { get; set; }
+        private IDictionary<Compound, double> _relativePotencyFactors;
+        private SubstanceTranslationAllocationMethod _allocationMethod;
 
-        public MostToxicActiveSubstanceAllocationCalculator(
+        public ToxicityActiveSubstanceAllocationCalculator(
+            SubstanceTranslationAllocationMethod allocationMethod,
             ICollection<SubstanceConversion> substanceConversions,
             IDictionary<(Food, Compound), SubstanceAuthorisation> substanceAuthorisations,
             bool useSubstanceAuthorisations,
@@ -18,6 +20,7 @@ namespace MCRA.Simulation.Calculators.ActiveSubstanceAllocation {
             bool tryFixDuplicateAllocationInconsistencies = false
         ) : base(substanceConversions, substanceAuthorisations, useSubstanceAuthorisations, retainAllAllocatedSubstancesAfterAllocation, tryFixDuplicateAllocationInconsistencies) {
             _relativePotencyFactors = relativePotencyFactors;
+            _allocationMethod = allocationMethod;
         }
 
         protected override ActiveSubstanceConversionRecord convert(
@@ -31,9 +34,7 @@ namespace MCRA.Simulation.Calculators.ActiveSubstanceAllocation {
             var substances = substanceTranslationCollection.LinkedActiveSubstances
                 .Select(r => (
                     Substance: r.Key,
-                    Authorised: !_useSubstanceAuthorisations
-                        || (_substanceAuthorisations?.ContainsKey((food, r.Key)) ?? true)
-                        || (food.BaseFood != null && (_substanceAuthorisations?.ContainsKey((food.BaseFood, r.Key)) ?? true))
+                    Authorised: !_useSubstanceAuthorisations || getAuthorisation(food, r.Key)
                 ))
                 .ToList();
 
@@ -42,9 +43,16 @@ namespace MCRA.Simulation.Calculators.ActiveSubstanceAllocation {
                 substances = substances.Where(r => r.Authorised).ToList();
             }
 
-            // Select most toxic substance
-            var mostToxicSubstance = substances
-                .OrderByDescending(r => _relativePotencyFactors.TryGetValue(r.Substance, out var rpf) ? rpf : 0D)
+            double getRpf(Compound s) => _relativePotencyFactors.TryGetValue(s, out var rpf) ? rpf : 0D;
+
+            var substancesSorted = _allocationMethod switch {
+                SubstanceTranslationAllocationMethod.UseLeastToxic =>
+                    substances.OrderBy(r => getRpf(r.Substance)),
+                _ => substances.OrderByDescending(r => getRpf(r.Substance))
+            };
+
+            // Select (least or most) toxic substance based on sorted list
+            var toxicSubstance = substancesSorted
                 .ThenBy(r => r.Substance.Name)
                 .ThenBy(r => r.Substance.Code)
                 .First().Substance;
@@ -53,7 +61,7 @@ namespace MCRA.Simulation.Calculators.ActiveSubstanceAllocation {
             var result = new List<SampleCompound>();
             foreach (var activeSubstance in substanceTranslationCollection.LinkedActiveSubstances) {
                 // Determine multiplication factor based on the drawn translation set
-                var factor = activeSubstance.Key == mostToxicSubstance ? activeSubstance.Value : 0D;
+                var factor = activeSubstance.Key == toxicSubstance ? activeSubstance.Value : 0D;
                 var resType = sampleCompound.IsCensoredValue && factor == 0
                     ? ResType.VAL : sampleCompound.ResType;
                 var record = new SampleCompound() {
@@ -75,9 +83,7 @@ namespace MCRA.Simulation.Calculators.ActiveSubstanceAllocation {
             return new ActiveSubstanceConversionRecord() {
                 MeasuredSubstanceSampleCompound = sampleCompound,
                 ActiveSubstanceSampleCompounds = result,
-                Authorised = !sampleCompound.IsPositiveResidue
-                    || (_substanceAuthorisations?.ContainsKey((food, mostToxicSubstance)) ?? true)
-                    || (food.BaseFood != null && (_substanceAuthorisations?.ContainsKey((food.BaseFood, mostToxicSubstance)) ?? true))
+                Authorised = !sampleCompound.IsPositiveResidue || getAuthorisation(food, toxicSubstance)
             };
         }
     }

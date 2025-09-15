@@ -9,10 +9,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ActiveSubstanceAllocation {
     /// Aggregate membership model calculator tests.
     /// </summary>
     [TestClass]
-    public class MostToxicActiveSubstanceAllocationCalculatorTests : ActiveSubstanceAllocationCalculatorTestsBase {
+    public class LeastToxicActiveSubstanceAllocationCalculatorTests : ActiveSubstanceAllocationCalculatorTestsBase {
 
         [TestMethod]
-        public void MostToxicActiveSubstanceAllocationCalculator_TestAuthorised() {
+        public void LeastToxicActiveSubstanceAllocationCalculator_TestAuthorised() {
             var foods = FakeFoodsGenerator.Create(1);
 
             // Substances and substance conversions
@@ -25,9 +25,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ActiveSubstanceAllocation {
                 createSubstanceConversion(activeSubstances[1], measuredSubstances[0], 0.5, true, 200)
             };
 
-            // Create authorisations
+            // Create authorisations [both authorised]
             var autorisations = FakeSubstanceAuthorisationsGenerator.Create(
-                (foods[0], activeSubstances[1]), (foods[0], activeSubstances[0])
+                (foods[0], activeSubstances[1]),
+                (foods[0], activeSubstances[0])
             );
 
             // Create a sample substance collection (one sample and one measurement)
@@ -35,28 +36,31 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ActiveSubstanceAllocation {
                 foods[0],
                 fakeSampleSubstanceRecord(measuredSubstances, [0.1, double.NaN])
             );
-            //AS1 substance most toxic
-            var rpfs = activeSubstances.ToDictionary(c => c, c => 1d);
-            rpfs[activeSubstances[0]] = 2;
+
+            // AS2 substance least toxic
+            var rpfs = new Dictionary<Compound, double>() {
+                { activeSubstances[0], 2 },
+                { activeSubstances[1], 1 },
+            };
 
             // Create allocator and run
             var allocator = new ToxicityActiveSubstanceAllocationCalculator(
-                SubstanceTranslationAllocationMethod.UseMostToxic,
+                SubstanceTranslationAllocationMethod.UseLeastToxic,
                 substanceConversions,
                 autorisations,
                 true, false, rpfs, false
             );
             var result = allocator.Allocate(
                 sampleSubstanceCollection,
-                activeSubstances.ToHashSet(),
+                [.. activeSubstances],
                 new McraRandomGenerator(1)
             );
             var sampleCompound = result.Single().SampleCompoundRecords.First();
 
-            // Assert: concentration should be allocated to the authorised active substance, this is the first
+            // Assert: concentration should be allocated to the AS2, which is authorised
             Assert.IsTrue(sampleCompound.AuthorisedUse);
-            Assert.IsTrue(sampleCompound.SampleCompounds[activeSubstances[1]].IsZeroConcentration);
-            Assert.AreEqual(0.5 * 0.1, sampleCompound.SampleCompounds[activeSubstances[0]].Residue);
+            Assert.IsTrue(sampleCompound.SampleCompounds[activeSubstances[0]].IsZeroConcentration);
+            Assert.AreEqual(0.5 * 0.1, sampleCompound.SampleCompounds[activeSubstances[1]].Residue);
         }
 
         [TestMethod]
@@ -64,7 +68,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ActiveSubstanceAllocation {
         [DataRow(false, true)]
         [DataRow(true, false)]
         [DataRow(true, true)]
-        public void MostToxicActiveSubstanceAllocationCalculator_TestAuthorisedRawFood(
+        public void LeastToxicActiveSubstanceAllocationCalculator_TestAuthorisedRawFood(
             params bool[] authorised
         ) {
             // Create a raw food and a processed food of the raw food
@@ -95,13 +99,16 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ActiveSubstanceAllocation {
                 processedFoods[0],
                 fakeSampleSubstanceRecord(measuredSubstances, [0.1, double.NaN])
             );
-            //AS1 substance most toxic
-            var rpfs = activeSubstances.ToDictionary(c => c, c => 1d);
-            rpfs[activeSubstances[0]] = 2;
+
+            //AS1 substance most toxic, AS2 is least toxic
+            var rpfs = new Dictionary<Compound, double>() {
+                { activeSubstances[0], 2 },
+                { activeSubstances[1], 1 },
+            };
 
             // Create allocator and run
             var allocator = new ToxicityActiveSubstanceAllocationCalculator(
-                SubstanceTranslationAllocationMethod.UseMostToxic,
+                SubstanceTranslationAllocationMethod.UseLeastToxic,
                 substanceConversions,
                 autorisations,
                 true, false, rpfs, false
@@ -109,20 +116,20 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ActiveSubstanceAllocation {
 
             var result = allocator.Allocate(
                 sampleSubstanceCollection,
-                activeSubstances.ToHashSet(),
+                [.. activeSubstances],
                 new McraRandomGenerator(1)
             );
             var sampleCompound = result.Single().SampleCompoundRecords.First();
 
             // One of the two substances should be allocated, the other not
-            var allocatedSubstance = activeSubstances.Single(r => sampleCompound.SampleCompounds[r].IsPositiveResidue);
-            var notAllocatedSubsance = activeSubstances.Single(r => sampleCompound.SampleCompounds[r].IsZeroConcentration);
+            var allocatedSubstance = activeSubstances
+                .Single(r => sampleCompound.SampleCompounds[r].IsPositiveResidue);
 
             // If one of the two active substances is authorised, the resulting sample substance
             // should also be authorised (and allocated to that substance)
             Assert.AreEqual(authorised[0] || authorised[1], sampleCompound.AuthorisedUse);
 
-            // Residue should be allocated to the second active substance, which is authorised
+            // Residue should be allocated to the first active substance, which is authorised
             Assert.AreEqual(0.5 * 0.1, sampleCompound.SampleCompounds[allocatedSubstance].Residue);
 
             if (authorised[0] && !authorised[1]) {

@@ -23,6 +23,14 @@
       </Description>
     </Unit>
     <Unit>
+      <Id>UseLeastToxic</Id>
+      <Name>Allocate least potent</Name>
+      <ShortName>Allocate least potent</ShortName>
+      <Description>
+        Allocate least potent active substance.
+      </Description>
+    </Unit>
+    <Unit>
       <Id>NominalEstimates</Id>
       <Name>Nominal estimate</Name>
       <ShortName>Nominal estimate</ShortName>

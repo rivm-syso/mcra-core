@@ -18,8 +18,10 @@ namespace MCRA.Simulation.Calculators.ActiveSubstanceAllocation {
             IDictionary<Compound, double> relativePotencyFactors
         ) {
             switch (_settings.ReplacementMethod) {
+                case SubstanceTranslationAllocationMethod.UseLeastToxic:
                 case SubstanceTranslationAllocationMethod.UseMostToxic:
-                    return new MostToxicActiveSubstanceAllocationCalculator(
+                    return new ToxicityActiveSubstanceAllocationCalculator(
+                        _settings.ReplacementMethod,
                         substanceConversions,
                         substanceAuthorisations,
                         _settings.UseSubstanceAuthorisations,

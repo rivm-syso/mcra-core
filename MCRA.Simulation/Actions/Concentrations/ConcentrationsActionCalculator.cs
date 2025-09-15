@@ -77,7 +77,10 @@ namespace MCRA.Simulation.Actions.Concentrations {
             _actionInputRequirements[ActionType.SubstanceApprovals].IsVisible = isRestrictWaterImputationToApprovedSubstances;
             var rpfVisible = isWaterImputationWithPotencyRestrition ||
                 (useComplexResidueDefinitions &&
-                ModuleConfig.SubstanceTranslationAllocationMethod == SubstanceTranslationAllocationMethod.UseMostToxic);
+                    (ModuleConfig.SubstanceTranslationAllocationMethod == SubstanceTranslationAllocationMethod.UseMostToxic
+                        || ModuleConfig.SubstanceTranslationAllocationMethod == SubstanceTranslationAllocationMethod.UseLeastToxic
+                    )
+                );
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsVisible = rpfVisible;
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsRequired = rpfVisible;
 
