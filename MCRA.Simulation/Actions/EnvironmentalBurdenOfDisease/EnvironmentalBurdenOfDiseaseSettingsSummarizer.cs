@@ -25,6 +25,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             section.SummarizeSetting(SettingsItemType.BodApproach, _configuration.BodApproach);
             section.SummarizeSetting(SettingsItemType.ExposureGroupingMethod, _configuration.ExposureGroupingMethod);
             section.SummarizeSetting(SettingsItemType.BinBoundaries, _configuration.BinBoundaries);
+            section.SummarizeSetting(SettingsItemType.EbdStandardisation, _configuration.EbdStandardisation);
             return section;
         }
     }

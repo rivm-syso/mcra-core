@@ -10,13 +10,13 @@
   </SettingsItem>
   <SettingsItem>
     <Id>BodApproach</Id>
-    <Name>Specify the Bod approach</Name>
+    <Name>Bod approach</Name>
     <Description>Specify the approach used for estimating the attributable burden of disease.</Description>
     <ValueType>BodApproach</ValueType>
   </SettingsItem>
   <SettingsItem>
     <Id>ExposureGroupingMethod</Id>
-    <Name>Specify the exposure grouping method</Name>
+    <Name>Exposure grouping method</Name>
     <Description>Specify the method by which the exposures are grouped in bins. For 'Custom bins', the 
       specified bins are used for all exposure response functions. For 'ERF-defined bins', the bins defined 
       for subgroups are used and for exposure response functions without subgroups, the specified custom bins are used.
@@ -25,7 +25,7 @@
   </SettingsItem>
   <SettingsItem>
     <Id>BinBoundaries</Id>
-    <Name>Specify the bin boundaries.</Name>
+    <Name>Bin boundaries</Name>
     <Description>
       Specify the boundaries (%) of the bins by which the exposures are grouped. For 'Custom bins', the
       specified bins are used for all exposure response functions. For 'ERF-defined bins', the bins defined
@@ -35,5 +35,13 @@
     <ValueType>Numeric</ValueType>
     <IsList>true</IsList>
     <DefaultValue>5, 10, 25, 50, 75, 90, 95</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>EbdStandardisation</Id>
+    <Name>Standardised population size</Name>
+    <Description>
+      Specify the standardisation method, e.g. per 10,000, per 100,000 (default) or per 1,000,000 individuals.
+    </Description>
+    <ValueType>EnvironmentalBodStandardisationMethod</ValueType>
   </SettingsItem>
 </SettingsItems>

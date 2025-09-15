@@ -96,7 +96,8 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
             var ebdCalculator = new EnvironmentalBurdenOfDiseaseCalculator(
                 ModuleConfig.BodApproach,
                 ModuleConfig.ExposureGroupingMethod,
-                ModuleConfig.BinBoundaries
+                ModuleConfig.BinBoundaries,
+                ModuleConfig.EbdStandardisation
             );
             var environmentalBurdenOfDiseases = ebdCalculator.Compute(
                 exposuresCollections,

@@ -12,15 +12,18 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
         private readonly BodApproach _bodApproach;
         private readonly List<double> _defaultBinBoundaries;
         private readonly ExposureGroupingMethod _exposureGroupingMethod;
+        private readonly EnvironmentalBodStandardisationMethod _ebdStandardisationMethod;
 
         public EnvironmentalBurdenOfDiseaseCalculator(
             BodApproach bodApproach,
             ExposureGroupingMethod exposureGroupingMethod,
-            List<double> defaultBinBoundaries
+            List<double> defaultBinBoundaries,
+            EnvironmentalBodStandardisationMethod ebdStandardisationMethod
         ) {
             _bodApproach = bodApproach;
             _exposureGroupingMethod = exposureGroupingMethod;
             _defaultBinBoundaries = defaultBinBoundaries;
+            _ebdStandardisationMethod = ebdStandardisationMethod;
         }
 
         public List<EnvironmentalBurdenOfDiseaseResultRecord> Compute(
@@ -78,8 +81,14 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
             Population population
         ) {
             var populationSize = population?.Size ?? double.NaN;
+            var standardisedPopulationSize = _ebdStandardisationMethod switch {
+                EnvironmentalBodStandardisationMethod.PER100K => 1E5,
+                EnvironmentalBodStandardisationMethod.PER10K => 1E4,
+                EnvironmentalBodStandardisationMethod.PER1M => 1E6,
+                _ => 1E5,
+            };
             var environmentalBurdenOfDiseaseResultBinRecords = exposureResponseResults
-                .Select(r => compute(r, population, burdenOfDisease, _bodApproach))
+                .Select(r => compute(r, population, burdenOfDisease, _bodApproach, standardisedPopulationSize))
                 .ToList();
             var sum = environmentalBurdenOfDiseaseResultBinRecords.Sum(c => c.AttributableBod);
             var cumulative = 0d;
@@ -98,7 +107,8 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
                 ExposureResponseFunction = exposureResponseResults.First().ExposureResponseFunction,
                 ErfDoseUnit = exposureResponseResults.First().ExposureResponseFunction.ExposureUnit,
                 TargetUnit = exposureResponseResults.First().TargetUnit,
-                EnvironmentalBurdenOfDiseaseResultBinRecords = environmentalBurdenOfDiseaseResultBinRecords
+                EnvironmentalBurdenOfDiseaseResultBinRecords = environmentalBurdenOfDiseaseResultBinRecords,
+                StandardisedPopulationSize = standardisedPopulationSize
             };
             return result;
         }
@@ -129,7 +139,8 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
             ExposureResponseResultRecord exposureResponseResultRecord,
             Population population,
             BurdenOfDisease burdenOfDisease,
-            BodApproach bodApproach
+            BodApproach bodApproach,
+            double standardisedPopulationSize
         ) {
             var totalBod = burdenOfDisease.Value
                 * exposureResponseResultRecord.PercentileInterval.Percentage / 100;
@@ -141,7 +152,8 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
                 Exposure = exposureResponseResultRecord.ExposureLevel,
                 TotalBod = totalBod,
                 ResponseValue = responseValue,
-                ExposureResponseResultRecord = exposureResponseResultRecord
+                ExposureResponseResultRecord = exposureResponseResultRecord,
+                StandardisedPopulationSize = standardisedPopulationSize
             };
             if (bodApproach == BodApproach.TopDown) {
                 var attributableFraction = computeAttributableFraction(
@@ -200,6 +212,20 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
                     }
             }
             return attributableFraction;
+        }
+
+        /// <summary>
+        /// Return the number for standardising the population
+        /// </summary>
+        /// <param name="ebdStandardisation"></param>
+        /// <returns></returns>
+        private static double getEbdStandardisation(EnvironmentalBodStandardisationMethod ebdStandardisation) {
+            return ebdStandardisation switch {
+                EnvironmentalBodStandardisationMethod.PER100K => 1E5,
+                EnvironmentalBodStandardisationMethod.PER10K => 1E4,
+                EnvironmentalBodStandardisationMethod.PER1M => 1E6,
+                _ => 1E5,
+            };
         }
     }
 }

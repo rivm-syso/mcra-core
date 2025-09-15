@@ -53,7 +53,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 ErfCode = ebdResultRecord.ExposureResponseFunction.Code,
                 ErfName = ebdResultRecord.ExposureResponseFunction.Name,
                 TotalAttributableBod = totalAttributableBod,
-                TotalAttributableBods = []
+                TotalAttributableBods = [],
+                StandardisedPopulationSize = ebdResultRecord.StandardisedPopulationSize
             };
         }
     }

@@ -44,6 +44,7 @@
     <CalculationSetting>BodApproach</CalculationSetting>
     <CalculationSetting>ExposureGroupingMethod</CalculationSetting>
     <CalculationSetting>BinBoundaries</CalculationSetting>
+    <CalculationSetting>EbdStandardisation</CalculationSetting>
   </CalculationSettings>
   <UncertaintySettings>
     <UncertaintySetting source="Action">UncertaintyLowerBound</UncertaintySetting>

@@ -30,6 +30,7 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
                 SectionLabel = ActionType.ToString()
             };
             var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
+            subHeader.Units = collectUnits(data.EnvironmentalBurdenOfDiseases);
             section.Summarize(
                 result.EnvironmentalBurdenOfDiseases
             );
@@ -76,7 +77,6 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
                     _configuration.UncertaintyLowerBound,
                     _configuration.UncertaintyUpperBound
                 );
-                subHeader.Units = collectUnits(data.EnvironmentalBurdenOfDiseases);
                 subHeader.SaveSummarySection(section);
             }
 
@@ -115,11 +115,10 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
                 order
             );
             section.Summarize(environmentalBurdenOfDiseases);
-            subHeader.Units = collectUnits(environmentalBurdenOfDiseases);
             subHeader.SaveSummarySection(section);
         }
 
-        private void summarizeAttributableBodUncertainty(
+        private static void summarizeAttributableBodUncertainty(
             List<EnvironmentalBurdenOfDiseaseResultRecord> environmentalBurdenOfDiseases,
             double lowerBound,
             double upperBound,
@@ -157,7 +156,7 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
             );
             subHeader.SaveSummarySection(section);
         }
-        private void summarizeExposureResponseFunctionUncertainty(
+        private static void summarizeExposureResponseFunctionUncertainty(
             ICollection<IExposureResponseFunctionModel> exposureResponseFunctionModels,
             List<EnvironmentalBurdenOfDiseaseResultRecord> environmentalBurdenOfDiseases,
             double lowerBound,
@@ -181,7 +180,8 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
             var result = new List<ActionSummaryUnitRecord> {
                 new ("EffectMetric", environmentalBurdenOfDiseases.FirstOrDefault().ExposureResponseFunction.EffectMetric.GetShortDisplayName()),
                 new ("LowerBound", $"p{_configuration.UncertaintyLowerBound}"),
-                new ("UpperBound", $"p{_configuration.UncertaintyUpperBound}")
+                new ("UpperBound", $"p{_configuration.UncertaintyUpperBound}"),
+                new ("EbdStandardisedPopulationSize", _configuration.EbdStandardisation.GetDisplayName())
             };
             return result;
         }

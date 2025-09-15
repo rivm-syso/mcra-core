@@ -83,7 +83,8 @@ namespace MCRA.Simulation.OutputGeneration {
                     CumulativeAttributableBod = r.CumulativeAttributableBod,
                     CumulativeAttributableBods = [],
                     CumulativeStandardisedExposedAttributableBod = r.CumulativeStandardisedExposedAttributableBod,
-                    CumulativeStandardisedExposedAttributableBods = []
+                    CumulativeStandardisedExposedAttributableBods = [],
+                    StandardisedPopulationSize = r.StandardisedPopulationSize
                 })
                 .ToList();
             return records;

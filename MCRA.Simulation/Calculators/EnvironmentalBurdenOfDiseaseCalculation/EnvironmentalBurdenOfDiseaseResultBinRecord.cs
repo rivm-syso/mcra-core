@@ -11,5 +11,6 @@
         public ExposureResponseResultRecord ExposureResponseResultRecord { get; set; }
         public double CumulativeAttributableBod { get; set; }
         public double CumulativeStandardisedExposedAttributableBod { get; set; }
+        public double StandardisedPopulationSize { get; set; }
     }
 }

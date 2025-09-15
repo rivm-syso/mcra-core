@@ -10,6 +10,9 @@ namespace MCRA.Simulation.OutputGeneration {
         public double PopulationSize { get; set; }
 
         [Display(AutoGenerateField = false)]
+        public double StandardisedPopulationSize { get; set; }
+
+        [Display(AutoGenerateField = false)]
         public double UncertaintyLowerBound { get; set; }
 
         [Display(AutoGenerateField = false)]
@@ -80,24 +83,24 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:G4}")]
         public double UpperTotalAttributableBod { get { return TotalAttributableBods.Percentile(UncertaintyUpperBound); } }
 
-        [Description("Standardised total EBD per 100,000 for the whole population (AttrBoD / Population size * 100,000) .")]
-        [DisplayName("EBD per 100,000")]
+        [Description("Standardised total attributable burden of disease {EbdStandardisedPopulationSize}.")]
+        [DisplayName("Standardised attr. BoD ({EbdStandardisedPopulationSize})")]
         [DisplayFormat(DataFormatString = "{0:G4}")]
-        public double StandardisedTotalAttributableBod { get { return TotalAttributableBod / PopulationSize * 1e5; } }
+        public double StandardisedTotalAttributableBod { get { return TotalAttributableBod / PopulationSize * StandardisedPopulationSize; } }
 
-        [Description("Median EBD per 100,000 for the whole population.")]
-        [DisplayName("EBD per 100,000 median")]
+        [Description("Standardised median attributable burden of disease {EbdStandardisedPopulationSize}.")]
+        [DisplayName("Standardised attr. BoD ({EbdStandardisedPopulationSize}) median")]
         [DisplayFormat(DataFormatString = "{0:G4}")]
-        public double MedianStandardisedTotalAttributableBod { get { return MedianTotalAttributableBod / PopulationSize * 1e5; } }
+        public double MedianStandardisedTotalAttributableBod { get { return MedianTotalAttributableBod / PopulationSize * StandardisedPopulationSize; } }
 
-        [Description("Lower uncertainty bound EBD per 100,000 for the whole population.")]
-        [DisplayName("EBD per 100,000 lower bound (LowerBound)")]
+        [Description("Standardised attributable burden of disease lower uncertainty bound {EbdStandardisedPopulationSize}.")]
+        [DisplayName("Standardised attr. BoD ({EbdStandardisedPopulationSize}) lower bound (LowerBound)")]
         [DisplayFormat(DataFormatString = "{0:G4}")]
-        public double LowerStandardisedTotalAttributableBod { get { return LowerTotalAttributableBod / PopulationSize * 1e5; } }
+        public double LowerStandardisedTotalAttributableBod { get { return LowerTotalAttributableBod / PopulationSize * StandardisedPopulationSize; } }
 
-        [Description("Upper uncertainty bound EBD per 100,000 for the whole population.")]
-        [DisplayName("EBD per 100,000 upper bound (UpperBound)")]
+        [Description("Standardised attributable burden of disease upper uncertainty bound {EbdStandardisedPopulationSize}.")]
+        [DisplayName("Standardised attr. BoD ({EbdStandardisedPopulationSize}) upper bound (UpperBound)")]
         [DisplayFormat(DataFormatString = "{0:G4}")]
-        public double UpperStandardisedTotalAttributableBod { get { return UpperTotalAttributableBod / PopulationSize * 1e5; } }
+        public double UpperStandardisedTotalAttributableBod { get { return UpperTotalAttributableBod / PopulationSize * StandardisedPopulationSize; } }
     }
 }

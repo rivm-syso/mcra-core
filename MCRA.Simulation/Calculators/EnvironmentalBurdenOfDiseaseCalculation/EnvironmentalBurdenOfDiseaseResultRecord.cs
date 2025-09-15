@@ -8,5 +8,6 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
         public ExposureUnitTriple ErfDoseUnit { get; set; }
         public TargetUnit TargetUnit { get; set; }
         public List<EnvironmentalBurdenOfDiseaseResultBinRecord> EnvironmentalBurdenOfDiseaseResultBinRecords { get; set; }
+        public double StandardisedPopulationSize { get; set; }
     }
 }

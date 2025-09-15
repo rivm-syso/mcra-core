@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>EnvironmentalBodStandardisationMethod</Id>
+  <Name>Environmental burden of disease standardisation method</Name>
+  <Description>
+    Accepted environmental burden of disease standardisation types.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>PER10K</Id>
+      <Name>per 10,000</Name>
+      <ShortName>per 10K</ShortName>
+      <Description>EBD standardised per 10,000.</Description>
+    </Unit>
+    <Unit>
+      <Id>PER100K</Id>
+      <Name>per 100,000</Name>
+      <ShortName>per 100K</ShortName>
+      <Description>EBD standardised per 100,000.</Description>
+    </Unit>
+    <Unit>
+      <Id>PER1M</Id>
+      <Name>per 1,000,000</Name>
+      <ShortName>per 1M</ShortName>
+      <Description>EBD standardised per 1,000,000.</Description>
+    </Unit>
+  </Units>
+</UnitDefinition>
