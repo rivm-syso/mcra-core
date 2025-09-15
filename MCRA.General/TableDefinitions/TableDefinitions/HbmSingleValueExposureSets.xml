@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition IsStrongEntity="true">
+  <Id>HbmSingleValueExposureSets</Id>
+  <Name>HBM single value exposure sets</Name>
+  <Description>
+    High level description of the  HBM single value exposure sets, specifying the id, name, description and the (reference) substance and exposure unit used for reporting the exposures.
+  </Description>
+  <Aliases>
+    <string>HbmSingleValueExposureSets</string>
+    <string>HbmSVExposureSets</string>
+  </Aliases>
+  <PreferredAlias>HbmSVExposureSets</PreferredAlias>
+  <HiddenAliases>
+    <string>RawHbmSingleValueExposureSets</string>
+  </HiddenAliases>
+  <TargetDataTable>RawHbmSingleValueExposureSets</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition IsPrimaryKey="true" Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
+      <Id>id</Id>
+      <Description>
+        Identifier of the HBM single exposure set.
+      </Description>
+      <Aliases>
+        <string>id</string>
+        <string>idExposureSet</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idSurvey</Id>
+      <Description>Unique identification code of the survey.</Description>
+      <Aliases>
+        <string>idSurvey</string>
+        <string>Survey</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>HbmSingleValueExposureSurveys</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idSubstance</Id>
+      <Name>idSubstance</Name>
+      <Description>The code of the substance.</Description>
+      <Aliases>
+        <string>idSubstance</string>
+        <string>SubstanceId</string>
+        <string>SubstanceCode</string>
+        <string>Substance</string>
+      </Aliases>
+      <PreferredAlias>SubstanceCode</PreferredAlias>
+      <ForeignKeyTables>
+        <string>Compounds</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="BiologicalMatrix">
+      <Id>BiologicalMatrix</Id>
+      <Name>Biological matrix</Name>
+      <Description>
+        The biological matrix (e.g., blood, urine) for which this exposure response function is defined.
+      </Description>
+      <Aliases>
+        <string>BiologicalMatrix</string>
+        <string>MatrixSource</string>
+        <string>SourceMatrix</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="DoseUnit">
+      <Id>DoseUnit</Id>
+      <Description>The unit of the result of the exposure response function.</Description>
+      <Aliases>
+        <string>DoseUnit</string>
+        <string>Unit</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="ExpressionType">
+      <Id>ExpressionType</Id>
+      <Description>
+        The expression type or adjustment method of the unit. This field specifies how the unit (target) is adjusted,
+        e.g. for blood lipids for fat soluble biomarkers ('mg/g lipids') or the dilution level of the urine ('mg/g creatinine').
+      </Description>
+      <Aliases>
+        <string>ExpressionType</string>
+        <string>AdjustmentMethod</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

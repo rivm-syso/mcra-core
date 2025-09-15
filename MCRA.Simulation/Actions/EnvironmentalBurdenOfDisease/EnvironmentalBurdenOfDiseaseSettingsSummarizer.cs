@@ -26,6 +26,9 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             section.SummarizeSetting(SettingsItemType.ExposureGroupingMethod, _configuration.ExposureGroupingMethod);
             section.SummarizeSetting(SettingsItemType.BinBoundaries, _configuration.BinBoundaries);
             section.SummarizeSetting(SettingsItemType.EbdStandardisation, _configuration.EbdStandardisation);
+            if (_configuration.ExposureCalculationMethod == ExposureCalculationMethod.MonitoringConcentration) {
+                section.SummarizeSetting(SettingsItemType.UsePointEstimates, _configuration.UsePointEstimates);
+            }
             return section;
         }
     }

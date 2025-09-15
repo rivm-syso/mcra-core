@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>HbmSingleValueExposures</Id>
+  <Name>HBM single value exposures</Name>
+  <ActionType>HbmSingleValueExposures</ActionType>
+  <ModuleType>DataModule</ModuleType>
+  <TableGroup>HbmSingleValueExposures</TableGroup>
+  <IsAdvancedActionType>false</IsAdvancedActionType>
+  <Description>
+    Human (bio)monitoring (HBM) population exposure estimates specified as (single value) percentile points of the exposure distribution.
+  </Description>
+  <ShortDescription>
+    Human (bio)monitoring (HBM) population exposure estimates specified as (single value) percentile points of the exposure distribution.
+  </ShortDescription>
+  <DataDescription>
+    Human (bio)monitoring (HBM) population exposure estimates specified as (single value) percentile points of the exposure distribution. For each HBM survey/study, exposure estimates for different biological matries (e.g. blood, urine) and substance can be reported via exposure sets.
+  </DataDescription>
+  <Entities>
+    <Entity>Populations</Entity>
+    <Entity>Substances</Entity>
+  </Entities>
+  <HasUncertaintyAnalysis>false</HasUncertaintyAnalysis>
+  <LoopEntities>
+    <LoopEntity>Compounds</LoopEntity>
+    <LoopEntity>Populations</LoopEntity>
+  </LoopEntities>
+  <SelectionSettings>
+    <SelectionSetting source="Action">ExposureType</SelectionSetting>
+  </SelectionSettings>
+  <CalculationSettings>
+  </CalculationSettings>
+  <OutputSettings>
+    <OutputSetting source="Action">VariabilityLowerPercentage</OutputSetting>
+    <OutputSetting source="Action">VariabilityUpperPercentage</OutputSetting>
+  </OutputSettings>
+  <UncertaintySettings>
+    <UncertaintySetting source="Action">UncertaintyLowerBound</UncertaintySetting>
+    <UncertaintySetting source="Action">UncertaintyUpperBound</UncertaintySetting>
+  </UncertaintySettings>
+</Module>

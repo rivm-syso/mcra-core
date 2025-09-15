@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsItems>
+  <!-- HBM single value exposures settings  -->
+  <SettingsItem>
+    <Id>UsePointEstimates</Id>
+    <Name>Use HBM single value exposures</Name>
+    <Description>
+      Use HBM single value exposures (distribution percentile point estimates).
+    </Description>
+    <ValueType>Boolean</ValueType>
+    <DefaultValue>false</DefaultValue>
+  </SettingsItem>
+</SettingsItems>

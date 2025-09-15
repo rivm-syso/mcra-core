@@ -1,5 +1,4 @@
-﻿using MCRA.Data.Compiled.Objects;
-using MCRA.General;
+﻿using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
 using MCRA.General.ModuleDefinitions.Settings;
@@ -24,7 +23,10 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
 
         protected override void verify() {
             var isTargetLevelExternal = ModuleConfig.TargetDoseLevelType == TargetLevelType.External;
-            var isMonitoringConcentrations = ModuleConfig.ExposureCalculationMethod == ExposureCalculationMethod.MonitoringConcentration;
+            var isMonitoringConcentrations = ModuleConfig.ExposureCalculationMethod == ExposureCalculationMethod.MonitoringConcentration
+                && !ModuleConfig.UsePointEstimates;
+            var isHbmSingleValueExposures = ModuleConfig.ExposureCalculationMethod == ExposureCalculationMethod.MonitoringConcentration
+                && ModuleConfig.UsePointEstimates;
             var isComputeFromModelledExposures = ModuleConfig.ExposureCalculationMethod == ExposureCalculationMethod.ModelledConcentration;
             _actionInputRequirements[ActionType.DietaryExposures].IsVisible = isComputeFromModelledExposures && isTargetLevelExternal;
             _actionInputRequirements[ActionType.DietaryExposures].IsRequired = isComputeFromModelledExposures && isTargetLevelExternal;
@@ -32,6 +34,8 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
             _actionInputRequirements[ActionType.TargetExposures].IsRequired = isComputeFromModelledExposures && !isTargetLevelExternal;
             _actionInputRequirements[ActionType.HumanMonitoringAnalysis].IsRequired = isMonitoringConcentrations;
             _actionInputRequirements[ActionType.HumanMonitoringAnalysis].IsVisible = isMonitoringConcentrations;
+            _actionInputRequirements[ActionType.HbmSingleValueExposures].IsRequired = isHbmSingleValueExposures;
+            _actionInputRequirements[ActionType.HbmSingleValueExposures].IsVisible = isHbmSingleValueExposures;
         }
 
         protected override ActionSettingsSummary summarizeSettings() {
@@ -72,9 +76,6 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
                 throw new Exception("Population size is required for bottom-up burden of disease computations.");
             }
 
-            // Get exposures per target
-            var exposuresCollections = getExposures(data);
-
             // Get burdens of disease
             var burdensOfDisease = data.BurdensOfDisease;
 
@@ -92,19 +93,32 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
             // Only keep BoDs for selected indicators
             burdensOfDisease = [.. burdensOfDisease.Where(r => ModuleConfig.BodIndicators.Contains(r.BodIndicator))];
 
+            // Compute exposure response
+            var erCalculator = new ExposureResponseCalculator(
+                ModuleConfig.ExposureGroupingMethod,
+                ModuleConfig.BinBoundaries
+            );
+            var exposureResponseResults = ModuleConfig.UsePointEstimates
+                ? erCalculator.ComputeFromHbmSingleValueExposures(
+                    data.HbmSingleValueExposureSets,
+                    data.ExposureResponseFunctionModels,
+                    data.CounterFactualValueModels
+                )
+                : erCalculator.ComputeFromTargetIndividualExposures(
+                    getExposures(data),
+                    data.ExposureResponseFunctionModels,
+                    data.CounterFactualValueModels
+                );
+
             // Create EBD calculator and compute
             var ebdCalculator = new EnvironmentalBurdenOfDiseaseCalculator(
                 ModuleConfig.BodApproach,
-                ModuleConfig.ExposureGroupingMethod,
-                ModuleConfig.BinBoundaries,
                 ModuleConfig.EbdStandardisation
             );
             var environmentalBurdenOfDiseases = ebdCalculator.Compute(
-                exposuresCollections,
                 burdensOfDisease,
                 data.SelectedPopulation,
-                data.ExposureResponseFunctionModels,
-                data.CounterFactualValueModels
+                exposureResponseResults
             );
 
             if (environmentalBurdenOfDiseases.Count == 0) {
@@ -112,7 +126,8 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
             }
 
             var result = new EnvironmentalBurdenOfDiseaseActionResult {
-                EnvironmentalBurdenOfDiseases = environmentalBurdenOfDiseases
+                EnvironmentalBurdenOfDiseases = environmentalBurdenOfDiseases,
+                ExposureResponseResults = exposureResponseResults,
             };
 
             localProgress.Update(100);

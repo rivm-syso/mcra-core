@@ -386,5 +386,8 @@ namespace MCRA.Simulation.Test.Mock {
         public IList<ConsumerProductConcentrationDistribution> GetAllConsumerProductConcentrationDistributions() {
             return _data.AllConsumerProductConcentrationDistributions;
         }
+        public ICollection<HbmSingleValueExposureSet> GetAllHbmSingleValueExposures() {
+            return _data.AllHbmSingleValueExposureSets;
+        }
     }
 }

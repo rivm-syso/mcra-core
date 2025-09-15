@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>HbmSingleValueExposures</Id>
+  <Name>HBM single value exposures</Name>
+  <Description>
+    HBM single value exposure linked to a HBM single value exposure sets.
+    The percentiles are reported in the unit specified by the HBM single value exposure sets to which they belong.
+  </Description>
+  <Aliases>
+    <string>HbmSingleValueExposures</string>
+    <string>HbmSVExposures</string>
+  </Aliases>
+  <PreferredAlias>HbmSVExposures</PreferredAlias>
+  <HiddenAliases>
+    <string>RawHbmSingleValueExposures</string>
+  </HiddenAliases>
+  <TargetDataTable>RawHbmSingleValueExposures</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
+      <Id>idExposureSet</Id>
+      <Description>
+        The code of the HBM exposure set to which this record belongs.
+      </Description>
+      <Aliases>
+        <string>idExposureSet</string>
+        <string>idHbmSVExposureSet</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>HbmSingleValueExposureSets</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>Percentage</Id>
+      <Description>
+        The percentage to which the percentile value belongs.
+      </Description>
+      <Aliases>
+        <string>Percentage</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>Value</Id>
+      <Description>
+        The percentile value. I.e., the concentration value belonging to the specified percentage.
+      </Description>
+      <Aliases>
+        <string>Value</string>
+        <string>Concentration</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

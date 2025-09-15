@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition IsStrongEntity="true">
+  <Id>HbmSingleValueExposureSurveys</Id>
+  <Name>HBM single value exposure surveys</Name>
+  <Description>
+    Contains the definitions of the human (bio)monitoring surveys/studies.
+  </Description>
+  <Aliases>
+    <string>HbmSingleValueExposureSurveys</string>
+    <string>HbmSVExposureSurveys</string>
+  </Aliases>
+  <PreferredAlias>HbmSVExposureSurveys</PreferredAlias>
+  <HiddenAliases>
+    <string>RawHbmSingleValueExposureSurveys</string>
+  </HiddenAliases>
+  <TargetDataTable>RawHbmSingleValueExposureSurveys</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition IsPrimaryKey="true" Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>id</Id>
+      <Description>Unique identification code of the survey.</Description>
+      <Aliases>
+        <string>idSurvey</string>
+        <string>id</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldSize="100" FieldType="AlphaNumeric" IsNameColumn="true">
+      <Id>Name</Id>
+      <Description>
+        Name of the study/survey.
+      </Description>
+      <Aliases>
+        <string>Name</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldSize="200" FieldType="AlphaNumeric">
+      <Id>Description</Id>
+      <Description>
+        Description of the study/survey.
+      </Description>
+      <Aliases>
+        <string>Description</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50">
+      <Id>Country</Id>
+      <Description>Unique identification code of the country.</Description>
+      <Aliases>
+        <string>Country</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

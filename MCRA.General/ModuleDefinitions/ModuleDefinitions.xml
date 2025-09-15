@@ -90,6 +90,7 @@
       <xi:include href="Modules/ConsumerProductUseFrequencies.xml" />
       <xi:include href="Modules/ConsumerProductExposureDeterminants.xml" />
       <xi:include href="Modules/ConsumerProductExposures.xml" />
+      <xi:include href="Modules/HbmSingleValueExposures.xml" />
     </Modules>
   </ModuleGroupDefinition>
   <ModuleGroupDefinition>

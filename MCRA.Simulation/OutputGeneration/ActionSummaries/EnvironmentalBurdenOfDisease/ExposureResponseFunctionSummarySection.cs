@@ -14,34 +14,31 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<ErfSummaryRecord> ErfSummaryRecords { get; set; }
 
         public void Summarize(
-            ICollection<IExposureResponseFunctionModel> exposureResponseFunctionModels,
-            List<EnvironmentalBurdenOfDiseaseResultRecord> environmentalBurdenOfDiseases
+            ICollection<ExposureResponseResult> exposureResponseResults
         ) {
             var erfSummaryRecords = new List<ErfSummaryRecord>();
-            foreach (var exposureResponseFunctionModel in exposureResponseFunctionModels) {
-                var erf = exposureResponseFunctionModel.ExposureResponseFunction;
-                var ebdRecords = environmentalBurdenOfDiseases
-                    .Where(r => r.ExposureResponseFunction == erf)
-                    .ToList();
-                var ebdBinRecords = ebdRecords
-                    .SelectMany(r => r.EnvironmentalBurdenOfDiseaseResultBinRecords);
+            foreach (var exposureResponseResult in exposureResponseResults) {
+                var erf = exposureResponseResult.ExposureResponseFunction;
+
                 var targetUnit = erf.TargetUnit;
-                var doseUnitAlignmentFactor = ebdBinRecords.First()
-                    .ExposureResponseResultRecord.ErfDoseUnitAlignmentFactor;
-                var dataPoints = ebdBinRecords
+                var doseUnitAlignmentFactor = exposureResponseResult.ErfDoseUnitAlignmentFactor;
+                var dataPoints = exposureResponseResult
+                    .ExposureResponseResultRecords
                     .Select(r => new ExposureResponseDataPoint() {
-                        Exposure = r.Exposure,
-                        ResponseValue = r.ResponseValue
+                        Exposure = r.ExposureLevel,
+                        ResponseValue = r.PercentileSpecificRisk
                     })
                     .ToList();
-                var maxExposure = ebdBinRecords.Max(r => r.Exposure);
+                var maxExposure = dataPoints.Max(r => r.Exposure);
                 var exposureResponseGridDataPoints = new UncertainDataPointCollection<double>();
                 var XValues = GriddingFunctions.Arange(
                     erf.CounterfactualValue,
                     maxExposure,
                     n: 1000);
                 var YValues = XValues
-                    .Select(r => exposureResponseFunctionModel.Compute(r * doseUnitAlignmentFactor, false));
+                    .Select(r => exposureResponseResult.ExposureResponseFunctionModel
+                        .Compute(r * doseUnitAlignmentFactor, false)
+                    );
                 exposureResponseGridDataPoints.XValues = XValues;
                 exposureResponseGridDataPoints.ReferenceValues = YValues;
 
@@ -84,23 +81,20 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         public void SummarizeUncertainty(
-           ICollection<IExposureResponseFunctionModel> exposureResponseFunctionModels,
-           List<EnvironmentalBurdenOfDiseaseResultRecord> environmentalBurdenOfDiseases,
-           double lowerBound,
-           double upperBound
+            ICollection<ExposureResponseResult> exposureResponseResults,
+            double lowerBound,
+            double upperBound
         ) {
-            foreach (var exposureResponseFunctionModel in exposureResponseFunctionModels) {
-                var erf = exposureResponseFunctionModel.ExposureResponseFunction;
-                var doseUnitAlignmentFactor = environmentalBurdenOfDiseases
-                    .Where(r => r.ExposureResponseFunction == erf)
-                    .SelectMany(r => r.EnvironmentalBurdenOfDiseaseResultBinRecords)
-                    .First()
-                    .ExposureResponseResultRecord.ErfDoseUnitAlignmentFactor;
+            foreach (var exposureResponseResult in exposureResponseResults) {
+                var erf = exposureResponseResult.ExposureResponseFunction;
+                var doseUnitAlignmentFactor = exposureResponseResult.ErfDoseUnitAlignmentFactor;
                 var XValues = ErfSummaryRecords
                     .Single(r => r.ErfCode == erf.Code)
                     .ExposureResponseGridDataPoints.XValues;
                 var YValues = XValues
-                    .Select(r => exposureResponseFunctionModel.Compute(r * doseUnitAlignmentFactor, false));
+                    .Select(r => exposureResponseResult.ExposureResponseFunctionModel
+                        .Compute(r * doseUnitAlignmentFactor, false)
+                    );
                 ErfSummaryRecords
                     .Single(r => r.ErfCode == erf.Code)
                     .ExposureResponseGridDataPoints.AddUncertaintyValues(YValues);

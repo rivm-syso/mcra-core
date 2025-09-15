@@ -119,11 +119,11 @@ namespace MCRA.General {
         SoilExposureDeterminants = 53,
         [Display(Name = "Burden of disease", Order = 56)]
         BurdensOfDisease = 54,
-        [Display(Name = "Indoor air concentratios", Order = 57)]
+        [Display(Name = "Indoor air concentrations", Order = 57)]
         IndoorAirConcentrations = 55,
         [Display(Name = "Air exposure determinants", Order = 58)]
         AirExposureDeterminants = 56,
-        [Display(Name = "Outdoor air concentratios", Order = 59)]
+        [Display(Name = "Outdoor air concentrations", Order = 59)]
         OutdoorAirConcentrations = 57,
         [Display(Name = "Consumer products", Order = 60)]
         ConsumerProducts = 58,
@@ -135,5 +135,7 @@ namespace MCRA.General {
         ConsumerProductExposureDeterminants = 61,
         [Display(Name = "Consumer product concentration distributions", Order = 64)]
         ConsumerProductConcentrationDistributions = 62,
+        [Display(Name = "HBM single value exposures", Order = 65)]
+        HbmSingleValueExposures = 63,
     }
 }

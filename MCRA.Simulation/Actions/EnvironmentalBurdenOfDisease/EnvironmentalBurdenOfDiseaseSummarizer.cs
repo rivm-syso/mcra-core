@@ -5,6 +5,7 @@ using MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation;
 using MCRA.Simulation.Calculators.ExposureResponseFunctions;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
+using Microsoft.AspNetCore.Mvc;
 
 namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
     public enum EnvironmentalBurdenOfDiseaseSections {
@@ -89,11 +90,9 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
                 );
             }
 
-            if (data.EnvironmentalBurdenOfDiseases.Count > 0 &&
-                data.ExposureResponseFunctionModels.Count > 0) {
+            if (result.ExposureResponseResults.Count > 0) {
                 summarizeExposureResponseFunctionUncertainty(
-                    data.ExposureResponseFunctionModels,
-                    data.EnvironmentalBurdenOfDiseases,
+                    result,
                     _configuration.UncertaintyLowerBound,
                     _configuration.UncertaintyUpperBound,
                     subHeader
@@ -111,7 +110,7 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
             };
             var subHeader = header.AddSubSectionHeaderFor(
                 section,
-                "Attributable Burden of disease",
+                "Attributable burden of disease",
                 order
             );
             section.Summarize(environmentalBurdenOfDiseases);
@@ -147,18 +146,17 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
             };
             var subHeader = header.AddSubSectionHeaderFor(
                 section,
-                "Exposure response function",
+                "Exposure response results",
                 order
             );
             section.Summarize(
-                data.ExposureResponseFunctionModels,
-                data.EnvironmentalBurdenOfDiseases
+                actionResult.ExposureResponseResults
             );
             subHeader.SaveSummarySection(section);
         }
+
         private static void summarizeExposureResponseFunctionUncertainty(
-            ICollection<IExposureResponseFunctionModel> exposureResponseFunctionModels,
-            List<EnvironmentalBurdenOfDiseaseResultRecord> environmentalBurdenOfDiseases,
+            EnvironmentalBurdenOfDiseaseActionResult actionResult,
             double lowerBound,
             double upperBound,
             SectionHeader header
@@ -167,8 +165,7 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
             if (subHeader != null) {
                 var section = subHeader.GetSummarySection() as ExposureResponseFunctionSummarySection;
                 section.SummarizeUncertainty(
-                    exposureResponseFunctionModels,
-                    environmentalBurdenOfDiseases,
+                    actionResult.ExposureResponseResults,
                     lowerBound,
                     upperBound
                 );

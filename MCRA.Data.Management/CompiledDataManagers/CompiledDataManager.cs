@@ -157,6 +157,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 writeConsumerProductConcentrationDistributions(folderName, data.AllConsumerProductConcentrationDistributions);
                 writeConsumerProductExposureFractions(folderName, data.AllConsumerProductExposureFractions);
                 writeConsumerProductApplicationAmounts(folderName, data.AllConsumerProductApplicationAmounts);
+                writeHbmSingleValueExposureSetsToCsv(folderName, data.AllHbmSingleValueExposureSets);
             } catch (Exception) {
                 throw;
             }

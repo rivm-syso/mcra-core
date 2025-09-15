@@ -101,5 +101,6 @@ namespace MCRA.Data.Management {
         IList<ConsumerProductApplicationAmount> GetAllConsumerProductApplicationAmounts();
         IList<ConsumerProductConcentration> GetAllConsumerProductConcentrations();
         IList<ConsumerProductConcentrationDistribution> GetAllConsumerProductConcentrationDistributions();
+        ICollection<HbmSingleValueExposureSet> GetAllHbmSingleValueExposures();
     }
 }

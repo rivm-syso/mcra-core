@@ -53,10 +53,10 @@ namespace MCRA.Simulation.OutputGeneration {
                     PopulationCode = population?.Code,
                     PopulationName = population?.Name,
                     PopulationSize = population?.Size > 0 ? population.Size : double.NaN,
-                    SubstanceCode = r.ExposureResponseResultRecord.Substance.Code,
-                    SubstanceName = r.ExposureResponseResultRecord.Substance.Name,
-                    EffectCode = r.ExposureResponseResultRecord.ExposureResponseFunction.Effect.Code,
-                    EffectName = r.ExposureResponseResultRecord.ExposureResponseFunction.Effect.Name,
+                    SubstanceCode = ebdResultRecord.Substance.Code,
+                    SubstanceName = ebdResultRecord.Substance.Name,
+                    EffectCode = ebdResultRecord.BurdenOfDisease.Effect.Code,
+                    EffectName = ebdResultRecord.BurdenOfDisease.Effect.Name,
                     BodIndicator = ebdResultRecord.BurdenOfDisease.BodIndicator.GetShortDisplayName(),
                     SourceIndicatorList = (ebdResultRecord.BurdenOfDisease is DerivedBurdenOfDisease)
                         ? (ebdResultRecord.BurdenOfDisease as DerivedBurdenOfDisease).Conversions

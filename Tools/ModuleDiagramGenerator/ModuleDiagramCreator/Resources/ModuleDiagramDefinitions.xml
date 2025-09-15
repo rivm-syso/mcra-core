@@ -33,7 +33,9 @@
 		<GraphDefinition ActionType="NonDietaryExposures" X="50" Y="76" Linebreaks="1"/>
 		<GraphDefinition ActionType="TargetExposures" X="70" Y="61" Linebreaks="0"/>
 		<GraphDefinition ActionType="ExposureMixtures" X="70" Y="84" Linebreaks="1"/>
-		<GraphDefinition ActionType="HumanMonitoringData" X="125" Y="84" Linebreaks="1"/>
+    
+    <GraphDefinition ActionType="HbmSingleValueExposures" X="125" Y="84" Linebreaks="1"/>
+    <GraphDefinition ActionType="HumanMonitoringData" X="125" Y="84" Linebreaks="1"/>
 		<GraphDefinition ActionType="HumanMonitoringAnalysis" X="89" Y="84" Linebreaks="1"/>
 		<GraphDefinition ActionType="BiologicalMatrixConcentrationComparisons" X="89" Y="73" Linebreaks="1"/>
 		<GraphDefinition ActionType="PbkModels" X="86" Y="42" Linebreaks="0"/>

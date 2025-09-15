@@ -145,6 +145,9 @@
         ConsumerProductExposureFractions = 148,
         ConsumerProductApplicationAmounts = 149,
         ConsumerProductConcentrationDistributions = 150,
-        BodIndicatorConversions = 151
+        BodIndicatorConversions = 151,
+        HbmSingleValueExposureSets = 152,
+        HbmSingleValueExposures = 153,
+        HbmSingleValueExposureSurveys = 154
     }
 }

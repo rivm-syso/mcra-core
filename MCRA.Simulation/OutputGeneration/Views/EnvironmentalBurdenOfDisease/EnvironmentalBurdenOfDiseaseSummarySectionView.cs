@@ -21,6 +21,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add("LowerStandardisedTotalAttributableBod");
                 hiddenProperties.Add("UpperStandardisedTotalAttributableBod");
             }
+            if (Model.Records.All(r => string.IsNullOrEmpty(r.SourceIndicators))) {
+                hiddenProperties.Add("SourceIndicators");
+            }
 
             var missingPopulationSize = Model.Records.All(c => double.IsNaN(c.PopulationSize));
             if (missingPopulationSize) {

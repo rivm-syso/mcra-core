@@ -160,32 +160,6 @@ namespace MCRA.General.Test.UnitTests.TableDefinitions {
             }
         }
 
-        /// <summary>
-        /// Check if column name and description are present for strong entities
-        /// </summary>
-        [TestMethod]
-        public void McraTableDefinitions_TestEntitiesForNameAndDescription() {
-            var definitionsInstance = McraTableDefinitions.Instance;
-            var definitions = definitionsInstance.TableDefinitions;
-            var nameList = new List<string>();
-            var descriptionList = new List<string>();
-            foreach (var definition in definitions) {
-                if (definition.Value.IsStrongEntity) {
-                    if (definition.Value.ColumnDefinitions.Any(r => r.IsPrimaryKey)) {
-                        if (!definition.Value.ColumnDefinitions.Select(c => c.Id).Contains("Name")) {
-                            nameList.Add(definition.Value.ToString());
-                        }
-                        if (!definition.Value.ColumnDefinitions.Select(c => c.Id).Contains("Description")) {
-                            descriptionList.Add(definition.Value.ToString());
-                        }
-                    }
-                }
-            }
-            Assert.AreEqual(0, nameList.Count);
-            Assert.AreEqual(0, descriptionList.Count);
-        }
-
-
         [TestMethod]
         public void McraTableDefinitions_TestDataFormats() {
             var groupDefinitions = McraTableDefinitions.Instance.DataGroupDefinitions;

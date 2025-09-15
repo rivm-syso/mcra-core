@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition IsExperimental="true">
+  <Id>HbmSingleValueExposures</Id>
+  <Name>HBM single value exposures</Name>
+  <SourceTableGroup>HbmSingleValueExposures</SourceTableGroup>
+  <Description>
+    HBM single value exposures data are exposure data from HBM surveys/studies, specified with percentile points of the exposure distributions for different combinations of matrix and substance.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>HbmSingleValueExposureSurveys</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>HbmSingleValueExposureSets</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>HbmSingleValueExposures</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

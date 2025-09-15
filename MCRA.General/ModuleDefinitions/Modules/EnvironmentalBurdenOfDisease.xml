@@ -29,6 +29,7 @@
     <Input>HumanMonitoringAnalysis</Input>
     <Input>ExposureResponseFunctions</Input>
     <Input>BurdensOfDisease</Input>
+    <Input>HbmSingleValueExposures</Input>
   </CalculationInputs>
   <SelectionInputs>
   </SelectionInputs>
@@ -45,6 +46,7 @@
     <CalculationSetting>ExposureGroupingMethod</CalculationSetting>
     <CalculationSetting>BinBoundaries</CalculationSetting>
     <CalculationSetting>EbdStandardisation</CalculationSetting>
+    <CalculationSetting>UsePointEstimates</CalculationSetting>
   </CalculationSettings>
   <UncertaintySettings>
     <UncertaintySetting source="Action">UncertaintyLowerBound</UncertaintySetting>

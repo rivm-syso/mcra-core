@@ -2112,4 +2112,42 @@
       </ParentScopeReference>
     </ParentScopeReferences>
   </ScopingTypeDefinition>
+
+  <ScopingTypeDefinition>
+    <Id>HbmSingleValueExposureSurveys</Id>
+    <Name>HBM single value exposure surveys</Name>
+    <RawTableId>HbmSingleValueExposureSurveys</RawTableId>
+    <Description>-</Description>
+    <TableGroup>HbmSingleValueExposures</TableGroup>
+    <IsStrongEntity>true</IsStrongEntity>
+    <AllowUserSelection>true</AllowUserSelection>
+  </ScopingTypeDefinition>
+  <ScopingTypeDefinition>
+    <Id>HbmSingleValueExposureSets</Id>
+    <Name>HBM single value exposures sets</Name>
+    <RawTableId>HbmSingleValueExposureSets</RawTableId>
+    <Description>-</Description>
+    <TableGroup>HbmSingleValueExposures</TableGroup>
+    <IsStrongEntity>true</IsStrongEntity>
+    <ParentScopeReferences>
+      <ParentScopeReference>
+        <IdField>idSubstance</IdField>
+        <ReferencedScope>Compounds</ReferencedScope>
+      </ParentScopeReference>
+    </ParentScopeReferences>
+  </ScopingTypeDefinition>
+  <ScopingTypeDefinition>
+    <Id>HbmSingleValueExposures</Id>
+    <Name>HBM single value exposures</Name>
+    <RawTableId>HbmSingleValueExposures</RawTableId>
+    <Description>-</Description>
+    <TableGroup>HbmSingleValueExposures</TableGroup>
+    <IsStrongEntity>false</IsStrongEntity>
+    <ParentScopeReferences>
+      <ParentScopeReference>
+        <IdField>idExposureSet</IdField>
+        <ReferencedScope>HbmSingleValueExposureSets</ReferencedScope>
+      </ParentScopeReference>
+    </ParentScopeReferences>
+  </ScopingTypeDefinition>
 </ScopingTypeDefinitions>

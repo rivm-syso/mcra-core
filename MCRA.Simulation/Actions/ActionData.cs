@@ -66,6 +66,7 @@ using MCRA.Simulation.Actions.Risks;
 using MCRA.Simulation.Actions.SingleValueConcentrations;
 using MCRA.Simulation.Actions.SingleValueConsumptions;
 using MCRA.Simulation.Actions.SingleValueDietaryExposures;
+using MCRA.Simulation.Actions.HbmSingleValueExposures;
 using MCRA.Simulation.Actions.SingleValueNonDietaryExposures;
 using MCRA.Simulation.Actions.SingleValueRisks;
 using MCRA.Simulation.Actions.SoilConcentrationDistributions;
@@ -1070,7 +1071,6 @@ namespace MCRA.Simulation {
             set => GetOrCreateModuleOutputData<ConsumerProductExposureDeterminantsOutputData>(ActionType.ConsumerProductExposureDeterminants).CPApplicationAmountUnit = value;
         }
 
-
         public ICollection<ConsumerProductConcentrationDistribution> AllConsumerProductConcentrationDistributions {
             get => GetOrCreateModuleOutputData<ConsumerProductConcentrationDistributionsOutputData>(ActionType.ConsumerProductConcentrationDistributions).AllConsumerProductConcentrationDistributions;
             set => GetOrCreateModuleOutputData<ConsumerProductConcentrationDistributionsOutputData>(ActionType.ConsumerProductConcentrationDistributions).AllConsumerProductConcentrationDistributions = value;
@@ -1085,6 +1085,11 @@ namespace MCRA.Simulation {
         public ICollection<ICounterFactualValueModel> CounterFactualValueModels {
             get => GetOrCreateModuleOutputData<ExposureResponseFunctionsOutputData>(ActionType.ExposureResponseFunctions).CounterFactualValueModels;
             set => GetOrCreateModuleOutputData<ExposureResponseFunctionsOutputData>(ActionType.ExposureResponseFunctions).CounterFactualValueModels = value;
+        }
+
+        public ICollection<HbmSingleValueExposureSet> HbmSingleValueExposureSets {
+            get => GetOrCreateModuleOutputData<HbmSingleValueExposuresOutputData>(ActionType.HbmSingleValueExposures).HbmSingleValueExposureSets;
+            set => GetOrCreateModuleOutputData<HbmSingleValueExposuresOutputData>(ActionType.HbmSingleValueExposures).HbmSingleValueExposureSets = value;
         }
         /// <summary>
         /// Creates a copy of the action data, to be used in bootstrap/uncertainty runs.

@@ -347,6 +347,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 AllFoodTranslations = [],
                 AllFoodSamples = new Dictionary<string, FoodSample>(),
                 AllHazardCharacterisations = [],
+                AllHbmSingleValueExposureSets = [],
                 AllHumanMonitoringIndividuals = new Dictionary<string, Individual>(),
                 AllHumanMonitoringAnalyticalMethods = new Dictionary<string, AnalyticalMethod>(),
                 AllHumanMonitoringSamples = new Dictionary<string, HumanMonitoringSample>(),

@@ -108,6 +108,7 @@ namespace MCRA.Data.Compiled {
         public IList<ConsumerProductApplicationAmount> AllConsumerProductApplicationAmounts { get; set; }
         public IList<ConsumerProductConcentration> AllConsumerProductConcentrations { get; set; }
         public IList<ConsumerProductConcentrationDistribution> AllConsumerProductConcentrationDistributions { get; set; }
+        public ICollection<HbmSingleValueExposureSet> AllHbmSingleValueExposureSets { get; set; }
 
         #region Methods
 
