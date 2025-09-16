@@ -13,6 +13,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public double BodyWeight { get; set; }
 
         [DisplayName("Age ({AgeUnit})")]
+        [DisplayFormat(DataFormatString = "{0:N0}")]
         public double Age { get; set; }
 
         [DisplayName("External exposure ({ExternalExposureUnit})")]
@@ -57,6 +58,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         [Description("Compartment size (mass or volume).")]
         [DisplayName("Compartment size")]
+        [DisplayFormat(DataFormatString = "{0:G3}")]
         public double CompartmentWeight {
             get {
                 return BodyWeight * RelativeCompartmentWeight;
@@ -71,21 +73,25 @@ namespace MCRA.Simulation.OutputGeneration {
         [Display(AutoGenerateField = false)]
         [Description("Relative compartment Weight.")]
         [DisplayName("Relative compartment Weight")]
+        [DisplayFormat(DataFormatString = "{0:G3}")]
         public double RelativeCompartmentWeight { get; set; }
 
         [Display(AutoGenerateField = false)]
         [Description("Steady state internal exposure.")]
         [DisplayName("Steady state internal exposure")]
+        [DisplayFormat(DataFormatString = "{0:G3}")]
         public double SteadyStateTargetExposure { get; set; }
 
         [Description("Peak internal exposure.")]
         [DisplayName("Peak internal exposure")]
         [Display(AutoGenerateField = false)]
+        [DisplayFormat(DataFormatString = "{0:G3}")]
         public double PeakTargetExposure { get; set; }
 
         [Description("The absolute maximum of the of the internal exposures time course.")]
         [DisplayName("The absolute maximum of the of the internal exposures time course")]
         [Display(AutoGenerateField = false)]
+        [DisplayFormat(DataFormatString = "{0:G3}")]
         public double MaximumTargetExposure { get; set; }
 
         [Display(AutoGenerateField = false)]

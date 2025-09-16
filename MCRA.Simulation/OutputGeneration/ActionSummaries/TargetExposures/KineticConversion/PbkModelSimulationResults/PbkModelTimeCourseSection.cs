@@ -95,8 +95,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     record.TargetExposures = pattern.TargetExposuresPerTimeUnit
                         .Select(r => new TargetIndividualExposurePerTimeUnitRecord() {
                             Exposure = r.Exposure,
-                            Time = r.Time,
-                            BodyWeight = r.BodyWeight ?? double.NaN
+                            Time = r.Time
                         })
                         .ToList();
                     record.PeakTargetExposure = pattern.PeakTargetExposure;

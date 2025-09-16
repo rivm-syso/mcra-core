@@ -78,21 +78,6 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                                     chartData: percentileDataSection
                                 ).ToString();
 
-                            var chartCreatorBodyweight = new PbkModelLifeTimeChartCreator(record, Model, ViewBag.GetUnit("BodyWeightUnit"));
-                            var figCaptionBodyWeight = !string.IsNullOrEmpty(record.IndividualCode)
-                                ? $"PBK model time course Body weight for individual {record.IndividualCode}."
-                                : $"PBK model time course Body weight.";
-                            chartBodyWeight = ChartHelpers.Chart(
-                                    name: $"BodyWeightTimeCourse{group.Key}{record.BiologicalMatrix}",
-                                    section: Model,
-                                    viewBag: ViewBag,
-                                    chartCreator: chartCreatorBodyweight,
-                                    fileType: ChartFileType.Svg,
-                                    saveChartFile: true,
-                                    caption: figCaptionBodyWeight,
-                                    chartData: percentileDataSection
-                                ).ToString();
-
                             var contentPanel = new HtmlString(
                                 "<div class=\"figure-container\">"
                                 + chartTimeCourse + chartBodyWeight

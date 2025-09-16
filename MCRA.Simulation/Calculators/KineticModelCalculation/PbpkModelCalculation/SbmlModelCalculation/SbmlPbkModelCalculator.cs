@@ -92,9 +92,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                         var compartmentWeight = output?.CompartmentVolumes[outputMapping.CompartmentId] ?? double.NaN;
                         var outputTimeSeries = output?.OutputTimeSeries[outputMapping.SpeciesId];
                         var relativeCompartmentWeight = compartmentWeight / individual.BodyWeight;
-                        var outputTimeSeriesBodyWeight = KineticModelDefinition.IdBodyWeightParameter != null
-                            ? output?.OutputTimeSeries[KineticModelDefinition.IdBodyWeightParameter]
-                            : null;
 
                         List<TargetExposurePerTimeUnit> exposures = null;
                         if (outputTimeSeries != null && outputTimeSeries.Average() > 0) {
@@ -103,8 +100,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                                 exposures = [.. outputTimeSeries
                                     .Select((r, i) => {
                                         var alignmentFactor = outputMapping.GetUnitAlignmentFactor(compartmentWeight);
-                                        var bodyWeight = outputTimeSeriesBodyWeight?.ElementAt(i);
-                                        var result = new TargetExposurePerTimeUnit(i * stepLength, r * alignmentFactor, bodyWeight);
+                                        var result = new TargetExposurePerTimeUnit(i * stepLength, r * alignmentFactor);
                                         return result;
                                     })];
                             } else {
@@ -114,10 +110,9 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                                 exposures = [.. outputTimeSeries
                                     .Select((r, i) => {
                                         var alignmentFactor = outputMapping.GetUnitAlignmentFactor(compartmentWeight);
-                                        var bodyWeight = outputTimeSeriesBodyWeight?.ElementAt(i);
                                         var exposure = alignmentFactor * r - runningSum;
                                         runningSum += exposure;
-                                        return new TargetExposurePerTimeUnit(i * stepLength, exposure, bodyWeight);
+                                        return new TargetExposurePerTimeUnit(i * stepLength, exposure);
                                     })];
                             }
                         }
