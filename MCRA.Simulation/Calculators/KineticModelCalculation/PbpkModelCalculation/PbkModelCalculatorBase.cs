@@ -6,6 +6,7 @@ using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation.R
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.Objects;
+using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 
@@ -57,6 +58,13 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             ProgressState progressState,
             IRandom generator
         ) {
+            // Check if routes are supported by the model
+            var missingRoutes = routes.Except(KineticModelDefinition.GetExposureRoutes()).ToList();
+            if (missingRoutes.Count > 0) {
+                var routeNames = string.Join(", ", missingRoutes.Select(r => r.GetDisplayName()));
+                throw new Exception($"Exposure routes {routeNames} are not supported by PBK model {KineticModelDefinition.Id}.");
+            }
+
             var externalIndividualExposures = individualDayExposures
                 .ToDictionary(
                     r => r.SimulatedIndividualDayId,
@@ -109,6 +117,13 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             ProgressState progressState,
             IRandom generator
         ) {
+            // Check if routes are supported by the model
+            var missingRoutes = routes.Except(KineticModelDefinition.GetExposureRoutes()).ToList();
+            if (missingRoutes.Count > 0) {
+                var routeNames = string.Join(", ", missingRoutes.Select(r => r.GetDisplayName()));
+                throw new Exception($"Exposure routes {routeNames} are not supported by PBK model {KineticModelDefinition.Id}.");
+            }
+
             var externalIndividualExposures = individualExposures
                 .ToDictionary(r => r.SimulatedIndividual.Id, r => r.ExternalIndividualDayExposures);
 
