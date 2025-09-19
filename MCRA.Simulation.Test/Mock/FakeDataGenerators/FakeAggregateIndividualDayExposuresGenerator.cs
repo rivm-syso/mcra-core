@@ -2,7 +2,7 @@
 using MCRA.Simulation.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
-using MCRA.Simulation.Calculators.KineticModelCalculation;
+using MCRA.Simulation.Calculators.KineticConversionCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
@@ -80,7 +80,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             ICollection<SimulatedIndividualDay> simulatedIndividualDays,
             ICollection<Compound> substances,
             ICollection<ExposureRoute> routes,
-            IDictionary<Compound, IKineticModelCalculator> kineticModelCalculators,
+            IDictionary<Compound, IKineticConversionCalculator> kineticModelCalculators,
             ExposureUnitTriple externalExposuresUnit,
             TargetUnit targetUnit,
             IRandom random
@@ -116,9 +116,9 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                     ExposureType.Acute,
                     new CancellationToken()
                 );
-            var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(
-                kineticModelCalculators
-            );
+
+            var kineticConversionCalculator = new KineticConversionFactorsCalculator(kineticModelCalculators);
+            var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(kineticConversionCalculator);
             var targetIndividualDayExposures = internalTargetExposuresCalculator
                 .ComputeAcute(
                     aggregateIndividualDayExposures,

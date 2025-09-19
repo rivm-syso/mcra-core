@@ -3,11 +3,11 @@ using MCRA.Simulation.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCharacterisationsFromIviveCalculation;
-using MCRA.Simulation.Calculators.KineticModelCalculation;
-using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
+using MCRA.Simulation.Calculators.KineticConversionCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Utils.Statistics;
+using MCRA.Simulation.Calculators.PbpkModelCalculation;
 
 namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCharacterisationTimeCourseCalculation {
     public class HazardDosePbkTimeCourseCalculator {
@@ -21,7 +21,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
         public List<HazardDosePbkTimeCourse> Compute(
             ICollection<IHazardCharacterisationModel> hazardCharacterisationModels,
             ExposureType exposureType,
-            KineticModelCalculatorFactory kineticModelCalculatorFactory,
+            KineticConversionCalculatorFactory kineticModelCalculatorFactory,
             PbkSimulationSettings pbkSimulationSettings,
             TargetUnit targetDoseUnit,
             IRandom kineticModelRandomGenerator

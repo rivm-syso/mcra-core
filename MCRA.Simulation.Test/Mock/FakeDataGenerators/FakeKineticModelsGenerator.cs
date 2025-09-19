@@ -1,8 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.KineticConversionFactorModels;
-using MCRA.Simulation.Calculators.KineticModelCalculation;
-using MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregationCalculation;
+using MCRA.Simulation.Calculators.KineticConversionCalculation;
 
 namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
 
@@ -89,7 +88,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         /// <summary>
         /// Creates a dictionary with kinetic model calculators for each substance
         /// </summary>
-        public static IDictionary<Compound, IKineticModelCalculator> CreateAbsorptionFactorKineticModelCalculators(
+        public static IDictionary<Compound, IKineticConversionCalculator> CreateAbsorptionFactorKineticModelCalculators(
             ICollection<Compound> substances,
             IDictionary<(ExposureRoute Route, Compound Substance), double> kineticConversionFactors,
             TargetUnit target,
@@ -107,6 +106,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                                 ExposureRouteFrom = c.Key.Route,
                                 DoseUnitFrom = ExposureUnitTriple.FromExposureUnit(externalExposureUnit),
                                 ConversionFactor = c.Value,
+                                SubstanceTo = r,
                                 BiologicalMatrixTo = target.BiologicalMatrix,
                                 ExpressionTypeTo = target.ExpressionType,
                                 DoseUnitTo = target.ExposureUnit
@@ -121,7 +121,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         /// Creates a linear kinetic conversion model calculator instance for the specified
         /// substance based on the provided collection of kinetic conversion factors.
         /// </summary>
-        public static IKineticModelCalculator CreateAbsorptionFactorKineticModelCalculator(
+        public static IKineticConversionCalculator CreateAbsorptionFactorKineticModelCalculator(
             Compound substance,
             ICollection<KineticConversionFactor> kineticConversionFactors
         ) {

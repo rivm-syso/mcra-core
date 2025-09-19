@@ -1,6 +1,6 @@
 ﻿using MCRA.General.ModuleDefinitions.Settings;
 
-namespace MCRA.Simulation.Calculators.KineticModelCalculation.AbsorptionFactorsCollectionsGeneration {
+namespace MCRA.Simulation.Calculators.KineticConversionCalculation.AbsorptionFactorsCollectionsGeneration {
     public sealed class AbsorptionFactorsCollectionBuilderSettings : IAbsorptionFactorsCollectionBuilderSettings {
 
         private readonly KineticModelsModuleConfig _configuration;

@@ -36,7 +36,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
                 kineticConversionFactors,
                 targetUnit
             );
-            var targetExposuresCalculator = new InternalTargetExposuresCalculator(kineticModelCalculators);
+            var kineticConversionCalculator = new KineticConversionFactorsCalculator(kineticModelCalculators);
+            var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(kineticConversionCalculator);
             var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
 
             var individualDayExposures = FakeAggregateIndividualDayExposuresGenerator

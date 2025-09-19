@@ -16,8 +16,8 @@ using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCharac
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCharacterisationTimeCourseCalculation;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardDoseTypeConversion;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticConversionFactorCalculation;
-using MCRA.Simulation.Calculators.KineticModelCalculation;
-using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
+using MCRA.Simulation.Calculators.KineticConversionCalculation;
+using MCRA.Simulation.Calculators.PbpkModelCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.ProgressReporting;
@@ -264,7 +264,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             var targetPointOfDeparture = ModuleConfig.GetTargetHazardDoseType();
 
             var kineticModelFactory = ModuleConfig.ApplyKineticConversions
-                ? new KineticModelCalculatorFactory(
+                ? new KineticConversionCalculatorFactory(
                     data.KineticModelInstances,
                     data.KineticConversionFactorModels,
                     data.AbsorptionFactors,

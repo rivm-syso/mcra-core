@@ -26,7 +26,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public string ExposureRoute { get; set; }
 
         [Description("Kinetic conversion factor.")]
-        [DisplayName("Kinetic conversion factor)")]
+        [DisplayName("Kinetic conversion factor")]
         [DisplayFormat(DataFormatString = "{0:G2}")]
         public double KineticConversionFactor { get; set; }
 

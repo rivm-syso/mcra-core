@@ -3,7 +3,7 @@ using MCRA.General;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
-using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
+using MCRA.Simulation.Calculators.PbpkModelCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
 
@@ -322,10 +322,8 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                             [record.AggregateIndividualExposure],
                             [record.ExternalTargetUnit.ExposureRoute],
                             substance,
-                            kineticModelInstance,
                             [record.InternalTargetUnit],
                             record.ExternalTargetUnit.ExposureUnit,
-                            _configuration.ExposureType,
                             _configuration.NonStationaryPeriod
                         );
                         subHeader1.SaveSummarySection(section);

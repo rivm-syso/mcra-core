@@ -24,10 +24,6 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Substance code")]
         public string SubstanceCode { get; set; }
 
-        [Description("Dose unit.")]
-        [DisplayName("Dose unit")]
-        public string DoseUnit { get; set; }
-
         [Description("Modelled exposure routes.")]
         [DisplayName("Modelled exposure routes")]
         public string Routes { get; set; }
@@ -35,14 +31,6 @@ namespace MCRA.Simulation.OutputGeneration {
         [Description("Output compartment.")]
         [DisplayName("Output compartment")]
         public string Output { get; set; }
-
-        [Description("Output unit.")]
-        [DisplayName("Output unit")]
-        public string OutputUnit { get; set; }
-
-        [Description("Time unit.")]
-        [DisplayName("Time unit")]
-        public string TimeUnit { get; set; }
 
     }
 }

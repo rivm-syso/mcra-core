@@ -1,19 +1,19 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.Simulation.Calculators.KineticModelCalculation;
+using MCRA.Simulation.Calculators.KineticConversionCalculation;
 using MCRA.Simulation.Objects;
-using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
+using MCRA.Simulation.Calculators.PbpkModelCalculation;
 
 namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticConversionFactorCalculation {
     public sealed class KineticConversionFactorCalculator : IKineticConversionFactorCalculator {
 
-        private readonly KineticModelCalculatorFactory _kineticModelCalculatorFactory;
+        private readonly KineticConversionCalculatorFactory _kineticModelCalculatorFactory;
         private readonly PbkSimulationSettings _pbkSimulationSettings;
         private readonly SimulatedIndividual _nominalIndividual;
 
         public KineticConversionFactorCalculator(
-            KineticModelCalculatorFactory kineticModelCalculatorFactory,
+            KineticConversionCalculatorFactory kineticModelCalculatorFactory,
             PbkSimulationSettings pbkSimulationSettings,
             double nominalBodyWeight
         ) {

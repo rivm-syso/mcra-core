@@ -4,7 +4,8 @@ using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.ExposureLevelsCalculation;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
-using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
+using MCRA.Simulation.Calculators.KineticConversionCalculation;
+using MCRA.Simulation.Calculators.PbpkModelCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils;
@@ -191,7 +192,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
             // Kinetic models
             if (result.KineticModelCalculators?.Values
-                .Any(r => r is PbkModelCalculatorBase) ?? false
+                .Any(r => r is PbkKineticConversionCalculator) ?? false
             ) {
                 subHeaderKineticConversion ??= subHeader.AddEmptySubSectionHeader("Kinetic conversion models", subOrder);
                 summarizePbkModelSimulationResults(
@@ -746,9 +747,9 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 }
             }
 
-            if (actionResult.KineticModelCalculators?.Values.Any(r => r is PbkModelCalculatorBase) ?? false) {
+            if (actionResult.KineticModelCalculators?.Values.Any(r => r is PbkKineticConversionCalculator) ?? false) {
                 foreach (var substance in activeSubstances) {
-                    if (actionResult.KineticModelCalculators[substance] is PbkModelCalculatorBase) {
+                    if (actionResult.KineticModelCalculators[substance] is PbkKineticConversionCalculator) {
                         var sectionTitle = data.ActiveSubstances.Count > 1
                             ? $"PBK model {substance.Name}"
                             : "PBK model";
@@ -1411,7 +1412,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             if (substances.Count == 1) {
                 // Single substance
                 var substance = substances.First();
-                if (result.KineticModelCalculators[substance] is PbkModelCalculatorBase) {
+                if (result.KineticModelCalculators[substance] is PbkKineticConversionCalculator) {
                     summarizePbkModelSimulationResults(
                         result,
                         data,
@@ -1430,8 +1431,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 var subOrder = 0;
 
                 var pbkModelCalculators = result.KineticModelCalculators.Values
-                    .Where(r => r is PbkModelCalculatorBase)
-                    .Cast<PbkModelCalculatorBase>()
+                    .Where(r => r is PbkKineticConversionCalculator)
+                    .Cast<PbkKineticConversionCalculator>()
                     .ToList();
 
                 foreach (var calculator in pbkModelCalculators) {
@@ -1545,10 +1546,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 selectedTargetExposures,
                 routes,
                 substance,
-                kineticModelInstance,
                 targetUnits,
                 externalExposureUnit,
-                _configuration.ExposureType,
                 _configuration.NonStationaryPeriodInDays
             );
             subHeader.SaveSummarySection(section);

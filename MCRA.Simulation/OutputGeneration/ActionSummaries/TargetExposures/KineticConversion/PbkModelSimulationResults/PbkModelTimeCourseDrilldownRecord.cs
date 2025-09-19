@@ -50,12 +50,6 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Expression type")]
         public string ExpressionType { get; set; }
 
-        [Display(AutoGenerateField = false)]
-        [Description("Compartment.")]
-        [DisplayName("Compartment")]
-        [DisplayFormat(DataFormatString = "{0:G3}")]
-        public string Compartment { get; set; }
-
         [Description("Compartment size (mass or volume).")]
         [DisplayName("Compartment size")]
         [DisplayFormat(DataFormatString = "{0:G3}")]

@@ -1,6 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
+using MCRA.Simulation.Calculators.PbpkModelCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Utils;
 using MCRA.Utils.ExtensionMethods;
@@ -11,22 +11,15 @@ namespace MCRA.Simulation.OutputGeneration {
 
         private static readonly int _specifiedTakeNumer = 9;
         public List<PbkModelTimeCourseDrilldownRecord> InternalTargetSystemExposures { get; set; }
-        public ExposureType ExposureType { get; set; }
-        public TimeUnit TimeScale { get; set; }
-        public string ModelCode { get; set; }
-        public int EvaluationFrequency { get; set; }
         public int NumberOfDaysSkipped { get; set; }
         public double Maximum { get; set; }
-
 
         public void Summarize(
            ICollection<AggregateIndividualExposure> targetExposures,
            ICollection<ExposureRoute> routes,
            Compound substance,
-           KineticModelInstance kineticModelInstance,
            ICollection<TargetUnit> targetUnits,
            ExposureUnitTriple externalExposureUnit,
-           ExposureType exposureType,
            int nonStationaryPeriod
        ) {
             if (targetUnits.Count > 1) {
@@ -43,10 +36,6 @@ namespace MCRA.Simulation.OutputGeneration {
                     )
                 )
                 .ToList();
-            ExposureType = exposureType;
-            TimeScale = kineticModelInstance.KineticModelDefinition.Resolution;
-            EvaluationFrequency = kineticModelInstance.KineticModelDefinition.EvaluationFrequency;
-            ModelCode = kineticModelInstance.IdModelDefinition;
             NumberOfDaysSkipped = nonStationaryPeriod;
             InternalTargetSystemExposures = results;
             Maximum = InternalTargetSystemExposures.Max(c => c.MaximumTargetExposure);
@@ -78,7 +67,6 @@ namespace MCRA.Simulation.OutputGeneration {
                     record.TargetExposure = pattern.Exposure;
                     record.MaximumTargetExposure = pattern.MaximumTargetExposure;
                     record.RelativeCompartmentWeight = pattern.RelativeCompartmentWeight;
-                    record.Compartment = pattern.Compartment;
                     record.ExternalExposure = aggregateExposure
                         .GetTotalExternalExposureForSubstance(substance, externalExposureUnit.IsPerUnit);
 

@@ -21,12 +21,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 ModelInstanceCode = kineticModelInstance.IdModelInstance,
                 SubstanceCode = substance.Code,
                 SubstanceName = substance.Name,
-                DoseUnit = string.Join(", ", kineticModelInstance.KineticModelDefinition.Forcings
-                     .Select(r => r.DoseUnit.GetShortDisplayName()).Distinct()),
                 Routes = string.Join(", ", routes.Select(c => c.GetShortDisplayName())),
-                Output = targetUnit.Target.GetDisplayName(),
-                OutputUnit = targetUnit.GetShortDisplayName(),
-                TimeUnit = kineticModelInstance.KineticModelDefinition.Resolution.GetShortDisplayName()
+                Output = targetUnit.Target.GetDisplayName()
             };
             KineticModelRecords.Add(kineticModelRecord);
         }

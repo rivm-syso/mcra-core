@@ -86,7 +86,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 targetUnit
             );
             var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
-            var targetExposuresCalculator = new InternalTargetExposuresCalculator(kineticModelCalculators);
+            var kineticConversionCalculator = new KineticConversionFactorsCalculator(kineticModelCalculators);
+            var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(kineticConversionCalculator);
             var aggregateIndividualDayExposures = FakeAggregateIndividualDayExposuresGenerator.Create(
                 individualDays,
                 routes,

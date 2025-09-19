@@ -1,7 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
-using MCRA.Simulation.Calculators.KineticModelCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
@@ -9,12 +8,12 @@ using MCRA.Utils.Statistics;
 namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators {
     public class InternalTargetExposuresCalculator : ITargetExposuresCalculator {
 
-        private readonly ICollection<IKineticModelCalculator> _kineticConversionCalculator;
+        private readonly KineticConversionFactorsCalculator _kineticConversionFactorsCalculator;
 
         public InternalTargetExposuresCalculator(
-            IDictionary<Compound, IKineticModelCalculator> kineticModelCalculators
+            KineticConversionFactorsCalculator kineticConversionFactorsCalculator
         ) {
-            _kineticConversionCalculator = kineticModelCalculators.Values;
+            _kineticConversionFactorsCalculator = kineticConversionFactorsCalculator;
         }
 
         public ICollection<AggregateIndividualDayExposure> ComputeAcute(
@@ -37,7 +36,10 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
                     }
                 );
 
-            foreach (var calculator in _kineticConversionCalculator) {
+            foreach (var substance in substances) {
+                // Create a kinetic model calculator for the current substance.
+                var calculator = _kineticConversionFactorsCalculator.GetKineticConversionCalculator(substance);
+
                 // Compute aggregate, internal exposures for this calculator.
                 var internalIndividualDayExposures = calculator
                     .CalculateIndividualDayTargetExposures(
@@ -70,10 +72,10 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
                             // current target; merge the substance target exposures with the existing records
                             // of the combined collection.
                             foreach (var value in target.Value) {
-                                var substance = value.Key;
+                                var outputSubstance = value.Key;
                                 var substanceTargetExposure = value.Value;
-                                if (!targetIndividualExposure.ContainsKey(substance)) {
-                                    targetIndividualExposure[substance] = substanceTargetExposure;
+                                if (!targetIndividualExposure.ContainsKey(outputSubstance)) {
+                                    targetIndividualExposure[outputSubstance] = substanceTargetExposure;
                                 } else {
                                     var msg = "Aggregation of multiple substance target exposures "
                                         + "from multiple kinetic conversion models not supported";
@@ -107,7 +109,10 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
                     }
                 );
 
-            foreach (var calculator in _kineticConversionCalculator) {
+            foreach (var substance in substances) {
+                // Create a kinetic model calculator for the current substance.
+                var calculator = _kineticConversionFactorsCalculator.GetKineticConversionCalculator(substance);
+
                 // Compute aggregate, internal exposures for this calculator.
                 var internalIndividualExposures = calculator
                     .CalculateIndividualTargetExposures(
@@ -140,10 +145,10 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
                             // current target; merge the substance target exposures with the existing records
                             // of the combined collection.
                             foreach (var value in target.Value) {
-                                var substance = value.Key;
+                                var outputSubstance = value.Key;
                                 var substanceTargetExposure = value.Value;
-                                if (!targetIndividualExposure.ContainsKey(substance)) {
-                                    targetIndividualExposure[substance] = substanceTargetExposure;
+                                if (!targetIndividualExposure.ContainsKey(outputSubstance)) {
+                                    targetIndividualExposure[outputSubstance] = substanceTargetExposure;
                                 } else {
                                     var msg = "Aggregation of multiple substance target exposures "
                                         + "from multiple kinetic conversion models not supported";

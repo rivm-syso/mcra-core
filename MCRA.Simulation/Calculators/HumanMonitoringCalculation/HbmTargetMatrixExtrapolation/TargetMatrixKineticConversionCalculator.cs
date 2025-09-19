@@ -1,9 +1,8 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.KineticConversionFactorModels;
-using MCRA.Simulation.Calculators.KineticModelCalculation;
-using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
-using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation.ReverseDoseCalculation;
+using MCRA.Simulation.Calculators.KineticConversionCalculation;
+using MCRA.Simulation.Calculators.PbpkModelCalculation;
 using MCRA.Simulation.Objects;
 using MCRA.Utils.Statistics;
 
@@ -26,12 +25,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
         /// <summary>
         /// Dictionary with relevant PBK models
         /// </summary>
-        private readonly Dictionary<Compound, IKineticModelCalculator> _kineticModelCalculators;
-
-        /// <summary>
-        /// Reverse dose calculator.
-        /// </summary>
-        private readonly ReverseDoseCalculator _reverseDoseCalculator;
+        private readonly Dictionary<Compound, IKineticConversionCalculator> _kineticModelCalculators;
 
         /// <summary>
         /// Default (intermediate) external exposure route for reverse PBK model calculations
@@ -55,15 +49,12 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
                     c.ConversionRule.TargetFrom,
                     c.ConversionRule.TargetTo
                 ));
-            var kmcFactory = new KineticModelCalculatorFactory(kineticModelInstances);
+            var kmcFactory = new KineticConversionCalculatorFactory(kineticModelInstances);
             _kineticModelCalculators = kineticModelInstances?
-                .Select(c => kmcFactory.CreateHumanKineticModelCalculator(c.InputSubstance, pbkSimulationSettings))
-                .ToDictionary(c => c.Substance);
-            if (kineticModelInstances != null) {
-                _reverseDoseCalculator = new ReverseDoseCalculator() {
-                    Precision = pbkSimulationSettings.PrecisionReverseDoseCalculation
-                };
-            }
+                .ToDictionary(
+                    c => c.InputSubstance,
+                    c => kmcFactory.CreateHumanKineticModelCalculator(c.InputSubstance, pbkSimulationSettings)
+                );
         }
 
         public ICollection<HbmSubstanceTargetExposure> GetSubstanceTargetExposures(
@@ -88,7 +79,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
                         exposureType,
                         substance,
                         targetUnit,
-                        instance as PbkModelCalculatorBase,
+                        instance as PbkKineticConversionCalculator,
                         kineticModelParametersRandomGenerator
                     ),
                     IsAggregateOfMultipleSamplingMethods = sourceExposure.IsAggregateOfMultipleSamplingMethods,
@@ -131,7 +122,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
             ExposureType exposureType,
             Compound substance,
             TargetUnit targetUnit,
-            PbkModelCalculatorBase kineticModelCalculator,
+            PbkKineticConversionCalculator kineticModelCalculator,
             IRandom kineticModelParametersRandomGenerator
         ) {
             // Determine (intermediate) external unit
@@ -140,9 +131,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
                 : TargetUnit.FromExternalDoseUnit(DoseUnit.ugPerKgBWPerDay, _reverseDoseDefaultExposureRoute);
 
             // Compute external dose leading to source concentration
-            var externalDose = _reverseDoseCalculator
+            var externalDose = kineticModelCalculator
                 .Reverse(
-                    kineticModelCalculator,
                     individual,
                     concentration,
                     sourceUnit,

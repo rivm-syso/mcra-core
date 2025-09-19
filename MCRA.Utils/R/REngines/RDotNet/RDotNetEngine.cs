@@ -388,7 +388,15 @@ namespace MCRA.Utils.R.REngines {
         /// </summary>
         public List<double> EvaluateNumericVector(string name) {
             var values = evaluateCommand(name).AsNumeric();
-            return values.ToList();
+            return [.. values];
+        }
+
+        /// <summary>
+        /// Evaluates the R variable as a list of doubles.
+        /// </summary>
+        public double[] EvaluateNumericArray(string name) {
+            var values = evaluateCommand(name).AsNumeric();
+            return [.. values];
         }
 
         /// <summary>

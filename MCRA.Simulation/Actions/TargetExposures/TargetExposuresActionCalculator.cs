@@ -18,8 +18,8 @@ using MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.SoilExposu
 using MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculation;
 using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
-using MCRA.Simulation.Calculators.KineticModelCalculation;
-using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
+using MCRA.Simulation.Calculators.KineticConversionCalculation;
+using MCRA.Simulation.Calculators.PbpkModelCalculation;
 using MCRA.Simulation.Calculators.PercentilesUncertaintyFactorialCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
 using MCRA.Simulation.Objects;
@@ -539,13 +539,14 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 );
 
             // Create kinetic model calculators
-            var kineticModelCalculatorFactory = new KineticModelCalculatorFactory(
+            var kineticModelCalculatorFactory = new KineticConversionCalculatorFactory(
                 data.KineticModelInstances,
                 data.KineticConversionFactorModels,
                 data.AbsorptionFactors,
                 ModuleConfig.TargetDoseLevelType,
                 ModuleConfig.InternalModelType
             );
+
             var pbkSimulationSettings = new PbkSimulationSettings() {
                 NumberOfSimulatedDays = ModuleConfig.NumberOfDays,
                 UseRepeatedDailyEvents = ModuleConfig.ExposureEventsGenerationMethod == ExposureEventsGenerationMethod.DailyAverageEvents,
@@ -562,15 +563,15 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 LifetimeYears = ModuleConfig.LifetimeYears,
                 BodyWeightCorrected = ModuleConfig.BodyWeightCorrected,
             };
-
             var kineticModelCalculators = kineticModelCalculatorFactory
                 .CreateHumanKineticModels(data.ActiveSubstances, pbkSimulationSettings);
 
             localProgress.Update("Computing internal exposures", 20);
 
             // Create internal concentrations calculator
-            var targetExposuresCalculator = new InternalTargetExposuresCalculator(kineticModelCalculators);
-            var kineticConversionFactorCalculator = new KineticConversionFactorsCalculator(kineticModelCalculators);
+            var kineticConversionCalculator = new KineticConversionFactorsCalculator(kineticModelCalculators);
+            var targetExposuresCalculator = new InternalTargetExposuresCalculator(kineticConversionCalculator);
+
             var seedKineticModelParameterSampling = RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.BME_DrawKineticModelParameters);
             var kineticModelParametersRandomGenerator = new McraRandomGenerator(seedKineticModelParameterSampling);
             if (ModuleConfig.ExposureType == ExposureType.Acute) {
@@ -589,7 +590,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
                 // Compute kinetic conversion factors
                 kineticModelParametersRandomGenerator.Reset();
-                var kineticConversionFactors = kineticConversionFactorCalculator
+                var kineticConversionFactors = kineticConversionCalculator
                     .ComputeKineticConversionFactors(
                         data.ActiveSubstances,
                         ModuleConfig.ExposureRoutes,
@@ -630,7 +631,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
                 // Compute kinetic conversion factors
                 kineticModelParametersRandomGenerator.Reset();
-                var kineticConversionFactors = kineticConversionFactorCalculator
+                var kineticConversionFactors = kineticConversionCalculator
                     .ComputeKineticConversionFactors(
                         data.ActiveSubstances,
                         ModuleConfig.ExposureRoutes,

@@ -45,7 +45,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var kineticConversionFactors = FakeKineticModelsGenerator.CreateAbsorptionFactors(substances, .1);
             var kineticModelCalculators = FakeKineticModelsGenerator
                 .CreateAbsorptionFactorKineticModelCalculators(substances, kineticConversionFactors, targetUnit);
-            var targetExposuresCalculator = new InternalTargetExposuresCalculator(kineticModelCalculators);
+            var kineticConversionCalculator = new KineticConversionFactorsCalculator(kineticModelCalculators);
+            var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(kineticConversionCalculator);
             var exposureTripleUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
             var aggregateExposures = FakeAggregateIndividualDayExposuresGenerator.Create(
                 simulatedIndividualDays: individualDays,
@@ -79,7 +80,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 .CreateAbsorptionFactors(substances, routes, 1);
             var kineticModelCalculators = FakeKineticModelsGenerator
                 .CreateAbsorptionFactorKineticModelCalculators(substances, kineticConversionFactors, targetUnit);
-            var targetExposuresCalculator = new InternalTargetExposuresCalculator(kineticModelCalculators);
+            var kineticConversionCalculator = new KineticConversionFactorsCalculator(kineticModelCalculators);
+            var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(kineticConversionCalculator);
             var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
             var aggregateExposures = FakeAggregateIndividualDayExposuresGenerator
                 .Create(

@@ -2,7 +2,7 @@
 using MCRA.General;
 using MCRA.Simulation.Constants;
 
-namespace MCRA.Simulation.Calculators.KineticModelCalculation.AbsorptionFactorsCollectionsGeneration {
+namespace MCRA.Simulation.Calculators.KineticConversionCalculation.AbsorptionFactorsCollectionsGeneration {
     public sealed class AbsorptionFactorsCollectionBuilder {
         private readonly IAbsorptionFactorsCollectionBuilderSettings _settings;
 

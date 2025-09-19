@@ -1,18 +1,28 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
-using MCRA.Simulation.Calculators.KineticModelCalculation;
+using MCRA.Simulation.Calculators.KineticConversionCalculation;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators {
     public class KineticConversionFactorsCalculator {
 
-        private readonly ICollection<IKineticModelCalculator> _kineticConversionCalculator;
+        private readonly IDictionary<Compound, IKineticConversionCalculator> _kineticModelCalculators;
 
         public KineticConversionFactorsCalculator(
-            IDictionary<Compound, IKineticModelCalculator> kineticModelCalculators
+            IDictionary<Compound, IKineticConversionCalculator> kineticModelCalculators
         ) {
-            _kineticConversionCalculator = kineticModelCalculators.Values;
+            _kineticModelCalculators = kineticModelCalculators;
+        }
+
+        public IKineticConversionCalculator GetKineticConversionCalculator(
+            Compound substance
+        ) {
+            if (_kineticModelCalculators.TryGetValue(substance, out var result)) {
+                return result;
+            } else {
+                throw new Exception($"No kinetic conversion model found for substance {substance.Name} [{substance.Code}].");
+            }
         }
 
         public IDictionary<(ExposureRoute, Compound), double> ComputeKineticConversionFactors(
@@ -25,7 +35,8 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
         ) {
             // TODO: How to compute absorption factors for metabolites?
             var result = new Dictionary<(ExposureRoute, Compound), double>();
-            foreach (var instanceCalculator in _kineticConversionCalculator) {
+            foreach (var substance in substances) {
+                var instanceCalculator = GetKineticConversionCalculator(substance);
                 var fittedAbsorptionFactors = instanceCalculator
                     .ComputeAbsorptionFactors(
                         aggregateIndividualDayExposures,
@@ -35,7 +46,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
                         generator
                     );
                 foreach (var item in fittedAbsorptionFactors) {
-                    result[(item.Key, instanceCalculator.Substance)] = item.Value;
+                    result[(item.Key, substance)] = item.Value;
                 }
             }
             return result;
@@ -50,8 +61,8 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
             IRandom generator
         ) {
             var result = new Dictionary<(ExposureRoute, Compound), double>();
-            foreach (var instanceCalculator in _kineticConversionCalculator) {
-                var inputSubstance = instanceCalculator.Substance;
+            foreach (var substance in substances) {
+                var instanceCalculator = GetKineticConversionCalculator(substance);
                 var fittedAbsorptionFactors = instanceCalculator
                     .ComputeAbsorptionFactors(
                         aggregateIndividualExposures,
@@ -61,7 +72,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
                         generator
                     );
                 foreach (var item in fittedAbsorptionFactors) {
-                    result[(item.Key, inputSubstance)] = item.Value;
+                    result[(item.Key, substance)] = item.Value;
                 }
             }
             return result;

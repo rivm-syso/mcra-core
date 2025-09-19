@@ -5,7 +5,7 @@ using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculation;
 using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
-using MCRA.Simulation.Calculators.KineticModelCalculation;
+using MCRA.Simulation.Calculators.KineticConversionCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 
 namespace MCRA.Simulation.Actions.TargetExposures {
@@ -19,7 +19,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         public ICollection<ExposureRoute> ExposureRoutes { get; set; }
         public ICollection<AggregateIndividualDayExposure> AggregateIndividualDayExposures { get; set; }
         public ICollection<AggregateIndividualExposure> AggregateIndividualExposures { get; set; }
-        public IDictionary<Compound, IKineticModelCalculator> KineticModelCalculators { get; set; }
+        public IDictionary<Compound, IKineticConversionCalculator> KineticModelCalculators { get; set; }
         public ExposureMatrix ExposureMatrix { get; set; }
         public List<DriverSubstance> DriverSubstances { get; set; }
         public IUncertaintyFactorialResult FactorialResult { get; set; }
