@@ -1,13 +1,13 @@
-﻿using MCRA.Utils.ExtensionMethods;
-using MCRA.Utils.ProgressReporting;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Objects;
+using MCRA.Utils.ExtensionMethods;
+using MCRA.Utils.ProgressReporting;
 
 namespace MCRA.Simulation.Calculators.OccurrencePatternsCalculation {
 
-    public sealed class OccurrencePatternsFromFindingsCalculator {
+    public sealed class OccurrencePatternsFromFindingsCalculator(IOccurrencePatternsFromFindingsCalculatorSettings settings) {
 
-        private readonly IOccurrencePatternsFromFindingsCalculatorSettings _settings;
+        private readonly IOccurrencePatternsFromFindingsCalculatorSettings _settings = settings;
 
         private const string _sep = "\a";
 
@@ -32,9 +32,6 @@ namespace MCRA.Simulation.Calculators.OccurrencePatternsCalculation {
         }
 
         #endregion
-        public OccurrencePatternsFromFindingsCalculator(IOccurrencePatternsFromFindingsCalculatorSettings settings) {
-            _settings = settings;
-        }
 
         public ICollection<MarginalOccurrencePattern> Compute(
             ICollection<Food> foods,
@@ -42,11 +39,15 @@ namespace MCRA.Simulation.Calculators.OccurrencePatternsCalculation {
             CompositeProgressState progressState = null
         ) {
             var cancelToken = progressState?.CancellationToken ?? new();
+
             var result = foods
                 .AsParallel()
                 .WithCancellation(cancelToken)
                 .SelectMany(food => {
-                    var foodRecords = computeFoodUsePatterns(sampleCompoundCollections, food);
+                    var foodRecords = new List<MarginalOccurrencePattern>();
+                    if (sampleCompoundCollections.TryGetValue(food, out var foodSampleCompoundRecords)) {
+                        foodRecords = computeFoodUsePatterns(foodSampleCompoundRecords.SampleCompoundRecords, food);
+                    }
                     rescale(food, foodRecords, _settings.Rescale, _settings.OnlyScaleAuthorised);
                     return foodRecords;
                 })
@@ -56,13 +57,20 @@ namespace MCRA.Simulation.Calculators.OccurrencePatternsCalculation {
         }
 
         private List<MarginalOccurrencePattern> computeFoodUsePatterns(
-            IDictionary<Food, SampleCompoundCollection> sampleCompoundCollectionLookup,
+            IList<SampleCompoundRecord> sampleCompoundRecords,
             Food food
         ) {
-            if(!sampleCompoundCollectionLookup.TryGetValue(food, out var foodSampleCompoundRecords)) {
-                return [];
-            }
-            var foodOccurrencePatterns = foodSampleCompoundRecords.SampleCompoundRecords
+            //create a resulting list of samplecompoundrecords
+            //with a list of substances that have a missing value
+            var recordsWithMissings = sampleCompoundRecords
+                .Select(scr =>
+                    scr.SampleCompounds
+                        .Where(s => s.Value.IsMissingValue)
+                        .Select(s => s.Key)
+                        .ToHashSet()
+                ).ToList();
+
+            var foodOccurrencePatterns = sampleCompoundRecords
                 .GroupBy(r => r, new SampleCompoundOccurrencePatternComparer())
                 .Where(g => g.Key.SampleCompounds.Values.Any(r => r.IsPositiveResidue))
                 .Select((g, i) => {
@@ -76,8 +84,8 @@ namespace MCRA.Simulation.Calculators.OccurrencePatternsCalculation {
                     if (_settings.Rescale && _settings.OnlyScaleAuthorised && isAuthorisedCount > 0 && isAuthorisedCount < positiveFindingsCount) {
                         throw new Exception("Unexpected: occurrence pattern from both authorised and unauthorised uses");
                     }
-                    var analyticalScopeCount = foodSampleCompoundRecords.SampleCompoundRecords
-                        .Count(fsc => mixtureSubstances.All(ms => !fsc.SampleCompounds[ms].IsMissingValue));
+                    var analyticalScopeCount = recordsWithMissings.Count(rwm => rwm.Count == 0 || !rwm.Overlaps(mixtureSubstances));
+
                     return new MarginalOccurrencePattern() {
                         Food = food,
                         Compounds = mixtureSubstances,
