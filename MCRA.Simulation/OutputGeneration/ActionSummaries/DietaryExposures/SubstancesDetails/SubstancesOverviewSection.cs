@@ -77,6 +77,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.DietaryExposures {
                 var weights = groupedIndividualDayIntakes
                     .Select(r => r.First().SimulatedIndividual.SamplingWeight).ToList();
                 var exposures = groupedIndividualDayIntakes
+                    .AsParallel()
                     .Select(c => c.Sum(s => s.GetSubstanceTotalExposure(substance))
                             / c.Count()
                             / (isPerPerson ? 1 : c.First().SimulatedIndividual.BodyWeight)
