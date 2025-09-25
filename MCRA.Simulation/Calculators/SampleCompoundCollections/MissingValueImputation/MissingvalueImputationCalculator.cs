@@ -35,9 +35,11 @@ namespace MCRA.Simulation.Calculators.SampleCompoundCollections.MissingValueImpu
             int seed,
             CompositeProgressState progressState = null
         ) {
-            var generatedValuesPerFoodCompound = new ConcurrentDictionary<(Food, Compound), List<double>>();
+            var generatedValuesPerFoodCompound = new ConcurrentDictionary<Food, Dictionary<Compound, Queue<double>>>();
 
             var cancelToken = progressState?.CancellationToken ?? new();
+            var correlateWithSamplePotency = _settings.CorrelateImputedValueWithSamplePotency;
+
             // Draw random values for missing values
             Parallel.ForEach(
                 sampleCompoundCollections,
@@ -49,22 +51,24 @@ namespace MCRA.Simulation.Calculators.SampleCompoundCollections.MissingValueImpu
                         .GroupBy(c => c.Key)
                         .OrderBy(c => c.Key.Code, StringComparer.OrdinalIgnoreCase)
                         .ToList();
+
+                    var queueDict = new Dictionary<Compound, Queue<double>>(compounds.Count);
+
                     foreach (var compound in compounds) {
                         var mvCount = compound.Count(mv => mv.Value.IsMissingValue);
-                        var drawValues = new List<double>(mvCount);
+                        var drawValues = new double[mvCount]; //initializes double array, all values are 0 by default
                         if (compoundConcentrationModels.TryGetValue((sampleCompoundCollection.Food, compound.Key), out var model)) {
                             for (int i = 0; i < mvCount; i++) {
-                                drawValues.Add(model.DrawFromDistribution(random, _settings.NonDetectsHandlingMethod));
+                                drawValues[i] = model.DrawFromDistribution(random, _settings.NonDetectsHandlingMethod);
                             }
-                            if (_settings.CorrelateImputedValueWithSamplePotency) {
-                                drawValues = drawValues.OrderByDescending(r => r).ToList();
-                            }
-                        } else {
-                            //Since mrl implementation always, a model is generated so only if no data are available AND no mrl, this point can be reached
-                            drawValues = Enumerable.Repeat(0D, mvCount).ToList();
                         }
-                        generatedValuesPerFoodCompound.TryAdd((sampleCompoundCollection.Food, compound.Key), drawValues);
+                        var drawQueue = correlateWithSamplePotency
+                            ? new Queue<double>(drawValues.OrderDescending())
+                            : new Queue<double>(drawValues);
+
+                        queueDict.Add(compound.Key, drawQueue);
                     }
+                    generatedValuesPerFoodCompound.TryAdd(sampleCompoundCollection.Food, queueDict);
                 }
             );
 
@@ -73,16 +77,18 @@ namespace MCRA.Simulation.Calculators.SampleCompoundCollections.MissingValueImpu
                 new ParallelOptions() { MaxDegreeOfParallelism = 1000, CancellationToken = cancelToken },
                 sampleCompoundCollection => {
                     var sampleCompoundRecords = sampleCompoundCollection.SampleCompoundRecords;
-                    if (relativePotencyFactors != null && _settings.CorrelateImputedValueWithSamplePotency) {
+                    if (relativePotencyFactors != null && correlateWithSamplePotency) {
                         // Re-order, then impute missing values
                         sampleCompoundRecords = sampleCompoundRecords.OrderByDescending(c => c.ImputedCumulativePotency(relativePotencyFactors)).ToList();
                     }
+                    var queueDict = generatedValuesPerFoodCompound[sampleCompoundCollection.Food];
+
                     foreach (var sampleCompoundRecord in sampleCompoundRecords) {
                         var sampleCompounds = sampleCompoundRecord.SampleCompounds.Values;
                         foreach (var sampleCompound in sampleCompounds) {
                             if (sampleCompound.IsMissingValue) {
-                                sampleCompound.Residue = generatedValuesPerFoodCompound[(sampleCompoundCollection.Food, sampleCompound.ActiveSubstance)].First();
-                                generatedValuesPerFoodCompound[(sampleCompoundCollection.Food, sampleCompound.ActiveSubstance)].RemoveAt(0);
+                                var drawQueue = queueDict[sampleCompound.ActiveSubstance];
+                                sampleCompound.Residue = drawQueue.Dequeue();
                                 sampleCompound.ResType = ResType.VAL;
                             }
                         }
