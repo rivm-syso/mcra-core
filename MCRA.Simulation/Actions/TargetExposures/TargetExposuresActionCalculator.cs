@@ -21,6 +21,7 @@ using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Calculators.KineticConversionCalculation;
 using MCRA.Simulation.Calculators.PbpkModelCalculation;
 using MCRA.Simulation.Calculators.PercentilesUncertaintyFactorialCalculation;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation.KineticConversionFactorCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
 using MCRA.Simulation.Objects;
 using MCRA.Simulation.OutputGeneration;
@@ -569,8 +570,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             localProgress.Update("Computing internal exposures", 20);
 
             // Create internal concentrations calculator
-            var kineticConversionCalculator = new KineticConversionFactorsCalculator(kineticModelCalculators);
-            var targetExposuresCalculator = new InternalTargetExposuresCalculator(kineticConversionCalculator);
+            var kineticConversionCalculatorProvider = new KineticConversionCalculatorProvider(kineticModelCalculators);
+            var targetExposuresCalculator = new InternalTargetExposuresCalculator(kineticConversionCalculatorProvider);
 
             var seedKineticModelParameterSampling = RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.BME_DrawKineticModelParameters);
             var kineticModelParametersRandomGenerator = new McraRandomGenerator(seedKineticModelParameterSampling);
@@ -590,7 +591,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
                 // Compute kinetic conversion factors
                 kineticModelParametersRandomGenerator.Reset();
-                var kineticConversionFactors = kineticConversionCalculator
+                var kineticConversionFactorCalculator = new KineticConversionFactorsCalculator(kineticConversionCalculatorProvider);
+                var kineticConversionFactors = kineticConversionFactorCalculator
                     .ComputeKineticConversionFactors(
                         data.ActiveSubstances,
                         ModuleConfig.ExposureRoutes,
@@ -632,7 +634,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
                 // Compute kinetic conversion factors
                 kineticModelParametersRandomGenerator.Reset();
-                var kineticConversionFactors = kineticConversionCalculator
+                var kineticConversionFactorCalculator = new KineticConversionFactorsCalculator(kineticConversionCalculatorProvider);
+                var kineticConversionFactors = kineticConversionFactorCalculator
                     .ComputeKineticConversionFactors(
                         data.ActiveSubstances,
                         ModuleConfig.ExposureRoutes,

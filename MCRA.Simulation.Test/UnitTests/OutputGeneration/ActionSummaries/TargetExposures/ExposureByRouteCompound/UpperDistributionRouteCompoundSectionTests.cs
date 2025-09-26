@@ -1,8 +1,8 @@
 ﻿using MCRA.General;
+using MCRA.Simulation.Calculators.KineticConversionCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
-using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Simulation.OutputGeneration;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.TargetExposures {
@@ -86,8 +86,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 targetUnit
             );
             var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
-            var kineticConversionCalculator = new KineticConversionFactorsCalculator(kineticModelCalculators);
-            var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(kineticConversionCalculator);
+            var kineticConversionCalculatorProvider = new KineticConversionCalculatorProvider(kineticModelCalculators);
+            var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(kineticConversionCalculatorProvider);
             var aggregateIndividualDayExposures = FakeAggregateIndividualDayExposuresGenerator.Create(
                 individualDays,
                 routes,

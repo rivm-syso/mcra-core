@@ -1,6 +1,7 @@
 ﻿using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons;
+using MCRA.Simulation.Calculators.KineticConversionCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.ProgressReporting;
@@ -40,8 +41,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 kineticConversionFactors,
                 targetUnit
             );
-            var kineticConversionCalculator = new KineticConversionFactorsCalculator(kineticModelCalculators);
-            var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(kineticConversionCalculator);
+            var kineticConversionCalculatorProvider = new KineticConversionCalculatorProvider(kineticModelCalculators);
+            var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(kineticConversionCalculatorProvider);
 
             var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
             var individualDayTargetExposures = FakeAggregateIndividualDayExposuresGenerator

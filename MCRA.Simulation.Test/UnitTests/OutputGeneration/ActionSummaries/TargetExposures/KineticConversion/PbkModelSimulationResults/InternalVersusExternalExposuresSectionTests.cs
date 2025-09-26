@@ -46,12 +46,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             };
             var pbkModelCalculator = new CosmosKineticModelCalculator(modelInstance, simulationSettings);
             var pbkKineticConversionCalculator = new PbkKineticConversionCalculator(pbkModelCalculator);
-            var kineticConversionCalculator = new KineticConversionFactorsCalculator(
+            var kineticConversionCalculatorProvider = new KineticConversionCalculatorProvider(
                 new Dictionary<Compound, IKineticConversionCalculator>() {
                     { substance, pbkKineticConversionCalculator }
                 }
             );
-            var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(kineticConversionCalculator);
+            var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(kineticConversionCalculatorProvider);
 
             var targetIndividualExposures = internalTargetExposuresCalculator
                 .ComputeChronic(
@@ -108,12 +108,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             };
             var pbkModelCalculator = new CosmosKineticModelCalculator(modelInstance, simulationSettings);
             var pbkKineticConversionCalculator = new PbkKineticConversionCalculator(pbkModelCalculator);
-            var kineticConversionCalculator = new KineticConversionFactorsCalculator(
+            var kineticConversionCalculatorProvider = new KineticConversionCalculatorProvider(
                 new Dictionary<Compound, IKineticConversionCalculator>() {
                     { substance, pbkKineticConversionCalculator }
                 }
             );
-            var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(kineticConversionCalculator);
+            var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(kineticConversionCalculatorProvider);
 
             var targetIndividualExposures = internalTargetExposuresCalculator
                 .ComputeAcute(

@@ -1,13 +1,13 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Simulation.Objects;
 using MCRA.General;
+using MCRA.Simulation.Calculators.CombinedExternalExposureCalculation;
 using MCRA.Simulation.Calculators.KineticConversionCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
+using MCRA.Simulation.Objects;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
-using MCRA.Simulation.Calculators.CombinedExternalExposureCalculation;
 
 namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
 
@@ -97,8 +97,8 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                 routes
             );
 
-            var kineticConversionCalculator = new KineticConversionFactorsCalculator(kineticModelCalculators);
-            var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(kineticConversionCalculator);
+            var kineticConversionCalculatorProvider = new KineticConversionCalculatorProvider(kineticModelCalculators);
+            var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(kineticConversionCalculatorProvider);
 
             var result = internalTargetExposuresCalculator
                 .ComputeChronic(

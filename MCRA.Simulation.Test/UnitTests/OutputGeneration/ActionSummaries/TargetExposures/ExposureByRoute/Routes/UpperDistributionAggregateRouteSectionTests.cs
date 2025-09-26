@@ -1,19 +1,15 @@
 ﻿using MCRA.General;
+using MCRA.Simulation.Calculators.KineticConversionCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
-using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Simulation.OutputGeneration;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.TargetExposures {
-    /// <summary>
-    /// OutputGeneration, ActionSummaries, TargetExposures, ExposureByRoute, Route
-    /// </summary>
+
     [TestClass]
     public class UpperDistributionAggregateRouteSectionTests : ChartCreatorTestBase {
-        /// <summary>
-        /// Summarize aggregate exposure routes chronic, test UpperDistributionAggregateRouteSection view
-        /// </summary>
+
         [TestMethod]
         public void UpperDistributionAggregateRouteSection_TestChronic() {
             var seed = 1;
@@ -32,8 +28,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 targetUnit
             );
             var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
-            var kineticConversionCalculator = new KineticConversionFactorsCalculator(kineticModelCalculators);
-            var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(kineticConversionCalculator);
+            var kineticConversionCalculatorProvider = new KineticConversionCalculatorProvider(kineticModelCalculators);
+            var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(kineticConversionCalculatorProvider);
             var aggregateIndividualExposures = FakeAggregateIndividualExposuresGenerator.Create(
                individualDays,
                substances,
@@ -62,13 +58,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             Assert.AreEqual(98D, sum, 3D);
 
             var chart = new ContributionByRouteUpperPieChartCreator(section, false);
-            RenderChart(chart, $"TestCreate1");
+            RenderChart(chart, $"TestChronic");
             AssertIsValidView(section);
         }
 
-        /// <summary>
-        /// Summarize aggregate exposure routes acute, test UpperDistributionAggregateRouteSection view
-        /// </summary>
         [TestMethod]
         public void UpperDistributionAggregateRouteSection_TestAcute() {
             var seed = 1;
@@ -86,8 +79,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 targetUnit
             );
             var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
-            var kineticConversionCalculator = new KineticConversionFactorsCalculator(kineticModelCalculators);
-            var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(kineticConversionCalculator);
+
+            var kineticConversionCalculatorProvider = new KineticConversionCalculatorProvider(kineticModelCalculators);
+            var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(kineticConversionCalculatorProvider);
             var aggregateIndividualDayExposures = FakeAggregateIndividualDayExposuresGenerator
                 .Create(
                     individualDays,
@@ -117,7 +111,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             Assert.AreEqual(98D, sum, 3D);
 
             var chart = new ContributionByRouteUpperPieChartCreator(section, false);
-            RenderChart(chart, $"TestCreate2");
+            RenderChart(chart, $"TestAcute");
             AssertIsValidView(section);
         }
     }

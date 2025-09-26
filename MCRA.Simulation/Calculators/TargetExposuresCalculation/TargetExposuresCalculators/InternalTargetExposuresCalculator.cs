@@ -1,6 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
+using MCRA.Simulation.Calculators.KineticConversionCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
@@ -8,12 +9,12 @@ using MCRA.Utils.Statistics;
 namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators {
     public class InternalTargetExposuresCalculator : ITargetExposuresCalculator {
 
-        private readonly KineticConversionFactorsCalculator _kineticConversionFactorsCalculator;
+        private readonly KineticConversionCalculatorProvider _kineticConversionCalculatorProvider;
 
         public InternalTargetExposuresCalculator(
-            KineticConversionFactorsCalculator kineticConversionFactorsCalculator
+            KineticConversionCalculatorProvider kineticConversionCalculatorProvider
         ) {
-            _kineticConversionFactorsCalculator = kineticConversionFactorsCalculator;
+            _kineticConversionCalculatorProvider = kineticConversionCalculatorProvider;
         }
 
         public ICollection<AggregateIndividualDayExposure> ComputeAcute(
@@ -38,7 +39,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
 
             foreach (var substance in substances) {
                 // Create a kinetic model calculator for the current substance.
-                var calculator = _kineticConversionFactorsCalculator.GetKineticConversionCalculator(substance);
+                var calculator = _kineticConversionCalculatorProvider.GetKineticConversionCalculator(substance);
 
                 // Compute aggregate, internal exposures for this calculator.
                 var internalIndividualDayExposures = calculator
@@ -111,7 +112,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
 
             foreach (var substance in substances) {
                 // Create a kinetic model calculator for the current substance.
-                var calculator = _kineticConversionFactorsCalculator.GetKineticConversionCalculator(substance);
+                var calculator = _kineticConversionCalculatorProvider.GetKineticConversionCalculator(substance);
 
                 // Compute aggregate, internal exposures for this calculator.
                 var internalIndividualExposures = calculator
