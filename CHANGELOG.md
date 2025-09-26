@@ -1,5 +1,19 @@
 # Change Log
 
+## Version 10.2.4 (2025-09-26)
+
+### Added
+
+- Implement HBM single value exposures module and use in EBD calculations (#2242)
+- Refactor EBD calculation and add functionality to translate between indicators (DALY <-> Costs) (#2243)
+- Implementation of uncertainty of counterfactual value in exposure response functions (#2240)
+- Add active substance allocation option in concentrations module to allocate to least potent substance (#2256)
+- Add enum for specifying standardised population size in EBD calculations (#2258)
+
+### Fixed
+
+- ConsumerProducts internal exposure fails after filtering for consumer products (#2274)
+
 ## Version 10.2.3 (2025-09-05)
 
 ### Added
