@@ -1281,7 +1281,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             subHeader.SaveSummarySection(headSection);
         }
 
-
         /// <summary>
         /// Summarize kinetic conversion factors
         /// </summary>

@@ -40,12 +40,12 @@ namespace MCRA.Simulation.OutputGeneration {
 
                 var upperIntakeCalculator = new ExternalExposureUpperExposuresCalculator();
                 var upperIntakes = upperIntakeCalculator.GetUpperExposures(
-                        externalIndividualDayExposures,
-                        relativePotencyFactors,
-                        membershipProbabilities,
-                        exposureType,
-                        percentageForUpperTail,
-                        isPerPerson
+                    externalIndividualDayExposures,
+                    relativePotencyFactors,
+                    membershipProbabilities,
+                    exposureType,
+                    percentageForUpperTail,
+                    isPerPerson
                 );
 
                 if (exposureType == ExposureType.Acute) {

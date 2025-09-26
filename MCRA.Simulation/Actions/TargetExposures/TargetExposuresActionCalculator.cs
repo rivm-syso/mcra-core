@@ -600,6 +600,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         kineticModelParametersRandomGenerator
                     );
                 result.KineticConversionFactors = kineticConversionFactors;
+
                 // Create aggregate individual exposures for acute
                 var externalIndividualExposures = CombinedExternalExposuresCalculator
                     .CreateCombinedExternalIndividualExposures(
