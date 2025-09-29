@@ -27,6 +27,7 @@ namespace MCRA.Simulation.Actions.RelativePotencyFactors {
             _actionInputRequirements[ActionType.AOPNetworks].IsRequired = ModuleConfig.IncludeAopNetworks;
             _actionInputRequirements[ActionType.AOPNetworks].IsVisible = ModuleConfig.IncludeAopNetworks;
             _actionDataLinkRequirements[ScopingType.RelativePotencyFactors][ScopingType.Effects].AlertTypeMissingData = AlertType.Notification;
+            _actionDataLinkRequirements[ScopingType.RelativePotencyFactors][ScopingType.Compounds].AlertTypeMissingData = AlertType.Notification;
             _actionDataLinkRequirements[ScopingType.RelativePotencyFactorsUncertain][ScopingType.Effects].AlertTypeMissingData = AlertType.Notification;
             _actionDataLinkRequirements[ScopingType.RelativePotencyFactorsUncertain][ScopingType.Compounds].AlertTypeMissingData = AlertType.Notification;
         }
