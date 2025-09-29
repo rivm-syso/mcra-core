@@ -1,13 +1,14 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Simulation.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Calculators.KineticConversionFactorModels;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation.KineticConversionFactorCalculation;
+using MCRA.Simulation.Constants;
+using MCRA.Simulation.Objects;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
-using MCRA.Simulation.Constants;
 
 namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
 
@@ -230,40 +231,52 @@ namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
             throw new Exception($"No absorption factor found for exposure route {route}.");
         }
 
-        public IDictionary<ExposureRoute, double> ComputeAbsorptionFactors(
+        public List<KineticConversionFactorResultRecord> ComputeAbsorptionFactors(
             ICollection<IExternalIndividualExposure> externalIndividualExposures,
             ICollection<ExposureRoute> routes,
             ExposureUnitTriple exposureUnit,
             TargetUnit targetUnit,
             IRandom generator
         ) {
-            //TODO currently kinetic conversion factors are averaged over all individual properties
-            //Should be improved in the future.
-            var absorptionFactors = new Dictionary<ExposureRoute, double>();
+            var result = new List<KineticConversionFactorResultRecord>();
             foreach (var exposureRoute in routes) {
                 if (_kineticConversionFactorModels.TryGetValue((exposureRoute, targetUnit.Target), out var model)) {
                     var factor = getAlignedConversionFactor(externalIndividualExposures, exposureUnit, targetUnit, model);
-                    absorptionFactors[exposureRoute] = factor;
+                    var record = new KineticConversionFactorResultRecord() {
+                        ExposureRoute = exposureRoute,
+                        Substance = _substance,
+                        ExternalExposureUnit = exposureUnit,
+                        Factor = factor,
+                        TargetUnit = targetUnit
+                    };
+                    result.Add(record);
                 }
             }
-            return absorptionFactors;
+            return result;
         }
 
-        public IDictionary<ExposureRoute, double> ComputeAbsorptionFactors(
+        public List<KineticConversionFactorResultRecord> ComputeAbsorptionFactors(
             ICollection<IExternalIndividualDayExposure> externalIndividualDayExposures,
             ICollection<ExposureRoute> routes,
             ExposureUnitTriple exposureUnit,
             TargetUnit targetUnit,
             IRandom generator
         ) {
-            var absorptionFactors = new Dictionary<ExposureRoute, double>();
+            var result = new List<KineticConversionFactorResultRecord>();
             foreach (var exposureRoute in routes) {
                 if (_kineticConversionFactorModels.TryGetValue((exposureRoute, targetUnit.Target), out var model)) {
                     var factor = getAlignedAbsorptionFactor(externalIndividualDayExposures, exposureUnit, targetUnit, model);
-                    absorptionFactors[exposureRoute] = factor;
+                    var record = new KineticConversionFactorResultRecord() {
+                        ExposureRoute = exposureRoute,
+                        Substance = _substance,
+                        ExternalExposureUnit = exposureUnit,
+                        Factor = factor,
+                        TargetUnit = targetUnit
+                    };
+                    result.Add(record);
                 }
             }
-            return absorptionFactors;
+            return result;
         }
 
         /// <summary>

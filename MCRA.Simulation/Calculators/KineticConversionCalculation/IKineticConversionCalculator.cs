@@ -2,7 +2,9 @@
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation.KineticConversionFactorCalculation;
 using MCRA.Simulation.Objects;
+using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 
@@ -70,7 +72,7 @@ namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
         /// <summary>
         /// Computes absorption factors for the different exposure routes.
         /// </summary>
-        IDictionary<ExposureRoute, double> ComputeAbsorptionFactors(
+        List<KineticConversionFactorResultRecord> ComputeAbsorptionFactors(
             ICollection<IExternalIndividualExposure> externalIndividualExposures,
             ICollection<ExposureRoute> routes,
             ExposureUnitTriple exposureUnit,
@@ -78,7 +80,7 @@ namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
             IRandom generator
         );
 
-        IDictionary<ExposureRoute, double> ComputeAbsorptionFactors(
+        List<KineticConversionFactorResultRecord> ComputeAbsorptionFactors(
             ICollection<IExternalIndividualDayExposure> externalIndividualDayExposures,
             ICollection<ExposureRoute> routes,
             ExposureUnitTriple exposureUnit,

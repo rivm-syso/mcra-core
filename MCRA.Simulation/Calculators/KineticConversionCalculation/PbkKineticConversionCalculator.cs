@@ -5,6 +5,7 @@ using MCRA.Simulation.Calculators.PbpkModelCalculation;
 using MCRA.Simulation.Calculators.PbpkModelCalculation.ReverseDoseCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation.KineticConversionFactorCalculation;
 using MCRA.Simulation.Objects;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
@@ -203,7 +204,7 @@ namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
         /// the same absorption factor (which reflects the the combined result of all routes in the kinetic
         /// model).
         /// </summary>
-        public IDictionary<ExposureRoute, double> ComputeAbsorptionFactors(
+        public List<KineticConversionFactorResultRecord> ComputeAbsorptionFactors(
             ICollection<IExternalIndividualExposure> externalIndividualExposures,
             ICollection<ExposureRoute> routes,
             ExposureUnitTriple exposureUnit,
@@ -245,7 +246,7 @@ namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
         /// Acute
         /// Calculate absorptionfactors
         /// </summary>
-        public IDictionary<ExposureRoute, double> ComputeAbsorptionFactors(
+        public List<KineticConversionFactorResultRecord> ComputeAbsorptionFactors(
             ICollection<IExternalIndividualDayExposure> externalIndividualDayExposures,
             ICollection<ExposureRoute> routes,
             ExposureUnitTriple exposureUnit,
@@ -333,7 +334,7 @@ namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
             );
         }
 
-        private Dictionary<ExposureRoute, double> computeAbsorptionFactors(
+        private List<KineticConversionFactorResultRecord> computeAbsorptionFactors(
             Compound substance,
             SimulatedIndividual individual,
             ICollection<ExposureRoute> routes,
@@ -343,8 +344,9 @@ namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
             TargetUnit targetUnit,
             IRandom generator
         ) {
-            var result = new Dictionary<ExposureRoute, double>();
+            var result = new List<KineticConversionFactorResultRecord>();
             foreach (var route in routes) {
+                double factor = double.NaN;
                 if (exposurePerRoutes.TryGetValue(route, out var externalDose)) {
                     var internalDose = Forward(
                         individual,
@@ -355,10 +357,15 @@ namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
                         exposureType,
                         generator
                     );
-                    result[route] = internalDose / externalDose;
-                } else {
-                    result[route] = double.NaN;
+                    factor = internalDose / externalDose;
                 }
+                result.Add(new KineticConversionFactorResultRecord() {
+                    ExposureRoute = route,
+                    Substance = substance,
+                    ExternalExposureUnit = exposureUnit,
+                    TargetUnit = targetUnit,
+                    Factor = factor
+                });
             }
             return result;
         }

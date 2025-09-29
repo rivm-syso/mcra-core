@@ -19,7 +19,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.KineticConversi
         /// Computes acute kinetic conversion factors for the specified substances, exposure
         /// routes and exposure target based on the provided external individual exposures.
         /// </summary>
-        public IDictionary<(ExposureRoute, Compound), double> ComputeKineticConversionFactors(
+        public List<KineticConversionFactorResultRecord> ComputeKineticConversionFactors(
             ICollection<Compound> substances,
             ICollection<ExposureRoute> exposureRoutes,
             ICollection<IExternalIndividualDayExposure> externalIndividualDayExposures,
@@ -27,11 +27,11 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.KineticConversi
             TargetUnit targetUnit,
             IRandom generator
         ) {
-            var result = new Dictionary<(ExposureRoute, Compound), double>();
+            var result = new List<KineticConversionFactorResultRecord>();
             foreach (var substance in substances) {
                 var instanceCalculator = _kineticConversionCalculatorCalculatorProvider
                     .GetKineticConversionCalculator(substance);
-                var fittedAbsorptionFactors = instanceCalculator
+                var derivedConversionFactors = instanceCalculator
                     .ComputeAbsorptionFactors(
                         externalIndividualDayExposures,
                         exposureRoutes,
@@ -39,8 +39,8 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.KineticConversi
                         targetUnit,
                         generator
                     );
-                foreach (var item in fittedAbsorptionFactors) {
-                    result[(item.Key, substance)] = item.Value;
+                foreach (var item in derivedConversionFactors) {
+                    result.Add(item);
                 }
             }
             return result;
@@ -50,7 +50,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.KineticConversi
         /// Computes chronic kinetic conversion factors for the specified substances, exposure
         /// routes and exposure target based on the provided external individual exposures.
         /// </summary>
-        public IDictionary<(ExposureRoute, Compound), double> ComputeKineticConversionFactors(
+        public List<KineticConversionFactorResultRecord> ComputeKineticConversionFactors(
             ICollection<Compound> substances,
             ICollection<ExposureRoute> exposureRoutes,
             ICollection<IExternalIndividualExposure> externalIndividualExposures,
@@ -58,11 +58,11 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.KineticConversi
             TargetUnit targetUnit,
             IRandom generator
         ) {
-            var result = new Dictionary<(ExposureRoute, Compound), double>();
+            var result = new List<KineticConversionFactorResultRecord>();
             foreach (var substance in substances) {
                 var instanceCalculator = _kineticConversionCalculatorCalculatorProvider
                     .GetKineticConversionCalculator(substance);
-                var fittedAbsorptionFactors = instanceCalculator
+                var derivedConversionFactors = instanceCalculator
                     .ComputeAbsorptionFactors(
                         externalIndividualExposures,
                         exposureRoutes,
@@ -70,8 +70,8 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.KineticConversi
                         targetUnit,
                         generator
                     );
-                foreach (var item in fittedAbsorptionFactors) {
-                    result[(item.Key, substance)] = item.Value;
+                foreach (var item in derivedConversionFactors) {
+                    result.Add(item);
                 }
             }
             return result;

@@ -1,5 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation.KineticConversionFactorCalculation;
 using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.OutputGeneration {
@@ -8,16 +9,16 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<KineticConversionFactorRecord> Records { get; set; }
 
         public void Summarize(
-            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
+            ICollection<KineticConversionFactorResultRecord> kineticConversionFactors,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound
         ) {
             Records = kineticConversionFactors
                 .Select(c => new KineticConversionFactorRecord() {
-                    SubstanceCode = c.Key.Item2.Code,
-                    SubstanceName = c.Key.Item2.Name,
-                    ExposureRoute = c.Key.Item1.GetDisplayName(),
-                    KineticConversionFactor = c.Value,
+                    SubstanceCode = c.Substance.Code,
+                    SubstanceName = c.Substance.Name,
+                    ExposureRoute = c.ExposureRoute.GetDisplayName(),
+                    KineticConversionFactor = c.Factor,
                     KineticConversionFactors = [],
                     UncertaintyLowerBound = uncertaintyLowerBound,
                     UncertaintyUpperBound = uncertaintyUpperBound
@@ -25,13 +26,17 @@ namespace MCRA.Simulation.OutputGeneration {
                 .ToList();
         }
 
-        public void SummarizeUncertainty(IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors) {
-            var records = kineticConversionFactors.Select(c => new KineticConversionFactorRecord() {
-                SubstanceCode = c.Key.Item2.Code,
-                SubstanceName = c.Key.Item2.Name,
-                ExposureRoute = c.Key.Item1.GetDisplayName(),
-                KineticConversionFactor = c.Value,
-            }).ToList();
+        public void SummarizeUncertainty(
+            ICollection<KineticConversionFactorResultRecord> kineticConversionFactors
+        ) {
+            var records = kineticConversionFactors
+                .Select(c => new KineticConversionFactorRecord() {
+                    SubstanceCode = c.Substance.Code,
+                    SubstanceName = c.Substance.Name,
+                    ExposureRoute = c.ExposureRoute.GetDisplayName(),
+                    KineticConversionFactor = c.Factor,
+                })
+                .ToList();
             updateFactors(records);
         }
 
