@@ -3,13 +3,13 @@
   <Id>KineticConversionMethodType</Id>
   <Name>Kinetic conversion method type</Name>
   <Description>
-    Methods/approaches for kinetic conversion; use PBK model, conversion factor model, or both.
+    Methods for translating between different (internal/external) exposure targets.
   </Description>
   <Units>
     <Unit>
       <Id>ConversionFactorModel</Id>
       <Name>Use kinetic conversion factors</Name>
-      <ShortName>ConversionFactorModel</ShortName>
+      <ShortName>KCFs</ShortName>
       <Description>Use (low-tier) kinetic conversion factor models.</Description>
       <Aliases>
         <Alias>ConversionFactorModel</Alias>
@@ -18,8 +18,8 @@
     </Unit>
     <Unit>
       <Id>PbkModel</Id>
-      <Name>Use PBK models only</Name>
-      <ShortName>PBKModel only</ShortName>
+      <Name>Use PBK models</Name>
+      <ShortName>PBK</ShortName>
       <Description>Use (high-tier) PBK models.</Description>
       <Aliases>
         <Alias>PBKModelOnly</Alias>
@@ -29,7 +29,7 @@
     <Unit>
       <Id>PbkWithFallback</Id>
       <Name>Use PBK models with fallback on kinetic conversion factors</Name>
-      <ShortName>PBKModel</ShortName>
+      <ShortName>PBK with fallback</ShortName>
       <Description>Use (high-tier) PBK models with fallback on (low-tier) kinetic conversion factors.</Description>
       <Aliases>
         <Alias>PBKModel</Alias>
