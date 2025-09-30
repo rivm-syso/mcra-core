@@ -28,9 +28,9 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Modelled exposure routes")]
         public string Routes { get; set; }
 
-        [Description("Output compartment.")]
-        [DisplayName("Output compartment")]
-        public string Output { get; set; }
+        [Description("Exposure target.")]
+        [DisplayName("Exposure target")]
+        public string ExposureTarget { get; set; }
 
     }
 }

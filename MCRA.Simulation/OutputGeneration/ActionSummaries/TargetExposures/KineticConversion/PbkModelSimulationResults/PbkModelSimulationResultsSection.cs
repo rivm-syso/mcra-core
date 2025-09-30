@@ -22,7 +22,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 SubstanceCode = substance.Code,
                 SubstanceName = substance.Name,
                 Routes = string.Join(", ", routes.Select(c => c.GetShortDisplayName())),
-                Output = targetUnit.Target.GetDisplayName()
+                ExposureTarget = targetUnit.Target.GetDisplayName()
             };
             KineticModelRecords.Add(kineticModelRecord);
         }

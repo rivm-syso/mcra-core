@@ -8,6 +8,8 @@
             BiologicalMatrix.CordBlood,
             BiologicalMatrix.VenousBlood,
             BiologicalMatrix.ArterialBlood,
+            BiologicalMatrix.VenousPlasma,
+            BiologicalMatrix.ArterialPlasma,
             BiologicalMatrix.BrainBlood,
         ];
 

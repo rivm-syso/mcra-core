@@ -24,6 +24,21 @@ namespace MCRA.Simulation.Calculators.PbpkModelCalculation {
         // Run/simulation settings
         public PbkSimulationSettings SimulationSettings { get; }
 
+        // Matrices that can be used for extrapolation when blood is requested
+        public static readonly Dictionary<BiologicalMatrix, HashSet<BiologicalMatrix>> ExtrapolationMatrices = 
+            new () {
+            { BiologicalMatrix.Blood, [
+                BiologicalMatrix.Blood,
+                BiologicalMatrix.VenousBlood,
+                BiologicalMatrix.ArterialBlood ]
+            },
+            { BiologicalMatrix.BloodPlasma, [
+                BiologicalMatrix.BloodPlasma,
+                BiologicalMatrix.VenousPlasma,
+                BiologicalMatrix.ArterialPlasma ]
+            }
+        };
+
         public PbkModelCalculatorBase(
             KineticModelInstance kineticModelInstance,
             PbkSimulationSettings simulationSettings
@@ -62,17 +77,16 @@ namespace MCRA.Simulation.Calculators.PbpkModelCalculation {
             }
 
             progressState?.Update("Starting PBK model simulation");
-
             var result = calculate(
                 externalIndividualExposures,
                 externalExposureUnit,
                 routes,
                 targetUnits,
                 exposureType,
-                generator);
+                generator
+            );
 
             progressState?.Update("PBK model simulation finished", 100);
-
             return result;
         }
 
@@ -242,11 +256,29 @@ namespace MCRA.Simulation.Calculators.PbpkModelCalculation {
         /// </summary>
         /// <param name="targetUnits"></param>
         /// <returns></returns>
-        protected List<TargetOutputMapping> getTargetOutputMappings(ICollection<TargetUnit> targetUnits) {
+        protected List<TargetOutputMapping> getTargetOutputMappings(
+            ICollection<TargetUnit> targetUnits
+        ) {
             var result = new List<TargetOutputMapping>();
             foreach (var targetUnit in targetUnits) {
                 var output = KineticModelDefinition.Outputs
                     .FirstOrDefault(c => c.TargetUnit.Target == targetUnit.Target);
+
+                if (output == null && targetUnit.TargetLevelType == TargetLevelType.Internal) {
+                    // Try to find an alternative output in case the biological matrix does not match.
+                    // E.g., when target is blood, but model only has venous/arterial blood, use venous blood.
+                    if (ExtrapolationMatrices.TryGetValue(targetUnit.BiologicalMatrix, out var extrapolationMatrices)) {
+                        foreach (var matrix in extrapolationMatrices) {
+                            output = KineticModelDefinition.Outputs
+                                .FirstOrDefault(c => c.TargetUnit.Target.TargetLevelType == TargetLevelType.Internal
+                                    && c.TargetUnit.Target.BiologicalMatrix == matrix);
+                            if (output != null) {
+                                break;
+                            }
+                        }
+                    }
+                }
+
                 if (output == null) {
                     var msg = $"No output found in PBK model [{KineticModelDefinition.Id}] for target [{targetUnit.Target.GetDisplayName()}].";
                     throw new Exception(msg);
