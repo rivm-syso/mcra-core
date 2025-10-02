@@ -264,6 +264,15 @@ namespace MCRA.Simulation.Calculators.PbpkModelCalculation {
                 var output = KineticModelDefinition.Outputs
                     .FirstOrDefault(c => c.TargetUnit.Target == targetUnit.Target);
 
+                // If no exact match found, check if reading across biological matrices is allowed
+                if (SimulationSettings.AllowUseSurrogateMatrix
+                    && SimulationSettings.SurrogateBiologicalMatrix != BiologicalMatrix.Undefined
+                ) {
+                    output = KineticModelDefinition.Outputs
+                        .FirstOrDefault(c => c.TargetUnit.Target.TargetLevelType == TargetLevelType.Internal
+                            && c.TargetUnit.Target.BiologicalMatrix == SimulationSettings.SurrogateBiologicalMatrix);
+                }
+
                 if (output == null && targetUnit.TargetLevelType == TargetLevelType.Internal) {
                     // Try to find an alternative output in case the biological matrix does not match.
                     // E.g., when target is blood, but model only has venous/arterial blood, use venous blood.

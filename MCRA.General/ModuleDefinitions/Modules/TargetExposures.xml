@@ -81,6 +81,8 @@
     <CalculationSetting source="PbkModels">SelectedEvents</CalculationSetting>
     <CalculationSetting source="PbkModels">SpecifyEvents</CalculationSetting>
     <CalculationSetting source="PbkModels">PbkSimulationMethod</CalculationSetting>
+    <CalculationSetting>AllowUseSurrogateMatrix</CalculationSetting>
+    <CalculationSetting>SurrogateBiologicalMatrix</CalculationSetting>
     <CalculationSetting source="PbkModels">LifetimeYears</CalculationSetting>
     <CalculationSetting source="PbkModels">BodyWeightCorrected</CalculationSetting>
     <CalculationSetting source="PbkModelSimulations">PbkOutputResolutionTimeUnit</CalculationSetting>

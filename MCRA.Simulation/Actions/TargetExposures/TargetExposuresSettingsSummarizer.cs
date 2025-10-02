@@ -123,6 +123,11 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             }
 
             if (_configuration.RequirePbkModels) {
+                if (_configuration.AllowUseSurrogateMatrix) {
+                    section.SummarizeSetting(SettingsItemType.AllowUseSurrogateMatrix, _configuration.AllowUseSurrogateMatrix);
+                    section.SummarizeSetting(SettingsItemType.SurrogateBiologicalMatrix, _configuration.SurrogateBiologicalMatrix);
+                }
+
                 section.SummarizeSetting(SettingsItemType.UseParameterVariability, _configuration.UseParameterVariability);
                 if (_configuration.PbkSimulationMethod == PbkSimulationMethod.Standard) {
                     section.SummarizeSetting(SettingsItemType.NumberOfDays, _configuration.NumberOfDays);

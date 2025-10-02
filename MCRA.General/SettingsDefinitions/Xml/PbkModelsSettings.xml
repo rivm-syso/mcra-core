@@ -95,6 +95,18 @@
     <ValueType>PbkSimulationMethod</ValueType>
   </SettingsItem>
   <SettingsItem>
+    <Id>AllowUseSurrogateMatrix</Id>
+    <Name>Allow use of other matrix as surrogate for target</Name>
+    <Description>Specifies whether to use exposures from another matrix as surrogate for the specified biologial matrix in case the target itself is not included in the PBK model.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>SurrogateBiologicalMatrix</Id>
+    <Name>Surrogate matrix</Name>
+    <Description>Biological matrix of the PBK model to use as surrogate for the target matrix.</Description>
+    <ValueType>BiologicalMatrix</ValueType>
+  </SettingsItem>
+  <SettingsItem>
     <Id>LifetimeYears</Id>
     <Name>Expected life time in years</Name>
     <Description>The total expected lifetime (in years) of the PBK model.</Description>

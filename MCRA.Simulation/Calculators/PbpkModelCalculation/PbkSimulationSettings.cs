@@ -36,6 +36,9 @@ namespace MCRA.Simulation.Calculators.PbpkModelCalculation {
 
         public double PrecisionReverseDoseCalculation { get; set; } = 0.001;
 
+        public bool AllowUseSurrogateMatrix { get; set; }
+        public BiologicalMatrix SurrogateBiologicalMatrix { get; set; } = BiologicalMatrix.Undefined;
+
         public int GetNumberOfEventsPerDay(ExposureRoute exposureRoute) {
             switch (exposureRoute) {
                 case ExposureRoute.Oral:
