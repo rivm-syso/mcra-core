@@ -69,7 +69,7 @@
     <PackageReference Include="pythonnet" Version="3.0.5" />
     <PackageReference Include="NCalcSync" Version="5.2.11" />
     <PackageReference Include="Svg" Version="3.4.7" />
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.8" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.9" />
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
