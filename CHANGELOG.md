@@ -1,5 +1,16 @@
 # Change Log
 
+## Version 10.2.5 (2025-10-03)
+
+### Added
+
+- Add option in PBK model simulation to read-across between arterial/venous blood/plasma and blood/plasma (#2286)
+- Add functionality to use surrogate matrix (for target) for PBK models in internal exposures (#2287)
+
+### Fixed
+
+- Update data link check for RPF module to allow missing RPFs for substances (can happen for non-active substances)
+
 ## Version 10.2.4 (2025-09-26)
 
 ### Added
