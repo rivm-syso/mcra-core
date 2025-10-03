@@ -6,7 +6,7 @@
   <ModuleType>CalculatorModule</ModuleType>
   <CanCompute>true</CanCompute>
   <TableGroup>DoseResponseModels</TableGroup>
-  <IsAdvancedActionType>false</IsAdvancedActionType>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
   <HasUncertaintyAnalysis>true</HasUncertaintyAnalysis>
   <Description>
     Dose response models are models fitted to dose response data and can be provided as data or calculated using a local or remote version of PROAST.

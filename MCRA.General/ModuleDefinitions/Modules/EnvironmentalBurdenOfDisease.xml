@@ -5,7 +5,7 @@
   <ActionType>EnvironmentalBurdenOfDisease</ActionType>
   <ModuleType>CalculatorModule</ModuleType>
   <CanCompute>true</CanCompute>
-  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <IsAdvancedActionType>false</IsAdvancedActionType>
   <HasUncertaintyAnalysis>true</HasUncertaintyAnalysis>
   <Description>
     Environmental Burden of Disease (EBD) assessment.

@@ -5,7 +5,7 @@
   <ActionType>SingleValueRisks</ActionType>
   <ModuleType>CalculatorModule</ModuleType>
   <CanCompute>true</CanCompute>
-  <IsAdvancedActionType>false</IsAdvancedActionType>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
   <Description>
     Single value risks are risk estimates obtained from combining single value exposures with single value hazard characterisations or as a percentile from a risk distribution.
   </Description>

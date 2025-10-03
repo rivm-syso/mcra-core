@@ -5,7 +5,7 @@
   <ActionType>HbmSingleValueExposures</ActionType>
   <ModuleType>DataModule</ModuleType>
   <TableGroup>HbmSingleValueExposures</TableGroup>
-  <IsAdvancedActionType>false</IsAdvancedActionType>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
   <Description>
     Human (bio)monitoring (HBM) population exposure estimates specified as (single value) percentile points of the exposure distribution.
   </Description>
