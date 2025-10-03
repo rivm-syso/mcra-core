@@ -26,7 +26,11 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                     var idSubstance = r.GetString(RawExposureResponseFunctions.IdSubstance, fieldMap);
                                     var idEffect = r.GetString(RawExposureResponseFunctions.IdEffect, fieldMap);
                                     var idModel = r.GetStringOrNull(RawExposureResponseFunctions.IdModel, fieldMap);
-                                    if (IsCodeSelected(ScopingType.ExposureResponseFunctions, idModel)) {
+                                    var valid = IsCodeSelected(ScopingType.ExposureResponseFunctions, idModel)
+                                        & CheckLinkSelected(ScopingType.Compounds, idSubstance)
+                                        & CheckLinkSelected(ScopingType.Effects, idEffect);
+
+                                    if (valid) {
                                         var biologicalMatrix = r.GetEnum(
                                             RawExposureResponseFunctions.BiologicalMatrix,
                                             fieldMap,
