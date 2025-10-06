@@ -7,21 +7,15 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public void Summarize(ICollection<ModelledFoodInfo> modelledFoodsInfos) {
             Records = modelledFoodsInfos
+                .GroupBy(r => r.Food)
                 .Select(c => {
                     return new ModelledFoodSummaryRecord() {
-                        FoodCode = c.Food.Code,
-                        FoodName = c.Food.Name,
-                        SubstanceCode = c.Substance.Code,
-                        SubstanceName = c.Substance.Name,
-                        HasMrl = c.HasMrl,
-                        HasMeasurements = c.HasMeasurements,
-                        HasPositiveConcentrations = c.HasPositiveMeasurements
+                        FoodCode = c.Key.Code,
+                        FoodName = c.Key.Name
                     };
                 })
                 .OrderBy(c => c.FoodName, StringComparer.OrdinalIgnoreCase)
                 .ThenBy(c => c.FoodCode, StringComparer.OrdinalIgnoreCase)
-                .ThenBy(c => c.SubstanceName, StringComparer.OrdinalIgnoreCase)
-                .ThenBy(c => c.SubstanceCode, StringComparer.OrdinalIgnoreCase)
                 .ToList();
         }
     }

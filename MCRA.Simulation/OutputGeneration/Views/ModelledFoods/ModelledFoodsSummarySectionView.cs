@@ -4,21 +4,9 @@ using System.Text;
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class ModelledFoodsSummarySectionView : SectionView<ModelledFoodsSummarySection> {
         public override void RenderSectionHtml(StringBuilder sb) {
-            var hiddenProperties = new List<string>();
-
-            //Render HTML
             if (Model.Records?.Count > 0) {
                 var distinctFoods = Model.Records.Select(r => r.FoodCode).Distinct().Count();
-                var distinctSubstances = Model.Records.Select(r => r.SubstanceCode).Distinct().Count();
-                var missingCombinations = (distinctFoods * distinctSubstances) - Model.Records.Count;
-                var description = $"Total {distinctFoods} modelled foods";
-                if (distinctSubstances > 1) {
-                    description += $" for {distinctSubstances} different substances.";
-                    if (missingCombinations > 0) {
-                        description += $" There are {missingCombinations} unmatched food/substance combinations";
-                    }
-                }
-                description += ".";
+                var description = $"Total {distinctFoods} modelled foods.";
                 sb.AppendDescriptionParagraph(description);
                 if (Model.Records?.Count > 0) {
                     sb.AppendTable(
@@ -29,8 +17,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         header: true,
                         caption: "Modelled foods",
                         saveCsv: true,
-                        sortable: true,
-                        hiddenProperties: hiddenProperties
+                        sortable: true
                     );
                 }
             } else {
