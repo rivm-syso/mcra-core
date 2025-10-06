@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <DataGroupDefinition>
   <Id>PbkModels</Id>
-  <Name>PBK models</Name>
+  <Name>PBK model parametrisations</Name>
   <SourceTableGroup>PbkModels</SourceTableGroup>
   <Description>
-    PBK model parametrisations contain specifications for kinetic model definitions and their parameterisation for build in (C-code) and uploadable (SBML) kinetic models.
+    PBK model parametrisations are specifications of parameter values of for PBK model definitions.
   </Description>
   <DataFormats>
     <DataFormat>
       <Id>PbkModels</Id>
       <Name>PBK model data format</Name>
       <Description>
-        The PBK model parametrisations data format specifies PBK model definitions and parameters.
+        The PBK model parametrisations data format specifies parameter values of for PBK model definitions.
       </Description>
       <TableIds>
         <TableId>KineticModelInstances</TableId>
