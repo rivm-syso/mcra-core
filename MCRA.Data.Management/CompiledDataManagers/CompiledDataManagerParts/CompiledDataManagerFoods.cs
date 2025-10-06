@@ -508,6 +508,11 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                         var facetString = FoodCodeUtilities.GetFoodEx2FacetString(food.Code);
                         if (_data.AllProcessingTypes.TryGetValue(facetString, out ProcessingType item)) {
                             food.ProcessingTypes.Add(item);
+                            if (food.FoodFacets.Any(f => f.FullCode == f.Name) && item.Name != item.Code) {
+                                // If (any of) the facet(s) does not have a name, but the processing type has a
+                                // name, then use the name of the processing type.
+                                food.Name = $"{food.Parent.Name} - {item.Name}";
+                            }
                         }
                     }
                 }
