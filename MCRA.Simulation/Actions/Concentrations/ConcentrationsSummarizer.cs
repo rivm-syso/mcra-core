@@ -8,6 +8,7 @@ using MCRA.Utils.ExtensionMethods;
 namespace MCRA.Simulation.Actions.Concentrations {
     public enum ConcentrationsSections {
         SampleOriginsSection,
+        SamplesByFoodSummarySection,
         SamplesByFoodSubstanceSection,
         SamplesByFoodActiveSubstanceSection,
         SamplesByPropertySection,
@@ -31,11 +32,11 @@ namespace MCRA.Simulation.Actions.Concentrations {
             if (!outputManager.ShouldSummarizeModuleOutput()) {
                 return;
             }
-            var section1 = new ConcentrationDataSummarySection() {
+            var section = new ConcentrationDataSummarySection() {
                 SectionLabel = ActionType.ToString()
             };
-            section1.Summarize(data.MeasuredSubstanceSampleCollections.Values, data.AllCompounds);
-            var subHeader = header.AddSubSectionHeaderFor(section1, ActionType.GetDisplayName(), order);
+            section.Summarize(data.MeasuredSubstanceSampleCollections.Values, data.AllCompounds);
+            var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
             subHeader.Units = collectUnits(data);
 
             var subOrder = 0;
@@ -44,18 +45,26 @@ namespace MCRA.Simulation.Actions.Concentrations {
                 summarizeFocalCommodityConcentrationScenarios(data, subHeader, subOrder++);
             }
 
-            summarizeSamplesByProperty(data, outputManager, subHeader, subOrder++);
+            if (data.FoodSamples != null
+                && outputManager.ShouldSummarize(ConcentrationsSections.SamplesByFoodSummarySection)
+            ) {
+                summarizeSamplesByFood(data, subHeader, subOrder++);
+            }
 
-            if (_configuration.FilterConcentrationLimitExceedingSamples
-                && (data.MaximumConcentrationLimits?.Count > 0)
-                && outputManager.ShouldSummarize(ConcentrationsSections.ConcentrationLimitExceedancesSection)) {
-                summarizeConcentrationLimitExceedances(data, subHeader, subOrder++);
+            if (outputManager.ShouldSummarize(ConcentrationsSections.SamplesByPropertySection)) {
+                summarizeSamplesByProperty(data, outputManager, subHeader, subOrder++);
             }
 
             if ((data.MeasuredSubstanceSampleCollections?.Values.Any(r => r.SampleCompoundRecords.Any()) ?? false)
                 && outputManager.ShouldSummarize(ConcentrationsSections.SamplesByFoodSubstanceSection)
             ) {
                 summarizeSamplesByFoodSubstance(data, subHeader, subOrder++);
+            }
+
+            if (_configuration.FilterConcentrationLimitExceedingSamples
+                && (data.MaximumConcentrationLimits?.Count > 0)
+                && outputManager.ShouldSummarize(ConcentrationsSections.ConcentrationLimitExceedancesSection)) {
+                summarizeConcentrationLimitExceedances(data, subHeader, subOrder++);
             }
 
             if ((data.ExtrapolationCandidates?.Count > 0)
@@ -67,7 +76,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
             if (data.MeasuredSubstanceSampleCollections != data.ActiveSubstanceSampleCollections && outputManager.ShouldSummarize(ConcentrationsSections.SamplesByFoodActiveSubstanceSection)) {
                 summarizeSamplesByFoodActiveSubstance(data, subHeader, subOrder++);
             }
-            subHeader.SaveSummarySection(section1);
+            subHeader.SaveSummarySection(section);
         }
 
         private List<ActionSummaryUnitRecord> collectUnits(ActionData data) {
@@ -171,8 +180,21 @@ namespace MCRA.Simulation.Actions.Concentrations {
             return order;
         }
 
+        private void summarizeSamplesByFood(ActionData data, SectionHeader header, int order) {
+            var section = new SamplesByFoodSummarySection() {
+                SectionLabel = getSectionLabel(ConcentrationsSections.SamplesByFoodSummarySection)
+            };
+            var subHeader = header.AddSubSectionHeaderFor(
+                section,
+                "Samples by food",
+                order
+            );
+            section.Summarize(data.FoodSamples);
+            subHeader.SaveSummarySection(section);
+        }
+
         private void summarizeSampleOrigin(ActionData data, SectionHeader header, int order) {
-            var section = new SampleOriginDataSection() {
+            var section = new SampleOriginsSummarySection() {
                 SectionLabel = getSectionLabel(ConcentrationsSections.SampleOriginsSection)
             };
             var subHeader = header.AddSubSectionHeaderFor(

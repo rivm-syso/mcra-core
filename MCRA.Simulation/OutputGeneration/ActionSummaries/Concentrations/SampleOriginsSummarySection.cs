@@ -5,14 +5,14 @@ namespace MCRA.Simulation.OutputGeneration {
     /// <summary>
     /// Summarizes the sample origin fractions per food.
     /// </summary>
-    public sealed class SampleOriginDataSection : SummarySection {
+    public sealed class SampleOriginsSummarySection : SummarySection {
 
-        public List<SampleOriginDataRecord> SampleOriginDataRecords { get; set; }
+        public List<SampleOriginSummaryRecord> Records { get; set; }
 
         public void Summarize(ICollection<ISampleOrigin> sampleOriginInfos) {
-            SampleOriginDataRecords = sampleOriginInfos
+            Records = sampleOriginInfos
                 .Where(r => r.Fraction > 0)
-                .Select(r => new SampleOriginDataRecord() {
+                .Select(r => new SampleOriginSummaryRecord() {
                     FoodCode = r.Food.Code,
                     FoodName = r.Food.Name,
                     Percentage = r.Fraction * 100,

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MCRA.Simulation.OutputGeneration {
 
-    public sealed class SampleOriginDataRecord {
+    public sealed class SampleOriginSummaryRecord {
 
         [DisplayName("Food name")]
         public string FoodName { get; set; }
@@ -22,7 +22,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Percentage")]
         [Description("The percentage of food samples with this origin.")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
-        public float Percentage { get; set; }
+        public double Percentage { get; set; }
 
     }
 }
