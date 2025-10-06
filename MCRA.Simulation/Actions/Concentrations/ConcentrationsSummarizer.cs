@@ -80,23 +80,21 @@ namespace MCRA.Simulation.Actions.Concentrations {
         }
 
         private void summarizeConcentrationLimitExceedances(ActionData data, SectionHeader header, int order) {
+            var subOrder = 0;
             var subHeader = header.AddEmptySubSectionHeader(
                 "Concentration limit exceedances",
                 order,
                 getSectionLabel(ConcentrationsSections.ConcentrationLimitExceedancesSection)
             );
-            var subOrder = 0;
-            if (data.MaximumConcentrationLimits != null) {
-                var exceedancesSection = new ConcentrationLimitExceedancesDataSection();
-                var exceedancesSectionHeader = subHeader.AddSubSectionHeaderFor(exceedancesSection, "Concentration limit exceedances by food and substance", subOrder++);
-                exceedancesSection.Summarize(data.MaximumConcentrationLimits.Values, data.FoodSamples, data.ConcentrationUnit, _configuration.ConcentrationLimitFilterFractionExceedanceThreshold);
-                exceedancesSectionHeader.SaveSummarySection(exceedancesSection);
-                if (data.AllCompounds.Count > 1 && exceedancesSection.Records.Any()) {
-                    var exceedancesByFoodSection = new ConcentrationLimitExceedancesByFoodDataSection();
-                    var exceedancesByFoodSectionHeader = subHeader.AddSubSectionHeaderFor(exceedancesByFoodSection, "Concentration limit exceedances by food", subOrder++);
-                    exceedancesByFoodSection.Summarize(data.MaximumConcentrationLimits.Values, data.FoodSamples, _configuration.ConcentrationLimitFilterFractionExceedanceThreshold);
-                    exceedancesByFoodSectionHeader.SaveSummarySection(exceedancesByFoodSection);
-                }
+            var exceedancesByFoodSection = new ConcentrationLimitExceedancesByFoodDataSection();
+            var exceedancesByFoodSectionHeader = subHeader.AddSubSectionHeaderFor(exceedancesByFoodSection, "Concentration limit exceedances by food", subOrder++);
+            exceedancesByFoodSection.Summarize(data.MaximumConcentrationLimits.Values, data.FoodSamples, _configuration.ConcentrationLimitFilterFractionExceedanceThreshold);
+            exceedancesByFoodSectionHeader.SaveSummarySection(exceedancesByFoodSection);
+            if (data.AllCompounds.Count > 1 && exceedancesByFoodSection.Records.Count != 0) {
+                var exceedancesByFoodSubstanceSection = new ConcentrationLimitExceedancesDataSection();
+                var exceedancesSectionHeader = subHeader.AddSubSectionHeaderFor(exceedancesByFoodSubstanceSection, "Concentration limit exceedances by food and substance", subOrder++);
+                exceedancesByFoodSubstanceSection.Summarize(data.MaximumConcentrationLimits.Values, data.FoodSamples, data.ConcentrationUnit, _configuration.ConcentrationLimitFilterFractionExceedanceThreshold);
+                exceedancesSectionHeader.SaveSummarySection(exceedancesByFoodSubstanceSection);
             }
         }
 
