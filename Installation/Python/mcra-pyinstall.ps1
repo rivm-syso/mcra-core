@@ -5,11 +5,20 @@
 # PS> ./mcra-pyinstall.ps1
 #
 
-$PythonVersion = '3.12.4'
+$PythonVersion = '3.12.10'
+$VcRedistInstaller = "vc_redist.x64.exe"
 $PythonInstaller = "python-$PythonVersion-amd64.exe"
 $PythonFolderVersion = $PythonVersion -replace '^(\d+)\.(\d+)\.(\d+)','$1$2'
 $PythonTargetDir = "C:\Python$PythonFolderVersion"
 $PipPackages = "$PsScriptRoot\mcra-pip-packages.json"
+
+# Install VC++ redistributable (requirement for libroadrunner)
+Write-Host "Installing VC++ 2015-2022 redistributable installer ..." -ForegroundColor green
+Start-Process -FilePath "$PsScriptRoot\$VcRedistInstaller" `
+    -ArgumentList "/install /quiet /passive /norestart" `
+    -NoNewWindow `
+    -Wait `
+    -PassThru ` > $null
 
 # Install Python
 Write-Host "Installing Python $PythonVersion in folder $PythonTargetDir ..." -ForegroundColor green
@@ -31,6 +40,6 @@ $jsonData = Get-Content -Path "$PipPackages" | ConvertFrom-Json
 $packagesArray = $jsonData.packages
 foreach ($package in $packagesArray) {
     $file = $($package.file).Trim()
-    $file = "$PsScriptRoot\pip\$file" 
+    $file = "$PsScriptRoot\pip\$file"
     &"pip" install $file --no-deps --disable-pip-version-check
 }

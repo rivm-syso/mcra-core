@@ -8,8 +8,9 @@ param (
     [string]$ImageFolder = "$PsScriptRoot"
 )
 
-$PythonVersion = '3.12.4'
+$PythonVersion = '3.12.10'
 $PythonInstaller = "python-$PythonVersion-amd64.exe"
+$VcRedistInstaller = "vc_redist.x64.exe"
 
 # Create target folder if not exists
 If (!(test-path -PathType container $ImageFolder))
@@ -18,9 +19,13 @@ If (!(test-path -PathType container $ImageFolder))
 }
 #Remove-Item "$ImageFolder\*" -Recurse -Force
 
+# Download VC++ x64 redistributable (version 2015-2022)
+Write-Host "Downloading VC++ 2015-2022 redistributable installer ..." -ForegroundColor green
+Invoke-WebRequest -Uri "https://aka.ms/vs/17/release/$VcRedistInstaller" -OutFile "$ImageFolder\$VcRedistInstaller"
+
 # Download Python
 Write-Host "Downloading Python $PythonVersion installer ..." -ForegroundColor green
-Invoke-WebRequest -Uri "https://www.python.org/ftp/python/$PythonVersion/python-$PythonVersion-amd64.exe" -OutFile "$ImageFolder\python-$PythonVersion-amd64.exe"
+Invoke-WebRequest -Uri "https://www.python.org/ftp/python/$PythonVersion/$PythonInstaller" -OutFile "$ImageFolder\$PythonInstaller"
 
 # Create local installer layout, using the Python installer
 Write-Host "Creating local installer layout ..." -ForegroundColor green
