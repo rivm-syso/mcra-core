@@ -18,7 +18,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticConversionCalculatio
             foreach (var definition in modelDefinitions) {
                 var location = Assembly.GetAssembly(typeof(KineticConversionCalculatorFactory)).Location;
                 var assemblyFolder = new FileInfo(location).Directory.FullName;
-                var dllPath = Path.Combine(assemblyFolder, "Resources", "KineticModels", definition.FileName);
+                var dllFileName = OperatingSystem.IsWindows()
+                    ? definition.FileName
+                    : $"{Path.GetFileNameWithoutExtension(definition.FileName)}.so";
+
+                var dllPath = Path.Combine(assemblyFolder, "Resources", "KineticModels", dllFileName);
+
                 Assert.IsTrue(File.Exists(dllPath));
             }
         }
