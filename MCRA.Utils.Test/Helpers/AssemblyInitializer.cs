@@ -11,8 +11,10 @@ namespace MCRA.Utils.Test.Helpers {
         /// </summary>
         [AssemblyInitialize]
         public static void GlobalTestInitializer(TestContext context) {
+            var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
             var builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", false, true)
+                .AddJsonFile($"appsettings.{env}.json", true, true)
                 .AddJsonFile("appsettings.user.json", optional: true);
             var config = builder.Build();
             RDotNetEngine.R_HomePath = config["RHomePath"];
