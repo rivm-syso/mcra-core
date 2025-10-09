@@ -12,6 +12,11 @@
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <ModuleExtension Condition="'$(OS)' == 'Windows_NT'">.dll</ModuleExtension>
+    <ModuleExtension Condition="'$(OS)' != 'Windows_NT'">.so</ModuleExtension>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <NoWarn>1701;1702;618</NoWarn>
   </PropertyGroup>
@@ -22,33 +27,33 @@
 
   <ItemGroup>
     <None Remove="Resources\KineticModels\EuroMix_Bisphenols_PBPK_model_V1.c" />
-    <None Remove="Resources\KineticModels\EuroMix_Bisphenols_PBPK_model_V1.dll" />
+    <None Remove="Resources\KineticModels\EuroMix_Bisphenols_PBPK_model_V1$(ModuleExtension)" />
     <None Remove="Resources\KineticModels\EuroMix_Bisphenols_PBPK_model_V2.c" />
-    <None Remove="Resources\KineticModels\EuroMix_Bisphenols_PBPK_model_V2.dll" />
+    <None Remove="Resources\KineticModels\EuroMix_Bisphenols_PBPK_model_V2$(ModuleExtension)" />
     <None Remove="Resources\KineticModels\EuroMix_Generic_PBTK_model_V5.c" />
-    <None Remove="Resources\KineticModels\EuroMix_Generic_PBTK_model_V5.dll" />
+    <None Remove="Resources\KineticModels\EuroMix_Generic_PBTK_model_V5$(ModuleExtension)" />
     <None Remove="Resources\KineticModels\EuroMix_Generic_PBTK_model_V6.c" />
-    <None Remove="Resources\KineticModels\EuroMix_Generic_PBTK_model_V6.dll" />
+    <None Remove="Resources\KineticModels\EuroMix_Generic_PBTK_model_V6$(ModuleExtension)" />
     <None Remove="Resources\KineticModels\PBK_Chlorpyrifos_V1.c" />
-    <None Remove="Resources\KineticModels\PBK_Chlorpyrifos_V1.dll" />
+    <None Remove="Resources\KineticModels\PBK_Chlorpyrifos_V1$(ModuleExtension)" />
     <None Remove="Resources\MunroTTCs\MunroTTCs.csv" />
     <None Remove="Resources\Opex\OpexToMcra.R" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Resources\KineticModels\EuroMix_Bisphenols_PBPK_model_V1.dll">
+    <Content Include="Resources\KineticModels\EuroMix_Bisphenols_PBPK_model_V1$(ModuleExtension)">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\KineticModels\EuroMix_Bisphenols_PBPK_model_V2.dll">
+    <Content Include="Resources\KineticModels\EuroMix_Bisphenols_PBPK_model_V2$(ModuleExtension)">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\KineticModels\EuroMix_Generic_PBTK_model_V5.dll">
+    <Content Include="Resources\KineticModels\EuroMix_Generic_PBTK_model_V5$(ModuleExtension)">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\KineticModels\EuroMix_Generic_PBTK_model_V6.dll">
+    <Content Include="Resources\KineticModels\EuroMix_Generic_PBTK_model_V6$(ModuleExtension)">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\KineticModels\PBK_Chlorpyrifos_V1.dll">
+    <Content Include="Resources\KineticModels\PBK_Chlorpyrifos_V1$(ModuleExtension)">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

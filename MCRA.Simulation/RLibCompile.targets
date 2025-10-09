@@ -9,18 +9,23 @@
     </AvailableItemName>
   </ItemGroup>
 
+  <PropertyGroup>
+    <ModuleExtension Condition="'$(OS)' == 'Windows_NT'">.dll</ModuleExtension>
+    <ModuleExtension Condition="'$(OS)' != 'Windows_NT'">.so</ModuleExtension>
+  </PropertyGroup>
+
   <Target
     Name="RLibSource"
     Condition="'@(RLibCompiler)' != ''"
     BeforeTargets="Compile"
     DependsOnTargets="SetCranRExe;_EnsureCranR;_EnsureMake;"
     Inputs="@(RLibCompiler)"
-    Outputs="%(RelativeDir)%(Filename).dll">
+    Outputs="%(RelativeDir)%(Filename)$(ModuleExtension)">
 
     <ItemGroup>
       <RLibCompiler>
         <TranslatedPath>$([System.String]::Copy('%(RelativeDir)%(Filename)%(Extension)').Replace('\', '/'))</TranslatedPath>
-        <OutputDllPath>$([System.String]::Copy('%(RelativeDir)%(Filename).dll').Replace('\', '/'))</OutputDllPath>
+        <OutputDllPath>$([System.String]::Copy('%(RelativeDir)%(Filename)$(ModuleExtension)').Replace('\', '/'))</OutputDllPath>
       </RLibCompiler>
     </ItemGroup>
     <Message Importance="high" Text="Building R Shared Library from C code '@(RLibCompiler)'" />
@@ -38,14 +43,14 @@
      Name="RLibClean"
      AfterTargets="Clean"
      Condition="'@(RLibCompiler)' != ''">
-    <Message Importance="high" Text="Cleaning Kinetic Models DLLs" />
-    <Delete Files="%(RLibCompiler.RelativeDir)%(RLibCompiler.Filename).dll" />
+    <Message Importance="high" Text="Cleaning Kinetic Models library files" />
+    <Delete Files="%(RLibCompiler.RelativeDir)%(RLibCompiler.Filename)$(ModuleExtension)" />
     <Delete Files="%(RLibCompiler.RelativeDir)%(RLibCompiler.Filename).o" />
   </Target>
 
   <Target Name="_EnsureCranR">
     <PropertyGroup>
-      <CranRMinVersion>3.6.0</CranRMinVersion>
+      <CranRMinVersion>4.4.1</CranRMinVersion>
     </PropertyGroup>
     <Exec Command='$(CranRExe) --version'
         EchoOff='true'
