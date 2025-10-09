@@ -1,0 +1,49 @@
+stages:
+  - build-core
+  - build-cli
+  - push-images
+
+default:
+  tags:
+    - D0168132
+    - Powershell
+
+workflow:
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+    - if: $CI_COMMIT_BRANCH == "dev"
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+
+variables:
+  PROJECT_NAME: "MCRA-Core"
+  # Use the Podman build image.
+  #~ BUILD_IMAGE: "quay.io/podman/stable"
+  GIT_DEPTH: 80
+  MCRA_IMAGE_TAG: $CI_COMMIT_BRANCH
+  MCRA_BUILD_ARG_FILE: ./ci-build-release.env
+
+BuildCore:
+  stage: build-core
+  #~ image: $BUILD_IMAGE
+  script:
+    - podman build -f "./Dockerfile" --build-arg-file $MCRA_BUILD_ARG_FILE --build-arg "CACHE_DATE=$(date +%Y-%m-%d:%H:%M:%S)" -v "$(pwd):/src" -t "${CI_REGISTRY_IMAGE}:${MCRA_IMAGE_TAG}" .
+  artifacts:
+    when: always
+    paths:
+     - ./TestResults/MCRA.*.html
+
+BuildCli:
+  stage: build-cli
+  #~ image: $BUILD_IMAGE
+  script:
+    - podman build -f "./MCRA.Simulation.Commander/Dockerfile" --build-arg "MCRA_IMAGE_TAG=${MCRA_IMAGE_TAG}" --build-arg-file $MCRA_BUILD_ARG_FILE -t "${CI_REGISTRY_IMAGE}/mcra-cli:${MCRA_IMAGE_TAG}" .
+
+PushImages:
+  stage: push-images
+  #~ image: $BUILD_IMAGE
+  script:
+    # Log in to gitlab
+    - podman login -u "gitlab-ci-token" -p "$CI_JOB_TOKEN" $CI_REGISTRY
+    # push images to registry
+    - podman push "${CI_REGISTRY_IMAGE}:${MCRA_IMAGE_TAG}" "${CI_REGISTRY_IMAGE}:${MCRA_IMAGE_TAG}"
+    - podman push "${CI_REGISTRY_IMAGE}/mcra-cli:${MCRA_IMAGE_TAG}" "${CI_REGISTRY_IMAGE}/mcra-cli:${MCRA_IMAGE_TAG}"
