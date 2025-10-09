@@ -1,13 +1,12 @@
-﻿using MCRA.Utils.Collections;
-using MCRA.Utils.Statistics;
+﻿using System.Diagnostics;
+using System.Globalization;
+using System.Text;
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Diagnostics;
-using System.Text;
-using System.Globalization;
+using MCRA.Utils.Collections;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.TargetExposures {
 
@@ -108,7 +107,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
         [TestMethod, TestCategory("Sandbox Tests")]
         public void ExposurePatternsAlgorithmCompareOutputTest() {
             //var data = createData(50, 50);
-            var data = createData(100,20000);
+            var data = createData(100, 20000);
             var result01 = getExposurePatternFrequencies1(data.records.ToList(), data.compounds).ToArray();
 
             var result02 = getExposurePatternFrequencies2(data.records.ToList(), data.compounds).ToArray();
@@ -149,27 +148,28 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
 
         [TestMethod, TestCategory("Sandbox Tests")]
         public void ExposurePatternsAlgorithm2Test() {
-            var data = createData(8, 8);
+            var (records, compounds) = createData(8, 8);
 
-            var result = getExposurePatternFrequencies2(data.records.ToList(), data.compounds).ToArray();
+            var result = getExposurePatternFrequencies2(records.ToList(), compounds).ToArray();
             Assert.AreEqual(8, result.Length);
 
             var sb = new StringBuilder();
             for (int i = 0; i < result.Length; i++) {
                 sb.AppendLine($"{i:00},f{result[i].Frequency},p{result[i].Percentage.ToString("00.0", CultureInfo.InvariantCulture)},{result[i].Substances}");
             }
-            const string check =
-                "00,f8,p50.0,C00\r\n"
-                + "01,f8,p50.0,C01\r\n"
-                + "02,f8,p50.0,C02\r\n"
-                + "03,f4,p25.0,C00, C01\r\n"
-                + "04,f4,p25.0,C00, C02\r\n"
-                + "05,f4,p25.0,C01, C02\r\n"
-                + "06,f2,p12.5,\r\n"
-                + "07,f2,p12.5,C00, C01, C02\r\n";
+
+            var check = new StringBuilder();
+            check.AppendLine("00,f8,p50.0,C00");
+            check.AppendLine("01,f8,p50.0,C01");
+            check.AppendLine("02,f8,p50.0,C02");
+            check.AppendLine("03,f4,p25.0,C00, C01");
+            check.AppendLine("04,f4,p25.0,C00, C02");
+            check.AppendLine("05,f4,p25.0,C01, C02");
+            check.AppendLine("06,f2,p12.5,");
+            check.AppendLine("07,f2,p12.5,C00, C01, C02");
 
             var s01 = sb.ToString();
-            Assert.AreEqual(check, s01);
+            Assert.AreEqual(check.ToString(), s01);
         }
 
         private (List<DetailCoExposureRecord> records, ICollection<Compound> compounds) createData(int compoundCount, int listCount) {
@@ -188,7 +188,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     Index = bp.IndicesOfSetBits.ToArray(),
                     Row = i
                 };
-            };
+            }
+            ;
             return (records.ToList(), compounds);
         }
 
@@ -234,7 +235,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     Index = bp.IndicesOfSetBits.ToArray(),
                     Row = i
                 };
-            };
+            }
+            ;
             return (records.ToList(), compounds);
         }
 
@@ -305,7 +307,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     var editItem = editGroup[j];
                     var frequency = editItem.Frequency;
                     //loop over all sets with length > editgroup
-                    if(editItem.NumberOfSubstances > 0) {
+                    if (editItem.NumberOfSubstances > 0) {
                         for (int l = i + 1; l < groupedRecords.Length; l++) {
                             //loop over individual items
                             frequency += groupedRecords[l]
