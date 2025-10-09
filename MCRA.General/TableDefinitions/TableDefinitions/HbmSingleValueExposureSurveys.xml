@@ -8,6 +8,7 @@
   <Aliases>
     <string>HbmSingleValueExposureSurveys</string>
     <string>HbmSVExposureSurveys</string>
+    <string>HbmPointEstimateSurveys</string>
   </Aliases>
   <PreferredAlias>HbmSVExposureSurveys</PreferredAlias>
   <HiddenAliases>

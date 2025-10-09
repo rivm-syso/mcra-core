@@ -9,6 +9,7 @@
   <Aliases>
     <string>HbmSingleValueExposures</string>
     <string>HbmSVExposures</string>
+    <string>HbmPointEstimates</string>
   </Aliases>
   <PreferredAlias>HbmSVExposures</PreferredAlias>
   <HiddenAliases>

@@ -8,6 +8,7 @@
   <Aliases>
     <string>HbmSingleValueExposureSets</string>
     <string>HbmSVExposureSets</string>
+    <string>HbmPointEstimateExposureSets</string>
   </Aliases>
   <PreferredAlias>HbmSVExposureSets</PreferredAlias>
   <HiddenAliases>
