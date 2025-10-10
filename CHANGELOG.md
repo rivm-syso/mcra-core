@@ -1,5 +1,16 @@
 # Change Log
 
+## Version 10.2.6 (2025-10-10)
+
+### Added
+
+- Add samples by food summary section and refactor sample origins section (#2289)
+
+### Changed
+
+- Update modelled foods module with additional output section to summarize modelled foods only (#2289)
+- Foods with facets: use name of processing type when (any of) the facet name(s) not available
+
 ## Version 10.2.5 (2025-10-03)
 
 ### Added
