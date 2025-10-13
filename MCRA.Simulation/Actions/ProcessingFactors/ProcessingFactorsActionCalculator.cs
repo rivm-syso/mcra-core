@@ -46,7 +46,6 @@ namespace MCRA.Simulation.Actions.ProcessingFactors {
             data.ProcessingFactorModels = processingFactorModelsBuilder
                 .Create(
                     data.ProcessingFactors,
-                    data.ActiveSubstances,
                     ModuleConfig.IsDistribution,
                     ModuleConfig.AllowHigherThanOne
                 );

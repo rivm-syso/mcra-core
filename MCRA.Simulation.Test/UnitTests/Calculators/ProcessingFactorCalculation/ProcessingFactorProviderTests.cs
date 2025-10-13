@@ -125,5 +125,55 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ProcessingFactorCalculation
                 Assert.IsTrue(double.IsNaN(pf));
             }
         }
+
+        [TestMethod]
+        public void ProcessingFactorProvider_TestSubstanceGeneric() {
+            var random = new McraRandomGenerator(1);
+
+            var substanceX = new Compound("CMPX");
+            var food = new Food("APPLE");
+            var processingType = new ProcessingType("JUICING");
+
+            var pfs = new List<ProcessingFactor>() {
+                // Substance-specific PF
+                new ProcessingFactor() {
+                    FoodUnprocessed = food,
+                    Compound = substanceX,
+                    ProcessingType = processingType,
+                    Nominal = 5
+                },
+                // Generic PF
+                new ProcessingFactor() {
+                    FoodUnprocessed = food,
+                    ProcessingType = processingType,
+                    Nominal = 10
+                }
+            };
+            var pfModels = pfs
+                .Select(pf => {
+                    var model = new PFFixedModel(pf);
+                    model.CalculateParameters();
+                    return model;
+                })
+                .Cast<ProcessingFactorModel>()
+                .ToList();
+
+            // Create processing factor provider with substance-specific and generic PF
+            var processingFactorProvider = new ProcessingFactorProvider(
+                pfModels,
+                false,
+                double.NaN
+            );
+
+            // Assert: get substance-specific processing factor
+            var pfCmpX = processingFactorProvider.GetProcessingFactor(food, substanceX, processingType, random);
+            Assert.AreEqual(5, pfCmpX);
+
+            // Assert: get generic processing factor for other substance
+            var substanceY = new Compound("CMPY");
+            var pfCmpY = processingFactorProvider.GetProcessingFactor(food, substanceY, processingType, random);
+            Assert.AreEqual(10, pfCmpY);
+
+        }
     }
 }

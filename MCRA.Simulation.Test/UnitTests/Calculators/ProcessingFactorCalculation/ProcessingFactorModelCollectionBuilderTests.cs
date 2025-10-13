@@ -26,7 +26,30 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ProcessingFactorCalculation
             var processingFactors = FakeProcessingFactorsGenerator
                 .Create(processedFoods, substances, random, processingTypes);
             var builder = new ProcessingFactorModelCollectionBuilder();
-            var result = builder.Create(processingFactors, substances, isDistribution, allowHigherThanOne);
+            var result = builder.Create(processingFactors, isDistribution, allowHigherThanOne);
+            Assert.AreEqual(processingFactors.Count, result.Count);
+        }
+
+        [TestMethod]
+        [DataRow(false, false)]
+        [DataRow(true, true)]
+        [DataRow(false, true)]
+        [DataRow(true, false)]
+        public void ProcessingFactorModelCollectionBuilder_TestCreateSubstanceGeneric(
+            bool isDistribution,
+            bool allowHigherThanOne
+        ) {
+            var random = new McraRandomGenerator(1);
+            var foods = FakeFoodsGenerator.Create(3);
+            var processingTypes = FakeProcessingTypesGenerator.Create(3);
+            var processedFoods = FakeFoodsGenerator.CreateProcessedFoods(foods, processingTypes);
+            foods.AddRange(processedFoods);
+            var substances = FakeSubstancesGenerator.Create(3);
+            substances.Add(null); // Add a null substance to test substance-generic processing factors
+            var processingFactors = FakeProcessingFactorsGenerator
+                .Create(processedFoods, substances, random, processingTypes);
+            var builder = new ProcessingFactorModelCollectionBuilder();
+            var result = builder.Create(processingFactors, isDistribution, allowHigherThanOne);
             Assert.AreEqual(processingFactors.Count, result.Count);
         }
 
@@ -42,7 +65,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ProcessingFactorCalculation
             var processingFactors = FakeProcessingFactorsGenerator
                 .Create(processedFoods, substances, random, processingTypes, true);
             var builder = new ProcessingFactorModelCollectionBuilder();
-            var result = builder.Create(processingFactors, substances, true, false);
+            var result = builder.Create(processingFactors, true, false);
             Assert.AreEqual(processingFactors.Count, result.Count);
             Assert.IsTrue(result.All(r => r is IDistributionProcessingFactorModel));
         }
@@ -58,7 +81,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ProcessingFactorCalculation
             var processingFactors = FakeProcessingFactorsGenerator
                 .Create(processedFoods, substances, random, processingTypes, true);
             var builder = new ProcessingFactorModelCollectionBuilder();
-            var result = builder.Create(processingFactors, substances, true, false);
+            var result = builder.Create(processingFactors, true, false);
 
             builder.Resample(random, result);
             Assert.IsTrue(result.All(r => r.IsUncertaintySample()));

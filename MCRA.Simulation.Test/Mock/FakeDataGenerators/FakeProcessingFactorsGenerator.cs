@@ -29,7 +29,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                 factors = factors.Where(r => random.NextDouble() > fractionMissing).ToList();
             }
             var builder = new ProcessingFactorModelCollectionBuilder();
-            var result = builder.Create(factors, substances, isDistribution, allowHigherThanOne);
+            var result = builder.Create(factors, isDistribution, allowHigherThanOne);
             return result;
         }
 

@@ -8,7 +8,6 @@ namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation {
 
         public ICollection<ProcessingFactorModel> Create(
             ICollection<ProcessingFactor> processingFactors,
-            ICollection<Compound> substances,
             bool createDistributionModels,
             bool allowHigherThanOne
         ) {
@@ -20,9 +19,6 @@ namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation {
             foreach (var processingFactor in substanceSpecificRecords) {
                 if (!result.TryGetValue((processingFactor.FoodUnprocessed, processingFactor.Compound, processingFactor.ProcessingType), out var model)) {
                     model = createProcessingFactorModel(
-                        processingFactor.FoodUnprocessed,
-                        processingFactor.Compound,
-                        processingFactor.ProcessingType,
                         processingFactor,
                         createDistributionModels,
                         allowHigherThanOne
@@ -35,18 +31,13 @@ namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation {
                 .Where(r => r.Compound == null)
                 .ToList();
             foreach (var foodProcessingFactor in substanceGenericRecords) {
-                foreach (var substance in substances) {
-                    if (!result.TryGetValue((foodProcessingFactor.FoodUnprocessed, substance, foodProcessingFactor.ProcessingType), out var model)) {
-                        model = createProcessingFactorModel(
-                            foodProcessingFactor.FoodUnprocessed,
-                            substance,
-                            foodProcessingFactor.ProcessingType,
-                            foodProcessingFactor,
-                            createDistributionModels,
-                            allowHigherThanOne
-                        );
-                        result.Add((foodProcessingFactor.FoodUnprocessed, substance, foodProcessingFactor.ProcessingType), model);
-                    }
+                if (!result.TryGetValue((foodProcessingFactor.FoodUnprocessed, null, foodProcessingFactor.ProcessingType), out var model)) {
+                    model = createProcessingFactorModel(
+                        foodProcessingFactor,
+                        createDistributionModels,
+                        allowHigherThanOne
+                    );
+                    result.Add((foodProcessingFactor.FoodUnprocessed, null, foodProcessingFactor.ProcessingType), model);
                 }
             }
 
@@ -76,9 +67,6 @@ namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation {
         }
 
         private ProcessingFactorModel createProcessingFactorModel(
-            Food food,
-            Compound substance,
-            ProcessingType processingType,
             ProcessingFactor pf,
             bool createDistributionModels,
             bool allowHigherThanOne
