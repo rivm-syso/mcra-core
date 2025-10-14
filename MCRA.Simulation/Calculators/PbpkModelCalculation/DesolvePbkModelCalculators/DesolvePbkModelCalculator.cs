@@ -250,8 +250,8 @@ namespace MCRA.Simulation.Calculators.PbpkModelCalculation.DesolvePbkModelCalcul
         ) {
             // Convert to repating exposure events to single events
             var singleExposureEvents = exposureEvents
-                .SelectMany(r => r is SingleExposureEvent
-                    ? [r as SingleExposureEvent]
+                .SelectMany(r => (r is SingleExposureEvent singleExpEvt)
+                    ? [singleExpEvt]
                     : (r as RepeatingExposureEvent).Expand(SimulationSettings.NumberOfSimulatedDays * timeUnitMultiplier)
                 )
                 .ToList();
