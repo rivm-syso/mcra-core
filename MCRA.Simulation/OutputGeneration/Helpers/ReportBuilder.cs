@@ -152,6 +152,22 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
                     var subHtml = RenderDisplayReport(subOutputInfo, true, subDestFolder.FullName, null, inlineCharts, subCsvIndex, subSvgIndex);
                     var subHtmlFile = Path.Combine(subDestFolder.FullName, "Report.html");
                     File.WriteAllText(subHtmlFile, subHtml);
+                    //Write metadata and TOC information files in MetaData subfolder
+                    var metadataPath = Path.Combine(subDestFolder.FullName, "MetaData");
+                    Directory.CreateDirectory(metadataPath);
+                    var indexFileName = Path.Combine(metadataPath, "CsvFileIndex.txt");
+                    using (var sw = new StreamWriter(indexFileName)) {
+                        foreach (var (fileName, titlePath) in subCsvIndex.Values) {
+                            sw.WriteLine($"{fileName}\t{titlePath}");
+                        }
+                    }
+                    indexFileName = Path.Combine(metadataPath, "ChartFileIndex.txt");
+                    using (var sw = new StreamWriter(indexFileName)) {
+                        foreach (var (fileName, titlePath) in subSvgIndex.Values) {
+                            sw.WriteLine($"{fileName}\t{titlePath}");
+                        }
+                    }
+                    subToc.WriteHeadersToFiles(metadataPath);
                 }
 
                 sbNav.Append("<li>");

@@ -69,7 +69,7 @@ namespace MCRA.Simulation.OutputManagement {
             var dataFolder = new DirectoryInfo(Path.Combine(_outputPath, "Data"));
             if (WriteDataFiles || WriteReport) {
                 toc.SaveTablesAsCsv(dataFolder, sectionManager, csvFileIndex);
-                var csvIndexFileName = Path.Combine(outputFolder.FullName, "Metadata", "CsvFileIndex.txt");
+                var csvIndexFileName = Path.Combine(metadataPath, "CsvFileIndex.txt");
                 using (var sw = new StreamWriter(csvIndexFileName)) {
                     foreach (var (fileName, titlePath) in csvFileIndex.Values) {
                         sw.WriteLine($"{fileName}\t{titlePath}");
@@ -82,7 +82,7 @@ namespace MCRA.Simulation.OutputManagement {
             if (WriteChartFiles || WriteReport) {
                 var chartsFolder = new DirectoryInfo(Path.Combine(_outputPath, "Img"));
                 toc.SaveChartFiles(chartsFolder, sectionManager, svgFileIndex);
-                var chartIndexFileName = Path.Combine(outputFolder.FullName, "Metadata", "ChartFileIndex.txt");
+                var chartIndexFileName = Path.Combine(metadataPath, "ChartFileIndex.txt");
                 using (var sw = new StreamWriter(chartIndexFileName)) {
                     foreach (var (fileName, titlePath) in svgFileIndex.Values) {
                         sw.WriteLine($"{fileName}\t{titlePath}");
@@ -91,7 +91,7 @@ namespace MCRA.Simulation.OutputManagement {
             }
 
             if (WriteTocCsv) {
-                toc.WriteHeadersToFiles(Path.Combine(outputFolder.FullName, "Metadata"), "txt");
+                toc.WriteHeadersToFiles(metadataPath, "txt");
             }
 
             if (WriteReport) {
