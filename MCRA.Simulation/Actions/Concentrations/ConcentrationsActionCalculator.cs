@@ -16,6 +16,7 @@ using MCRA.Simulation.Calculators.FoodSampleFilters;
 using MCRA.Simulation.Calculators.ProcessingFactorCalculation;
 using MCRA.Simulation.Calculators.SampleCompoundCollections;
 using MCRA.Simulation.Calculators.SampleOriginCalculation;
+using MCRA.Simulation.Calculators.SubstanceAuthorisationsBuilder;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.DateTimes;
 using MCRA.Utils.ProgressReporting;
@@ -340,7 +341,9 @@ namespace MCRA.Simulation.Actions.Concentrations {
             // Compute sample origins
             data.SampleOriginInfos = SampleOriginCalculator.Calculate(foodSamples.ToLookup(c => c.Food));
 
-            // For focal commodity substance measurement removal/replacement compute the focal commodity combinations.
+            var substanceAuthorisations = data.SubstanceAuthorisations;
+
+            // For focal commodity substance measurement removal/replacement compute the focal commodity combinations
             if (ModuleConfig.FocalCommodity && ModuleConfig.IsFocalCommodityMeasurementReplacement) {
                 data.FocalCommodityCombinations = FocalCommodityCombinationsBuilder
                     .Create(
@@ -353,21 +356,18 @@ namespace MCRA.Simulation.Actions.Concentrations {
                 // Make sure that the focal food/substance combinations are authorised.
                 // Note: this implementation is not so nice; the concentrations module is now changing
                 // data of another module (the substance authorisations). Candidate for improvement.
-                if (data.SubstanceAuthorisations != null) {
-                    var unauthorisedCombinations = data.FocalCommodityCombinations
-                        .Where(r => !data.SubstanceAuthorisations.ContainsKey((r.Food, r.Substance)))
-                        .ToList();
-                    foreach (var combination in unauthorisedCombinations) {
-                        data.SubstanceAuthorisations.Add(
-                            (combination.Food, combination.Substance),
-                            new SubstanceAuthorisation() {
-                                Food = combination.Food,
-                                Substance = combination.Substance
-                            }
-                        );
+                if (substanceAuthorisations != null) {
+                    var focalAuthorisationRecords = SubstanceAuthorisationsBuilder.ComputeFocalSubstanceAuthorisations(
+                        substanceAuthorisations.Keys,
+                        data.FocalCommodityCombinations,
+                        data.SubstanceConversions
+                    );
+                    foreach (var record in focalAuthorisationRecords) {
+                        substanceAuthorisations[(record.Food, record.Substance)] = record;
                     }
                 }
             }
+
             //Set concentration unit
             data.ConcentrationUnit = data.MeasuredSubstances.Count == 1
                 ? data.MeasuredSubstances.First().ConcentrationUnit
@@ -380,7 +380,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
                     data.MeasuredSubstances,
                     foodSamples,
                     data.ConcentrationUnit,
-                    data.SubstanceAuthorisations,
+                    substanceAuthorisations,
                     progressState
                 );
 
@@ -465,6 +465,23 @@ namespace MCRA.Simulation.Actions.Concentrations {
             var measuredSubstanceSampleCollections = data.MeasuredSubstanceSampleCollections.Values
                 .ToDictionary(r => r.Food, r => r.Clone());
 
+            // Get substance authorisations
+            var substanceAuthorisations = data.SubstanceAuthorisations;
+
+            // For focal commodity scenarios, make sure that the focal food/substance combinations are authorised
+            // Note: this implementation is not so nice; the concentrations module is now changing
+            // data of another module (the substance authorisations). Candidate for improvement.
+            if (data.FocalCommodityCombinations?.Count > 0 && substanceAuthorisations != null) {
+                var focalAuthorisationRecords = SubstanceAuthorisationsBuilder.ComputeFocalSubstanceAuthorisations(
+                    substanceAuthorisations.Keys,
+                    data.FocalCommodityCombinations,
+                    data.SubstanceConversions
+                );
+                foreach (var record in focalAuthorisationRecords) {
+                    substanceAuthorisations[(record.Food, record.Substance)] = record;
+                }
+            }
+
             // Focal commodity substance measurement removal/replacement
             if (ModuleConfig.FocalCommodity
                 && ModuleConfig.IsFocalCommodityMeasurementReplacement
@@ -492,13 +509,13 @@ namespace MCRA.Simulation.Actions.Concentrations {
                 var activeSubstanceAllocationCalculatorFactory = new ActiveSubstanceAllocationCalculatorFactory(ModuleConfig);
                 var calculator = activeSubstanceAllocationCalculatorFactory.Create(
                     data.SubstanceConversions,
-                    data.SubstanceAuthorisations,
+                    substanceAuthorisations,
                     data.CorrectedRelativePotencyFactors
                 );
                 var activeSubstanceSampleCollections = calculator
                     .Allocate(
                         measuredSubstanceSampleCollections.Values,
-                        new HashSet<Compound>(data.ActiveSubstances),
+                        [.. data.ActiveSubstances],
                         allocationRandomGenerator,
                         progressState
                     )
@@ -528,7 +545,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
                         data.ActiveSubstanceSampleCollections,
                         data.FoodExtrapolations,
                         data.SubstanceConversions,
-                        data.SubstanceAuthorisations,
+                        substanceAuthorisations,
                         data.MaximumConcentrationLimits
                     );
                 data.ExtrapolationCandidates = extrapolationCandidates;
@@ -551,7 +568,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
                 var waterSampleCollection = waterImputationCalculator.Create(
                     data.ActiveSubstances ?? data.AllCompounds,
                     water,
-                    data.SubstanceAuthorisations,
+                    substanceAuthorisations,
                     data.SubstanceApprovals,
                     5,
                     data.CorrectedRelativePotencyFactors,
@@ -585,6 +602,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
                     );
             }
         }
+
         protected override void summarizeActionResult(IConcentrationsActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
             var summarizer = new ConcentrationsSummarizer(ModuleConfig);

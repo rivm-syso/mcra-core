@@ -43,6 +43,7 @@ namespace MCRA.Simulation.Objects {
         /// A boolean stating whether the measurement is a non-detect or non-quantification:  ResType = LOD or LOQ
         /// </summary>
         public bool IsCensoredValue => ResType == ResType.LOD || ResType == ResType.LOQ;
+
         /// <summary>
         /// Defines restype of concentration value (LOD, LOQ, MV or VAL)
         /// </summary>
@@ -52,6 +53,7 @@ namespace MCRA.Simulation.Objects {
         /// A boolean stating whether the measurement is a non-detect value: ResType = LOD. f * lod
         /// </summary>
         public bool IsNonDetect => ResType == ResType.LOD;
+
         /// <summary>
         /// A boolean stating whether the measurement is a non-quantification: ResType = LOQ. lod + f (loq-lod)
         /// </summary>

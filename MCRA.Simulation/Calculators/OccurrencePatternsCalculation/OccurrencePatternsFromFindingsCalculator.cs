@@ -78,6 +78,7 @@ namespace MCRA.Simulation.Calculators.OccurrencePatternsCalculation {
                         .Where(sc => sc.IsPositiveResidue)
                         .Select(sc => sc.ActiveSubstance)
                         .ToHashSet();
+
                     var positiveFindingsCount = g.Count();
                     var isAuthorisedCount = g.Count(r => r.AuthorisedUse);
                     var isAuthorised = isAuthorisedCount > 0;
