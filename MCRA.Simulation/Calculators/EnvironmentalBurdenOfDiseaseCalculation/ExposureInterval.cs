@@ -3,6 +3,11 @@
         public double Lower { get; set; } = lower;
         public double Upper { get; set; } = upper;
 
+        public readonly double Average => 
+            double.IsNaN(Lower) || Lower == 0 ? Upper
+            : double.IsNaN(Upper) ? Lower 
+            : (Upper + Lower) / 2;
+
         public override readonly string ToString() {
             var res = double.IsNaN(Lower) || Lower == 0
                 ? $"< {Upper:G3}"

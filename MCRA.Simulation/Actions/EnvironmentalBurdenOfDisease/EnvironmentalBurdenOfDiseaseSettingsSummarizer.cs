@@ -5,7 +5,7 @@ using MCRA.General.SettingsDefinitions;
 using MCRA.Simulation.Action;
 using MCRA.Utils.ExtensionMethods;
 
-namespace MCRA.Simulation.Actions.DietaryExposures {
+namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
 
     public sealed class EnvironmentalBurdenOfDiseaseSettingsSummarizer : ActionModuleSettingsSummarizer<EnvironmentalBurdenOfDiseaseModuleConfig> {
         public EnvironmentalBurdenOfDiseaseSettingsSummarizer(EnvironmentalBurdenOfDiseaseModuleConfig config) : base(config) {
@@ -29,6 +29,8 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             if (_configuration.ExposureCalculationMethod == ExposureCalculationMethod.MonitoringConcentration) {
                 section.SummarizeSetting(SettingsItemType.UsePointEstimates, _configuration.UsePointEstimates);
             }
+            section.SummarizeSetting(SettingsItemType.WithinBinExposureRepresentationMethod, _configuration.WithinBinExposureRepresentationMethod);
+
             return section;
         }
     }

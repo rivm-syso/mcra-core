@@ -11,13 +11,16 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
 
         private readonly List<double> _defaultBinBoundaries;
         private readonly ExposureGroupingMethod _exposureGroupingMethod;
+        private readonly WithinBinExposureRepresentationMethod _withinBinExposureRepresentationMethod;
 
         public ExposureResponseCalculator(
             ExposureGroupingMethod exposureGroupingMethod,
-            List<double> defaultBinBoundaries
+            List<double> defaultBinBoundaries,
+            WithinBinExposureRepresentationMethod withinBinExposureRepresentationMethod
         ) {
             _exposureGroupingMethod = exposureGroupingMethod;
             _defaultBinBoundaries = defaultBinBoundaries;
+            _withinBinExposureRepresentationMethod = withinBinExposureRepresentationMethod;
         }
 
         public List<ExposureResponseResult> ComputeFromHbmSingleValueExposures(
@@ -47,7 +50,8 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
                 var exposureResponseResult = ComputeFromHbmSingleValueExposureSet(
                     exposureResponseFunctionModel,
                     hbmSingleValueExposureSet,
-                    exposureUnit
+                    exposureUnit,
+                    _withinBinExposureRepresentationMethod
                 );
                 exposureResponseResults.Add(exposureResponseResult);
             }
@@ -79,7 +83,8 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
                     exposures,
                     exposureUnit,
                     percentileIntervals,
-                    _exposureGroupingMethod
+                    _exposureGroupingMethod,
+                    _withinBinExposureRepresentationMethod
                 );
                 exposureResponseResults.Add(exposureResponseResult);
             }
@@ -93,7 +98,8 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
             List<ITargetIndividualExposure> exposures,
             TargetUnit targetUnit,
             List<PercentileInterval> percentileIntervals,
-            ExposureGroupingMethod exposureGroupingMethod
+            ExposureGroupingMethod exposureGroupingMethod,
+            WithinBinExposureRepresentationMethod withinBinExposureRepresentationMethod
         ) {
             var erf = exposureResponseFunctionModel.ExposureResponseFunction;
 
@@ -120,6 +126,7 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
                     exposureResponseFunctionModel,
                     r.ExposureInterval,
                     r.PercentileInterval,
+                    withinBinExposureRepresentationMethod,
                     targetUnit,
                     unitAlignmentFactor,
                     useErfBins,
@@ -141,7 +148,8 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
         public ExposureResponseResult ComputeFromHbmSingleValueExposureSet(
             IExposureResponseFunctionModel exposureResponseFunctionModel,
             HbmSingleValueExposureSet hbmSingleValueExposureSet,
-            TargetUnit targetUnit
+            TargetUnit targetUnit,
+            WithinBinExposureRepresentationMethod withinBinExposureRepresentationMethod
         ) {
             var erf = exposureResponseFunctionModel.ExposureResponseFunction;
             var substance = erf.Substance;
@@ -170,6 +178,7 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
                     exposureResponseFunctionModel,
                     r.ExposureInterval,
                     r.PercentileInterval,
+                    withinBinExposureRepresentationMethod,
                     targetUnit,
                     unitAlignmentFactor,
                     false,
@@ -329,6 +338,7 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
             IExposureResponseFunctionModel exposureResponseFunctionModel,
             ExposureInterval exposureInterval,
             PercentileInterval percentileInterval,
+            WithinBinExposureRepresentationMethod withinBinExposureRepresentationMethod,
             TargetUnit targetUnit,
             double unitAlignmentFactor,
             bool useErfBins,
@@ -336,8 +346,14 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
         ) {
             var erf = exposureResponseFunctionModel.ExposureResponseFunction;
 
-            var exposureLevel = !double.IsNaN(exposureInterval.Upper)
-                ? exposureInterval.Upper : exposureInterval.Lower;
+            var exposureLevel = withinBinExposureRepresentationMethod switch {
+                WithinBinExposureRepresentationMethod.MinimumInBin => 
+                    !double.IsNaN(exposureInterval.Lower) ? exposureInterval.Lower : exposureInterval.Upper,
+                WithinBinExposureRepresentationMethod.MaximumInBin =>
+                    !double.IsNaN(exposureInterval.Upper) ? exposureInterval.Upper : exposureInterval.Lower,
+                WithinBinExposureRepresentationMethod.AverageInBin => exposureInterval.Average,
+                _ => throw new NotImplementedException()
+            };
 
             var response = exposureResponseFunctionModel
                     .Compute(exposureLevel * unitAlignmentFactor, useErfBins);

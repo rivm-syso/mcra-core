@@ -47,6 +47,7 @@
     <CalculationSetting>BinBoundaries</CalculationSetting>
     <CalculationSetting>EbdStandardisation</CalculationSetting>
     <CalculationSetting>UsePointEstimates</CalculationSetting>
+    <CalculationSetting>WithinBinExposureRepresentationMethod</CalculationSetting>
   </CalculationSettings>
   <UncertaintySettings>
     <UncertaintySetting source="Action">UncertaintyLowerBound</UncertaintySetting>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>WithinBinExposureRepresentationMethod</Id>
+  <Name>Within bin exposure representation method</Name>
+  <Description>
+    Method used for selecting the value within a bin that should represent the exposure for the bin.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>MinimumInBin</Id>
+      <Name>Minimum in bin</Name>
+      <ShortName>Minimum in bin</ShortName>
+      <Description>
+        Minimum exposure value within the bin.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>MaximumInBin</Id>
+      <Name>Maximum in bin</Name>
+      <ShortName>Maximum in bin</ShortName>
+      <Description>
+        Maximum exposure value within the bin.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>AverageInBin</Id>
+      <Name>Average in bin</Name>
+      <ShortName>Average in bin</ShortName>
+      <Description>
+        Average exposure value within the bin.
+      </Description>
+    </Unit>
+  </Units>
+</UnitDefinition>

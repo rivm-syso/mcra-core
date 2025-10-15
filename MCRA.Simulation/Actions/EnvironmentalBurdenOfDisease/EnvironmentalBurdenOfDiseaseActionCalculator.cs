@@ -4,7 +4,6 @@ using MCRA.General.Annotations;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
-using MCRA.Simulation.Actions.DietaryExposures;
 using MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation;
 using MCRA.Simulation.Calculators.RiskCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
@@ -96,7 +95,8 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
             // Compute exposure response
             var erCalculator = new ExposureResponseCalculator(
                 ModuleConfig.ExposureGroupingMethod,
-                ModuleConfig.BinBoundaries
+                ModuleConfig.BinBoundaries,
+                ModuleConfig.WithinBinExposureRepresentationMethod
             );
             var exposureResponseResults = ModuleConfig.UsePointEstimates
                 ? erCalculator.ComputeFromHbmSingleValueExposures(

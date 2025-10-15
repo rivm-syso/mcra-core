@@ -44,4 +44,12 @@
     </Description>
     <ValueType>EnvironmentalBodStandardisationMethod</ValueType>
   </SettingsItem>
+  <SettingsItem>
+    <Id>WithinBinExposureRepresentationMethod</Id>
+    <Name>Within bin exposure representation method</Name>
+    <Description>
+      Specify which value within a bin should represent the exposure value for the bin.
+    </Description>
+    <ValueType>WithinBinExposureRepresentationMethod</ValueType>
+  </SettingsItem>
 </SettingsItems>
