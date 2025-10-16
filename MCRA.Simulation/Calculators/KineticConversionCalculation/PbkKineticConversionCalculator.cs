@@ -13,6 +13,8 @@ using MCRA.Utils.Statistics;
 namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
     public class PbkKineticConversionCalculator : IKineticConversionCalculator {
 
+        public KineticConversionModelType ModelType => KineticConversionModelType.PbkModel;
+
         private readonly IPbkModelCalculator _pbkModelCalculator;
 
         private readonly PbkSimulationSettings _simulationSettings;

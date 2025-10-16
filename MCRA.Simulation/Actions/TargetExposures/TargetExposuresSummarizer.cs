@@ -1,6 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.ModuleDefinitions.Settings;
+using MCRA.General.OpexProductDefinitions.Dto;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.ExposureLevelsCalculation;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
@@ -9,6 +10,7 @@ using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils;
 using MCRA.Utils.ExtensionMethods;
+using Microsoft.AspNetCore.Mvc;
 
 namespace MCRA.Simulation.Actions.TargetExposures {
 
@@ -172,34 +174,9 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             }
 
             // Toc: external exposures
-            summarizeExternalExposures(subHeader, result, data, outputSettings, subOrder);
+            summarizeExternalExposures(result, data, subHeader, outputSettings, subOrder++);
 
-            SectionHeader subHeaderKineticConversion = null;
-
-            // Kinetic conversion factors
-            if (result.KineticConversionFactors?.Count > 0
-                && outputSettings.ShouldSummarize(TargetExposuresSections.KineticConversionFactorsSection)
-            ) {
-                subHeaderKineticConversion ??= subHeader.AddEmptySubSectionHeader("Kinetic conversion models", subOrder);
-                summarizeKineticConversionFactors(
-                    result,
-                    subHeaderKineticConversion,
-                    subOrder++
-               );
-            }
-
-            // Kinetic models
-            if (result.KineticModelCalculators?.Values
-                .Any(r => r is PbkKineticConversionCalculator) ?? false
-            ) {
-                subHeaderKineticConversion ??= subHeader.AddEmptySubSectionHeader("Kinetic conversion models", subOrder);
-                summarizePbkModelSimulationResults(
-                    result,
-                    data,
-                    subHeaderKineticConversion,
-                    subOrder++
-                );
-            }
+            summarizeKineticConversion(result, data, subHeader, outputSettings, subOrder++);
 
             // MCR co-exposures
             if (_configuration.McrAnalysis
@@ -215,10 +192,56 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             subHeader.SaveSummarySection(outputSummary);
         }
 
-        private void summarizeExternalExposures(
-            SectionHeader header,
+        private void summarizeKineticConversion(
             TargetExposuresActionResult result,
             ActionData data,
+            SectionHeader header,
+            ModuleOutputSectionsManager<TargetExposuresSections> outputSettings,
+            int order
+        ) {
+            var subHeader = header.AddEmptySubSectionHeader("Kinetic conversion", order);
+
+            var subOrder = 0;
+
+            // Kinetic conversion factors
+            if (result.KineticConversionFactors?.Count > 0
+                && outputSettings.ShouldSummarize(TargetExposuresSections.KineticConversionFactorsSection)
+            ) {
+                summarizeKineticConversionFactors(
+                    result,
+                    data,
+                    subHeader,
+                    subOrder++
+               );
+            }
+
+            // Internal versus external exposures
+            {
+                summarizeInternalVersusExternalExposures(
+                    result,
+                    data,
+                    subHeader,
+                    subOrder++
+                );
+            }
+
+            // Kinetic models
+            if (result.KineticConversionCalculators?.Values
+                .Any(r => r is PbkKineticConversionCalculator) ?? false
+            ) {
+                summarizePbkModelSimulationResults(
+                    result,
+                    data,
+                    subHeader,
+                    subOrder++
+                );
+            }
+        }
+
+        private void summarizeExternalExposures(
+            TargetExposuresActionResult result,
+            ActionData data,
+            SectionHeader header,
             ModuleOutputSectionsManager<TargetExposuresSections> outputSettings,
             int order
         ) {
@@ -744,29 +767,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 }
             }
 
-            if (actionResult.KineticModelCalculators?.Values.Any(r => r is PbkKineticConversionCalculator) ?? false) {
-                foreach (var substance in activeSubstances) {
-                    if (actionResult.KineticModelCalculators[substance] is PbkKineticConversionCalculator) {
-                        var sectionTitle = data.ActiveSubstances.Count > 1
-                            ? $"PBK model {substance.Name}"
-                            : "PBK model";
-                        subHeader = header
-                            .GetSubSectionHeaderFromTitleString<PbkModelSimulationResultsSection>(sectionTitle)?
-                            .GetSubSectionHeader<InternalVersusExternalExposuresSection>();
-                        if (subHeader != null) {
-                            var section = subHeader.GetSummarySection() as InternalVersusExternalExposuresSection;
-                            var kineticModelInstance = kineticModelInstances.Single(c => c.IsHumanModel && c.Substances.Contains(substance));
-                            section.SummarizeUncertainty(
-                                actionResult.KineticConversionFactorsByRouteSubstance,
-                                substance,
-                                routes
-                            );
-                            subHeader.SaveSummarySection(section);
-                        }
-                    }
-                }
-            }
-
             // Exposures by substance
             if (isAggregate) {
                 subHeader = header.GetSubSectionHeader<TargetExposuresSummarySection>();
@@ -804,9 +804,9 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 }
             }
 
-            subHeader = header.GetSubSectionHeader<KineticConversionFactorSection>();
+            subHeader = header.GetSubSectionHeader<KineticConversionSummarySection>();
             if (subHeader != null) {
-                var section = subHeader.GetSummarySection() as KineticConversionFactorSection;
+                var section = subHeader.GetSummarySection() as KineticConversionSummarySection;
                 section.SummarizeUncertainty(
                     actionResult.KineticConversionFactors
                 );
@@ -1282,18 +1282,22 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         /// </summary>
         private void summarizeKineticConversionFactors(
             TargetExposuresActionResult result,
+            ActionData data,
             SectionHeader header,
             int order
         ) {
-            var section = new KineticConversionFactorSection() {
+            var section = new KineticConversionSummarySection() {
                 SectionLabel = getSectionLabel(TargetExposuresSections.KineticConversionFactorsSection)
             };
-            var subHeader = header.AddSubSectionHeaderFor(section, "Kinetic conversion factors", order++);
+            var subHeader = header.AddSubSectionHeaderFor(section, "Kinetic conversion models", order++);
             section.Summarize(
+                result.ExposureRoutes,
+                [result.TargetExposureUnit],
+                data.ActiveSubstances,
+                result.KineticConversionCalculators,
                 result.KineticConversionFactors,
                 _configuration.UncertaintyLowerBound,
                 _configuration.UncertaintyUpperBound
-
             );
             subHeader.SaveSummarySection(section);
         }
@@ -1407,118 +1411,75 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             if (substances.Count == 1) {
                 // Single substance
                 var substance = substances.First();
-                if (result.KineticModelCalculators[substance] is PbkKineticConversionCalculator) {
-                    summarizePbkModelSimulationResults(
-                        result,
-                        data,
+                if (result.KineticConversionCalculators[substance] is PbkKineticConversionCalculator) {
+                    summarizePbkModelTimeCourse(
+                        data.ExposureRoutes,
                         data.KineticModelInstances.Single(c => c.IsHumanModel && c.Substances.Contains(substance)),
                         substance,
-                        allTargetExposures,
                         selectedTargetExposures,
-                        "PBK model",
+                        [data.TargetExposureUnit],
+                        result.ExternalExposureUnit,
                         header,
+                        $"PBK model simulations",
                         order
                     );
                 }
             } else {
                 // Multiple substance
-                var subHeader = header.AddEmptySubSectionHeader("PBK models", order++);
+                var subHeader = header.AddEmptySubSectionHeader("Internal concentration time series", order++);
                 var subOrder = 0;
 
-                var pbkModelCalculators = result.KineticModelCalculators.Values
+                var pbkModelCalculators = result.KineticConversionCalculators.Values
                     .Where(r => r is PbkKineticConversionCalculator)
                     .Cast<PbkKineticConversionCalculator>()
                     .ToList();
 
                 foreach (var calculator in pbkModelCalculators) {
-                    summarizePbkModelSimulationResults(
-                        result,
-                        data,
+                    summarizePbkModelTimeCourse(
+                        data.ExposureRoutes,
                         calculator.KineticModelInstance,
                         calculator.Substance,
-                        allTargetExposures,
                         selectedTargetExposures,
-                        $"PBK model {calculator.Substance.Name}",
+                        [data.TargetExposureUnit],
+                        result.ExternalExposureUnit,
                         subHeader,
+                        $"{calculator.Substance.Name}",
                         subOrder++
                     );
                 }
             }
         }
 
-        private void summarizePbkModelSimulationResults(
-            TargetExposuresActionResult actionResult,
-            ActionData data,
-            KineticModelInstance kineticModelInstance,
-            Compound substance,
-            ICollection<AggregateIndividualExposure> allTargetExposures,
-            ICollection<AggregateIndividualExposure> selectedTargetExposures,
-            string subTitle,
-            SectionHeader header,
-            int order
-        ) {
-            var section = new PbkModelSimulationResultsSection();
-            var subHeader = header.AddSubSectionHeaderFor(section, subTitle, order);
-            section.Summarize(
-                substance,
-                kineticModelInstance,
-                data.ExposureRoutes,
-                [data.TargetExposureUnit]
-            );
-            subHeader.SaveSummarySection(section);
-
-            var subOrder = 0;
-            summarizeInternalVersusExternalExposures(
-                actionResult,
-                data.ExposureRoutes,
-                substance,
-                allTargetExposures,
-                [data.TargetExposureUnit],
-                subHeader,
-                subOrder++
-            );
-
-            if (selectedTargetExposures != null) {
-                summarizePbkModelTimeCourse(
-                    data.ExposureRoutes,
-                    kineticModelInstance,
-                    substance,
-                    selectedTargetExposures,
-                    [data.TargetExposureUnit],
-                    actionResult.ExternalExposureUnit,
-                    subHeader,
-                    subOrder++
-                );
-            }
-        }
-
         private void summarizeInternalVersusExternalExposures(
-            TargetExposuresActionResult actionResult,
-            ICollection<ExposureRoute> routes,
-            Compound substance,
-            ICollection<AggregateIndividualExposure> allTargetExposures,
-            List<TargetUnit> targetUnits,
+            TargetExposuresActionResult result,
+            ActionData data,
             SectionHeader header,
             int order
         ) {
-            var section = new InternalVersusExternalExposuresSection();
-            var subHeader = header.AddSubSectionHeaderFor(
-                section,
-                "Internal versus external exposures",
-                order
-            );
-            section.Summarize(
-                substance,
-                routes,
-                allTargetExposures,
-                actionResult.KineticConversionFactorsByRouteSubstance,
-                targetUnits,
-                _configuration.ExposureType,
-                actionResult.ExternalExposureUnit,
-                _configuration.UncertaintyLowerBound,
-                _configuration.UncertaintyUpperBound
-            );
-            subHeader.SaveSummarySection(section);
+            var subHeader = header.AddEmptySubSectionHeader("Internal versus external exposures", order);
+
+            var subOder = 0;
+            var allTargetExposures = _configuration.ExposureType == ExposureType.Acute
+                ? result.AggregateIndividualDayExposures
+                    .Cast<AggregateIndividualExposure>()
+                    .ToList()
+                : [.. result.AggregateIndividualExposures];
+
+            foreach (var substance in data.ActiveSubstances.OrderBy(r => r.Name)) {
+                var section = new InternalVersusExternalExposuresSection();
+                var subSubHeader = subHeader.AddSubSectionHeaderFor(
+                    section,
+                    $"{substance.Name}",
+                    subOder++
+                );
+
+                section.Summarize(
+                    substance,
+                    allTargetExposures,
+                    [data.TargetExposureUnit],
+                    result.ExternalExposureUnit);
+                subSubHeader.SaveSummarySection(section);
+            }
         }
 
         private void summarizePbkModelTimeCourse(
@@ -1529,15 +1490,17 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             ICollection<TargetUnit> targetUnits,
             ExposureUnitTriple externalExposureUnit,
             SectionHeader header,
+            string title,
             int subOrder
         ) {
             var section = new PbkModelTimeCourseSection();
             var subHeader = header.AddSubSectionHeaderFor(
                 section: section,
-                title: $"Individual drilldown PBK model {substance.Name}",
+                title: title,
                 order: subOrder++
             );
             section.Summarize(
+                kineticModelInstance,
                 selectedTargetExposures,
                 routes,
                 substance,

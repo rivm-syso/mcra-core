@@ -2,7 +2,7 @@
 
 namespace MCRA.Simulation.OutputGeneration {
 
-    public sealed class PbkModelSimulationSummaryRecord {
+    public sealed class PbkModelSummaryRecord {
 
         [Description("Model name.")]
         [DisplayName("Model name")]

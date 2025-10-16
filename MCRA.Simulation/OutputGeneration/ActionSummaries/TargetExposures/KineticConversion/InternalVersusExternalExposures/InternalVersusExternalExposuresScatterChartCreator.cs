@@ -1,6 +1,8 @@
 ﻿using MCRA.General;
 using MCRA.Utils.ExtensionMethods;
+using MCRA.Utils.Statistics.Modelling;
 using OxyPlot;
+using OxyPlot.Annotations;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 
@@ -23,12 +25,14 @@ namespace MCRA.Simulation.OutputGeneration {
             _targetUnit = targetUnit;
         }
 
-        public override string Title => $"Internal ({_targetUnit.Target.GetDisplayName()}) versus external exposures of {_section.SubstanceName}.";
+        public override string Title => $"Total external exposure plotted " +
+            $"against the internal exposure ({_targetUnit.Target.GetDisplayName()}) " +
+            $"for {_section.SubstanceName}.";
 
         public override string ChartId {
             get {
-                var pictureId = "c651aee4-f5f5-49aa-8b14-cd6e33fa1d04";
-                return StringExtensions.CreateFingerprint(_section.SectionId + _targetUnit.Target.Code + pictureId);
+                var chartId = "c651aee4-f5f5-49aa-8b14-cd6e33fa1d04";
+                return StringExtensions.CreateFingerprint(_section.SectionId + _targetUnit.Target.Code + chartId);
             }
         }
 
@@ -42,17 +46,9 @@ namespace MCRA.Simulation.OutputGeneration {
             var plotModel = createDefaultPlotModel();
 
             var target = _targetUnit.Target;
-            var records = _section.Records
-                .Where(r => !double.IsNaN(r.TargetExposure[target]))
-                .Where(r => r.TargetExposure[target] > 0)
-                .ToList();
-
-            var externalExposures = records
-                .Select(r => r.ExternalExposure)
-                .ToList();
-            var targetExposures = records
-                .Select(r => r.TargetExposure[target])
-                .ToList();
+            var externalExposures = _section.TotalExternalIndividualExposures;
+            var targetExposures = _section.TargetIndividualExposures[_targetUnit.Target];
+            var records = externalExposures.Zip(targetExposures).ToList();
 
             var minExternalExposures = externalExposures.Any(c => c > 0)
                 ? externalExposures.Where(c => c > 0).Min() * 0.1 : 0.1;
@@ -99,20 +95,52 @@ namespace MCRA.Simulation.OutputGeneration {
             };
             foreach (var record in records) {
                 scatterSeries.Points.Add(
-                    new ScatterPoint(record.ExternalExposure, record.TargetExposure[target])
+                    new ScatterPoint(record.First, record.Second)
                 );
             }
             plotModel.Series.Add(scatterSeries);
 
-            var lineSeriesConversionFactor = new LineSeries() {
+            // Neutral line series (x = y)
+            var neutralFactorLineSeries = new LineSeries() {
                 Color = OxyColors.Black,
                 LineStyle = LineStyle.Solid,
                 StrokeThickness = 1,
             };
+            neutralFactorLineSeries.Points.Add(new DataPoint(minimum, minimum));
+            neutralFactorLineSeries.Points.Add(new DataPoint(maximum, maximum));
+            plotModel.Series.Add(neutralFactorLineSeries);
 
-            lineSeriesConversionFactor.Points.Add(new DataPoint(minimum, minimum));
-            lineSeriesConversionFactor.Points.Add(new DataPoint(maximum, maximum));
-            plotModel.Series.Add(lineSeriesConversionFactor);
+            // Conversion factor
+            if (records.Count > 1 
+                && externalExposures.Distinct().Count() > 1
+                && targetExposures.Distinct().Count() > 1
+            ) {
+                var lmFit = SimpleLinearRegressionCalculator.Compute(
+                    externalExposures,
+                    targetExposures,
+                    Intercept.Omit
+                );
+                var xMin = .9 * externalExposures.Min();
+                var xMax = 1.1 * externalExposures.Max();
+                var yMin = xMin * lmFit.Coefficient;
+                var yMax = xMax * lmFit.Coefficient;
+                var conversionFactorLineSeries = new LineSeries() {
+                    Color = OxyColors.Red,
+                    LineStyle = LineStyle.Solid,
+                    StrokeThickness = 1,
+                };
+                conversionFactorLineSeries.Points.Add(new DataPoint(xMin, yMin));
+                conversionFactorLineSeries.Points.Add(new DataPoint(xMax, yMax));
+                plotModel.Series.Add(conversionFactorLineSeries);
+
+                var modelFitAnnotation = new TextAnnotation {
+                    TextPosition = new DataPoint(minimum * 5, maximum / 5),
+                    StrokeThickness = 0,
+                    Text = $"y = {lmFit.Coefficient:G4} * x"
+                };
+                plotModel.Annotations.Add(modelFitAnnotation);
+            }
+
             return plotModel;
         }
     }

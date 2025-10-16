@@ -66,6 +66,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 );
             var section = new PbkModelTimeCourseSection();
             section.Summarize(
+                modelInstance,
                 targetExposures,
                 routes,
                 substance,
@@ -142,6 +143,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
 
             var section = new PbkModelTimeCourseSection();
             section.Summarize(
+                modelInstance,
                 drillDownRecords,
                 routes,
                 substance,
@@ -221,6 +223,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 .ToList();
             var section = new PbkModelTimeCourseSection();
             section.Summarize(
+                modelInstance,
                 drillDownRecords,
                 routes,
                 substance,
@@ -303,6 +306,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 .ToList();
             var section = new PbkModelTimeCourseSection();
             section.Summarize(
+                modelInstance,
                 drillDownRecords,
                 routes,
                 substance,

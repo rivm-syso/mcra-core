@@ -14,6 +14,8 @@ namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
 
     public class LinearDoseAggregationCalculator : IKineticConversionCalculator {
 
+        public KineticConversionModelType ModelType => KineticConversionModelType.ConversionFactorModel;
+
         private Compound _substance;
 
         private readonly List<Compound> _outputSubstances;

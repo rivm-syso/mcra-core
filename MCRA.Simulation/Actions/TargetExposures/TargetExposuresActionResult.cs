@@ -20,7 +20,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         public ICollection<ExposureRoute> ExposureRoutes { get; set; }
         public ICollection<AggregateIndividualDayExposure> AggregateIndividualDayExposures { get; set; }
         public ICollection<AggregateIndividualExposure> AggregateIndividualExposures { get; set; }
-        public IDictionary<Compound, IKineticConversionCalculator> KineticModelCalculators { get; set; }
+        public IDictionary<Compound, IKineticConversionCalculator> KineticConversionCalculators { get; set; }
         public ExposureMatrix ExposureMatrix { get; set; }
         public List<DriverSubstance> DriverSubstances { get; set; }
         public IUncertaintyFactorialResult FactorialResult { get; set; }

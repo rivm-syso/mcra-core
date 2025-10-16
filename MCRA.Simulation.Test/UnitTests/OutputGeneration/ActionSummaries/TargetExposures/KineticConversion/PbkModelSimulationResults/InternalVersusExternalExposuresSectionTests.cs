@@ -68,15 +68,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var section = new InternalVersusExternalExposuresSection();
             section.Summarize(
                 substance,
-                routes,
                 targetIndividualExposures,
-                absorptionFactorsPerCompound,
                 [targetUnit],
-                ExposureType.Chronic,
-                exposureUnit,
-                double.NaN,
-                double.NaN
-            );
+                exposureUnit);
             AssertIsValidView(section);
         }
 
@@ -132,15 +126,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var section = new InternalVersusExternalExposuresSection();
             section.Summarize(
                 substance,
-                routes,
                 targetIndividualExposures.Cast<AggregateIndividualExposure>().ToList(),
-                absorptionFactorsPerCompound,
                 [targetUnit],
-                ExposureType.Chronic,
-                exposureUnit,
-                double.NaN,
-                double.NaN
-            );
+                exposureUnit);
 
             AssertIsValidView(section);
         }

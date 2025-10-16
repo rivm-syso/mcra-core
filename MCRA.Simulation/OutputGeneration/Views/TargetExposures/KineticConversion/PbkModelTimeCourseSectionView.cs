@@ -3,11 +3,19 @@ using MCRA.General;
 using MCRA.Simulation.OutputGeneration.Helpers;
 using MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders;
 using Microsoft.AspNetCore.Html;
-using Microsoft.AspNetCore.Routing.Constraints;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class PbkModelTimeCourseSectionView : SectionView<PbkModelTimeCourseSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
+            sb.AppendDescriptionTable(
+               "KineticModelsSummaryRecordTable",
+               Model.SectionId,
+               Model.PbkModelSummaryRecord,
+               ViewBag,
+               caption: "PBK model.",
+               header: true
+            );
+
             var hiddenProperties = new List<string>();
             if (Model.InternalTargetSystemExposures.All(r => r.ExpressionType == null)) {
                 hiddenProperties.Add("ExpressionType");
@@ -65,8 +73,8 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                                 viewBag: ViewBag
                             );
                             var figCaptionBiologicalMatrix = !string.IsNullOrEmpty(record.IndividualCode)
-                                ? $"PBK model time course {record.BiologicalMatrix} for individual {record.IndividualCode}."
-                                : $"PBK model time course {record.BiologicalMatrix}.";
+                                ? $"Internal concentration time series of {Model.PbkModelSummaryRecord.SubstanceName} in {record.BiologicalMatrix} for individual {record.IndividualCode}."
+                                : $"Internal concentration time series of {Model.PbkModelSummaryRecord.SubstanceName} in {record.BiologicalMatrix}.";
                             chartTimeCourse = ChartHelpers.Chart(
                                     name: $"KineticTimeCourse{group.Key}{record.BiologicalMatrix}",
                                     section: Model,
@@ -111,8 +119,8 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     Model,
                     ViewBag,
                     !string.IsNullOrEmpty(record.IndividualCode)
-                        ? $"PBK model time course {record.BiologicalMatrix} for individual {record.IndividualCode}."
-                        : $"PBK model time course {record.BiologicalMatrix}.",
+                        ? $"Internal concentration time series of {Model.PbkModelSummaryRecord.SubstanceName} in {record.BiologicalMatrix} for individual {record.IndividualCode}."
+                        : $"Internal concentration time series of {Model.PbkModelSummaryRecord.SubstanceName} in {record.BiologicalMatrix}.",
                     true
                 );
             }
@@ -120,9 +128,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             sb.AppendTable(
                 Model,
                 Model.InternalTargetSystemExposures,
-                "KineticModelDrilldownTable",
+                $"PBKModelDrilldownTable_{Model.PbkModelSummaryRecord.SubstanceName}",
                 ViewBag,
-                caption: "Individual drilldown PBK model.",
+                caption: $"Individual drilldown PBK model simulations {Model.PbkModelSummaryRecord.SubstanceName}.",
                 saveCsv: true,
                 hiddenProperties: hiddenProperties
             );

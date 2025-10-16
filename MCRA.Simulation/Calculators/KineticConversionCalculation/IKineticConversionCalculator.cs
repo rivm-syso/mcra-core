@@ -1,16 +1,25 @@
-﻿using MCRA.General;
+﻿using System.ComponentModel.DataAnnotations;
+using MCRA.General;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.KineticConversionFactorCalculation;
 using MCRA.Simulation.Objects;
-using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
 
+    public enum KineticConversionModelType {
+        [Display(Name = "Kinetic conversion factor model")]
+        ConversionFactorModel,
+        [Display(Name = "PBK model")]
+        PbkModel
+    }
+
     public interface IKineticConversionCalculator {
+
+        KineticConversionModelType ModelType { get; }
 
         List<AggregateIndividualDayExposure> CalculateIndividualDayTargetExposures(
             ICollection<IExternalIndividualDayExposure> individualDayExposures,

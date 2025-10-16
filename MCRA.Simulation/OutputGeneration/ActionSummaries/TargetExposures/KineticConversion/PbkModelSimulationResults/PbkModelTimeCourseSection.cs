@@ -9,12 +9,15 @@ using MCRA.Utils.Statistics;
 namespace MCRA.Simulation.OutputGeneration {
     public class PbkModelTimeCourseSection : SummarySection {
 
+        public PbkModelSummaryRecord PbkModelSummaryRecord { get; set; }
+
         private static readonly int _specifiedTakeNumer = 9;
         public List<PbkModelTimeCourseDrilldownRecord> InternalTargetSystemExposures { get; set; }
         public int NumberOfDaysSkipped { get; set; }
         public double Maximum { get; set; }
 
         public void Summarize(
+            KineticModelInstance kineticModelInstance,
            ICollection<AggregateIndividualExposure> targetExposures,
            ICollection<ExposureRoute> routes,
            Compound substance,
@@ -25,6 +28,18 @@ namespace MCRA.Simulation.OutputGeneration {
             if (targetUnits.Count > 1) {
                 throw new NotImplementedException();
             }
+
+            var targetUnit = targetUnits.FirstOrDefault();
+            PbkModelSummaryRecord = new PbkModelSummaryRecord() {
+                ModelCode = kineticModelInstance.KineticModelDefinition.Id,
+                ModelName = kineticModelInstance.KineticModelDefinition.Name,
+                ModelInstanceCode = kineticModelInstance.IdModelInstance,
+                SubstanceCode = substance.Code,
+                SubstanceName = substance.Name,
+                Routes = string.Join(", ", routes.Select(c => c.GetShortDisplayName())),
+                ExposureTarget = targetUnit.Target.GetDisplayName()
+            };
+
             var results = targetExposures
                 .SelectMany(targetExposure =>
                     getDrillDownSubstanceExposure(

@@ -14,15 +14,20 @@ namespace MCRA.Utils.Statistics.Modelling {
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
+        /// <param name="intercept"></param>
         /// <returns></returns>
-        public static SimpleLinearRegressionResult Compute(IEnumerable<double> x, IEnumerable<double> y) {
-            var intercept = Intercept.Include;
+        public static SimpleLinearRegressionResult Compute(
+            IEnumerable<double> x,
+            IEnumerable<double> y,
+            Intercept intercept = Intercept.Include
+        ) {
             var weights = Enumerable.Repeat(1d, x.Count());
             return Compute(x, y, weights, intercept);
         }
 
         /// <summary>
-        /// Performs a simple linear regression with or without a constant term. The data is optionally weighted.
+        /// Performs a simple linear regression with or without a constant term.
+        /// The data is optionally weighted.
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>

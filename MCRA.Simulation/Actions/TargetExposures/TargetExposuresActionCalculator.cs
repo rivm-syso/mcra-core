@@ -654,7 +654,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             result.TargetExposureUnit = targetUnit;
             result.ExposureRoutes = ModuleConfig.ExposureRoutes;
             result.ExternalExposureCollections = externalExposureCollections;
-            result.KineticModelCalculators = kineticModelCalculators;
+            result.KineticConversionCalculators = kineticModelCalculators;
 
             localProgress.Update(100);
 

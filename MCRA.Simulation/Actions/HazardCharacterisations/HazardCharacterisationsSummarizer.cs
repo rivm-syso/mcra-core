@@ -319,6 +319,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                             order: subOrder++
                         );
                         section.Summarize(
+                            kineticModelInstance,
                             [record.AggregateIndividualExposure],
                             [record.ExternalTargetUnit.ExposureRoute],
                             substance,
