@@ -25,8 +25,8 @@ namespace MCRA.Simulation.Calculators.PbpkModelCalculation {
         public PbkSimulationSettings SimulationSettings { get; }
 
         // Matrices that can be used for extrapolation when blood is requested
-        public static readonly Dictionary<BiologicalMatrix, HashSet<BiologicalMatrix>> ExtrapolationMatrices = 
-            new () {
+        public static readonly Dictionary<BiologicalMatrix, HashSet<BiologicalMatrix>> ExtrapolationMatrices =
+            new() {
             { BiologicalMatrix.Blood, [
                 BiologicalMatrix.Blood,
                 BiologicalMatrix.VenousBlood,
@@ -53,7 +53,7 @@ namespace MCRA.Simulation.Calculators.PbpkModelCalculation {
             // Check if model matches settings
             if (SimulationSettings.PbkSimulationMethod != PbkSimulationMethod.Standard
                 && SimulationSettings.BodyWeightCorrected
-                && string.IsNullOrEmpty(KineticModelDefinition.IdBodyWeightParameter)
+                && KineticModelDefinition.GetParameterDefinitionByType(PbkModelParameterType.BodyWeight) == null
             ) {
                 var msg = $"Cannot apply bodyweight corrected exposures on PBK model [{KineticModelDefinition.Id}]: no BW parameter found.";
                 throw new Exception(msg);
@@ -128,77 +128,126 @@ namespace MCRA.Simulation.Calculators.PbpkModelCalculation {
             SimulatedIndividual individual
         ) {
             var instanceParameters = KineticModelInstance.KineticModelInstanceParameters;
-            var bodyWeightParameter = KineticModelDefinition.Parameters
-                .FirstOrDefault(r => r.Id == KineticModelDefinition.IdBodyWeightParameter);
 
             // Set BW
-            //IsInternalParameter is equal to IsConstant, see also SbmlToPbkModelDefinitionConverter where IsInternalParameter is set
-            //Meaning of IsConstant: true = parameter is set from outside
-            //                       false = parameter is calculated in PBK model
-            if (!bodyWeightParameter.IsInternalParameter) {
+            var bodyWeightParameter = KineticModelDefinition
+                .GetParameterDefinitionByType(PbkModelParameterType.BodyWeight);
+            if (bodyWeightParameter != null && !bodyWeightParameter.IsInternalParameter) {
                 // TODO: current code assumes bodyweights in same unit as kinetic model parameter
                 var bodyWeight = individual.BodyWeight;
-                parametrisation[KineticModelDefinition.IdBodyWeightParameter] = bodyWeight;
+                parametrisation[bodyWeightParameter.Id] = bodyWeight;
 
                 // Set BSA
-                var bodySurfaceAreaParameter = KineticModelDefinition.Parameters
-                    .FirstOrDefault(r => r.Id == KineticModelDefinition.IdBodySurfaceAreaParameter);
-
-                if (!bodySurfaceAreaParameter?.IsInternalParameter ?? false) {
-                    if (instanceParameters.TryGetValue(KineticModelDefinition.IdBodySurfaceAreaParameter, out var bsaParameterValue)
-                        && instanceParameters.TryGetValue(KineticModelDefinition.IdBodyWeightParameter, out var bwParameterValue)
+                var bsaParameter = KineticModelDefinition
+                    .GetParameterDefinitionByType(PbkModelParameterType.BodySurfaceArea);
+                if (bsaParameter != null && !bsaParameter.IsInternalParameter) {
+                    if (instanceParameters.TryGetValue(bsaParameter.Id, out var bsaParameterValue)
+                        && instanceParameters.TryGetValue(bodyWeightParameter.Id, out var bwParameterValue)
                     ) {
                         var standardBSA = bsaParameterValue.Value;
                         var standardBW = bwParameterValue.Value;
                         var allometricScaling = Math.Pow(standardBW / bodyWeight, 1 - 0.7);
-                        parametrisation[KineticModelDefinition.IdBodySurfaceAreaParameter] = standardBSA / allometricScaling;
+                        parametrisation[bsaParameter.Id] = standardBSA / allometricScaling;
                     }
                 }
             }
 
             // Set age
-            var ageParameter = KineticModelDefinition.Parameters
-                .FirstOrDefault(r => r.Id == KineticModelDefinition.IdAgeParameter);
-            if (!ageParameter?.IsInternalParameter ?? false) {
+            var ageParameter = KineticModelDefinition
+                .GetParameterDefinitionByType(PbkModelParameterType.Age);
+            if (ageParameter != null && !ageParameter.IsInternalParameter) {
                 // Get individual age
                 // TODO: current code assumes age in same unit as kinetic model parameter
-                var age = individual.Age;
-                if (!age.HasValue || double.IsNaN(age.Value)) {
-                    if (instanceParameters.TryGetValue(KineticModelDefinition.IdAgeParameter, out var ageParameterValue)
-                        && !double.IsNaN(ageParameterValue.Value)
-                    ) {
-                        // Fallback on age from kinetic model parametrisation
-                        age = ageParameterValue.Value;
-                    } else if (_modelParameterDefinitions[KineticModelDefinition.IdAgeParameter].DefaultValue.HasValue) {
-                        // Fallback on default age from kinetic model definition
-                        age = _modelParameterDefinitions[KineticModelDefinition.IdAgeParameter].DefaultValue.Value;
-                    } else {
-                        throw new Exception($"Cannot set required parameter for age for PBK model [{KineticModelDefinition.Name}].");
-                    }
-                }
-                parametrisation[KineticModelDefinition.IdAgeParameter] = age.Value;
+                var age = individual.Age.HasValue && !double.IsNaN(individual.Age.Value)
+                    ? individual.Age.Value
+                    : GetFallbackParameterValue(instanceParameters, ageParameter);
+                parametrisation[ageParameter.Id] = age;
             }
 
             // Set sex
-            var sexParameter = KineticModelDefinition.Parameters
-                .FirstOrDefault(r => r.Id == KineticModelDefinition.IdAgeParameter);
-            if (!sexParameter?.IsInternalParameter ?? false) {
+            var sexParameter = KineticModelDefinition
+                .GetParameterDefinitionByType(PbkModelParameterType.Sex);
+            if (sexParameter != null && !sexParameter.IsInternalParameter) {
                 // TODO: implicit assumption of Female = 1, Male = 2 should become explicit
                 var sex = individual.Gender;
                 if (sex == GenderType.Undefined) {
-                    if (instanceParameters.TryGetValue(KineticModelDefinition.IdSexParameter, out var paramValue)
+                    if (instanceParameters.TryGetValue(sexParameter.Id, out var paramValue)
                         && !double.IsNaN(paramValue.Value)
                     ) {
                         // Fallback on age from kinetic model parametrisation
                         sex = (GenderType)paramValue.Value;
-                    } else if (_modelParameterDefinitions[KineticModelDefinition.IdSexParameter].DefaultValue.HasValue) {
+                    } else if (_modelParameterDefinitions[sexParameter.Id].DefaultValue.HasValue) {
                         // Fallback on default age from kinetic model definition
-                        sex = (GenderType)_modelParameterDefinitions[KineticModelDefinition.IdSexParameter].DefaultValue;
+                        sex = (GenderType)_modelParameterDefinitions[sexParameter.Id].DefaultValue;
                     } else {
-                        throw new Exception($"Cannot set required parameter for sex for PBK model [{KineticModelDefinition.Name}].");
+                        throw new Exception($"Cannot set required parameter sex for PBK model [{KineticModelDefinition.Name}].");
                     }
                 }
-                parametrisation[KineticModelDefinition.IdSexParameter] = (double)sex;
+                parametrisation[sexParameter.Id] = (double)sex;
+            }
+
+            // For lifetime models, check for reference age and body weight parameters
+            if (KineticModelDefinition.IsLifetimeModel()) {
+                // Check for reference age parameter
+                var ageRefParameter = KineticModelDefinition
+                    .GetParameterDefinitionByType(PbkModelParameterType.AgeRef);
+                if (ageRefParameter != null && !ageRefParameter.IsInternalParameter) {
+                    var age = individual.Age.HasValue && !double.IsNaN(individual.Age.Value)
+                        ? individual.Age.Value
+                        : GetFallbackParameterValue(instanceParameters, ageRefParameter);
+                    parametrisation[ageRefParameter.Id] = age;
+                }
+
+                // Check for reference body weight parameter
+                var bwRefParameter = KineticModelDefinition
+                    .GetParameterDefinitionByType(PbkModelParameterType.BodyWeightRef);
+                if (bwRefParameter != null && !bwRefParameter.IsInternalParameter) {
+                    var bw = !double.IsNaN(individual.BodyWeight)
+                        ? individual.BodyWeight
+                        : GetFallbackParameterValue(instanceParameters, bwRefParameter);
+                    parametrisation[bwRefParameter.Id] = bw;
+                }
+
+                // Check for reference age parameter
+                var ageInitParameter = KineticModelDefinition
+                    .GetParameterDefinitionByType(PbkModelParameterType.AgeInit);
+                if (ageInitParameter != null && !ageInitParameter.IsInternalParameter) {
+                    var age = individual.Age.HasValue && !double.IsNaN(individual.Age.Value)
+                        ? individual.Age.Value
+                        : GetFallbackParameterValue(instanceParameters, ageInitParameter);
+                    var ageInit = SimulationSettings.PbkSimulationMethod switch {
+                        PbkSimulationMethod.Standard => age,
+                        PbkSimulationMethod.LifetimeToSpecifiedAge => 0D,
+                        PbkSimulationMethod.LifetimeToCurrentAge => 0D,
+                        _ => throw new NotImplementedException(),
+                    };
+                    parametrisation[ageInitParameter.Id] = ageInit;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets a (fallback) parameter value from either the model instance or the default value
+        /// of the model definition.
+        /// </summary>
+        /// <param name="instanceParameters"></param>
+        /// <param name="paramDefinition"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        private double GetFallbackParameterValue(
+            IDictionary<string, KineticModelInstanceParameter> instanceParameters,
+            KineticModelParameterDefinition paramDefinition
+        ) {
+            if (instanceParameters.TryGetValue(paramDefinition.Id, out var parameterValue)
+                && !double.IsNaN(parameterValue.Value)
+            ) {
+                // Fallback on value from PBK model parametrisation
+                return parameterValue.Value;
+            } else if (_modelParameterDefinitions[paramDefinition.Id].DefaultValue.HasValue) {
+                // Fallback on default value from PBK model definition
+                return _modelParameterDefinitions[paramDefinition.Id].DefaultValue.Value;
+            } else {
+                throw new Exception($"Cannot set required parameter age for PBK model [{KineticModelDefinition.Name}].");
             }
         }
 
@@ -265,7 +314,7 @@ namespace MCRA.Simulation.Calculators.PbpkModelCalculation {
                     .FirstOrDefault(c => c.TargetUnit.Target == targetUnit.Target);
 
                 // If no exact match found, check if reading across biological matrices is allowed
-                if (SimulationSettings.AllowUseSurrogateMatrix
+                if (output == null && SimulationSettings.AllowUseSurrogateMatrix
                     && SimulationSettings.SurrogateBiologicalMatrix != BiologicalMatrix.Undefined
                 ) {
                     output = KineticModelDefinition.Outputs
@@ -329,7 +378,10 @@ namespace MCRA.Simulation.Calculators.PbpkModelCalculation {
             return result;
         }
 
-        protected static List<SubstanceTargetExposureTimeSeries> getSubstanceTargetLevelTimeSeries(
+        /// <summary>
+        /// Maps PBK model simulation output to formatted results for the simulated individual.
+        /// </summary>
+        protected PbkSimulationOutput collectPbkSimulationResults(
             List<TargetOutputMapping> outputMappings,
             SimulatedIndividual individual,
             SimulationOutput simulationOutput,
@@ -383,7 +435,25 @@ namespace MCRA.Simulation.Calculators.PbpkModelCalculation {
                 );
             }
 
-            return resultTimeSeries;
+            var result = new PbkSimulationOutput() {
+                SimulatedIndividual = individual,
+                SubstanceTargetLevelTimeSeries = resultTimeSeries
+            };
+
+            if (KineticModelDefinition.IsLifetimeModel()) {
+                var bwParam = KineticModelDefinition.GetParameterDefinitionByType(PbkModelParameterType.BodyWeight);
+                if (bwParam != null && bwParam.IsInternalParameter) {
+                    result.BodyWeightTimeSeries = simulationOutput?.OutputTimeSeries[bwParam.Id];
+                }
+                var ageParam = KineticModelDefinition.GetParameterDefinitionByType(PbkModelParameterType.Age);
+                if (ageParam != null && ageParam.IsInternalParameter) {
+                    var ageTimeSeries = simulationOutput?.OutputTimeSeries[ageParam.Id];
+                    result.AgeStart = ageTimeSeries[0];
+                    result.AgeEnd = ageTimeSeries.Last();
+                }
+            }
+
+            return result;
         }
     }
 }

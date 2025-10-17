@@ -1,5 +1,4 @@
-﻿using ExCSS;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 
 namespace MCRA.Simulation.Calculators.PbpkModelCalculation {

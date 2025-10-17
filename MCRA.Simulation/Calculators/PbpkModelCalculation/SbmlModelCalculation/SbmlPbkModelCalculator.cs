@@ -3,7 +3,6 @@ using MCRA.General;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Calculators.PbpkModelCalculation.ExposureEventsGeneration;
 using MCRA.Simulation.Objects;
-using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.PbpkModelCalculation.SbmlModelCalculation {
@@ -43,6 +42,28 @@ namespace MCRA.Simulation.Calculators.PbpkModelCalculation.SbmlModelCalculation 
             // Get kinetic model output mappings for selected targets
             var outputMappings = getTargetOutputMappings(targetUnits);
 
+            // The '[..]' bracket notation indicates roadrunner to return
+            // outputs as concentrations
+            var outputTimeSeriesSelection = outputMappings
+                .Select(r => r.TargetUnit.IsPerBodyWeight ? $"[{r.SpeciesId}]" : r.SpeciesId)
+                .ToList();
+
+            if (KineticModelDefinition.IsLifetimeModel()) {
+                var bwParam = KineticModelDefinition.GetParameterDefinitionByType(PbkModelParameterType.BodyWeight);
+                if (bwParam != null && bwParam.IsInternalParameter) {
+                    outputTimeSeriesSelection.Add(bwParam.Id);
+                }
+                var ageParam = KineticModelDefinition.GetParameterDefinitionByType(PbkModelParameterType.Age);
+                if (ageParam != null && ageParam.IsInternalParameter) {
+                    outputTimeSeriesSelection.Add(ageParam.Id);
+                }
+            }
+
+            var outputStatesSelection = outputMappings
+                .Select(r => r.CompartmentId)
+                .Distinct()
+                .ToList();
+
             var results = new List<PbkSimulationOutput>();
             using (var runner = new SbmlModelRunner(KineticModelInstance, outputMappings)) {
 
@@ -50,7 +71,7 @@ namespace MCRA.Simulation.Calculators.PbpkModelCalculation.SbmlModelCalculation 
                 foreach (var id in externalIndividualExposures) {
 
                     // Get simulation period
-                    var numberOfDays = getSimulationDuration(id.Individual.Age);
+                    var numberOfDays = (int)getSimulationDuration(id.Individual.Age);
                     var duration = (int)(timeUnitMultiplier * numberOfDays);
                     var simulationSteps = (int)(numberOfDays * stepsPerDay) + 1;
 
@@ -70,15 +91,6 @@ namespace MCRA.Simulation.Calculators.PbpkModelCalculation.SbmlModelCalculation 
                     // If we have positive exposures, then run simulation
                     SimulationOutput simulationOutput = null;
                     if (exposureEvents.Count > 0) {
-                        // The '[..]' bracket notation indicates roadrunner to return
-                        // outputs as concentrations
-                        var outputTimeSeriesSelection = outputMappings
-                            .Select(r => r.TargetUnit.IsPerBodyWeight ? $"[{r.SpeciesId}]" : r.SpeciesId)
-                            .ToList();
-                        var outputStatesSelection = outputMappings
-                            .Select(r => r.CompartmentId)
-                            .Distinct()
-                            .ToList();
                         simulationOutput = runner.Run(
                             exposureEvents,
                             parameters,
@@ -86,20 +98,17 @@ namespace MCRA.Simulation.Calculators.PbpkModelCalculation.SbmlModelCalculation 
                             outputStatesSelection,
                             duration,
                             simulationSteps,
-                            SimulationSettings.BodyWeightCorrected,
-                            KineticModelDefinition.IdBodyWeightParameter
+                            SimulationSettings.BodyWeightCorrected
                         );
                     }
 
                     results.Add(
-                        new PbkSimulationOutput() {
-                            SubstanceTargetLevelTimeSeries = getSubstanceTargetLevelTimeSeries(
-                                outputMappings,
-                                id.Individual,
-                                simulationOutput,
-                                1D / stepsPerDay
-                            )
-                        }
+                        collectPbkSimulationResults(
+                            outputMappings,
+                            id.Individual,
+                            simulationOutput,
+                            1D / stepsPerDay
+                        )
                     );
                 }
             }

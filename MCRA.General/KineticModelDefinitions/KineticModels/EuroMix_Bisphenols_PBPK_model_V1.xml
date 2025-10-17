@@ -14,7 +14,6 @@
   <FileName>EuroMix_Bisphenols_PBPK_model_V1.dll</FileName>
   <Resolution>Hours</Resolution>
   <EvaluationFrequency>30</EvaluationFrequency>
-  <IdBodyWeightParameter>BW</IdBodyWeightParameter>
   <IdAgeParameter>age</IdAgeParameter>
   <IdSexParameter>gender</IdSexParameter>
   <Forcings>
@@ -397,7 +396,7 @@
       <Description>Bodyweight</Description>
       <Order>0</Order>
       <Unit>kg</Unit>
-      <Type>Physiological</Type>
+      <Type>BodyWeight</Type>
     </Parameter>
     <Parameter>
       <Id>QCC</Id>
@@ -1510,7 +1509,7 @@
       <Description>age</Description>
       <Order>159</Order>
       <Unit></Unit>
-      <Type>Other</Type>
+      <Type>Age</Type>
       <DefaultValue>30</DefaultValue>
     </Parameter>
     <Parameter>
@@ -1518,7 +1517,7 @@
       <Description>gender</Description>
       <Order>160</Order>
       <Unit></Unit>
-      <Type>Other</Type>
+      <Type>Sex</Type>
       <DefaultValue>0</DefaultValue>
     </Parameter>
     <Parameter>

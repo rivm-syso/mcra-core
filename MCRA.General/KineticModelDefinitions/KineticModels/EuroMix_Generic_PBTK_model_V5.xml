@@ -16,8 +16,6 @@
   <FileName>EuroMix_Generic_PBTK_model_V5.dll</FileName>
   <Resolution>Hours</Resolution>
   <EvaluationFrequency>1</EvaluationFrequency>
-  <IdBodyWeightParameter>BM</IdBodyWeightParameter>
-  <IdBodySurfaceAreaParameter>BSA</IdBodySurfaceAreaParameter>
   <Forcings>
     <Forcing>
       <Id>Oral</Id>
@@ -246,14 +244,14 @@
       <Description>Body mass</Description>
       <Unit>kg</Unit>
       <Order>0</Order>
-      <Type>Physiological</Type>
+      <Type>BodyWeight</Type>
     </Parameter>
     <Parameter>
       <Id>BSA</Id>
       <Description>Body skin surface area</Description>
       <Unit>dm2</Unit>
       <Order>1</Order>
-      <Type>Physiological</Type>
+      <Type>BodySurfaceArea</Type>
     </Parameter>
     <Parameter>
       <Id>scVFat</Id>

@@ -14,11 +14,7 @@
   </Aliases>
   <FileName>EuroMix_Bisphenols_PBPK_model_V2.dll</FileName>
   <Resolution>Hours</Resolution>
-  <!-- In Karrer, frequency is 30, meaning 30 times each hour, so every 2 minutes ODE is evaluated,
-   change this to 2 times each hour, so every 30 minutes ODE is evaluated,.
-  -->
   <EvaluationFrequency>2</EvaluationFrequency>
-  <IdBodyWeightParameter>BW</IdBodyWeightParameter>
   <IdAgeParameter>age</IdAgeParameter>
   <IdSexParameter>gender</IdSexParameter>
   <Forcings>
@@ -404,7 +400,7 @@
       <Description>Bodyweight</Description>
       <Order>0</Order>
       <Unit>kg</Unit>
-      <Type>Physiological</Type>
+      <Type>BodyWeight</Type>
     </Parameter>
     <Parameter IsInternalParameter="true">
       <Id>QCC</Id>
@@ -1146,7 +1142,7 @@
       <Description>age</Description>
       <Order>106</Order>
       <Unit></Unit>
-      <Type>Other</Type>
+      <Type>Age</Type>
       <DefaultValue>30</DefaultValue>
     </Parameter>
     <Parameter>
@@ -1154,7 +1150,7 @@
       <Description>gender</Description>
       <Order>107</Order>
       <Unit></Unit>
-      <Type>Other</Type>
+      <Type>Sex</Type>
       <DefaultValue>0</DefaultValue>
     </Parameter>
     <Parameter>

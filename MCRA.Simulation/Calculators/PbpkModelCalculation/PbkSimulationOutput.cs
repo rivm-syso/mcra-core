@@ -1,6 +1,16 @@
-﻿namespace MCRA.Simulation.Calculators.PbpkModelCalculation {
+﻿using MCRA.Simulation.Objects;
+
+namespace MCRA.Simulation.Calculators.PbpkModelCalculation {
 
     public class PbkSimulationOutput {
+
+        public double AgeStart { get; set; }
+
+        public double AgeEnd { get; set; }
+
+        public double[] BodyWeightTimeSeries { get; set; }
+
+        public SimulatedIndividual SimulatedIndividual { get; set; }
 
         public List<SubstanceTargetExposureTimeSeries> SubstanceTargetLevelTimeSeries { get; set; }
 

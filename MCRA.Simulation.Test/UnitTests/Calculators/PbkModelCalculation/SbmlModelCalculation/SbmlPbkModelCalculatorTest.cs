@@ -4,7 +4,6 @@ using MCRA.Simulation.Calculators.KineticConversionCalculation;
 using MCRA.Simulation.Calculators.PbpkModelCalculation;
 using MCRA.Simulation.Calculators.PbpkModelCalculation.SbmlModelCalculation;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
-using MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 
@@ -57,8 +56,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.SbmlMod
                 expected,
                 modelDefinition.Forcings.Select(r => r.Id).ToArray()
             );
-            Assert.AreEqual("BM", modelDefinition.IdBodyWeightParameter);
-            Assert.AreEqual("BSA", modelDefinition.IdBodySurfaceAreaParameter);
+            var bwParam = modelDefinition.GetParameterDefinitionByType(PbkModelParameterType.BodyWeight);
+            Assert.AreEqual("BM", bwParam.Id);
+            var bsaParam = modelDefinition.GetParameterDefinitionByType(PbkModelParameterType.BodySurfaceArea);
+            Assert.AreEqual("BSA", bsaParam.Id);
         }
 
         [TestMethod]

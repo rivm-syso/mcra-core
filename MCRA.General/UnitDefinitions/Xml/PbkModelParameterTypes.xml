@@ -30,10 +30,26 @@
     <Unit>
       <Id>Age</Id>
       <Name>age</Name>
+      <Description>Age of individual (during simulation).</Description>
       <ParentId>Physiological</ParentId>
       <URIs>
         <URI>http://purl.obolibrary.org/obo/PBPKO_00521</URI>
       </URIs>
+    </Unit>
+    <Unit>
+      <Id>AgeInit</Id>
+      <Name>age</Name>
+      <Description>(Initial) age of individual (i.e. at start of simulation).</Description>
+      <ParentId>Physiological</ParentId>
+    </Unit>
+    <Unit>
+      <Id>AgeRef</Id>
+      <Name>reference age</Name>
+      <Description>Reference age of individual (e.g. age at time of measuring the reference body weight, see reference body weight).</Description>
+      <ParentId>Physiological</ParentId>
+      <Aliases>
+        <Alias>AgeRef</Alias>
+      </Aliases>
     </Unit>
     <Unit>
       <Id>BodyWeight</Id>
@@ -42,6 +58,15 @@
       <URIs>
         <URI>http://purl.obolibrary.org/obo/PBPKO_00008</URI>
       </URIs>
+    </Unit>
+    <Unit>
+      <Id>BodyWeightRef</Id>
+      <Name>reference body weight</Name>
+      <Description>Reference body weight of individual measured at a certain age.</Description>
+      <ParentId>Physiological</ParentId>
+      <Aliases>
+        <Alias>BWRef</Alias>
+      </Aliases>
     </Unit>
     <Unit>
       <Id>BodySurfaceArea</Id>

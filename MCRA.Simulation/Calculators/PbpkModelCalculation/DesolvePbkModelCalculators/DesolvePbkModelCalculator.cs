@@ -188,14 +188,12 @@ namespace MCRA.Simulation.Calculators.PbpkModelCalculation.DesolvePbkModelCalcul
                         }
 
                         results.Add(
-                            new PbkSimulationOutput() {
-                                SubstanceTargetLevelTimeSeries = getSubstanceTargetLevelTimeSeries(
-                                    outputMappings,
-                                    individual,
-                                    simulationOutput,
-                                    1D / stepsPerDay
-                                )
-                            }
+                            collectPbkSimulationResults(
+                                outputMappings,
+                                individual,
+                                simulationOutput,
+                                1D / stepsPerDay
+                            )
                         );
                     }
                 } finally {

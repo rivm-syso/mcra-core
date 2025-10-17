@@ -32,7 +32,6 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             return Create(individuals);
         }
 
-
         public static List<SimulatedIndividualDay> CreateSimulatedIndividualDays(
             int number,
             int daysInSurvey,
@@ -90,26 +89,17 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         }
 
         /// <summary>
-        /// Creates a list of individual days
+        /// Creates a list of individual days from a list of <see cref="Individual"/>
         /// </summary>
         /// <param name="individuals"></param>
         /// <param name="replicates"></param>
         /// <returns></returns>
         public static List<SimulatedIndividualDay> CreateSimulatedIndividualDays(
-            IEnumerable<SimulatedIndividual> individuals,
+            IEnumerable<Individual> individuals,
             int replicates = 1
         ) {
-            var individualDayCounter = 0;
-            return individuals
-                .SelectMany(r => Enumerable.Repeat(r, replicates))
-                .SelectMany(r => Enumerable
-                    .Range(0, r.NumberOfDaysInSurvey)
-                    .Select((id, ix) =>
-                        new SimulatedIndividualDay(r) {
-                            SimulatedIndividualDayId = individualDayCounter++,
-                            Day = ix.ToString()
-                        })
-                ).ToList();
+            var simulatedIndividuals = CreateSimulatedIndividuals(individuals);
+            return CreateSimulatedIndividualDays(simulatedIndividuals, replicates);
         }
 
         /// <summary>
@@ -135,17 +125,26 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         }
 
         /// <summary>
-        /// Creates a list of individual days from a list of <see cref="Individual"/>
+        /// Creates a list of individual days
         /// </summary>
         /// <param name="individuals"></param>
         /// <param name="replicates"></param>
         /// <returns></returns>
         public static List<SimulatedIndividualDay> CreateSimulatedIndividualDays(
-            IEnumerable<Individual> individuals,
+            IEnumerable<SimulatedIndividual> individuals,
             int replicates = 1
         ) {
-            var simulatedIndividuals = CreateSimulatedIndividuals(individuals);
-            return CreateSimulatedIndividualDays(simulatedIndividuals, replicates);
+            var individualDayCounter = 0;
+            return individuals
+                .SelectMany(r => Enumerable.Repeat(r, replicates))
+                .SelectMany(r => Enumerable
+                    .Range(0, r.NumberOfDaysInSurvey)
+                    .Select((id, ix) =>
+                        new SimulatedIndividualDay(r) {
+                            SimulatedIndividualDayId = individualDayCounter++,
+                            Day = ix.ToString()
+                        })
+                ).ToList();
         }
     }
 }

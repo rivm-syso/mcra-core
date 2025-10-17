@@ -6,32 +6,26 @@ namespace MCRA.General.Sbml {
     public class SbmlToPbkModelDefinitionConverter {
 
         public KineticModelDefinition Convert(SbmlModel sbmlModel) {
-            var result = new KineticModelDefinition();
-            var unitsDictionary = sbmlModel.UnitDefinitions;
-            var compartmentsLookup = sbmlModel.Compartments
-                .ToDictionary(r => r.Id, StringComparer.OrdinalIgnoreCase);
-            if (!compartmentsLookup.Any()) {
-                throw new PbkModelException("No compartments found.");
+            var result = new KineticModelDefinition {
+                Id = sbmlModel.Id,
+                Name = sbmlModel.Name ?? sbmlModel.Id,
+                Format = KineticModelType.SBML,
+                EvaluationFrequency = 1
+            };
+
+            if (sbmlModel.TimeUnit == SbmlTimeUnit.NotSpecified) {
+                throw new PbkModelException($"No time unit specified for model {sbmlModel.Id}.");
             }
-            result.Id = sbmlModel.Id;
-            result.Name = sbmlModel.Name ?? sbmlModel.Id;
-            result.Format = KineticModelType.SBML;
-            result.EvaluationFrequency = 1;
             result.Resolution = sbmlModel.TimeUnit.ToTimeUnit();
 
-            var routes = new List<ExposureRoute>() {
-                ExposureRoute.Oral,
-                ExposureRoute.Dermal,
-                ExposureRoute.Inhalation
-            };
-            var inputCompartments = routes
+            if (sbmlModel.Compartments.Count == 0) {
+                throw new PbkModelException($"Model {sbmlModel.Id} does not contain any compartment.");
+            }
+            var inputCompartments = Enum.GetValues<ExposureRoute>()
                 .Select(r => (
                     route: r,
                     compartment: sbmlModel.Compartments
-                        .Select(c => (
-                            compartment: c,
-                            priority: c.GetPriority(r)
-                        ))
+                        .Select(c => (compartment: c, priority: c.GetPriority(r)))
                         .Where(c => c.priority > 0)
                         .OrderByDescending(c => c.priority)
                         .Select(r => r.compartment)
@@ -43,9 +37,12 @@ namespace MCRA.General.Sbml {
             var inputSpecies = sbmlModel.Species
                 .Where(r => inputCompartments.ContainsKey(r.Compartment))
                 .ToList();
-            if (!inputSpecies.Any()) {
-                throw new PbkModelException("No species found.");
+            if (inputSpecies.Count == 0) {
+                throw new PbkModelException($"Model {sbmlModel.Id} does not contain any chemical species.");
             }
+
+            var unitsDictionary = sbmlModel.UnitDefinitions;
+            var compartmentsLookup = sbmlModel.Compartments.ToDictionary(r => r.Id, StringComparer.OrdinalIgnoreCase);
             result.Forcings = inputSpecies
                 .Select(r => {
                     var amountUnit = unitsDictionary[r.SubstanceUnits].ToSubstanceAmountUnit();
@@ -64,7 +61,6 @@ namespace MCRA.General.Sbml {
                 .ToList();
 
             var forcings = result.Forcings.GroupBy(c => c.Route);
-
             foreach (var forcing in forcings) {
                 if (forcing.Count() > 1) {
                     throw new PbkModelException($"For route {forcing.Key.GetDisplayName()} multiple compartments are found.");
@@ -120,15 +116,6 @@ namespace MCRA.General.Sbml {
                     Name = g.Key
                 })
                 .ToList();
-
-            result.IdAgeParameter = sbmlModel.Parameters
-                .FirstOrDefault(r => r.IsOfType(PbkModelParameterType.Age))?.Id;
-            result.IdSexParameter = sbmlModel.Parameters
-                .FirstOrDefault(r => r.IsOfType(PbkModelParameterType.Sex))?.Id;
-            result.IdBodyWeightParameter = sbmlModel.Parameters
-                .FirstOrDefault(r => r.IsOfType(PbkModelParameterType.BodyWeight))?.Id;
-            result.IdBodySurfaceAreaParameter = sbmlModel.Parameters
-                .FirstOrDefault(r => r.IsOfType(PbkModelParameterType.BodySurfaceArea))?.Id;
 
             return result;
         }

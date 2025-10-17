@@ -30,26 +30,6 @@ namespace MCRA.General {
         public string FileName { get; set; }
 
         /// <summary>
-        /// The id of the parameter associated with the body weight.
-        /// </summary>
-        public string IdBodyWeightParameter { get; set; }
-
-        /// <summary>
-        /// The id of the parameter associated with the body surface area.
-        /// </summary>
-        public string IdBodySurfaceAreaParameter { get; set; }
-
-        /// <summary>
-        /// The id of the parameter associated with the age.
-        /// </summary>
-        public string IdAgeParameter { get; set; }
-
-        /// <summary>
-        /// The id of the parameter associated with the gender.
-        /// </summary>
-        public string IdSexParameter { get; set; }
-
-        /// <summary>
         /// The kinetic model resolution.
         /// </summary>
         public TimeUnit Resolution { get; set; }
@@ -102,6 +82,25 @@ namespace MCRA.General {
         /// <returns></returns>
         public ICollection<ExposureRoute> GetExposureRoutes() {
             return Forcings.OrderBy(c => c.Order).Select(c => c.Route).ToList();
+        }
+
+        /// <summary>
+        /// Returns true if this is a lifetime model, i.e. it has an (external) initial age
+        /// parameter and an (internal/variable) age parameter.
+        /// </summary>
+        /// <returns></returns>
+        public bool IsLifetimeModel() {
+            return Parameters.Any(p => p.Type == PbkModelParameterType.Age && p.IsInternalParameter)
+                && Parameters.Any(p => p.Type == PbkModelParameterType.AgeInit && !p.IsInternalParameter);
+        }
+
+        /// <summary>
+        /// Gets a parameter definition by its type.
+        /// </summary>
+        /// <param name="paramType"></param>
+        /// <returns></returns>
+        public KineticModelParameterDefinition GetParameterDefinitionByType(PbkModelParameterType paramType) {
+            return Parameters.FirstOrDefault(p => p.Type == paramType);
         }
 
         /// <summary>

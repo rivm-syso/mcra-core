@@ -10,6 +10,7 @@ namespace MCRA.Simulation.Calculators.PbpkModelCalculation.SbmlModelCalculation 
         private bool _disposed = false;
 
         private readonly string _modelFileName;
+        private readonly string _idBodyWeightParameter;
         private readonly Dictionary<string, double> _defaultParameters;
         private readonly Dictionary<ExposureRoute, string> _modelInputs;
         private readonly List<TargetOutputMapping> _targetOutputMappings;
@@ -25,6 +26,8 @@ namespace MCRA.Simulation.Calculators.PbpkModelCalculation.SbmlModelCalculation 
             _modelInputs = modelDefinition.Forcings.ToDictionary(r => r.Route, r => r.Id);
             _modelFileName = modelInstance.KineticModelDefinition.FileName;
             _targetOutputMappings = targetOutputMappings;
+
+            // Store default parameters from model instance
             _defaultParameters = [];
             foreach (var parameterDefinition in modelDefinition.Parameters) {
                 if (modelInstance.KineticModelInstanceParameters.TryGetValue(parameterDefinition.Id, out var parameter)) {
@@ -33,6 +36,10 @@ namespace MCRA.Simulation.Calculators.PbpkModelCalculation.SbmlModelCalculation 
                     //throw new Exception($"Kinetic model parameter {parameterDefinition.Id} not found in model instance [{ModelInstance.IdModelInstance}].");
                 }
             }
+
+            // Body weight parameter
+            _idBodyWeightParameter = modelDefinition
+                .GetParameterDefinitionByType(PbkModelParameterType.BodyWeight)?.Id;
 
             // Initialize python
             if (!PythonEngine.IsInitialized) {
@@ -79,8 +86,7 @@ namespace MCRA.Simulation.Calculators.PbpkModelCalculation.SbmlModelCalculation 
             List<string> outputStateSelection,
             int evaluationPeriod,
             int steps,
-            bool applyBodyWeightScaling,
-            string idBodyWeightParameter
+            bool applyBodyWeightScaling
         ) {
             using (Py.GIL()) {
                 initializeModel();
@@ -96,7 +102,7 @@ namespace MCRA.Simulation.Calculators.PbpkModelCalculation.SbmlModelCalculation 
                         _model.__setattr__(parameter.Key, parameter.Value);
                     }
                 }
-                setExposuresEvents(exposureEvents, applyBodyWeightScaling, idBodyWeightParameter);
+                setExposuresEvents(exposureEvents, applyBodyWeightScaling);
 
                 // Regenerate model
                 _model.regenerateModel(true, true);
@@ -121,6 +127,7 @@ namespace MCRA.Simulation.Calculators.PbpkModelCalculation.SbmlModelCalculation 
                     result.OutputTimeSeries[idOutput] = [.. output[i + 1]];
                 }
 
+                // Get selected output states at end of simulation
                 foreach (var mapping in _targetOutputMappings) {
                     result.OutputStates.Add(mapping.CompartmentId, (double)_model[mapping.CompartmentId]);
                 }
@@ -131,13 +138,12 @@ namespace MCRA.Simulation.Calculators.PbpkModelCalculation.SbmlModelCalculation 
 
         private void setExposuresEvents(
             List<IExposureEvent> exposureEvents,
-            bool applyBodyweightScaling,
-            string idBodyweightParameter
+            bool applyBodyweightScaling
         ) {
             // Set exposure events
             var eidCounter = 1;
             var bodyweightMultiplication = applyBodyweightScaling
-                ? $"*{idBodyweightParameter}" : string.Empty;
+                ? $"*{_idBodyWeightParameter}" : string.Empty;
             foreach (var exposureEvent in exposureEvents) {
                 // Create an event for each exposure event
                 if (exposureEvent.GetType() == typeof(SingleExposureEvent)) {

@@ -34,6 +34,13 @@
       </URIs>
     </Unit>
     <Unit>
+      <Id>Blood</Id>
+      <Name>Blood compartment</Name>
+      <URIs>
+        <URI>http://purl.obolibrary.org/obo/PBPKO_00464</URI>
+      </URIs>
+    </Unit>
+    <Unit>
       <Id>BloodPlasma</Id>
       <Name>blood plasma compartment</Name>
       <URIs>

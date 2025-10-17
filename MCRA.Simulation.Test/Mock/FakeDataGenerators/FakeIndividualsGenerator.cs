@@ -12,15 +12,22 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         /// <summary>
         /// Creates a single individual.
         /// </summary>
-        /// <param name="bodyWeight"></param>
-        /// <returns></returns>
         public static SimulatedIndividual CreateSingle(
-            double bodyWeight = 70
+            double bodyWeight = 70,
+            int? daysInSurvey = 1,
+            double? age = null
         ) {
-            var individual = new SimulatedIndividual(
-                new(0) { BodyWeight = bodyWeight }, 0
-            );
-            return individual;
+            var individual = new Individual(0) {
+                BodyWeight = bodyWeight,
+                NumberOfDaysInSurvey = daysInSurvey ?? 1,
+            };
+            if (age != null) {
+                individual.SetPropertyValue(
+                    FakeIndividualPropertiesGenerator.FakeAgeProperty,
+                    doubleValue: age ?? 30
+                );
+            }
+            return new SimulatedIndividual(individual, 0);
         }
 
         /// <summary>
