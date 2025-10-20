@@ -172,6 +172,12 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
                 .ToList();
 
             var bins = getIntervals(exposureLevels, percentages);
+            var topBin = bins.Last();
+            if (topBin.PercentileInterval.Upper != 100) {
+                var exposureInterval = new ExposureInterval(topBin.ExposureInterval.Upper, double.NaN);
+                var percentileInterval = new PercentileInterval(topBin.PercentileInterval.Upper, 100.0);
+                bins.Add((exposureInterval, percentileInterval));
+            }
 
             var resultRecords = bins
                 .Select((r, ix) => compute(

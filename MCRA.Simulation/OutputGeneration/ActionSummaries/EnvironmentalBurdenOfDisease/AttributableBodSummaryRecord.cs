@@ -89,24 +89,25 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double MedianBinPercentage { get { return BinPercentages.Count != 0 ? BinPercentages.Percentile(50) : double.NaN; } }
 
-        [Description("Exposure.")]
+        [Description("Exposure level considered for the bin in the EBD calculations.")]
         [DisplayName("Exposure")]
+        [DisplayFormat(DataFormatString = "{0:G3}")]
         public double Exposure { get; set; }
 
         [Display(AutoGenerateField = false)]
         public List<double> Exposures { get; set; }
 
-        [Description("Median exposure.")]
+        [Description("Uncertainty median bin exposure level.")]
         [DisplayName("Exposure median")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double MedianExposure { get { return Exposures.Count != 0 ? Exposures.Percentile(50) : double.NaN; } }
 
-        [Description("Lower uncertainty bound exposure.")]
+        [Description("Lower uncertainty bound bin exposure level.")]
         [DisplayName("Exposure lower bound (LowerBound)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double LowerBoundExposure { get { return Exposures.Percentile(UncertaintyLowerBound); } }
 
-        [Description("Upper uncertainty bound exposure.")]
+        [Description("Upper uncertainty bound bin exposure level.")]
         [DisplayName("Exposure upper bound (UpperBound)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double UpperBoundExposure { get { return Exposures.Percentile(UncertaintyUpperBound); } }
