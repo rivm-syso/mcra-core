@@ -4,6 +4,11 @@ using MCRA.Simulation.OutputGeneration.Helpers;
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class BodIndicatorConversionsSummarySectionView : SectionView<BodIndicatorConversionsSummarySection> {
         public override void RenderSectionHtml(StringBuilder sb) {
+            if (Model.Records.Count == 0) {
+                sb.AppendNotification("No BoD indicator conversions defined/selected.");
+                return;
+            }
+
             var hiddenProperties = new List<string>();
             if (Model.Records.All(c => c.FromUnit == string.Empty)) {
                 hiddenProperties.Add("FromUnit");

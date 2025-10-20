@@ -62,7 +62,7 @@ namespace MCRA.Simulation.Actions.BurdensOfDisease {
             var section = new BodIndicatorConversionsSummarySection() {
                 SectionLabel = ActionType.ToString()
             };
-            var subHeader = header.AddSubSectionHeaderFor(section, "Bod indicator conversions", order);
+            var subHeader = header.AddSubSectionHeaderFor(section, "BoD indicator conversions", order);
             section.Summarize(data.BodIndicatorConversions);
             subHeader.SaveSummarySection(section);
         }
