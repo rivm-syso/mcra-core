@@ -21,6 +21,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public double UncertaintyUpperLimit { get; set; }
         public bool HasUncertainty { get; set; }
         public double? RestrictedUpperPercentile { get; set; }
+
         /// <summary>
         /// Summarizes hazard versus exposure charts.
         /// </summary>
@@ -80,7 +81,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
                 // Target substance records
                 if ((individualEffectsBySubstanceCollections?.Count > 0)
-                    && riskMetricCalculationType != RiskMetricCalculationType.RPFWeighted
+                    && (!isCumulative || riskMetricCalculationType != RiskMetricCalculationType.RPFWeighted)
                 ) {
                     var hazardCharacterisationsModelsCollection = hazardCharacterisationsModelsCollections
                         .Single(c => c.TargetUnit?.Target == target);
