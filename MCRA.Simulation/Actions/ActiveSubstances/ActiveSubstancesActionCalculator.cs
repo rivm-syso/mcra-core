@@ -77,7 +77,9 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
 
             // Get selected membership model
             var availableActiveSubstanceModels = subsetManager.AllActiveSubstances
-                .Where(r => r.Effect != null || relevantEffects.Contains(r.Effect)).ToList();
+                .Where(r => r.Effect != null || relevantEffects.Contains(r.Effect))
+                .ToList();
+
             if (!availableActiveSubstanceModels?.Any() ?? true) {
                 throw new Exception("No assessment group memberships model found for current effect selection");
             } else if (availableActiveSubstanceModels.Count > 1) {
@@ -138,13 +140,26 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
                 availableActiveSubstanceModels.Add(membershipsFromPoD);
             }
 
+            //set active substance memberships to 0 based on configuration of excluded substances
+            var excludeSubstanceCodes = ModuleConfig.ExcludeSelectedSubstances.ToHashSet();
+            if (excludeSubstanceCodes.Count != 0) {
+                foreach (var kvp in activeSubstanceModel.MembershipProbabilities
+                    .Where(m => excludeSubstanceCodes.Contains(m.Key.Code))
+                ) {
+                    activeSubstanceModel.MembershipProbabilities[kvp.Key] = 0D;
+                }
+            }
+
+            // Set active substances collection based on membership probabilities
+            var activeSubstances = filterActiveSubstancesByMembership(
+                data.AllCompounds,
+                activeSubstanceModel.MembershipProbabilities,
+                ModuleConfig.FilterByCertainAssessmentGroupMembership
+            );
+
             // Update data
             data.ModuleOutputData[ActionType.ActiveSubstances] = new ActiveSubstancesOutputData() {
-                ActiveSubstances = filterActiveSubstancesByMembership(
-                    data.AllCompounds,
-                    activeSubstanceModel.MembershipProbabilities,
-                    ModuleConfig.FilterByCertainAssessmentGroupMembership
-                ),
+                ActiveSubstances = activeSubstances,
                 AvailableActiveSubstanceModels = availableActiveSubstanceModels,
                 MembershipProbabilities = activeSubstanceModel.MembershipProbabilities
             };
@@ -156,7 +171,7 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
                 data.ActiveSubstances = defaultMemberships.Keys.ToHashSet();
                 data.MembershipProbabilities = defaultMemberships;
             }
-         }
+        }
 
         protected override ActiveSubstancesActionResult run(ActionData data, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
@@ -250,6 +265,15 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
                     );
                 availableActiveSubstanceModels.Add(membershipsFromPoD);
             }
+            //set active substance memberships to 0 based on configuration of excluded substances
+            var excludeSubstanceCodes = ModuleConfig.ExcludeSelectedSubstances.ToHashSet();
+            if (excludeSubstanceCodes.Count != 0) {
+                foreach (var kvp in activeSubstanceModel.MembershipProbabilities
+                    .Where(m => excludeSubstanceCodes.Contains(m.Key.Code))
+                ) {
+                    activeSubstanceModel.MembershipProbabilities[kvp.Key] = 0D;
+                }
+            }
 
             // Set active substances collection based on membership probabilities
             var activeSubstances = filterActiveSubstancesByMembership(
@@ -335,19 +359,17 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
             IDictionary<Compound, double> membershipProbabilities,
             bool restrictToCertainMembership
         ) {
-            if (restrictToCertainMembership) {
-                var result = substances.Where(r => membershipProbabilities.TryGetValue(r, out var p) && p == 1D);
-                return result.ToHashSet();
-            } else {
-                var result = substances.Where(r => membershipProbabilities.TryGetValue(r, out var p) && p > 0);
-                return result.ToHashSet();
-            }
+            var predicate = restrictToCertainMembership
+                ? membershipProbabilities.Where(m => m.Value == 1D)
+                : membershipProbabilities.Where(m => m.Value > 0);
+
+            return substances.Intersect(predicate.Select(m => m.Key)).ToHashSet();
         }
 
-        private static Dictionary<Compound, double> resampleMemberships(IRandom generator, IDictionary<Compound, double> source) {
+        private Dictionary<Compound, double> resampleMemberships(IRandom generator, IDictionary<Compound, double> source) {
             var newMembershipProbabilities = new Dictionary<Compound, double>();
             foreach (var nominal in source) {
-                var newMembership = generator.NextDouble() < nominal.Value ? 1 : 0;
+                var newMembership = generator.NextDouble() < nominal.Value ? 1D : 0D;
                 newMembershipProbabilities.Add(nominal.Key, newMembership);
             }
             return newMembershipProbabilities;

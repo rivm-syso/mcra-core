@@ -20,6 +20,13 @@
     <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>
+    <Id>ExcludeSelectedSubstances</Id>
+    <Name>Exclude the selected substances</Name>
+    <Description>Exclude the selected substances using the substance code.</Description>
+    <ValueType>AlphaNumeric</ValueType>
+    <IsList>true</IsList>
+  </SettingsItem>
+  <SettingsItem>
     <Id>UseQsarModels</Id>
     <Name>Derive memberships from QSAR membership data</Name>
     <Description>Specifies whether QSAR membership data is used for computing the assessment group memberships.</Description>

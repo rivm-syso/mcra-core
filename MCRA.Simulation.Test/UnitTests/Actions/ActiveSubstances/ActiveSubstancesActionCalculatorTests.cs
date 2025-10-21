@@ -204,6 +204,53 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         }
 
         /// <summary>
+        ///  Runs the ActiveSubstances action: load data and summarize method
+        ///  project.EffectSettings.UseProbabilisticMemberships = true;
+        /// </summary>
+        [TestMethod]
+        public void ActiveSubstancesActionCalculator_TestExcludeSubstances() {
+            var seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var effect = new Effect() { Code = "code" };
+            var substances = FakeSubstancesGenerator.Create(15);
+            var pointsOfDeparture = FakePointsOfDepartureGenerator.Create(substances, PointOfDepartureType.Bmd, effect, "Rat", random).Select(c => c.Value).ToList();
+            var relevantEffects = new List<Effect>() { effect };
+            var rpfDictionary = new Dictionary<string, List<RelativePotencyFactor>> {
+                [effect.Code] = substances
+                .Select(c => new RelativePotencyFactor() { Compound = c, Effect = effect, RPF = 1 })
+                .ToList()
+            };
+            var correctedRelativePotencyFactors = rpfDictionary.SelectMany(c => c.Value).ToDictionary(c => c.Compound);
+
+            var project = new ProjectDto();
+            var excludedSubstances = substances.Slice(4, 5).ToList();
+            project.ActiveSubstancesSettings.ExcludeSelectedSubstances = [.. excludedSubstances.Select(s => s.Code)];
+            project.ActiveSubstancesSettings.IsCompute = true;
+            var data = new ActionData() {
+                AllCompounds = substances,
+                SelectedEffect = effect,
+                PointsOfDeparture = pointsOfDeparture,
+                RelevantEffects = relevantEffects,
+                RawRelativePotencyFactors = correctedRelativePotencyFactors
+            };
+
+            var calculator = new ActiveSubstancesActionCalculator(project);
+            var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, $"TestCompute");
+
+            //the excludedsubstances should have membership probability 0
+            foreach (var excludedSubstance in excludedSubstances) {
+                Assert.AreEqual(0D, data.MembershipProbabilities[excludedSubstance]);
+            }
+            var factorialSet = new UncertaintyFactorialSet(UncertaintySource.AssessmentGroupMemberships);
+            var uncertaintySourceGenerators = factorialSet.UncertaintySources.ToDictionary(r => r, r => random as IRandom);
+            TestRunUpdateSummarizeUncertainty(calculator, data, header, random, factorialSet, uncertaintySourceGenerators);
+            //also after uncertainty run(s) the excludedsubstances should have membership probability 0
+            foreach (var excludedSubstance in excludedSubstances) {
+                Assert.AreEqual(0D, data.MembershipProbabilities[excludedSubstance]);
+            }
+        }
+
+        /// <summary>
         /// Runs the ActiveSubstances action: run and summarize method
         /// project.EffectSettings.UseProbabilisticMemberships = false;
         /// </summary>

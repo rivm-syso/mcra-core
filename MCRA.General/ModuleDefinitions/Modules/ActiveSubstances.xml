@@ -42,6 +42,7 @@
     <CalculationSetting>FilterByCertainAssessmentGroupMembership</CalculationSetting>
     <CalculationSetting>FilterByAvailableHazardDose</CalculationSetting>
     <CalculationSetting>FilterByAvailableHazardCharacterisation</CalculationSetting>
+    <CalculationSetting>ExcludeSelectedSubstances</CalculationSetting>
     <CalculationSetting>UseQsarModels</CalculationSetting>
     <CalculationSetting>UseMolecularDockingModels</CalculationSetting>
     <CalculationSetting>IncludeSubstancesWithUnknowMemberships</CalculationSetting>
