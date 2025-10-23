@@ -17,7 +17,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public double? ReferenceValueExposure { get; set; }
 
         [Description("Median of the uncertainty distribution of the exposure at the specified percentile.")]
-        [DisplayName("Exposure (IntakeUnit)")]
+        [DisplayName("Exposure (IntakeUnit) median")]
         [DisplayFormat(DataFormatString = "{0:G4}")]
         public double? MedianExposure { get; set; }
 

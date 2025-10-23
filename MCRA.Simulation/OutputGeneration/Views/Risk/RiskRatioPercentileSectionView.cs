@@ -83,15 +83,13 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add("LowerBoundExposure");
                 hiddenProperties.Add("UpperBoundExposure");
             } else {
+                hiddenProperties.Add("ReferenceValue");
                 hiddenProperties.Add("ReferenceValueExposure");
             }
             if (riskPercentileRecords.All(r => r.RisksPercentage == r.ExposurePercentage)) {
                 hiddenProperties.Add("RisksPercentage");
             }
             if (Model.Reference == null || Model.RiskMetricCalculationType == RiskMetricCalculationType.SumRatios) {
-                hiddenProperties.Add("LowerBoundExposure");
-                hiddenProperties.Add("UpperBoundExposure");
-                hiddenProperties.Add("ReferenceValueExposure");
                 hiddenProperties.Add("ReferenceValueExposure");
                 hiddenProperties.Add("LowerBoundExposure");
                 hiddenProperties.Add("UpperBoundExposure");
@@ -101,17 +99,11 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add("ReferenceValueExposure");
             }
 
-            if (Model.IsHazardCharacterisationDistribution) {
-                hiddenProperties.Add("LowerBoundExposure");
-                hiddenProperties.Add("UpperBoundExposure");
-                hiddenProperties.Add("MedianExposure");
-            }
-
             // Percentiles table
             sb.AppendTable(
                 Model,
                 riskPercentileRecords,
-                Model.RiskMetricType == RiskMetricType.HazardExposureRatio ?  "MOEPercentileTable" : "HIPercentileTable",
+                Model.RiskMetricType == RiskMetricType.HazardExposureRatio ? "MOEPercentileTable" : "HIPercentileTable",
                 viewBag,
                 caption: $"Risk characterisation ratio distribution percentiles.",
                 saveCsv: true,
@@ -163,7 +155,6 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 if (Model.RiskMetricType == RiskMetricType.HazardExposureRatio) {
                     sb.AppendDescriptionParagraph(description);
                 }
-
             }
         }
     }
