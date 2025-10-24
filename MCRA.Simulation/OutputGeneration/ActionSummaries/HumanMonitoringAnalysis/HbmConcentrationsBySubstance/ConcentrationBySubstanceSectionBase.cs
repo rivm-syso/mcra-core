@@ -16,14 +16,10 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries {
         public SerializableDictionary<ExposureTarget, List<HbmConcentrationsPercentilesRecord>> HbmBoxPlotRecords { get; set; } = [];
         public double? RestrictedUpperPercentile { get; set; }
         public bool ShowOutliers { get; set; }
+
         /// <summary>
         /// Get boxplot record
         /// </summary>
-        /// <param name="result"></param>
-        /// <param name="percentages"></param>
-        /// <param name="multipleSamplingMethods"></param>
-        /// <param name="substance"></param>
-        /// <param name="hbmIndividualDayConcentrations"></param>
         protected static void getBoxPlotRecord(
             List<HbmConcentrationsPercentilesRecord> result,
             Compound substance,

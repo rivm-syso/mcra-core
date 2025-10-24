@@ -55,8 +55,8 @@ namespace MCRA.Simulation.OutputGeneration {
 
         [Display(AutoGenerateField = false)]
         public List<double> Percentiles { get; set; }
-        [Display(AutoGenerateField = false)]
 
+        [Display(AutoGenerateField = false)]
         public List<double> Outliers { get; set; }
 
         [Description("Number of outliers.")]

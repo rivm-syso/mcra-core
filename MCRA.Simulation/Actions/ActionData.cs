@@ -24,6 +24,7 @@ using MCRA.Simulation.Actions.DietaryExposures;
 using MCRA.Simulation.Actions.DoseResponseData;
 using MCRA.Simulation.Actions.DoseResponseModels;
 using MCRA.Simulation.Actions.DustConcentrationDistributions;
+using MCRA.Simulation.Actions.DustConcentrations;
 using MCRA.Simulation.Actions.DustExposureDeterminants;
 using MCRA.Simulation.Actions.DustExposures;
 using MCRA.Simulation.Actions.EffectRepresentations;
@@ -37,6 +38,7 @@ using MCRA.Simulation.Actions.FoodExtrapolations;
 using MCRA.Simulation.Actions.FoodRecipes;
 using MCRA.Simulation.Actions.Foods;
 using MCRA.Simulation.Actions.HazardCharacterisations;
+using MCRA.Simulation.Actions.HbmSingleValueExposures;
 using MCRA.Simulation.Actions.HighExposureFoodSubstanceCombinations;
 using MCRA.Simulation.Actions.HumanMonitoringAnalysis;
 using MCRA.Simulation.Actions.HumanMonitoringData;
@@ -51,6 +53,8 @@ using MCRA.Simulation.Actions.ModelledFoods;
 using MCRA.Simulation.Actions.MolecularDockingModels;
 using MCRA.Simulation.Actions.NonDietaryExposures;
 using MCRA.Simulation.Actions.NonDietaryExposureSources;
+using MCRA.Simulation.Actions.OccupationalExposures;
+using MCRA.Simulation.Actions.OccupationalTaskExposures;
 using MCRA.Simulation.Actions.OccurrenceFrequencies;
 using MCRA.Simulation.Actions.OccurrencePatterns;
 using MCRA.Simulation.Actions.OutdoorAirConcentrations;
@@ -66,7 +70,6 @@ using MCRA.Simulation.Actions.Risks;
 using MCRA.Simulation.Actions.SingleValueConcentrations;
 using MCRA.Simulation.Actions.SingleValueConsumptions;
 using MCRA.Simulation.Actions.SingleValueDietaryExposures;
-using MCRA.Simulation.Actions.HbmSingleValueExposures;
 using MCRA.Simulation.Actions.SingleValueNonDietaryExposures;
 using MCRA.Simulation.Actions.SingleValueRisks;
 using MCRA.Simulation.Actions.SoilConcentrationDistributions;
@@ -81,6 +84,7 @@ using MCRA.Simulation.Actions.TestSystems;
 using MCRA.Simulation.Actions.TotalDietStudyCompositions;
 using MCRA.Simulation.Actions.UnitVariabilityFactors;
 using MCRA.Simulation.Calculators.AirExposureCalculation;
+using MCRA.Simulation.Calculators.BodIndicatorModels;
 using MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
 using MCRA.Simulation.Calculators.ConsumerProductExposureCalculation;
@@ -100,18 +104,17 @@ using MCRA.Simulation.Calculators.InterSpeciesConversion;
 using MCRA.Simulation.Calculators.IntraSpeciesConversion;
 using MCRA.Simulation.Calculators.KineticConversionFactorModels;
 using MCRA.Simulation.Calculators.ModelledFoodsCalculation;
+using MCRA.Simulation.Calculators.OccupationalScenarioExposureCalculation;
 using MCRA.Simulation.Calculators.OccurrencePatternsCalculation;
 using MCRA.Simulation.Calculators.ProcessingFactorCalculation.ProcessingFactorModels;
 using MCRA.Simulation.Calculators.RiskCalculation;
+using MCRA.Simulation.Calculators.SimulatedPopulations;
 using MCRA.Simulation.Calculators.SingleValueDietaryExposuresCalculation;
 using MCRA.Simulation.Calculators.SingleValueNonDietaryExposuresCalculation;
 using MCRA.Simulation.Calculators.SingleValueRisksCalculation;
 using MCRA.Simulation.Calculators.SoilExposureCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.Objects;
-using MCRA.Simulation.Calculators.BodIndicatorModels;
-using MCRA.Simulation.Calculators.SimulatedPopulations;
-using MCRA.Simulation.Actions.DustConcentrations;
 
 namespace MCRA.Simulation {
     public class ActionData {
@@ -1101,6 +1104,29 @@ namespace MCRA.Simulation {
             get => GetOrCreateModuleOutputData<HbmSingleValueExposuresOutputData>(ActionType.HbmSingleValueExposures).HbmSingleValueExposureSets;
             set => GetOrCreateModuleOutputData<HbmSingleValueExposuresOutputData>(ActionType.HbmSingleValueExposures).HbmSingleValueExposureSets = value;
         }
+
+        //Occupational scenarios
+        public IDictionary<string, OccupationalScenario> OccupationalScenarios {
+            get => GetOrCreateModuleOutputData<OccupationalTaskExposuresOutputData>(ActionType.OccupationalTaskExposures).OccupationalScenarios;
+            set => GetOrCreateModuleOutputData<OccupationalTaskExposuresOutputData>(ActionType.OccupationalTaskExposures).OccupationalScenarios = value;
+        }
+
+        public IDictionary<string, OccupationalTask> OccupationalTasks {
+            get => GetOrCreateModuleOutputData<OccupationalTaskExposuresOutputData>(ActionType.OccupationalTaskExposures).OccupationalTasks;
+            set => GetOrCreateModuleOutputData<OccupationalTaskExposuresOutputData>(ActionType.OccupationalTaskExposures).OccupationalTasks = value;
+        }
+
+        public ICollection<OccupationalTaskExposure> OccupationalTaskExposures {
+            get => GetOrCreateModuleOutputData<OccupationalTaskExposuresOutputData>(ActionType.OccupationalTaskExposures).OccupationalTaskExposures;
+            set => GetOrCreateModuleOutputData<OccupationalTaskExposuresOutputData>(ActionType.OccupationalTaskExposures).OccupationalTaskExposures = value;
+        }
+
+        // OccupationalExposures
+        public ICollection<OccupationalScenarioExposure> OccupationalScenarioExposures {
+            get => GetOrCreateModuleOutputData<OccupationalExposuresOutputData>(ActionType.OccupationalExposures).OccupationalScenarioExposures;
+            set => GetOrCreateModuleOutputData<OccupationalExposuresOutputData>(ActionType.OccupationalExposures).OccupationalScenarioExposures = value;
+        }
+
         /// <summary>
         /// Creates a copy of the action data, to be used in bootstrap/uncertainty runs.
         /// </summary>

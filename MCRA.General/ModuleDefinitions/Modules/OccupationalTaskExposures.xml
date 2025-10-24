@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>OccupationalTaskExposures</Id>
+  <Name>Occupational task exposures</Name>
+  <ModuleType>DataModule</ModuleType>
+  <ActionType>OccupationalTaskExposures</ActionType>
+  <TableGroup>OccupationalTaskExposures</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Occupational task exposures are....
+  </Description>
+  <ShortDescription>
+    Occupational task exposures.
+  </ShortDescription>
+  <DataDescription>
+    Occupational task exposures can be entered using the internal, relational data format.
+  </DataDescription>
+  <Entities>
+    <Entity>Substances</Entity>
+  </Entities>
+</Module>

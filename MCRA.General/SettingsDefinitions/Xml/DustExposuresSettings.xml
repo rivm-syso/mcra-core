@@ -18,7 +18,7 @@
   <SettingsItem>
     <Id>SelectedExposureRoutes</Id>
     <Name>Selected exposure routes</Name>
-    <Description>Exposure routes included in dust exposure computation.</Description>
+    <Description>Exposure routes included in exposure computation.</Description>
     <ValueType>SelectedExposureRoutes</ValueType>
     <IsList>true</IsList>
     <SystemType>ExposureRoute</SystemType>

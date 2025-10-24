@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition IsStrongEntity="true">
+  <Id>OccupationalScenarios</Id>
+  <Name>Occupational scenarios</Name>
+  <Description>
+    Definitions of occupational exposure scenarios, described as combinations of different tasks/activities and task determinants (e.g., use of RPE).
+  </Description>
+  <Aliases>
+    <string>OccupationalScenarios</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawOccupationalScenarios</string>
+  </HiddenAliases>
+  <TargetDataTable>RawOccupationalScenarios</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition IsPrimaryKey="true" IsUnique="true" Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>id</Id>
+      <Description>Identifier of specific scenario.</Description>
+      <Aliases>
+        <string>id</string>
+        <string>idScenario</string>
+        <string>idOccupationalScenario</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="AlphaNumeric" FieldSize="100" IsNameColumn="true">
+      <Id>Name</Id>
+      <Description>The name of the scenario.</Description>
+      <Aliases>
+        <string>Name</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="AlphaNumeric" FieldSize="200">
+      <Id>Description</Id>
+      <Description>Description of the scenario.</Description>
+      <Aliases>
+        <string>Description</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>OccupationalExposureModelType</Id>
+  <Name>Occupational exposure model type</Name>
+  <Description>
+    Exposure model types for occupational exposures.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>Percentile</Id>
+      <Name>Use percentile point</Name>
+      <ShortName>Percentile</ShortName>
+      <Description>
+        Constant model from selected distribution percentile.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>Distribution</Id>
+      <Name>Use distribution</Name>
+      <ShortName>Distribution</ShortName>
+      <Description>
+        A parametric model is fitted on the provided distribution percentiles.
+      </Description>
+    </Unit>
+  </Units>
+</UnitDefinition>

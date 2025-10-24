@@ -48,13 +48,13 @@ namespace MCRA.Utils.ExtensionMethods {
         /// <summary>
         /// Creates substring limited to n (length) characters
         /// </summary>
-        /// <param name="data"></param>
+        /// <param name="str"></param>
         /// <param name="length"></param>
         /// <returns></returns>
-        public static string LimitTo(this string data, int length) {
-            return (data == null || data.Length < length)
-              ? data
-              : $"{data.Substring(0, length)}...";
+        public static string LimitTo(this string str, int length) {
+            return (str == null || str.Length < length)
+              ? str
+              : $"{str[..Math.Min(str.Length - 3, length)]}...";
         }
 
         public static string ReplaceCaseInsensitive(this string str, string old, string @new, StringComparison comparison) {

@@ -113,7 +113,9 @@ namespace MCRA.Data.Compiled {
         public IDictionary<string, IndividualSet> AllIndividualSets { get; set; }
         public IDictionary<string, Individual> AllIndividualSetIndividuals { get; set; }
         public IDictionary<string, IndividualProperty> AllIndividualSetIndividualProperties { get; set; }
-
+        public IDictionary<string, OccupationalTask> AllOccupationalTasks {  get; set; }
+        public IDictionary<string, OccupationalScenario> AllOccupationalScenarios { get; set; }
+        public ICollection<OccupationalTaskExposure> AllOccupationalTaskExposures { get; set; }
 
         #region Methods
 

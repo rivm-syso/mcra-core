@@ -305,7 +305,10 @@ namespace MCRA.Utils.ExtensionMethods {
         /// <param name="source"></param>
         /// <param name="selector"></param>
         /// <returns></returns>
-        public static IEnumerable<TOut> SelectCombine<TIn, TOut>(this IEnumerable<TIn> source, Func<TIn, TIn, TOut> selector) {
+        public static IEnumerable<TOut> SelectCombine<TIn, TOut>(
+            this IEnumerable<TIn> source,
+            Func<TIn, TIn, TOut> selector
+        ) {
             var s = source.ToList();
             var n = s.Count;
             for (int i = 0; i < n - 1; i++) {
@@ -366,35 +369,6 @@ namespace MCRA.Utils.ExtensionMethods {
                 r++;
             }
             return designMatrix;
-        }
-
-        /// <summary>
-        /// PatternId is as follows for compound C1...C3 and 1 = positive concentration, 0 = zero concentration.
-        /// patternId is equal to binary encoding
-        /// id C1 C2 C3
-        /// 0:  0  0  0
-        /// 1:  0  0  1
-        /// 2:  0  1  0
-        /// 3:  0  1  1
-        /// 4:  1  0  0
-        /// 5:  1  0  1
-        /// 6:  1  1  0
-        /// 7:  1  1  1
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="source"></param>
-        /// <param name="truthExtractor"></param>
-        /// <returns></returns>
-        public static int GetPatternId<T>(this IEnumerable<T> source, Func<T, bool> truthExtractor) {
-            var sourceList = source.ToList();
-            var n = sourceList.Count;
-            var result = 0;
-            for (int i = 0; i < n; i++) {
-                if (truthExtractor(sourceList[i])) {
-                    result += Math.Pow(2, i).Floor();
-                }
-            }
-            return result;
         }
 
         /// <summary>

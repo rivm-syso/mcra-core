@@ -154,5 +154,9 @@
         IndividualSetIndividualProperties = 157,
         IndividualSetIndividualPropertyValues = 158,
         DustConcentrationDistributions = 159,
+        OccupationalTasks = 160,
+        OccupationalTaskExposures = 161,
+        OccupationalScenarioTasks = 162,
+        OccupationalScenarios = 163,
     }
 }

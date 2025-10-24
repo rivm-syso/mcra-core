@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>OccupationalScenarioTasks</Id>
+  <Name>Occupational scenario tasks</Name>
+  <Description>
+    Table linking occupational tasks/activities to scenarios. I.e., describing what activities are part of a scenario, including details on task duration and other determinants (e.g., use of RPE), described via the contributing tasks relationship.
+  </Description>
+  <Aliases>
+    <string>OccupationalScenarioTasks</string>
+    <string>ScenarioTasks</string>
+    <string>ContributingScenarios</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawOccupationalScenarioTasks</string>
+  </HiddenAliases>
+  <TargetDataTable>RawOccupationalScenarioTasks</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idOccupationalScenario</Id>
+      <Description>Reference to the scenario.</Description>
+      <Aliases>
+        <string>idOccupationalScenario</string>
+        <string>idScenario</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>OccupationalScenarios</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idOccupationalTask</Id>
+      <Description>Reference to the task that is part of the scenario.</Description>
+      <Aliases>
+        <string>idOccupationalTask</string>
+        <string>idTask</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>OccupationalTasks</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>Duration</Id>
+      <Description>Duration of performing the task within this scenario.</Description>
+      <Aliases>
+        <string>Duration</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>Frequency</Id>
+      <Description>Frequency with which the task is executed within this scenario, specified in number of times per day/week/etc. The resolution of the frequency is specified by the frequency resolution field.</Description>
+      <Aliases>
+        <string>Frequency</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="FrequencyResolutionType">
+      <Id>FrequencyResolution</Id>
+      <Description>Resolution of the specific task frequency (e.g. per day, per week, etc.).</Description>
+      <Aliases>
+        <string>FrequencyResolution</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="RPEType">
+      <Id>RPEType</Id>
+      <Name>RPE type</Name>
+      <Description>
+        Type of RPE (e.g., None, RPE). If not specified then considered to be undefined.
+      </Description>
+      <Aliases>
+        <string>RPEType</string>
+        <string>RPE</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

@@ -5,7 +5,7 @@ using MCRA.General.SettingsDefinitions;
 using MCRA.Simulation.Action;
 using MCRA.Utils.ExtensionMethods;
 
-namespace MCRA.Simulation.Actions.DietaryExposures {
+namespace MCRA.Simulation.Actions.DustExposures {
 
     public sealed class DustExposuresSettingsSummarizer : ActionModuleSettingsSummarizer<DustExposuresModuleConfig> {
         public DustExposuresSettingsSummarizer(DustExposuresModuleConfig config) : base(config) {

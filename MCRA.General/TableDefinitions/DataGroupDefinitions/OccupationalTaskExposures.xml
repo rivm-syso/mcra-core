@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>OccupationalTaskExposures</Id>
+  <Name>Occupational task exposures</Name>
+  <SourceTableGroup>OccupationalTaskExposures</SourceTableGroup>
+  <Description>
+    Occupational scenarios.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>OccupationalScenarios</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>OccupationalTasks</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>OccupationalScenarioTasks</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>OccupationalTaskExposures</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

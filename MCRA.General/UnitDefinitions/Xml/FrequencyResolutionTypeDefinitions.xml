@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>FrequencyResolutionType</Id>
+  <Name>Frequency resolution type</Name>
+  <UndefinedValue>-1</UndefinedValue>
+  <Description>
+    Controlled terminology for specification of frequency resolution.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>PerDay</Id>
+      <Name>Per day</Name>
+      <Description>Frequency specified in times per day.</Description>
+      <Aliases>
+        <Alias>PerDay</Alias>
+        <Alias>Day</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>PerWeek</Id>
+      <Name>Per week</Name>
+      <Description>Frequency specified in times per week.</Description>
+      <Aliases>
+        <Alias>PerWeek</Alias>
+        <Alias>Week</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>PerMonth</Id>
+      <Name>Per month</Name>
+      <Description>Frequency specified in times per month.</Description>
+      <Aliases>
+        <Alias>PerMonth</Alias>
+        <Alias>Month</Alias>
+      </Aliases>
+    </Unit>
+  </Units>
+</UnitDefinition>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>JobTaskExposureUnit</Id>
+  <Name>Job task exposure unit</Name>
+  <Description>
+    Accepted units for job exposure activities.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>ugPerCm2PerDay</Id>
+      <Name>µg/cm2/day</Name>
+      <ShortName>µg/cm2/day</ShortName>
+      <Description>Exposure expressed in micrograms per square centimeter (µg/cm2) per day.</Description>
+      <Aliases>
+        <Alias>µg/cm2/day</Alias>
+        <Alias>ug/cm2/day</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>mgPerCm2PerDay</Id>
+      <Name>mg/cm2/day</Name>
+      <ShortName>mg/cm2/day</ShortName>
+      <Description>Exposure expressed in milligrams per square centimeter (mg/cm2) per day.</Description>
+      <Aliases>
+        <Alias>mg/cm2/day</Alias>
+        <Alias>mg/cm2/day</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>ugPerM3</Id>
+      <Name>µg/m3</Name>
+      <ShortName>µg/m3</ShortName>
+      <Description>Exposure expressed in micrograms per cubic meters (µg/m3).</Description>
+      <Aliases>
+        <Alias>µg/m3</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>mgPerM3</Id>
+      <Name>mg/m3</Name>
+      <ShortName>mg/m3</ShortName>
+      <Description>Exposure expressed in milligrams per cubic meters (mg/m3).</Description>
+      <Aliases>
+        <Alias>mg/m3</Alias>
+      </Aliases>
+    </Unit>
+  </Units>
+</UnitDefinition>

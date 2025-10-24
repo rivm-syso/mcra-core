@@ -92,6 +92,8 @@
       <xi:include href="Modules/ConsumerProductExposureDeterminants.xml" />
       <xi:include href="Modules/ConsumerProductExposures.xml" />
       <xi:include href="Modules/HbmSingleValueExposures.xml" />
+      <xi:include href="Modules/OccupationalTaskExposures.xml" />
+      <xi:include href="Modules/OccupationalExposures.xml" />
     </Modules>
   </ModuleGroupDefinition>
   <ModuleGroupDefinition>

@@ -214,5 +214,9 @@ namespace MCRA.General {
         HbmSingleValueExposures = 81,
         [Display(Name = "Dust concentration distributions")]
         DustConcentrationDistributions = 82,
+        [Display(Name = "Occupational task exposures")]
+        OccupationalTaskExposures = 83,
+        [Display(Name = "Occupational exposures")]
+        OccupationalExposures = 84,
     }
 }

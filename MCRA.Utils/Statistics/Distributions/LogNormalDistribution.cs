@@ -94,5 +94,9 @@ namespace MCRA.Utils.Statistics {
         public override double CDF(double x) {
             return CDF(Mu, Sigma, x);
         }
+
+        public double InvCDF(double p) {
+            return InvCDF(Mu, Sigma, p);
+        }
     }
 }

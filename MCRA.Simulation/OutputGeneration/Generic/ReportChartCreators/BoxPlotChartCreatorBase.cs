@@ -42,7 +42,6 @@ namespace MCRA.Simulation.OutputGeneration {
             var maximum = double.NegativeInfinity;
             var xOrder = 0;
             foreach (var item in recordsReversed) {
-    
                 var outliers = new List<double>();
                 if (showOutliers) {
                     if (item.Outliers?.Count > outliersLimit) {
@@ -215,7 +214,15 @@ namespace MCRA.Simulation.OutputGeneration {
             return multipleWhiskerBoxPlotItem;
         }
 
-        protected double[] getWhiskers(double p5, double p10, double p25, double p50, double p75, double p90, double p95) {
+        protected double[] getWhiskers(
+            double p5,
+            double p10,
+            double p25,
+            double p50,
+            double p75,
+            double p90,
+            double p95
+        ) {
             var whiskers = new double[7];
             whiskers[0] = p5;
             whiskers[1] = p10;
@@ -226,7 +233,7 @@ namespace MCRA.Simulation.OutputGeneration {
             whiskers[6] = p95;
             for (int i = 1; i < whiskers.Length; i++) {
                 if (whiskers[i - 1] > whiskers[i]) {
-                    throw new Exception("Sorry, wrong order of percentiles, do your job");
+                    throw new Exception("Incorrect percentiles order.");
                 }
             }
             return whiskers;

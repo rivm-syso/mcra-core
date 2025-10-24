@@ -2218,4 +2218,56 @@
     </ParentScopeReferences>
   </ScopingTypeDefinition>
 
+  <ScopingTypeDefinition>
+    <Id>OccupationalTasks</Id>
+    <Name>Occupational tasks</Name>
+    <RawTableId>OccupationalTasks</RawTableId>
+    <Description>-</Description>
+    <TableGroup>OccupationalTaskExposures</TableGroup>
+    <IsStrongEntity>true</IsStrongEntity>
+  </ScopingTypeDefinition>
+  <ScopingTypeDefinition>
+    <Id>OccupationalScenarios</Id>
+    <Name>Occupational scenarios</Name>
+    <RawTableId>OccupationalScenarios</RawTableId>
+    <Description>-</Description>
+    <TableGroup>OccupationalTaskExposures</TableGroup>
+    <IsStrongEntity>true</IsStrongEntity>
+  </ScopingTypeDefinition>
+  <ScopingTypeDefinition>
+    <Id>OccupationalScenarioTasks</Id>
+    <Name>Occupational scenario tasks</Name>
+    <RawTableId>OccupationalScenarioTasks</RawTableId>
+    <Description>-</Description>
+    <TableGroup>OccupationalTaskExposures</TableGroup>
+    <IsStrongEntity>false</IsStrongEntity>
+    <ParentScopeReferences>
+      <ParentScopeReference>
+        <IdField>idOccupationalScenario</IdField>
+        <ReferencedScope>OccupationalScenarios</ReferencedScope>
+      </ParentScopeReference>
+      <ParentScopeReference>
+        <IdField>idOccupationalTask</IdField>
+        <ReferencedScope>OccupationalTasks</ReferencedScope>
+      </ParentScopeReference>
+    </ParentScopeReferences>
+  </ScopingTypeDefinition>
+  <ScopingTypeDefinition>
+    <Id>OccupationalTaskExposures</Id>
+    <Name>Occupational task exposures</Name>
+    <RawTableId>OccupationalTaskExposures</RawTableId>
+    <Description>-</Description>
+    <TableGroup>OccupationalTaskExposures</TableGroup>
+    <IsStrongEntity>false</IsStrongEntity>
+    <ParentScopeReferences>
+      <ParentScopeReference>
+        <IdField>idOccupationalTask</IdField>
+        <ReferencedScope>OccupationalTasks</ReferencedScope>
+      </ParentScopeReference>
+      <ParentScopeReference>
+        <IdField>idSubstance</IdField>
+        <ReferencedScope>Compounds</ReferencedScope>
+      </ParentScopeReference>
+    </ParentScopeReferences>
+  </ScopingTypeDefinition>
 </ScopingTypeDefinitions>

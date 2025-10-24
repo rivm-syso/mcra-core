@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>OccupationalTaskExposures</Id>
+  <Name>Occupational task exposures</Name>
+  <Description>
+    Exposure (percentile) estimates of the occupational tasks.
+  </Description>
+  <Aliases>
+    <string>OccupationalTaskExposures</string>
+    <string>TaskExposures</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawOccupationalTaskExposures</string>
+  </HiddenAliases>
+  <TargetDataTable>RawOccupationalTaskExposures</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idOccupationalTask</Id>
+      <Description>Activity for which the estimate applies.</Description>
+      <Aliases>
+        <string>idTask</string>
+        <string>idOccupationalTask</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>OccupationalTasks</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="ExposureRoute">
+      <Id>ExposureRoute</Id>
+      <Name>ExposureRoute</Name>
+      <Description>The exposure route.</Description>
+      <Aliases>
+        <string>ExposureRoute</string>
+        <string>Route</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idSubstance</Id>
+      <Name>idSubstance</Name>
+      <Description>The code of the substance.</Description>
+      <Aliases>
+        <string>idSubstance</string>
+        <string>SubstanceId</string>
+        <string>SubstanceCode</string>
+        <string>Substance</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Compounds</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="RPEType">
+      <Id>RPEType</Id>
+      <Name>RPE type</Name>
+      <Description>
+        Type of RPE considered for this activity exposure estimate. If not specified, then
+        considered to be undefined.
+      </Description>
+      <Aliases>
+        <string>RPEType</string>
+        <string>RPE</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="JobTaskExposureUnit">
+      <Id>Unit</Id>
+      <Description>Unit of the estimate.</Description>
+      <Aliases>
+        <string>Unit</string>
+        <string>JobTaskExposureUnit</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="JobTaskExposureEstimateType">
+      <Id>ExposureType</Id>
+      <Description>Type of the exposure estimate.</Description>
+      <Aliases>
+        <string>ExposureType</string>
+        <string>EstimateType</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>Percentage</Id>
+      <Description>
+        The percentage to which the percentile value belongs.
+      </Description>
+      <Aliases>
+        <string>Percentage</string>
+        <string>Percentile</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>Value</Id>
+      <Description>
+        The percentile value. I.e., the exposure value belonging to the specified percentage.
+      </Description>
+      <Aliases>
+        <string>Value</string>
+        <string>Exposure</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
+      <Id>Reference</Id>
+      <Description>
+        Reference to the source from which this exposure value is obtained.
+      </Description>
+      <Aliases>
+        <string>Reference</string>
+        <string>References</string>
+        <string>Source</string>
+        <string>Sources</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

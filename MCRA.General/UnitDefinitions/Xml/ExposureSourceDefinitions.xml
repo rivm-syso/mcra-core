@@ -74,5 +74,16 @@
         <Alias>Other non-dietary</Alias>
       </Aliases>
     </Unit>
+    <Unit>
+      <Id>Occupational</Id>
+      <Name>Occupational</Name>
+      <ShortName>Occupational</ShortName>
+      <Description>
+        Occupational exposure sources.
+      </Description>
+      <Aliases>
+        <Alias>Occupational</Alias>
+      </Aliases>
+    </Unit>
   </Units>
 </UnitDefinition>

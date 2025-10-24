@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>RPEType</Id>
+  <Name>RPE type</Name>
+  <UndefinedValue>-1</UndefinedValue>
+  <Description>
+    Controlled terminology for type of RPE.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>None</Id>
+      <EnumValue>0</EnumValue>
+      <Name>None</Name>
+      <Description>None</Description>
+      <Aliases>
+        <Alias>None</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>RPE</Id>
+      <EnumValue>1</EnumValue>
+      <Name>RPE</Name>
+      <Description>RPE</Description>
+      <Aliases>
+        <Alias>RPE</Alias>
+      </Aliases>
+    </Unit>
+  </Units>
+</UnitDefinition>

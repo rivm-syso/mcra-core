@@ -46,7 +46,7 @@ namespace MCRA.Simulation.Test.Mock {
         }
 
         public IDictionary<string, DoseResponseExperiment> GetAllDoseResponseExperiments() {
-           return _data.AllDoseResponseExperiments;
+            return _data.AllDoseResponseExperiments;
         }
 
         public IList<DoseResponseModel> GetAllDoseResponseModels() {
@@ -266,7 +266,7 @@ namespace MCRA.Simulation.Test.Mock {
         }
 
         public IDictionary<string, FoodSample> GetAllFoodSamples() {
-           return _data.AllFoodSamples;
+            return _data.AllFoodSamples;
         }
 
         public IDictionary<string, IndividualProperty> GetAllHumanMonitoringIndividualProperties() {
@@ -379,8 +379,6 @@ namespace MCRA.Simulation.Test.Mock {
         public ICollection<HbmSingleValueExposureSet> GetAllHbmSingleValueExposures() {
             return _data.AllHbmSingleValueExposureSets;
         }
-
-
         public IDictionary<string, IndividualSet> GetAllIndividualSets() {
             return _data.AllIndividualSets;
         }
@@ -389,6 +387,15 @@ namespace MCRA.Simulation.Test.Mock {
         }
         public IDictionary<string, IndividualProperty> GetAllIndividualSetIndividualProperties() {
             return _data.AllIndividualSetIndividualProperties;
+        }
+        public IDictionary<string, OccupationalTask> GetAllOccupationalTasks() {
+            return _data.AllOccupationalTasks;
+        }
+        public IDictionary<string, OccupationalScenario> GetAllOccupationalScenarios() {
+            return _data.AllOccupationalScenarios;
+        }
+        public ICollection<OccupationalTaskExposure> GetAllOccupationalTaskExposures() {
+            return _data.AllOccupationalTaskExposures;
         }
     }
 }

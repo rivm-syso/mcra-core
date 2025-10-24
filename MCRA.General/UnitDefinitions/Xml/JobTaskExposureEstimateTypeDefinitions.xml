@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>JobTaskExposureEstimateType</Id>
+  <Name>Job task exposure estimate type</Name>
+  <UndefinedValue>-1</UndefinedValue>
+  <Description>
+    Accepted job exposure estimate types.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>TWA8h</Id>
+      <Name>8h TWA</Name>
+      <ShortName>8h TWA</ShortName>
+      <Description>Exposure estimate is an 8-hour time-weighted average (TWA).</Description>
+      <Aliases>
+        <Alias>TWA8h</Alias>
+        <Alias>8hTWA</Alias>
+        <Alias>8h TWA</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>LTA</Id>
+      <Name>LTA</Name>
+      <ShortName>LTA</ShortName>
+      <Description>Long-term average exposure estimate.</Description>
+      <Aliases>
+        <Alias>LTA</Alias>
+      </Aliases>
+    </Unit>
+  </Units>
+</UnitDefinition>

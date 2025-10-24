@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsItems>
+  <!-- Occupational exposure settings  -->
+  <SettingsItem>
+    <Id>ExposureApproachMethod</Id>
+    <Name>Method for generating occupational exposures</Name>
+    <Description>Method for generating occupational exposures (modelled or measured).</Description>
+    <ValueType>ExposureApproachMethod</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>OccupationalExposureModelType</Id>
+    <Name>Method for generating occupational exposures</Name>
+    <Description>Method for generating occupational exposures (based on a specified percentile or distribution).</Description>
+    <ValueType>OccupationalExposureModelType</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>SelectedPercentage</Id>
+    <Name>Select a percentage (with corresponding percentile)</Name>
+    <Description>
+      Select a percentage (with corresponding percentile). Note, percentages may very within occupational task exposures.
+      A warning is thrown when the selected percentage is not available for a specific the task exposure.
+    </Description>
+    <ValueType>Numeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ComputeExternalOccupationalDoses</Id>
+    <Name>Compute external doses</Name>
+    <Description>Compute external occupational doses for the exposure scenarios.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>OccupationalExposuresCalculationMethod</Id>
+    <Name>Calculation method</Name>
+    <Description>Method for calculating occupational exposures.</Description>
+    <ValueType>OccupationalExposuresCalculationMethod</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>VentilatoryFlowRate</Id>
+    <Name>Ventilatory flow rate (m3/day)</Name>
+    <Description>
+      Ventilatory flow rate for occupational inhalation exposures (in m3/day).
+    </Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>1</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>FractionSkinExposed</Id>
+    <Name>Fraction skin exposed</Name>
+    <Description>
+      Fraction skin exposed for occupational dermal exposures.
+    </Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>1</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>NominalBodySurfaceArea</Id>
+    <Name>Nominal body surface area (cm2)</Name>
+    <Description>
+      Nominal body surface area (in cm2).
+    </Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>173</DefaultValue>
+  </SettingsItem>
+</SettingsItems>

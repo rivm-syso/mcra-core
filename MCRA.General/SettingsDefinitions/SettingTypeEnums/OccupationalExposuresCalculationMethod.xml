@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>OccupationalExposuresCalculationMethod</Id>
+  <Name>Occupational exposure calculation method</Name>
+  <Description>
+    Available methods for calculating modelled occupational exposures.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>SingleIndividual</Id>
+      <Name>Compute for single individual</Name>
+      <ShortName>Single individual</ShortName>
+      <Description>
+        Compute for single individual.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>IndividualSet</Id>
+      <Name>Compute for individual set</Name>
+      <ShortName>Individual set</ShortName>
+      <Description>
+        Compute for a set of individuals.
+      </Description>
+    </Unit>
+  </Units>
+</UnitDefinition>

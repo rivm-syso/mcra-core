@@ -604,5 +604,9 @@ namespace MCRA.Data.Management {
         public ICollection<Individual> AllIndividualSetIndividuals => [.. _dataManager.GetAllIndividualSetIndividuals().Values];
         public IDictionary<string, IndividualProperty> AllIndividualSetIndividualProperties => _dataManager.GetAllIndividualSetIndividualProperties();
 
+        public IDictionary<string, OccupationalTask> AllOccupationalTasks => _dataManager.GetAllOccupationalTasks();
+        public IDictionary<string, OccupationalScenario> AllOccupationalScenarios => _dataManager.GetAllOccupationalScenarios();
+        public ICollection<OccupationalTaskExposure> AllOccupationalTaskExposures => _dataManager.GetAllOccupationalTaskExposures();
+
     }
 }

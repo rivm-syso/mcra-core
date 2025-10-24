@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition IsStrongEntity="true">
+  <Id>OccupationalTasks</Id>
+  <Name>Occupational tasks</Name>
+  <Description>
+    Definitions of occupational tasks.
+  </Description>
+  <Aliases>
+    <string>OccupationalTasks</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawOccupationalTasks</string>
+  </HiddenAliases>
+  <TargetDataTable>RawOccupationalTasks</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition IsPrimaryKey="true" IsUnique="true" Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>id</Id>
+      <Description>Identifier of specific task.</Description>
+      <Aliases>
+        <string>id</string>
+        <string>idTask</string>
+        <string>idOccupationalTask</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="AlphaNumeric" FieldSize="100" IsNameColumn="true">
+      <Id>Name</Id>
+      <Description>The name of the occupational task.</Description>
+      <Aliases>
+        <string>Name</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="AlphaNumeric" FieldSize="200">
+      <Id>Description</Id>
+      <Description>Description of the occupational task.</Description>
+      <Aliases>
+        <string>Description</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

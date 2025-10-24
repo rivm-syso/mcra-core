@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>OccupationalExposures</Id>
+  <Name>Occupational exposures</Name>
+  <ActionType>OccupationalExposures</ActionType>
+  <ModuleType>CalculatorModule</ModuleType>
+  <CanCompute>true</CanCompute>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Occupational exposures are the amounts of substances to which individuals are exposed
+    while performing job tasks. Occupational exposures are long-term/chronic exposures,
+    they represent the average exposure per day over an unspecified longer time period.
+  </Description>
+  <ShortDescription>
+    Occupational exposures are the amounts of substances to which individuals are exposed
+    while performing job tasks.
+  </ShortDescription>
+  <CalculationDescription>
+    Occupational exposures are calculated from job task exposures data.
+  </CalculationDescription>
+  <Entities>
+    <Entity>Substances</Entity>
+  </Entities>
+  <SelectionInputs>
+    <Input>ActiveSubstances</Input>
+  </SelectionInputs>
+  <CalculationSettings>
+    <CalculationSetting source="Action">RandomSeed</CalculationSetting>
+    <CalculationSetting source="Action">ExposureType</CalculationSetting>
+    <CalculationSetting>SelectedExposureRoutes</CalculationSetting>
+    <CalculationSetting>ExposureApproachMethod</CalculationSetting>
+    <CalculationSetting>OccupationalExposureModelType</CalculationSetting>
+    <CalculationSetting>SelectedPercentage</CalculationSetting>
+    <CalculationSetting>ComputeExternalOccupationalDoses</CalculationSetting>
+    <CalculationSetting>OccupationalExposuresCalculationMethod</CalculationSetting>
+    <CalculationSetting>VentilatoryFlowRate</CalculationSetting>
+    <CalculationSetting>NominalBodySurfaceArea</CalculationSetting>
+    <CalculationSetting>FractionSkinExposed</CalculationSetting>
+  </CalculationSettings>
+  <OutputSettings>
+    <OutputSetting source="Action">VariabilityLowerPercentage</OutputSetting>
+    <OutputSetting source="Action">VariabilityUpperPercentage</OutputSetting>
+  </OutputSettings>
+  <UncertaintySettings>
+  </UncertaintySettings>
+  <CalculationInputs>
+    <Input>OccupationalTaskExposures</Input>
+  </CalculationInputs>
+</Module>

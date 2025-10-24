@@ -182,27 +182,6 @@ namespace MCRA.Utils.Test.UnitTests {
         }
 
         [TestMethod]
-        public void IEnumerableExtensions_GetPatternIdTest2() {
-            var l = new string[] { "A", "B", "C" };
-            var p1 = l.GetPatternId(s => !string.IsNullOrEmpty(s));
-            Assert.AreEqual(7, p1);
-        }
-
-        [TestMethod]
-        public void IEnumerableExtensions_GetPatternIdTest3() {
-            var l = new string[] { "", "B", "C" };
-            var p1 = l.GetPatternId(s => !string.IsNullOrEmpty(s));
-            Assert.AreEqual(6, p1);
-        }
-
-        [TestMethod]
-        public void IEnumerableExtensions_GetPatternIdTest4() {
-            var l = new string[] { "A", "", "C" };
-            var p1 = l.GetPatternId(s => !string.IsNullOrEmpty(s));
-            Assert.AreEqual(5, p1);
-        }
-
-        [TestMethod]
         [DataRow(new int[] { 0, 1, 2, 1 }, 1, 1)]
         [DataRow(new int[] { 0, 1, 2, 1 }, 3, -1)]
         [DataRow(new int[] { 0, 1, 2, 1 }, 2, 2)]

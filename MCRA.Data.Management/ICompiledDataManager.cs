@@ -105,5 +105,9 @@ namespace MCRA.Data.Management {
         IDictionary<string, IndividualSet> GetAllIndividualSets();
         IDictionary<string, Individual> GetAllIndividualSetIndividuals();
         IDictionary<string, IndividualProperty> GetAllIndividualSetIndividualProperties();
+
+        IDictionary<string, OccupationalTask> GetAllOccupationalTasks();
+        IDictionary<string, OccupationalScenario> GetAllOccupationalScenarios();
+        ICollection<OccupationalTaskExposure> GetAllOccupationalTaskExposures();
     }
 }
