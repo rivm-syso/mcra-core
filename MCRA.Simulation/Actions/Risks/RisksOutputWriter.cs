@@ -71,7 +71,11 @@ namespace MCRA.Simulation.Actions.Risks {
                             ? r.HazardExposureRatio : r.HazardQuotient
                     })
                     .ToDictionary(r => r.Percentage),
-                RiskMetric = config.RiskMetricType
+                RiskMetric = config.RiskMetricType,
+                ThresholdMarginOfExposure = config.ThresholdMarginOfExposure,
+                LeftMarginSafetyPlot = config.LeftMargin,
+                RightMarginSafetyPlot = config.RightMargin,
+                ConfidenceInterval = config.ConfidenceInterval
             };
         }
     }

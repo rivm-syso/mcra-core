@@ -53,7 +53,7 @@ namespace MCRA.Simulation.OutputGeneration {
         private static PlotModel create(
             double xLow,
             double xHigh,
-            double xNeutral,
+            double xThreshold,
             List<SubstanceRiskDistributionRecord> terStatistics,
             bool isUncertainty,
             string riskMetric
@@ -89,7 +89,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 ResolutionX = 100,
                 HeatMapMappingFunction = (x, y) => {
                     double transform(double val) => Math.Log10(val);
-                    return 2 / (1 + Math.Exp(-(transform(x) - transform(xNeutral)))) - 1;
+                    return 2 / (1 + Math.Exp(-(transform(x) - transform(xThreshold)))) - 1;
                 },
             };
             plotModel.Series.Add(heatMapSeries);
@@ -99,8 +99,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 StrokeThickness = 4,
                 LineStyle = LineStyle.Solid,
             };
-            lineSeriesShiny.Points.Add(new DataPoint(xNeutral, ymin));
-            lineSeriesShiny.Points.Add(new DataPoint(xNeutral, yMax));
+            lineSeriesShiny.Points.Add(new DataPoint(xThreshold, ymin));
+            lineSeriesShiny.Points.Add(new DataPoint(xThreshold, yMax));
             plotModel.Series.Add(lineSeriesShiny);
 
             var lineSeriesRisk = new LineSeries() {
@@ -108,8 +108,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 StrokeThickness = .8,
                 LineStyle = LineStyle.Solid,
             };
-            lineSeriesRisk.Points.Add(new DataPoint(xNeutral, ymin));
-            lineSeriesRisk.Points.Add(new DataPoint(xNeutral, yMax));
+            lineSeriesRisk.Points.Add(new DataPoint(xThreshold, ymin));
+            lineSeriesRisk.Points.Add(new DataPoint(xThreshold, yMax));
             plotModel.Series.Add(lineSeriesRisk);
 
             // Vertical line at 1

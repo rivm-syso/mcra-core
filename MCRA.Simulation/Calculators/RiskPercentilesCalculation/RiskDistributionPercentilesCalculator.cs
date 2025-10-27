@@ -6,10 +6,10 @@ using MCRA.Utils.Statistics;
 namespace MCRA.Simulation.Calculators.RiskPercentilesCalculation {
     public sealed class RiskDistributionPercentilesCalculator {
 
-        public HealthEffectType HealthEffectType { get; private set; }
-        public RiskMetricType RiskMetricType { get; private set; }
-        public double[] Percentages { get; private set; }
-        public bool UseInverseDistribution { get; private set; }
+        public HealthEffectType HealthEffectType { get; init; }
+        public RiskMetricType RiskMetricType { get; init; }
+        public double[] Percentages { get; init; }
+        public bool UseInverseDistribution { get; init; }
 
         public RiskDistributionPercentilesCalculator(IIndividualSingleValueRisksCalculatorSettings settings) {
             HealthEffectType = settings.HealthEffectType;

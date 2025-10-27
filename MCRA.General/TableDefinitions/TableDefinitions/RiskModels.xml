@@ -69,5 +69,41 @@
         <string>Risk</string>
       </Aliases>
     </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="Numeric" Default = "100">
+      <Id>ThresholdMarginOfExposure</Id>
+      <Description>
+        Threshold for interpretation of the risk metric.
+      </Description>
+      <Aliases>
+        <string>Threshold</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="Numeric" Default ="0.1">
+      <Id>LeftMarginSafetyPlot</Id>
+      <Description>
+        Left margin of the risk value in risk characterisation plots / safety charts.
+      </Description>
+      <Aliases>
+        <string>LeftMargin</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="Numeric" Default = "10000000">
+      <Id>RightMarginSafetyPlot</Id>
+      <Description>
+        Right margin of the risk value in risk characterisation plots / safety charts.
+      </Description>
+      <Aliases>
+        <string>RightMargin</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="Numeric" Default = "90">
+      <Id>ConfidenceInterval</Id>
+      <Description>
+        Inclusion percentage variability interval, e.g., 90 means p5-p95
+      </Description>
+      <Aliases>
+        <string>Confidence</string>
+      </Aliases>
+    </ColumnDefinition>
   </ColumnDefinitions>
 </TableDefinition>

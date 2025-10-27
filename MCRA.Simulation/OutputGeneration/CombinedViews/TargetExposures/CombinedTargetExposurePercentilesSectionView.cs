@@ -20,7 +20,7 @@ namespace MCRA.Simulation.OutputGeneration.CombinedViews {
                 sb.Append($"<table class=\"sortable\">");
                 sb.Append($"<caption>Exposures in {Model.ExposureUnit.GetShortDisplayName()}</caption>");
                 sb.Append($"<thead><tr>");
-                sb.Append($"<th>Model</th>");
+                sb.Append($"<th>Population</th>");
                 foreach (var percentage in Model.Percentages) {
                     sb.Append($"<th>p{percentage:G3}</th>");
                 }

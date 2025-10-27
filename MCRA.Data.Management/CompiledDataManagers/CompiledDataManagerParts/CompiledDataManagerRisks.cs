@@ -41,6 +41,10 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         Compound = compound,
                                         RiskMetric = r.GetEnum(RawRiskModels.RiskMetric, fieldMap, RiskMetricType.HazardExposureRatio),
                                         RiskPercentiles = [],
+                                        ThresholdMarginOfExposure = r.GetDouble(RawRiskModels.ThresholdMarginOfExposure, fieldMap),
+                                        LeftMarginSafetyPlot = r.GetDouble(RawRiskModels.LeftMarginSafetyPlot, fieldMap),
+                                        RightMarginSafetyPlot = r.GetDouble(RawRiskModels.RightMarginSafetyPlot, fieldMap),
+                                        ConfidenceInterval = r.GetDouble(RawRiskModels.ConfidenceInterval, fieldMap),
                                     };
                                     allRiskModels.Add(idModel, model);
                                 }

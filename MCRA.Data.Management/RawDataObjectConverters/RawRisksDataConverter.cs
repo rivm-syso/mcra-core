@@ -19,6 +19,10 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
                     Description = model.Description,
                     Name = model.Name,
                     RiskMetric = model.RiskMetric.ToString(),
+                    ThresholdMarginOfExposure = model.ThresholdMarginOfExposure,
+                    LeftMarginSafetyPlot = model.LeftMarginSafetyPlot,
+                    RightMarginSafetyPlot = model.RightMarginSafetyPlot,
+                    ConfidenceInterval = model.ConfidenceInterval,
                 };
                 result.RiskModelRecords.Add(modelRecord);
                 if (model.RiskPercentiles?.Count > 0) {

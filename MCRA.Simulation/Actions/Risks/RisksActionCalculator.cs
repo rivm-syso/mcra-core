@@ -443,10 +443,24 @@ namespace MCRA.Simulation.Actions.Risks {
 
             // Risk percentiles
             if (!ModuleConfig.MultipleSubstances || ModuleConfig.IsCumulative) {
+
+                // Add the percentages from the confidence interval to make both sides, e.g., p0.1 and p99.9, of the
+                // distribution available for later calculations, like in the combined outputs of loop calculations
+                var pLower = (100 - ModuleConfig.ConfidenceInterval) / 2;
+                var pUpper = 100 - pLower;
+                var median = 50.0;
+                double[] percentagesConfidenceInterval = [pLower, median, pUpper];
+                percentagesConfidenceInterval = [.. percentagesConfidenceInterval.Select(d => Math.Round(d, 5))];
+                var percentages = ModuleConfig.RiskPercentiles.Select(d => Math.Round(d, 5)).ToList();
+                var allPercentages = percentages
+                    .Union(percentagesConfidenceInterval)
+                    .Order()
+                    .ToArray();
+
                 var percentilesCalculator = new RiskDistributionPercentilesCalculator(
                     ModuleConfig.HealthEffectType,
                     ModuleConfig.RiskMetricType,
-                    ModuleConfig.RiskPercentiles,
+                    allPercentages,
                     ModuleConfig.IsInverseDistribution
                 );
                 result.RiskPercentiles = percentilesCalculator.Compute(result.IndividualRisks);
