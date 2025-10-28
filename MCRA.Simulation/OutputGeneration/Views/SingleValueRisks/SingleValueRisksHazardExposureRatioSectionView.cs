@@ -32,7 +32,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (!Model.UseAdjustmentFactor) {
                 hiddenProperties.Add("PUpperRisk");
                 hiddenProperties.Add("PLowerRisk");
-                hiddenProperties.Add("AdjustedRisk");
+                hiddenProperties.Add("MedianAdjustedRisk");
                 hiddenProperties.Add("AdjustmentFactor");
                 hiddenProperties.Add("AdjustedRisk");
             }
