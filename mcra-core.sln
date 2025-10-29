@@ -45,6 +45,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModuleDiagramCreator", "Too
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModuleDiagramCreator.Test", "Tools\ModuleDiagramGenerator\ModuleDiagramCreator.Test\ModuleDiagramCreator.Test.csproj", "{9B0CC86C-688C-49A7-A58A-F7EA5400D068}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		Shared\SharedAssemblyInfo.cs = Shared\SharedAssemblyInfo.cs
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -175,6 +180,7 @@ Global
 		{330D0380-C88C-4F19-8253-F3ADDA2A89F8} = {D74AA7AF-5F84-4AFF-B973-28D7BC049482}
 		{9987BC60-8D24-4CDD-830D-C7F817F495A5} = {330D0380-C88C-4F19-8253-F3ADDA2A89F8}
 		{9B0CC86C-688C-49A7-A58A-F7EA5400D068} = {330D0380-C88C-4F19-8253-F3ADDA2A89F8}
+		{02EA681E-C7D8-13C7-8484-4AC65E1B71E8} = {9CFF7BF7-BC48-4E76-99D7-0F07BF083225}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CFED96CF-602F-4D20-889B-043D8D9EF561}

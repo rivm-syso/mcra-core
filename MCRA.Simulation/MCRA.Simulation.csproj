@@ -12,6 +12,10 @@
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Include="..\Shared\SharedAssemblyInfo.cs" Link="Properties\SharedAssemblyInfo.cs" />
+  </ItemGroup>
+
   <PropertyGroup>
     <ModuleExtension Condition="'$(OS)' == 'Windows_NT'">.dll</ModuleExtension>
     <ModuleExtension Condition="'$(OS)' != 'Windows_NT'">.so</ModuleExtension>

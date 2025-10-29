@@ -11,6 +11,10 @@
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Include="..\Shared\SharedAssemblyInfo.cs" Link="Properties\SharedAssemblyInfo.cs" />
+  </ItemGroup>
+
   <!-- T4 build support for .NET Core builds (Begin) -->
   <ItemGroup Condition="'$(MSBuildRuntimeType)'=='Core'">
     <TextTemplate Include="**\*.tt" />

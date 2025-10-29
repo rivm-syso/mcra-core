@@ -11,6 +11,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\Shared\SharedAssemblyInfo.cs" Link="Properties\SharedAssemblyInfo.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Resources\TextTemplates\CsvDataSourceTemplate_ReadMe.md" />
     <None Remove="Resources\TextTemplates\ExcelDataSourceTemplate_ReadMe.txt" />
   </ItemGroup>

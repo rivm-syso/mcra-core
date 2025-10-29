@@ -5,10 +5,15 @@
     <TargetFramework>net9.0</TargetFramework>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <ImplicitUsings>enable</ImplicitUsings>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <Nullable>disable</Nullable>
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
     <OutputPath>..\..\..\bin\Diagramcreator</OutputPath>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\..\Shared\SharedAssemblyInfo.cs" Link="Properties\SharedAssemblyInfo.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Remove="Resources\ModuleDiagramDefinitions.xml" />
