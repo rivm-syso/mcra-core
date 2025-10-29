@@ -1,41 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\Shared\MCRA.Shared.Build.targets" />
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
     <EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <Nullable>disable</Nullable>
     <IsPackable>false</IsPackable>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Include="..\Shared\SharedAssemblyInfo.cs" Link="Properties\SharedAssemblyInfo.cs" />
-  </ItemGroup>
-
-  <!-- T4 build support for .NET Core builds (Begin) -->
-  <ItemGroup Condition="'$(MSBuildRuntimeType)'=='Core'">
-    <TextTemplate Include="**\*.tt" />
-  </ItemGroup>
-
-  <Target Name="TextTemplateTransform" BeforeTargets="BeforeCompile" Condition="'$(MSBuildRuntimeType)'=='Core'">
-    <Message Importance="high" Text="T4 transforming '%(TextTemplate.Identity)'" />
-    <Exec WorkingDirectory="$(ProjectDir)" Command="t4 %(TextTemplate.Identity)" />
-  </Target>
-  <!-- T4 build support for .NET Core builds (End) -->
-
-  <!-- T4 build support for Visual Studio (Begin) -->
-  <PropertyGroup Condition="'$(MSBuildRuntimeType)'=='Full'">
-    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
-    <!-- This is what will cause the templates to be transformed when the project is built (default is false) -->
-    <TransformOnBuild>true</TransformOnBuild>
-    <!-- Set to true to force overwriting of read-only output files, e.g. if they're not checked out (default is false) -->
-    <OverwriteReadOnlyOutputFiles>true</OverwriteReadOnlyOutputFiles>
-    <!-- Set to false to transform files even if the output appears to be up-to-date (default is true)  -->
-    <TransformOutOfDateOnly>true</TransformOutOfDateOnly>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <NoWarn>1701;1702;618</NoWarn>
   </PropertyGroup>
@@ -43,14 +13,7 @@
     <NoWarn>1701;1702;618</NoWarn>
   </PropertyGroup>
 
-  <Import Project="$(VSToolsPath)\TextTemplating\Microsoft.TextTemplating.targets" Condition="'$(MSBuildRuntimeType)'=='Full'" />
-  <!-- T4 build support for Visual Studio (End) -->
-
   <ItemGroup>
-    <PackageReference Include="GitInfo" Version="3.3.5">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.0" />
     <PackageReference Include="Moq" Version="4.20.72" />
     <PackageReference Include="MSTest.TestAdapter" Version="3.11.0" />
