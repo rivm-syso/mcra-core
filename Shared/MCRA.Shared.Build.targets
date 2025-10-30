@@ -13,7 +13,13 @@
     <Compile Include="..\Shared\SharedAssemblyInfo.cs" Link="Properties\SharedAssemblyInfo.cs" />
   </ItemGroup>
 
-  <ItemGroup>
+  <!-- If GitInfo.ThisAssembly.cs exists at the solution level then don't
+    include the GitInfo package, but include the existing file in the compilation
+  -->
+  <ItemGroup Condition="Exists('..\GitInfo.ThisAssembly.cs')">
+    <Compile Include="..\GitInfo.ThisAssembly.cs" Link="Properties\GitInfo.ThisAssembly.cs" />
+  </ItemGroup>
+  <ItemGroup Condition="!Exists('..\GitInfo.ThisAssembly.cs')">
     <PackageReference Include="GitInfo" Version="3.3.5">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
