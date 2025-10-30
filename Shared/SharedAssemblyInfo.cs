@@ -12,7 +12,7 @@ using Ver = ThisAssembly.Git.BaseVersion;
 [assembly: AssemblyFileVersion(
     $"{Ver.Major}.{Ver.Minor}.{Ver.Patch}.{Git.Commits}")]
 [assembly: AssemblyInformationalVersion(
-    $"{Ver.Major}.{Ver.Minor}.{Ver.Patch}.{Git.Commits}-{Git.Branch}+{Git.Commit}")]
+    $"{Ver.Major}.{Ver.Minor}.{Ver.Patch}.{Git.Commits}-{Git.Branch}+{Git.Commit}+built{Git.CommitDate}")]
 
 // i..e ^: 1.0.2.0-master+c218617
 // General Information about an assembly is controlled through the following
