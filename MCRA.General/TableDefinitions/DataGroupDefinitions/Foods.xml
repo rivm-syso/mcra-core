@@ -36,8 +36,5 @@
     <DataGroupTable>
       <Id>FoodConsumptionQuantifications</Id>
     </DataGroupTable>
-    <DataGroupTable>
-      <Id>FoodConsumptionUncertainties</Id>
-    </DataGroupTable>
   </DataGroupTables>
 </DataGroupDefinition>

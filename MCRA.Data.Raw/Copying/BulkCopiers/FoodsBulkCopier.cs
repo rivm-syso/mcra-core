@@ -34,9 +34,6 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                 progressState.Update("Processing Food Consumption Quantifications", 40);
                 tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.FoodConsumptionQuantifications);
 
-                progressState.Update("Processing Food Consumption Uncertainties", 50);
-                tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.FoodConsumptionUncertainties);
-
                 progressState.Update("Processing Food Origins", 60);
                 tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.FoodOrigins);
 
