@@ -15,6 +15,8 @@
 
         public List<SbmlModelAssignmentRule> AssignmentRules { get; set; }
 
+        public List<SbmlReaction> Reactions { get; set; }
+
         public Dictionary<string, SbmlUnitDefinition> UnitDefinitions { get; set; }
 
         public List<SbmlModelParameter> GetAssignableParameters() {

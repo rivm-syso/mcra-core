@@ -1,5 +1,7 @@
 ﻿namespace MCRA.Utils.Sbml.Objects {
-    public class SbmlModelAssignmentRule {
-        public string Variable { get; set; }
+    public class SbmlReaction {
+        public string Id { get; set; }
+        public List<string> Reactants { get; set; }
+        public List<string> Products { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Xml.Serialization;
 using MCRA.General.Sbml;
+using MCRA.Utils.Sbml.Objects;
 using MCRA.Utils.SBML;
 
 namespace MCRA.General {
@@ -52,28 +53,34 @@ namespace MCRA.General {
         public List<KineticModelSubstanceDefinition> KineticModelSubstances { get; set; }
 
         /// <summary>
-        /// Forcing parameters of the kinetic model.
+        /// Forcing parameters of the PBK model.
         /// </summary>
         [XmlArrayItem("Forcing")]
         public List<KineticModelInputDefinition> Forcings { get; set; }
 
         /// <summary>
-        /// Input parameters of the kinetic model.
+        /// Input parameters of the PBK model.
         /// </summary>
         [XmlArrayItem("Parameter")]
         public List<KineticModelParameterDefinition> Parameters { get; set; }
 
         /// <summary>
-        /// State parameters of the kinetic model.
+        /// State parameters of the PBK model.
         /// </summary>
         [XmlArrayItem("State")]
         public List<KineticModelStateVariableDefinition> States { get; set; }
 
         /// <summary>
-        /// Output parameters of the kinetic model.
+        /// Output parameters of the PBK model.
         /// </summary>
         [XmlArrayItem("Output")]
         public List<KineticModelOutputDefinition> Outputs { get; set; }
+
+        /// <summary>
+        /// SBML model definition.
+        /// </summary>
+        [XmlIgnore]
+        public SbmlModel SbmlModel { get; set; }
 
         /// <summary>
         /// Returns the exposure routes of the kinetic model definition (ordered by

@@ -6,21 +6,25 @@ namespace MCRA.General.Sbml {
     public class SbmlToPbkModelDefinitionConverter {
 
         public KineticModelDefinition Convert(SbmlModel sbmlModel) {
+            if (sbmlModel.TimeUnit == SbmlTimeUnit.NotSpecified) {
+                throw new PbkModelException($"No time unit specified for model {sbmlModel.Id}.");
+            }
+            if (sbmlModel.Compartments.Count == 0) {
+                throw new PbkModelException($"Model {sbmlModel.Id} does not contain any compartment.");
+            }
+            if (sbmlModel.Species.Count == 0) {
+                throw new PbkModelException($"Model {sbmlModel.Id} does not contain any species.");
+            }
+
             var result = new KineticModelDefinition {
                 Id = sbmlModel.Id,
                 Name = sbmlModel.Name ?? sbmlModel.Id,
                 Format = KineticModelType.SBML,
-                EvaluationFrequency = 1
+                EvaluationFrequency = 1,
+                Resolution = sbmlModel.TimeUnit.ToTimeUnit(),
+                SbmlModel = sbmlModel
             };
 
-            if (sbmlModel.TimeUnit == SbmlTimeUnit.NotSpecified) {
-                throw new PbkModelException($"No time unit specified for model {sbmlModel.Id}.");
-            }
-            result.Resolution = sbmlModel.TimeUnit.ToTimeUnit();
-
-            if (sbmlModel.Compartments.Count == 0) {
-                throw new PbkModelException($"Model {sbmlModel.Id} does not contain any compartment.");
-            }
             var inputCompartments = Enum.GetValues<ExposureRoute>()
                 .Select(r => (
                     route: r,

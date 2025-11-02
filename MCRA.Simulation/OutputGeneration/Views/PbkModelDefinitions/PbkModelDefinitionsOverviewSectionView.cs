@@ -1,8 +1,8 @@
-﻿using MCRA.Simulation.OutputGeneration.Helpers;
-using System.Text;
+﻿using System.Text;
+using MCRA.Simulation.OutputGeneration.Helpers;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
-    public class PbkModelDefinitionsOverviewSummarySectionView : SectionView<PbkModelDefinitionsOverviewSummarySection> {
+    public class PbkModelDefinitionsOverviewSectionView : SectionView<PbkModelDefinitionsOverviewSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             if (Model.Records.Any()) {
                 var hiddenProperties = new List<string>();
@@ -19,7 +19,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                    saveCsv: true
                 );
             } else {
-                sb.AppendDescriptionParagraph("No additional (SBML) PBK models were linked. Only the embedded PBK models of MCRA were used.");
+                sb.AppendDescriptionParagraph("No (additional) PBK models were linked. Only the embedded PBK models of MCRA were used.");
             }
         }
     }

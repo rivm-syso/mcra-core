@@ -1,11 +1,33 @@
 ﻿using System.Globalization;
 using System.Xml;
+using DocumentFormat.OpenXml.Office2010.Excel;
+using DocumentFormat.OpenXml.Spreadsheet;
+using DocumentFormat.OpenXml.Wordprocessing;
 using MCRA.Utils.Sbml.Objects;
 
 namespace MCRA.Utils.SBML {
     public class SbmlFileReader {
 
         private XmlNamespaceManager _xmlNamespaceManager;
+
+        private static readonly HashSet<string> _secondTimeUnitAliases = new(StringComparer.OrdinalIgnoreCase) {
+            "SEC",
+            "SECONDS",
+            "S"
+        };
+
+        private static readonly HashSet<string> _dayTimeUnitAliases = new(StringComparer.OrdinalIgnoreCase) {
+            "DAY",
+            "DAYS",
+            "D"
+        };
+
+        private static readonly HashSet<string> _hourTimeUnitAliases = new(StringComparer.OrdinalIgnoreCase) {
+            "HR",
+            "HOUR",
+            "HOURS",
+            "H"
+        };
 
         public SbmlModel LoadModel(string pathSbmlfile) {
 
@@ -31,15 +53,28 @@ namespace MCRA.Utils.SBML {
 
             var modelNode = root.SelectSingleNode("descendant::ls:model", _xmlNamespaceManager);
 
+            var id = parseId(modelNode);
+            var name = parseName(modelNode);
+
+            var unitDefinitions = parseUnitDefinitions(modelNode).ToDictionary(r => r.Id);
+            var timeUnit = parseTimeUnit(modelNode);
+
+            var assignmentRules = parseAssignmentRules(modelNode);
+            var reactions = parseReactions(modelNode);
+            var species = parseSpecies(modelNode);
+            var parameters = parseParameters(modelNode);
+            var compartments = parseCompartments(modelNode);
+
             var model = new SbmlModel() {
-                Id = parseId(modelNode),
-                Name = parseName(modelNode),
-                TimeUnit = parseTimeUnit(modelNode),
-                Compartments = parseCompartments(modelNode),
-                Parameters = parseParameters(modelNode),
-                Species = parseSpecies(modelNode),
-                UnitDefinitions = parseUnitDefinitions(modelNode).ToDictionary(r => r.Id),
-                AssignmentRules = parseAssignmentRules(modelNode),
+                Id = id,
+                Name = name,
+                TimeUnit = timeUnit,
+                Compartments = compartments,
+                Parameters = parameters,
+                Species = species,
+                UnitDefinitions = unitDefinitions,
+                AssignmentRules = assignmentRules,
+                Reactions = reactions
             };
 
             return model;
@@ -83,23 +118,6 @@ namespace MCRA.Utils.SBML {
         private string parseName(XmlNode modelNode) {
             return modelNode.Attributes["name"]?.Value;
         }
-
-        private static HashSet<string> _secondTimeUnitAliases = new(StringComparer.OrdinalIgnoreCase) {
-            "SEC",
-            "SECONDS",
-            "S"
-        };
-        private static HashSet<string> _dayTimeUnitAliases = new(StringComparer.OrdinalIgnoreCase) {
-            "DAY",
-            "DAYS",
-            "D"
-        };
-        private static HashSet<string> _hourTimeUnitAliases = new(StringComparer.OrdinalIgnoreCase) {
-            "HR",
-            "HOUR",
-            "HOURS",
-            "H"
-        };
 
         private SbmlTimeUnit parseTimeUnit(XmlNode modelNode) {
             // TODO PBK SBML: get time unit from SBML model
@@ -194,6 +212,34 @@ namespace MCRA.Utils.SBML {
                 }
             }
             return results;
+        }
+
+        private List<SbmlReaction> parseReactions(XmlNode modelNode) {
+            var result = new List<SbmlReaction>();
+            var nodeList = modelNode.SelectNodes("descendant::ls:listOfReactions/ls:reaction", _xmlNamespaceManager);
+            var enumerator = nodeList.GetEnumerator();
+            while (enumerator.MoveNext()) {
+                var reactionNode = enumerator.Current as XmlNode;
+                if (reactionNode != null) {
+                    var reactants = reactionNode
+                        .SelectNodes($"descendant::ls:listOfReactants/ls:speciesReference", _xmlNamespaceManager)
+                        .Cast<XmlNode>()
+                        .Select(r => r.Attributes["species"].InnerText)
+                        .ToList();
+                    var products = reactionNode
+                        .SelectNodes($"descendant::ls:listOfProducts/ls:speciesReference", _xmlNamespaceManager)
+                        .Cast<XmlNode>()
+                        .Select(r => r.Attributes["species"].InnerText)
+                        .ToList();
+                    var record = new SbmlReaction {
+                        Id = reactionNode.Attributes["id"].InnerText,
+                        Products = products,
+                        Reactants = reactants
+                    };
+                    result.Add(record);
+                }
+            }
+            return result;
         }
 
         private List<string> parseElementAnnotation(XmlNode node, string metaId, string qualifier) {

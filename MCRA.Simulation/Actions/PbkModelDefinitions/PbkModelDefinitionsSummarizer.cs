@@ -42,7 +42,7 @@ namespace MCRA.Simulation.Actions.PbkModelDefinitions {
         }
 
         private static void summarizeSbmlModelsOverview(SectionHeader header, List<PbkModelDefinition> sbmlPbkModelDefinitions, int order) {
-            var section = new PbkModelDefinitionsOverviewSummarySection();
+            var section = new PbkModelDefinitionsOverviewSection();
             section.Summarize(sbmlPbkModelDefinitions);
             var subHeader = header.AddSubSectionHeaderFor(section, "Overview", order);
             subHeader.SaveSummarySection(section);
@@ -65,8 +65,8 @@ namespace MCRA.Simulation.Actions.PbkModelDefinitions {
         ) {
             var subOrder = 0;
             {
-                var section = new PbkModelDefinitionStateVariablesSummarySection();
-                var subHeader = header.AddSubSectionHeaderFor(section, "State variables", subOrder++);
+                var section = new PbkModelDefinitionSummarySection();
+                var subHeader = header.AddSubSectionHeaderFor(section, "Compartments", subOrder++);
                 section.Summarize(modelDefinition);
                 subHeader.SaveSummarySection(section);
             }

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class PbkModelDefinitionSummaryRecordRecord {
+    public sealed class PbkModelDefinitionSummaryRecord {
 
         [Description("The PBK model code.")]
         [DisplayName("Model code")]
@@ -34,6 +34,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [Description("Inhalation input compartment.")]
         [DisplayName("Inhalation input compartment")]
         public string InhalationInpputCompartment { get; set; }
+
 
     }
 }

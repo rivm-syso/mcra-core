@@ -3,9 +3,9 @@ using MCRA.General;
 using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class PbkModelDefinitionsOverviewSummarySection : SummarySection {
+    public sealed class PbkModelDefinitionsOverviewSection : SummarySection {
 
-        public List<PbkModelDefinitionSummaryRecordRecord> Records { get; set; } = [];
+        public List<PbkModelDefinitionSummaryRecord> Records { get; set; } = [];
 
         public void Summarize(ICollection<PbkModelDefinition> pbkModelDefinitions) {
             foreach (var definition in pbkModelDefinitions) {
@@ -27,7 +27,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     var exposureRouteStrings = def.GetExposureRoutes()
                         .Select(r => r.GetShortDisplayName())
                         .ToList();
-                    var record = new PbkModelDefinitionSummaryRecordRecord() {
+                    var record = new PbkModelDefinitionSummaryRecord() {
                         Code = definition.IdModelDefinition,
                         Name = definition.Name,
                         Description = definition.Description,
