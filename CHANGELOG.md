@@ -1,5 +1,20 @@
 # Change Log
 
+## Version 10.2.7 (2025-11-02)
+
+### Added
+
+- Add option for defining within bin exposure (#2127)
+- Add substances exclude list to active substance filtering, sets membership to 0 (#2254)
+- Add initial implementation of dynamic age/BW scaling in lifetime PBK simulations
+
+### Fixed
+
+- Risks module: exposure percentiles visible in nominal, but invisible in uncertainty run (#2290)
+- No metadata for individual loop task output reports (#2292)
+- Correct loading and usage of substance-generic processing factors (#2293)
+- Update concentrations action to also treat substance translations of the focal food/substance combinations as authorised (#2295)
+
 ## Version 10.2.6 (2025-10-10)
 
 ### Added
