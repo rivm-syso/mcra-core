@@ -17,9 +17,8 @@ namespace MCRA.Simulation.OutputGeneration {
             var records = new List<PbkModelDefinitionSpeciesSummaryRecord>();
             var sbmlModel = modelDefinition.KineticModelDefinition.SbmlModel;
             if (sbmlModel != null) {
-                var compartmentsLookup = sbmlModel.Compartments.ToDictionary(r => r.Id);
-                foreach (var species in sbmlModel.Species) {
-                    var hasCompartment = compartmentsLookup.TryGetValue(species.Compartment, out var compartment);
+                foreach (var species in sbmlModel.Species.Values) {
+                    var hasCompartment = sbmlModel.Compartments.TryGetValue(species.Compartment, out var compartment);
                     var matrix = hasCompartment ? compartment.GetBiologicalMatrix() : BiologicalMatrix.Undefined;
                     var record = new PbkModelDefinitionSpeciesSummaryRecord() {
                         SpeciesCode = species.Id,

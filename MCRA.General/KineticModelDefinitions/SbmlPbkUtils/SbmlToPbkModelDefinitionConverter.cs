@@ -6,29 +6,33 @@ namespace MCRA.General.Sbml {
     public class SbmlToPbkModelDefinitionConverter {
 
         public KineticModelDefinition Convert(SbmlModel sbmlModel) {
-            if (sbmlModel.TimeUnit == SbmlTimeUnit.NotSpecified) {
-                throw new PbkModelException($"No time unit specified for model {sbmlModel.Id}.");
+            if (string.IsNullOrEmpty(sbmlModel.TimeUnits)) {
+                throw new PbkModelException($"Error reading model [{sbmlModel.Id}]: model time unit not specified.");
+            }
+            if (!sbmlModel.UnitDefinitions.TryGetValue(sbmlModel.TimeUnits, out var timeUnits)) {
+                throw new PbkModelException($"Error reading model [{sbmlModel.Id}]: model time unit not in unit definitions.");
             }
             if (sbmlModel.Compartments.Count == 0) {
-                throw new PbkModelException($"Model {sbmlModel.Id} does not contain any compartment.");
+                throw new PbkModelException($"Error reading model [{sbmlModel.Id}]: model does not contain any compartment.");
             }
             if (sbmlModel.Species.Count == 0) {
-                throw new PbkModelException($"Model {sbmlModel.Id} does not contain any species.");
+                throw new PbkModelException($"Error reading model [{sbmlModel.Id}]: model does not contain any species.");
             }
+            var timeUnit = sbmlModel.GetModelTimeUnit();
 
             var result = new KineticModelDefinition {
                 Id = sbmlModel.Id,
                 Name = sbmlModel.Name ?? sbmlModel.Id,
                 Format = KineticModelType.SBML,
                 EvaluationFrequency = 1,
-                Resolution = sbmlModel.TimeUnit.ToTimeUnit(),
+                Resolution = timeUnit,
                 SbmlModel = sbmlModel
             };
 
             var inputCompartments = Enum.GetValues<ExposureRoute>()
                 .Select(r => (
                     route: r,
-                    compartment: sbmlModel.Compartments
+                    compartment: sbmlModel.Compartments.Values
                         .Select(c => (compartment: c, priority: c.GetPriority(r)))
                         .Where(c => c.priority > 0)
                         .OrderByDescending(c => c.priority)
@@ -38,7 +42,7 @@ namespace MCRA.General.Sbml {
                 .Where(r => r.compartment != null)
                 .ToDictionary(r => r.compartment.Id);
 
-            var inputSpecies = sbmlModel.Species
+            var inputSpecies = sbmlModel.Species.Values
                 .Where(r => inputCompartments.ContainsKey(r.Compartment))
                 .ToList();
             if (inputSpecies.Count == 0) {
@@ -46,13 +50,12 @@ namespace MCRA.General.Sbml {
             }
 
             var unitsDictionary = sbmlModel.UnitDefinitions;
-            var compartmentsLookup = sbmlModel.Compartments.ToDictionary(r => r.Id, StringComparer.OrdinalIgnoreCase);
             result.Forcings = inputSpecies
                 .Select(r => {
                     var amountUnit = unitsDictionary[r.SubstanceUnits].ToSubstanceAmountUnit();
-                    var concentrationMassUnit = unitsDictionary[compartmentsLookup[r.Compartment].Units].ToConcentrationMassUnit();
+                    var concentrationMassUnit = unitsDictionary[sbmlModel.Compartments[r.Compartment].Units].ToConcentrationMassUnit();
                     var doseUnit = $"{amountUnit.GetShortDisplayName()}/{concentrationMassUnit.GetShortDisplayName()}";
-                    var route = compartmentsLookup[r.Compartment].GetExposureRouteType();
+                    var route = sbmlModel.Compartments[r.Compartment].GetExposureRouteType();
                     var result = new KineticModelInputDefinition() {
                         Id = r.Id,
                         Name = r.Name,
@@ -71,10 +74,10 @@ namespace MCRA.General.Sbml {
                 };
             }
 
-            result.Outputs = sbmlModel.Species
-                .GroupBy(r => compartmentsLookup[r.Compartment].Id)
+            result.Outputs = sbmlModel.Species.Values
+                .GroupBy(r => r.Compartment)
                 .Select(r => {
-                    var compartment = compartmentsLookup[r.Key];
+                    var compartment = sbmlModel.Compartments[r.Key];
                     var amountUnit = unitsDictionary[r.First().SubstanceUnits].ToSubstanceAmountUnit();
                     if (string.IsNullOrEmpty(compartment.Units)) {
                         throw new PbkModelException($"No unit specified for compartment [{r.Key}].");
@@ -98,7 +101,7 @@ namespace MCRA.General.Sbml {
                 })
                 .ToList();
 
-            result.Parameters = sbmlModel.Parameters
+            result.Parameters = sbmlModel.Parameters.Values
                 .Select((r, ix) => new KineticModelParameterDefinition() {
                     Id = r.Id,
                     IsInternalParameter = !r.IsConstant,
@@ -112,7 +115,7 @@ namespace MCRA.General.Sbml {
                 })
                 .ToList();
 
-            result.KineticModelSubstances = sbmlModel.Species
+            result.KineticModelSubstances = sbmlModel.Species.Values
                 .GroupBy(r => r.GetSubstanceId())
                 .Select(g => new KineticModelSubstanceDefinition() {
                     Id = g.Key,

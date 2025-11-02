@@ -19,22 +19,25 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("File name")]
         public string FileName { get; set; }
 
+        [Description("Time resolution of the model.")]
+        [DisplayName("Time resolution")]
+        public string TimeResolution { get; set; }
+
         [Description("Input routes.")]
         [DisplayName("Input routes")]
         public string ExposureRoutes { get; set; }
 
         [Description("Oral input compartment.")]
         [DisplayName("Oral input compartment")]
-        public string OralInpputCompartment { get; set; }
+        public string OralInputCompartment { get; set; }
 
         [Description("Dermal input compartment.")]
         [DisplayName("Dermal input compartment")]
-        public string DermalInpputCompartment { get; set; }
+        public string DermalInputCompartment { get; set; }
 
         [Description("Inhalation input compartment.")]
         [DisplayName("Inhalation input compartment")]
-        public string InhalationInpputCompartment { get; set; }
-
+        public string InhalationInputCompartment { get; set; }
 
     }
 }

@@ -48,6 +48,20 @@ namespace MCRA.General.Sbml {
             return true;
         }
 
+        public static bool IsTimeUnit(this SbmlUnitDefinition unit) {
+            if (unit?.Units == null) {
+                return false;
+            }
+            if (unit.Units.Count != 1) {
+                return false;
+            }
+            var unitPart = unit.Units.Single();
+            if (unitPart.Kind != SbmlUnitKind.Second || unitPart.Exponent != 1) {
+                return false;
+            }
+            return true;
+        }
+
         public static bool IsConcentrationUnit(this SbmlUnitDefinition unit) {
             if (unit?.Units == null) {
                 return false;
@@ -69,6 +83,16 @@ namespace MCRA.General.Sbml {
                 return false;
             }
             return false;
+        }
+
+        public static TimeUnit ToTimeUnit(this SbmlUnitDefinition unit) {
+            if (!IsTimeUnit(unit)) {
+                throw new Exception($"Unit {unit.Id} is not a valid time unit");
+            } else {
+                var unitPart = unit.Units.Single();
+                var result = unitPart.ToTimeUnit();
+                return result;
+            }
         }
 
         public static SubstanceAmountUnit ToSubstanceAmountUnit(this SbmlUnitDefinition unit) {
@@ -98,6 +122,28 @@ namespace MCRA.General.Sbml {
                 };
             }
             throw new NotImplementedException();
+        }
+
+        private static TimeUnit ToTimeUnit(this SbmlUnit unitPart) {
+            if (unitPart == null) {
+                throw new ArgumentNullException(nameof(unitPart));
+            }
+
+            // Only time-based units are valid for conversion
+            if (unitPart.Kind != SbmlUnitKind.Second)
+                return TimeUnit.NotSpecified;
+
+            // Compute effective time multiplier
+            var effectiveMultiplier = (double)unitPart.Multiplier * Math.Pow(10, (double)unitPart.Scale);
+
+            // Match multiplier to TimeUnit
+            return effectiveMultiplier switch {
+                1 => TimeUnit.Seconds,
+                60 => TimeUnit.Minutes,
+                3600 => TimeUnit.Hours,
+                86400 => TimeUnit.Days,
+                _ => TimeUnit.NotSpecified // For unsupported multipliers (e.g., milliseconds, years, etc.)
+            };
         }
 
         private static SubstanceAmountUnit ToSubstanceAmountUnit(this SbmlUnit unitPart) {

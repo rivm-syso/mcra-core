@@ -1,8 +1,5 @@
 ﻿using System.Globalization;
 using System.Xml;
-using DocumentFormat.OpenXml.Office2010.Excel;
-using DocumentFormat.OpenXml.Spreadsheet;
-using DocumentFormat.OpenXml.Wordprocessing;
 using MCRA.Utils.Sbml.Objects;
 
 namespace MCRA.Utils.SBML {
@@ -57,7 +54,9 @@ namespace MCRA.Utils.SBML {
             var name = parseName(modelNode);
 
             var unitDefinitions = parseUnitDefinitions(modelNode).ToDictionary(r => r.Id);
-            var timeUnit = parseTimeUnit(modelNode);
+            var timeUnits = modelNode.Attributes["timeUnits"]?.Value;
+            var substancesUnits = modelNode.Attributes["substancesUnits"]?.Value;
+            var volumeUnits = modelNode.Attributes["volumeUnits"]?.Value;
 
             var assignmentRules = parseAssignmentRules(modelNode);
             var reactions = parseReactions(modelNode);
@@ -68,7 +67,9 @@ namespace MCRA.Utils.SBML {
             var model = new SbmlModel() {
                 Id = id,
                 Name = name,
-                TimeUnit = timeUnit,
+                TimeUnits = timeUnits,
+                SubstancesUnits = substancesUnits,
+                VolumeUnits = volumeUnits,
                 Compartments = compartments,
                 Parameters = parameters,
                 Species = species,
@@ -119,21 +120,7 @@ namespace MCRA.Utils.SBML {
             return modelNode.Attributes["name"]?.Value;
         }
 
-        private SbmlTimeUnit parseTimeUnit(XmlNode modelNode) {
-            // TODO PBK SBML: get time unit from SBML model
-            var timeUnit = modelNode.Attributes["timeUnits"]?.Value;
-            if (_dayTimeUnitAliases.Contains(timeUnit)) {
-                return SbmlTimeUnit.Days;
-            } else if (_hourTimeUnitAliases.Contains(timeUnit)) {
-                return SbmlTimeUnit.Hours;
-            } else if (_secondTimeUnitAliases.Contains(timeUnit)) {
-                return SbmlTimeUnit.Seconds;
-            }
-            // TODO PBK SBML: default?
-            return SbmlTimeUnit.Hours;
-        }
-
-        private List<SbmlModelCompartment> parseCompartments(XmlNode modelNode) {
+        private Dictionary<string, SbmlModelCompartment> parseCompartments(XmlNode modelNode) {
             var result = new List<SbmlModelCompartment>();
             var nodeList = modelNode.SelectNodes("descendant::ls:listOfCompartments/ls:compartment", _xmlNamespaceManager);
             var enumerator = nodeList.GetEnumerator();
@@ -154,10 +141,10 @@ namespace MCRA.Utils.SBML {
                     result.Add(record);
                 }
             }
-            return result;
+            return result.ToDictionary(r => r.Id, StringComparer.OrdinalIgnoreCase);
         }
 
-        private List<SbmlModelSpecies> parseSpecies(XmlNode modelNode) {
+        private Dictionary<string, SbmlModelSpecies> parseSpecies(XmlNode modelNode) {
             var result = new List<SbmlModelSpecies>();
             var nodeList = modelNode.SelectNodes("descendant::ls:listOfSpecies/ls:species", _xmlNamespaceManager);
             var enumerator = nodeList.GetEnumerator();
@@ -182,11 +169,11 @@ namespace MCRA.Utils.SBML {
                     result.Add(record);
                 }
             }
-            return result;
+            return result.ToDictionary(r => r.Id, StringComparer.OrdinalIgnoreCase);
         }
 
-        private List<SbmlModelParameter> parseParameters(XmlNode modelNode) {
-            var results = new List<SbmlModelParameter>();
+        private Dictionary<string, SbmlModelParameter> parseParameters(XmlNode modelNode) {
+            var result = new List<SbmlModelParameter>();
             var nodeList = modelNode.SelectNodes("descendant::ls:listOfParameters/ls:parameter", _xmlNamespaceManager);
             var enumerator = nodeList.GetEnumerator();
             while (enumerator.MoveNext()) {
@@ -208,10 +195,10 @@ namespace MCRA.Utils.SBML {
                     record.BqmIsResources = parseElementAnnotation(node, metaId, "bqmodel:is");
                     record.DefaultValue = double.TryParse(valueString, NumberStyles.Any, NumberFormatInfo.InvariantInfo, out var value) ? value : double.NaN;
                     record.IsConstant = isConstant;
-                    results.Add(record);
+                    result.Add(record);
                 }
             }
-            return results;
+            return result.ToDictionary(r => r.Id, StringComparer.OrdinalIgnoreCase);
         }
 
         private List<SbmlReaction> parseReactions(XmlNode modelNode) {

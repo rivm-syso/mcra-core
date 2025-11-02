@@ -9,14 +9,6 @@
         Mole
     }
 
-    public enum SbmlTimeUnit {
-        NotSpecified = -1,
-        Seconds,
-        Minutes,
-        Hours,
-        Days,
-    }
-
     public static class SbmlUnitKindConverter {
         public static SbmlUnitKind Parse(string str) {
             if (str.Equals("litre", StringComparison.OrdinalIgnoreCase)) {

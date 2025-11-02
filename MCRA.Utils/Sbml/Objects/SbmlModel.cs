@@ -5,13 +5,17 @@
 
         public string Name { get; set; }
 
-        public SbmlTimeUnit TimeUnit { get; set; }
+        public string TimeUnits { get; set; }
 
-        public List<SbmlModelCompartment> Compartments { get; set; }
+        public string VolumeUnits { get; set; }
 
-        public List<SbmlModelParameter> Parameters { get; set; }
+        public string SubstancesUnits { get; set; }
 
-        public List<SbmlModelSpecies> Species { get; set; }
+        public Dictionary<string, SbmlModelCompartment> Compartments { get; set; }
+
+        public Dictionary<string, SbmlModelParameter> Parameters { get; set; }
+
+        public Dictionary<string, SbmlModelSpecies> Species { get; set; }
 
         public List<SbmlModelAssignmentRule> AssignmentRules { get; set; }
 
@@ -20,7 +24,7 @@
         public Dictionary<string, SbmlUnitDefinition> UnitDefinitions { get; set; }
 
         public List<SbmlModelParameter> GetAssignableParameters() {
-            var result = Parameters
+            var result = Parameters.Values
                 .Where(r => !AssignmentRules.Any(ar => ar.Variable == r.Id))
                 .ToList();
             return result;

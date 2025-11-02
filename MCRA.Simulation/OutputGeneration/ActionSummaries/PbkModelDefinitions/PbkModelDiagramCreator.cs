@@ -150,8 +150,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 $"  ];"
             );
 
-            var speciesByCompartment = model.Species.ToLookup(r => r.Compartment);
-            foreach (var compartment in model.Compartments) {
+            var speciesByCompartment = model.Species.Values.ToLookup(r => r.Compartment);
+            foreach (var compartment in model.Compartments.Values) {
                 var matrix = compartment.GetBiologicalMatrix();
                 var compartmentLabel = compartment.Id;
                 sb.AppendLine($"  subgraph cluster_{compartment.Id} {{");
