@@ -27,6 +27,10 @@ namespace MCRA.Simulation.OutputGeneration {
                     records.Add(record);
                 }
                 foreach (var parameter in instance.KineticModelDefinition.Parameters) {
+                    if (parameter.IsInternalParameter) {
+                        // Skip internal parameters
+                        continue;
+                    }
                     if (parameter.SubstanceParameterValues?.Count > 0) {
                         foreach (var substanceParameter in parameter.SubstanceParameterValues) {
                             // Substance dependent parameter splitting out over multiple substances
