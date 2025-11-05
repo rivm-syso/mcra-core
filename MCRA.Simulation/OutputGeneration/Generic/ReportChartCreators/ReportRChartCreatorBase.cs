@@ -28,8 +28,8 @@ namespace MCRA.Simulation.OutputGeneration {
             };
             string result = null;
             Action<RDotNetEngine> closePlot = (rEngine) => {
-                result = rEngine.EvaluateString("s()");
                 rEngine.EvaluateNoReturn("dev.off()");
+                result = rEngine.EvaluateString("s()");
             };
             createPlot(openPlot, closePlot);
             return result;
