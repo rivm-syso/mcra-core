@@ -15,35 +15,17 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             var result = Model.DriverSubstanceTargetStatisticsRecords.OrderByDescending(c => c.CumulativeExposureMedian).ToList();
             //Render HTML
-            var definition = "exposure";
-            var riskType = string.Empty;
-            if (Model.IsRiskMcrPlot) {
-                definition = "risk";
-                if (Model.RiskMetricType == RiskMetricType.HazardExposureRatio) {
-                    riskType = "Risk is defined as hazard/exposure.";
-                } else {
-                    riskType = "Risk is defined as exposure/hazard.";
-                }
-            }
             var description = string.Empty;
-            sb.AppendDescriptionParagraph($"Maximum Cumulative Ratio (MCR) plot: total {definition} / maximum {definition} vs total {definition} (n = {Model.DriverSubstanceTargets.Count}). {riskType}");
-            if (!Model.IsRiskMcrPlot) {
-                sb.AppendDescriptionParagraph($"Exposures are expressed in equivalents of the reference substance. For each {individualDayUnit} the {definition} is cumulated to a total {definition} and divided by the {definition} of the highest contributing substance (MCR).");
-            } else {
-                if (Model.RiskMetricCalculationType == RiskMetricCalculationType.RPFWeighted) {
-                    sb.AppendDescriptionParagraph($"Exposures are expressed in equivalents of the reference substance. For each {individualDayUnit} the {definition} is cumulated to a total {definition} and divided by the {definition} of the highest contributing substance (MCR).");
-                } else {
-                    sb.AppendDescriptionParagraph($"For each {individualDayUnit} the {definition} is calculated as the sum of risk characterisation ratios and divided by the ratio of the highest contributing substance (MCR).");
-                }
-            }
-            sb.AppendDescriptionParagraph($"Ratios above 1 indicate co-exposure, {individualDayUnits} have different colors according to the highest contributing substances.");
-
-            sb.AppendDescriptionParagraph($"The black lines represent the regression lines MCR vs ln(Cumulative {definition}) for each tail.");
+            sb.AppendDescriptionParagraph($"Maximum Cumulative Ratio (MCR) plot: total exposure / maximum exposure vs total exposure " +
+                $"(n = {Model.DriverSubstanceTargets.Count}).");
+            sb.AppendDescriptionParagraph($"Exposures are expressed in equivalents of the reference substance. For each {individualDayUnit} " +
+                $"the exposure is cumulated to a " +
+                $"total exposure and divided by the exposure of the highest contributing substance (MCR).");
+            sb.AppendDescriptionParagraph($"Ratios above 1 indicate co-exposure, {individualDayUnits} have different colors according to " +
+                $"the highest contributing substances.");
+            sb.AppendDescriptionParagraph($"The black lines represent the regression lines MCR vs ln(Cumulative exposure) for each tail.");
             if (Model.MinimumPercentage > 0) {
                 sb.AppendDescriptionParagraph($"Substances with a contribution less than {Model.MinimumPercentage}% are not displayed.");
-            }
-            if (Model.IsRiskMcrPlot) {
-                sb.AppendDescriptionParagraph($"The vertical red line indicates the toxicological threshold value.");
             }
             var panelBuilder = new HtmlTabPanelBuilder();
 
@@ -64,7 +46,6 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                             caption: chartCreator1.Title
                         )
                     );
-
                     var chartCreator2 = new DriverSubstancesChartCreator(Model, Model.Percentiles.Min());
                     panelBuilder.AddPanel(
                         id: "upperChart",
@@ -132,19 +113,19 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 );
             }
 
-            if (!Model.IsRiskMcrPlot) {
-                sb.AppendDescriptionParagraph($"Bivariate distributions statistics for MCR and cumulative {definition} {individualDayUnits}, {individualDayUnits} are grouped by the highest contributing substance. The last column displays for each substance the number of {individualDayUnits} with cumulative exposure > 0 (n = {Model.DriverSubstanceTargets.Count}).");
-                sb.AppendDescriptionParagraph($"Total number of {individualDayUnits} is {Model.DriverSubstanceTargets.Count}.");
-                sb.AppendTable(
-                   Model,
-                   result,
-                   "MCRSubstanceStatisticsTable",
-                   ViewBag,
-                   caption: "Maximum cumulative ratio statistics by substance.",
-                   saveCsv: true,
-                   header: true
-                );
-            }
+            sb.AppendDescriptionParagraph($"Bivariate distributions statistics for MCR and cumulative exposure {individualDayUnits}, {individualDayUnits} are " +
+                $"grouped by the highest contributing substance. The last column displays for each substance the number of {individualDayUnits} with " +
+                $"cumulative exposure > 0 (n = {Model.DriverSubstanceTargets.Count}).");
+            sb.AppendDescriptionParagraph($"Total number of {individualDayUnits} is {Model.DriverSubstanceTargets.Count}.");
+            sb.AppendTable(
+               Model,
+               result,
+               "MCRSubstanceStatisticsTable",
+               ViewBag,
+               caption: "Maximum cumulative ratio statistics by substance.",
+               saveCsv: true,
+               header: true
+            );
         }
     }
 }

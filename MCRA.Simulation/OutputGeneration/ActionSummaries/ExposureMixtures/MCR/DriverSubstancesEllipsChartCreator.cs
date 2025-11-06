@@ -6,12 +6,10 @@ using OxyPlot.Series;
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class DriverSubstancesEllipsChartCreator : DriverCompoundsChartCreatorBase {
 
-        private MaximumCumulativeRatioSection _section;
-        private double? _percentage;
-        private bool _skipPrivacySensitiveOutputs;
-        private string _title;
-        private string _xTitle;
-        private string _definition;
+        private readonly MaximumCumulativeRatioSection _section;
+        private readonly double? _percentage;
+        private readonly bool _skipPrivacySensitiveOutputs;
+        private readonly string _title;
 
         public DriverSubstancesEllipsChartCreator(MaximumCumulativeRatioSection section, bool skipPrivacySensitiveOutputs, double? percentage = null) {
             Height = 400;
@@ -20,11 +18,6 @@ namespace MCRA.Simulation.OutputGeneration {
             _section = section;
             _skipPrivacySensitiveOutputs = skipPrivacySensitiveOutputs;
             _title = _percentage == null ? "(total)" : $"(upper tail {_percentage}%)";
-            _definition = _section.IsRiskMcrPlot ? "risk" : "exposure";
-            var unit = _section.TargetUnit?.GetShortDisplayName() ?? string.Empty;
-            _xTitle = _section.IsRiskMcrPlot
-                        ? (_section.RiskMetricCalculationType == RiskMetricCalculationType.RPFWeighted ? $"Cumulative exposure ({unit})" : "Risk characterisation ratio (E/H)")
-                        : $"Cumulative exposure ({_section.TargetUnit.GetShortDisplayName(TargetUnit.DisplayOption.AppendBiologicalMatrix)})";
         }
 
         public override string ChartId {
@@ -33,20 +26,19 @@ namespace MCRA.Simulation.OutputGeneration {
                 return StringExtensions.CreateFingerprint(_section.SectionId + pictureId + _percentage);
             }
         }
-        public override string Title => $"Using MCR to identify substances that drive cumulative {_definition}, bivariate distributions {_title}.";
+        public override string Title => $"Using MCR to identify substances that drive cumulative exposure, bivariate distributions {_title}.";
 
         public override PlotModel Create() {
-            var xTitle = _xTitle;
             return create(
-            _section.DriverSubstanceTargetStatisticsRecords,
-            _section.DriverSubstanceTargets,
-            _section.RatioCutOff,
-            _section.Percentiles,
-            _section.CumulativeExposureCutOffPercentage,
-            _section.MinimumPercentage,
-            _section.Threshold,
-            xTitle
-        );
+                _section.DriverSubstanceTargetStatisticsRecords,
+                _section.DriverSubstanceTargets,
+                _section.RatioCutOff,
+                _section.Percentiles,
+                _section.CumulativeExposureCutOffPercentage,
+                _section.MinimumPercentage,
+                _section.Threshold,
+                $"Cumulative exposure ({_section.TargetUnit.GetShortDisplayName(TargetUnit.DisplayOption.AppendBiologicalMatrix)})"
+            );
         }
 
         private PlotModel create(

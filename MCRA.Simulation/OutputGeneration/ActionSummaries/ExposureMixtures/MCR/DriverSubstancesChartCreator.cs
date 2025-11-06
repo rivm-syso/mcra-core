@@ -7,11 +7,9 @@ using OxyPlot.Series;
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class DriverSubstancesChartCreator : DriverCompoundsChartCreatorBase {
 
-        private MaximumCumulativeRatioSection _section;
-        private double? _percentage;
-        private string _title;
-        private string _xTitle;
-        private string _definition;
+        private readonly MaximumCumulativeRatioSection _section;
+        private readonly double? _percentage;
+        private readonly string _title;
 
         public DriverSubstancesChartCreator(MaximumCumulativeRatioSection section, double? percentage = null) {
             Height = 400;
@@ -19,23 +17,17 @@ namespace MCRA.Simulation.OutputGeneration {
             _section = section;
             _percentage = percentage;
             _title = _percentage == null ? "(total)" : $"(upper tail {_percentage}%)";
-            _definition = _section.IsRiskMcrPlot ? "risk" : "exposure";
-            var unit = _section.TargetUnit?.GetShortDisplayName() ?? string.Empty;
-            _xTitle = _section.IsRiskMcrPlot
-                ? (_section.RiskMetricCalculationType == RiskMetricCalculationType.RPFWeighted ? $"Cumulative exposure ({unit})" : "Risk characterisation ratio (E/H)")
-                : $"Cumulative exposure ({_section.TargetUnit.GetShortDisplayName(TargetUnit.DisplayOption.AppendBiologicalMatrix)})";
         }
 
         public override string ChartId {
             get {
-                var pictureId = "aaca4f63-9d38-448c-96d2-11373a3931e4";
+                var pictureId = "34525ddd-647e-4bcc-ad02-0195e62d8e2a";
                 return StringExtensions.CreateFingerprint(_section.SectionId + pictureId + _percentage);
             }
         }
-        public override string Title => $"Using MCR to identify substances that drive cumulative {_definition}, scatter distributions {_title}.";
+        public override string Title => $"Using MCR to identify substances that drive cumulative exposure, scatter distributions {_title}.";
 
         public override PlotModel Create() {
-            var xTitle = _xTitle;
             return create(
                 _section.DriverSubstanceTargets,
                 _section.RatioCutOff,
@@ -43,7 +35,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 _section.CumulativeExposureCutOffPercentage,
                 _section.MinimumPercentage,
                 _section.Threshold,
-                xTitle
+                 $"Cumulative exposure ({_section.TargetUnit.GetShortDisplayName(TargetUnit.DisplayOption.AppendBiologicalMatrix)})"
             );
         }
 

@@ -20,10 +20,6 @@ namespace MCRA.Simulation.OutputGeneration {
         public RiskMetricCalculationType RiskMetricCalculationType { get; set; }
         public RiskMetricType RiskMetricType { get; set; }
 
-        /// <summary>
-        /// True for mcr plots based on risk characterisation ratios
-        /// </summary>
-        public bool IsRiskMcrPlot { get; set; }
         public bool SkipPrivacySensitiveOutputs { get; set; }
 
         public void Summarize(
@@ -44,7 +40,6 @@ namespace MCRA.Simulation.OutputGeneration {
             if (exposureApproachType == ExposureApproachType.RiskBased) {
                 RiskBased = true;
             }
-            IsRiskMcrPlot = isRiskMcrPlot;
             TargetUnit = targetUnit;
             Percentiles = percentiles;
             RatioCutOff = ratioCutOff;
@@ -57,6 +52,7 @@ namespace MCRA.Simulation.OutputGeneration {
             DriverSubstanceTargets = [];
             foreach (var item in driverSubstances) {
                 DriverSubstanceTargets.Add(new DriverSubstanceRecord() {
+
                     SubstanceCode = item.Substance.Code,
                     SubstanceName = item.Substance.Name,
                     Ratio = item.MaximumCumulativeRatio,
@@ -65,7 +61,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 });
             }
 
-            DriverSubstanceTargetStatisticsRecords = driverSubstances.GroupBy(gr => (gr.Substance, gr.Target))
+            DriverSubstanceTargetStatisticsRecords = [.. driverSubstances.GroupBy(gr => (gr.Substance, gr.Target))
                 .Select(g => {
                     var logTotalExposure = g.Select(c => Math.Log(c.CumulativeExposure)).ToList();
                     var logRatio = g.Select(c => Math.Log(c.MaximumCumulativeRatio)).ToList();
@@ -82,8 +78,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         Number = logTotalExposure.Count,
                     };
                 })
-                .OrderBy(c => c.CumulativeExposureMedian)
-                .ToList();
+                .OrderBy(c => c.CumulativeExposureMedian)];
         }
 
         public void Summarize(
@@ -95,13 +90,13 @@ namespace MCRA.Simulation.OutputGeneration {
             var coExposures = new List<List<double>>();
             var exposureTranspose = exposureMatrix.Exposures.Transpose();
             foreach (var item in exposureTranspose.Array) {
-                coExposures.Add(item.ToList());
+                coExposures.Add([.. item]);
             }
 
             var substances = exposureMatrix.RowRecords.Values.Select(c => c.Substance).ToList();
-            coExposures = coExposures.Where(c => c.Sum() > 0).OrderByDescending(c => c.Sum()).ToList();
+            coExposures = [.. coExposures.Where(c => c.Sum() > 0).OrderByDescending(c => c.Sum())];
             MCRDrilldownRecords = [];
-            percentiles = percentiles.Order().ToArray();
+            percentiles = [.. percentiles.Order()];
             foreach (var percentage in percentiles) {
                 var take = Convert.ToInt32((100 - percentage) * coExposures.Count / 100);
                 if (take > 0) {

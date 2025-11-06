@@ -2,7 +2,6 @@
 using MCRA.General;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
-using MCRA.Simulation.Actions.HumanMonitoringAnalysis;
 using MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculation;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
 using MCRA.Simulation.Calculators.IntraSpeciesConversion;
@@ -262,13 +261,14 @@ namespace MCRA.Simulation.Actions.Risks {
                 );
 
                 //Maximum cumulative ratio
-                summarizeMcr(
-                    driverSubstances,
-                    referenceDose,
-                    targetUnit,
-                    subOrder,
-                    subHeader
-                );
+                if (_configuration.RiskMetricCalculationType == RiskMetricCalculationType.SumRatios) {
+                    summarizeMcr(
+                        driverSubstances,
+                        referenceDose,
+                        subOrder,
+                        subHeader
+                    );
+                }
 
 
                 // Contributions by substance
@@ -1165,36 +1165,25 @@ namespace MCRA.Simulation.Actions.Risks {
         private void summarizeMcr(
             List<DriverSubstance> driverSubstances,
             IHazardCharacterisationModel referenceDose,
-            TargetUnit targetUnit,
             int subOrder,
             SectionHeader header
         ) {
             if (driverSubstances?.Count > 0) {
                 //Maximum Cumulative Ratio
-                var section = new MaximumCumulativeRatioSection() {
-                    SectionLabel = getSectionLabel(HumanMonitoringAnalysisSections.McrCoExposureSection)
+                var section = new RiskMaximumCumulativeRatioSection() {
+                    SectionLabel = getSectionLabel(RisksSections.McrCoExposureSection)
                 };
                 var subHeader = header.AddSubSectionHeaderFor(
                     section,
                     "Maximum Cumulative Ratio",
                     subOrder++
                 );
-                var threshold = _configuration.RiskMetricCalculationType == RiskMetricCalculationType.RPFWeighted
-                    ? _configuration.ThresholdMarginOfExposure * referenceDose.Value
-                    : _configuration.ThresholdMarginOfExposure;
                 section.Summarize(
                     driverSubstances,
-                    targetUnit,
                     _configuration.McrExposureApproachType,
-                    _configuration.McrPlotRatioCutOff,
-                    _configuration.McrPlotPercentiles.ToArray(),
-                    _configuration.McrCalculationTotalExposureCutOff,
-                    _configuration.McrPlotMinimumPercentage,
                     _configuration.SkipPrivacySensitiveOutputs,
-                    threshold,
-                    _configuration.RiskMetricCalculationType,
-                    _configuration.RiskMetricType,
-                    isRiskMcrPlot: true
+                    _configuration.ThresholdMarginOfExposure,
+                    _configuration.RiskMetricType
                 );
                 subHeader.SaveSummarySection(section);
             }

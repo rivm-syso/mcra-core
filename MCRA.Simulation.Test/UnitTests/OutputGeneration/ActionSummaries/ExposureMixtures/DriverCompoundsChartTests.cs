@@ -1,10 +1,9 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.Utils.Statistics.Histograms;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculation;
 using MCRA.Simulation.OutputGeneration;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MCRA.Utils.Statistics;
+using MCRA.Utils.Statistics.Histograms;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.ExposureMixtures {
     /// <summary>
@@ -20,12 +19,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Exposu
             var seed = 1;
             var rnd = new McraRandomGenerator(seed);
             var nSubst = 5;
-            var substA = new Compound() { Code = "aa", Name = "AA" };
-            var substB = new Compound() { Code = "bb", Name = "BB" };
-            var substC = new Compound() { Code = "cc", Name = "CC" };
-            var substD = new Compound() { Code = "dd", Name = "DD" };
-            var substE = new Compound() { Code = "ee", Name = "EE" };
-            var substF = new Compound() { Code = "ff", Name = "FF" };
+            var substA = new Compound() { Code = "aa" };
+            var substB = new Compound() { Code = "bb" };
+            var substC = new Compound() { Code = "cc" };
+            var substD = new Compound() { Code = "dd" };
+            var substE = new Compound() { Code = "ee" };
+            var substF = new Compound() { Code = "ff" };
             var drivers = new List<DriverSubstance>();
             for (int i = 0; i < 100; i++) {
                 var mcrA = rnd.NextDouble() * nSubst + 1;
@@ -94,12 +93,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Exposu
             var seed = 1;
             var rnd = new McraRandomGenerator(seed);
             var nSubst = 5;
-            var substA = new Compound() { Code = "aa", Name = "AA" };
-            var substB = new Compound() { Code = "bb", Name = "BB" };
-            var substC = new Compound() { Code = "cc", Name = "CC" };
-            var substD = new Compound() { Code = "dd", Name = "DD" };
-            var substE = new Compound() { Code = "ee", Name = "EE" };
-            var substF = new Compound() { Code = "ff", Name = "FF" };
+            var substA = new Compound() { Code = "aa" };
+            var substB = new Compound() { Code = "bb" };
+            var substC = new Compound() { Code = "cc" };
+            var substD = new Compound() { Code = "dd" };
+            var substE = new Compound() { Code = "ee" };
+            var substF = new Compound() { Code = "ff" };
             var drivers = new List<DriverSubstance>();
             for (int i = 0; i < 100; i++) {
                 var mcrA = rnd.NextDouble() * nSubst + 1;
@@ -160,6 +159,109 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Exposu
             AssertIsValidView(section); ;
         }
 
+
+        /// <summary>
+        /// Create charts: HI
+        /// </summary>
+        [TestMethod]
+        public void MCR_HI_Test1() {
+            var seed = 1;
+            var rnd = new McraRandomGenerator(seed);
+            var substances = new List<Compound> {
+                new() { Code = "A" },
+                new() { Code = "B" },
+                new() { Code = "C" },
+                new() { Code = "D" },
+                new() { Code = "E" },
+                new() { Code = "F" },
+            };
+            var drivers = new List<DriverSubstance>();
+            var rfD = 50d;
+            var lognormal = new LogNormalDistribution(-.2, 2);
+            for (int i = 0; i < 100; i++) {
+                var exposure = new List<double>();
+                for (int ii = 0; ii < substances.Count - 2; ii++) {
+                    exposure.Add(lognormal.Draw(rnd) * 1 * (i + 1) / rfD);
+                }
+                //drivers
+                for (int ii = 0; ii < 2; ii++) {
+                    exposure.Add(lognormal.Draw(rnd) * 3 * (i + 1) / rfD);
+                }
+                var cumulative = exposure.Sum();
+                var maximum = exposure.Max();
+                var index = exposure.FindIndex(a => a == maximum);
+                drivers.Add(new DriverSubstance() { Substance = substances[index], MaximumCumulativeRatio = cumulative / maximum, CumulativeExposure = cumulative });
+            }
+
+            var driverSubstances = new List<DriverSubstanceRecord>();
+            foreach (var item in drivers) {
+                driverSubstances.Add(new DriverSubstanceRecord() {
+                    SubstanceCode = item.Substance.Code,
+                    SubstanceName = item.Substance.Name,
+                    Ratio = item.MaximumCumulativeRatio,
+                    CumulativeExposure = item.CumulativeExposure,
+                });
+            }
+            var section = new RiskMaximumCumulativeRatioSection {
+                DriverSubstanceTargets = driverSubstances,
+                RiskMetricType = RiskMetricType.ExposureHazardRatio,
+                Threshold = 1,
+            };
+
+            var chart = new MCRChartCreator(section);
+            RenderChart(chart, $"TestCreateMCR_HI");
+        }
+
+        /// <summary>
+        /// Create charts: MOE
+        /// </summary>
+        [TestMethod]
+        public void MCR_MOE_Test1() {
+            var seed = 1;
+            var rnd = new McraRandomGenerator(seed);
+            var substances = new List<Compound> {
+                new() { Code = "A" },
+                new() { Code = "B" },
+                new() { Code = "C" },
+                new() { Code = "D" },
+                new() { Code = "E" },
+                new() { Code = "F" },
+            };
+            var drivers = new List<DriverSubstance>();
+            var rfD = 5d;
+            var lognormal = new LogNormalDistribution(-.2, 2);
+            for (int i = 0; i < 100; i++) {
+                var exposure = new List<double>();
+                for (int ii = 0; ii < substances.Count - 2; ii++) {
+                    exposure.Add(rfD / (lognormal.Draw(rnd) * 1 * (i + 1)));
+                }
+                //drivers
+                for (int ii = 0; ii < 2; ii++) {
+                    exposure.Add(rfD / (lognormal.Draw(rnd) * 3 * (i + 1)));
+                }
+                var cumulative = exposure.Sum();
+                var maximum = exposure.Max();
+                var index = exposure.FindIndex(a => a == maximum);
+                drivers.Add(new DriverSubstance() { Substance = substances[index], MaximumCumulativeRatio = cumulative / maximum, CumulativeExposure = cumulative });
+            }
+            var driverSubstances = new List<DriverSubstanceRecord>();
+            foreach (var item in drivers) {
+                driverSubstances.Add(new DriverSubstanceRecord() {
+                    SubstanceCode = item.Substance.Code,
+                    SubstanceName = item.Substance.Name,
+                    Ratio = item.MaximumCumulativeRatio,
+                    CumulativeExposure = item.CumulativeExposure,
+                });
+            }
+            var section = new RiskMaximumCumulativeRatioSection {
+                DriverSubstanceTargets = driverSubstances,
+                RiskMetricType = RiskMetricType.HazardExposureRatio,
+                Threshold = 1,
+            };
+
+            var chart = new MCRChartCreator(section);
+            RenderChart(chart, $"TestCreateMCR_MOE");
+        }
         private List<double> getBivariateParameters(List<double> x, List<double> y) {
             var x_muX = new List<double>();
             var y_muY = new List<double>();
