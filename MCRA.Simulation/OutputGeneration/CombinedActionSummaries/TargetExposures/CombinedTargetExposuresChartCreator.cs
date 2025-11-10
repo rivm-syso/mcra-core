@@ -17,7 +17,7 @@ namespace MCRA.Simulation.OutputGeneration {
             double percentile
         ) {
             Width = 700;
-            Height = 100 + section.ExposureModelSummaryRecords.Count * 18;
+            Height = 100 + section.ModelSummaryRecords.Count * 18;
             _section = section;
             _percentile = percentile;
             _palette = CustomPalettes.Monochrome(_section.Percentages.Count, 0.5883, .2, .5, 1, 1, false);
@@ -36,8 +36,8 @@ namespace MCRA.Simulation.OutputGeneration {
             var plotModel = createDefaultPlotModel(title);
 
             var sortPercentage = _percentile;
-            var models = _section.ExposureModelSummaryRecords
-                .OrderBy(r => _section.GetPercentile(r.Id, sortPercentage)?.Risk ?? double.NaN)
+            var models = _section.ModelSummaryRecords
+                .OrderBy(r => _section.GetPercentileRecord(r.Id, sortPercentage)?.Value ?? double.NaN)
                 .ThenByDescending(r => r.Name)
                 .ToList();
 
@@ -72,7 +72,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var idx = 0;
             foreach (var percentile in _section.Percentages) {
                 var items = models
-                    .Select(r => _section.GetPercentile(r.Id, percentile))
+                    .Select(r => _section.GetPercentileRecord(r.Id, percentile))
                     .ToList();
                 if (items.Any(r => r.HasUncertainty)) {
                     var series = new ConfidenceIntervalBarSeries() {
@@ -86,7 +86,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         var r = items[i];
                         if (r != null) {
                             series.Items.Add(new TornadoBarItem() {
-                                BaseValue = r?.UncertaintyMedian ?? r.Risk,
+                                BaseValue = r?.UncertaintyMedian ?? r.Value,
                                 Minimum = r?.UncertaintyLowerBound ?? double.NaN,
                                 Maximum = r?.UncertaintyUpperBound ?? double.NaN,
                                 CategoryIndex = i,
@@ -107,7 +107,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     for (int i = 0; i < items.Count; i++) {
                         var r = items[i];
                         if (r != null) {
-                            points.Add(new ScatterPoint(r.Risk, i, double.NaN, percentile));
+                            points.Add(new ScatterPoint(r.Value, i, double.NaN, percentile));
                         }
                     }
                     series.ItemsSource = points;

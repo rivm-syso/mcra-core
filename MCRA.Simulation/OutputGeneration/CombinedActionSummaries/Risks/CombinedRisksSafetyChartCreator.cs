@@ -14,7 +14,7 @@ namespace MCRA.Simulation.OutputGeneration.CombinedActionSummaries.Risks {
             CombinedRiskPercentilesSection section
         ) {
             Width = 700;
-            Height = 100 + section.ExposureModelSummaryRecords.Count * 18;
+            Height = 100 + section.ModelSummaryRecords.Count * 18;
             _section = section;
         }
 
@@ -46,7 +46,7 @@ namespace MCRA.Simulation.OutputGeneration.CombinedActionSummaries.Risks {
 
             // Boxplot items apparently are added in reverse order, this OrderByDescending ensures the same order
             // as at other places in the output, like the table output.
-            var models = _section.ExposureModelSummaryRecords
+            var models = _section.ModelSummaryRecords
                 .OrderByDescending(r => r.Name)
                 .ToList();
 
@@ -131,16 +131,16 @@ namespace MCRA.Simulation.OutputGeneration.CombinedActionSummaries.Risks {
             var idx = 0;
             foreach (var model in models) {
                 categoryAxis.Labels.Add(model.Name);
-                var records = _section.CombinedExposurePercentileRecords.Where(c => c.IdModel == model.Id).ToList();
+                var records = _section.CombinedPercentileRecords.Where(c => c.IdModel == model.Id).ToList();
                 var hasUncertainty = records.Any(r => r.HasUncertainty);
 
-                var lowerPercentileRecord = _section.GetPercentile(model.Id, _section.LowerPercentile);
-                var upperPercentileRecord = _section.GetPercentile(model.Id, _section.UpperPercentile);
-                var medianRecord = _section.GetPercentile(model.Id, _section.MedianPercentile);
+                var lowerPercentileRecord = _section.GetPercentileRecord(model.Id, _section.LowerPercentile);
+                var upperPercentileRecord = _section.GetPercentileRecord(model.Id, _section.UpperPercentile);
+                var medianRecord = _section.GetPercentileRecord(model.Id, _section.MedianPercentile);
 
-                var boxLow = lowerPercentileRecord?.Risk ?? xLeftMargin;
-                var boxHigh = upperPercentileRecord?.Risk ?? xLeftMargin;
-                var median = medianRecord?.Risk ?? xLeftMargin;
+                var boxLow = lowerPercentileRecord?.Value?? xLeftMargin;
+                var boxHigh = upperPercentileRecord?.Value ?? xLeftMargin;
+                var median = medianRecord?.Value ?? xLeftMargin;
                 var wiskerLow = boxLow;
                 var wiskerHigh = boxHigh;
 

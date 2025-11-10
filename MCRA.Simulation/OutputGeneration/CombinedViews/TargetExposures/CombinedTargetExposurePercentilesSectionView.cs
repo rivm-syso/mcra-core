@@ -5,8 +5,8 @@ using System.Text;
 namespace MCRA.Simulation.OutputGeneration.CombinedViews {
     public class CombinedTargetExposurePercentilesSectionView : SectionView<CombinedTargetExposurePercentilesSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
-            if (Model.Percentages.Any() && Model.ExposureModelSummaryRecords.Any()) {
-                var percentilesLookup = Model.CombinedExposurePercentileRecords.ToLookup(r => r.IdModel);
+            if (Model.Percentages.Count != 0 && Model.ModelSummaryRecords.Count != 0) {
+                var percentilesLookup = Model.CombinedPercentileRecords.ToLookup(r => r.IdModel);
                 var chartCreator = new CombinedTargetExposuresChartCreator(Model, double.NaN);
                 sb.AppendChart(
                     "CombinedExposurePercentilesChart",
@@ -22,11 +22,11 @@ namespace MCRA.Simulation.OutputGeneration.CombinedViews {
                 sb.Append($"<thead><tr>");
                 sb.Append($"<th>Population</th>");
                 foreach (var percentage in Model.Percentages) {
-                    sb.Append($"<th>p{percentage:G3}</th>");
+                    sb.Append($"<th>p{percentage:G4}</th>");
                 }
                 sb.Append($"</tr></thead>");
                 sb.Append($"<tbody>");
-                foreach (var item in Model.ExposureModelSummaryRecords) {
+                foreach (var item in Model.ModelSummaryRecords) {
                     var percentiles = percentilesLookup.Contains(item.Id)
                         ? percentilesLookup[item.Id].ToDictionary(r => r.Percentage)
                         : null;
@@ -37,7 +37,7 @@ namespace MCRA.Simulation.OutputGeneration.CombinedViews {
                             if (value.HasUncertainty) {
                                 sb.Append($"<td>{value.UncertaintyMedian:G3}<br />[{value.UncertaintyLowerBound:G3}, {value.UncertaintyUpperBound:G3}]</td>");
                             } else {
-                                sb.Append($"<td>{value.Risk:G3}</td>");
+                                sb.Append($"<td>{value.Value:G3}</td>");
                             }
                         }
                     }

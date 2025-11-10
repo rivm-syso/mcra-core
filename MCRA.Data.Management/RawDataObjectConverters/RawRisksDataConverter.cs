@@ -55,10 +55,10 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
             int bootstrap,
             IEnumerable<RiskModel> risksModels
         ) {
-            foreach (var item in risksModels) {
-                var percentileRecords = item.RiskPercentiles.Values
+            foreach (var model in risksModels) {
+                var percentileRecords = model.RiskPercentiles.Values
                     .Select((p, ix) => new RawRiskPercentileUncertain() {
-                        idRiskModel = item.Code,
+                        idRiskModel = model.Code,
                         idUncertaintySet = $"{bootstrap}",
                         Percentage = p.Percentage,
                         Risk = p.Risk

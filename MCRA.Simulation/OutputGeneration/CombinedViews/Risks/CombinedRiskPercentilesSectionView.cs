@@ -8,7 +8,7 @@ using MCRA.Utils.ExtensionMethods;
 namespace MCRA.Simulation.OutputGeneration.CombinedViews {
     public class CombinedRiskPercentilesSectionView : SectionView<CombinedRiskPercentilesSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
-            if (Model.AllPercentages.Count != 0 && Model.ExposureModelSummaryRecords.Count != 0) {
+            if (Model.Percentages.Count != 0 && Model.ModelSummaryRecords.Count != 0) {
                 var panelBuilder = new HtmlTabPanelBuilder();
                 var safetyChartCreator = new CombinedRisksSafetyChartCreator(Model);
                 panelBuilder.AddPanel(
@@ -26,14 +26,14 @@ namespace MCRA.Simulation.OutputGeneration.CombinedViews {
                     )
                 );
                 
-                if (Model.CombinedExposurePercentileRecords.First().UncertaintyValues?.Count > 1) {
-
+                if (Model.CombinedPercentileRecords.First().UncertaintyValues?.Count > 1) {
                     foreach (var percentage in Model.DisplayPercentages) {
-                        var violinChartCreator = new CombinedRisksViolinChartCreator(Model, percentage, true, false, false);
+                        var violinChartCreator = new CombinedRisksViolinChartCreator(Model, percentage, 
+                            true, false, false);
                         panelBuilder.AddPanel(
                             id: percentage.ToString(),
-                            title: $"p{percentage:F2}",
-                            hoverText: $"p{percentage:F2}",
+                            title: $"p{percentage}",
+                            hoverText: $"p{percentage}",
                             content: ChartHelpers.Chart(
                                 name: $"CombinedRisksViolinPercentile_{percentage}Chart",
                                 section: Model,
@@ -49,17 +49,17 @@ namespace MCRA.Simulation.OutputGeneration.CombinedViews {
 
                 panelBuilder.RenderPanel(sb);
 
-                var percentilesLookup = Model.CombinedExposurePercentileRecords.ToLookup(r => r.IdModel);
+                var percentilesLookup = Model.CombinedPercentileRecords.ToLookup(r => r.IdModel);
                 sb.Append($"<table class=\"sortable\">");
                 sb.Append($"<caption>Risk characterisation ratio ({Model.RiskMetric.GetShortDisplayName()}) at different percentiles of the risk distribution.</caption>");
                 sb.Append($"<thead><tr>");
                 sb.Append($"<th>Population</th>");
                 foreach (var percentage in Model.DisplayPercentages) {
-                    sb.Append($"<th>p{percentage:F2}</th>");
+                    sb.Append($"<th>p{percentage:G4}</th>");
                 }
                 sb.Append($"</tr></thead>");
                 sb.Append($"<tbody>");
-                foreach (var item in Model.ExposureModelSummaryRecords) {
+                foreach (var item in Model.ModelSummaryRecords) {
                     var percentiles = percentilesLookup.Contains(item.Id)
                         ? percentilesLookup[item.Id].ToDictionary(r => r.Percentage)
                         : null;
@@ -70,7 +70,7 @@ namespace MCRA.Simulation.OutputGeneration.CombinedViews {
                             if (value.HasUncertainty) {
                                 sb.Append($"<td>{value.UncertaintyMedian:G3}<br />[{value.UncertaintyLowerBound:G3}, {value.UncertaintyUpperBound:G3}]</td>");
                             } else {
-                                sb.Append($"<td>{value.Risk:G3}</td>");
+                                sb.Append($"<td>{value.Value:G3}</td>");
                             }
                         }
                     }
