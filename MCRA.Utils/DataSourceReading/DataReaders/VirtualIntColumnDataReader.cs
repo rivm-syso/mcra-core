@@ -24,22 +24,17 @@ namespace MCRA.Utils.DataSourceReading.DataSourceReaders {
         /// <param name="i"></param>
         /// <returns></returns>
         public override int GetInt32(int i) {
-            if (i == 0) {
-                return _virtualColumnValue;
-            }
-            return _internalReader.GetInt32(i - 1);
+            return i == 0 ? _virtualColumnValue : base.GetInt32(i);
         }
 
         /// <summary>
         /// Return whether the specified field is set to null.
+        /// The virtual column is never null
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
         public override bool IsDBNull(int i) {
-            if (i == 0) {
-                return false;
-            }
-            return _internalReader.IsDBNull(i - 1);
+            return i > 0 && base.IsDBNull(i);
         }
     }
 }

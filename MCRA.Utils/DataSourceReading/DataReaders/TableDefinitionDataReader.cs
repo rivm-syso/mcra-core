@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using MCRA.Utils.DataSourceReading.DataReaders;
 
 namespace MCRA.Utils.DataFileReading {
 
@@ -7,9 +8,8 @@ namespace MCRA.Utils.DataFileReading {
     /// based on table definition's column definitions for the specific table and
     /// throws a more descriptive exception.
     /// </summary>
-    public class TableDefinitionDataReader : IDataReader, IDisposable {
+    public class TableDefinitionDataReader : DataReaderBase {
 
-        private readonly IDataReader _internalReader;
         private readonly List<ColumnDefinition> _columnDefinitions;
         private readonly List<string> _columnNames;
         private readonly Dictionary<string, int> _columnIndexes;
@@ -26,8 +26,7 @@ namespace MCRA.Utils.DataFileReading {
             IDataReader internalReader,
             TableDefinition tableDefinition,
             bool useDefinitionColumnNames = false
-        ) {
-            _internalReader = internalReader;
+        ) : base(internalReader) {
             _useDefinitionColumnNames = useDefinitionColumnNames;
             _columnNames = [];
             _columnIndexes = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
@@ -47,22 +46,13 @@ namespace MCRA.Utils.DataFileReading {
         }
 
         /// <summary>
-        /// Gets the column located at the specified index.
-        /// </summary>
-        /// <param name="i"></param>
-        /// <returns></returns>
-        public object this[int i] {
-            get { return GetValue(i); }
-        }
-
-        /// <summary>
         /// Get the value of the column with the specified name.
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public object this[string name] {
+        public override object this[string name] {
             get {
-                var idx = _internalReader.GetOrdinal(_internalColumnNameMappings[name]);
+                var idx = base.GetOrdinal(_internalColumnNameMappings[name]);
                 return this[idx];
             }
         }
@@ -75,141 +65,9 @@ namespace MCRA.Utils.DataFileReading {
         /// <summary>
         ///
         /// </summary>
-        public int Depth => _internalReader.Depth;
-
-        /// <summary>
-        ///
-        /// </summary>
-        public bool IsClosed => _internalReader.IsClosed;
-
-        /// <summary>
-        ///
-        /// </summary>
-        public int RecordsAffected => _internalReader.RecordsAffected;
-
-        /// <summary>
-        ///
-        /// </summary>
-        public int FieldCount => _internalReader.FieldCount;
-
-        /// <summary>
-        ///
-        /// </summary>
-        public void Close() {
-            _internalReader.Close();
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public void Dispose() {
-            _internalReader.Dispose();
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        public bool GetBoolean(int i) {
-            return _internalReader.GetBoolean(i);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="i"></param>
-        /// <returns></returns>
-        public byte GetByte(int i) {
-            return _internalReader.GetByte(i);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="i"></param>
-        /// <param name="fieldOffset"></param>
-        /// <param name="buffer"></param>
-        /// <param name="bufferoffset"></param>
-        /// <param name="length"></param>
-        /// <returns></returns>
-        public long GetBytes(int i, long fieldOffset, byte[] buffer, int bufferoffset, int length) {
-            return _internalReader.GetBytes(i, fieldOffset, buffer, bufferoffset, length);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="i"></param>
-        /// <returns></returns>
-        public char GetChar(int i) {
-            return _internalReader.GetChar(i);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="i"></param>
-        /// <param name="fieldOffset"></param>
-        /// <param name="buffer"></param>
-        /// <param name="bufferoffset"></param>
-        /// <param name="length"></param>
-        /// <returns></returns>
-        public long GetChars(int i, long fieldOffset, char[] buffer, int bufferoffset, int length) {
-            return _internalReader.GetChars(i, fieldOffset, buffer, bufferoffset, length);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="i"></param>
-        /// <returns></returns>
-        public IDataReader GetData(int i) {
-            return _internalReader.GetData(i);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="i"></param>
-        /// <returns></returns>
-        public string GetDataTypeName(int i) {
-            return _internalReader.GetDataTypeName(i);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="i"></param>
-        /// <returns></returns>
-        public DateTime GetDateTime(int i) {
-            return _internalReader.GetDateTime(i);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="i"></param>
-        /// <returns></returns>
-        public decimal GetDecimal(int i) {
-            return _internalReader.GetDecimal(i);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="i"></param>
-        /// <returns></returns>
-        public double GetDouble(int i) {
-            return _internalReader.GetDouble(i);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="i"></param>
-        /// <returns></returns>
-        public Type GetFieldType(int i) {
+        public override Type GetFieldType(int i) {
             if (_columnDefinitions[i] != null) {
                 var type = FieldTypeConverter.ToSystemType(_columnDefinitions[i].GetFieldType());
                 if (!_columnDefinitions[i].Required && !type.IsClass && Nullable.GetUnderlyingType(type) == null) {
@@ -217,7 +75,7 @@ namespace MCRA.Utils.DataFileReading {
                 }
                 return type;
             }
-            return _internalReader.GetFieldType(i);
+            return base.GetFieldType(i);
         }
 
         /// <summary>
@@ -225,72 +83,20 @@ namespace MCRA.Utils.DataFileReading {
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        public float GetFloat(int i) {
-            return _internalReader.GetFloat(i);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="i"></param>
-        /// <returns></returns>
-        public Guid GetGuid(int i) {
-            return _internalReader.GetGuid(i);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="i"></param>
-        /// <returns></returns>
-        public short GetInt16(int i) {
-            return _internalReader.GetInt16(i);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="i"></param>
-        /// <returns></returns>
-        public int GetInt32(int i) {
-            return _internalReader.GetInt32(i);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="i"></param>
-        /// <returns></returns>
-        public long GetInt64(int i) {
-            return _internalReader.GetInt64(i);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="i"></param>
-        /// <returns></returns>
-        public string GetName(int i) {
-            return _columnNames[i];
-        }
+        public override string GetName(int i) => _columnNames[i];
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public int GetOrdinal(string name) {
-            if (_columnIndexes.TryGetValue(name, out var index)) {
-                return index;
-            }
-            return -1;
-        }
+        public override int GetOrdinal(string name) => _columnIndexes.TryGetValue(name, out var index) ? index : -1;
 
         /// <summary>
         /// Build schema table based on column definitions
         /// </summary>
         /// <returns></returns>
-        public DataTable GetSchemaTable() {
+        public override DataTable GetSchemaTable() {
             DataTable schemaTable = new DataTable();
             schemaTable.Columns.Add("ColumnName", typeof(string));
             schemaTable.Columns.Add("ColumnOrdinal", typeof(int));
@@ -298,14 +104,14 @@ namespace MCRA.Utils.DataFileReading {
             schemaTable.Columns.Add("DataType", typeof(Type));
             schemaTable.Columns.Add("AllowDbNull", typeof(bool));
             schemaTable.Columns.Add("IsUnique", typeof(bool));
-            for (int i = 0; i < _internalReader.FieldCount; i++) {
+            for (int i = 0; i < base.FieldCount; i++) {
                 schemaTable.Rows.Add(
                     _columnNames[i],
                     i,
                     _columnDefinitions[i]?.FieldSize ?? -1,
                     _columnDefinitions[i] != null
                         ? FieldTypeConverter.ToSystemType(_columnDefinitions[i].GetFieldType())
-                        : _internalReader.GetFieldType(i),
+                        : base.GetFieldType(i),
                     !_columnDefinitions[i]?.Required ?? true,
                     _columnDefinitions[i]?.IsUnique ?? false
                 );
@@ -318,16 +124,14 @@ namespace MCRA.Utils.DataFileReading {
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        public string GetString(int i) {
-            return getCheckedStringValue(i);
-        }
+        public override string GetString(int i) => getCheckedStringValue(i);
 
         /// <summary>
         /// Gets the value of the specified field.
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        public object GetValue(int i) {
+        public override object GetValue(int i) {
             var coldef = _columnDefinitions[i];
             if (coldef != null) {
 
@@ -354,7 +158,7 @@ namespace MCRA.Utils.DataFileReading {
                     _ => throw new Exception($"Unknown field type {fieldType}."),
                 };
             } else {
-                return _internalReader.GetValue(i);
+                return base.GetValue(i);
             }
         }
 
@@ -363,7 +167,7 @@ namespace MCRA.Utils.DataFileReading {
         /// </summary>
         /// <param name="values"></param>
         /// <returns></returns>
-        public int GetValues(object[] values) {
+        public override int GetValues(object[] values) {
             for (int i = 0; i < values.Length; i++) {
                 values[i] = GetValue(i);
             }
@@ -371,29 +175,12 @@ namespace MCRA.Utils.DataFileReading {
         }
 
         /// <summary>
-        /// Checks if the value at the specified index is DBNull.
-        /// </summary>
-        /// <param name="i"></param>
-        /// <returns></returns>
-        public bool IsDBNull(int i) {
-            return _internalReader.IsDBNull(i);
-        }
-
-        /// <summary>
-        /// Advances the data reader to the next result.
-        /// </summary>
-        /// <returns></returns>
-        public bool NextResult() {
-            return _internalReader.NextResult();
-        }
-
-        /// <summary>
         /// Advances the IDataReader to the next record.
         /// </summary>
         /// <returns></returns>
-        public bool Read() {
+        public override bool Read() {
             RowCount++;
-            var result = _internalReader.Read();
+            var result = base.Read();
             if (result) {
                 var values = new object[FieldCount];
                 GetValues(values);
@@ -412,7 +199,7 @@ namespace MCRA.Utils.DataFileReading {
         }
 
         private string getCheckedStringValue(int i) {
-            var value = _internalReader.GetValue(i).ToString();
+            var value = base.GetValue(i).ToString();
             if (_columnDefinitions[i] != null) {
                 if (string.IsNullOrWhiteSpace(value)) {
                     if (_columnDefinitions[i].Required) {

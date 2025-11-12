@@ -1,13 +1,13 @@
-﻿using MCRA.Utils.DataSourceReading.ValueConversion;
-using System.Data;
+﻿using System.Data;
 using System.Text;
+using MCRA.Utils.DataSourceReading.ValueConversion;
 
 namespace MCRA.Utils.DataFileReading {
 
     /// <summary>
     /// This is a csv data reader that implements the IDataReader interface.
     /// </summary>
-    public class CsvDataReader : IDataReader, IDisposable {
+    public class CsvDataReader : IDataReader {
 
         private readonly ValueConverterCollection _valueConverters;
 
@@ -15,7 +15,6 @@ namespace MCRA.Utils.DataFileReading {
         private readonly char _comment = '#';
 
         private readonly bool _firstRowHeader = true;
-        private readonly bool _trimUnquotedFields = true;
 
         private readonly int _csvColumnCount = 0;
         private readonly string[] _headers;
@@ -160,16 +159,6 @@ namespace MCRA.Utils.DataFileReading {
         /// </summary>
         public int RecordsAffected {
             get { return _rowCount; }
-        }
-
-        /// <summary>
-        /// Disposes the reader.
-        /// </summary>
-        public void Dispose() {
-            if (_stream != null) {
-                _stream.Dispose();
-                _stream = null;
-            }
         }
 
         /// <summary>
@@ -495,92 +484,6 @@ namespace MCRA.Utils.DataFileReading {
         /// Reads a row of data from a Csv file
         /// </summary>
         /// <returns>array of strings from csv line</returns>
-        private string[] readRow(string line) {
-            var values = new List<string>();
-            if (string.IsNullOrEmpty(line)) {
-                return [];
-            }
-
-            int pos = 0;
-            int rows = 0;
-            while (pos < line.Length) {
-                string value;
-
-                // Skip leading whitespaces
-                if (_trimUnquotedFields) {
-                    while (pos < line.Length && char.IsWhiteSpace(line[pos])) {
-                        pos++;
-                    }
-                    if (pos >= line.Length) {
-                        continue;
-                    }
-                }
-
-                // Special handling for quoted field
-                if (line[pos] == '"') {
-                    // Skip initial quote
-                    pos++;
-
-                    // Parse quoted value
-                    int start = pos;
-                    while (pos < line.Length) {
-                        // Test for quote character
-                        if (line[pos] == '"') {
-                            // Found one
-                            pos++;
-
-                            // If two quotes together, keep one
-                            // Otherwise, indicates end of value
-                            if (pos >= line.Length || line[pos] != '"') {
-                                pos--;
-                                break;
-                            }
-                        }
-                        pos++;
-                    }
-                    value = line.Substring(start, pos - start);
-                    value = value.Replace("\"\"", "\"");
-                } else {
-                    // Parse unquoted value
-                    int start = pos;
-                    while (pos < line.Length && line[pos] != _delimiter) {
-                        pos++;
-                    }
-
-                    value = line.Substring(start, pos - start);
-                    if (_trimUnquotedFields) {
-                        value = value.Trim();
-                    }
-                }
-                // Add field to list
-                if (rows < values.Count) {
-                    values[rows] = value;
-                } else {
-                    values.Add(value);
-                }
-
-                rows++;
-
-                // Eat up to and including next comma
-                while (pos < line.Length && line[pos] != _delimiter) {
-                    pos++;
-                }
-
-                if (pos < line.Length) {
-                    pos++;
-                }
-            }
-            // Empty columns at end of line string: fill with empty string values
-            while (values.Count < _csvColumnCount) {
-                values.Add(string.Empty);
-            }
-            return values.ToArray();
-        }
-
-        /// <summary>
-        /// Reads a row of data from a Csv file
-        /// </summary>
-        /// <returns>array of strings from csv line</returns>
         /// <param name="line"></param>
         /// <param name="delimiter"></param>
         /// <param name="comment"></param>
@@ -597,7 +500,7 @@ namespace MCRA.Utils.DataFileReading {
                 string value;
 
                 // Skip leading whitespaces
-                if (char.IsWhiteSpace(line[pos]) && pos != line.Length -1) {
+                if (char.IsWhiteSpace(line[pos]) && pos != line.Length - 1) {
                     pos++;
                     continue;
                 }
@@ -647,7 +550,7 @@ namespace MCRA.Utils.DataFileReading {
                 }
 
                 // If the last character is a delimiter, then add empty string and break
-                if (pos == line.Length -1 && line[pos] == delimiter) {
+                if (pos == line.Length - 1 && line[pos] == delimiter) {
                     values.Add(string.Empty);
                     break;
                 }
@@ -673,5 +576,28 @@ namespace MCRA.Utils.DataFileReading {
                 headercollection.Add(_headers[i]);
             }
         }
+
+        #region Disposable
+        private bool _disposed;
+
+        ~CsvDataReader() {
+            Dispose(false);
+        }
+
+        protected virtual void Dispose(bool disposing) {
+            if (!_disposed) {
+                if (disposing) {
+                    Close();
+                }
+                _disposed = true;
+            }
+        }
+
+        public void Dispose() {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 }

@@ -24,10 +24,9 @@ namespace MCRA.Utils.DataSourceReading.DataSourceReaders {
         /// <param name="i"></param>
         /// <returns></returns>
         public override string GetString(int i) {
-            if (i == 0) {
-                return _virtualColumnValue;
-            }
-            return _internalReader.GetString(i - 1);
+            return i == 0
+                ? _virtualColumnValue
+                : base.GetString(i);
         }
 
         /// <summary>
@@ -36,10 +35,9 @@ namespace MCRA.Utils.DataSourceReading.DataSourceReaders {
         /// <param name="i"></param>
         /// <returns></returns>
         public override bool IsDBNull(int i) {
-            if (i == 0) {
-                return string.IsNullOrEmpty(_virtualColumnValue);
-            }
-            return _internalReader.IsDBNull(i - 1);
+            return i == 0
+                ? string.IsNullOrEmpty(_virtualColumnValue)
+                : base.IsDBNull(i);
         }
     }
 }
