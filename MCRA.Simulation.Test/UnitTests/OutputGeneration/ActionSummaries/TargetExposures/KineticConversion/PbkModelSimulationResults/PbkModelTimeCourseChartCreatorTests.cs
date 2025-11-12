@@ -127,18 +127,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     random,
                     new ProgressState()
                 );
-            var individualIds = PbkModelTimeCourseSection
-                 .GetDrilldownIndividualIds(
-                    targetExposures,
-                    substances,
-                    substances.ToDictionary(r => r, r => .1),
-                    substances.ToDictionary(r => r, r => .1),
-                    95,
-                    targetUnit
-                );
             var drillDownRecords = targetExposures
-                .Where(c => individualIds.Contains(c.SimulatedIndividual.Id))
                 .Cast<AggregateIndividualExposure>()
+                .OrderByDescending(r => r.GetSubstanceExposure(targetUnit.Target, substance))
+                .Take(9)
                 .ToList();
 
             var section = new PbkModelTimeCourseSection();
@@ -291,18 +283,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     random,
                     new ProgressState()
                 );
-            var individualIds = PbkModelTimeCourseSection
-                 .GetDrilldownIndividualIds(
-                    targetExposures,
-                    substances,
-                    substances.ToDictionary(r => r, r => .1),
-                    substances.ToDictionary(r => r, r => .1),
-                    95,
-                    targetUnit
-                );
 
             var drillDownRecords = targetExposures
-                .Where(c => individualIds.Contains(c.SimulatedIndividual.Id))
+                .OrderByDescending(r => r.GetSubstanceExposure(targetUnit.Target, substance))
+                .Take(9)
                 .ToList();
             var section = new PbkModelTimeCourseSection();
             section.Summarize(

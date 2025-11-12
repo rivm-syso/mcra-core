@@ -1394,20 +1394,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     .ToList()
                 : [.. result.AggregateIndividualExposures];
 
-            var drilldownIndividualIds = PbkModelTimeCourseSection
-                .GetDrilldownIndividualIds(
-                    allTargetExposures,
-                    data.ActiveSubstances,
-                    data.CorrectedRelativePotencyFactors,
-                    data.MembershipProbabilities,
-                    _configuration.VariabilityDrilldownPercentage,
-                    result.TargetExposureUnit
-                );
-
-            var selectedTargetExposures = allTargetExposures
-                .Where(c => drilldownIndividualIds.Contains(c.SimulatedIndividual.Id))
-                .ToList();
-
             if (substances.Count == 1) {
                 // Single substance
                 var substance = substances.First();
@@ -1416,8 +1402,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         data.ExposureRoutes,
                         data.KineticModelInstances.Single(c => c.IsHumanModel && c.Substances.Contains(substance)),
                         substance,
-                        selectedTargetExposures,
-                        [data.TargetExposureUnit],
+                        allTargetExposures,
+                        data.TargetExposureUnit,
                         result.ExternalExposureUnit,
                         header,
                         $"PBK model simulations",
@@ -1439,8 +1425,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         data.ExposureRoutes,
                         calculator.KineticModelInstance,
                         calculator.Substance,
-                        selectedTargetExposures,
-                        [data.TargetExposureUnit],
+                        allTargetExposures,
+                        data.TargetExposureUnit,
                         result.ExternalExposureUnit,
                         subHeader,
                         $"{calculator.Substance.Name}",
@@ -1486,8 +1472,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             ICollection<ExposureRoute> routes,
             KineticModelInstance kineticModelInstance,
             Compound substance,
-            ICollection<AggregateIndividualExposure> selectedTargetExposures,
-            ICollection<TargetUnit> targetUnits,
+            ICollection<AggregateIndividualExposure> targetExposures,
+            TargetUnit targetUnit,
             ExposureUnitTriple externalExposureUnit,
             SectionHeader header,
             string title,
@@ -1499,12 +1485,18 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 title: title,
                 order: subOrder++
             );
+
+            var selectedTargetExposures = targetExposures
+                .OrderByDescending(c => c.GetSubstanceExposure(targetUnit.Target, substance))
+                .Take(9)
+                .ToList();
+
             section.Summarize(
                 kineticModelInstance,
                 selectedTargetExposures,
                 routes,
                 substance,
-                targetUnits,
+                [targetUnit],
                 externalExposureUnit,
                 _configuration.NonStationaryPeriodInDays
             );
