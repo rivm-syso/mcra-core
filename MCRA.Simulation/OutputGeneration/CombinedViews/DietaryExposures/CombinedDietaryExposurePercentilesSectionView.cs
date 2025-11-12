@@ -49,7 +49,7 @@ namespace MCRA.Simulation.OutputGeneration.CombinedViews {
                 panelBuilder.RenderPanel(sb);
 
                 sb.Append($"<table class=\"sortable\">");
-                sb.Append($"<caption>Exposures ({Model.ExposureUnit.GetShortDisplayName()}) at different percentiles of " +
+                sb.Append($"<caption>Exposures ({Model.ExposureUnit.GetDisplayName()}) at different percentiles of " +
                     $"the exposure distribution.</caption>");
                 sb.Append($"<thead><tr>");
                 sb.Append($"<th>Population</th>");
@@ -67,9 +67,9 @@ namespace MCRA.Simulation.OutputGeneration.CombinedViews {
                     foreach (var percentage in Model.Percentages) {
                         if (percentiles?.TryGetValue(percentage, out var value) ?? false) {
                             if (value.HasUncertainty) {
-                                sb.Append($"<td>{value.UncertaintyMedian:G3}<br />[{value.UncertaintyLowerBound:G3}, {value.UncertaintyUpperBound:G3}]</td>");
+                                sb.Append($"<td>{value.UncertaintyMedian:G4}<br />[{value.UncertaintyLowerBound:G4}, {value.UncertaintyUpperBound:G4}]</td>");
                             } else {
-                                sb.Append($"<td>{value.Value:G3}</td>");
+                                sb.Append($"<td>{value.Value:G4}</td>");
                             }
                         }
                     }

@@ -51,7 +51,7 @@ namespace MCRA.Simulation.OutputGeneration.CombinedViews {
 
                 var percentilesLookup = Model.CombinedPercentileRecords.ToLookup(r => r.IdModel);
                 sb.Append($"<table class=\"sortable\">");
-                sb.Append($"<caption>Risk characterisation ratio ({Model.RiskMetric.GetShortDisplayName()}) at different percentiles of the risk distribution.</caption>");
+                sb.Append($"<caption>Risk characterisation ratio ({Model.RiskMetric.GetDisplayName()}) at different percentiles of the risk distribution.</caption>");
                 sb.Append($"<thead><tr>");
                 sb.Append($"<th>Population</th>");
                 foreach (var percentage in Model.DisplayPercentages) {
@@ -68,9 +68,9 @@ namespace MCRA.Simulation.OutputGeneration.CombinedViews {
                     foreach (var percentage in Model.DisplayPercentages) {
                         if (percentiles?.TryGetValue(percentage, out var value) ?? false) {
                             if (value.HasUncertainty) {
-                                sb.Append($"<td>{value.UncertaintyMedian:G3}<br />[{value.UncertaintyLowerBound:G3}, {value.UncertaintyUpperBound:G3}]</td>");
+                                sb.Append($"<td>{value.UncertaintyMedian:G4}<br />[{value.UncertaintyLowerBound:G4}, {value.UncertaintyUpperBound:G4}]</td>");
                             } else {
-                                sb.Append($"<td>{value.Value:G3}</td>");
+                                sb.Append($"<td>{value.Value:G4}</td>");
                             }
                         }
                     }

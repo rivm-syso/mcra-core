@@ -29,13 +29,13 @@ namespace MCRA.Simulation.OutputGeneration.CombinedActionSummaries.Risks {
             get {
                 var str = $"The safety plot shows the variability of the risk characterisation ratio " +
                     $"{_section.RiskMetric.GetDisplayName()} in the population. The left side of the bar is the " +
-                    $"p{_section.LowerPercentile:F2} percentile and the right side is the " +
-                    $"p{_section.UpperPercentile:F2} of the risk distribution.";
+                    $"p{_section.LowerPercentile:G4} percentile and the right side is the " +
+                    $"p{_section.UpperPercentile:G4} of the risk distribution.";
 
                 if (_section.HasUncertainty) {
                     str += $" The left whisker indicates the {_section.UncertaintyLowerLimit}% limit " +
-                        $"of the p{_section.LowerPercentile:F2} and the right wisker the " +
-                        $"{_section.UncertaintyUpperLimit}% limit of the p{_section.UpperPercentile:F2}";
+                        $"of the p{_section.LowerPercentile:G4} and the right wisker the " +
+                        $"{_section.UncertaintyUpperLimit}% limit of the p{_section.UpperPercentile:G4}";
                 }
                 return str;
             }
@@ -145,6 +145,7 @@ namespace MCRA.Simulation.OutputGeneration.CombinedActionSummaries.Risks {
                 var wiskerHigh = boxHigh;
 
                 if (hasUncertainty) {
+                    median = medianRecord?.UncertaintyMedian ?? median;
                     boxLow = lowerPercentileRecord?.UncertaintyMedian ?? boxLow;
                     boxHigh = upperPercentileRecord?.UncertaintyMedian ?? boxHigh;
                     wiskerLow = lowerPercentileRecord?.UncertaintyLowerBound ?? boxLow;
