@@ -49,13 +49,13 @@ namespace MCRA.Simulation.OutputGeneration {
         [Display(AutoGenerateField = false)]
         public List<double> AdjustedRisks { get; set; }
 
-        [Description("Unadjusted risk ({RiskMetric}) (nominal run).")]
-        [Display(Name = "Unadjusted risk ({RiskMetricShort})")]
+        [Description("Risk ({RiskMetric}) (nominal run).")]
+        [Display(Name = "Risk ({RiskMetricShort})")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double Risk { get; set; }
 
-        [Description("Median unadjusted risk ({RiskMetric}) of uncertainty analysis cycles.")]
-        [Display(Name = "Median unadjusted risk ({RiskMetricShort})")]
+        [Description("Median risk ({RiskMetric}) of uncertainty analysis cycles.")]
+        [Display(Name = "Median risk ({RiskMetricShort})")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double MedianRisk {
             get {
@@ -63,8 +63,8 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        [Description("Uncertainty lower (LowerConfidenceBound) bound of the unadjusted risk ({RiskMetric}).")]
-        [DisplayName("Unadjusted risk ({RiskMetricShort}) (LowerConfidenceBound)")]
+        [Description("Uncertainty lower (LowerConfidenceBound) bound of the risk ({RiskMetric}).")]
+        [DisplayName("Risk ({RiskMetricShort}) (LowerConfidenceBound)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double PLowerRisk_uncertainty {
             get {
@@ -72,8 +72,8 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        [Description("Uncertainty upper (UpperConfidenceBound) bound of the unadjusted risk ({RiskMetric}).")]
-        [DisplayName("Unadjusted risk ({RiskMetricShort}) (UpperConfidenceBound)")]
+        [Description("Uncertainty upper (UpperConfidenceBound) bound of the risk ({RiskMetric}).")]
+        [DisplayName("Risk ({RiskMetricShort}) (UpperConfidenceBound)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double PUpperRisk_uncertainty {
             get {
