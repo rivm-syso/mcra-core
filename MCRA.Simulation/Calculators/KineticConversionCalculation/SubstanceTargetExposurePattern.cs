@@ -49,7 +49,7 @@ namespace MCRA.Simulation.Calculators.PbpkModelCalculation {
         /// </summary>
         public double MaximumTargetExposure {
             get {
-                return TargetExposuresPerTimeUnit.Count != 0
+                return TargetExposuresPerTimeUnit?.Count > 0
                     ? TargetExposuresPerTimeUnit.Max(r => r.Exposure)
                     : 0D;
             }

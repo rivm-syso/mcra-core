@@ -95,12 +95,12 @@ namespace MCRA.Simulation.OutputGeneration {
                                     externalExposureUnit.IsPerUnit
                                 )
                         );
-                    record.TargetExposures = pattern.TargetExposuresPerTimeUnit
+                    record.TargetExposures = pattern.TargetExposuresPerTimeUnit?
                         .Select(r => new TargetIndividualExposurePerTimeUnitRecord() {
                             Exposure = r.Exposure,
                             Time = r.Time
                         })
-                        .ToList();
+                        .ToList() ?? [];
                     record.PeakTargetExposure = pattern.PeakTargetExposure;
                     record.SteadyStateTargetExposure = pattern.SteadyStateTargetExposure;
                     record.Unit = targetUnit.GetShortDisplayName();
