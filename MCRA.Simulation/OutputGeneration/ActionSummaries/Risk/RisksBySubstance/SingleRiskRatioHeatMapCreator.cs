@@ -49,7 +49,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 : riskRecord.PUpperRiskNom;
             var p1_lower95 = p1;
             var p99_upper95 = p99;
-            var p50 = (!double.IsNaN(riskRecord.RiskP50UncP50)) ? riskRecord.RiskP50UncP50 : p99;
+            var p50 = (!double.IsNaN(riskRecord.RiskP50UncP50)) ? riskRecord.RiskP50UncP50 :riskRecord.RiskP50Nom;
             if (_isUncertainty) {
                 if (_section.RiskMetricType == RiskMetricType.HazardExposureRatio) {
                     p1_lower95 = riskRecord.PLowerRiskUncLower;
