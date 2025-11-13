@@ -49,7 +49,7 @@ namespace MCRA.Simulation.OutputGeneration.CombinedViews {
                 panelBuilder.RenderPanel(sb);
 
                 sb.Append($"<table class=\"sortable\">");
-                sb.Append($"<caption>Exposures ({Model.ExposureUnit.GetDisplayName()}) at different percentiles of " +
+                sb.Append($"<caption>Dietary exposures ({Model.ExposureUnit.GetShortDisplayName()}) at different percentiles of " +
                     $"the exposure distribution.</caption>");
                 sb.Append($"<thead><tr>");
                 sb.Append($"<th>Population</th>");

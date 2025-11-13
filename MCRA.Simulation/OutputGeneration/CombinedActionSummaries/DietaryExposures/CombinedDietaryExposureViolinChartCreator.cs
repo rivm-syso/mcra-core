@@ -1,4 +1,5 @@
-﻿using MCRA.Utils.ExtensionMethods;
+﻿using MCRA.General;
+using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.OutputGeneration {
     public class CombinedDietaryExposureViolinChartCreator(
@@ -8,6 +9,9 @@ namespace MCRA.Simulation.OutputGeneration {
        bool boxplotItem,
        bool equalSize
     ) : CombinedViolinChartCreatorBase(section, percentile, horizontal, boxplotItem, equalSize) {
+
+        public ExternalExposureUnit ExposureUnit => section.ExposureUnit;
+
         public override string ChartId {
             get {
                 var pictureId = "bbde56ae-040d-499d-a320-dc5a1a113cb5";
@@ -23,5 +27,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     $"uncertainty distribution. The nominal run is indicated by the black dot.";
             }
         }
+
+        protected override string HorizontalAxisTitle => $"Dietary exposure ({ExposureUnit.GetShortDisplayName()})";
     }
 }

@@ -34,6 +34,8 @@ namespace MCRA.Simulation.OutputGeneration {
             _upperBound = section.UncertaintyUpperLimit;
         }
 
+        protected abstract string HorizontalAxisTitle { get; }
+
         /// <summary>
         /// Kernel density estimation in R"
         /// d <- density(data)
@@ -53,7 +55,7 @@ namespace MCRA.Simulation.OutputGeneration {
             };
 
             var axis = CreateLogarithmicAxis(_horizontal);
-            axis.Title = "Exposure";
+            axis.Title = HorizontalAxisTitle;
             var models = _section.ModelSummaryRecords
                 .OrderBy(r => _section.GetPercentileRecord(r.Id, _percentile)?.Value ?? double.NaN)
                 .ThenByDescending(r => r.Name);

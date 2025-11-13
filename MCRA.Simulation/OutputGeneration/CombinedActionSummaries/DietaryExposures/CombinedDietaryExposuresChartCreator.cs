@@ -58,7 +58,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 MajorGridlineStyle = LineStyle.Solid,
                 MinimumPadding = 0.1,
                 MaximumPadding = 0.1,
-                Title = $"Exposure [{_section.ExposureUnit.GetShortDisplayName()}]",
+                Title = $"Dietary exposure ({_section.ExposureUnit.GetShortDisplayName()})",
                 Position = AxisPosition.Bottom,
                 UseSuperExponentialFormat = true
             };

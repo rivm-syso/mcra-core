@@ -26,6 +26,8 @@ namespace MCRA.Simulation.OutputGeneration {
                     $"uncertainty distribution. The nominal run is indicated by the black dot.";
             }
         }
+
+        protected override string HorizontalAxisTitle => $"{RiskType.GetDisplayName()}";
     }
 }
 
