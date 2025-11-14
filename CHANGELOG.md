@@ -1,5 +1,23 @@
 # Change Log
 
+## Version 10.2.8 (2025-11-14)
+
+### Added
+
+- Safety plot in loop risk output of SRA2025 (#2279)
+- Add new MCR plot according to Kortenkamp (#2323)
+- Violin plots for dietary exposure percentiles of combined loop outputs (#2326)
+- Add PBK model diagram
+
+### Changed
+
+- Update SBML file reader and SBML PBK model parsing
+
+### Fixed
+
+- Unclosed tag in SVG output of ReportRChartCreatorBase.ToSvgString using new R svglite package (#2322)
+- MCRA.Utils data readers are not disposed properly (#2332)
+
 ## Version 10.2.7 (2025-11-02)
 
 ### Added
