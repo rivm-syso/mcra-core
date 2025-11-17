@@ -6,15 +6,31 @@ namespace MCRA.Utils.Tests.UnitTests.DataReading.ValueConversion {
     public class BoolValueConverterTests {
 
         [TestMethod]
-        public void BoolValueConverter_TestConvert() {
+        [DataRow("1")]
+        [DataRow("true")]
+        [DataRow("t")]
+        [DataRow("True")]
+        [DataRow("T")]
+        [DataRow("YES")]
+        [DataRow("y")]
+        [DataRow("4")]
+        public void BoolValueConverter_TestConvertTrue(string str) {
             var converter = new BoolValueConverter();
-            Assert.IsTrue((bool)converter.Convert("1"));
-            Assert.IsTrue((bool)converter.Convert("true"));
-            Assert.IsTrue((bool)converter.Convert("True"));
-            Assert.IsTrue((bool)converter.Convert("4"));
-            Assert.IsFalse((bool)converter.Convert("0"));
-            Assert.IsFalse((bool)converter.Convert("False"));
-            Assert.IsFalse((bool)converter.Convert("false"));
+            Assert.IsTrue((bool)converter.Convert(str));
+        }
+
+        [TestMethod]
+        [DataRow("0")]
+        [DataRow("False")]
+        [DataRow("F")]
+        [DataRow("false")]
+        [DataRow("f")]
+        [DataRow("N")]
+        [DataRow("n")]
+        [DataRow("No")]
+        public void BoolValueConverter_TestConvertFalse(string str) {
+            var converter = new BoolValueConverter();
+            Assert.IsFalse((bool)converter.Convert(str));
         }
 
         [TestMethod]
@@ -26,7 +42,9 @@ namespace MCRA.Utils.Tests.UnitTests.DataReading.ValueConversion {
         [TestMethod]
         [DataRow("invalid")]
         [DataRow("123x")]
-        [DataRow("f")]
+        [DataRow("Nein")]
+        [DataRow("0.1")]
+        [DataRow("9,0")]
         public void BoolValueConverter_TestFail(string str) {
             var converter = new BoolValueConverter();
             Assert.ThrowsExactly<FormatException>(() => converter.Convert(str));

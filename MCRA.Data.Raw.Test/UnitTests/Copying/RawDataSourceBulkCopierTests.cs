@@ -332,13 +332,13 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying {
         }
 
         /// <summary>
-        /// Integration test, processes the data source file DataGroupsTests.mdb.
+        /// Integration test, processes the data source file DataGroupsTests.xlsx.
         /// </summary>
         [TestMethod]
         public void RawDataSourceBulkCopier_TestCopyDataGroups() {
             var writerMock = new Mock<IDataSourceWriter>();
             var copier = new RawDataSourceBulkCopier(writerMock.Object);
-            var result = copier.CopyFromDataFile(TestUtils.GetResource("DataGroupsTests.mdb"));
+            var result = copier.CopyFromDataFile(TestUtils.GetResource("DataGroupsTests.xlsx"));
             Assert.IsTrue(result.Any());
         }
 

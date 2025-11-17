@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using System.Globalization;
 using MCRA.Utils.DataSourceReading.DataReaders;
+using MCRA.Utils.DataSourceReading.ValueConversion;
 
 namespace MCRA.Utils.DataFileReading {
     /// <summary>
@@ -17,6 +18,7 @@ namespace MCRA.Utils.DataFileReading {
         private readonly int[] _fieldSizes;
         private readonly Dictionary<string, int> _fieldIdByNames;
         private readonly string[] _colNames;
+        private readonly ValueConverterCollection _converters = ValueConverterCollection.Default();
 
         /// <summary>
         /// Constructor
@@ -73,21 +75,8 @@ namespace MCRA.Utils.DataFileReading {
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        public override object this[int i] {
-            get {
-                if (_fieldTypes[i] == FieldType.AlphaNumeric) {
-                    return getCheckedStringValue(i, base.GetValue(i)?.ToString());
-                }
+        public override object this[int i] => GetValue(i);
 
-                var coldef = _columnDefs[i];
-                var val = base.GetValue(i);
-                if (val == null && coldef.Required) {
-                    throw new ArgumentException($"Error on line {RowCount}: " +
-                        $"Value in column '{_colNames[i]}' is required.");
-                }
-                return val;
-            }
-        }
         /// <summary>
         ///
         /// </summary>
@@ -127,6 +116,13 @@ namespace MCRA.Utils.DataFileReading {
         /// <param name="name"></param>
         /// <returns></returns>
         public override int GetOrdinal(string name) => _fieldIdByNames[name];
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="i"></param>
+        /// <returns></returns>
+        public override Type GetFieldType(int i) => FieldTypeConverter.ToSystemType(_fieldTypes[i], _columnDefs[i].Required);
 
         /// <summary>
         /// Build schema table based on column definitions
@@ -172,6 +168,10 @@ namespace MCRA.Utils.DataFileReading {
         /// <param name="i"></param>
         /// <returns></returns>
         public override object GetValue(int i) {
+            if (base.IsDBNull(i)) {
+                return null;
+            }
+
             var val = base.GetValue(i);
 
             if (_fieldTypes[i] == FieldType.AlphaNumeric) {
@@ -180,46 +180,60 @@ namespace MCRA.Utils.DataFileReading {
             }
 
             var coldef = _columnDefs[i];
-            if (val == null && coldef.Required) {
-                throw new ArgumentException($"Error on line {RowCount}: " +
-                    $"Value in column '{_colNames[i]}' is required.");
+            if (val == null || val is string stringVal && string.IsNullOrWhiteSpace(stringVal)) {
+                return coldef.Required
+                    ? throw new ArgumentException($"Error on line {RowCount}: " +
+                        $"Value in column '{_colNames[i]}' is required.")
+                    : null;
             }
-            //check whether returned value's type is correct
-            //check for any numeric or boolean values passed in as strings
-            if ((_fieldTypes[i] == FieldType.Numeric || _fieldTypes[i] == FieldType.Boolean)
-                && val is string stringVal) {
-                //fields in data source are erroneously typed as string, first check for null
-                if (string.IsNullOrWhiteSpace(stringVal)) {
-                    //for empty strings, return null,
-                    //or throw exception if the column is required
-                    if (coldef.Required) {
-                        throw new ArgumentException($"Error on line {RowCount}: " +
-                            $"Value in column '{_colNames[i]}' is required.");
-                    }
-                    return null;
-                } else if (_fieldTypes[i] == FieldType.Numeric) {
-                    var doubleVal = double.Parse(stringVal.Replace(',', '.'), NumberFormatInfo.InvariantInfo);
-                    return doubleVal;
-                    //all other cases: try parsing bool value
-                } else if (bool.TryParse(stringVal, out var boolVal)) {
-                    return boolVal;
-                    //if it's an integer value (0 == false, otherwise true)
-                } else if (int.TryParse(stringVal, out var intVal)) {
-                    return intVal != 0;
-                    //string comparison if all of the above fails
-                    //we allow y/n, yes/no, t/f, true/false (case insensitive) here for now.
-                } else if (stringVal.Equals("y", StringComparison.OrdinalIgnoreCase) ||
-                           stringVal.Equals("yes", StringComparison.OrdinalIgnoreCase) ||
-                           stringVal.Equals("t", StringComparison.OrdinalIgnoreCase) ||
-                           stringVal.Equals("true", StringComparison.OrdinalIgnoreCase)) {
-                    return true;
-                } else if (stringVal.Equals("n", StringComparison.OrdinalIgnoreCase) ||
-                       stringVal.Equals("no", StringComparison.OrdinalIgnoreCase) ||
-                       stringVal.Equals("f", StringComparison.OrdinalIgnoreCase) ||
-                       stringVal.Equals("false", StringComparison.OrdinalIgnoreCase)) {
-                    return false;
+
+            var valFieldType = FieldTypeConverter.FromSystemType(val.GetType());
+            var colFieldType = _fieldTypes[i];
+
+            // Read field type and column definition field type match
+            // return the value unchanged
+            if (colFieldType == valFieldType) {
+                return val;
+            }
+
+            if (valFieldType == FieldType.AlphaNumeric) {
+                stringVal = val as string;
+                if (colFieldType == FieldType.Numeric) {
+                    return _converters.Convert<double>(stringVal.Replace(',', '.'));
+                }
+                if (colFieldType == FieldType.Integer) {
+                    return _converters.Convert<int>(stringVal.Replace(',', '.'));
+                }
+                if (colFieldType == FieldType.Boolean) {
+                    return _converters.Convert<bool>(stringVal);
+                }
+                if (colFieldType == FieldType.DateTime) {
+                    //first try to parse field as double to catch dates encoded as
+                    //OLE Automation date (e.g. Excel date/time)
+                    return _converters.Convert<DateTime>(stringVal);
                 }
             }
+            if (valFieldType == FieldType.Numeric) {
+                var dblVal = Convert.ToDouble(val);
+                return colFieldType switch {
+                    FieldType.AlphaNumeric => dblVal.ToString(CultureInfo.InvariantCulture),
+                    FieldType.Boolean => dblVal != 0D,
+                    FieldType.Integer => Convert.ToInt32(dblVal),
+                    FieldType.DateTime => DateTime.FromOADate(dblVal),
+                    _ => dblVal,
+                };
+            }
+            if (valFieldType == FieldType.Integer) {
+                var intVal = Convert.ToInt32(val);
+                return colFieldType switch {
+                    FieldType.AlphaNumeric => intVal.ToString(CultureInfo.InvariantCulture),
+                    FieldType.Boolean => intVal != 0,
+                    FieldType.Numeric => Convert.ToDouble(intVal),
+                    FieldType.DateTime => DateTime.FromOADate(intVal),
+                    _ => intVal,
+                };
+            }
+
             return val;
         }
 
@@ -267,11 +281,10 @@ namespace MCRA.Utils.DataFileReading {
             var coldef = _columnDefs[i];
 
             if (string.IsNullOrWhiteSpace(value)) {
-                if (coldef.Required) {
-                    throw new ArgumentException($"Error on line {RowCount}: " +
-                        $"Value in column '{_colNames[i]}' is required.");
-                }
-                return string.Empty;
+                return coldef.Required
+                    ? throw new ArgumentException($"Error on line {RowCount}: " +
+                        $"Value in column '{_colNames[i]}' is required.")
+                    : string.Empty;
             }
 
             var stringVal = value.Trim();

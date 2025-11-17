@@ -38,12 +38,12 @@
         /// </summary>
         /// <param name="fieldType"></param>
         /// <returns></returns>
-        public static Type ToSystemType(FieldType fieldType) {
+        public static Type ToSystemType(FieldType fieldType, bool required = true) {
             return fieldType switch {
-                FieldType.Numeric => typeof(double),
-                FieldType.Boolean => typeof(bool),
-                FieldType.Integer => typeof(int),
-                FieldType.DateTime => typeof(DateTime),
+                FieldType.Numeric => required ? typeof(double) : typeof(double?),
+                FieldType.Boolean => required ? typeof(bool) : typeof(bool?),
+                FieldType.Integer => required ? typeof(int) : typeof(int?),
+                FieldType.DateTime => required ? typeof(DateTime) : typeof(DateTime?),
                 _ => typeof(string),
             };
         }

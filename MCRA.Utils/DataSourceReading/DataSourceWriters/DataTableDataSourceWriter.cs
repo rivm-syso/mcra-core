@@ -1,5 +1,5 @@
-﻿using MCRA.Utils.ProgressReporting;
-using System.Data;
+﻿using System.Data;
+using MCRA.Utils.ProgressReporting;
 
 namespace MCRA.Utils.DataFileReading {
     public class DataTableDataSourceWriter : IDataSourceWriter {
@@ -73,9 +73,34 @@ namespace MCRA.Utils.DataFileReading {
                     var newRow = destinationTable.NewRow();
                     for (int i = 0; i < tableDefinition.ColumnDefinitions.Count; i++) {
                         if (mappings[i] > -1) {
-                            newRow[i] = sourceTableReader.IsDBNull(mappings[i])
-                                ? DBNull.Value
-                                : sourceTableReader.GetValue(mappings[i]);
+                            if (sourceTableReader.IsDBNull(mappings[i])) {
+                                newRow[i] = DBNull.Value;
+                                continue;
+                            }
+                            var colType = tableDefinition.ColumnDefinitions[i].GetFieldType();
+
+                            var readValue = sourceTableReader.GetValue(mappings[i]);
+                            var readType = FieldTypeConverter.FromSystemType(readValue.GetType());
+
+                            if (colType != readType) {
+                                switch (colType) {
+                                    case FieldType.AlphaNumeric:
+                                        newRow[i] = readValue.ToString();
+                                        break;
+                                    case FieldType.DateTime:
+                                        if (readType == FieldType.Numeric) {
+                                            newRow[i] = DateTime.FromOADate(Convert.ToDouble(readValue));
+                                        } else {
+                                            newRow[i] = Convert.ToDateTime(readValue);
+                                        }
+                                        break;
+                                    default:
+                                        newRow[i] = readValue;
+                                        break;
+                                }
+                            } else {
+                                newRow[i] = readValue;
+                            }
                         }
                     }
                     destinationTable.Rows.Add(newRow);

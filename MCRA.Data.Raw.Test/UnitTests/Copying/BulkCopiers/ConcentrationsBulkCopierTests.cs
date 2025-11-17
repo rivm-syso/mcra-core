@@ -415,13 +415,35 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
         }
 
         /// <summary>
-        /// ConcentrationDataBulkCopier_TestBulkCopyTabulated
+        /// ConcentrationDataBulkCopier_TestBulkCopyConcentrations_Access
         /// </summary>
         [TestMethod]
         [SupportedOSPlatform("windows")]
-        public void ConcentrationDataBulkCopier_TestBulkCopyConcentrations() {
+        public void ConcentrationDataBulkCopier_TestBulkCopyConcentrations_Access() {
+            if(Environment.OSVersion.Platform != PlatformID.Win32NT) {
+                return;
+            }
             var dataSourceWriter = new DataTableDataSourceWriter();
             using (var reader = new AccessDataFileReader(TestUtils.GetResource("DataGroupsTests.mdb"))) {
+                reader.Open();
+                var bulkCopier = new ConcentrationsBulkCopier(dataSourceWriter, null, null);
+                bulkCopier.TryCopy(reader, new ProgressState());
+                var tables = dataSourceWriter.DataTables;
+                Assert.AreEqual(5, tables["RawAnalyticalMethods"].Rows.Count);
+                Assert.AreEqual(12, tables["RawAnalyticalMethodCompounds"].Rows.Count);
+                Assert.AreEqual(20, tables["RawFoodSamples"].Rows.Count);
+                Assert.AreEqual(20, tables["RawAnalysisSamples"].Rows.Count);
+                Assert.AreEqual(32, tables["RawConcentrationsPerSample"].Rows.Count);
+            }
+        }
+
+        /// <summary>
+        /// ConcentrationDataBulkCopier_TestBulkCopyConcentrations_Excel
+        /// </summary>
+        [TestMethod]
+        public void ConcentrationDataBulkCopier_TestBulkCopyConcentrations_Excel() {
+            var dataSourceWriter = new DataTableDataSourceWriter();
+            using (var reader = new ExcelFileReader(TestUtils.GetResource("DataGroupsTests.xlsx"))) {
                 reader.Open();
                 var bulkCopier = new ConcentrationsBulkCopier(dataSourceWriter, null, null);
                 bulkCopier.TryCopy(reader, new ProgressState());
@@ -438,7 +460,6 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
         /// ConcentrationDataBulkCopier_TestBulkCopyTabulated
         /// </summary>
         [TestMethod]
-        [SupportedOSPlatform("windows")]
         public void ConcentrationDataBulkCopier_TestBulkCopyConcentrationsWithEntityRecoding() {
             var config = new EntityCodeConversionConfiguration() {
                 EntityCodeConversions = [
@@ -465,7 +486,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
                 config.EntityCodeConversions
             );
 
-            using (var reader = new AccessDataFileReader(TestUtils.GetResource("DataGroupsTests.mdb"))) {
+            using (var reader = new ExcelFileReader(TestUtils.GetResource("DataGroupsTests.xlsx"))) {
                 reader.Open();
                 var bulkCopier = new ConcentrationsBulkCopier(dataSourceWriter, null, null);
                 bulkCopier.TryCopy(reader, new ProgressState());

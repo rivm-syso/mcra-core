@@ -126,8 +126,13 @@ namespace MCRA.Utils.DataFileReading {
                     var index = mappings[i];
                     var definition = columnDefinitions.ElementAt(i);
                     var acceptedFieldTypes = getAcceptedFieldTypes(definition.GetFieldType());
-                    if (!acceptedFieldTypes.Contains(fieldTypes[index].Name)) {
-                        throw new Exception($"Fieldtype of column {definition.Id} must be {definition.FieldType} ({fieldTypes[index].Name} is found))");
+                    var fieldType = fieldTypes[index];
+                    var fieldTypeName = definition.Required || fieldType == typeof(string)
+                        ? fieldType.Name
+                        : Nullable.GetUnderlyingType(fieldType).Name;
+
+                    if (!acceptedFieldTypes.Contains(fieldTypeName)) {
+                        throw new Exception($"Fieldtype of column {definition.Id} must be {definition.FieldType} ({fieldTypeName} is found))");
                     }
                 }
             }

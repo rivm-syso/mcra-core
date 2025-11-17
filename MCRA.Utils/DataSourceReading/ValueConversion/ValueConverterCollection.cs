@@ -1,4 +1,4 @@
-namespace MCRA.Utils.DataSourceReading.ValueConversion {
+﻿namespace MCRA.Utils.DataSourceReading.ValueConversion {
     public class ValueConverterCollection {
 
         private readonly Dictionary<Type, IValueConverter> _valueConverters;
@@ -87,6 +87,7 @@ namespace MCRA.Utils.DataSourceReading.ValueConversion {
         public static ValueConverterCollection Default() {
             var result = new ValueConverterCollection();
             result.Add(typeof(bool), new BoolValueConverter());
+            result.Add(typeof(bool?), new NullableValueConverter<BoolValueConverter>(new BoolValueConverter()));
             result.Add(typeof(DateTime), new DateTimeValueConverter());
             result.Add(typeof(DateTime?), new NullableValueConverter<DateTimeValueConverter>(new DateTimeValueConverter()));
             result.Add(typeof(decimal), new DecimalValueConverter());

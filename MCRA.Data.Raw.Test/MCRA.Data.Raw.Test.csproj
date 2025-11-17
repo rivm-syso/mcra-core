@@ -109,6 +109,9 @@
     <None Update="Resources\DataGroupsTests.mdb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\DataGroupsTests.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\DoseResponseData\TwoWayDataTables\DoseResponseExperiments.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

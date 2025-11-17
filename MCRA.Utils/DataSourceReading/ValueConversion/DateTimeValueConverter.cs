@@ -1,4 +1,4 @@
-using System.Globalization;
+﻿using System.Globalization;
 
 namespace MCRA.Utils.DataSourceReading.ValueConversion {
 
@@ -32,17 +32,18 @@ namespace MCRA.Utils.DataSourceReading.ValueConversion {
         /// Converts a <see cref="DateTime"/> from a <see cref="string"/> value.
         /// </summary>
         public object Convert(string value) {
-            if (DateTime.TryParseExact(
+            if( double.TryParse(value.Replace(',', '.'), NumberFormatInfo.InvariantInfo, out var oaVal)) {
+                return DateTime.FromOADate(oaVal);
+            }
+            return DateTime.TryParseExact(
                 value.Replace("\"", "").Trim(),
                 _formats,
                 CultureInfo.InvariantCulture,
                 DateTimeStyles.AllowInnerWhite,
-                out var result)
-            ) {
-                return result;
-            } else {
-                throw new FormatException($"Failed to parse '{value}' in column as a date/time value.");
-            }
+                out var result
+            )
+                ? (object)result
+                : throw new FormatException($"Failed to parse '{value}' as a date/time value.");
         }
     }
 }
