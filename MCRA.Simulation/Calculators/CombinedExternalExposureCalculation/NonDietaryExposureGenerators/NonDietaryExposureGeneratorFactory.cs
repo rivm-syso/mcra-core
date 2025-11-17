@@ -13,12 +13,12 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.NonDie
             NonDietaryExposureGenerator result = populationAlignmentMethod switch {
                 PopulationAlignmentMethod.MatchIndividualID => new NonDietaryMatchedExposureGenerator(nonDietaryExposureSets),
                 PopulationAlignmentMethod.MatchCofactors => correlatedNonDietaryExposureSets
-                    ? new NonDietaryUnmatchedCorrelatedExposureGenerator(
+                    ? new NonDietaryUnmatchedExposureGenerator(nonDietaryExposureSets)
+                    : new NonDietaryUnmatchedCorrelatedExposureGenerator(
                             nonDietaryExposureSets,
                             alignOnAge,
                             alignOnSex
-                        )
-                    : new NonDietaryUnmatchedExposureGenerator(nonDietaryExposureSets),
+                        ),
                 PopulationAlignmentMethod.MatchRandom => throw new NotImplementedException("Match at random not implemented for non-dietary exposures"),
                 _ => throw new NotImplementedException()
             };

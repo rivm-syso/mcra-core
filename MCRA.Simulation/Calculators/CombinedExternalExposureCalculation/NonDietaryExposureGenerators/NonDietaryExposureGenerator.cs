@@ -97,7 +97,7 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.NonDie
             // Generate non-dietary individual day exposures from individual days and non-dietary individual exposures.
             var externalIndividualDayExposures = individualDays
                 .GroupBy(r => r.SimulatedIndividual)
-                .AsParallel()
+                //.AsParallel()
                 .SelectMany(individualExposures => generateIndividualExposure(
                     individualExposures.Key,
                     [.. individualExposures],
@@ -142,6 +142,15 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.NonDie
             IRandom randomIndividual
         );
 
+
+        //Quick fix. Alternative is to add a table to Nondietary with individual properties
+        private static bool Matches(IndividualProperty property, NonDietarySurveyProperty sp) {
+            if ((property.IsAgeProperty && sp.Name == "Age") || (property.IsSexProperty && sp.Name == "Sex")) {
+                return true;
+            }
+            return false;
+        }
+
         /// <summary>
         /// Evaluates whether the individual matches with the non-dietary survey properties.
         /// </summary>
@@ -155,7 +164,8 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.NonDie
                 var matchAge = false;
                 var matchSex = false;
 
-                var ip = individual.Individual.GetPropertyValue(sp.IndividualProperty);
+                var ip = individual.Individual.IndividualPropertyValues
+                    .FirstOrDefault(r => Matches(r.IndividualProperty, sp));
                 if (ip != null) {
                     //Set matchAge always to true if property is cofactor (sex)
                     if (sp.PropertyType == PropertyType.Cofactor) {
