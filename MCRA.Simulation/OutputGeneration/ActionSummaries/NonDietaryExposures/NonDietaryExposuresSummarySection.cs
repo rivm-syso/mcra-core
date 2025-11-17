@@ -80,7 +80,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .SelectMany(r => r.NonDietarySurveyProperties, (s, sp) => new NonDietarySurveyPropertyRecord() {
                     Code = s.Code,
                     Description = s.Description,
-                    CovariateName = sp.IndividualProperty.Name,
+                    CovariateName = sp.Name,
                     PropertyType = sp.PropertyType.ToString(),
                     Minimum = sp.IndividualPropertyDoubleValueMin ?? double.NaN,
                     Maximum = sp.IndividualPropertyDoubleValueMax ?? double.NaN,

@@ -34,7 +34,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 false,
                 true
             );
-            Assert.IsTrue(calculator is NonDietaryUnmatchedExposureGenerator);
+            Assert.IsTrue(calculator is NonDietaryUnmatchedCorrelatedExposureGenerator);
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 false,
                 true
             );
-            Assert.IsTrue(calculator is NonDietaryUnmatchedCorrelatedExposureGenerator);
+            Assert.IsTrue(calculator is NonDietaryUnmatchedExposureGenerator);
         }
     }
 }

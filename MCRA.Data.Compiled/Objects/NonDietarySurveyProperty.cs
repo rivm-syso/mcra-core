@@ -1,4 +1,4 @@
-using MCRA.General;
+﻿using MCRA.General;
 
 namespace MCRA.Data.Compiled.Objects {
     public sealed class NonDietarySurveyProperty {
@@ -6,7 +6,7 @@ namespace MCRA.Data.Compiled.Objects {
         public double? IndividualPropertyDoubleValueMin { get; set; }
         public double? IndividualPropertyDoubleValueMax { get; set; }
 
-        public IndividualProperty IndividualProperty { get; set; }
+        public string Name { get; set; }
         public NonDietarySurvey NonDietarySurvey { get; set; }
 
         public PropertyType PropertyType {

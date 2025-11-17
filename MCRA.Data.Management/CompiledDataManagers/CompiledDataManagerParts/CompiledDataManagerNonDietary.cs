@@ -61,18 +61,15 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                     if (valid) {
                                         var survey = nonDietarySurveys[idSurvey];
                                         var propertyName = r.GetString(RawNonDietarySurveyProperties.IndividualPropertyName, fieldMap);
-                                        var prop = new NonDietarySurveyProperty();
-                                        if (_data.AllDietaryIndividualProperties.TryGetValue(propertyName, out IndividualProperty property)) {
-                                            prop = new NonDietarySurveyProperty {
-                                                IndividualProperty = property,
-                                                NonDietarySurvey = survey,
-                                                IndividualPropertyDoubleValueMax = r.GetDoubleOrNull(RawNonDietarySurveyProperties.IndividualPropertyDoubleValueMax, fieldMap),
-                                                IndividualPropertyDoubleValueMin = r.GetDoubleOrNull(RawNonDietarySurveyProperties.IndividualPropertyDoubleValueMin, fieldMap),
-                                                IndividualPropertyTextValue = r.GetStringOrNull(RawNonDietarySurveyProperties.IndividualPropertyTextValue, fieldMap)
-                                            };
-                                            if (nonDietarySurveys.TryGetValue(idSurvey, out var ndSurvey)) {
-                                                ndSurvey.NonDietarySurveyProperties.Add(prop);
-                                            }
+                                        var prop = new NonDietarySurveyProperty {
+                                            Name = propertyName,
+                                            NonDietarySurvey = survey,
+                                            IndividualPropertyDoubleValueMax = r.GetDoubleOrNull(RawNonDietarySurveyProperties.IndividualPropertyDoubleValueMax, fieldMap),
+                                            IndividualPropertyDoubleValueMin = r.GetDoubleOrNull(RawNonDietarySurveyProperties.IndividualPropertyDoubleValueMin, fieldMap),
+                                            IndividualPropertyTextValue = r.GetStringOrNull(RawNonDietarySurveyProperties.IndividualPropertyTextValue, fieldMap)
+                                        };
+                                        if (nonDietarySurveys.TryGetValue(idSurvey, out var ndSurvey)) {
+                                            ndSurvey.NonDietarySurveyProperties.Add(prop);
                                         }
                                     }
                                 }
@@ -199,7 +196,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                         foreach (var svProperty in svProperties) {
                             var rowsp = dtsp.NewRow();
                             rowsp.WriteNonEmptyString(RawNonDietarySurveyProperties.IdNonDietarySurvey, survey.Code);
-                            rowsp.WriteNonEmptyString(RawNonDietarySurveyProperties.IndividualPropertyName, svProperty.IndividualProperty.Name);
+                            rowsp.WriteNonEmptyString(RawNonDietarySurveyProperties.IndividualPropertyName, svProperty.Name);
                             rowsp.WriteNonEmptyString(RawNonDietarySurveyProperties.IndividualPropertyTextValue, svProperty.IndividualPropertyTextValue);
                             rowsp.WriteNonNullDouble(RawNonDietarySurveyProperties.IndividualPropertyDoubleValueMin, svProperty.IndividualPropertyDoubleValueMin);
                             rowsp.WriteNonNullDouble(RawNonDietarySurveyProperties.IndividualPropertyDoubleValueMax, svProperty.IndividualPropertyDoubleValueMax);

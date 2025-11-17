@@ -157,7 +157,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             anAopNetwork.EffectRelations = [anEffectRelation];
 
             var aNdSurvey = new NonDietarySurvey { Code = "A", NonDietarySurveyProperties = [
-                new NonDietarySurveyProperty {IndividualProperty = new IndividualProperty() }
+                new NonDietarySurveyProperty { }
             ] };
             var aNdExposureSet = new NonDietaryExposureSet { Code = "A", NonDietarySurvey = aNdSurvey };
             var aNdExposureSet2 = new NonDietaryExposureSet { NonDietarySurvey = aNdSurvey };
