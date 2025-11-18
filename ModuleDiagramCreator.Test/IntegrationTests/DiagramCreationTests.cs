@@ -9,12 +9,17 @@ namespace ModuleDiagramCreator.Test.IntegrationTests {
         [TestMethod]
         public void GenerateDiagram_DefaultSettings_ShouldCreateSvgFile() {
             // Arrange
-            var exePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModuleDiagramCreator.exe");
-            var outputImagePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), CreateOptions._defaultDiagramFilename);
+            var asmPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var exePath = Path.Combine(asmPath, "ModuleDiagramCreator.exe");
+            var dllPath = Path.Combine(asmPath, "ModuleDiagramCreator.dll");
+            var outputImagePath = Path.Combine(asmPath, CreateOptions._defaultDiagramFilename);
             outputImagePath = Path.ChangeExtension(outputImagePath, CreateOptions._defaultOutputFormat);
 
             // Act
-            var process = Process.Start(exePath);
+            var process = Environment.OSVersion.Platform == PlatformID.Win32NT
+                ? Process.Start(exePath)
+                : Process.Start($"dotnet", dllPath);
+
             process.WaitForExit();
 
             // Assert
