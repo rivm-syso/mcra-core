@@ -1,6 +1,5 @@
 ﻿using MCRA.Utils.R.REngines;
 using Microsoft.Extensions.Configuration;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Utils.Test.Helpers {
     [TestClass]
@@ -15,7 +14,9 @@ namespace MCRA.Utils.Test.Helpers {
             var builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", false, true)
                 .AddJsonFile($"appsettings.{env}.json", true, true)
-                .AddJsonFile("appsettings.user.json", optional: true);
+                .AddJsonFile("appsettings.user.json", optional: true)
+                .AddEnvironmentVariables();
+
             var config = builder.Build();
             RDotNetEngine.R_HomePath = config["RHomePath"];
             Environment.SetEnvironmentVariable("PYTHONNET_PYDLL", config["PythonPath"]);
