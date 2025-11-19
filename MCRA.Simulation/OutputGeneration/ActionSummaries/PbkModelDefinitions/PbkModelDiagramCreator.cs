@@ -79,12 +79,6 @@ namespace MCRA.Simulation.OutputGeneration {
             string fileName,
             string outputFormat
         ) {
-            var diagramCreator = new GraphvizDiagramCreator {
-                GraphVizBinariesDirectory = Path.Combine(
-                    Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                    "graphviz"
-                )
-            };
             var options = new PbkDiagramOptions() {
                 OutputFormat = outputFormat,
                 Dpi = 100,
@@ -104,9 +98,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
             // Write module diagram file
             var graphViz = new GraphViz();
-            var graphVizBinariesDirectory = Path
-                .Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "graphviz");
-            graphViz.Config.GraphVizBinariesDirectory = graphVizBinariesDirectory;
+            graphViz.Config.GraphVizBinariesDirectory = GraphvizDiagramCreator.GraphVizBinariesDirectory;
             var result = graphViz.LayoutAndRender(
                 null,
                 dotString,

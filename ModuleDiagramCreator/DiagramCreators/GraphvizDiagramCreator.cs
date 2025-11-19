@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Reflection;
 using System.Text;
 using GraphVizNet;
 using MCRA.General;
@@ -22,16 +23,14 @@ namespace ModuleDiagramCreator.DiagramCreators {
         private readonly double _nodeHeightFullGraph = 1.3;
         private readonly string _extensionDotFile = "dot";
         private readonly string _documentationBaseUrl = $"https://mcra.rivm.nl/documentation/{ThisAssembly.Git.BaseVersion.Major}.{ThisAssembly.Git.BaseVersion.Minor}.{ThisAssembly.Git.BaseVersion.Patch}/modules/";
-        private string _graphVizBinFolder = "graphviz";
 
         /// <summary>
         /// The location of the GraphViz binaries directory.
         /// </summary>
-        public string GraphVizBinariesDirectory {
-            //always return /usr/bin folder when not on Windows
-            get => Environment.OSVersion.Platform == PlatformID.Win32NT ? _graphVizBinFolder : "/usr/bin";
-            set => _graphVizBinFolder = value;
-        }
+        public static string GraphVizBinariesDirectory
+            => Environment.OSVersion.Platform == PlatformID.Win32NT
+                ? Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "graphviz")
+                : "/usr/bin";
 
         public void CreateToFile(
             CreateOptions options,

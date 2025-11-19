@@ -42,9 +42,6 @@ namespace MCRA.Simulation.OutputGeneration {
             string fileName
         ) {
             var diagramCreator = new GraphvizDiagramCreator();
-            diagramCreator.GraphVizBinariesDirectory = Path.Combine(
-                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                "graphviz");
             var options = new CreateOptions() {
                 OutputDotFile = true,
                 LayoutAlgorithm = "dot",
