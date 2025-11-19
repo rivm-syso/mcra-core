@@ -30,6 +30,7 @@
     <Input>ExposureResponseFunctions</Input>
     <Input>BurdensOfDisease</Input>
     <Input>HbmSingleValueExposures</Input>
+    <Input>RelativePotencyFactors</Input>
   </CalculationInputs>
   <SelectionInputs>
   </SelectionInputs>
@@ -41,6 +42,8 @@
   <CalculationSettings>
     <CalculationSetting source="HazardCharacterisations">TargetDoseLevelType</CalculationSetting>
     <CalculationSetting source="Risks">ExposureCalculationMethod</CalculationSetting>
+    <CalculationSetting source="Substances">MultipleSubstances</CalculationSetting>
+    <CalculationSetting>Cumulative</CalculationSetting>
     <CalculationSetting>BodIndicators</CalculationSetting>
     <CalculationSetting>BodApproach</CalculationSetting>
     <CalculationSetting>ExposureGroupingMethod</CalculationSetting>

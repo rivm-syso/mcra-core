@@ -33,7 +33,8 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
             var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
             subHeader.Units = collectUnits(data.EnvironmentalBurdenOfDiseases);
             section.Summarize(
-                result.EnvironmentalBurdenOfDiseases
+                result.EnvironmentalBurdenOfDiseases,
+                _configuration.MultipleSubstances && _configuration.Cumulative
             );
             subHeader.SaveSummarySection(section);
 

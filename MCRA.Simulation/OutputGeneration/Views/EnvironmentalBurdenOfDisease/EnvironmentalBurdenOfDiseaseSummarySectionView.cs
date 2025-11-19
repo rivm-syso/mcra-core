@@ -4,6 +4,7 @@ using MCRA.Simulation.OutputGeneration.Helpers;
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class EnvironmentalBurdenOfDiseaseSummarySectionView : SectionView<EnvironmentalBurdenOfDiseaseSummarySection> {
         public override void RenderSectionHtml(StringBuilder sb) {
+            var isCumulative = Model.IsCumulative ? ", cumulative exposure": string.Empty;
 
             var hiddenProperties = new List<string>();
             if (Model.Records.All(c => double.IsInfinity(c.StandardisedTotalAttributableBod))) {
@@ -38,7 +39,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 Model.Records,
                 "EnvironmentalBurdenOfDiseaseSummaryTable",
                 ViewBag,
-                caption: "Environmental burden of disease summary table.",
+                caption: $"Environmental burden of disease summary table{isCumulative}.",
                 saveCsv: true,
                 sortable: false,
                 hiddenProperties: hiddenProperties

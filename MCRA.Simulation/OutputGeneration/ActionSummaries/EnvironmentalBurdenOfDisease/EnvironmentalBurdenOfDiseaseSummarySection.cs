@@ -4,10 +4,13 @@ using MCRA.Utils.ExtensionMethods;
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class EnvironmentalBurdenOfDiseaseSummarySection : ActionSummarySectionBase {
         public List<EnvironmentalBurdenOfDiseaseSummaryRecord> Records { get; set; }
+        public bool IsCumulative { get; set; }
 
         public void Summarize(
-            List<EnvironmentalBurdenOfDiseaseResultRecord> environmentalBurdenOfDiseases
+            List<EnvironmentalBurdenOfDiseaseResultRecord> environmentalBurdenOfDiseases,
+            bool cumulative
         ) {
+            IsCumulative = cumulative;
             Records = [.. environmentalBurdenOfDiseases.Select(getEbdSummaryRecord)];
         }
 

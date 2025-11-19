@@ -13,6 +13,7 @@
       <Description>Disability-adjusted life year.</Description>
       <Aliases>
         <Alias>DALY</Alias>
+        <Alias>DALYs</Alias>
       </Aliases>
     </Unit>
     <Unit>
@@ -40,6 +41,16 @@
       <Description>Costs.</Description>
       <Aliases>
         <Alias>Costs</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Prevalence</Id>
+      <Name>Prevalence</Name>
+      <ShortName>Prevalence</ShortName>
+      <Description>Prevalence.</Description>
+      <Aliases>
+        <Alias>Prevalence</Alias>
+        <Alias>Prevalences</Alias>
       </Aliases>
     </Unit>
   </Units>

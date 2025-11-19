@@ -2,6 +2,7 @@
 using MCRA.General;
 using MCRA.Simulation.Calculators.CounterFactualValueModels;
 using MCRA.Simulation.Calculators.ExposureResponseFunctions;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Utils.Statistics;
 
@@ -75,20 +76,23 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
                     throw new Exception(msg);
                 }
                 (var exposures, var exposureUnit) = (targetExposures.Exposures, targetExposures.Unit);
-
-                // Compute exposure response results
-                var exposureResponseResult = ComputeFromTargetIndividualExposures(
-                    exposureResponseFunctionModel,
-                    counterFactualModel,
-                    exposures,
-                    exposureUnit,
-                    percentileIntervals,
-                    _exposureGroupingMethod,
-                    _withinBinExposureRepresentationMethod
-                );
-                exposureResponseResults.Add(exposureResponseResult);
+                // Get exposures for the reference substance
+                // For a cumulative exposure assessment the targetIndididualExposures contains only exposures for the reference substance
+                // Ignore all other substances in erfResponseFunctionModels
+                if (exposures.All(c => c.Substances.Contains(erf.Substance))) {
+                    // Compute exposure response results
+                    var exposureResponseResult = ComputeFromTargetIndividualExposures(
+                        exposureResponseFunctionModel,
+                        counterFactualModel,
+                        exposures,
+                        exposureUnit,
+                        percentileIntervals,
+                        _exposureGroupingMethod,
+                        _withinBinExposureRepresentationMethod
+                    );
+                    exposureResponseResults.Add(exposureResponseResult);
+                }
             }
-
             return exposureResponseResults;
         }
 
@@ -353,7 +357,7 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
             var erf = exposureResponseFunctionModel.ExposureResponseFunction;
 
             var exposureLevel = withinBinExposureRepresentationMethod switch {
-                WithinBinExposureRepresentationMethod.MinimumInBin => 
+                WithinBinExposureRepresentationMethod.MinimumInBin =>
                     !double.IsNaN(exposureInterval.Lower) ? exposureInterval.Lower : exposureInterval.Upper,
                 WithinBinExposureRepresentationMethod.MaximumInBin =>
                     !double.IsNaN(exposureInterval.Upper) ? exposureInterval.Upper : exposureInterval.Lower,

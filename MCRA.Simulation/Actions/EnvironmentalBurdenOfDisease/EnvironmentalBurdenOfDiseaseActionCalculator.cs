@@ -1,4 +1,5 @@
-﻿using MCRA.General;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
 using MCRA.General.ModuleDefinitions.Settings;
@@ -35,6 +36,9 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
             _actionInputRequirements[ActionType.HumanMonitoringAnalysis].IsVisible = isMonitoringConcentrations;
             _actionInputRequirements[ActionType.HbmSingleValueExposures].IsRequired = isHbmSingleValueExposures;
             _actionInputRequirements[ActionType.HbmSingleValueExposures].IsVisible = isHbmSingleValueExposures;
+            var isCumulative = ModuleConfig.MultipleSubstances && ModuleConfig.Cumulative;
+            _actionInputRequirements[ActionType.RelativePotencyFactors].IsRequired = isCumulative;
+            _actionInputRequirements[ActionType.RelativePotencyFactors].IsVisible = isCumulative;
         }
 
         protected override ActionSettingsSummary summarizeSettings() {
@@ -98,6 +102,7 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
                 ModuleConfig.BinBoundaries,
                 ModuleConfig.WithinBinExposureRepresentationMethod
             );
+
             var exposureResponseResults = ModuleConfig.UsePointEstimates
                 ? erCalculator.ComputeFromHbmSingleValueExposures(
                     data.HbmSingleValueExposureSets,
@@ -105,7 +110,7 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
                     data.CounterFactualValueModels
                 )
                 : erCalculator.ComputeFromTargetIndividualExposures(
-                    getExposures(data),
+                    getExposures(data, ModuleConfig.MultipleSubstances && ModuleConfig.Cumulative),
                     data.ExposureResponseFunctionModels,
                     data.CounterFactualValueModels
                 );
@@ -162,7 +167,8 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
         }
 
         private Dictionary<ExposureTarget, (List<ITargetIndividualExposure> Exposures, TargetUnit Unit)> getExposures(
-            ActionData data
+            ActionData data,
+            bool cumulative
         ) {
             var result = new Dictionary<ExposureTarget, (List<ITargetIndividualExposure>, TargetUnit)>();
             if (ModuleConfig.ExposureCalculationMethod == ExposureCalculationMethod.ModelledConcentration) {
@@ -196,6 +202,17 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
                     .ToDictionary(
                         r => r.TargetUnit.Target,
                         r => (r.HbmIndividualConcentrations.Cast<ITargetIndividualExposure>().ToList(), r.TargetUnit)
+                    );
+            }
+
+            // If cumulative, then compute cumulative exposures
+            if (cumulative) {
+                result = CumulativeTargetExposuresCalculator
+                    .ComputeCumulativeExposures(
+                        result,
+                        data.ReferenceSubstance,
+                        data.CorrectedRelativePotencyFactors,
+                        data.MembershipProbabilities
                     );
             }
             return result;
