@@ -1,6 +1,7 @@
 ﻿namespace MCRA.General {
 
     public static class IndividualPropertyTypeExtensions {
+
         /// <summary>
         /// Returns the property type.
         /// </summary>

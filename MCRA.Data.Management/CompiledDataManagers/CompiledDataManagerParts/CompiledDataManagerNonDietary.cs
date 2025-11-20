@@ -88,13 +88,16 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                               & CheckLinkSelected(ScopingType.Compounds, idSubstance);
                                     if (valid) {
                                         var substance = _data.GetOrAddSubstance(idSubstance);
-                                        fillNonDietaryExposureData(nonDietarySurveys[idSurvey],
-                                            ndSets, string.Empty,
+                                        fillNonDietaryExposureData(
+                                            nonDietarySurveys[idSurvey],
+                                            ndSets,
+                                            string.Empty,
                                             idIndividual,
                                             substance,
                                             r.GetDouble(RawNonDietaryExposures.Dermal, fieldMap),
                                             r.GetDouble(RawNonDietaryExposures.Oral, fieldMap),
-                                            r.GetDouble(RawNonDietaryExposures.Inhalation, fieldMap));
+                                            r.GetDouble(RawNonDietaryExposures.Inhalation, fieldMap)
+                                        );
                                     }
                                 }
                             }
@@ -112,13 +115,16 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                     if (valid) {
                                         var substance = _data.GetOrAddSubstance(idSubstance);
                                         var idSet = r.GetString(RawNonDietaryExposuresUncertain.Id, fieldMap);
-                                        fillNonDietaryExposureData(nonDietarySurveys[idSurvey],
-                                            ndSets, idSet,
+                                        fillNonDietaryExposureData(
+                                            nonDietarySurveys[idSurvey],
+                                            ndSets,
+                                            idSet,
                                             idIndividual,
                                             substance,
                                             r.GetDouble(RawNonDietaryExposuresUncertain.Dermal, fieldMap),
                                             r.GetDouble(RawNonDietaryExposuresUncertain.Oral, fieldMap),
-                                            r.GetDouble(RawNonDietaryExposuresUncertain.Inhalation, fieldMap));
+                                            r.GetDouble(RawNonDietaryExposuresUncertain.Inhalation, fieldMap)
+                                        );
                                     }
                                 }
                             }
@@ -129,12 +135,17 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             return _data.NonDietaryExposureSets;
         }
 
-        private void fillNonDietaryExposureData(NonDietarySurvey survey,
+        private void fillNonDietaryExposureData(
+            NonDietarySurvey survey,
             IDictionary<string, NonDietaryExposureSet> ndSets,
-            string idSet, string idIndividual, Compound compound,
-            double dermal, double oral, double inhalation) {
-
-            //an empty idSet variable denotes raw dietary exposures otherwise uncertainties
+            string idSet,
+            string idIndividual,
+            Compound compound,
+            double dermal,
+            double oral,
+            double inhalation
+        ) {
+            // An empty idSet variable denotes raw dietary exposures otherwise uncertainties
             var isExposure = string.IsNullOrEmpty(idSet);
             var setKey = idSet + _sep + survey.Code + _sep + idIndividual;
 
@@ -154,7 +165,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 Compound = compound,
                 Dermal = dermal,
                 Oral = oral,
-                NonDietarySetCode = set.Code,
                 Inhalation = inhalation,
                 IdIndividual = set.IndividualCode,
             };

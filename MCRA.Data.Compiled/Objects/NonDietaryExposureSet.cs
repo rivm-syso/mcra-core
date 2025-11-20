@@ -1,4 +1,4 @@
-namespace MCRA.Data.Compiled.Objects {
+﻿namespace MCRA.Data.Compiled.Objects {
     public sealed class NonDietaryExposureSet
     {
         public NonDietaryExposureSet() {
@@ -9,5 +9,9 @@ namespace MCRA.Data.Compiled.Objects {
         public string IndividualCode { get; set; }
         public NonDietarySurvey NonDietarySurvey { get; set; }
         public ICollection<NonDietaryExposure> NonDietaryExposures { get; set; }
+
+        public bool IsUncertaintySet() {
+            return !string.IsNullOrEmpty(Code);
+        }
     }
 }

@@ -161,7 +161,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             ] };
             var aNdExposureSet = new NonDietaryExposureSet { Code = "A", NonDietarySurvey = aNdSurvey };
             var aNdExposureSet2 = new NonDietaryExposureSet { NonDietarySurvey = aNdSurvey };
-            var aNdExposure = new NonDietaryExposure { NonDietarySetCode = "A", Compound = aCompound };
+            var aNdExposure = new NonDietaryExposure { Compound = aCompound };
             var aNdExposureUnc = new NonDietaryExposure { Compound = new Compound("B") };
             aNdExposureSet.NonDietaryExposures = [aNdExposure, aNdExposureUnc];
             aNdExposureSet2.NonDietaryExposures = [aNdExposure, aNdExposureUnc];

@@ -9,11 +9,13 @@ using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
+
     /// <summary>
     /// Runs the NonDietaryExposures action
     /// </summary>
     [TestClass]
     public class NonDietaryExposuresActionCalculatorTests : ActionCalculatorTestsBase {
+
         /// <summary>
         /// Runs the NonDietaryExposures action: load data, summarize action result, load data uncertain
         /// </summary>
@@ -24,10 +26,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             var substances = FakeSubstancesGenerator.Create(3);
             var routes = new[] { ExposureRoute.Dermal, ExposureRoute.Inhalation, ExposureRoute.Oral };
-            var nondietaryExposureSets = FakeNonDietaryExposureSetsGenerator.MockNonDietaryExposureSets(individuals, substances, routes, random, ExternalExposureUnit.mgPerKgBWPerDay);
+            var nonDietaryExposures = FakeNonDietaryExposureSetsGenerator
+                .Create(individuals, substances, routes, random);
 
             var compiledData = new CompiledData() {
-                NonDietaryExposureSets = nondietaryExposureSets,
+                NonDietaryExposureSets = [.. nonDietaryExposures.SelectMany(r => r.Value)],
             };
 
             var dataManager = new MockCompiledDataManager(compiledData);

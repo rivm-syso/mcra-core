@@ -18,5 +18,10 @@ namespace MCRA.Data.Compiled.Objects {
                 }
             }
         }
+
+        public bool Matches(IndividualProperty property) {
+            var prop = IndividualProperty.FromName(Name, string.IsNullOrEmpty(IndividualPropertyTextValue));
+            return prop.MatchesIndividualProperty(property);
+        }
     }
 }

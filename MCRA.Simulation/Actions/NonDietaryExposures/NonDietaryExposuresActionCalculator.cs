@@ -37,11 +37,9 @@ namespace MCRA.Simulation.Actions.NonDietaryExposures {
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
             var nonDietaryExposureSets = subsetManager.NonDietaryExposureSets;
-            var selectedNonDietaryExposureSets = nonDietaryExposureSets.Any(c => string.IsNullOrEmpty(c.Code))
-                ? nonDietaryExposureSets.Where(c => string.IsNullOrEmpty(c.Code)).ToList()
-                : nonDietaryExposureSets;
-            data.NonDietaryExposureSets = subsetManager.NonDietaryExposureSets;
-            data.NonDietaryExposures = selectedNonDietaryExposureSets
+            data.NonDietaryExposureSets = nonDietaryExposureSets;
+            data.NonDietaryExposures = nonDietaryExposureSets
+                .Where(c => !c.IsUncertaintySet())
                 .GroupBy(r => r.NonDietarySurvey)
                 .ToDictionary(r => r.Key, g => g.ToList());
             data.NonDietaryExposureRoutes = [
@@ -56,7 +54,7 @@ namespace MCRA.Simulation.Actions.NonDietaryExposures {
             if (exposureUnits.Count == 1) {
                 data.NonDietaryExposureUnit = exposureUnits.First();
             } else {
-                throw new Exception("The nondietary surveys have different exposure units, which is currently not allowed.");
+                throw new Exception("The non-dietary surveys have different exposure units, which is currently not allowed.");
             }
             localProgress.Update(100);
         }
@@ -88,7 +86,7 @@ namespace MCRA.Simulation.Actions.NonDietaryExposures {
 
         public ICollection<NonDietaryExposureSet> ResampleNondietaryExposureUncertainSets(ActionData data, IRandom random) {
             var codes = data.NonDietaryExposureSets
-                .Where(c => !string.IsNullOrEmpty(c.Code))
+                .Where(c => c.IsUncertaintySet())
                 .Select(c => c.Code)
                 .Distinct()
                 .ToList();

@@ -30,8 +30,8 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.NonDie
 
         /// <summary>
         /// Use the correlation between individuals in different nondietary surveys.
-        /// Randomly pair non-dietary and dietary individuals
-        /// (if the properties of the individual match the covariates of the non-dietary survey)
+        /// Randomly pair non-dietary and dietary individuals (if the properties of 
+        /// the individual match the covariates of the non-dietary survey).
         /// </summary>
         protected override IExternalIndividualDayExposure generate(
             IIndividualDay individualDay,

@@ -1,10 +1,44 @@
 ﻿using MCRA.General;
 
 namespace MCRA.Data.Compiled.Objects {
+
     public sealed class IndividualProperty : StrongEntity {
+
+        /// <summary>
+        /// Reserved names for age property.
+        /// </summary>
+        public static HashSet<string> AgePropertyAliases { get; } = new(StringComparer.OrdinalIgnoreCase) {
+            "Age"
+        };
+
+        /// <summary>
+        /// At present, sex and gender are used interchangeably when making selections on individual properties.
+        /// </summary>
+        public static HashSet<string> SexPropertyAliases { get; } = new(StringComparer.OrdinalIgnoreCase) {
+            "Sex", "Gender"
+        };
+
+        /// <summary>
+        /// Reserved names for height property.
+        /// </summary>
+        public static HashSet<string> HeightPropertyAliases { get; } = new(StringComparer.OrdinalIgnoreCase) {
+            "Height"
+        };
+
+        /// <summary>
+        /// Reserved names for BSA (body surface area) property.
+        /// </summary>
+        public static HashSet<string> BsaPropertyAliases { get; } = new(StringComparer.OrdinalIgnoreCase) {
+            "BSA"
+        };
+
         public IndividualProperty() {
             CategoricalLevels = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         }
+
+        public IndividualPropertyType PropertyType { get; set; }
+
+        public PropertyLevelType PropertyLevel { get; set; }
 
         public HashSet<string> CategoricalLevels { get; set; }
 
@@ -12,31 +46,40 @@ namespace MCRA.Data.Compiled.Objects {
 
         public double Max { get; set; }
 
-        public IndividualPropertyType PropertyType { get; set; }
+        public bool IsAgeProperty => AgePropertyAliases.Contains(Name);
 
-        public PropertyLevelType PropertyLevel { get; set; }
+        public bool IsSexProperty => SexPropertyAliases.Contains(Name);
 
-        public bool IsAgeProperty => nameEquals("Age");
+        public bool IsHeightProperty => HeightPropertyAliases.Contains(Name);
 
-        public bool IsSexProperty => nameEquals("Sex", "Gender");
-
-        public bool IsHeightProperty => nameEquals("Height");
-
-        public bool IsBsaProperty => nameEquals("BSA");
-
-        private bool nameEquals(params string[] compareValues) =>
-            compareValues.Any(s => string.Equals(Name, s, StringComparison.OrdinalIgnoreCase));
+        public bool IsBsaProperty => BsaPropertyAliases.Contains(Name);
 
         public bool MatchesIndividualProperty(IndividualProperty other) {
-            // TODO: Matching is now based mostly based on identical codes.
-            // It should also include controlled terminology aliases.
             if (IsAgeProperty && other.IsAgeProperty) {
                 return true;
-            }
-            if (IsSexProperty && other.IsSexProperty) {
+            } else if (IsSexProperty && other.IsSexProperty) {
+                return true;
+            } else if (IsHeightProperty && other.IsHeightProperty) {
+                return true;
+            } else if (IsBsaProperty && other.IsBsaProperty) {
                 return true;
             }
             return string.Equals(Code, other.Code, StringComparison.OrdinalIgnoreCase);
+        }
+
+        public static IndividualProperty FromName(string name, bool isNumeric) {
+            var propertyType = IndividualPropertyTypeConverter
+                .FromString(
+                    name,
+                    isNumeric ? IndividualPropertyType.Numeric : IndividualPropertyType.Categorical,
+                    true
+                );
+            return new IndividualProperty {
+                Code = name,
+                Name = name,
+                PropertyType = propertyType,
+                PropertyLevel = PropertyLevelType.Individual
+            };
         }
     }
 }

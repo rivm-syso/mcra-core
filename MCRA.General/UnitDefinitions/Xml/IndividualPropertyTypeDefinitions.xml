@@ -99,7 +99,7 @@
       <Name>Gender</Name>
       <ShortName>Gender</ShortName>
       <Description>
-        Gender, sex or sexuality. See Gender types unit definitions.
+        Gender or sex. At present, these terms are used interchangeably when making selections on individual properties. See Gender types unit definitions.
       </Description>
       <Aliases>
         <Alias>Gender</Alias>
