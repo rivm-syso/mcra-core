@@ -9,7 +9,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public HbmCumulativeIndividualDayDistributionsBoxPlotChartCreator(HbmCumulativeIndividualDayDistributionsSection section) {
             _section = section;
             Width = 500;
-            Height = 80 + Math.Max(_section.HbmBoxPlotRecords.Count * _cellSize, 80);
+            Height = 80 + Math.Max(_section.BoxPlotRecords.Count * _cellSize, 80);
         }
 
         public override string Title => "Cumulative HBM individual day concentrations. " + base.Title;
@@ -22,8 +22,8 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         public override PlotModel Create() {
-            var unit = _section.HbmBoxPlotRecords.FirstOrDefault()?.Unit;
-            return create(_section.HbmBoxPlotRecords, $"Cumulative concentration ({unit})", false);
+            var unit = _section.BoxPlotRecords.FirstOrDefault()?.Unit;
+            return create(_section.BoxPlotRecords, $"Cumulative concentration ({unit})", false);
         }
     }
 }

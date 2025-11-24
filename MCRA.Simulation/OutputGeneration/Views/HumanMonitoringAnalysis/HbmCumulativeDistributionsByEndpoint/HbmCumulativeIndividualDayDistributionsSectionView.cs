@@ -11,11 +11,11 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             } else {
                 if (Model.Records.Any()) {
                     var percentileDataSection = DataSectionHelper
-                        .CreateCsvDataSection("CumulativeDayConcentrationsPercentiles", Model, Model.HbmBoxPlotRecords, ViewBag);
+                        .CreateCsvDataSection("HbmCumulativeConcentrationsPercentiles", Model, Model.BoxPlotRecords, ViewBag);
                     var chartCreator = new HbmCumulativeIndividualDayDistributionsBoxPlotChartCreator(Model);
 
                     sb.AppendChart(
-                        "CumulativeDayConcentrationsBoxPlotChart",
+                        "HbmCumulativeConcentrationsBoxPlotChart",
                         chartCreator,
                         ChartFileType.Svg,
                         Model,
@@ -24,7 +24,6 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         saveChartFile: true,
                         chartData: percentileDataSection
                     );
-
                     var hiddenProperties = new List<string> {
                         "SubstanceCode"
                     };
@@ -40,7 +39,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     sb.AppendTable(
                         Model,
                         Model.Records,
-                        "CumulativeDayConcentrationsTable",
+                        "HbmCumulativeConcentrationsTable",
                         ViewBag,
                         caption: "Human biomonitoring individual day measurement distribution endpoint cumulative substance.",
                         saveCsv: true,

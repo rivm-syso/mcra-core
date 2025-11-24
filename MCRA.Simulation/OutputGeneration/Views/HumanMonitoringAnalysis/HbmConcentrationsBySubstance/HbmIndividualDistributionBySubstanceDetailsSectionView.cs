@@ -20,7 +20,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         var targetName = boxPlotRecord.Key.GetDisplayName();
 
                         var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
-                            name: $"HbmIndividualDistributionBySubstancePercentiles{targetCode}",
+                            name: $"HbmConcentrationsBySubstanceDetailsPercentiles_{targetCode}",
                             section: Model,
                             items: boxPlotRecord.Value,
                             viewBag: ViewBag
@@ -35,14 +35,14 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         );
 
                         var numberOfRecords = boxPlotRecord.Value.Count;
-                        var warning = Model.HbmBoxPlotRecords[boxPlotRecord.Key].Any(c => c.P95 == 0) ? "The asterix indicates substances with positive measurements above an upper whisker of zero." : string.Empty;
+                        var warning = Model.HbmBoxPlotRecords[boxPlotRecord.Key].Any(c => c.P95 == 0) ? "The asterisk indicates substances with positive measurements above an upper whisker of zero." : string.Empty;
                         var figCaption = $"{targetName} individual day concentrations by substance. " + chartCreator.Title + $" {warning}";
                         panelBuilder.AddPanel(
                             id: $"Panel_{targetCode}",
                             title: $"{targetName} ({numberOfRecords})",
                             hoverText: targetName,
                             content: ChartHelpers.Chart(
-                                name: $"HBMIndividualDistributionBySubstanceDetailsBoxPlotChart{targetCode}",
+                                name: $"HbmConcentrationsBySubstanceDetailsBoxPlots_{targetCode}",
                                 section: Model,
                                 viewBag: ViewBag,
                                 chartCreator: chartCreator,

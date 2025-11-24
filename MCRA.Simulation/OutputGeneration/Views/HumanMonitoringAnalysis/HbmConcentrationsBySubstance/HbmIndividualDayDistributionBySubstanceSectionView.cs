@@ -29,7 +29,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         var targetName = boxPlotRecord.Key.GetDisplayName();
 
                         var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
-                            name: $"HbmIndividualDayDistributionBySubstancePercentiles{targetCode}",
+                            name: $"HbmConcentrationsBySubstancePercentiles_{targetCode}",
                             section: Model,
                             items: boxPlotRecord.Value,
                             viewBag: ViewBag
@@ -39,7 +39,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                             Model.HbmBoxPlotRecords[boxPlotRecord.Key],
                             boxPlotRecord.Key,
                             Model.SectionId,
-                            ViewBag.GetUnit(targetCode),
+                            Model.HbmBoxPlotRecords[boxPlotRecord.Key].FirstOrDefault()?.Unit ?? string.Empty,
                             Model.ShowOutliers
                         );
 
@@ -51,7 +51,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                             title: $"{targetName} ({numberOfRecords})",
                             hoverText: targetName,
                             content: ChartHelpers.Chart(
-                                name: $"HBMIndividualDayConcentrationBySubstanceBoxPlotChart{targetCode}",
+                                name: $"HbmConcentrationsBySubstanceBoxPlots_{targetCode}",
                                 section: Model,
                                 viewBag: ViewBag,
                                 chartCreator: chartCreator,

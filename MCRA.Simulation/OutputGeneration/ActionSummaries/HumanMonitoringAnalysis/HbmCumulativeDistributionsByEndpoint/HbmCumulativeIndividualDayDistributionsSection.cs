@@ -11,7 +11,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public override bool SaveTemporaryData => true;
 
         public List<HbmIndividualDayDistributionBySubstanceRecord> Records { get; set; } = [];
-        public List<HbmConcentrationsPercentilesRecord> HbmBoxPlotRecords { get; set; }
+        public List<HbmConcentrationsPercentilesRecord> BoxPlotRecords { get; set; }
         public double? RestrictedUpperPercentile { get; set; }
 
         public void Summarize(
@@ -64,9 +64,7 @@ namespace MCRA.Simulation.OutputGeneration {
             };
             result.Add(record);
 
-            result = result
-                 .Where(r => r.MeanPositives > 0)
-                 .ToList();
+            result = [.. result.Where(r => r.MeanPositives > 0)];
             Records.AddRange(result);
             summarizeBoxPot(collection);
         }
@@ -93,14 +91,14 @@ namespace MCRA.Simulation.OutputGeneration {
                     SubstanceCode = "Cumulative",
                     SubstanceName = "Cumulative",
                     Description = $"Cumulative",
-                    Percentiles = percentiles.ToList(),
+                    Percentiles = [.. percentiles],
                     NumberOfPositives = positives.Count,
                     Percentage = positives.Count * 100d / cumulativeIndividualDayCollection.HbmCumulativeIndividualDayConcentrations.Count,
                     Unit = cumulativeIndividualDayCollection.TargetUnit?.GetShortDisplayName()
                 };
                 result.Add(record);
             }
-            HbmBoxPlotRecords = result;
+            BoxPlotRecords = result;
         }
 
         public void SummarizeUncertainty(

@@ -64,9 +64,7 @@ namespace MCRA.Simulation.OutputGeneration {
             };
             result.Add(record);
 
-            result = result
-                 .Where(r => r.MeanPositives > 0)
-                 .ToList();
+            result = [.. result.Where(r => r.MeanPositives > 0)];
             Records.AddRange(result);
             summarizeBoxPot(collection);
         }
@@ -89,7 +87,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     SubstanceCode = "Cumulative",
                     SubstanceName = "Cumulative",
                     Description = $"Cumulative",
-                    Percentiles = percentiles.ToList(),
+                    Percentiles = [.. percentiles],
                     NumberOfPositives = positives.Count,
                     Percentage = positives.Count * 100d / cumulativeIndividualCollection.HbmCumulativeIndividualConcentrations.Count,
                     Unit = cumulativeIndividualCollection.TargetUnit?.GetShortDisplayName()
