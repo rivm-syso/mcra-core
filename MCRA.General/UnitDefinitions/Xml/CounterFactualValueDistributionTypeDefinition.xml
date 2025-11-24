@@ -29,5 +29,16 @@
         <Alias>Uniform</Alias>
       </Aliases>
     </Unit>
+    <Unit>
+      <Id>Triangular</Id>
+      <Name>Triangular</Name>
+      <ShortName>Triangular</ShortName>
+      <Description>
+        Triangular distribution specified by a mean/median and a lower and upper boundary.
+      </Description>
+      <Aliases>
+        <Alias>Triangular</Alias>
+      </Aliases>
+    </Unit>
   </Units>
 </UnitDefinition>

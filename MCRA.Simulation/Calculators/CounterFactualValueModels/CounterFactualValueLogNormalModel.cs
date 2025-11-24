@@ -5,9 +5,13 @@ namespace MCRA.Simulation.Calculators.CounterFactualValueModels {
 
     public sealed class CounterFactualValueLogNormalModel(
         ExposureResponseFunction erf
-    ) : CounterFactualValueDistributionModel<LogNormalDistribution>(erf) {
-        protected override LogNormalDistribution getDistributionFromNominalAndUpper(double factor, double upper) {
-            var distribution = LogNormalDistribution.FromMeanAndUpper(factor, upper);
+    ) : CounterFactualValueDistributionModel<LogNormalDistribution>(erf), ICounterFactualValueModel {
+        protected override LogNormalDistribution getDistribution(ExposureResponseFunction erf) {
+            if (!erf.CFVUncertaintyUpper.HasValue) {
+                var msg = $"Missing upper counterfactualvalue lognormal uncertainty distribution for ERF {ExposureResponseFunction.Code}.";
+                throw new Exception(msg);
+            }
+            var distribution = LogNormalDistribution.FromMeanAndUpper(erf.CounterFactualValue, erf.CFVUncertaintyUpper.Value);
             return distribution;
         }
     }

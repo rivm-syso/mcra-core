@@ -21,7 +21,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             int seed = 1
         ) {
             var random = new McraRandomGenerator(seed);
-            var result = new List<IExposureResponseFunctionModel>();
+            var result = new List<ExposureResponseFunction>();
             var erfTypes = Enum.GetValues(typeof(ExposureResponseType))
                 .Cast<ExposureResponseType>()
                 .ToList();
@@ -45,11 +45,15 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                         true,
                         random
                     );
-                    var record = new ExposureResponseFunctionModel(erf);
-                    result.Add(record);
+                    result.Add(erf);
                 }
             }
-            return result;
+
+            var erfModels = result.Select(r => new ExposureResponseFunctionModel(r) {
+                    CounterFactualValueModel = CounterFactualValueCalculatorFactory.Create(r)
+                })
+                .Cast<IExposureResponseFunctionModel>().ToList();
+            return erfModels;
         }
 
         public static List<ICounterFactualValueModel> FakeCounterFactualValueModel(List<IExposureResponseFunctionModel> erfModels) {
@@ -84,7 +88,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                 ExposureResponseSpecificationLower = new NCalc.Expression(erfStringLower),
                 ExposureResponseSpecificationUpper = new NCalc.Expression(erfStringUpper),
                 ExposureResponseType = erfType,
-                CounterfactualValue = counterfactualValue
+                CounterFactualValue = counterfactualValue
             };
             if (metric == EffectMetric.PositiveShift
                 || metric == EffectMetric.NegativeShift

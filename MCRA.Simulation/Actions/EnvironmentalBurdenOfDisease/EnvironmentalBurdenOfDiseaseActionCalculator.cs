@@ -114,13 +114,11 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
             var exposureResponseResults = ModuleConfig.UsePointEstimates
                 ? erCalculator.ComputeFromHbmSingleValueExposures(
                     data.HbmSingleValueExposureSets,
-                    exposureResponseFunctionModels,
-                    data.CounterFactualValueModels
+                    exposureResponseFunctionModels
                 )
                 : erCalculator.ComputeFromTargetIndividualExposures(
                     getExposures(data, ModuleConfig.MultipleSubstances && ModuleConfig.Cumulative),
-                    exposureResponseFunctionModels,
-                    data.CounterFactualValueModels
+                    exposureResponseFunctionModels
                 );
 
             // Create EBD calculator and compute

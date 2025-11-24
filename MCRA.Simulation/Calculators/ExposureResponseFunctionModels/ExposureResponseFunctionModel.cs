@@ -1,5 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.Simulation.Calculators.CounterFactualValueModels;
 using MCRA.Utils.Statistics;
 using NCalc;
 
@@ -18,6 +19,8 @@ namespace MCRA.Simulation.Calculators.ExposureResponseFunctions {
         public bool IsNominal { get; private set; } = true;
 
         public ExposureResponseFunction ExposureResponseFunction { get; set; } = exposureResponseFunction;
+
+        public ICounterFactualValueModel CounterFactualValueModel { get; set; }
 
         public virtual void ResampleModelParameters(IRandom random) {
             var rnd = new McraRandomGenerator(random.Next());
@@ -44,7 +47,7 @@ namespace MCRA.Simulation.Calculators.ExposureResponseFunctions {
 
         public double compute(double x, FunctionLevel functionLevel) {
             var erf = ExposureResponseFunction;
-            if (x <= erf.CounterfactualValue) {
+            if (x <= CounterFactualValueModel.GetCounterFactualValue()) {
                 return erf.EffectMetric == EffectMetric.NegativeShift |
                     erf.EffectMetric == EffectMetric.PositiveShift ? 0D : 1D;
             }
@@ -71,10 +74,10 @@ namespace MCRA.Simulation.Calculators.ExposureResponseFunctions {
                 return Convert.ToDouble(erfSpecification.Evaluate());
             } else if (erf.ExposureResponseType == ExposureResponseType.PerDoubling) {
                 var doubFac = Convert.ToDouble(erfSpecification.Evaluate());
-                return Math.Pow(doubFac, Math.Log2(x / erf.CounterfactualValue));
+                return Math.Pow(doubFac, Math.Log2(x / CounterFactualValueModel.GetCounterFactualValue()));
             } else if (erf.ExposureResponseType == ExposureResponseType.PerUnit) {
                 var a = Convert.ToDouble(erfSpecification.Evaluate());
-                var b = 1 - a * erf.CounterfactualValue;
+                var b = 1 - a * CounterFactualValueModel.GetCounterFactualValue();
                 return a * x + b;
             } else if (erf.ExposureResponseType == ExposureResponseType.Constant) {
                 return Convert.ToDouble(erfSpecification.Evaluate());

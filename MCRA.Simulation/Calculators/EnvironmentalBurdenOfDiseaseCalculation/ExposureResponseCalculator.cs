@@ -1,8 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.Simulation.Calculators.CounterFactualValueModels;
 using MCRA.Simulation.Calculators.ExposureResponseFunctions;
-using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Utils.Statistics;
 
@@ -26,13 +24,11 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
 
         public List<ExposureResponseResult> ComputeFromHbmSingleValueExposures(
             ICollection<HbmSingleValueExposureSet> hbmSingleValueExposureSets,
-            ICollection<IExposureResponseFunctionModel> exposureResponseFunctionModels,
-            ICollection<ICounterFactualValueModel> counterFactualModels
+            ICollection<IExposureResponseFunctionModel> exposureResponseFunctionModels
         ) {
             var exposureResponseResults = new List<ExposureResponseResult>();
             foreach (var exposureResponseFunctionModel in exposureResponseFunctionModels) {
                 var erf = exposureResponseFunctionModel.ExposureResponseFunction;
-                var counterFactualModel = counterFactualModels.FirstOrDefault(c => c.ExposureResponseFunction == erf);
                 var hbmSingleValueExposureSet = hbmSingleValueExposureSets
                     .FirstOrDefault(c => c.Substance == erf.Substance);
                 if (hbmSingleValueExposureSet == null) {
@@ -62,14 +58,12 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
 
         public List<ExposureResponseResult> ComputeFromTargetIndividualExposures(
             Dictionary<ExposureTarget, (List<ITargetIndividualExposure> Exposures, TargetUnit Unit)> exposuresCollections,
-            ICollection<IExposureResponseFunctionModel> exposureResponseFunctionModels,
-            ICollection<ICounterFactualValueModel> counterFactualModels
+            ICollection<IExposureResponseFunctionModel> exposureResponseFunctionModels
         ) {
             var exposureResponseResults = new List<ExposureResponseResult>();
             var percentileIntervals = getPercentileIntervalsFromBinBoundaries(_defaultBinBoundaries);
             foreach (var exposureResponseFunctionModel in exposureResponseFunctionModels) {
                 var erf = exposureResponseFunctionModel.ExposureResponseFunction;
-                var counterFactualModel = counterFactualModels.FirstOrDefault(c => c.ExposureResponseFunction == erf);
                 // Get exposures for target
                 if (!exposuresCollections.TryGetValue(erf.ExposureTarget, out var targetExposures)) {
                     var msg = $"Failed to compute effects for exposure response function {erf.Code}: missing estimates for target {erf.ExposureTarget.GetDisplayName()}.";
@@ -80,7 +74,6 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
                 // Compute exposure response results
                 var exposureResponseResult = ComputeFromTargetIndividualExposures(
                     exposureResponseFunctionModel,
-                    counterFactualModel,
                     exposures,
                     exposureUnit,
                     percentileIntervals,
@@ -94,7 +87,6 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
 
         public ExposureResponseResult ComputeFromTargetIndividualExposures(
             IExposureResponseFunctionModel exposureResponseFunctionModel,
-            ICounterFactualValueModel counterFactualValueModel,
             List<ITargetIndividualExposure> exposures,
             TargetUnit targetUnit,
             List<PercentileInterval> percentileIntervals,
@@ -114,7 +106,6 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
 
             var bins = getBins(
                 exposureResponseFunctionModel,
-                counterFactualValueModel,
                 exposures,
                 percentileIntervals,
                 unitAlignmentFactor,
@@ -205,20 +196,18 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
 
         private List<(ExposureInterval ExposureInterval, PercentileInterval PercentileInterval)> getBins(
             IExposureResponseFunctionModel exposureResponseFunctionModel,
-            ICounterFactualValueModel counterFactualValueModel,
             List<ITargetIndividualExposure> exposures,
             List<PercentileInterval> defaultPercentileIntervals,
             double unitAlignmentFactor,
             bool useErfBins
         ) {
             return useErfBins
-                ? computeBinsFromErf(exposureResponseFunctionModel, counterFactualValueModel, exposures, unitAlignmentFactor)
+                ? computeBinsFromErf(exposureResponseFunctionModel, exposures, unitAlignmentFactor)
                 : calculateExposureBinsFromPercentiles(exposureResponseFunctionModel, exposures, defaultPercentileIntervals);
         }
 
         private List<(ExposureInterval, PercentileInterval)> computeBinsFromErf(
             IExposureResponseFunctionModel exposureResponseFunctionModel,
-            ICounterFactualValueModel counterFactualValueModel,
             List<ITargetIndividualExposure> exposures,
             double unitAlignmentFactor
         ) {
@@ -234,7 +223,7 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
                 .ToList();
 
             var exposureLevels = new List<double> {
-                counterFactualValueModel.GetCounterFactualValue() * unitAlignmentFactor
+                exposureResponseFunctionModel.CounterFactualValueModel.GetCounterFactualValue() * unitAlignmentFactor
             };
             var maximum = allExposures.Max();
             if (erf.HasErfSubGroups) {

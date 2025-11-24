@@ -5,9 +5,13 @@ namespace MCRA.Simulation.Calculators.CounterFactualValueModels {
 
     public sealed class CounterFactualValueUniformModel(
         ExposureResponseFunction erf
-    ) : CounterFactualValueDistributionModel<UniformDistribution>(erf) {
-        protected override UniformDistribution getDistributionFromNominalAndUpper(double factor, double upper) {
-            var distribution = UniformDistribution.FromMeanAndUpper(factor, upper);
+    ) : CounterFactualValueDistributionModel<UniformDistribution>(erf), ICounterFactualValueModel {
+        protected override UniformDistribution getDistribution(ExposureResponseFunction erf) {
+            if (!erf.CFVUncertaintyUpper.HasValue) {
+                var msg = $"Missing upper counterfactualvalue uniform uncertainty distribution for ERF {ExposureResponseFunction.Code}";
+                throw new Exception(msg);
+            }
+            var distribution = UniformDistribution.FromMeanAndUpper(erf.CounterFactualValue, erf.CFVUncertaintyUpper.Value);
             return distribution;
         }
     }

@@ -1,5 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.Simulation.Calculators.CounterFactualValueModels;
 using MCRA.Simulation.Calculators.ExposureResponseFunctions;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
@@ -12,6 +13,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.EnvironmentalBurdenOfDiseas
                 ExposureResponseSpecification = new NCalc.Expression("5.01")
             };
             var erfModel = new ExposureResponseFunctionModel(erf);
+            erfModel.CounterFactualValueModel= CounterFactualValueCalculatorFactory.Create(erf);
             var result = erfModel.Compute(42, true);
             Assert.AreEqual(5.01, result);
         }

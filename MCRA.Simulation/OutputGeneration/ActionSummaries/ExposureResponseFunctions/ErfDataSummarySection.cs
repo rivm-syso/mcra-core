@@ -45,7 +45,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         ExposureResponseSpecificationUpper = r.ExposureResponseSpecificationUpper.ExpressionString.Length != 0
                             ? r.ExposureResponseSpecificationUpper.ExpressionString
                             : null,
-                        CounterfactualValue = r.CounterfactualValue,
+                        CounterfactualValue = r.CounterFactualValue,
                         UncertaintyDistribution = r.CFVUncertaintyDistribution.GetShortDisplayName(),
                         UncertaintyUpper = r.CFVUncertaintyUpper ?? double.NaN,
                         HasSubgroups = r.HasErfSubGroups,

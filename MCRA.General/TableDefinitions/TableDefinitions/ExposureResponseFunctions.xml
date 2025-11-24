@@ -230,6 +230,17 @@
       </PossibleValues>
     </ColumnDefinition>
     <ColumnDefinition FieldType="Numeric">
+      <Id>CFVLower</Id>
+      <Description>
+        The lower value of the distribution. If the distribution is triangular then it is the lower bound of the uniform distribution.
+        This value should be smaller than the counter factual value.
+      </Description>
+      <Aliases>
+        <string>CFVLower</string>
+        <string>CFVUncertaintyLower</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric">
       <Id>CFVUpper</Id>
       <Description>
         The upper value of the distribution. If the distribution is uniform, then it is the upper bound of the uniform distribution.

@@ -107,11 +107,12 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             ExposureResponseSpecification = exposureResponseSpecification,
                                             ExposureResponseSpecificationLower = exposureResponseSpecificationLower,
                                             ExposureResponseSpecificationUpper = exposureResponseSpecificationUpper,
-                                            CounterfactualValue = r.GetDouble(RawExposureResponseFunctions.CounterfactualValue, fieldMap),
+                                            CounterFactualValue = r.GetDouble(RawExposureResponseFunctions.CounterfactualValue, fieldMap),
                                             PopulationCharacteristic = populationCharacteristicType,
                                             EffectThresholdLower = r.GetDoubleOrNull(RawExposureResponseFunctions.EffectThresholdLower, fieldMap),
                                             EffectThresholdUpper = r.GetDoubleOrNull(RawExposureResponseFunctions.EffectThresholdUpper, fieldMap),
                                             CFVUncertaintyDistribution = CounterFactualValueDistributionTypeConverter.FromString(distributionTypeString, CounterFactualValueDistributionType.Constant),
+                                            CFVUncertaintyLower = r.GetDoubleOrNull(RawExposureResponseFunctions.CFVLower, fieldMap),
                                             CFVUncertaintyUpper = r.GetDoubleOrNull(RawExposureResponseFunctions.CFVUpper, fieldMap)
                                         };
                                         allExposureResponseFunctions.Add(record);
@@ -196,7 +197,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 r.WriteNonEmptyString(RawExposureResponseFunctions.ExposureResponseSpecification, erf.ExposureResponseSpecification.ToString(), ccr);
                 r.WriteNonEmptyString(RawExposureResponseFunctions.ExposureResponseSpecificationLower, erf.ExposureResponseSpecificationLower.ToString(), ccr);
                 r.WriteNonEmptyString(RawExposureResponseFunctions.ExposureResponseSpecificationUpper, erf.ExposureResponseSpecificationUpper.ToString(), ccr);
-                r.WriteNonEmptyString(RawExposureResponseFunctions.CounterfactualValue, erf.CounterfactualValue.ToString(), ccr);
+                r.WriteNonEmptyString(RawExposureResponseFunctions.CounterfactualValue, erf.CounterFactualValue.ToString(), ccr);
                 r.WriteNonEmptyString(RawExposureResponseFunctions.PopulationCharacteristic, erf.PopulationCharacteristic.ToString(), ccr);
                 r.WriteNonEmptyString(RawExposureResponseFunctions.EffectThresholdLower, erf.EffectThresholdLower.ToString(), ccr);
                 r.WriteNonEmptyString(RawExposureResponseFunctions.CFVUncertaintyDistribution, erf.CFVUncertaintyDistribution.ToString(), ccr); 

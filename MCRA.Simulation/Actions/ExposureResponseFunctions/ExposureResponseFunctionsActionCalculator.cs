@@ -1,4 +1,5 @@
-﻿using MCRA.Data.Management;
+﻿using CommandLine;
+using MCRA.Data.Management;
 using MCRA.Data.Management.CompiledDataManagers.DataReadingSummary;
 using MCRA.General;
 using MCRA.General.Action.Settings;
@@ -42,14 +43,10 @@ namespace MCRA.Simulation.Actions.ExposureResponseFunctions {
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
             var exposureResponseFunctions = subsetManager.AllExposureResponseFunctions;
             data.ExposureResponseFunctionModels = [.. exposureResponseFunctions
-                .Select(r => new ExposureResponseFunctionModel(r))
+                .Select(r => new ExposureResponseFunctionModel(r) {
+                    CounterFactualValueModel = CounterFactualValueCalculatorFactory.Create(r)
+                })
                 .Cast<IExposureResponseFunctionModel>()];
-
-            var counterFactualValueModels = exposureResponseFunctions
-                .Select(CounterFactualValueCalculatorFactory.Create)
-                .ToList();
-
-            data.CounterFactualValueModels = counterFactualValueModels;
         }
 
         protected override void summarizeActionResult(IExposureResponseFunctionsActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {
@@ -66,21 +63,17 @@ namespace MCRA.Simulation.Actions.ExposureResponseFunctions {
             CompositeProgressState progressReport
         ) {
             var localProgress = progressReport.NewProgressState(100);
-            if (data.ExposureResponseFunctionModels != null && factorialSet.Contains(UncertaintySource.ExposureResponseFunctions)) {
-                localProgress.Update("Resampling exposure response functions.");
-                if (data.ExposureResponseFunctionModels?.Count > 0) {
-                    var random = uncertaintySourceGenerators[UncertaintySource.ExposureResponseFunctions];
-                    foreach (var model in data.ExposureResponseFunctionModels) {
+            if (data.ExposureResponseFunctionModels != null && data.ExposureResponseFunctionModels?.Count > 0) {
+                foreach (var model in data.ExposureResponseFunctionModels) {
+                    if (factorialSet.Contains(UncertaintySource.ExposureResponseFunctions)) {
+                        localProgress.Update("Resampling exposure response functions.");
+                        var random = uncertaintySourceGenerators[UncertaintySource.ExposureResponseFunctions];
                         model.ResampleModelParameters(random);
                     }
-                }
-            }
-            if (data.ExposureResponseFunctionModels != null && factorialSet.Contains(UncertaintySource.CounterFactualValues)) {
-                localProgress.Update("Resampling counter factual values.");
-                if (data.ExposureResponseFunctionModels?.Count > 0) {
-                    var random = uncertaintySourceGenerators[UncertaintySource.CounterFactualValues];
-                    foreach (var model in data.CounterFactualValueModels) {
-                        model.ResampleModelParameters(random);
+                    if (factorialSet.Contains(UncertaintySource.CounterFactualValues)) {
+                        localProgress.Update("Resampling counter factual values.");
+                        var random = uncertaintySourceGenerators[UncertaintySource.CounterFactualValues];
+                        model.CounterFactualValueModel.ResampleModelParameters(random);
                     }
                 }
             }

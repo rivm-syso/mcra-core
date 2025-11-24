@@ -32,7 +32,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 var maxExposure = dataPoints.Max(r => r.Exposure);
                 var exposureResponseGridDataPoints = new UncertainDataPointCollection<double>();
                 var XValues = GriddingFunctions.Arange(
-                    erf.CounterfactualValue,
+                    erf.CounterFactualValue,
                     maxExposure,
                     n: 1000);
                 var YValues = XValues
@@ -70,7 +70,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         : null,
                     ErfDoseUnit = erf.ExposureUnit.GetShortDisplayName(),
                     ErfDoseAlignmentFactor = doseUnitAlignmentFactor,
-                    CounterfactualValue = erf.CounterfactualValue,
+                    CounterfactualValue = erf.CounterFactualValue,
                     HasSubgroups = erf.HasErfSubGroups,
                     ExposureResponseDataPoints = dataPoints,
                     ExposureResponseGridDataPoints = exposureResponseGridDataPoints

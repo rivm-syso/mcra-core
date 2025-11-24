@@ -3,47 +3,35 @@ using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.CounterFactualValueModels {
 
-    public class CounterFactualValueDistributionModelParametrisation<T>
-        : CounterFactualValueModelParametrisation where T : Distribution {
-        public T Distribution { get; set; }
-    }
+    public abstract class CounterFactualValueDistributionModel<T> where T : Distribution {
 
-    public abstract class CounterFactualValueDistributionModel<T>(
-        ExposureResponseFunction erf
-    ) : CounterFactualValueModelBase<CounterFactualValueDistributionModelParametrisation<T>>(
-        erf
-    ) where T : Distribution {
+        public ExposureResponseFunction ExposureResponseFunction { get; protected set; }
 
-        public override void ResampleModelParameters(IRandom random) {
-            var rnd = new McraRandomGenerator(random.Next());
-            foreach (var parametrisation in ModelParametrisations) {
-                // Correlated draw for all parametrisations
-                parametrisation.Factor = parametrisation.Distribution.Draw(rnd);
-                rnd.Reset();
-            }
+        public double Factor { get; protected set; }
+
+        public T Distribution { get; protected set; }
+
+        public CounterFactualValueDistributionModel(ExposureResponseFunction erf) {
+            ExposureResponseFunction = erf;
         }
 
-        protected abstract T getDistributionFromNominalAndUpper(double factor, double upper);
-
-        protected override CounterFactualValueDistributionModelParametrisation<T> getParametrisation(
-            double factor,
-            double? upper
-        ) {
-            if (!upper.HasValue) {
-                var msg = $"Missing uncertainty upper value for counter factual value {ExposureResponseFunction.Code}";
-                throw new Exception(msg);
-            }
-            try {
-                var distribution = getDistributionFromNominalAndUpper(factor, upper.Value);
-                var result = new CounterFactualValueDistributionModelParametrisation<T>() {
-                    Distribution = distribution,
-                    Factor = factor
-                };
-                return result;
-            } catch (Exception ex) {
-                var msg = $"Incorrect specification of counter factual value uncertainty distribution: {ex.Message}";
-                throw new Exception(msg);
-            }
+        public void CalculateParameters() {
+            Distribution = getDistribution(ExposureResponseFunction);
+            Factor = ExposureResponseFunction.CounterFactualValue;
         }
+
+        public void ResampleModelParameters(IRandom random) {
+            Factor = Distribution.Draw(random);
+        }
+
+        /// <summary>
+        /// Returns the currently active (drwan) counterfactual value.
+        /// </summary>
+        public double GetCounterFactualValue() {
+            return Factor;
+        }
+
+        protected abstract T getDistribution(ExposureResponseFunction erf);
+
     }
 }

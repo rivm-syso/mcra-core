@@ -99,7 +99,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 AllEffects = effects,
                 SelectedPopulation = population,
                 ExposureResponseFunctionModels = exposureResponseFunctionModels,
-                CounterFactualValueModels = counterFactualValueModels,
                 BurdensOfDisease = burdenOfDiseases,
                 HbmIndividualCollections = [new() {
                     TargetUnit = targetUnit,

@@ -19,7 +19,7 @@ namespace MCRA.Data.Compiled.Objects {
         public Expression ExposureResponseSpecification { get; set; }
         public Expression ExposureResponseSpecificationLower { get; set; }
         public Expression ExposureResponseSpecificationUpper { get; set; }
-        public double CounterfactualValue { get; set; }
+        public double CounterFactualValue { get; set; }
         public ICollection<ErfSubgroup> ErfSubgroups { get; set; } = [];
         public PopulationCharacteristicType PopulationCharacteristic { get; set; }
         public double? EffectThresholdLower { get; set; }
@@ -32,6 +32,7 @@ namespace MCRA.Data.Compiled.Objects {
         public TargetUnit TargetUnit => new(ExposureTarget, ExposureUnit);
         public CounterFactualValueDistributionType CFVUncertaintyDistribution { get; set; } = CounterFactualValueDistributionType.Constant;
         public double? CFVUncertaintyUpper { get; set; }
+        public double? CFVUncertaintyLower { get; set; }
         public bool HasErfSubGroups => ErfSubgroups != null && ErfSubgroups.Count > 0;
     }
 }

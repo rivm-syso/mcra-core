@@ -1081,12 +1081,6 @@ namespace MCRA.Simulation {
             set => GetOrCreateModuleOutputData<ConsumerProductConcentrationDistributionsOutputData>(ActionType.ConsumerProductConcentrationDistributions).ConsumerProductConcentrationModels = value;
         }
 
-
-        public ICollection<ICounterFactualValueModel> CounterFactualValueModels {
-            get => GetOrCreateModuleOutputData<ExposureResponseFunctionsOutputData>(ActionType.ExposureResponseFunctions).CounterFactualValueModels;
-            set => GetOrCreateModuleOutputData<ExposureResponseFunctionsOutputData>(ActionType.ExposureResponseFunctions).CounterFactualValueModels = value;
-        }
-
         public ICollection<HbmSingleValueExposureSet> HbmSingleValueExposureSets {
             get => GetOrCreateModuleOutputData<HbmSingleValueExposuresOutputData>(ActionType.HbmSingleValueExposures).HbmSingleValueExposureSets;
             set => GetOrCreateModuleOutputData<HbmSingleValueExposuresOutputData>(ActionType.HbmSingleValueExposures).HbmSingleValueExposureSets = value;

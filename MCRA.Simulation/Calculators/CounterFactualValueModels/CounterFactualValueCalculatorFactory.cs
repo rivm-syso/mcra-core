@@ -18,11 +18,15 @@ namespace MCRA.Simulation.Calculators.CounterFactualValueModels {
                 case CounterFactualValueDistributionType.Uniform:
                     model = new CounterFactualValueUniformModel(erf);
                     break;
+                case CounterFactualValueDistributionType.Triangular:
+                    model = new CounterFactualValueTriangularModel(erf);
+                    break;
                 default:
                     var msg = $"No counter factual value for distribution type ${erf.CFVUncertaintyDistribution}.";
                     throw new NotImplementedException(msg);
             }
             model.CalculateParameters();
+
             return model;
         }
     }
