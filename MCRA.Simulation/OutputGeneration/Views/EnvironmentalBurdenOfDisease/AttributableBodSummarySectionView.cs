@@ -119,6 +119,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     );
                     var chartCreator = new AttributableBodChartCreator(
                         [.. group],
+                        Model.StandardisationMethod,
                         Model.SectionId
                     );
 
@@ -137,10 +138,12 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     if (!missingPopulationSize) {
                         var chartCreatorStandardised = new StandardisedAttributableBodChartCreator(
                             [.. group],
+                            Model.StandardisationMethod,
                             Model.SectionId
                         );
                         var chartCreatorExposed = new StandardisedExposedAttributableBodChartCreator(
                             [.. group],
+                            Model.StandardisationMethod,
                             Model.SectionId
                         );
 

@@ -1,4 +1,5 @@
-﻿using MCRA.Utils.ExtensionMethods;
+﻿using MCRA.General;
+using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
 
 namespace MCRA.Simulation.OutputGeneration {
@@ -6,11 +7,12 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public StandardisedAttributableBodChartCreator(
             List<AttributableBodSummaryRecord> records,
+            EnvironmentalBodStandardisationMethod standardisationMethod,
             string sectionId
-        ) : base(records, sectionId) {
+        ) : base(records, standardisationMethod, sectionId) {
         }
 
-        public override string Title => "EBD per 100,000 &amp; cumulative percentage.";
+        public override string Title => $"EBD per {_standardisationMethod.GetDisplayName()} &amp; cumulative percentage.";
 
         public override string ChartId {
             get {
@@ -34,7 +36,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 ))],
             labels: [.. _records.Select(c => c.ExposureBin)],
             unit: _unit,
-            leftYAxisTitle: $"Attributable Burden ({_bodIndicator} per 100k)",
+            leftYAxisTitle: $"Attributable Burden ({_bodIndicator} per {_standardisationMethod.GetShortDisplayName()})",
             uncertainty: _records.SelectMany(c => c.AttributableBods).Any()
         );
     }

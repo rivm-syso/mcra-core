@@ -1,4 +1,5 @@
-﻿using MCRA.Utils.Charting.OxyPlot;
+﻿using MCRA.General;
+using MCRA.Utils.Charting.OxyPlot;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Legends;
@@ -14,9 +15,11 @@ namespace MCRA.Simulation.OutputGeneration {
         protected readonly string _sourceIndicators;
         protected readonly string _erfCode;
         protected readonly string _unit;
+        protected readonly EnvironmentalBodStandardisationMethod _standardisationMethod;
 
         public AttributableBodChartCreatorBase(
             List<AttributableBodSummaryRecord> records,
+            EnvironmentalBodStandardisationMethod standardisationMethod,
             string sectionId
         ) {
             Width = 370;
@@ -28,6 +31,7 @@ namespace MCRA.Simulation.OutputGeneration {
             _bodIndicator = records.First().BodIndicator;
             _sourceIndicators = records.First().SourceIndicators;
             _erfCode = records.First().ErfCode;
+            _standardisationMethod = standardisationMethod;
         }
 
         protected static PlotModel create(

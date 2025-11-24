@@ -46,6 +46,7 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
             ) {
                 summarizeAttributableBod(
                     result.EnvironmentalBurdenOfDiseases,
+                    _configuration.EbdStandardisation,
                     subHeader,
                     subOrder++
                 );
@@ -103,6 +104,7 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
 
         private void summarizeAttributableBod(
             List<EnvironmentalBurdenOfDiseaseResultRecord> environmentalBurdenOfDiseases,
+            EnvironmentalBodStandardisationMethod standardisationMethod,
             SectionHeader header,
             int order
         ) {
@@ -114,7 +116,7 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
                 "Attributable burden of disease",
                 order
             );
-            section.Summarize(environmentalBurdenOfDiseases);
+            section.Summarize(environmentalBurdenOfDiseases, standardisationMethod);
             subHeader.SaveSummarySection(section);
         }
 

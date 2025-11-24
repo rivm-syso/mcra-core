@@ -1,4 +1,5 @@
-﻿using MCRA.Utils.ExtensionMethods;
+﻿using MCRA.General;
+using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
 
 namespace MCRA.Simulation.OutputGeneration {
@@ -6,8 +7,9 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public StandardisedExposedAttributableBodChartCreator(
             List<AttributableBodSummaryRecord> records,
+            EnvironmentalBodStandardisationMethod standardisationMethod,
             string sectionId
-        ) : base(records, sectionId) {
+        ) : base(records, standardisationMethod, sectionId) {
         }
 
         public override string Title => "Standardised exposed attributable burden &amp; cumulative percentage.";

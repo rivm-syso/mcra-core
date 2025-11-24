@@ -1,15 +1,19 @@
-﻿using MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation;
+﻿using MCRA.General;
+using MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation;
 using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class AttributableBodSummarySection : SummarySection {
         public override bool SaveTemporaryData => true;
         public List<AttributableBodSummaryRecord> Records { get; set; }
+        public EnvironmentalBodStandardisationMethod StandardisationMethod { get; set; }
 
         public void Summarize(
-            List<EnvironmentalBurdenOfDiseaseResultRecord> environmentalBurdenOfDiseases
+            List<EnvironmentalBurdenOfDiseaseResultRecord> environmentalBurdenOfDiseases,
+            EnvironmentalBodStandardisationMethod standardisationMethod
         ) {
             Records = [.. environmentalBurdenOfDiseases.SelectMany(getAttributableBodSummaryRecords)];
+            StandardisationMethod = standardisationMethod;
         }
 
         public void SummarizeUncertainty(
