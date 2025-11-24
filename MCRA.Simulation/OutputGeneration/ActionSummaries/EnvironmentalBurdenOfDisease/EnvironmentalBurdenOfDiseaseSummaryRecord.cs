@@ -50,7 +50,6 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Source indicator(s)")]
         public string SourceIndicators { get; set; }
 
-        [Display(AutoGenerateField = false)]
         [Description("The code of the exposure response function.")]
         [DisplayName("ERF code")]
         public string ErfCode { get; set; }

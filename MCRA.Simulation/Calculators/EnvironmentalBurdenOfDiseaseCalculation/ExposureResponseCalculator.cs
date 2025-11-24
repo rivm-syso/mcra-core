@@ -76,22 +76,18 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
                     throw new Exception(msg);
                 }
                 (var exposures, var exposureUnit) = (targetExposures.Exposures, targetExposures.Unit);
-                // Get exposures for the reference substance
-                // For a cumulative exposure assessment the targetIndididualExposures contains only exposures for the reference substance
-                // Ignore all other substances in erfResponseFunctionModels
-                if (exposures.All(c => c.Substances.Contains(erf.Substance))) {
-                    // Compute exposure response results
-                    var exposureResponseResult = ComputeFromTargetIndividualExposures(
-                        exposureResponseFunctionModel,
-                        counterFactualModel,
-                        exposures,
-                        exposureUnit,
-                        percentileIntervals,
-                        _exposureGroupingMethod,
-                        _withinBinExposureRepresentationMethod
-                    );
-                    exposureResponseResults.Add(exposureResponseResult);
-                }
+
+                // Compute exposure response results
+                var exposureResponseResult = ComputeFromTargetIndividualExposures(
+                    exposureResponseFunctionModel,
+                    counterFactualModel,
+                    exposures,
+                    exposureUnit,
+                    percentileIntervals,
+                    _exposureGroupingMethod,
+                    _withinBinExposureRepresentationMethod
+                );
+                exposureResponseResults.Add(exposureResponseResult);
             }
             return exposureResponseResults;
         }

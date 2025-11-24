@@ -103,15 +103,23 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
                 ModuleConfig.WithinBinExposureRepresentationMethod
             );
 
+            // Get exposure response function models (filter by reference substance if cumulative)
+            var exposureResponseFunctionModels = ModuleConfig.MultipleSubstances && ModuleConfig.Cumulative
+                ? data.ExposureResponseFunctionModels
+                    .Where(r => r.ExposureResponseFunction.Substance == data.ReferenceSubstance)
+                    .ToList()
+                : data.ExposureResponseFunctionModels;
+
+            // Compute exposure response results
             var exposureResponseResults = ModuleConfig.UsePointEstimates
                 ? erCalculator.ComputeFromHbmSingleValueExposures(
                     data.HbmSingleValueExposureSets,
-                    data.ExposureResponseFunctionModels,
+                    exposureResponseFunctionModels,
                     data.CounterFactualValueModels
                 )
                 : erCalculator.ComputeFromTargetIndividualExposures(
                     getExposures(data, ModuleConfig.MultipleSubstances && ModuleConfig.Cumulative),
-                    data.ExposureResponseFunctionModels,
+                    exposureResponseFunctionModels,
                     data.CounterFactualValueModels
                 );
 
