@@ -55,7 +55,6 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("ERF code")]
         public string ErfCode { get; set; }
 
-        [Display(AutoGenerateField = false)]
         [Description("The name of the exposure response function.")]
         [DisplayName("ERF name")]
         public string ErfName { get; set; }
