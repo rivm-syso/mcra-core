@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition IsStrongEntity="true">
+  <Id>IndividualSets</Id>
+  <Name>Individual sets</Name>
+  <Description>
+    Contains the definitions of individual sets.
+  </Description>
+  <Aliases>
+    <string>IndividualSets</string>
+    <string>IndividualSet</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawIndividualSets</string>
+  </HiddenAliases>
+  <TargetDataTable>RawIndividualSets</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition IsPrimaryKey="true" Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idSet</Id>
+      <Description>Unique identification code of the individual set.</Description>
+      <Aliases>
+        <string>idIndividualSet</string>
+        <string>SetCode</string>
+        <string>Code</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldSize="100" FieldType="AlphaNumeric" IsNameColumn="true">
+      <Id>Name</Id>
+      <Description>
+        Name of the individual set.
+      </Description>
+      <Aliases>
+        <string>Name</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldSize="200" FieldType="AlphaNumeric">
+      <Id>Description</Id>
+      <Description>
+        Description of the individual set.
+      </Description>
+      <Aliases>
+        <string>Description</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldSize="50" FieldType="AlphaNumeric">
+      <Id>BodyWeightUnit</Id>
+      <Description>The unit of bodyweight of the individuals of the set: kg (default) or g.</Description>
+      <Aliases>
+        <string>BodyWeightUnit</string>
+        <string>UnitBodyWeight</string>
+        <string>WeightIn</string>
+      </Aliases>
+      <DefaultValue>Kilogram</DefaultValue>
+    </ColumnDefinition>
+    <ColumnDefinition FieldSize="50" FieldType="AlphaNumeric">
+      <Id>AgeUnit</Id>
+      <Description>
+        The unit of age, i.e., year or month.
+      </Description>
+      <Aliases>
+        <string>UnitAge</string>
+        <string>agein</string>
+        <string>AgeUnit</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="DateTime">
+      <Id>StartDate</Id>
+      <Description>The starting date of the set.</Description>
+      <Aliases>
+        <string>StartDate</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="DateTime">
+      <Id>EndDate</Id>
+      <Description>The end date of the set.</Description>
+      <Aliases>
+        <string>EndDate</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idPopulation</Id>
+      <Description>Unique identification code of the population.</Description>
+      <Aliases>
+        <string>IdPopulation</string>
+        <string>PopulationId</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Populations</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

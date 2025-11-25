@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>Individuals</Id>
+  <Name>Individuals</Name>
+  <SourceTableGroup>Individuals</SourceTableGroup>
+  <Description>
+    Simulates individuals with properties like age, body weight, sex, and body surface area.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>IndividualSets</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>Individuals</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>IndividualProperties</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>IndividualPropertyValues</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

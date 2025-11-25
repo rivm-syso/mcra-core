@@ -137,5 +137,7 @@ namespace MCRA.General {
         ConsumerProductConcentrationDistributions = 62,
         [Display(Name = "HBM single value exposures", Order = 65)]
         HbmSingleValueExposures = 63,
+        [Display(Name = "Individuals", Order = 66)]
+        Individuals = 64,
     }
 }

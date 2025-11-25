@@ -2150,4 +2150,57 @@
       </ParentScopeReference>
     </ParentScopeReferences>
   </ScopingTypeDefinition>
+
+  <ScopingTypeDefinition>
+    <Id>IndividualSets</Id>
+    <Name>Individual sets</Name>
+    <RawTableId>IndividualSets</RawTableId>
+    <Description>-</Description>
+    <TableGroup>Individuals</TableGroup>
+    <IsStrongEntity>true</IsStrongEntity>
+    <AllowUserSelection>true</AllowUserSelection>
+    <ParentScopeReferences>
+      <ParentScopeReference>
+        <IdField>idPopulation</IdField>
+        <ReferencedScope>Populations</ReferencedScope>
+      </ParentScopeReference>
+    </ParentScopeReferences>
+  </ScopingTypeDefinition>
+  <ScopingTypeDefinition>
+    <Id>IndividualSetIndividuals</Id>
+    <Name>Individual set individuals</Name>
+    <RawTableId>Individuals</RawTableId>
+    <Description>-</Description>
+    <TableGroup>Individuals</TableGroup>
+    <IsStrongEntity>true</IsStrongEntity>
+    <ParentScopeReferences>
+      <ParentScopeReference>
+        <IdField>idFoodSurvey</IdField>
+        <ReferencedScope>IndividualSets</ReferencedScope>
+      </ParentScopeReference>
+    </ParentScopeReferences>
+  </ScopingTypeDefinition>
+  <ScopingTypeDefinition>
+    <Id>IndividualSetIndividualProperties</Id>
+    <Name>Individual set individual properties</Name>
+    <RawTableId>IndividualProperties</RawTableId>
+    <Description>-</Description>
+    <TableGroup>Individuals</TableGroup>
+    <IsStrongEntity>true</IsStrongEntity>
+  </ScopingTypeDefinition>
+  <ScopingTypeDefinition>
+    <Id>IndividualSetIndividualPropertyValues</Id>
+    <Name>Individual set individual property values</Name>
+    <RawTableId>IndividualPropertyValues</RawTableId>
+    <Description>-</Description>
+    <TableGroup>Individuals</TableGroup>
+    <IsStrongEntity>false</IsStrongEntity>
+    <ParentScopeReferences>
+      <ParentScopeReference>
+        <IdField>idIndividual</IdField>
+        <ReferencedScope>IndividualSetIndividuals</ReferencedScope>
+      </ParentScopeReference>
+    </ParentScopeReferences>
+  </ScopingTypeDefinition>
+
 </ScopingTypeDefinitions>

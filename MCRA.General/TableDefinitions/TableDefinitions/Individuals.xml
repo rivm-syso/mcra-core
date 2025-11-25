@@ -41,12 +41,16 @@
         <string>SurveyId</string>
         <string>FoodSurveyId</string>
         <string>SurveyCode</string>
+        <string>idSet</string>
+        <string>SetCode</string>
+        <string>Code</string>
       </Aliases>
       <ForeignKeyTables>
         <string>FoodSurveys</string>
         <string>HumanMonitoringSurveys</string>
         <string>NonDietarySurveys</string>
         <string>ConsumerProductSurveys</string>
+        <string>IndividualSets</string>
       </ForeignKeyTables>
     </ColumnDefinition>
     <ColumnDefinition FieldType="Numeric">

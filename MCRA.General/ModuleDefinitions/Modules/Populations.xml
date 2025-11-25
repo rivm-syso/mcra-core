@@ -8,7 +8,6 @@
   <DefaultCompute>true</DefaultCompute>
   <TableGroup>Populations</TableGroup>
   <IsAdvancedActionType>true</IsAdvancedActionType>
-  <!--<AllowMultipleDataSources>true</AllowMultipleDataSources>-->
   <Description>
     Populations are groups of human individuals that are the scope of exposure or risk assessments.
     Optional descriptors of populations are location (e.g. a country), time period (with a start and end date), age range (with a minimum and maximum age) and gender.

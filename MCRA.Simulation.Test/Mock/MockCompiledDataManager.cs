@@ -389,5 +389,16 @@ namespace MCRA.Simulation.Test.Mock {
         public ICollection<HbmSingleValueExposureSet> GetAllHbmSingleValueExposures() {
             return _data.AllHbmSingleValueExposureSets;
         }
+
+
+        public IDictionary<string, IndividualSet> GetAllIndividualSets() {
+            return _data.AllIndividualSets;
+        }
+        public IDictionary<string, Individual> GetAllIndividualSetIndividuals() {
+            return _data.AllIndividualSetIndividuals;
+        }
+        public IDictionary<string, IndividualProperty> GetAllIndividualSetIndividualProperties() {
+            return _data.AllIndividualSetIndividualProperties;
+        }
     }
 }

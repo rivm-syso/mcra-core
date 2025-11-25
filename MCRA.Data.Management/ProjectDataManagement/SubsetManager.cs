@@ -605,5 +605,9 @@ namespace MCRA.Data.Management {
         public IList<ConsumerProductConcentrationDistribution> AllConsumerProductConcentrationDistributions => _dataManager.GetAllConsumerProductConcentrationDistributions();
         public ICollection<HbmSingleValueExposureSet> GetAllHbmSingleValueExposureSets => _dataManager.GetAllHbmSingleValueExposures();
 
+        public ICollection<IndividualSet> AllIndividualSets => [.. _dataManager.GetAllIndividualSets().Values];
+        public ICollection<Individual> AllIndividualSetIndividuals => [.. _dataManager.GetAllIndividualSetIndividuals().Values];
+        public IDictionary<string, IndividualProperty> AllIndividualSetIndividualProperties => _dataManager.GetAllIndividualSetIndividualProperties();
+
     }
 }

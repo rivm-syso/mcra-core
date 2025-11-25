@@ -6,6 +6,7 @@
   <ModuleType>CalculatorModule</ModuleType>
   <CanCompute>true</CanCompute>
   <DefaultCompute>true</DefaultCompute>
+  <TableGroup>Individuals</TableGroup>
   <IsAdvancedActionType>true</IsAdvancedActionType>
   <HasUncertaintyAnalysis>true</HasUncertaintyAnalysis>
   <Description>
@@ -17,6 +18,9 @@
   <CalculationDescription>
     Simulates individuals.
   </CalculationDescription>
+   <DataDescription>
+    When provided as data, in the form of sets of individuals, each individual can be specified with additional properties.
+  </DataDescription>
   <Entities>
     <Entity>Populations</Entity>
   </Entities>

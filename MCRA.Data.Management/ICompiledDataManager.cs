@@ -102,5 +102,9 @@ namespace MCRA.Data.Management {
         IList<ConsumerProductConcentration> GetAllConsumerProductConcentrations();
         IList<ConsumerProductConcentrationDistribution> GetAllConsumerProductConcentrationDistributions();
         ICollection<HbmSingleValueExposureSet> GetAllHbmSingleValueExposures();
+
+        IDictionary<string, IndividualSet> GetAllIndividualSets();
+        IDictionary<string, Individual> GetAllIndividualSetIndividuals();
+        IDictionary<string, IndividualProperty> GetAllIndividualSetIndividualProperties();
     }
 }

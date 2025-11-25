@@ -25,6 +25,8 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:N0}")]
         public int TotalIndividualDays { get; set; }
 
+        public bool IsCompute { get; set; }
+
         /// <summary>
         /// Summarize the individuals
         /// </summary>
@@ -32,10 +34,12 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="population"></param>
         public void Summarize(
             ICollection<IIndividualDay> individuals,
-            Population population
+            Population population,
+            bool isCompute
         ) {
             TotalIndividualDays = individuals.Count;
             TotalSamplingWeights = individuals.Sum(w => w.SimulatedIndividual.SamplingWeight);
+            IsCompute = isCompute;
             summarizeIndividualCharacteristics(individuals);
             summarizeSelectedProperties(population);
         }

@@ -25,17 +25,19 @@ namespace MCRA.Simulation.Actions.Individuals {
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }
-            if (result.Individuals != null
-                && outputSettings.ShouldSummarize(IndividualsSections.IndividualsSection)
+
+            if (data.Individuals != null
+               && outputSettings.ShouldSummarize(IndividualsSections.IndividualsSection)
             ) {
-                
+
                 // Main summary section
                 var section = new IndividualsSummarySection() {
                     SectionLabel = ActionType.ToString()
                 };
                 section.Summarize(
-                    result.Individuals,
-                    data.SelectedPopulation
+                    data.Individuals,
+                    data.SelectedPopulation,
+                    _configuration.IsCompute
                 );
                 var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
                 subHeader.SaveSummarySection(section);

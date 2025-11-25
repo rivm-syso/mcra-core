@@ -1,10 +1,13 @@
-﻿using MCRA.General;
+﻿using MCRA.Data.Management;
+using MCRA.Data.Management.CompiledDataManagers.DataReadingSummary;
+using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Calculators.IndividualDaysGenerator;
+using MCRA.Simulation.Calculators.IndividualsSubsetCalculation;
 using MCRA.Simulation.Calculators.PopulationGeneration;
 using MCRA.Simulation.Objects;
 using MCRA.Simulation.OutputGeneration;
@@ -20,6 +23,12 @@ namespace MCRA.Simulation.Actions.Individuals {
         private IndividualsModuleConfig ModuleConfig => (IndividualsModuleConfig)_moduleSettings;
 
         protected override void verify() {
+            if (!_moduleSettings.IsCompute) {
+                _actionDataSelectionRequirements[ScopingType.IndividualSets].MaxSelectionCount = 1;
+            }
+            _actionDataSelectionRequirements[ScopingType.IndividualSetIndividualProperties].AllowEmptyScope = true;
+            _actionDataSelectionRequirements[ScopingType.IndividualSetIndividualPropertyValues].AllowEmptyScope = true;
+            _actionDataLinkRequirements[ScopingType.IndividualSetIndividualPropertyValues][ScopingType.IndividualSetIndividuals].AlertTypeMissingData = AlertType.Notification;
         }
 
         public override ICollection<UncertaintySource> GetRandomSources() {
@@ -33,6 +42,32 @@ namespace MCRA.Simulation.Actions.Individuals {
         protected override ActionSettingsSummary summarizeSettings() {
             var summarizer = new IndividualsSettingsSummarizer(ModuleConfig);
             return summarizer.Summarize(_project);
+        }
+
+        protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
+            var individualSets = subsetManager.AllIndividualSets;
+            if (!individualSets?.Any() ?? true) {
+                throw new Exception("No individual sets selected");
+            } else if (individualSets.Count > 1) {
+                throw new Exception("Multiple individual sets selected");
+            }
+            var individualSet = individualSets.Single();
+
+            var individuals = IndividualsSubsetCalculator.GetIndividualSubsets(
+                subsetManager.AllIndividualSetIndividuals,
+                subsetManager.AllIndividualSetIndividualProperties,
+                data.SelectedPopulation,
+                individualSet.Code,
+                IndividualSubsetType.IgnorePopulationDefinition,
+                null,
+                false
+            );
+
+            var simulatedIndividuals = new List<SimulatedIndividual>();
+            foreach (var individual in individuals) {
+                simulatedIndividuals.Add(new(individual, individual.Id));
+            }
+            data.Individuals = IndividualDaysGenerator.CreateSimulatedIndividualDays(simulatedIndividuals);
         }
 
         protected override IndividualsActionResult run(

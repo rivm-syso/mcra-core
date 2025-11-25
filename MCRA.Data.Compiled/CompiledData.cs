@@ -109,6 +109,10 @@ namespace MCRA.Data.Compiled {
         public IList<ConsumerProductConcentration> AllConsumerProductConcentrations { get; set; }
         public IList<ConsumerProductConcentrationDistribution> AllConsumerProductConcentrationDistributions { get; set; }
         public ICollection<HbmSingleValueExposureSet> AllHbmSingleValueExposureSets { get; set; }
+        public IDictionary<string, IndividualSet> AllIndividualSets { get; set; }
+        public IDictionary<string, Individual> AllIndividualSetIndividuals { get; set; }
+        public IDictionary<string, IndividualProperty> AllIndividualSetIndividualProperties { get; set; }
+
 
         #region Methods
 
@@ -195,6 +199,13 @@ namespace MCRA.Data.Compiled {
             if (!AllConsumerProducts.TryGetValue(id, out ConsumerProduct item)) {
                 item = new ConsumerProduct { Code = id, Name = name };
                 AllConsumerProducts.Add(id, item);
+            }
+            return item;
+        }
+        public IndividualSet GetOrAddIndividualSet(string id, string name = null) {
+            if (!AllIndividualSets.TryGetValue(id, out IndividualSet item)) {
+                item = new IndividualSet { Code = id, Name = name };
+                AllIndividualSets.Add(id, item);
             }
             return item;
         }

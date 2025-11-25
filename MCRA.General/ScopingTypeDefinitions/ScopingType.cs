@@ -148,6 +148,10 @@
         BodIndicatorConversions = 151,
         HbmSingleValueExposureSets = 152,
         HbmSingleValueExposures = 153,
-        HbmSingleValueExposureSurveys = 154
+        HbmSingleValueExposureSurveys = 154,
+        IndividualSets = 155,
+        IndividualSetIndividuals = 156,
+        IndividualSetIndividualProperties = 157,
+        IndividualSetIndividualPropertyValues = 158,
     }
 }

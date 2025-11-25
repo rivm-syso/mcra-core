@@ -5,7 +5,12 @@ namespace MCRA.Simulation.OutputGeneration.Views {
     public class IndividualsSummarySectionView : SectionView<IndividualsSummarySection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             sb.Append("<p class=\"description\">");
-            sb.Append($"Individuals");
+            sb.Append($"Individuals: ");
+            if (Model.IsCompute) {
+                sb.Append("generated");
+            } else {
+                sb.Append("from data");
+            }
             sb.Append("</p>");
 
             if (Model.SelectedPropertyRecords?.Count > 0) {
