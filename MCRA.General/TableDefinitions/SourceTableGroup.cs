@@ -105,8 +105,8 @@ namespace MCRA.General {
         PbkModels = 46,
         [Display(Name = "Kinetic conversion factors", Order = 49)]
         KineticConversionFactors = 47,
-        [Display(Name = "Dust concentration distributions", Order = 50)]
-        DustConcentrationDistributions = 48,
+        [Display(Name = "Dust concentrations", Order = 50)]
+        DustConcentrations = 48,
         [Display(Name = "Dust exposure determinants", Order = 51)]
         DustExposureDeterminants = 49,
         [Display(Name = "Exposure response functions", Order = 52)]
@@ -139,5 +139,8 @@ namespace MCRA.General {
         HbmSingleValueExposures = 63,
         [Display(Name = "Individuals", Order = 66)]
         Individuals = 64,
+        [Display(Name = "Dust concentration distributions", Order = 67)]
+        DustConcentrationDistributions = 65,
+
     }
 }

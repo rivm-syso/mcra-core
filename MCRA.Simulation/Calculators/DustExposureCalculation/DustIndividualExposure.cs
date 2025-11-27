@@ -3,9 +3,10 @@ using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Objects;
 
 namespace MCRA.Simulation.Calculators.DustExposureCalculation {
-    public sealed class DustIndividualDayExposure(
+    public sealed class DustIndividualExposure(
+        SimulatedIndividual individual,
         Dictionary<ExposurePath, List<IIntakePerCompound>> exposuresPerPath
-    ) : ExternalIndividualDayExposure(exposuresPerPath) {
+    ) : ExternalIndividualExposure(individual, exposuresPerPath) {
     }
 }
 

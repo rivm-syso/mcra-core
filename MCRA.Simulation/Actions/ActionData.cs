@@ -111,6 +111,7 @@ using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.Objects;
 using MCRA.Simulation.Calculators.BodIndicatorModels;
 using MCRA.Simulation.Calculators.SimulatedPopulations;
+using MCRA.Simulation.Actions.DustConcentrations;
 
 namespace MCRA.Simulation {
     public class ActionData {
@@ -401,6 +402,12 @@ namespace MCRA.Simulation {
             set => GetOrCreateModuleOutputData<AirExposureDeterminantsOutputData>(ActionType.AirExposureDeterminants).AirVentilatoryFlowRates = value;
         }
 
+        // DustConcentrations
+        public IList<DustConcentration> DustConcentrations {
+            get => GetOrCreateModuleOutputData<DustConcentrationsOutputData>(ActionType.DustConcentrations).DustConcentrations;
+            set => GetOrCreateModuleOutputData<DustConcentrationsOutputData>(ActionType.DustConcentrations).DustConcentrations = value;
+        }
+
         // DustConcentrationDistributions
         public IList<DustConcentrationDistribution> DustConcentrationDistributions {
             get => GetOrCreateModuleOutputData<DustConcentrationDistributionsOutputData>(ActionType.DustConcentrationDistributions).DustConcentrationDistributions;
@@ -412,10 +419,13 @@ namespace MCRA.Simulation {
             set => GetOrCreateModuleOutputData<DustConcentrationDistributionsOutputData>(ActionType.DustConcentrationDistributions).DustConcentrationUnit = value;
         }
 
-
+        public IDictionary<Compound, ConcentrationModel> DustConcentrationModels {
+            get => GetOrCreateModuleOutputData<DustConcentrationDistributionsOutputData>(ActionType.DustConcentrationDistributions).DustConcentrationModels;
+            set => GetOrCreateModuleOutputData<DustConcentrationDistributionsOutputData>(ActionType.DustConcentrationDistributions).DustConcentrationModels = value;
+        }
 
         // DustExposures
-        public ICollection<DustIndividualDayExposure> IndividualDustExposures {
+        public ICollection<DustIndividualExposure> IndividualDustExposures {
             get => GetOrCreateModuleOutputData<DustExposuresOutputData>(ActionType.DustExposures).IndividualDustExposures;
             set => GetOrCreateModuleOutputData<DustExposuresOutputData>(ActionType.DustExposures).IndividualDustExposures = value;
         }

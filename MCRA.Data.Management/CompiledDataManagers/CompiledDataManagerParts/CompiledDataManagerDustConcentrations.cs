@@ -5,42 +5,41 @@ using MCRA.General.TableDefinitions.RawTableFieldEnums;
 
 namespace MCRA.Data.Management.CompiledDataManagers {
     public partial class CompiledDataManager {
-
         /// <summary>
-        /// All maximum residue limits.
+        /// Read all dust concentrations within scope.
         /// </summary>
-        public IList<DustConcentrationDistribution> GetAllDustConcentrationDistributions() {
-            if (_data.AllDustConcentrationDistributions == null) {
-                LoadScope(SourceTableGroup.DustConcentrationDistributions);
-                var allDustConcentrationDistributions = new List<DustConcentrationDistribution>();
-                var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.DustConcentrationDistributions);
+        public IList<DustConcentration> GetAllDustConcentrations() {
+            if (_data.AllDustConcentrations == null) {
+                LoadScope(SourceTableGroup.DustConcentrations);
+                var allDustConcentrations = new List<DustConcentration>();
+                var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.DustConcentrations);
                 if (rawDataSourceIds?.Count > 0) {
                     GetAllCompounds();
                     using (var rdm = _rawDataProvider.CreateRawDataManager()) {
                         foreach (var rawDataSourceId in rawDataSourceIds) {
-                            using (var r = rdm.OpenDataReader<RawDustConcentrationDistributions>(rawDataSourceId, out int[] fieldMap)) {
+                            using (var r = rdm.OpenDataReader<RawDustConcentrations>(rawDataSourceId, out int[] fieldMap)) {
                                 while (r?.Read() ?? false) {
-                                    var idSubstance = r.GetString(RawDustConcentrationDistributions.IdSubstance, fieldMap);
+                                    var idSubstance = r.GetString(RawDustConcentrations.IdSubstance, fieldMap);
                                     var valid = CheckLinkSelected(ScopingType.Compounds, idSubstance);
                                     if (valid) {
-                                        var unitString = r.GetStringOrNull(RawDustConcentrationDistributions.ConcentrationUnit, fieldMap);
+                                        var unitString = r.GetStringOrNull(RawDustConcentrations.ConcentrationUnit, fieldMap);
                                         var unit = ConcentrationUnitConverter.FromString(unitString, ConcentrationUnit.ugPerg);
-                                        var dustConcentrationDistribution = new DustConcentrationDistribution {
-                                            idSample = r.GetStringOrNull(RawDustConcentrationDistributions.IdSample, fieldMap),
+                                        var dustConcentrations = new DustConcentration {
+                                            idSample = r.GetStringOrNull(RawDustConcentrations.IdSample, fieldMap),
                                             Substance = _data.GetOrAddSubstance(idSubstance),
-                                            Concentration = r.GetDouble(RawDustConcentrationDistributions.Concentration, fieldMap),
+                                            Concentration = r.GetDouble(RawDustConcentrations.Concentration, fieldMap),
                                             Unit = unit
                                         };
-                                        allDustConcentrationDistributions.Add(dustConcentrationDistribution);
+                                        allDustConcentrations.Add(dustConcentrations);
                                     }
                                 }
                             }
                         }
                     }
                 }
-                _data.AllDustConcentrationDistributions = allDustConcentrationDistributions;
+                _data.AllDustConcentrations = allDustConcentrations;
             }
-            return _data.AllDustConcentrationDistributions;
+            return _data.AllDustConcentrations;
         }
     }
 }

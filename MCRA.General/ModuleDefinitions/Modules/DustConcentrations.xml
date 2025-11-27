@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>DustConcentrations</Id>
+  <Name>Dust concentrations</Name>
+  <ModuleType>DataModule</ModuleType>
+  <ActionType>DustConcentrations</ActionType>
+  <TableGroup>DustConcentrations</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Dust concentration data are ...
+  </Description>
+  <ShortDescription>
+    Dust concentration data are ...
+  </ShortDescription>
+  <DataDescription>
+    Dust concentration data can be entered using the internal, relational data format.
+  </DataDescription>
+  <Entities>
+    <Entity>Substances</Entity>
+  </Entities>
+  <UncertaintySettings>
+    <UncertaintySetting>ResampleDustConcentrations</UncertaintySetting>
+  </UncertaintySettings>
+  <UncertaintySources>
+    <UncertaintySource>DustConcentrations</UncertaintySource>
+  </UncertaintySources>
+</Module>

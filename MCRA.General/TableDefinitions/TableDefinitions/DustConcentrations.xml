@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>DustConcentrations</Id>
+  <Name>Dust concentrations</Name>
+  <Description>
+    Substance concentrations in dust. Censored values, i.e., concentrations less than LOR, can be specified as negative values (minus the LOR value).
+  </Description>
+  <Aliases>
+    <string>DustConcentrations</string>
+    <string>ConcentrationsDust</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawDustConcentrations</string>
+  </HiddenAliases>
+  <TargetDataTable>RawDustConcentrations</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idSample</Id>
+      <Description>The identification number of the dust sample.</Description>
+      <Aliases>
+        <string>id</string>
+        <string>SampleId</string>
+        <string>idDustSample</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idSubstance</Id>
+      <Name>idSubstance</Name>
+      <Description>The code of the substance.</Description>
+      <Aliases>
+        <string>idSubstance</string>
+        <string>SubstanceId</string>
+        <string>SubstanceCode</string>
+        <string>Substance</string>
+      </Aliases>
+      <PreferredAlias>SubstanceCode</PreferredAlias>
+      <HiddenAliases>
+        <string>idCompound</string>
+        <string>CompoundId</string>
+        <string>CompoundCode</string>
+        <string>Compound</string>
+      </HiddenAliases>
+      <ForeignKeyTables>
+        <string>Compounds</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>Concentration</Id>
+      <Description>The substance concentration value or LOR of the dust sample. LORs are specified using a minus (-) sign.</Description>
+      <Aliases>
+        <string>Concentration</string>
+        <string>Value</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="ConcentrationUnit">
+      <Id>ConcentrationUnit</Id>
+      <Description>
+        The unit for the substance concentrations. When not specified, then a default unit of ug/g is assumed.
+      </Description>
+      <Aliases>
+        <string>Unit</string>
+        <string>ConcentrationUnit</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

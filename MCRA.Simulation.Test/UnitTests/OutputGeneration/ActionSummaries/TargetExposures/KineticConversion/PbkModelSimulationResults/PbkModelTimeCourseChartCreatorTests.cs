@@ -249,8 +249,16 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var individual = new SimulatedIndividual(new(0) { BodyWeight = 70D }, 0);
             var exposureDay1 = ExternalIndividualDayExposure.FromSingleDose(ExposureRoute.Oral, substance, 0.01, exposureUnit, individual);
             var exposureDay2 = ExternalIndividualDayExposure.FromSingleDose(ExposureRoute.Oral, substance, 0.05, exposureUnit, individual);
-            var individualExposure = new ExternalIndividualExposure(individual) {
-                ExternalIndividualDayExposures = [exposureDay1, exposureDay2]
+            var externalIndividualDayExposures = new List<IExternalIndividualDayExposure> { exposureDay1, exposureDay2 };
+            var exposuresPerPath = externalIndividualDayExposures
+                            .SelectMany(x => x.ExposuresPerPath)
+                            .GroupBy(r => r.Key)
+                            .ToDictionary(
+                                d => d.Key,
+                                d => d.SelectMany(r => r.Value).ToList()
+                            );
+            var individualExposure = new ExternalIndividualExposure(individual, exposuresPerPath) {
+                ExternalIndividualDayExposures = externalIndividualDayExposures
             };
 
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.mgPerKg, BiologicalMatrix.Liver);

@@ -1,41 +1,89 @@
-﻿using MCRA.General;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
+using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.Actions.DustConcentrationDistributions {
     public enum DustConcentrationDistributionsSections {
-        //No sub-sections
+        DustConcentrationModelsSection,
+        DustConcentrationModelGraphsSection
     }
-    public class DustConcentrationDistributionsSummarizer : ActionResultsSummarizerBase<IDustConcentrationDistributionsActionResult> {
+    public class DustConcentrationDistributionsSummarizer : ActionResultsSummarizerBase<DustConcentrationDistributionsActionResult> {
 
         public override ActionType ActionType => ActionType.DustConcentrationDistributions;
 
-        public override void Summarize(ActionModuleConfig sectionConfig, IDustConcentrationDistributionsActionResult actionResult, ActionData data, SectionHeader header, int order) {
+        public override void Summarize(ActionModuleConfig sectionConfig, DustConcentrationDistributionsActionResult actionResult, ActionData data, SectionHeader header, int order) {
             var outputSettings = new ModuleOutputSectionsManager<DustConcentrationDistributionsSections>(sectionConfig, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }
 
-            var section = new DustConcentrationDistributionsSummarySection() {
-                SectionLabel = ActionType.ToString()
-            };
-            var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
+            var subHeader = header.AddEmptySubSectionHeader(ActionType.GetDisplayName(), order, ActionType.ToString());
+            var subOrder = 0;
             subHeader.Units = collectUnits(data, sectionConfig);
 
-            section.Summarize(
-                data.DustConcentrationDistributions,
-                data.DustConcentrationUnit,
-                sectionConfig.VariabilityLowerPercentage,
-                sectionConfig.VariabilityUpperPercentage
+            if (outputSettings.ShouldSummarize(DustConcentrationDistributionsSections.DustConcentrationModelsSection)
+               && data.DustConcentrationModels?.Count > 0
+            ) {
+                summarizeDustConcentrationModels(
+                    data.DustConcentrationModels,
+                    subHeader,
+                    subOrder++
+                );
+            }
+
+            if (outputSettings.ShouldSummarize(DustConcentrationDistributionsSections.DustConcentrationModelGraphsSection)
+              && (data.DustConcentrationModels?.Count > 0)) {
+                summarizeDustConcentrationModelCharts(
+                    data.DustConcentrationModels,
+                    subHeader,
+                    subOrder++
+                );
+            }
+        }
+
+        private void summarizeDustConcentrationModels(
+           IDictionary<Compound, ConcentrationModel> concentrationModels,
+           SectionHeader header,
+           int order
+        ) {
+            var section = new DustConcentrationModelsTableSection() {
+                SectionLabel = getSectionLabel(DustConcentrationDistributionsSections.DustConcentrationModelsSection)
+            };
+            section.Summarize(concentrationModels);
+            var subHeader = header.AddSubSectionHeaderFor(
+                section,
+                "Dust concentration models per substance",
+                order
             );
             subHeader.SaveSummarySection(section);
         }
+
+        private void summarizeDustConcentrationModelCharts(
+           IDictionary<Compound, ConcentrationModel> concentrationModels,
+           SectionHeader header,
+           int subOrder
+        ) {
+            var section = new DustConcentrationModelsGraphSection {
+                SectionLabel = getSectionLabel(DustConcentrationDistributionsSections.DustConcentrationModelGraphsSection)
+            };
+            section.Summarize(concentrationModels);
+            var subHeader = header.AddSubSectionHeaderFor(
+                section,
+                "Dust concentration model graphs",
+                subOrder++
+            );
+            subHeader.SaveSummarySection(section);
+        }
+
         private static List<ActionSummaryUnitRecord> collectUnits(ActionData data, ActionModuleConfig sectionConfig) {
             var result = new List<ActionSummaryUnitRecord> {
                 new("LowerPercentage", $"p{sectionConfig.VariabilityLowerPercentage}"),
-                new("UpperPercentage", $"p{sectionConfig.VariabilityUpperPercentage}")
+                new("UpperPercentage", $"p{sectionConfig.VariabilityUpperPercentage}"),
+                new("ConcentrationUnit", data.DustConcentrationUnit.GetShortDisplayName()),
             };
             return result;
         }

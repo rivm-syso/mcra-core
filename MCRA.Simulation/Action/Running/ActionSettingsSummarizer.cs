@@ -170,7 +170,7 @@ namespace MCRA.Simulation.Action {
                 }
 
                 if (activeUncertaintySettings.Contains(SettingsItemType.ResampleDustConcentrations)) {
-                    section.SummarizeSetting(SettingsItemType.ResampleDustConcentrations, project.DustConcentrationDistributionsSettings.ResampleDustConcentrations);
+                    section.SummarizeSetting(SettingsItemType.ResampleDustConcentrations, project.DustConcentrationsSettings.ResampleDustConcentrations);
                 }
 
                 if (activeUncertaintySettings.Contains(SettingsItemType.ResampleSoilConcentrations)) {

@@ -3,7 +3,7 @@
   <Id>ConsumerProductConcentrations</Id>
   <Name>Consumer product concentrations</Name>
   <Description>
-    Consumer product concentrations.
+    Consumer product concentrations. Censored values, i.e., concentrations less than LOR, can be specified as negative values (minus the LOR value).
   </Description>
   <Aliases>
     <string>ConsumerProductConcentrations</string>
@@ -41,7 +41,7 @@
     </ColumnDefinition>
     <ColumnDefinition Required="true" FieldType="Numeric">
       <Id>Concentration</Id>
-      <Description>The substance concentration value of the consumer product.</Description>
+      <Description>The substance concentration value or LOR of the consumer product. LORs are specified using a minus (-) sign.</Description>
       <Aliases>
         <string>Concentration</string>
         <string>Value</string>

@@ -70,7 +70,7 @@ namespace MCRA.Simulation.Actions.DustExposures {
         }
 
         private void summarizeDustExposureUncertainty(
-            ICollection<DustIndividualDayExposure> individualDustExposures,
+            ICollection<DustIndividualExposure> individualDustExposures,
             SectionHeader header
         ) {
             var subHeader = header.GetSubSectionHeader<DustExposuresSection>();

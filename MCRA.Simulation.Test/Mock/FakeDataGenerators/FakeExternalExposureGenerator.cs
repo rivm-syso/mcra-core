@@ -29,15 +29,15 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                         paths,
                         seed + g.Key.Id
                     );
-                    var exposure = new ExternalIndividualExposure(g.Key) {
-                        ExternalIndividualDayExposures = indvDayExposures,
-                        ExposuresPerPath = indvDayExposures
+                    var exposuresPerPath = indvDayExposures
                             .SelectMany(x => x.ExposuresPerPath)
                             .GroupBy(r => r.Key)
                             .ToDictionary(
                                 d => d.Key,
                                 d => d.SelectMany(r => r.Value).ToList()
-                            )
+                            );
+                    var exposure = new ExternalIndividualExposure(g.Key, exposuresPerPath) {
+                        ExternalIndividualDayExposures = indvDayExposures
                     };
                     return exposure;
                 })

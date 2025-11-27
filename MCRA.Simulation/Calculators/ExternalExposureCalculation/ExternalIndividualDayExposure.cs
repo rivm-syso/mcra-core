@@ -3,7 +3,6 @@ using MCRA.General;
 using MCRA.Simulation.Calculators.ConsumerProductExposureCalculation;
 using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Objects;
-using RDotNet;
 
 namespace MCRA.Simulation.Calculators.ExternalExposureCalculation {
     public class ExternalIndividualDayExposure(

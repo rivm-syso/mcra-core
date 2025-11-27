@@ -87,18 +87,20 @@ namespace MCRA.Simulation.Actions.DustExposures {
         ) {
             var result = new DustExposuresActionResult();
 
-            ICollection<IIndividualDay> individualDays = null;
+            ICollection<SimulatedIndividual> simulatedIndividuals = null;
             if (ModuleConfig.DustExposuresIndividualGenerationMethod == DustExposuresIndividualGenerationMethod.Simulate) {
-                individualDays = data.Individuals;
+                simulatedIndividuals = data.Individuals
+                    .Select(r => r.SimulatedIndividual)
+                    .Distinct()
+                    .ToList();
             } else {
-                individualDays = data.DietaryIndividualDayIntakes
+                simulatedIndividuals = data.DietaryIndividualDayIntakes
                     .GroupBy(r => r.SimulatedIndividual.Id, (key, g) => g.First())
-                    .Cast<IIndividualDay>()
+                    .Select(r => r.SimulatedIndividual)
                     .ToList();
             }
             var substances = data.ActiveSubstances ?? data.AllCompounds;
 
-            var dustConcentrationDistributions = data.DustConcentrationDistributions;
             var dustIngestions = data.DustIngestions
                 .OrderBy(r => r.AgeLower)
                 .ToList();
@@ -112,10 +114,10 @@ namespace MCRA.Simulation.Actions.DustExposures {
 
             var individualDustExposureRecords = DustExposureCalculator
                 .ComputeDustExposure(
-                    individualDays,
+                    simulatedIndividuals,
                     substances,
                     ModuleConfig.SelectedExposureRoutes,
-                    dustConcentrationDistributions,
+                    data.DustConcentrationModels,
                     dustIngestions,
                     data.DustAdherenceAmounts,
                     data.DustAvailabilityFractions,

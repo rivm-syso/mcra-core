@@ -11,7 +11,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public int TotalIndividuals { get; set; }
 
         public void Summarize(
-            ICollection<DustIndividualDayExposure> dustIndividualDayExposures
+            ICollection<DustIndividualExposure> dustIndividualDayExposures
         ) {
             var records = dustIndividualDayExposures
                 .AsParallel()
@@ -46,7 +46,7 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         public void SummarizeUncertainty(
-            ICollection<DustIndividualDayExposure> individualDustExposures,
+            ICollection<DustIndividualExposure> individualDustExposures,
             double lowerBound,
             double upperBound
         ) {

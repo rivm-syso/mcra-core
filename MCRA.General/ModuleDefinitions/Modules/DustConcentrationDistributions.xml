@@ -2,7 +2,8 @@
 <Module>
   <Id>DustConcentrationDistributions</Id>
   <Name>Dust concentration distributions</Name>
-  <ModuleType>DataModule</ModuleType>
+  <ModuleType>CalculatorModule</ModuleType>
+  <CanCompute>true</CanCompute>
   <ActionType>DustConcentrationDistributions</ActionType>
   <TableGroup>DustConcentrationDistributions</TableGroup>
   <IsAdvancedActionType>true</IsAdvancedActionType>
@@ -13,16 +14,16 @@
   <ShortDescription>
     Dust concentration distributions data are data on analytical measurements of chemical substances occurring in dust samples.
   </ShortDescription>
+  <CalculationDescription>
+    Dust concentration distributions are computed ...
+  </CalculationDescription>
   <DataDescription>
     Dust concentration distributions data can be entered using the internal, relational data format.
   </DataDescription>
   <Entities>
     <Entity>Substances</Entity>
   </Entities>
-  <UncertaintySettings>
-    <UncertaintySetting>ResampleDustConcentrations</UncertaintySetting>
-  </UncertaintySettings>
-  <UncertaintySources>
-    <UncertaintySource>DustConcentrations</UncertaintySource>
-  </UncertaintySources>
+  <CalculationInputs>
+    <Input>DustConcentrations</Input>
+  </CalculationInputs>
 </Module>

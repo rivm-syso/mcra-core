@@ -42,7 +42,7 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.DustEx
 
         protected override List<IExternalIndividualDayExposure> generate(
             ICollection<IIndividualDay> individualDays,
-            ICollection<DustIndividualDayExposure> individualDayExposures,
+            ICollection<DustIndividualExposure> individualDayExposures,
             ICollection<Compound> substances,
             IRandom generator
         ) {
@@ -88,8 +88,8 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.DustEx
         /// <summary>
         /// Check for sex level and select the right individual day exposures, if not found return null.
         /// </summary>
-        private static ICollection<DustIndividualDayExposure> getExposuresForSexLevel(
-            ICollection<DustIndividualDayExposure> individualDayExposures,
+        private static ICollection<DustIndividualExposure> getExposuresForSexLevel(
+            ICollection<DustIndividualExposure> individualDayExposures,
             SimulatedIndividual simulatedIndividual
         ) {
             individualDayExposures = [.. individualDayExposures.Where(c => c.SimulatedIndividual.Gender == simulatedIndividual.Gender)];
@@ -99,8 +99,8 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.DustEx
         /// <summary>
         ///  Check for age range and select the right individual day exposures.
         /// </summary>
-        private static ICollection<DustIndividualDayExposure> getExposuresForAgeRange(
-            ICollection<DustIndividualDayExposure> individualDayExposures,
+        private static ICollection<DustIndividualExposure> getExposuresForAgeRange(
+            ICollection<DustIndividualExposure> individualDayExposures,
             SimulatedIndividual simulatedIndividual,
             List<(double left, double right)> intervals
         ) {

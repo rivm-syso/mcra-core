@@ -293,6 +293,10 @@ namespace MCRA.Simulation.Test.Mock {
             return _data.AllSingleValueNonDietaryExposureEstimates;
         }
 
+        public IList<DustConcentration> GetAllDustConcentrations() {
+            return _data.AllDustConcentrations;
+        }
+
         public IList<DustConcentrationDistribution> GetAllDustConcentrationDistributions() {
             return _data.AllDustConcentrationDistributions;
         }

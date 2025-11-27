@@ -5,7 +5,7 @@ using MCRA.Simulation.Calculators.DustExposureCalculation;
 namespace MCRA.Simulation.Actions.DustExposures {
     public class DustExposuresOutputData : IModuleOutputData {
 
-        public ICollection<DustIndividualDayExposure> IndividualDustExposures { get; set; }
+        public ICollection<DustIndividualExposure> IndividualDustExposures { get; set; }
         public ExposureUnitTriple DustExposureUnit { get; set; }
 
         public IModuleOutputData Copy() {

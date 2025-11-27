@@ -3,7 +3,8 @@
   <Id>DustConcentrationDistributions</Id>
   <Name>Dust concentration distributions</Name>
   <Description>
-    Substance concentrations in dust.
+    Dust concentration distributions specified in the form of summary statistics: mean and a coefficient of variation, 
+    and a occurrence percentage.
   </Description>
   <Aliases>
     <string>DustConcentrationDistributions</string>
@@ -14,15 +15,6 @@
   </HiddenAliases>
   <TargetDataTable>RawDustConcentrationDistributions</TargetDataTable>
   <ColumnDefinitions>
-    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
-      <Id>idSample</Id>
-      <Description>The identification number of the dust sample.</Description>
-      <Aliases>
-        <string>idSample</string>
-        <string>SampleId</string>
-        <string>idDustSample</string>
-      </Aliases>
-    </ColumnDefinition>
     <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
       <Id>idSubstance</Id>
       <Name>idSubstance</Name>
@@ -45,21 +37,54 @@
       </ForeignKeyTables>
     </ColumnDefinition>
     <ColumnDefinition Required="true" FieldType="Numeric">
-      <Id>Concentration</Id>
-      <Description>The substance concentration value of the dust sample.</Description>
+      <Id>Mean</Id>
+      <Description>The mean of the concentration distribution.</Description>
       <Aliases>
-        <string>Concentration</string>
+        <string>Mean</string>
         <string>Value</string>
+        <string>Concentration</string>
       </Aliases>
     </ColumnDefinition>
-    <ColumnDefinition FieldType="ConcentrationUnit">
-      <Id>ConcentrationUnit</Id>
+    <ColumnDefinition FieldType="ConcentrationUnit" Required="false">
+      <Id>Unit</Id>
       <Description>
-        The unit for the substance concentrations. When not specified, then a default unit of ug/g is assumed.
+        The unit for the substance concentrations. When not specified, then a default unit of ug/kg is assumed.
       </Description>
       <Aliases>
         <string>Unit</string>
         <string>ConcentrationUnit</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="DustConcentrationDistributionType" Required="true">
+      <Id>DistributionType</Id>
+      <Description>
+        Type of the distribution.
+      </Description>
+      <Aliases>
+        <string>DistributionType</string>
+        <string>Distribution</string>
+      </Aliases>
+      <PossibleValues>
+        <PossibleValue>Uniform</PossibleValue>
+        <PossibleValue>LogNormal</PossibleValue>
+      </PossibleValues>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric" Required="false">
+      <Id>CvVariability</Id>
+      <Description>Coefficient of variation.</Description>
+      <Aliases>
+        <string>CvVariability</string>
+        <string>CV</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric" Required="false">
+      <Id>OccurrencePercentage</Id>
+      <Description>
+        Percentage (%) of the dust with substance (default 100%).
+      </Description>
+      <Aliases>
+        <string>OccurrencePercentage</string>
+        <string>Percentage</string>
       </Aliases>
     </ColumnDefinition>
   </ColumnDefinitions>

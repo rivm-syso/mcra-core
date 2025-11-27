@@ -2,6 +2,7 @@
 using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.DustExposures;
+using MCRA.Simulation.Calculators.DustConcentrationModelCalculation;
 using MCRA.Simulation.Calculators.IndividualDaysGenerator;
 using MCRA.Simulation.Calculators.PopulationGeneration;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
@@ -48,10 +49,15 @@ namespace MCRA.Simulation.Test.UnitTests.Actions.DustExposures {
 
             selectedPopulation.PopulationIndividualPropertyValues = populationIndividualPropertyValues;
 
-            var dustConcentrations = FakeDustConcentrationDistributionsGenerator.Create(substances, seed);
+            var dustConcentrations = FakeDustConcentrationsGenerator.Create(substances, seed);
             var dustIngestions = FakeDustIngestionsGenerator.Create(seed);
             var dustAdherenceAmounts = FakeDustAdherenceAmountsGenerator.Create(seed);
             var dustAvailabilityFractions = FakeDustAvailabilityFractionsGenerator.Create(substances, seed);
+            var dustConcentrationModelBuilder = new DustConcentrationModelBuilder();
+            var concentrationModels = dustConcentrationModelBuilder.Create(
+                dustConcentrations,
+                NonDetectsHandlingMethod.ReplaceByZero,
+                0);
 
             var project = new ProjectDto();
             var config = project.DustExposuresSettings;
@@ -75,7 +81,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions.DustExposures {
                 AllCompounds = substances,
                 ActiveSubstances = substances,
                 SelectedPopulation = selectedPopulation,
-                DustConcentrationDistributions = dustConcentrations,
+                DustConcentrationModels = concentrationModels,  
                 DustIngestions = dustIngestions,
                 DustBodyExposureFractions = dustBodyExposureFractions,
                 DustAdherenceAmounts = dustAdherenceAmounts,
@@ -121,11 +127,17 @@ namespace MCRA.Simulation.Test.UnitTests.Actions.DustExposures {
             var dietaryIndividualDayIntakes = FakeDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);
             var sexes = individuals.Select(c => c.Gender).Distinct().ToList();
             var ages = individuals.Select(c => c.Age).Distinct().ToList();
-            var dustConcentrations = FakeDustConcentrationDistributionsGenerator.Create(substances, seed);
+            var dustConcentrations = FakeDustConcentrationsGenerator.Create(substances, seed);
             var dustIngestions = FakeDustIngestionsGenerator.Create(seed);
             var dustBodyExposureFractions = FakeDustBodyExposureFractionsGenerator.Create(sexes, ages, seed);
             var dustAdherenceAmounts = FakeDustAdherenceAmountsGenerator.Create(seed);
             var dustAvailabilityFractions = FakeDustAvailabilityFractionsGenerator.Create(substances, seed);
+
+            var dustConcentrationModelBuilder = new DustConcentrationModelBuilder();
+            var concentrationModels = dustConcentrationModelBuilder.Create(
+                dustConcentrations,
+                NonDetectsHandlingMethod.ReplaceByZero,
+                0);
 
             var project = new ProjectDto();
             var config = project.DustExposuresSettings;
@@ -136,7 +148,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions.DustExposures {
                 AllCompounds = substances,
                 ActiveSubstances = substances,
                 DietaryIndividualDayIntakes = dietaryIndividualDayIntakes,
-                DustConcentrationDistributions = dustConcentrations,
+                DustConcentrationModels = concentrationModels,
                 DustIngestions = dustIngestions,
                 DustBodyExposureFractions = dustBodyExposureFractions,
                 DustAdherenceAmounts = dustAdherenceAmounts,

@@ -39,7 +39,7 @@
     <OutputSetting source="DietaryExposures">IsPerPerson</OutputSetting>
   </OutputSettings>
   <UncertaintySettings>
-    <UncertaintySetting source="DustConcentrationDistributions">ResampleDustConcentrations</UncertaintySetting>
+    <UncertaintySetting source="DustConcentrations">ResampleDustConcentrations</UncertaintySetting>
     <UncertaintySetting source="Action">UncertaintyLowerBound</UncertaintySetting>
     <UncertaintySetting source="Action">UncertaintyUpperBound</UncertaintySetting>
   </UncertaintySettings>

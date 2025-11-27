@@ -120,7 +120,7 @@
         KineticConversionFactorSGs = 123,
         ExposureBiomarkerConversionSGs = 124,
         HumanMonitoringTimepoints = 125,
-        DustConcentrationDistributions = 126,
+        DustConcentrations = 126,
         DustIngestions = 127,
         DustBodyExposureFractions = 128,
         DustAdherenceAmounts = 129,
@@ -153,5 +153,6 @@
         IndividualSetIndividuals = 156,
         IndividualSetIndividualProperties = 157,
         IndividualSetIndividualPropertyValues = 158,
+        DustConcentrationDistributions = 159,
     }
 }

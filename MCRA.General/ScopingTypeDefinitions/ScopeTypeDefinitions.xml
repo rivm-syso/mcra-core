@@ -2203,4 +2203,19 @@
     </ParentScopeReferences>
   </ScopingTypeDefinition>
 
+
+  <ScopingTypeDefinition>
+    <Id>DustConcentrations</Id>
+    <Name>Dust concentrations</Name>
+    <RawTableId>DustConcentrations</RawTableId>
+    <Description>-</Description>
+    <TableGroup>DustConcentrations</TableGroup>
+    <ParentScopeReferences>
+      <ParentScopeReference>
+        <IdField>idSubstance</IdField>
+        <ReferencedScope>Compounds</ReferencedScope>
+      </ParentScopeReference>
+    </ParentScopeReferences>
+  </ScopingTypeDefinition>
+
 </ScopingTypeDefinitions>

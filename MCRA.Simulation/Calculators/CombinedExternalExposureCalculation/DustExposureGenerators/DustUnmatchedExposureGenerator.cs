@@ -13,7 +13,7 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.DustEx
         /// </summary>
         protected override List<IExternalIndividualDayExposure> generate(
             ICollection<IIndividualDay> individualDays,
-            ICollection<DustIndividualDayExposure> dustIndividualDayExposures,
+            ICollection<DustIndividualExposure> dustIndividualDayExposures,
             ICollection<Compound> substances,
             IRandom generator
         ) {

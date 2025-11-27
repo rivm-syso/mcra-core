@@ -1,9 +1,9 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
 using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Objects;
 using MCRA.Simulation.Objects.IndividualExposures;
-using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.DustExposureCalculation {
@@ -14,11 +14,11 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
         /// <summary>
         /// Computes dust exposures for the provided collection of individuals.
         /// </summary>
-        public static List<DustIndividualDayExposure> ComputeDustExposure(
-            ICollection<IIndividualDay> individualDays,
+        public static List<DustIndividualExposure> ComputeDustExposure(
+            ICollection<SimulatedIndividual> simulatedIndividuals,
             ICollection<Compound> substances,
             List<ExposureRoute> routes,
-            ICollection<DustConcentrationDistribution> dustConcentrationDistributions,
+            IDictionary<Compound, ConcentrationModel> concentrationModels,
             ICollection<DustIngestion> dustIngestions,
             ICollection<DustAdherenceAmount> dustAdherenceAmounts,
             ICollection<DustAvailabilityFraction> dustAvailabilityFractions,
@@ -32,19 +32,19 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
             var needsAge = dustIngestions.All(r => r.AgeLower.HasValue)
                 || dustAdherenceAmounts.All(r => r.AgeLower.HasValue)
                 || dustBodyExposureFractions.All(r => r.AgeLower.HasValue);
-            if (needsAge && individualDays.Any(r => r.SimulatedIndividual.Age == null)) {
+            if (needsAge && simulatedIndividuals.Any(i => i.Age == null)) {
                 throw new Exception("Missing values for age in individuals.");
             }
 
             var needsSex = dustIngestions.All(r => r.Sex != GenderType.Undefined)
                 || dustAdherenceAmounts.All(r => r.Sex != GenderType.Undefined)
                 || dustBodyExposureFractions.All(r => r.Sex != GenderType.Undefined);
-            if (needsSex && individualDays.Any(r => r.SimulatedIndividual.Gender == GenderType.Undefined)) {
+            if (needsSex && simulatedIndividuals.Any(i => i.Gender == GenderType.Undefined)) {
                 throw new Exception("Missing values for gender in individuals.");
             }
 
             var needsBsa = routes.Contains(ExposureRoute.Dermal);
-            if (needsBsa && individualDays.Select(d => d.SimulatedIndividual).Any(r => !r.BodySurfaceArea.HasValue && !r.Height.HasValue)) {
+            if (needsBsa && simulatedIndividuals.Any(i => !i.BodySurfaceArea.HasValue && !i.Height.HasValue)) {
                 throw new Exception("Missing values for body surface area (BSA) in individuals.");
             }
 
@@ -63,9 +63,6 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
             var dustConcentrationMassFactor = dustConcentrationUnit.GetConcentrationMassUnit()
                 .GetMultiplicationFactor(ConcentrationMassUnit.Grams);
             var concentrationAlignmentFactor = dustConcentrationAmountFactor * dustConcentrationMassFactor;
-            var alignedDustConcentrationDistributions = dustConcentrationDistributions
-                .GroupBy(r => r.Substance)
-                .ToDictionary(r => r.Key, r => r.Select(c => c.Concentration * concentrationAlignmentFactor));
 
             // Compute availability fractions for ingestion exposure
             var substanceDustAvailabilityFraction = routes.Contains(ExposureRoute.Dermal)
@@ -76,10 +73,10 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
                     )
                 : null;
 
-            var result = new List<DustIndividualDayExposure>();
-            foreach (var individualDay in individualDays) {
-                var age = individualDay.SimulatedIndividual.Age;
-                var sex = individualDay.SimulatedIndividual.Gender;
+            var result = new List<DustIndividualExposure>();
+            foreach (var simulatedIndividual in simulatedIndividuals) {
+                var age = simulatedIndividual.Age;
+                var sex = simulatedIndividual.Gender;
 
                 // Compute ingestion exposure
                 var exposuresPerPath = new Dictionary<ExposurePath, List<IIntakePerCompound>>();
@@ -94,7 +91,7 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
                     var dustExposurePerSubstance = computeIngestionExposures(
                         substances,
                         individualDustIngestion,
-                        alignedDustConcentrationDistributions,
+                        concentrationModels,
                         dustConcentrationsRandomGenerator
                     );
                     exposuresPerPath[new(ExposureSource.Dust, ExposureRoute.Oral)] = dustExposurePerSubstance;
@@ -102,10 +99,10 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
 
                 // Compute dermal exposure
                 if (routes.Contains(ExposureRoute.Dermal)) {
-                    var bodySurfaceArea = individualDay.SimulatedIndividual.BodySurfaceArea;
+                    var bodySurfaceArea = simulatedIndividual.BodySurfaceArea;
                     if (!bodySurfaceArea.HasValue) {
-                        var height = individualDay.SimulatedIndividual.Height.Value;
-                        bodySurfaceArea = Math.Sqrt(height * individualDay.SimulatedIndividual.SamplingWeight / 3600);
+                        var height = simulatedIndividual.Height.Value;
+                        bodySurfaceArea = Math.Sqrt(height * simulatedIndividual.SamplingWeight / 3600);
                     }
                     var individualDustAdherenceAmount = calculateDustAdherenceAmount(
                         dustAdherenceAmounts,
@@ -124,7 +121,7 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
                         timeDustExposure,
                         dustConcentrationsRandomGenerator,
                         substanceDustAvailabilityFraction,
-                        alignedDustConcentrationDistributions,
+                        concentrationModels,
                         bodySurfaceArea.Value,
                         individualDustAdherenceAmount,
                         individualDustBodyExposureFraction
@@ -132,10 +129,7 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
                     exposuresPerPath[new(ExposureSource.Dust, ExposureRoute.Dermal)] = dustExposurePerSubstance;
                 }
 
-                var dustIndividualDayExposure = new DustIndividualDayExposure(exposuresPerPath) {
-                    SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId,
-                    SimulatedIndividual = individualDay.SimulatedIndividual
-                };
+                var dustIndividualDayExposure = new DustIndividualExposure(simulatedIndividual, exposuresPerPath);
                 result.Add(dustIndividualDayExposure);
             }
             return result;
@@ -146,7 +140,7 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
             double timeDustExposure,
             IRandom dustConcentrationsRandomGenerator,
             Dictionary<Compound, double> substanceDustAvailabilityFraction,
-            Dictionary<Compound, IEnumerable<double>> adjustedDustConcentrationDistributions,
+            IDictionary<Compound, ConcentrationModel> concentrationModels,
             double bodySurfaceArea,
             double individualDustAdherenceAmount,
             double individualDustBodyExposureFraction
@@ -154,9 +148,10 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
             // TODO: create random generator per substance
             var dustExposurePerSubstance = new List<IIntakePerCompound>();
             foreach (var substance in substances) {
-                if (adjustedDustConcentrationDistributions.TryGetValue(substance, out var dustConcentrations)) {
-                    var individualDustConcentration = dustConcentrations
-                        .DrawRandom(dustConcentrationsRandomGenerator);
+
+                if (concentrationModels.TryGetValue(substance, out var concentrationModel)) {
+                    var individualDustConcentration = concentrationModel
+                        .DrawFromDistribution(dustConcentrationsRandomGenerator, NonDetectsHandlingMethod.ReplaceByZero);
                     var exposure = new ExposurePerSubstance {
                         Compound = substance,
                         Amount = substanceDustAvailabilityFraction[substance]
@@ -173,15 +168,15 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
         private static List<IIntakePerCompound> computeIngestionExposures(
             ICollection<Compound> substances,
             double individualDustIngestion,
-            Dictionary<Compound, IEnumerable<double>> adjustedDustConcentrationDistributions,
+            IDictionary<Compound, ConcentrationModel> concentrationModels,
             IRandom dustConcentrationsRandomGenerator
         ) {
             // TODO: create random generator per substance
             var dustExposurePerSubstance = new List<IIntakePerCompound>();
             foreach (var substance in substances) {
-                if (adjustedDustConcentrationDistributions.TryGetValue(substance, out var dustConcentrations)) {
-                    var individualDustConcentration = dustConcentrations
-                        .DrawRandom(dustConcentrationsRandomGenerator);
+                if (concentrationModels.TryGetValue(substance, out var dustConcentrationModel)) {
+                    var individualDustConcentration = dustConcentrationModel
+                        .DrawFromDistribution(dustConcentrationsRandomGenerator, NonDetectsHandlingMethod.ReplaceByZero);
                     var exposure = new ExposurePerSubstance {
                         Compound = substance,
                         Amount = individualDustIngestion * individualDustConcentration

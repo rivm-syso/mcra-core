@@ -4,9 +4,12 @@ using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation;
 
 namespace MCRA.Simulation.Calculators.ExternalExposureCalculation {
-    public sealed class ExternalIndividualExposure(SimulatedIndividual individual) : IExternalIndividualExposure {
+    public class ExternalIndividualExposure(
+        SimulatedIndividual individual,
+        Dictionary<ExposurePath, List<IIntakePerCompound>> exposuresPerPath
+    ) : IExternalIndividualExposure {
         public SimulatedIndividual SimulatedIndividual { get; } = individual;
-        public Dictionary<ExposurePath, List<IIntakePerCompound>> ExposuresPerPath { get; set; }
+        public Dictionary<ExposurePath, List<IIntakePerCompound>> ExposuresPerPath { get; } = exposuresPerPath;
         public List<IExternalIndividualDayExposure> ExternalIndividualDayExposures { get; set; }
 
         /// <summary>

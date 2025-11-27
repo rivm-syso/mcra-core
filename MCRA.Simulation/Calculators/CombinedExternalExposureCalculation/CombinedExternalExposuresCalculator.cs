@@ -59,8 +59,7 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation {
                        .Where(c => routes.Contains(c.Key.Route))
                        .ToDictionary((c => c.Key), c => c.Value);
 
-                   return new ExternalIndividualExposure(c.Key) {
-                       ExposuresPerPath = exposuresPerRouteSubstance,
+                   return new ExternalIndividualExposure(c.Key, exposuresPerRouteSubstance) {
                        ExternalIndividualDayExposures = [.. c
                            .Select(r => new ExternalIndividualDayExposure(
                                r.ExposuresPerPath

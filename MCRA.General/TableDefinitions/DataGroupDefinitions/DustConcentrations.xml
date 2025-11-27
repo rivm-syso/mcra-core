@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>DustConcentrations</Id>
+  <Name>Dust concentrations</Name>
+  <SourceTableGroup>DustConcentrations</SourceTableGroup>
+  <Description>
+    Substance concentrations in dust.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>DustConcentrations</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

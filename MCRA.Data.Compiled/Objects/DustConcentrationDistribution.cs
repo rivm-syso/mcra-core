@@ -2,9 +2,12 @@
 
 namespace MCRA.Data.Compiled.Objects {
     public sealed class DustConcentrationDistribution {
-        public string idSample { get; set; }
+        public string IdDistribution { get; set; }
         public Compound Substance { get; set; }
-        public double Concentration { get; set; }
-        public ConcentrationUnit Unit { get; set; } = ConcentrationUnit.ugPerg;
+        public double Mean { get; set; }
+        public ConcentrationUnit Unit { get; set; } = ConcentrationUnit.ugPerKg;
+        public DustConcentrationDistributionType DistributionType { get; set; }
+        public double? CvVariability { get; set; }
+        public double? OccurrencePercentage { get; set; }
     }
 }

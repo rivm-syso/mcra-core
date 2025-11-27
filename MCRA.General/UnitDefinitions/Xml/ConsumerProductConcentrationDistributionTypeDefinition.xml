@@ -3,6 +3,9 @@
   <Id>ConsumerProductConcentrationDistributionType</Id>
   <Name>Consumer product concentration uncertainty distribution types.</Name>
   <UndefinedValue Id="Constant" Name="Constant">0</UndefinedValue>
+  <UndefinedAliases>
+    <Alias>Constant</Alias>
+  </UndefinedAliases>
   <Description>
     Consumer product concentration uncertainty distribution types.
   </Description>

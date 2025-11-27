@@ -16,7 +16,7 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.DustEx
         public ExternalExposureCollection Generate(
             ICollection<IIndividualDay> individualDays,
             ICollection<Compound> substances,
-            ICollection<DustIndividualDayExposure> individualDayExposures,
+            ICollection<DustIndividualExposure> individualDayExposures,
             SubstanceAmountUnit substanceAmountUnit,
             int seed
         ) {
@@ -45,14 +45,14 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.DustEx
 
         protected abstract List<IExternalIndividualDayExposure> generate(
             ICollection<IIndividualDay> individualDays,
-            ICollection<DustIndividualDayExposure> individualDayExposures,
+            ICollection<DustIndividualExposure> individualDayExposures,
             ICollection<Compound> substances,
             IRandom randomIndividual
         );
 
         protected ExternalIndividualDayExposure createExternalIndividualDayExposure(
             IIndividualDay individualDay,
-            DustIndividualDayExposure individualDayExposure
+            DustIndividualExposure individualDayExposure
         ) {
             return new ExternalIndividualDayExposure(individualDayExposure.ExposuresPerPath) {
                 SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId,

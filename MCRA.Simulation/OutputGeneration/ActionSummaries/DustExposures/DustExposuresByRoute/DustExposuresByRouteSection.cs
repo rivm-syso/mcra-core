@@ -19,7 +19,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public void Summarize(
             ICollection<Compound> substances,
-            ICollection<DustIndividualDayExposure> dustIndividualDayExposures,
+            ICollection<DustIndividualExposure> dustIndividualDayExposures,
             double lowerPercentage,
             double upperPercentage,
             ExposureUnitTriple exposureUnit,
@@ -61,7 +61,7 @@ namespace MCRA.Simulation.OutputGeneration {
         private static DustExposuresByRouteRecord getSummaryRecord(
             double[] percentages,
             ExposureRoute dustExposureRoute,
-            ICollection<DustIndividualDayExposure> dustIndividualDayExposures,
+            ICollection<DustIndividualExposure> dustIndividualDayExposures,
             Compound substance,
             ExposureUnitTriple exposureUnit
         ) {
@@ -124,7 +124,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         private static List<DustExposuresPercentilesRecord> getBoxPlotRecords(
             ExposureRoute dustExposureRoute,
-            ICollection<DustIndividualDayExposure> dustIndividualDayExposures,
+            ICollection<DustIndividualExposure> dustIndividualDayExposures,
             ICollection<Compound> substances,
             ExposureUnitTriple exposureUnit
         ) {

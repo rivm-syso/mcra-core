@@ -1,10 +1,9 @@
-﻿using MCRA.Utils.DataFileReading;
+﻿using MCRA.General;
+using MCRA.Utils.DataFileReading;
 using MCRA.Utils.ProgressReporting;
-using MCRA.General;
 
 namespace MCRA.Data.Raw.Copying.BulkCopiers {
     public sealed class DustConcentrationDistributionsBulkCopier : RawDataSourceBulkCopierBase {
-
         public DustConcentrationDistributionsBulkCopier(
             IDataSourceWriter dataSourceWriter,
             HashSet<SourceTableGroup> parsedTableGroups,
