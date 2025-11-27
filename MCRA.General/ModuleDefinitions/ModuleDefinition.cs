@@ -39,6 +39,7 @@ namespace MCRA.General.ModuleDefinitions {
         public ActionType ActionType { get; set; } = ActionType.Unknown;
         public ModuleType ModuleType { get; set; }
         public bool CanCompute { get; set; } = false;
+        public bool DefaultCompute { get; set; } = false;
         public string TableGroup { get; set; }
 
         public bool IsAdvancedActionType { get; set; }

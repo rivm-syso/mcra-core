@@ -4,6 +4,7 @@
   <Name>Active substances</Name>
   <ModuleType>CalculatorModule</ModuleType>
   <CanCompute>true</CanCompute>
+  <DefaultCompute>true</DefaultCompute>
   <ActionType>ActiveSubstances</ActionType>
   <TableGroup>AssessmentGroupMemberships</TableGroup>
   <IsAdvancedActionType>true</IsAdvancedActionType>

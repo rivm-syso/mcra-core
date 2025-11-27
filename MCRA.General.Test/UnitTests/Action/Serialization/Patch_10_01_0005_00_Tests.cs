@@ -1,4 +1,5 @@
 ﻿using MCRA.General.Action.Serialization;
+using MCRA.General.ModuleDefinitions;
 using ModuleSettingsType = (string moduleId, (string key, string value)[])[];
 
 namespace MCRA.General.Test.UnitTests.Action.Serialization {
@@ -37,11 +38,14 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xmlOld, null, false, out _);
             var newXml = ProjectSettingsSerializer.GetTransformedSettingsXml(xmlOld);
 
+            var definitions = McraModuleDefinitions.Instance.ModuleDefinitions;
+
             //loop through all action types
             foreach (var t in Enum.GetValues<ActionType>().Where(t => (int)t >= 0)) {
                 var conf = settingsDto.GetModuleConfiguration(t);
                 if (conf != null) {
-                    Assert.AreEqual(calculationTypes.Contains(t.ToString()), conf.IsCompute);
+                    var definition = definitions[t];
+                    Assert.AreEqual(calculationTypes.Contains(t.ToString()) || definition.DefaultCompute, conf.IsCompute);
                 }
             }
         }

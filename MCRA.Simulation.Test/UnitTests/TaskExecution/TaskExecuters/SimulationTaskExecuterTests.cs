@@ -47,6 +47,7 @@ namespace MCRA.Simulation.Test.UnitTests.TaskExecution.TaskExecuters {
                             SourceTableGroup.RelativePotencyFactors
                         )
                 };
+                project.ActiveSubstancesSettings.IsCompute = false;
                 project.EffectsSettings.CodeFocalEffect = effects.First().Code;
                 project.SubstancesSettings.CodeReferenceSubstance = substances.First().Code;
                 project.SubstancesSettings.MultipleSubstances = true;

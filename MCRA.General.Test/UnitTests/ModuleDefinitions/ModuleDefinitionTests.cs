@@ -9,7 +9,7 @@ namespace MCRA.General.Test.UnitTests.ModuleDefinitions {
         [TestMethod]
         public void ModuleDefinitions_TestCompletenessActionClasses() {
             var definitionsInstance = McraModuleDefinitions.Instance;
-            var enumValues = Enum.GetValues(typeof(ActionClass))
+            var enumValues = Enum.GetValues<ActionClass>()
                 .Cast<ActionClass>();
             // Check whether there is a definition for each enum value.
             foreach (var value in enumValues) {
@@ -21,7 +21,7 @@ namespace MCRA.General.Test.UnitTests.ModuleDefinitions {
         [TestMethod]
         public void ModuleDefinitions_TestActionClassDisplayNames() {
             var definitionsInstance = McraModuleDefinitions.Instance;
-            var enumValues = Enum.GetValues(typeof(ActionClass))
+            var enumValues = Enum.GetValues<ActionClass>()
                 .Cast<ActionClass>();
             // Check whether there is a definition for each enum value.
             foreach (var value in enumValues) {
@@ -32,28 +32,26 @@ namespace MCRA.General.Test.UnitTests.ModuleDefinitions {
 
         [TestMethod]
         public void ModuleDefinitions_TestCompletenessActionTypes() {
-            var definitionsInstance = McraModuleDefinitions.Instance;
-            var definitions = definitionsInstance.ModuleDefinitions;
-            var enumValues = Enum.GetValues(typeof(ActionType))
+            var definitions = McraModuleDefinitions.Instance.ModuleDefinitions;
+            var enumValues = Enum.GetValues<ActionType>()
                 .Cast<ActionType>()
                 .Where(r => (int)r >= 0);
             // Check whether there is a definition for each enum value.
             foreach (var value in enumValues) {
-                var definition = definitionsInstance.ModuleDefinitions[value];
+                var definition = definitions[value];
                 Assert.IsNotNull(definition);
             }
         }
 
         [TestMethod]
         public void ModuleDefinitions_TestActionTypeDisplayNames() {
-            var definitionsInstance = McraModuleDefinitions.Instance;
-            var definitions = definitionsInstance.ModuleDefinitions;
-            var enumValues = Enum.GetValues(typeof(ActionType))
+            var definitions = McraModuleDefinitions.Instance.ModuleDefinitions;
+            var enumValues = Enum.GetValues<ActionType>()
                 .Cast<ActionType>()
                 .Where(r => (int)r >= 0);
             // Check whether there is a definition for each enum value.
             foreach (var value in enumValues) {
-                var definition = definitionsInstance.ModuleDefinitions[value];
+                var definition = definitions[value];
                 Assert.AreEqual(value.GetDisplayName(), definition.Name);
             }
         }
@@ -67,7 +65,7 @@ namespace MCRA.General.Test.UnitTests.ModuleDefinitions {
                     Assert.IsTrue(Enum.TryParse(definition.TableGroup, out SourceTableGroup value));
                 }
             }
-            var enumValues = Enum.GetValues(typeof(SourceTableGroup))
+            var enumValues = Enum.GetValues<SourceTableGroup>()
                 .Cast<SourceTableGroup>()
                 .Where(r => r != SourceTableGroup.Unknown)
                 .Where(r => r != SourceTableGroup.DietaryExposures)
@@ -81,7 +79,7 @@ namespace MCRA.General.Test.UnitTests.ModuleDefinitions {
 
         [TestMethod]
         public void ModuleDefinitions_TestCompletenessActionClass() {
-            var enumValues = Enum.GetValues(typeof(ActionType)).Cast<ActionType>().ToList();
+            var enumValues = Enum.GetValues<ActionType>().Cast<ActionType>().ToList();
             foreach (var value in enumValues.Where(r => (int)r >= 0)) {
                 _ = McraModuleDefinitions.Instance.GetActionClass(value);
             }
@@ -89,9 +87,23 @@ namespace MCRA.General.Test.UnitTests.ModuleDefinitions {
         }
 
         [TestMethod]
+        public void ModuleDefinitions_TestDefaultIsCompute() {
+            var definitions = McraModuleDefinitions.Instance.ModuleDefinitions;
+            var enumValues = Enum.GetValues<ActionType>()
+                .Cast<ActionType>()
+                .Where(r => (int)r >= 0);
+            // Check whether there is a definition for each enum value.
+            var project = new ProjectDto();
+            foreach (var value in enumValues) {
+                var definition = definitions[value];
+                var config = project.GetModuleConfiguration(definition.ActionType);
+                Assert.AreEqual(definition.DefaultCompute, config?.IsCompute ?? false);
+            }
+        }
+
+        [TestMethod]
         public void ModuleDefinitions_TestCanComputeCalculationModules() {
-            var definitionsInstance = McraModuleDefinitions.Instance;
-            var definitions = definitionsInstance.ModuleDefinitions.Values
+            var definitions = McraModuleDefinitions.Instance.ModuleDefinitions.Values
                 .Where(r => r.ModuleType == ModuleType.CalculatorModule)
                 .ToList();
 

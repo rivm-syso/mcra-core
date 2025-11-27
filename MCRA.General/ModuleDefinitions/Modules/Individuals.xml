@@ -5,6 +5,7 @@
   <ActionType>Individuals</ActionType>
   <ModuleType>CalculatorModule</ModuleType>
   <CanCompute>true</CanCompute>
+  <DefaultCompute>true</DefaultCompute>
   <IsAdvancedActionType>true</IsAdvancedActionType>
   <HasUncertaintyAnalysis>true</HasUncertaintyAnalysis>
   <Description>

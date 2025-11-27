@@ -1,7 +1,8 @@
-﻿using MCRA.Data.Management.RawDataProviders;
+﻿using System.Data;
+using MCRA.Data.Management.RawDataProviders;
 using MCRA.General;
 using MCRA.General.Action.Settings;
-using System.Data;
+using MCRA.General.ModuleDefinitions;
 
 namespace MCRA.Data.Management.Test.UnitTests.RawDataProviders {
     [TestClass]
@@ -33,24 +34,31 @@ namespace MCRA.Data.Management.Test.UnitTests.RawDataProviders {
         /// </summary>
         [TestMethod]
         public void ActionRawDataProvider_TestGetFilterCodes_Selection() {
+            var definitions = McraModuleDefinitions.Instance.ModuleDefinitions.Values
+                .Where(r => r.CanCompute && r.DefaultCompute);
+            var project = new ProjectDto();
+            //set iscompute to false where a default value is set to true for this project
+            foreach (var d in definitions) {
+                project.GetModuleConfiguration(d.ActionType).IsCompute = false;
+            }
 
             var scopingTypes = Enum.GetValues(typeof(ScopingType))
                 .Cast<ScopingType>()
                 .ToList();
+
             foreach (var scopingType in scopingTypes) {
-                var project = new ProjectDto() {
-                    ScopeKeysFilters = [
-                        new ScopeKeysFilter() {
-                            ScopingType = scopingType,
-                            SelectedCodes = ["A", "B"]
-                        }
-                    ]
-                };
+                project.ScopeKeysFilters = [
+                    new ScopeKeysFilter() {
+                        ScopingType = scopingType,
+                        SelectedCodes = ["A", "B"]
+                    }
+                ];
+
                 var linkedDataSources = new Dictionary<SourceTableGroup, List<int>>();
                 var rawDataProvider = new ActionRawDataProvider(
                     project,
                     linkedDataSources,
-                new MockDataManagerFactory()
+                    new MockDataManagerFactory()
                 );
 
                 var filterCodes = rawDataProvider.GetFilterCodes(scopingType).ToArray();
@@ -63,6 +71,8 @@ namespace MCRA.Data.Management.Test.UnitTests.RawDataProviders {
         /// </summary>
         [TestMethod]
         public void ActionRawDataProvider_TestGetFilterCodes_SkippedSelection() {
+            var definitions = McraModuleDefinitions.Instance.ModuleDefinitions.Values
+                .Where(r => r.CanCompute && r.DefaultCompute);
             var project = new ProjectDto() {
                 ScopeKeysFilters = [
                     new ScopeKeysFilter() {
@@ -71,6 +81,11 @@ namespace MCRA.Data.Management.Test.UnitTests.RawDataProviders {
                     }
                 ]
             };
+            //set iscompute to false where a default value is set to true for this project
+            foreach (var d in definitions) {
+                project.GetModuleConfiguration(d.ActionType).IsCompute = false;
+            }
+
             var linkedDataSources = new Dictionary<SourceTableGroup, List<int>>();
             var rawDataProvider = new ActionRawDataProvider(
                 project,

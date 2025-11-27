@@ -44,6 +44,7 @@ namespace MCRA.General.ModuleDefinitions.Settings {
 
     var modName = moduleDoc.SelectSingleNode("Module/Name").InnerText;
     var canCompute = bool.Parse(moduleDoc.SelectSingleNode("Module/CanCompute")?.InnerText ?? "false");
+    var defaultCompute = bool.Parse(moduleDoc.SelectSingleNode("Module/DefaultCompute")?.InnerText ?? "false");
 
     var allSettings = new List<XmlNode>();
     allSettings.AddRange(moduleDoc.DocumentElement.SelectNodes("SelectionSettings/SelectionSetting").Cast<XmlNode>());
@@ -66,6 +67,14 @@ namespace MCRA.General.ModuleDefinitions.Settings {
 
         //parameterless constructor
         public <#=className#>ModuleConfig(): base() {
+<#
+    if(canCompute && defaultCompute) {
+#>
+            //Set IsCompute default to true for this module configuration
+            IsCompute = true;
+<#
+    }
+#>
         }
 
         //constructor from ModuleConfiguration's settings list

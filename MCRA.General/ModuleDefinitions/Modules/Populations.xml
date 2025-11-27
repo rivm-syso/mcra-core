@@ -5,6 +5,7 @@
   <ActionType>Populations</ActionType>
   <ModuleType>PrimaryEntityModule</ModuleType>
   <CanCompute>true</CanCompute>
+  <DefaultCompute>true</DefaultCompute>
   <TableGroup>Populations</TableGroup>
   <IsAdvancedActionType>true</IsAdvancedActionType>
   <!--<AllowMultipleDataSources>true</AllowMultipleDataSources>-->
