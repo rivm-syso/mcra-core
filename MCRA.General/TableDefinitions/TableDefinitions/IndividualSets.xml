@@ -18,6 +18,8 @@
       <Id>idSet</Id>
       <Description>Unique identification code of the individual set.</Description>
       <Aliases>
+        <string>id</string>
+        <string>idSet</string>
         <string>idIndividualSet</string>
         <string>SetCode</string>
         <string>Code</string>

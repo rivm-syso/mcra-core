@@ -53,97 +53,17 @@ namespace MCRA.Data.Management.CompiledDataManagers {
         /// <returns></returns>
         public IDictionary<string, Individual> GetAllConsumerProductIndividuals() {
             if (_data.AllConsumerProductIndividuals == null) {
-                var allConsumerProductIndividuals = new Dictionary<string, Individual>(StringComparer.OrdinalIgnoreCase);
-                var allIndividualProperties = new Dictionary<string, IndividualProperty>(StringComparer.OrdinalIgnoreCase);
-                var emptyPropertyTypes = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-                var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.ConsumerProductUseFrequencies);
-                if (rawDataSourceIds?.Count > 0) {
-                    GetAllConsumerProductSurveys();
-                    using (var rdm = _rawDataProvider.CreateRawDataManager()) {
-
-                        // Read individuals
-                        var id = 0;
-                        foreach (var rawDataSourceId in rawDataSourceIds) {
-                            using (var r = rdm.OpenDataReader<RawIndividuals>(rawDataSourceId, out int[] fieldMap)) {
-                                while (r?.Read() ?? false) {
-                                    var surveyCode = r.GetString(RawIndividuals.IdFoodSurvey, fieldMap);
-                                    var valid = CheckLinkSelected(ScopingType.ConsumerProductSurveys, surveyCode);
-                                    if (valid) {
-                                        var survey = _data.GetOrAddConsumerProductSurvey(surveyCode);
-                                        var idIndividual = r.GetString(RawIndividuals.IdIndividual, fieldMap);
-                                        var individual = new Individual(++id) {
-                                            Code = idIndividual,
-                                            BodyWeight = r.GetDoubleOrNull(RawIndividuals.BodyWeight, fieldMap) ?? double.NaN,
-                                            SamplingWeight = r.GetDoubleOrNull(RawIndividuals.SamplingWeight, fieldMap) ?? 1D,
-                                            CodeFoodSurvey = surveyCode,
-                                        };
-                                        allConsumerProductIndividuals.Add(individual.Code, individual);
-                                        survey.Individuals.Add(individual);
-                                    }
-                                }
-                            }
-                        }
-
-                        // Read individual properties
-                        foreach (var rawDataSourceId in rawDataSourceIds) {
-                            using (var r = rdm.OpenDataReader<RawIndividualProperties>(rawDataSourceId, out int[] fieldMap)) {
-                                while (r?.Read() ?? false) {
-                                    var propertyName = r.GetString(RawIndividualProperties.IdIndividualProperty, fieldMap);
-                                    if (!allIndividualProperties.TryGetValue(propertyName, out IndividualProperty individualProperty)) {
-                                        var name = r.GetStringOrNull(RawIndividualProperties.Name, fieldMap);
-                                        if (r.IsDBNull(RawIndividualProperties.Type, fieldMap)) {
-                                            emptyPropertyTypes.Add(propertyName);
-                                        }
-                                        allIndividualProperties[propertyName] = new IndividualProperty {
-                                            Code = propertyName,
-                                            Name = !string.IsNullOrEmpty(name) ? name : propertyName,
-                                            Description = r.GetStringOrNull(RawIndividualProperties.Description, fieldMap),
-                                            PropertyLevel = r.GetEnum<PropertyLevelType>(RawIndividualProperties.PropertyLevel, fieldMap),
-                                            PropertyType = r.GetEnum<IndividualPropertyType>(RawIndividualProperties.Type, fieldMap),
-                                        };
-                                    }
-                                }
-                            }
-                        }
-
-                        // Read individual property values
-                        foreach (var rawDataSourceId in rawDataSourceIds) {
-                            using (var r = rdm.OpenDataReader<RawIndividualPropertyValues>(rawDataSourceId, out int[] fieldMap)) {
-                                while (r?.Read() ?? false) {
-                                    var idIndividual = r.GetString(RawIndividualPropertyValues.IdIndividual, fieldMap);
-                                    var valid = CheckLinkSelected(ScopingType.ConsumerProductIndividuals, idIndividual);
-                                    if (valid) {
-                                        var propertyName = r.GetString(RawIndividualPropertyValues.PropertyName, fieldMap);
-                                        var individual = allConsumerProductIndividuals[idIndividual];
-                                        if (allIndividualProperties.TryGetValue(propertyName, out IndividualProperty individualProperty)) {
-                                            individual.SetPropertyValue(
-                                                individualProperty,
-                                                r.GetStringOrNull(RawIndividualPropertyValues.TextValue, fieldMap),
-                                                r.GetDoubleOrNull(RawIndividualPropertyValues.DoubleValue, fieldMap)
-                                            );
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        // Set property types (i.e., numeric/categorical) for properties without type
-                        foreach (var property in allIndividualProperties) {
-                            if (emptyPropertyTypes.Contains(property.Key)) {
-                                var individualPropertyValues = allConsumerProductIndividuals.Values
-                                    .Where(r => r.IndividualPropertyValues.Any(c => c.IndividualProperty == property.Value))
-                                    .Select(r => r.IndividualPropertyValues.First(c => c.IndividualProperty == property.Value))
-                                    .ToList();
-                                property.Value.PropertyType = individualPropertyValues.All(ipv => ipv.IsNumeric())
-                                    ? IndividualPropertyType.Numeric
-                                    : IndividualPropertyType.Categorical;
-                            }
-                        }
-                    }
-                }
-
-                _data.AllConsumerProductIndividualProperties = allIndividualProperties;
-                _data.AllConsumerProductIndividuals = allConsumerProductIndividuals;
+                GetAllConsumerProductSurveys();
+                _data.AllConsumerProductIndividuals = GetIndividuals(
+                    SourceTableGroup.ConsumerProductUseFrequencies,
+                    ScopingType.ConsumerProductSurveys,
+                    _data.GetOrAddConsumerProductSurvey
+                    );
+                _data.AllConsumerProductIndividualProperties = GetIndividualProperties(
+                    SourceTableGroup.ConsumerProductUseFrequencies,
+                    ScopingType.ConsumerProductIndividuals,
+                    _data.AllConsumerProductIndividuals
+                    );
             }
             return _data.AllConsumerProductIndividuals;
         }

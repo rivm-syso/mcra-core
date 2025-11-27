@@ -59,119 +59,20 @@ namespace MCRA.Data.Management.CompiledDataManagers {
         /// </summary>
         public IDictionary<string, Individual> GetAllIndividuals() {
             if (_data.AllIndividuals == null) {
-                var allIndividuals = new Dictionary<string, Individual>(StringComparer.OrdinalIgnoreCase);
-                var allDietaryIndividualProperties = new Dictionary<string, IndividualProperty>(StringComparer.OrdinalIgnoreCase);
-                var emptyPropertyTypes = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-                var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.Survey);
-                if (rawDataSourceIds?.Count > 0) {
-                    GetAllFoodSurveys();
-                    using (var rdm = _rawDataProvider.CreateRawDataManager()) {
-                        var id = 0;
-                        foreach (var rawDataSourceId in rawDataSourceIds) {
-                            using (var r = rdm.OpenDataReader<RawIndividuals>(rawDataSourceId, out int[] fieldMap)) {
-                                while (r?.Read() ?? false) {
-                                    var surveyCode = r.GetString(RawIndividuals.IdFoodSurvey, fieldMap);
-                                    var valid = CheckLinkSelected(ScopingType.FoodSurveys, surveyCode);
-                                    if (valid) {
-                                        var survey = _data.GetOrAddFoodSurvey(surveyCode);
-                                        var idIndividual = r.GetString(RawIndividuals.IdIndividual, fieldMap);
-                                        var idv = new Individual(++id) {
-                                            Code = idIndividual,
-                                            CodeFoodSurvey = surveyCode,
-                                            BodyWeight = r.GetDoubleOrNull(RawIndividuals.BodyWeight, fieldMap) ?? double.NaN,
-                                            SamplingWeight = r.GetDoubleOrNull(RawIndividuals.SamplingWeight, fieldMap) ?? 1D,
-                                            NumberOfDaysInSurvey = r.GetIntOrNull(RawIndividuals.NumberOfSurveyDays, fieldMap)
-                                                ?? survey.NumberOfSurveyDays ?? 1,
-                                            IndividualDays = new Dictionary<string, IndividualDay>(StringComparer.OrdinalIgnoreCase),
-                                            Name = r.GetStringOrNull(RawIndividuals.Name, fieldMap),
-                                            Description = r.GetStringOrNull(RawIndividuals.Description, fieldMap),
-                                        };
-                                        allIndividuals.Add(idv.Code, idv);
-                                        survey.Individuals.Add(idv);
-                                    }
-                                }
-                            }
-                        }
-
-                        foreach (var rawDataSourceId in rawDataSourceIds) {
-                            using (var r = rdm.OpenDataReader<RawIndividualDays>(rawDataSourceId, out int[] fieldMap)) {
-                                while (r?.Read() ?? false) {
-                                    var idIndividual = r.GetString(RawIndividualDays.IdIndividual, fieldMap);
-                                    var valid = CheckLinkSelected(ScopingType.DietaryIndividuals, idIndividual);
-                                    if (valid) {
-                                        var individual = allIndividuals[idIndividual];
-                                        var idDay = r.GetString(RawIndividualDays.IdDay, fieldMap);
-                                        var idv = new IndividualDay() {
-                                            Individual = individual,
-                                            IdDay = idDay,
-                                            Date = r.GetDateTimeOrNull(RawIndividualDays.SamplingDate, fieldMap)
-                                        };
-                                        individual.IndividualDays[idDay] = idv;
-                                    }
-                                }
-                            }
-                        }
-
-                        // Read individual properties
-                        foreach (var rawDataSourceId in rawDataSourceIds) {
-                            using (var r = rdm.OpenDataReader<RawIndividualProperties>(rawDataSourceId, out int[] fieldMap)) {
-                                while (r?.Read() ?? false) {
-                                    var propertyName = r.GetString(RawIndividualProperties.IdIndividualProperty, fieldMap);
-                                    if (!allDietaryIndividualProperties.TryGetValue(propertyName, out IndividualProperty individualProperty)) {
-                                        var name = r.GetStringOrNull(RawIndividualProperties.Name, fieldMap);
-                                        if (r.IsDBNull(RawIndividualProperties.Type, fieldMap)) {
-                                            emptyPropertyTypes.Add(propertyName);
-                                        }
-                                        allDietaryIndividualProperties[propertyName] = new IndividualProperty {
-                                            Code = propertyName,
-                                            Name = !string.IsNullOrEmpty(name) ? name : propertyName,
-                                            Description = r.GetStringOrNull(RawIndividualProperties.Description, fieldMap),
-                                            PropertyLevel = r.GetEnum<PropertyLevelType>(RawIndividualProperties.PropertyLevel, fieldMap),
-                                            PropertyType = r.GetEnum<IndividualPropertyType>(RawIndividualProperties.Type, fieldMap),
-                                        };
-                                    }
-                                }
-                            }
-                        }
-
-                        // Read individual property values
-                        foreach (var rawDataSourceId in rawDataSourceIds) {
-                            using (var r = rdm.OpenDataReader<RawIndividualPropertyValues>(rawDataSourceId, out int[] fieldMap)) {
-                                while (r?.Read() ?? false) {
-                                    var idIndividual = r.GetString(RawIndividualPropertyValues.IdIndividual, fieldMap);
-                                    var valid = CheckLinkSelected(ScopingType.DietaryIndividuals, idIndividual);
-                                    if (valid) {
-                                        var propertyName = r.GetString(RawIndividualPropertyValues.PropertyName, fieldMap);
-                                        var individual = allIndividuals[idIndividual];
-                                        if (allDietaryIndividualProperties.TryGetValue(propertyName, out IndividualProperty individualProperty)) {
-                                            individual.SetPropertyValue(
-                                                individualProperty,
-                                                r.GetStringOrNull(RawIndividualPropertyValues.TextValue, fieldMap),
-                                                r.GetDoubleOrNull(RawIndividualPropertyValues.DoubleValue, fieldMap)
-                                            );
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        // Set property types (i.e., numeric/categorical) for properties without type
-                        foreach (var property in allDietaryIndividualProperties) {
-                            if (emptyPropertyTypes.Contains(property.Key)) {
-                                var individualPropertyValues = allIndividuals.Values
-                                    .Where(r => r.IndividualPropertyValues.Any(c => c.IndividualProperty == property.Value))
-                                    .Select(r => r.IndividualPropertyValues.First(c => c.IndividualProperty == property.Value))
-                                    .ToList();
-                                property.Value.PropertyType = individualPropertyValues.All(ipv => ipv.IsNumeric())
-                                    ? IndividualPropertyType.Numeric
-                                    : IndividualPropertyType.Categorical;
-                            }
-                        }
-                    }
-                }
-
-                _data.AllDietaryIndividualProperties = allDietaryIndividualProperties;
-                _data.AllIndividuals = allIndividuals;
+                GetAllFoodSurveys();
+                var collectionNrOfDaysInSurvey = _data.AllFoodSurveys.Values
+                    .ToDictionary(s => s.Code, s => s.NumberOfSurveyDays.GetValueOrDefault(), StringComparer.OrdinalIgnoreCase);
+                _data.AllIndividuals = GetIndividuals(
+                    SourceTableGroup.Survey,
+                    ScopingType.FoodSurveys,
+                    _data.GetOrAddFoodSurvey,
+                    collectionNrOfDaysInSurvey
+                    );
+                _data.AllDietaryIndividualProperties = GetIndividualProperties(
+                    SourceTableGroup.Survey,
+                    ScopingType.DietaryIndividuals,
+                    _data.AllIndividuals
+                    );
             }
             return _data.AllIndividuals;
         }

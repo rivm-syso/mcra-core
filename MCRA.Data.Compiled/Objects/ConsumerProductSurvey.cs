@@ -1,8 +1,9 @@
-﻿using MCRA.General;
+﻿using MCRA.Data.Compiled.Interfaces;
+using MCRA.General;
 using MCRA.Utils.DateTimes;
 
 namespace MCRA.Data.Compiled.Objects {
-    public sealed class ConsumerProductSurvey : StrongEntity {
+    public sealed class ConsumerProductSurvey : StrongEntity, IIndividualCollection {
         public ConsumerProductSurvey() {
             Individuals = [];
         }

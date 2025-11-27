@@ -1,8 +1,9 @@
-﻿using MCRA.General;
+﻿using MCRA.Data.Compiled.Interfaces;
+using MCRA.General;
 using MCRA.Utils.DateTimes;
 
 namespace MCRA.Data.Compiled.Objects {
-    public sealed class FoodSurvey : StrongEntity {
+    public sealed class FoodSurvey : StrongEntity, IIndividualCollection {
         public string Location { get; set; }
         public string AgeUnitString { get; set; }
         public DateTime? StartDate { get; set; }

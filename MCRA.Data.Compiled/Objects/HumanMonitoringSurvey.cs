@@ -1,8 +1,9 @@
 ﻿using MCRA.Utils.DateTimes;
 using MCRA.General;
+using MCRA.Data.Compiled.Interfaces;
 
 namespace MCRA.Data.Compiled.Objects {
-    public sealed class HumanMonitoringSurvey: StrongEntity {
+    public sealed class HumanMonitoringSurvey: StrongEntity, IIndividualCollection {
 
         public HumanMonitoringSurvey() {
             Individuals = [];
