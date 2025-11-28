@@ -31,7 +31,7 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
             }
             section.SummarizeSetting(SettingsItemType.WithinBinExposureRepresentationMethod, _configuration.WithinBinExposureRepresentationMethod);
             if (_configuration.MultipleSubstances) {
-                section.SummarizeSetting(SettingsItemType.Cumulative, _configuration.Cumulative);
+                section.SummarizeSetting(SettingsItemType.EbdCumulative, _configuration.EbdCumulative);
             }
             return section;
         }

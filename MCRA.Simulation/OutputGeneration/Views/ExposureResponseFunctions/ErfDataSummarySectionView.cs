@@ -31,6 +31,12 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (Model.Records.All(r => string.IsNullOrEmpty(r.ExposureResponseSpecificationUpper))) {
                 hiddenProperties.Add("ExposureResponseSpecificationUpper");
             }
+            if (Model.Records.All(r => !r.CfvUncertaintyLower.HasValue || double.IsNaN(r.CfvUncertaintyLower.Value))) {
+                hiddenProperties.Add("CfvUncertaintyLower");
+            }
+            if (Model.Records.All(r => !r.CfvUncertaintyUpper.HasValue || double.IsNaN(r.CfvUncertaintyUpper.Value))) {
+                hiddenProperties.Add("CfvUncertaintyUpper");
+            }
 
             sb.AppendTable(
                 Model,

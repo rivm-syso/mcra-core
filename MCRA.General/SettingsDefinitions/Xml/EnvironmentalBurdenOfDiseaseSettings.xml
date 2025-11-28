@@ -37,6 +37,14 @@
     <DefaultValue>5, 10, 25, 50, 75, 90, 95</DefaultValue>
   </SettingsItem>
   <SettingsItem>
+    <Id>EbdCumulative</Id>
+    <Name>Compute for cumulative exposures</Name>
+    <Description>
+      Specifies whether to compute EBDs based on cumulative exposures.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
     <Id>EbdStandardisation</Id>
     <Name>Standardised population size</Name>
     <Description>

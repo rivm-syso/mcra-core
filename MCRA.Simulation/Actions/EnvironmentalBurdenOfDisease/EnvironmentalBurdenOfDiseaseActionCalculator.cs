@@ -36,7 +36,7 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
             _actionInputRequirements[ActionType.HumanMonitoringAnalysis].IsVisible = isMonitoringConcentrations;
             _actionInputRequirements[ActionType.HbmSingleValueExposures].IsRequired = isHbmSingleValueExposures;
             _actionInputRequirements[ActionType.HbmSingleValueExposures].IsVisible = isHbmSingleValueExposures;
-            var isCumulative = ModuleConfig.MultipleSubstances && ModuleConfig.Cumulative;
+            var isCumulative = ModuleConfig.MultipleSubstances && ModuleConfig.EbdCumulative;
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsRequired = isCumulative;
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsVisible = isCumulative;
         }
@@ -104,7 +104,7 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
             );
 
             // Get exposure response function models (filter by reference substance if cumulative)
-            var exposureResponseFunctionModels = ModuleConfig.MultipleSubstances && ModuleConfig.Cumulative
+            var exposureResponseFunctionModels = ModuleConfig.MultipleSubstances && ModuleConfig.EbdCumulative
                 ? data.ExposureResponseFunctionModels
                     .Where(r => r.ExposureResponseFunction.Substance == data.ReferenceSubstance)
                     .ToList()
@@ -117,7 +117,7 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
                     exposureResponseFunctionModels
                 )
                 : erCalculator.ComputeFromTargetIndividualExposures(
-                    getExposures(data, ModuleConfig.MultipleSubstances && ModuleConfig.Cumulative),
+                    getExposures(data, ModuleConfig.MultipleSubstances && ModuleConfig.EbdCumulative),
                     exposureResponseFunctionModels
                 );
 

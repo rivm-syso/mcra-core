@@ -46,8 +46,9 @@ namespace MCRA.Simulation.OutputGeneration {
                             ? r.ExposureResponseSpecificationUpper.ExpressionString
                             : null,
                         CounterfactualValue = r.CounterFactualValue,
-                        UncertaintyDistribution = r.CFVUncertaintyDistribution.GetShortDisplayName(),
-                        UncertaintyUpper = r.CFVUncertaintyUpper ?? double.NaN,
+                        CfvUncertaintyDistribution = r.CFVUncertaintyDistribution.GetShortDisplayName(),
+                        CfvUncertaintyLower = r.CFVUncertaintyLower,
+                        CfvUncertaintyUpper = r.CFVUncertaintyUpper,
                         HasSubgroups = r.HasErfSubGroups,
                     };
                     return record;
