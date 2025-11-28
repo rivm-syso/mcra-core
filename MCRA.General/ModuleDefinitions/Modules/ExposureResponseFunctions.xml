@@ -17,6 +17,9 @@
     <Entity>Substances</Entity>
     <Entity>Effects</Entity>
   </Entities>
+  <CalculationSettings>
+    <CalculationSetting source="Action">RandomSeed</CalculationSetting>
+  </CalculationSettings>
   <UncertaintySources>
     <UncertaintySource>ExposureResponseFunctions</UncertaintySource>
     <UncertaintySource>CounterFactualValues</UncertaintySource>
@@ -24,5 +27,5 @@
   <UncertaintySettings>
     <UncertaintySetting>ResampleExposureResponseFunctions</UncertaintySetting>
     <UncertaintySetting>ResampleCounterFactualValues</UncertaintySetting>
-  </UncertaintySettings>  
+  </UncertaintySettings>
 </Module>

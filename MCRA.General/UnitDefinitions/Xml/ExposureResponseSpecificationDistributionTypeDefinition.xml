@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>ExposureResponseSpecificationDistributionType</Id>
+  <Name>Exposure response specification uncertainty distribution types.</Name>
+  <UndefinedValue Id="Constant" Name="Constant">0</UndefinedValue>
+  <Description>
+    Exposure response specification uncertainty distribution types.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>Normal</Id>
+      <Name>Normal</Name>
+      <ShortName>Normal</ShortName>
+      <Description>
+        Normal distribution parameterised by a mean and and upper p95 percentile.
+      </Description>
+      <Aliases>
+        <Alias>Normal</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>LogNormal</Id>
+      <Name>LogNormal</Name>
+      <ShortName>LogNormal</ShortName>
+      <Description>
+        LogNormal distribution parameterised by a mean and and upper p95 percentile.
+      </Description>
+      <Aliases>
+        <Alias>LogNormal</Alias>a
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Triangular</Id>
+      <Name>Triangular</Name>
+      <ShortName>Triangular</ShortName>
+      <Description>
+        Triangular distribution specified by a mode and a lower and upper boundary.
+      </Description>
+      <Aliases>
+        <Alias>Triangular</Alias>
+      </Aliases>
+    </Unit>
+  </Units>
+</UnitDefinition>

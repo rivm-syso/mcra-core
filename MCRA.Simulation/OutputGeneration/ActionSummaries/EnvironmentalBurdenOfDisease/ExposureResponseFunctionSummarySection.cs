@@ -1,6 +1,5 @@
 ﻿using MCRA.General;
 using MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation;
-using MCRA.Simulation.Calculators.ExposureResponseFunctions;
 using MCRA.Utils;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
@@ -18,8 +17,7 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             var erfSummaryRecords = new List<ErfSummaryRecord>();
             foreach (var exposureResponseResult in exposureResponseResults) {
-                var erf = exposureResponseResult.ExposureResponseFunction;
-
+                var erf = exposureResponseResult.ExposureResponseFunctionModel;
                 var targetUnit = erf.TargetUnit;
                 var doseUnitAlignmentFactor = exposureResponseResult.ErfDoseUnitAlignmentFactor;
                 var dataPoints = exposureResponseResult
@@ -32,9 +30,10 @@ namespace MCRA.Simulation.OutputGeneration {
                 var maxExposure = dataPoints.Max(r => r.Exposure);
                 var exposureResponseGridDataPoints = new UncertainDataPointCollection<double>();
                 var XValues = GriddingFunctions.Arange(
-                    erf.CounterFactualValue,
+                    erf.GetCounterFactualValue(),
                     maxExposure,
-                    n: 1000);
+                    n: 1000
+                );
                 var YValues = XValues
                     .Select(r => exposureResponseResult.ExposureResponseFunctionModel
                         .Compute(r * doseUnitAlignmentFactor, false)
@@ -48,29 +47,29 @@ namespace MCRA.Simulation.OutputGeneration {
                     SubstanceCode = erf.Substance.Code,
                     EffectCode = erf.Effect.Code,
                     EffectName = erf.Effect.Name,
-                    TargetLevel = erf.TargetLevel.GetDisplayName(),
-                    ExposureRoute = erf.ExposureRoute != ExposureRoute.Undefined
-                        ? erf.ExposureRoute.GetDisplayName()
+                    TargetLevel = erf.TargetUnit.TargetLevelType.GetDisplayName(),
+                    ExposureRoute = erf.TargetUnit.ExposureRoute != ExposureRoute.Undefined
+                        ? erf.TargetUnit.ExposureRoute.GetDisplayName()
                         : null,
-                    BiologicalMatrix = erf.BiologicalMatrix != BiologicalMatrix.Undefined
-                        ? erf.BiologicalMatrix.GetDisplayName()
+                    BiologicalMatrix = erf.TargetUnit.BiologicalMatrix != BiologicalMatrix.Undefined
+                        ? erf.TargetUnit.BiologicalMatrix.GetDisplayName()
                         : null,
                     TargetUnit = targetUnit.GetShortDisplayName(),
-                    ExpressionType = erf.ExpressionType != ExpressionType.None
-                        ? erf.ExpressionType.GetDisplayName()
+                    ExpressionType = erf.TargetUnit.ExpressionType != ExpressionType.None
+                        ? erf.TargetUnit.ExpressionType.GetDisplayName()
                         : null,
                     EffectMetric = erf.EffectMetric.GetDisplayName(),
                     ExposureResponseType = erf.ExposureResponseType.GetDisplayName(),
-                    ExposureResponseSpecification = erf.ExposureResponseSpecification.ExpressionString,
-                    ExposureResponseSpecificationLower = erf.ExposureResponseSpecificationLower?.ExpressionString.Length > 0
-                        ? erf.ExposureResponseSpecificationLower.ExpressionString
+                    ExposureResponseSpecification = erf.ExposureResponseFunction.ExposureResponseSpecification.ExpressionString,
+                    ExposureResponseSpecificationLower = erf.ExposureResponseFunction.ExposureResponseSpecificationLower?.ExpressionString.Length > 0
+                        ? erf.ExposureResponseFunction.ExposureResponseSpecificationLower.ExpressionString
                         : null,
-                    ExposureResponseSpecificationUpper = erf.ExposureResponseSpecificationUpper?.ExpressionString.Length > 0
-                        ? erf.ExposureResponseSpecificationUpper.ExpressionString
+                    ExposureResponseSpecificationUpper = erf.ExposureResponseFunction.ExposureResponseSpecificationUpper?.ExpressionString.Length > 0
+                        ? erf.ExposureResponseFunction.ExposureResponseSpecificationUpper.ExpressionString
                         : null,
-                    ErfDoseUnit = erf.ExposureUnit.GetShortDisplayName(),
+                    ErfDoseUnit = erf.TargetUnit.ExposureUnit.GetShortDisplayName(),
                     ErfDoseAlignmentFactor = doseUnitAlignmentFactor,
-                    CounterfactualValue = erf.CounterFactualValue,
+                    CounterfactualValue = erf.GetCounterFactualValue(),
                     HasSubgroups = erf.HasErfSubGroups,
                     ExposureResponseDataPoints = dataPoints,
                     ExposureResponseGridDataPoints = exposureResponseGridDataPoints
@@ -85,18 +84,17 @@ namespace MCRA.Simulation.OutputGeneration {
             double lowerBound,
             double upperBound
         ) {
-            foreach (var exposureResponseResult in exposureResponseResults) {
-                var erf = exposureResponseResult.ExposureResponseFunction;
-                var doseUnitAlignmentFactor = exposureResponseResult.ErfDoseUnitAlignmentFactor;
+            foreach (var resultRecord in exposureResponseResults) {
+                var doseUnitAlignmentFactor = resultRecord.ErfDoseUnitAlignmentFactor;
                 var XValues = ErfSummaryRecords
-                    .Single(r => r.ErfCode == erf.Code)
+                    .Single(r => r.ErfCode == resultRecord.ExposureResponseFunctionModel.Code)
                     .ExposureResponseGridDataPoints.XValues;
                 var YValues = XValues
-                    .Select(r => exposureResponseResult.ExposureResponseFunctionModel
+                    .Select(r => resultRecord.ExposureResponseFunctionModel
                         .Compute(r * doseUnitAlignmentFactor, false)
                     );
                 ErfSummaryRecords
-                    .Single(r => r.ErfCode == erf.Code)
+                    .Single(r => r.ErfCode == resultRecord.ExposureResponseFunctionModel.Code)
                     .ExposureResponseGridDataPoints.AddUncertaintyValues(YValues);
             }
             UncertaintyLowerLimit = lowerBound;

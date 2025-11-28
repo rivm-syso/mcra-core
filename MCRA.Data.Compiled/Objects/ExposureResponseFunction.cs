@@ -17,9 +17,9 @@ namespace MCRA.Data.Compiled.Objects {
         public EffectMetric EffectMetric { get; set; }
         public ExposureResponseType ExposureResponseType { get; set; }
         public Expression ExposureResponseSpecification { get; set; }
+        public ExposureResponseSpecificationDistributionType ERFUncertaintyDistribution { get; set; } = ExposureResponseSpecificationDistributionType.Constant;
         public Expression ExposureResponseSpecificationLower { get; set; }
         public Expression ExposureResponseSpecificationUpper { get; set; }
-        public double CounterFactualValue { get; set; }
         public ICollection<ErfSubgroup> ErfSubgroups { get; set; } = [];
         public PopulationCharacteristicType PopulationCharacteristic { get; set; }
         public double? EffectThresholdLower { get; set; }
@@ -30,6 +30,7 @@ namespace MCRA.Data.Compiled.Objects {
         public BiologicalMatrix BiologicalMatrix => ExposureTarget.BiologicalMatrix;
         public ExpressionType ExpressionType => ExposureTarget.ExpressionType;
         public TargetUnit TargetUnit => new(ExposureTarget, ExposureUnit);
+        public double CounterFactualValue { get; set; }
         public CounterFactualValueDistributionType CFVUncertaintyDistribution { get; set; } = CounterFactualValueDistributionType.Constant;
         public double? CFVUncertaintyUpper { get; set; }
         public double? CFVUncertaintyLower { get; set; }

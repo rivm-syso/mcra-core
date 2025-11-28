@@ -2,10 +2,8 @@
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation;
-using MCRA.Simulation.Calculators.ExposureResponseFunctions;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
-using Microsoft.AspNetCore.Mvc;
 
 namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
     public enum EnvironmentalBurdenOfDiseaseSections {
@@ -178,7 +176,7 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
 
         private List<ActionSummaryUnitRecord> collectUnits(List<EnvironmentalBurdenOfDiseaseResultRecord> environmentalBurdenOfDiseases) {
             var result = new List<ActionSummaryUnitRecord> {
-                new ("EffectMetric", environmentalBurdenOfDiseases.FirstOrDefault().ExposureResponseFunction.EffectMetric.GetShortDisplayName()),
+                new ("EffectMetric", environmentalBurdenOfDiseases.FirstOrDefault().ExposureResponseModel.EffectMetric.GetShortDisplayName()),
                 new ("LowerBound", $"p{_configuration.UncertaintyLowerBound}"),
                 new ("UpperBound", $"p{_configuration.UncertaintyUpperBound}"),
                 new ("EbdStandardisedPopulationSize", _configuration.EbdStandardisation.GetDisplayName())

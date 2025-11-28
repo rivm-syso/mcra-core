@@ -34,13 +34,13 @@ namespace MCRA.Utils.Statistics {
             var rnd = new RandomAsRandomWrapper(random);
             var x = new double[n];
             Normal.Samples(rnd, x, mu, stddev);
-            return x.ToList();
+            return [.. x];
         }
 
         public static List<double> NormalSamples(int n, double mu, double sigma) {
             var x = new double[n];
             Normal.Samples(x, mu, sigma);
-            return x.ToList();
+            return [.. x];
         }
 
         public static double DrawInvCdf(IRandom random, double mu, double stddev) {
@@ -57,6 +57,20 @@ namespace MCRA.Utils.Statistics {
 
         public static double CDF(double mu, double stddev, double x) {
             return Normal.CDF(mu, stddev, x);
+        }
+
+        /// <summary>
+        /// Creates a <see cref="NormalDistribution"/> instance based on a provided mean
+        /// and upper.
+        /// </summary>
+        public static NormalDistribution FromMeanAndUpper(double mean, double upper) {
+            var mu = mean;
+            if (mean > upper) {
+                var msg = $"The provided mean of {mean} is higher than the specified upper p95 percentile of {upper}.";
+                throw new ArgumentException(msg);
+            }
+            var sigma = (upper - mu) / 1.645;
+            return new NormalDistribution(mu, sigma);
         }
 
         /// <summary>

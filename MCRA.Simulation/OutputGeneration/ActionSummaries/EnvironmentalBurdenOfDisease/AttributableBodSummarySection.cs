@@ -67,7 +67,7 @@ namespace MCRA.Simulation.OutputGeneration {
                             .Select(r => r.FromIndicator.GetShortDisplayName())
                             .ToList()
                         : [],
-                    ErfCode = ebdResultRecord.ExposureResponseFunction.Code,
+                    ErfCode = ebdResultRecord.ExposureResponseModel.Code,
                     BinPercentage = r.ExposurePercentileBin.Percentage,
                     BinPercentages = [],
                     ExposurePercentileBin = r.ExposurePercentileBin.ToString(),

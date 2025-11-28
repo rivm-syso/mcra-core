@@ -48,9 +48,8 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
             var result = new List<EnvironmentalBurdenOfDiseaseResultRecord>();
 
             // Compute EBDs for burdens of disease for effect of ERF
-            var erf = exposureResponseResult.ExposureResponseFunction;
             var effectBurdensOfDisease = burdensOfDisease
-                .Where(r => r.Effect == erf.Effect)
+                .Where(r => r.Effect == exposureResponseResult.ExposureResponseFunctionModel.Effect)
                 .ToList();
             foreach (var burdenOfDisease in effectBurdensOfDisease) {
                 var resultRecord = Compute(
@@ -104,9 +103,9 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
             }
             var result = new EnvironmentalBurdenOfDiseaseResultRecord {
                 BurdenOfDisease = burdenOfDisease,
-                ExposureResponseFunction = exposureResponseResult.ExposureResponseFunction,
-                ErfDoseUnit = exposureResponseResult.ExposureResponseFunction.ExposureUnit,
-                Substance = exposureResponseResult.ExposureResponseFunction.Substance,
+                ExposureResponseModel = exposureResponseResult.ExposureResponseFunctionModel,
+                ErfDoseUnit = exposureResponseResult.ExposureResponseFunctionModel.TargetUnit.ExposureUnit,
+                Substance = exposureResponseResult.ExposureResponseFunctionModel.Substance,
                 TargetUnit = exposureResponseResult.TargetUnit,
                 EnvironmentalBurdenOfDiseaseResultBinRecords = environmentalBurdenOfDiseaseResultBinRecords,
                 StandardisedPopulationSize = standardisedPopulationSize
@@ -169,8 +168,8 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
                     break;
                 case EffectMetric.NegativeShift: {
                         var characteristic = population.PopulationCharacteristics
-                            .Single(r => r.Characteristic == exposureResponseResultRecord.ExposureResponseFunction.PopulationCharacteristic);
-                        var thresholdLower = (double)exposureResponseResultRecord.ExposureResponseFunction.EffectThresholdLower;
+                            .Single(r => r.Characteristic == exposureResponseResultRecord.ExposureResponseModel.PopulationCharacteristic);
+                        var thresholdLower = (double)exposureResponseResultRecord.ExposureResponseModel.EffectThresholdLower;
                         var distribution = PopulationCharacteristicDistributionFactory
                             .createProbabilityDistribution(characteristic);
                         var distributionShifted = PopulationCharacteristicDistributionFactory
@@ -180,8 +179,8 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
                     break;
                 case EffectMetric.PositiveShift: {
                         var characteristic = population.PopulationCharacteristics
-                            .Single(r => r.Characteristic == exposureResponseResultRecord.ExposureResponseFunction.PopulationCharacteristic);
-                        var thresholdUpper = (double)exposureResponseResultRecord.ExposureResponseFunction.EffectThresholdUpper;
+                            .Single(r => r.Characteristic == exposureResponseResultRecord.ExposureResponseModel.PopulationCharacteristic);
+                        var thresholdUpper = (double)exposureResponseResultRecord.ExposureResponseModel.EffectThresholdUpper;
                         var distribution = PopulationCharacteristicDistributionFactory
                             .createProbabilityDistribution(characteristic);
                         var distributionShifted = PopulationCharacteristicDistributionFactory

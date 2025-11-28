@@ -1,7 +1,8 @@
 ﻿using System.Globalization;
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.Simulation.Calculators.CounterFactualValueModels;
+using MCRA.Simulation.Calculators.ExposureResponseFunctionModels;
+using MCRA.Simulation.Calculators.ExposureResponseFunctionModels.CounterFactualValueModels;
 using MCRA.Simulation.Calculators.ExposureResponseFunctions;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
@@ -13,7 +14,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
     /// </summary>
     public static class FakeExposureResponseFunctionsGenerator {
 
-        public static List<IExposureResponseFunctionModel> FakeExposureResponseFunctionModel(
+        public static List<IExposureResponseModel> FakeExposureResponseFunctionModel(
             List<Compound> substances,
             List<Effect> effects,
             ExposureTarget target,
@@ -49,19 +50,11 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                 }
             }
 
-            var erfModels = result.Select(r => new ExposureResponseFunctionModel(r) {
-                    CounterFactualValueModel = CounterFactualValueCalculatorFactory.Create(r)
-                })
-                .Cast<IExposureResponseFunctionModel>().ToList();
-            return erfModels;
-        }
-
-        public static List<ICounterFactualValueModel> FakeCounterFactualValueModel(List<IExposureResponseFunctionModel> erfModels) {
-            var exposureResponseFunctions = erfModels.Select(c => c.ExposureResponseFunction).ToList();
-            var counterFactualValueModels = exposureResponseFunctions
-                .Select(CounterFactualValueCalculatorFactory.Create)
+            var erfModels = result
+                .Select(ExposureResponseModelBuilder.Create)
+                .Cast<IExposureResponseModel>()
                 .ToList();
-            return counterFactualValueModels;
+            return erfModels;
         }
 
         public static ExposureResponseFunction FakeExposureResponseFunction(

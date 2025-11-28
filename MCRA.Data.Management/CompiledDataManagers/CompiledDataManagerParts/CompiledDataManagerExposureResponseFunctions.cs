@@ -93,7 +93,8 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             ? new ExposureTarget(exposureRoute)
                                             : new ExposureTarget(biologicalMatrix, expressionType);
                                         var doseUnit = DoseUnitConverter.FromString(doseUnitString);
-                                        var distributionTypeString = r.GetStringOrNull(RawExposureResponseFunctions.CFVUncertaintyDistribution, fieldMap);
+                                        var cfvDistributionTypeString = r.GetStringOrNull(RawExposureResponseFunctions.CFVUncertaintyDistribution, fieldMap);
+                                        var erfDistributionTypeString = r.GetStringOrNull(RawExposureResponseFunctions.ERFUncertaintyDistribution, fieldMap);
                                         var record = new ExposureResponseFunction() {
                                             Code = idModel,
                                             Name = r.GetStringOrNull(RawExposureResponseFunctions.Name, fieldMap),
@@ -105,13 +106,14 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             EffectMetric = effectMetric,
                                             ExposureResponseType = exposureResponseType,
                                             ExposureResponseSpecification = exposureResponseSpecification,
+                                            ERFUncertaintyDistribution = ExposureResponseSpecificationDistributionTypeConverter.FromString(erfDistributionTypeString, ExposureResponseSpecificationDistributionType.Constant),
                                             ExposureResponseSpecificationLower = exposureResponseSpecificationLower,
                                             ExposureResponseSpecificationUpper = exposureResponseSpecificationUpper,
                                             CounterFactualValue = r.GetDouble(RawExposureResponseFunctions.CounterfactualValue, fieldMap),
                                             PopulationCharacteristic = populationCharacteristicType,
                                             EffectThresholdLower = r.GetDoubleOrNull(RawExposureResponseFunctions.EffectThresholdLower, fieldMap),
                                             EffectThresholdUpper = r.GetDoubleOrNull(RawExposureResponseFunctions.EffectThresholdUpper, fieldMap),
-                                            CFVUncertaintyDistribution = CounterFactualValueDistributionTypeConverter.FromString(distributionTypeString, CounterFactualValueDistributionType.Constant),
+                                            CFVUncertaintyDistribution = CounterFactualValueDistributionTypeConverter.FromString(cfvDistributionTypeString, CounterFactualValueDistributionType.Constant),
                                             CFVUncertaintyLower = r.GetDoubleOrNull(RawExposureResponseFunctions.CFVLower, fieldMap),
                                             CFVUncertaintyUpper = r.GetDoubleOrNull(RawExposureResponseFunctions.CFVUpper, fieldMap)
                                         };
@@ -158,7 +160,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                                 ExposureResponseSpecificationLower = exposureResponseSpecificationLower,
                                                 ExposureResponseSpecificationUpper = exposureResponseSpecificationUpper
                                             };
-
                                             exposureResponseFunction.ErfSubgroups.Add(record);
                                         }
                                     }

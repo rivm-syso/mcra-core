@@ -7,7 +7,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public List<ErfDataSummaryRecord> Records { get; set; }
 
-        public void Summarize(ICollection<IExposureResponseFunctionModel> exposureResponseFunctionModels) {
+        public void Summarize(ICollection<IExposureResponseModel> exposureResponseFunctionModels) {
             var exposureResponseFunctions = exposureResponseFunctionModels
                 .Select(r => r.ExposureResponseFunction)
                 .ToList();

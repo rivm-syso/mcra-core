@@ -11,6 +11,7 @@ using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
+using MCRA.Utils.Statistics.RandomGenerators;
 
 namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
 
@@ -106,19 +107,24 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
             // Get exposure response function models (filter by reference substance if cumulative)
             var exposureResponseFunctionModels = ModuleConfig.MultipleSubstances && ModuleConfig.EbdCumulative
                 ? data.ExposureResponseFunctionModels
-                    .Where(r => r.ExposureResponseFunction.Substance == data.ReferenceSubstance)
+                    .Where(r => r.Substance == data.ReferenceSubstance)
                     .ToList()
                 : data.ExposureResponseFunctionModels;
 
             // Compute exposure response results
+            var seed = factorialSet?.Contains(UncertaintySource.ExposureResponseFunctions) ?? false
+                ? RandomUtils.CreateSeed(uncertaintySourceGenerators[UncertaintySource.ExposureResponseFunctions].Seed, (int)RandomSource.ERF_DrawResponseTypeFunctionDistributions)
+                 : RandomUtils.CreateSeed(_project.ExposureResponseFunctionsSettings.RandomSeed, (int)RandomSource.ERF_DrawResponseTypeFunctionDistributions);
             var exposureResponseResults = ModuleConfig.UsePointEstimates
                 ? erCalculator.ComputeFromHbmSingleValueExposures(
                     data.HbmSingleValueExposureSets,
-                    exposureResponseFunctionModels
+                    exposureResponseFunctionModels,
+                    seed
                 )
                 : erCalculator.ComputeFromTargetIndividualExposures(
                     getExposures(data, ModuleConfig.MultipleSubstances && ModuleConfig.EbdCumulative),
-                    exposureResponseFunctionModels
+                    exposureResponseFunctionModels,
+                    seed
                 );
 
             // Create EBD calculator and compute

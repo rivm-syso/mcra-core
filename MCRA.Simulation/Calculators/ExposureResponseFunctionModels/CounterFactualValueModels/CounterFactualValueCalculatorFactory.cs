@@ -1,7 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 
-namespace MCRA.Simulation.Calculators.CounterFactualValueModels {
+namespace MCRA.Simulation.Calculators.ExposureResponseFunctionModels.CounterFactualValueModels {
     public class CounterFactualValueCalculatorFactory {
 
         public static ICounterFactualValueModel Create(
@@ -25,8 +25,6 @@ namespace MCRA.Simulation.Calculators.CounterFactualValueModels {
                     var msg = $"No counter factual value for distribution type ${erf.CFVUncertaintyDistribution}.";
                     throw new NotImplementedException(msg);
             }
-            model.CalculateParameters();
-
             return model;
         }
     }

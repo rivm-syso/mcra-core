@@ -76,5 +76,7 @@
         CPE_DrawIndividuals = 38,
         // Consumer product exposures: draw consumer product exposures
         CPE_DrawConsumerProductExposures = 39,
+        // Exposure respons functions: draw distributions for exposure respons type = function
+        ERF_DrawResponseTypeFunctionDistributions = 40,
     }
 }

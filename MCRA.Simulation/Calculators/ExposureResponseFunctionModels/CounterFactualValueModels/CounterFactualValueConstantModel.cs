@@ -1,7 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Utils.Statistics;
 
-namespace MCRA.Simulation.Calculators.CounterFactualValueModels {
+namespace MCRA.Simulation.Calculators.ExposureResponseFunctionModels.CounterFactualValueModels {
 
     public sealed class CounterFactualValueConstantModel : ICounterFactualValueModel {
 

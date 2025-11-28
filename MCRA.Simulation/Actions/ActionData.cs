@@ -84,7 +84,6 @@ using MCRA.Simulation.Calculators.AirExposureCalculation;
 using MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
 using MCRA.Simulation.Calculators.ConsumerProductExposureCalculation;
-using MCRA.Simulation.Calculators.CounterFactualValueModels;
 using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.DustExposureCalculation;
 using MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation;
@@ -460,7 +459,7 @@ namespace MCRA.Simulation {
         }
 
         // ExposureResponseFunctions
-        public ICollection<IExposureResponseFunctionModel> ExposureResponseFunctionModels {
+        public ICollection<IExposureResponseModel> ExposureResponseFunctionModels {
             get => GetOrCreateModuleOutputData<ExposureResponseFunctionsOutputData>(ActionType.ExposureResponseFunctions).ExposureResponseFunctionModels;
             set => GetOrCreateModuleOutputData<ExposureResponseFunctionsOutputData>(ActionType.ExposureResponseFunctions).ExposureResponseFunctionModels = value;
         }

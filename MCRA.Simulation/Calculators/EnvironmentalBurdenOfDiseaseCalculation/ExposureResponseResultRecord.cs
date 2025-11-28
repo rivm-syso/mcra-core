@@ -1,8 +1,8 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Simulation.Calculators.ExposureResponseFunctions;
 
 namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
     public sealed class ExposureResponseResultRecord {
-        public ExposureResponseFunction ExposureResponseFunction { get; set; }
+        public IExposureResponseModel ExposureResponseModel { get; set; }
         public bool IsErfDefinedExposureBin { get; set; }
         public int ExposureBinId { get; set; }
         public PercentileInterval PercentileInterval { get; set; }

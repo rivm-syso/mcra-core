@@ -48,14 +48,8 @@ namespace MCRA.Utils.Statistics {
             if (upper < mode) {
                 var msg = $"Specified mode of {mode} is greater than the upper {upper}.";
                 throw new ArgumentException(msg);
-            } else if (upper == mode) {
-                var msg = $"Specified mode of {mode} is equal to the upper {upper}.";
-                throw new ArgumentException(msg);
             } else if (lower > mode) {
                 var msg = $"Specified mode of {mode} is smaller than the lower {lower}.";
-                throw new ArgumentException(msg);
-            } else if (lower == mode) {
-                var msg = $"Specified mode of {mode} is equal to the lower {lower}.";
                 throw new ArgumentException(msg);
             }
             return new TriangularDistribution(lower, upper, mode);

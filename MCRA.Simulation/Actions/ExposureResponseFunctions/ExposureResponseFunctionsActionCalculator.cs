@@ -7,7 +7,7 @@ using MCRA.General.Annotations;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
-using MCRA.Simulation.Calculators.CounterFactualValueModels;
+using MCRA.Simulation.Calculators.ExposureResponseFunctionModels;
 using MCRA.Simulation.Calculators.ExposureResponseFunctions;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;
@@ -40,13 +40,18 @@ namespace MCRA.Simulation.Actions.ExposureResponseFunctions {
             return result;
         }
 
+        /// <summary>
+        /// Load and create distribution voor exposure response functions, only when the response type is not a function.
+        /// A function is dependent on the exposure level, which is unknown yet.
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="subsetManager"></param>
+        /// <param name="progressState"></param>
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
             var exposureResponseFunctions = subsetManager.AllExposureResponseFunctions;
             data.ExposureResponseFunctionModels = [.. exposureResponseFunctions
-                .Select(r => new ExposureResponseFunctionModel(r) {
-                    CounterFactualValueModel = CounterFactualValueCalculatorFactory.Create(r)
-                })
-                .Cast<IExposureResponseFunctionModel>()];
+                .Select(ExposureResponseModelBuilder.Create)
+                .Cast<IExposureResponseModel>()];
         }
 
         protected override void summarizeActionResult(IExposureResponseFunctionsActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {
@@ -56,6 +61,14 @@ namespace MCRA.Simulation.Actions.ExposureResponseFunctions {
             localProgress.Update(100);
         }
 
+        /// <summary>
+        /// Load and resample distribution voor exposure response functions, only when the response type is not a function.
+        /// A function is dependent on the exposure level, which is unknown yet
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="factorialSet"></param>
+        /// <param name="uncertaintySourceGenerators"></param>
+        /// <param name="progressReport"></param>
         protected override void loadDataUncertain(
             ActionData data,
             UncertaintyFactorialSet factorialSet,
@@ -65,15 +78,15 @@ namespace MCRA.Simulation.Actions.ExposureResponseFunctions {
             var localProgress = progressReport.NewProgressState(100);
             if (data.ExposureResponseFunctionModels != null && data.ExposureResponseFunctionModels?.Count > 0) {
                 foreach (var model in data.ExposureResponseFunctionModels) {
-                    if (factorialSet.Contains(UncertaintySource.ExposureResponseFunctions)) {
-                        localProgress.Update("Resampling exposure response functions.");
-                        var random = uncertaintySourceGenerators[UncertaintySource.ExposureResponseFunctions];
-                        model.ResampleModelParameters(random);
-                    }
                     if (factorialSet.Contains(UncertaintySource.CounterFactualValues)) {
                         localProgress.Update("Resampling counter factual values.");
                         var random = uncertaintySourceGenerators[UncertaintySource.CounterFactualValues];
-                        model.CounterFactualValueModel.ResampleModelParameters(random);
+                        model.ResampleCounterFactualValue(random);
+                    }
+                    if (factorialSet.Contains(UncertaintySource.ExposureResponseFunctions)) {
+                        localProgress.Update("Resampling exposure response functions.");
+                        var random = uncertaintySourceGenerators[UncertaintySource.ExposureResponseFunctions];
+                        model.ResampleExposureResponseFunction(random);
                     }
                 }
             }

@@ -180,6 +180,22 @@
         <string>ErSpecification</string>
       </Aliases>
     </ColumnDefinition>
+    <ColumnDefinition FieldType="ExposureResponseSpecificationDistributionType">
+      <Id>ERFUncertaintyDistribution</Id>
+      <Description>
+        Distribution type (Uniform, Triangular or LogNormal).
+        If not specified, the exposure response specification is assumed to be a constant factor.
+      </Description>
+      <Aliases>
+        <string>ERFUncertaintyDistribution</string>
+        <string>ERFDistribution</string>
+      </Aliases>
+      <PossibleValues>
+        <PossibleValue>Uniform</PossibleValue>
+        <PossibleValue>LogNormal</PossibleValue>
+        <PossibleValue>Triangular</PossibleValue>
+      </PossibleValues>
+    </ColumnDefinition>
     <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
       <Id>ExposureResponseSpecificationLower</Id>
       <Name>ExposureResponseSpecificationLower</Name>

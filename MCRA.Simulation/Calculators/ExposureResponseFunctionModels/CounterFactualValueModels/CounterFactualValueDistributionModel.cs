@@ -1,7 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Utils.Statistics;
 
-namespace MCRA.Simulation.Calculators.CounterFactualValueModels {
+namespace MCRA.Simulation.Calculators.ExposureResponseFunctionModels.CounterFactualValueModels {
 
     public abstract class CounterFactualValueDistributionModel<T> where T : Distribution {
 
@@ -13,11 +13,8 @@ namespace MCRA.Simulation.Calculators.CounterFactualValueModels {
 
         public CounterFactualValueDistributionModel(ExposureResponseFunction erf) {
             ExposureResponseFunction = erf;
-        }
-
-        public void CalculateParameters() {
-            Distribution = getDistribution(ExposureResponseFunction);
-            Factor = ExposureResponseFunction.CounterFactualValue;
+            Distribution = getDistribution(erf);
+            Factor = erf.CounterFactualValue;
         }
 
         public void ResampleModelParameters(IRandom random) {

@@ -1,10 +1,7 @@
-﻿using CommandLine;
-using MCRA.Data.Compiled.Objects;
-using MCRA.General;
+﻿using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease;
-using MCRA.Simulation.Calculators.CounterFactualValueModels;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 
@@ -83,14 +80,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                     random.Next()
                 );
 
-            var counterFactualValueModels = FakeExposureResponseFunctionsGenerator
-                .FakeCounterFactualValueModel(
-                    exposureResponseFunctionModels
-                );
-
             var burdenOfDiseases = effects.Select(r => FakeBurdenOfDiseasesGenerator.Create(r)).ToList();
             var populationCharacteristicTypes = exposureResponseFunctionModels
-                .Select(r => r.ExposureResponseFunction.PopulationCharacteristic)
+                .Select(r => r.PopulationCharacteristic)
                 .Distinct()
                 .ToList();
             var population = FakePopulationsGenerator
