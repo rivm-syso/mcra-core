@@ -1,5 +1,18 @@
 # Change Log
 
+## Version 10.2.9 (2025-12-01)
+
+### Added
+
+- Implement option to compute EBDs for cumulative exposures in EBDs module (#2336)
+- Implementation triangular distribution for counterfactualvalue; fix for cfv uncertainty (#2240)
+- Individuals as data (#2341)
+
+### Fixed
+
+- Error when reading DateTime value from an (Excel) OLE Automation Date (#2335)
+- Display correct EBD standardisation in charts (#2346)
+
 ## Version 10.2.8 (2025-11-14)
 
 ### Added
