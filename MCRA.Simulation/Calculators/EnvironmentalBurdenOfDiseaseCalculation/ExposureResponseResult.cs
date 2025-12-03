@@ -1,5 +1,4 @@
-﻿using MCRA.Data.Compiled.Objects;
-using MCRA.General;
+﻿using MCRA.General;
 using MCRA.Simulation.Calculators.ExposureResponseFunctions;
 
 namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
@@ -8,8 +7,6 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
         public double ErfDoseUnitAlignmentFactor { get; set; }
         public IExposureResponseModel ExposureResponseFunctionModel { get; set; }
         public List<ExposureResponseResultRecord> ExposureResponseResultRecords { get; set; }
-
         public EffectMetric EffectMetric => ExposureResponseFunctionModel.EffectMetric;
-        public Compound Substance => ExposureResponseFunctionModel.Substance;
     }
 }

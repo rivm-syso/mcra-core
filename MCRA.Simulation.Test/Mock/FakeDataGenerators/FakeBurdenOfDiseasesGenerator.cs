@@ -1,5 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.Simulation.Calculators.BodIndicatorModels;
 
 namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
 
@@ -19,6 +20,13 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                 Value = 3
             };
             return record;
+        }
+
+        public static List<IBodIndicatorValueModel> FakeBodIndicatorValueModel(List<BurdenOfDisease> bods) {
+            var bodIndicatorValueModels = bods
+                .Select(BodIndicatorValueCalculatorFactory.Create)
+                .ToList();
+            return bodIndicatorValueModels;
         }
     }
 }

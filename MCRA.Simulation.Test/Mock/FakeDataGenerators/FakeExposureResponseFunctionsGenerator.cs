@@ -2,7 +2,6 @@
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ExposureResponseFunctionModels;
-using MCRA.Simulation.Calculators.ExposureResponseFunctionModels.CounterFactualValueModels;
 using MCRA.Simulation.Calculators.ExposureResponseFunctions;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;

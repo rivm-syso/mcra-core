@@ -81,21 +81,20 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
             }
 
             // Get burdens of disease
-            var burdensOfDisease = data.BurdensOfDisease;
-
+            var bodIndicatorValueModels = data.BodIndicatorValueModels;
             if (data.BodIndicatorConversions != null) {
                 // Get derived burdens of disease from BoD indicator conversions
                 var bodIndicatorConversionsCalculator = new BoDConversionsCalculator();
-                var derivedBodIndicators = bodIndicatorConversionsCalculator
+                var derivedBodIndicatorValueModels = bodIndicatorConversionsCalculator
                     .GetDerivedBurdensOfDisease(
-                        data.BurdensOfDisease,
+                        bodIndicatorValueModels,
                         data.BodIndicatorConversions
                     );
-                burdensOfDisease = [.. burdensOfDisease.Union(derivedBodIndicators)];
+                bodIndicatorValueModels = [.. bodIndicatorValueModels.Union(derivedBodIndicatorValueModels)];
             }
 
             // Only keep BoDs for selected indicators
-            burdensOfDisease = [.. burdensOfDisease.Where(r => ModuleConfig.BodIndicators.Contains(r.BodIndicator))];
+            bodIndicatorValueModels = [.. bodIndicatorValueModels.Where(r => ModuleConfig.BodIndicators.Contains(r.BurdenOfDisease.BodIndicator))];
 
             // Compute exposure response
             var erCalculator = new ExposureResponseCalculator(
@@ -106,15 +105,13 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
 
             // Get exposure response function models (filter by reference substance if cumulative)
             var exposureResponseFunctionModels = ModuleConfig.MultipleSubstances && ModuleConfig.EbdCumulative
-                ? data.ExposureResponseFunctionModels
-                    .Where(r => r.Substance == data.ReferenceSubstance)
-                    .ToList()
+                ? [.. data.ExposureResponseFunctionModels.Where(r => r.ExposureResponseFunction.Substance == data.ReferenceSubstance)]
                 : data.ExposureResponseFunctionModels;
 
             // Compute exposure response results
             var seed = factorialSet?.Contains(UncertaintySource.ExposureResponseFunctions) ?? false
                 ? RandomUtils.CreateSeed(uncertaintySourceGenerators[UncertaintySource.ExposureResponseFunctions].Seed, (int)RandomSource.ERF_DrawResponseTypeFunctionDistributions)
-                 : RandomUtils.CreateSeed(_project.ExposureResponseFunctionsSettings.RandomSeed, (int)RandomSource.ERF_DrawResponseTypeFunctionDistributions);
+                : RandomUtils.CreateSeed(_project.ExposureResponseFunctionsSettings.RandomSeed, (int)RandomSource.ERF_DrawResponseTypeFunctionDistributions);
             var exposureResponseResults = ModuleConfig.UsePointEstimates
                 ? erCalculator.ComputeFromHbmSingleValueExposures(
                     data.HbmSingleValueExposureSets,
@@ -133,7 +130,7 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
                 ModuleConfig.EbdStandardisation
             );
             var environmentalBurdenOfDiseases = ebdCalculator.Compute(
-                burdensOfDisease,
+                bodIndicatorValueModels,
                 data.SelectedPopulation,
                 exposureResponseResults
             );

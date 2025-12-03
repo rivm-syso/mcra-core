@@ -25,11 +25,15 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                 while (r?.Read() ?? false) {
                                     var idEffect = r.GetString(RawBurdensOfDisease.IdEffect, fieldMap);
                                     var idPopulation = r.GetString(RawBurdensOfDisease.Population, fieldMap);
+                                    var distributionTypeString = r.GetStringOrNull(RawBurdensOfDisease.BodIndicatorUncertaintyDistribution, fieldMap);
                                     var record = new BurdenOfDisease() {
                                         Population = _data.GetOrAddPopulation(idPopulation),
                                         Effect = _data.GetOrAddEffect(idEffect),
                                         BodIndicator = r.GetEnum<BodIndicator>(RawBurdensOfDisease.BodIndicator, fieldMap),
-                                        Value = r.GetDouble(RawBurdensOfDisease.Value, fieldMap)
+                                        Value = r.GetDouble(RawBurdensOfDisease.Value, fieldMap),
+                                        BodUncertaintyDistribution = BodIndicatorDistributionTypeConverter.FromString(distributionTypeString,  BodIndicatorDistributionType.Constant),
+                                        BodUncertaintyLower = r.GetDoubleOrNull(RawBurdensOfDisease.BodIndicatorLower, fieldMap),
+                                        BodUncertaintyUpper = r.GetDoubleOrNull(RawBurdensOfDisease.BodIndicatorUpper, fieldMap)
                                     };
                                     allBurdensOfDisease.Add(record);
                                 }

@@ -8,7 +8,11 @@ namespace MCRA.Simulation.Calculators.ExposureResponseFunctionModels.CounterFact
     ) : CounterFactualValueDistributionModel<TriangularDistribution>(erf), ICounterFactualValueModel {
         protected override TriangularDistribution getDistribution(ExposureResponseFunction erf) {
             if (!erf.CFVUncertaintyLower.HasValue) {
-                var msg = $"Missing lower counterfactualvalue triangular uncertainty distribution for ERF {erf.Code}.";
+                var msg = $"Missing lower bound counterfactualvalue triangular uncertainty distribution for ERF {erf.Code}.";
+                throw new Exception(msg);
+            }
+            if (!erf.CFVUncertaintyUpper.HasValue) {
+                var msg = $"Missing upper bound counterfactualvalue triangular uncertainty distribution for ERF {erf.Code}.";
                 throw new Exception(msg);
             }
             var distribution = TriangularDistribution.FromModeLowerandUpper(erf.CounterFactualValue, erf.CFVUncertaintyLower.Value, erf.CFVUncertaintyUpper.Value);

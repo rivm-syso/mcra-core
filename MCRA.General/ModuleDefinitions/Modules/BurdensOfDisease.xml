@@ -16,4 +16,13 @@
     <Entity>Populations</Entity>
     <Entity>Effects</Entity>
   </Entities>
+  <CalculationSettings>
+    <CalculationSetting source="Action">RandomSeed</CalculationSetting>
+  </CalculationSettings>
+  <UncertaintySources>
+    <UncertaintySource>BodIndicatorValues</UncertaintySource>
+  </UncertaintySources>
+  <UncertaintySettings>
+    <UncertaintySetting>ResampleBodIndicatorValues</UncertaintySetting>
+  </UncertaintySettings>
 </Module>

@@ -81,6 +81,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 );
 
             var burdenOfDiseases = effects.Select(r => FakeBurdenOfDiseasesGenerator.Create(r)).ToList();
+            var bodIndicatorValueModels = FakeBurdenOfDiseasesGenerator
+                .FakeBodIndicatorValueModel(burdenOfDiseases);
             var populationCharacteristicTypes = exposureResponseFunctionModels
                 .Select(r => r.PopulationCharacteristic)
                 .Distinct()
@@ -92,6 +94,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 SelectedPopulation = population,
                 ExposureResponseFunctionModels = exposureResponseFunctionModels,
                 BurdensOfDisease = burdenOfDiseases,
+                BodIndicatorValueModels = bodIndicatorValueModels,
                 HbmIndividualCollections = [new() {
                     TargetUnit = targetUnit,
                         HbmIndividualConcentrations = hbmIndividualConcentrations

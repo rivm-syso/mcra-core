@@ -1,5 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.Simulation.Calculators.BodIndicatorModels;
 using MCRA.Simulation.Calculators.DustExposureCalculation;
 
 namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
@@ -22,14 +23,18 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
         /// Exposure-Response Results across all Burdens of Disease.
         /// </summary>
         public List<EnvironmentalBurdenOfDiseaseResultRecord> Compute(
-            List<BurdenOfDisease> burdensOfDisease,
+            ICollection<IBodIndicatorValueModel> bodIndicatorValueModels,
             Population selectedPopulation,
             List<ExposureResponseResult> exposureResponseResults
         ) {
             // Compute EBDs for current ERF results
             var environmentalBurdenOfDiseases = new List<EnvironmentalBurdenOfDiseaseResultRecord>();
             foreach (var exposureResponseResult in exposureResponseResults) {
-                var erfEbdResults = Compute(exposureResponseResult, burdensOfDisease, selectedPopulation);
+                var erfEbdResults = Compute(
+                    exposureResponseResult,
+                    bodIndicatorValueModels,
+                    selectedPopulation
+                );
                 environmentalBurdenOfDiseases.AddRange(erfEbdResults);
             }
             return environmentalBurdenOfDiseases;
@@ -42,19 +47,21 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
         /// </summary>
         public List<EnvironmentalBurdenOfDiseaseResultRecord> Compute(
             ExposureResponseResult exposureResponseResult,
-            List<BurdenOfDisease> burdensOfDisease,
+            ICollection<IBodIndicatorValueModel> bodIndicatorValueModels,
             Population selectedPopulation
         ) {
             var result = new List<EnvironmentalBurdenOfDiseaseResultRecord>();
 
             // Compute EBDs for burdens of disease for effect of ERF
-            var effectBurdensOfDisease = burdensOfDisease
-                .Where(r => r.Effect == exposureResponseResult.ExposureResponseFunctionModel.Effect)
+            var erf = exposureResponseResult.ExposureResponseFunctionModel;
+
+            var effectBurdensOfDisease = bodIndicatorValueModels
+                .Where(r => r.BurdenOfDisease.Effect == erf.Effect)
                 .ToList();
-            foreach (var burdenOfDisease in effectBurdensOfDisease) {
+            foreach (var bodIndicatorValueModel in effectBurdensOfDisease) {
                 var resultRecord = Compute(
                     exposureResponseResult,
-                    burdenOfDisease,
+                    bodIndicatorValueModel,
                     selectedPopulation
                 );
                 result.Add(resultRecord);
@@ -69,7 +76,7 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
         /// </summary>
         public EnvironmentalBurdenOfDiseaseResultRecord Compute(
             ExposureResponseResult exposureResponseResult,
-            BurdenOfDisease burdenOfDisease,
+            IBodIndicatorValueModel bodIndicatorValueModel,
             Population population
         ) {
             var populationSize = population?.Size ?? double.NaN;
@@ -79,12 +86,14 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
                 EnvironmentalBodStandardisationMethod.PER1M => 1E6,
                 _ => 1E5,
             };
+            var conversionFactor = getBodIndicatorConversionFactor(bodIndicatorValueModel);
             var environmentalBurdenOfDiseaseResultBinRecords = exposureResponseResult.ExposureResponseResultRecords
                 .Select(r => computeBinResults(
                     r,
                     exposureResponseResult.EffectMetric,
                     population,
-                    burdenOfDisease,
+                    bodIndicatorValueModel,
+                    conversionFactor,
                     _bodApproach,
                     standardisedPopulationSize
                 ))
@@ -102,7 +111,7 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
                 record.CumulativeStandardisedExposedAttributableBod = cumulativeExposed / sumExposed * 100;
             }
             var result = new EnvironmentalBurdenOfDiseaseResultRecord {
-                BurdenOfDisease = burdenOfDisease,
+                BurdenOfDisease = bodIndicatorValueModel.BurdenOfDisease,
                 ExposureResponseModel = exposureResponseResult.ExposureResponseFunctionModel,
                 ErfDoseUnit = exposureResponseResult.ExposureResponseFunctionModel.TargetUnit.ExposureUnit,
                 Substance = exposureResponseResult.ExposureResponseFunctionModel.Substance,
@@ -113,15 +122,33 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
             return result;
         }
 
+        /// <summary>
+        /// Get the burden of disease indicator conversion factor
+        /// </summary>
+        /// <param name="bodIndicatorValueModel"></param>
+        /// <returns></returns>
+        private static double getBodIndicatorConversionFactor(IBodIndicatorValueModel bodIndicatorValueModel) {
+            var conversionFactor = 1d;
+            if (bodIndicatorValueModel.BurdenOfDisease is DerivedBurdenOfDisease) {
+                var conversions = (bodIndicatorValueModel.BurdenOfDisease as DerivedBurdenOfDisease).Conversions;
+                foreach (var conversion in conversions) {
+                    conversionFactor *= conversion.Value;
+                }
+            }
+            return conversionFactor;
+        }
+
         private EnvironmentalBurdenOfDiseaseResultBinRecord computeBinResults(
             ExposureResponseResultRecord exposureResponseResultRecord,
             EffectMetric effectMetric,
             Population population,
-            BurdenOfDisease burdenOfDisease,
+            IBodIndicatorValueModel bodIndicatorValueModel,
+            double conversionFactor,
             BodApproach bodApproach,
             double standardisedPopulationSize
         ) {
-            var totalBod = burdenOfDisease.Value
+            var totalBod = bodIndicatorValueModel.GetBodIndicatorValue()
+                * conversionFactor
                 * exposureResponseResultRecord.PercentileInterval.Percentage / 100;
             var responseValue = exposureResponseResultRecord.PercentileSpecificRisk;
             var result = new EnvironmentalBurdenOfDiseaseResultBinRecord {

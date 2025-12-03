@@ -12,7 +12,7 @@
       <Name>LogNormal</Name>
       <ShortName>LogNormal</ShortName>
       <Description>
-        Lognormal distribution parameterised by a mean and and upper p95 percentile.
+        Lognormal distribution parameterised by a mean and upper p95 percentile.
       </Description>
       <Aliases>
         <Alias>LogNormal</Alias>
@@ -34,7 +34,7 @@
       <Name>Triangular</Name>
       <ShortName>Triangular</ShortName>
       <Description>
-        Triangular distribution specified by a mean/median and a lower and upper boundary.
+        Triangular distribution specified by a mode and a lower and upper boundary.
       </Description>
       <Aliases>
         <Alias>Triangular</Alias>

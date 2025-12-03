@@ -269,6 +269,12 @@ namespace MCRA.Simulation.Action {
                         project.ExposureResponseFunctionsSettings.ResampleCounterFactualValues
                     );
                 }
+                if (activeUncertaintySettings.Contains(SettingsItemType.ResampleBodIndicatorValues)) {
+                    section.SummarizeSetting(
+                        SettingsItemType.ResampleBodIndicatorValues,
+                        project.BurdensOfDiseaseSettings.ResampleBodIndicatorValues
+                    );
+                }
 
                 section.SummarizeSetting(SettingsItemType.UncertaintyLowerBound, actionConfig.UncertaintyLowerBound);
                 section.SummarizeSetting(SettingsItemType.UncertaintyUpperBound, actionConfig.UncertaintyUpperBound);

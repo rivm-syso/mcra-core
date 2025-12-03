@@ -9,11 +9,11 @@ namespace MCRA.Simulation.Actions.BurdensOfDisease {
         BurdensOfDiseaseSummarySection,
         BodIndicatorConversionsSummarySection
     }
-    public sealed class BurdensOfDiseaseSummarizer : ActionResultsSummarizerBase<IIBurdensOfDiseaseActionResult> {
+    public sealed class BurdensOfDiseaseSummarizer : ActionResultsSummarizerBase<IBurdensOfDiseaseActionResult> {
 
         public override ActionType ActionType => ActionType.BurdensOfDisease;
 
-        public override void Summarize(ActionModuleConfig sectionConfig, IIBurdensOfDiseaseActionResult result, ActionData data, SectionHeader header, int order) {
+        public override void Summarize(ActionModuleConfig sectionConfig, IBurdensOfDiseaseActionResult result, ActionData data, SectionHeader header, int order) {
             var outputSettings = new ModuleOutputSectionsManager<BurdensOfDiseaseSections>(sectionConfig, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;

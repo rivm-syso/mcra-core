@@ -109,6 +109,7 @@ using MCRA.Simulation.Calculators.SingleValueRisksCalculation;
 using MCRA.Simulation.Calculators.SoilExposureCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.Objects;
+using MCRA.Simulation.Calculators.BodIndicatorModels;
 
 namespace MCRA.Simulation {
     public class ActionData {
@@ -474,6 +475,11 @@ namespace MCRA.Simulation {
         public List<BodIndicatorConversion> BodIndicatorConversions {
             get => (List<BodIndicatorConversion>)GetOrCreateModuleOutputData<BurdensOfDiseaseOutputData>(ActionType.BurdensOfDisease).BodIndicatorConversions;
             set => GetOrCreateModuleOutputData<BurdensOfDiseaseOutputData>(ActionType.BurdensOfDisease).BodIndicatorConversions = value;
+        }
+        //BodIndicatorValueModels
+        public ICollection<IBodIndicatorValueModel> BodIndicatorValueModels {
+            get => GetOrCreateModuleOutputData<BurdensOfDiseaseOutputData>(ActionType.BurdensOfDisease).BodIndicatorValueModels;
+            set => GetOrCreateModuleOutputData<BurdensOfDiseaseOutputData>(ActionType.BurdensOfDisease).BodIndicatorValueModels = value;
         }
         // ExposureBiomarkerConversions
         public ICollection<ExposureBiomarkerConversion> ExposureBiomarkerConversions {

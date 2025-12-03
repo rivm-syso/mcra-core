@@ -1,7 +1,6 @@
-﻿using System.Linq;
-using CommandLine;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.Simulation.Calculators.BodIndicatorModels;
 
 namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
     public class BoDConversionsCalculator {
@@ -38,20 +37,20 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
             return results;
         }
 
-        public List<BurdenOfDisease> GetDerivedBurdensOfDisease(
-            List<BurdenOfDisease> burdensOfDisease,
+        public List<IBodIndicatorValueModel> GetDerivedBurdensOfDisease(
+            ICollection<IBodIndicatorValueModel> bodIndicatorValueModels,
             List<BodIndicatorConversion> bodIndicatorConversions
         ) {
-            var results = new List<BurdenOfDisease>();
+            var results = new List<IBodIndicatorValueModel>();
             var conversionsLookup = bodIndicatorConversions
                 .ToLookup(r => r.FromIndicator);
-            foreach (var bod in burdensOfDisease) {
-                if (conversionsLookup.Contains(bod.BodIndicator)) {
-                    var conversions = conversionsLookup[bod.BodIndicator];
+            foreach (var model in bodIndicatorValueModels) {
+                if (conversionsLookup.Contains(model.BurdenOfDisease.BodIndicator)) {
+                    var conversions = conversionsLookup[model.BurdenOfDisease.BodIndicator];
                     foreach (var conversion in conversions) {
                         BurdenOfDisease derivedBurdenOfDisease;
-                        if (bod is DerivedBurdenOfDisease) {
-                            var derivedBod = bod as DerivedBurdenOfDisease;
+                        if (model.BurdenOfDisease is DerivedBurdenOfDisease) {
+                            var derivedBod = model.BurdenOfDisease as DerivedBurdenOfDisease;
                             if (!derivedBod.Conversions.Contains(conversion)) {
                                 derivedBurdenOfDisease = new DerivedBurdenOfDisease() {
                                     BodIndicator = conversion.ToIndicator,
@@ -61,11 +60,12 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
                                     SourceIndicator = derivedBod.SourceIndicator,
                                     Conversions = [.. derivedBod.Conversions.Union([conversion])],
                                 };
-                                results.Add(derivedBurdenOfDisease);
+                                model.BurdenOfDisease = derivedBurdenOfDisease;
+                                results.Add(model);
 
-                                // Get recusrive records
+                                // Get recursive records
                                 var recursiveRecords = GetDerivedBurdensOfDisease(
-                                    [derivedBurdenOfDisease],
+                                    [model],
                                     bodIndicatorConversions
                                 );
                                 results.AddRange(recursiveRecords);
@@ -73,17 +73,18 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
                         } else {
                             derivedBurdenOfDisease = new DerivedBurdenOfDisease() {
                                 BodIndicator = conversion.ToIndicator,
-                                Effect = bod.Effect,
-                                Population = bod.Population,
-                                Value = bod.Value * conversion.Value,
-                                SourceIndicator = bod,
+                                Effect = model.BurdenOfDisease.Effect,
+                                Population = model.BurdenOfDisease.Population,
+                                Value = model.BurdenOfDisease.Value * conversion.Value,
+                                SourceIndicator = model.BurdenOfDisease,
                                 Conversions = [conversion],
                             };
-                            results.Add(derivedBurdenOfDisease);
+                            model.BurdenOfDisease = derivedBurdenOfDisease;
+                            results.Add(model);
 
                             // Get recusrive records
                             var recursiveRecords = GetDerivedBurdensOfDisease(
-                                [derivedBurdenOfDisease],
+                                [model],
                                 bodIndicatorConversions
                             );
                             results.AddRange(recursiveRecords);

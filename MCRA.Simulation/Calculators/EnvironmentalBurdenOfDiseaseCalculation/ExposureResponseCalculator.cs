@@ -228,7 +228,8 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
             if (exposureResponseFunctionModel.HasErfSubGroups) {
                 exposureLevels.AddRange(
                     exposureResponseFunctionModel.SubGroupLevels.Select(r => r * unitAlignmentFactor)
-                );
+                    );
+                exposureLevels = [.. exposureLevels.OrderBy(r => r)];
             }
 
             var percentages = allExposures

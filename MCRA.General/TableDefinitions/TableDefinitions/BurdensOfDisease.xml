@@ -56,5 +56,43 @@
         <string>Value</string>
       </Aliases>
     </ColumnDefinition>
+    <ColumnDefinition FieldType="BodIndicatorDistributionType">
+      <Id>BodIndicatorUncertaintyDistribution</Id>
+      <Description>
+        Distribution type (Uniform, Triangular or LogNormal).
+        If not specified, the burden of disease indicator is assumed to be a constant factor.
+      </Description>
+      <Aliases>
+        <string>BodUncertaintyDistribution</string>
+        <string>BodDistribution</string>
+      </Aliases>
+      <PossibleValues>
+        <PossibleValue>Uniform</PossibleValue>
+        <PossibleValue>LogNormal</PossibleValue>
+        <PossibleValue>Triangular</PossibleValue>
+      </PossibleValues>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric">
+      <Id>BodIndicatorLower</Id>
+      <Name>BodIndicatorLower</Name>
+      <Description>
+        Burden of disease indicator lower uncertainty bound.
+      </Description>
+      <Aliases>
+        <string>BodIndicatorLower</string>
+        <string>BodLower</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric">
+      <Id>BodIndicatorUpper</Id>
+      <Name>BodIndicatorUpper</Name>
+      <Description>
+        Burden of disease indicator upper uncertainty bound.
+      </Description>
+      <Aliases>
+        <string>BodIndicatorUpper</string>
+        <string>BodUpper</string>
+      </Aliases>
+    </ColumnDefinition>
   </ColumnDefinitions>
 </TableDefinition>

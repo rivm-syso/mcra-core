@@ -10,5 +10,8 @@ namespace MCRA.Data.Compiled.Objects {
         public Effect Effect { get; set; }
         public BodIndicator BodIndicator { get; set; }
         public double Value { get; set; }
+        public BodIndicatorDistributionType BodUncertaintyDistribution { get; set; } = BodIndicatorDistributionType.Constant;
+        public double? BodUncertaintyUpper { get; set; }
+        public double? BodUncertaintyLower { get; set; }
     }
 }

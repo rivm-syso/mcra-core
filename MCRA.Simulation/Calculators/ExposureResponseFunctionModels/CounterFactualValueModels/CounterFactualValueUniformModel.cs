@@ -8,7 +8,7 @@ namespace MCRA.Simulation.Calculators.ExposureResponseFunctionModels.CounterFact
     ) : CounterFactualValueDistributionModel<UniformDistribution>(erf), ICounterFactualValueModel {
         protected override UniformDistribution getDistribution(ExposureResponseFunction erf) {
             if (!erf.CFVUncertaintyUpper.HasValue) {
-                var msg = $"Missing upper counterfactualvalue uniform uncertainty distribution for ERF {erf.Code}";
+                var msg = $"Missing upper bound counterfactualvalue uniform uncertainty distribution for ERF {erf.Code}";
                 throw new Exception(msg);
             }
             var distribution = UniformDistribution.FromMeanAndUpper(erf.CounterFactualValue, erf.CFVUncertaintyUpper.Value);

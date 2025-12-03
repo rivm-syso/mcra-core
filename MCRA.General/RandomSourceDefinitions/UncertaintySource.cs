@@ -78,5 +78,7 @@ namespace MCRA.General {
         SoilConcentrations = 37,
         [Display(Name = "Counter factual values")]
         CounterFactualValues = 38,
+        [Display(Name = "Burden of disease indicator values")]
+        BodIndicatorValues = 39,
     }
 }

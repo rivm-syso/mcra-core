@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <UnitDefinition>
-  <Id>ExposureResponseSpecificationDistributionType</Id>
-  <Name>Exposure response specification uncertainty distribution types.</Name>
+  <Id>BodIndicatorDistributionType</Id>
+  <Name>Burden of disease indicator uncertainty distribution types.</Name>
   <UndefinedValue Id="Constant" Name="Constant">0</UndefinedValue>
   <Description>
-    Exposure response specification uncertainty distribution types.
+    Burden of disease indicator uncertainty distribution types.
   </Description>
   <Units>
     <Unit>
