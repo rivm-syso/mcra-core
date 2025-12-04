@@ -1,5 +1,5 @@
-﻿using MCRA.Simulation.OutputGeneration.Helpers;
-using System.Text;
+﻿using System.Text;
+using MCRA.Simulation.OutputGeneration.Helpers;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class NormalAmountsModelSectionView : SectionView<NormalAmountsModelSection> {
@@ -29,36 +29,21 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 sb.Append("</table>");
                 sb.Append("</div>");
             }
-
-            sb.Append("<table>");
-            sb.AppendHeaderRow("Parameter", "Estimate", "s.e.", "t-value");
-
             if (Model.Power == 0) {
-                sb.AppendTableRow("transformation", "logarithmic (0)", "", "");
+                sb.AppendParagraph("transformation: logarithmic (0)");
             } else if (Model.Power == 1) {
-                sb.AppendTableRow("transformation", "identy (1)", "", "");
+                sb.AppendParagraph("transformation: identy (1)");
             } else {
-                sb.AppendTableRow("transformation power", Model.Power.ToString("G2"), "", "");
+                sb.AppendParagraph("transformation power: ", Model.Power.ToString("G2"));
             }
-
-            foreach (var item in Model.AmountsModelEstimates) {
-                sb.AppendTableRow(
-                    item.ParameterName,
-                    item.Estimate.ToString("G2"),
-                    item.StandardError.ToString("F2"),
-                    item.TValue.ToString("G2"));
-            }
-
-            if (Model.IsAcuteCovariateModelling) {
-                sb.AppendTableRow("distribution variance", Model.VarianceBetween.ToString("G4"), "", "");
-            } else {
-                sb.AppendTableRow("variance between individuals", Model.VarianceBetween.ToString("G4"), "", "");
-                sb.AppendTableRow("variance within individuals", Model.VarianceWithin.ToString("G4"), "", "");
-            }
-            sb.AppendTableRow("degrees of freedom", Model.DegreesOfFreedom.ToString("N0"), "", "");
-            sb.AppendTableRow("-2*loglikelihood", Model._2LogLikelihood.ToString("F2"), "", "");
-
-            sb.Append("</table>");
+            sb.AppendTable(
+                Model,
+                Model.AmountModelFitSummaryRecords,
+                "NormalmountModelSummaryTable",
+                ViewBag,
+                header: true,
+                saveCsv: true
+            );
         }
     }
 }

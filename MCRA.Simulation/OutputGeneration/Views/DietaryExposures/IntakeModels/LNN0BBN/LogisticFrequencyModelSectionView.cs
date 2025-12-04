@@ -1,7 +1,7 @@
-﻿using MCRA.Utils.ExtensionMethods;
-using MCRA.Simulation.OutputGeneration.Helpers;
-using System.Text;
+﻿using System.Text;
 using System.Web;
+using MCRA.Simulation.OutputGeneration.Helpers;
+using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class LogisticFrequencyModelSectionView : SectionView<LogisticFrequencyModelSection> {
@@ -34,26 +34,14 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 sb.Append("</table>");
                 sb.Append("</div>");
             }
-
-            sb.Append("<table>");
-            sb.AppendHeaderRow("Parameter", "Estimate", "s.e.", "t-value");
-            sb.AppendTableRow(
-                Model.VarianceEstimates.ParameterName,
-                Model.VarianceEstimates.Estimate.ToString("G2"),
-                Model.VarianceEstimates.StandardError.ToString("G2"),
-                Model.VarianceEstimates.TValue.ToString("G2"));
-
-            foreach (var item in Model.FrequencyModelEstimates) {
-                sb.AppendTableRow(
-                    item.ParameterName,
-                    item.Estimate.ToString("G2"),
-                    item.StandardError.ToString("F2"),
-                    item.TValue.ToString("G2"));
-            }
-            sb.AppendTableRow("degrees of freedom", Model.DegreesOfFreedom.ToString("F0"), "", "");
-            sb.AppendTableRow("-2*loglikelihood", Model._2LogLikelihood.ToString("F2"), "", "");
-
-            sb.Append("</table>");
+            sb.AppendTable(
+                Model,
+                Model.FrequencyModelRecords,
+                "FrequencyModelSummaryTable",
+                ViewBag,
+                header: true,
+                saveCsv: true
+            );
         }
     }
 }

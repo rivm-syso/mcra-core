@@ -2,14 +2,14 @@
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class NormalAmountsModelSection : UncorrelatedModelResultsSection {
-        public bool IsAcuteCovariateModelling { get; set; }
         public double Power { get; set; }
         public double VarianceBetween { get; set; }
         public double VarianceWithin { get; set; }
         public List<ParameterEstimates> AmountsModelEstimates { get; set; }
 
-        public void Summarize(AmountsModelSummary amountsModelSummary, bool isAcuteCovariateModelling) {
-            this.IsAcuteCovariateModelling = isAcuteCovariateModelling;
+        public List<ModelFitResultSummaryRecord> AmountModelFitSummaryRecords;
+
+        public void Summarize(AmountsModelSummary amountsModelSummary, bool isAcuteCovariateModelling = false) {
             this.VarianceBetween = ((NormalAmountsModelSummary)amountsModelSummary).VarianceBetween;
             this.VarianceWithin = ((NormalAmountsModelSummary)amountsModelSummary).VarianceWithin;
             this._2LogLikelihood = ((NormalAmountsModelSummary)amountsModelSummary)._2LogLikelihood;
@@ -25,14 +25,50 @@ namespace MCRA.Simulation.OutputGeneration {
                 Power = 0;
             }
             this.LikelihoodRatioTestResults = ((NormalAmountsModelSummary)amountsModelSummary).LikelihoodRatioTestResults;
-        }
 
-        /// <summary>
-        /// Overload for LNN with correlation.
-        /// </summary>
-        /// <param name="amountsModelSummary"></param>
-        public void Summarize(AmountsModelSummary amountsModelSummary) {
-            Summarize(amountsModelSummary, false);
+            AmountModelFitSummaryRecords = [
+                new ModelFitResultSummaryRecord {
+                    Parameter = "transformation power",
+                    Estimate = Power
+                }
+            ];
+            foreach (var item in AmountsModelEstimates) {
+                var record = new ModelFitResultSummaryRecord {
+                    Parameter = item.ParameterName,
+                    Estimate = item.Estimate,
+                    StandardError = item.StandardError,
+                    TValue = item.TValue
+                };
+                AmountModelFitSummaryRecords.Add(record);
+            }
+            if (isAcuteCovariateModelling) {
+                var varBetweenRecord = new ModelFitResultSummaryRecord {
+                    Parameter = "distribution variance",
+                    Estimate = VarianceBetween
+                };
+                AmountModelFitSummaryRecords.Add(varBetweenRecord);
+            } else {
+                var varBetweenRecord = new ModelFitResultSummaryRecord {
+                    Parameter = "variance between individuals",
+                    Estimate = VarianceBetween
+                };
+                AmountModelFitSummaryRecords.Add(varBetweenRecord);
+                var varWithinRecord = new ModelFitResultSummaryRecord {
+                    Parameter = "variance within individuals",
+                    Estimate = VarianceWithin
+                };
+                AmountModelFitSummaryRecords.Add(varWithinRecord);
+            }
+            var DfRecord = new ModelFitResultSummaryRecord {
+                Parameter = "degrees of freemdom",
+                Estimate = DegreesOfFreedom
+            };
+            AmountModelFitSummaryRecords.Add(DfRecord);
+            var LogLikRecord = new ModelFitResultSummaryRecord {
+                Parameter = "-2*loglikelihood",
+                Estimate = _2LogLikelihood
+            };
+            AmountModelFitSummaryRecords.Add(LogLikRecord);
         }
     }
 }

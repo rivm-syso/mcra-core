@@ -1,4 +1,5 @@
-﻿using MCRA.Utils.Statistics;
+﻿using MCRA.Simulation.OutputGeneration;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.IntakeModelling {
     public sealed class FrequencyModelSummary {
@@ -8,5 +9,6 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
         public double _2LogLikelihood { get; set; }
         public LikelihoodRatioTestResults LikelihoodRatioTestResults { get; set; }
         public ErrorMessages ErrorMessage { get; set; } = ErrorMessages.NoConvergence;
+        public List<ModelFitResultSummaryRecord> FrequencyModelRecords { get; set; }
     }
 }
