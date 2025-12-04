@@ -1,9 +1,8 @@
-﻿using MCRA.Utils.DataFileReading;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Extensions;
-using MCRA.General.TableDefinitions;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
+using MCRA.Utils.DataFileReading;
 
 namespace MCRA.Data.Management.CompiledDataManagers {
     public partial class CompiledDataManager {
@@ -47,30 +46,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 _data.AllSubstances = allCompounds;
             }
             return _data.AllSubstances;
-        }
-
-        private static void writeCompoundsDataToCsv(string tempFolder, IEnumerable<Compound> compounds) {
-            if (!compounds?.Any() ?? true) {
-                return;
-            }
-
-            var td = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.Compounds);
-            var dt = td.CreateDataTable();
-            var ccr = new int[Enum.GetNames(typeof(RawCompounds)).Length];
-
-            foreach (var cmp in compounds) {
-                var row = dt.NewRow();
-                row.WriteNonEmptyString(RawCompounds.IdCompound, cmp.Code, ccr);
-                row.WriteNonEmptyString(RawCompounds.Name, cmp.Name, ccr);
-                row.WriteNonEmptyString(RawCompounds.Description, cmp.Description, ccr);
-                row.WriteNonEmptyString(RawCompounds.ConcentrationUnit, cmp.ConcentrationUnit.ToString(), ccr);
-                row.WriteNonNullInt32(RawCompounds.CramerClass, cmp.CramerClass, ccr);
-                row.WriteNonNaNDouble(RawCompounds.MolecularMass, cmp.MolecularMass, ccr);
-                row.WriteNonNullBoolean(RawCompounds.IsLipidSoluble, cmp.IsLipidSoluble, ccr);
-                dt.Rows.Add(row);
-            }
-
-            writeToCsv(tempFolder, td, dt, ccr);
         }
     }
 }

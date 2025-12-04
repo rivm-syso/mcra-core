@@ -1,9 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Extensions;
-using MCRA.General.TableDefinitions;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
-using MCRA.Utils.DataFileReading;
 
 namespace MCRA.Data.Management.CompiledDataManagers {
     public partial class CompiledDataManager {
@@ -35,7 +33,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         };
                                         //Copy the extracted SBML model file to temp location in parameter
                                         var sbmlFilePath = rdm.GetFileReference(rawDataSourceId, sbmlFileName);
-                                        if(dataFilePath != null && Path.Exists(dataFilePath)) {
+                                        if (dataFilePath != null && Path.Exists(dataFilePath)) {
                                             //move sbml file to provided temp location if present
                                             var newSbmlFilePath = Path.Combine(dataFilePath, Path.GetFileName(sbmlFilePath));
                                             File.Move(sbmlFilePath, newSbmlFilePath);
@@ -75,23 +73,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 _data.AllPbkModelDefinitions = allPbkModelDefinitions;
             }
             return _data.AllPbkModelDefinitions;
-        }
-
-        private static void writePbkModelDefinitionDataToCsv(string tempFolder, IEnumerable<PbkModelDefinition> definitions) {
-            if (!definitions?.Any() ?? true) {
-                return;
-            }
-            var td = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.KineticModelDefinitions);
-            var dt = td.CreateDataTable();
-            foreach (var definition in definitions) {
-                var row = dt.NewRow();
-                row.WriteNonEmptyString(RawPbkModelDefinitions.Id, definition.IdModelDefinition);
-                row.WriteNonEmptyString(RawPbkModelDefinitions.Name, definition.Name);
-                row.WriteNonEmptyString(RawPbkModelDefinitions.Description, definition.Description);
-                row.WriteNonEmptyString(RawPbkModelDefinitions.FilePath, definition.FileName);
-                dt.Rows.Add(row);
-            }
-            writeToCsv(tempFolder, td, dt);
         }
     }
 }

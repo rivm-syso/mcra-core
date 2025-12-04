@@ -1,9 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Extensions;
-using MCRA.General.TableDefinitions;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
-using MCRA.Utils.DataFileReading;
 
 namespace MCRA.Data.Management.CompiledDataManagers {
     public partial class CompiledDataManager {
@@ -43,27 +41,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 _data.AllSoilConcentrationDistributions = allSoilConcentrationDistributions;
             }
             return _data.AllSoilConcentrationDistributions;
-        }
-
-        private static void writeSoilConcentrationDistributionsToCsv(string tempFolder, IEnumerable<SoilConcentrationDistribution> soilConcentrationDistributions) {
-            if (!soilConcentrationDistributions?.Any() ?? true) {
-                return;
-            }
-
-            var td = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.SoilConcentrationDistributions);
-            var dt = td.CreateDataTable();
-            var ccr = new int[Enum.GetNames(typeof(RawSoilConcentrationDistributions)).Length];
-
-            foreach (var soilConcentrationDistribution in soilConcentrationDistributions) {
-                var row = dt.NewRow();
-                row.WriteNonEmptyString(RawSoilConcentrationDistributions.IdSample, soilConcentrationDistribution.idSample, ccr);
-                row.WriteNonEmptyString(RawSoilConcentrationDistributions.IdSubstance, soilConcentrationDistribution.Substance?.Code, ccr);
-                row.WriteNonNaNDouble(RawSoilConcentrationDistributions.Concentration, soilConcentrationDistribution.Concentration, ccr);
-                row.WriteNonEmptyString(RawSoilConcentrationDistributions.ConcentrationUnit, soilConcentrationDistribution.Unit.ToString(), ccr);
-                dt.Rows.Add(row);
-            }
-
-            writeToCsv(tempFolder, td, dt, ccr);
         }
     }
 }

@@ -1,9 +1,8 @@
-﻿using MCRA.Utils.DataFileReading;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Extensions;
-using MCRA.General.TableDefinitions;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
+using MCRA.Utils.DataFileReading;
 
 namespace MCRA.Data.Management.CompiledDataManagers {
     public partial class CompiledDataManager {
@@ -45,21 +44,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             }
             _data.AllMarketShares = _data.AllFoods.Where(c => c.Value.MarketShare != null).Select(c => c.Value.MarketShare).ToList();
             return _data.AllMarketShares;
-        }
-
-        private static void writeMarketSharesDataToCsv(string tempFolder, IList<MarketShare> marketShares) {
-            if (!marketShares?.Any() ?? true) {
-                return;
-            }
-
-            var td = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.MarketShares);
-            var dt = td.CreateDataTable();
-            foreach (var t in marketShares) {
-                var row = dt.NewRow();
-                row.WriteNonEmptyString(RawMarketShares.IdFood, t.Food.Code);
-                dt.Rows.Add(row);
-            }
-            writeToCsv(tempFolder, td, dt);
         }
     }
 }

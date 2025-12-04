@@ -1,9 +1,8 @@
-﻿using MCRA.Utils.DataFileReading;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Extensions;
-using MCRA.General.TableDefinitions;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
+using MCRA.Utils.DataFileReading;
 
 namespace MCRA.Data.Management.CompiledDataManagers {
     public partial class CompiledDataManager {
@@ -45,26 +44,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 _data.AllSubstanceConversions = allSubstanceConversions;
             }
             return _data.AllSubstanceConversions;
-        }
-
-        private static void writeSubstanceConversionsDataToCsv(string tempFolder, IEnumerable<SubstanceConversion> types) {
-            if (!types?.Any() ?? true) {
-                return;
-            }
-
-            var tdSubstanceConversions = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.ResidueDefinitions);
-            var dtSubstanceConversions = tdSubstanceConversions.CreateDataTable();
-            var ccr = new int[Enum.GetNames(typeof(RawResidueDefinitions)).Length];
-            foreach (var t in types) {
-                var r = dtSubstanceConversions.NewRow();
-                r.WriteNonEmptyString(RawResidueDefinitions.IdActiveSubstance, t.ActiveSubstance?.Code, ccr);
-                r.WriteNonEmptyString(RawResidueDefinitions.IdMeasuredSubstance, t.MeasuredSubstance?.Code, ccr);
-                r.WriteNonNaNDouble(RawResidueDefinitions.ConversionFactor, t.ConversionFactor, ccr);
-                r.WriteNonNullBoolean(RawResidueDefinitions.IsExclusive, t.IsExclusive, ccr);
-                r.WriteNonNullDouble(RawResidueDefinitions.Proportion, t.Proportion, ccr);
-                dtSubstanceConversions.Rows.Add(r);
-            }
-            writeToCsv(tempFolder, tdSubstanceConversions, dtSubstanceConversions);
         }
     }
 }

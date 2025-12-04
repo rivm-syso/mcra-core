@@ -1,8 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.General.TableDefinitions.RawTableFieldEnums;
 using MCRA.General;
 using MCRA.General.Extensions;
-using MCRA.General.TableDefinitions;
+using MCRA.General.TableDefinitions.RawTableFieldEnums;
 using MCRA.Utils.DataFileReading;
 
 namespace MCRA.Data.Management.CompiledDataManagers {
@@ -55,27 +54,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 _data.AllIntraSpeciesFactors = allIntraSpeciesFactors;
             }
             return _data.AllIntraSpeciesFactors;
-        }
-
-        private static void writeIntraSpeciesFactorDataToCsv(string tempFolder, IEnumerable<IntraSpeciesFactor> factors) {
-            if (!factors?.Any() ?? true) {
-                return;
-            }
-
-            var tdi = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.IntraSpeciesModelParameters);
-            var dti = tdi.CreateDataTable();
-
-            foreach (var factor in factors) {
-                var row = dti.NewRow();
-                row.WriteNonEmptyString(RawIntraSpeciesModelParameters.IdEffect, factor.Effect?.Code);
-                row.WriteNonEmptyString(RawIntraSpeciesModelParameters.IdCompound, factor.Compound?.Code);
-                row.WriteNonEmptyString(RawIntraSpeciesModelParameters.IdPopulation, factor.IdPopulation);
-                row.WriteNonNullDouble(RawIntraSpeciesModelParameters.IntraSpeciesLowerVariationFactor, factor.LowerVariationFactor);
-                row.WriteNonNaNDouble(RawIntraSpeciesModelParameters.IntraSpeciesUpperVariationFactor, factor.UpperVariationFactor);
-
-                dti.Rows.Add(row);
-            }
-            writeToCsv(tempFolder, tdi, dti);
         }
     }
 }

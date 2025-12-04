@@ -1,8 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.General.TableDefinitions.RawTableFieldEnums;
 using MCRA.General;
 using MCRA.General.Extensions;
-using MCRA.General.TableDefinitions;
+using MCRA.General.TableDefinitions.RawTableFieldEnums;
 using MCRA.Utils.DataFileReading;
 
 namespace MCRA.Data.Management.CompiledDataManagers {
@@ -94,54 +93,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 _data.AllIestiSpecialCases = allIestiSpecialCases;
             }
             return _data.AllIestiSpecialCases;
-        }
-
-        private static void writeUnitVariabilityFactorsDataToCsv(string tempFolder, IEnumerable<UnitVariabilityFactor> factors) {
-            if (!factors?.Any() ?? true) {
-                return;
-            }
-
-            var tdu = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.UnitVariabilityFactors);
-            var dtu = tdu.CreateDataTable();
-
-            var ccr = new int[Enum.GetNames(typeof(RawUnitVariabilityFactors)).Length];
-
-            foreach (var uvf in factors) {
-                var rowuvf = dtu.NewRow();
-                rowuvf.WriteNonEmptyString(RawUnitVariabilityFactors.IdFood, uvf.Food.Code, ccr);
-                rowuvf.WriteNonEmptyString(RawUnitVariabilityFactors.IdCompound, uvf.Compound?.Code, ccr);
-                rowuvf.WriteNonEmptyString(RawUnitVariabilityFactors.IdProcessingType, uvf.ProcessingType?.Code, ccr);
-                rowuvf.WriteNonNullDouble(RawUnitVariabilityFactors.Factor, uvf.Factor, ccr);
-                rowuvf.WriteNonNaNDouble(RawUnitVariabilityFactors.UnitsInCompositeSample, uvf.UnitsInCompositeSample, ccr);
-                rowuvf.WriteNonNullDouble(RawUnitVariabilityFactors.Coefficient, uvf.Coefficient, ccr);
-
-                dtu.Rows.Add(rowuvf);
-            }
-
-            writeToCsv(tempFolder, tdu, dtu, ccr);
-        }
-
-        private static void writeIestiSpecialCasesDataToCsv(string tempFolder, IEnumerable<IestiSpecialCase> items) {
-            if (!items?.Any() ?? true) {
-                return;
-            }
-
-            var td = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.IestiSpecialCases);
-            var dt = td.CreateDataTable();
-
-            var ccr = new int[Enum.GetNames(typeof(RawIestiSpecialCases)).Length];
-
-            foreach (var item in items) {
-                var newRow = dt.NewRow();
-                newRow.WriteNonEmptyString(RawIestiSpecialCases.IdFood, item.Food.Code, ccr);
-                newRow.WriteNonEmptyString(RawIestiSpecialCases.IdSubstance, item.Substance.Code, ccr);
-                newRow.WriteNonEmptyString(RawIestiSpecialCases.Reference, item.Reference, ccr);
-                newRow.WriteNonEmptyString(RawIestiSpecialCases.ApplicationType, item.ApplicationType.ToString(), ccr);
-
-                dt.Rows.Add(newRow);
-            }
-
-            writeToCsv(tempFolder, td, dt, ccr);
         }
     }
 }

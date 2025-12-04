@@ -44,13 +44,6 @@ namespace MCRA.Data.Management {
         public ProjectDto Project { get; }
 
         /// <summary>
-        /// Write the data of this instance to a zipped CSV file
-        /// </summary>
-        /// <param name="filename"></param>
-        /// <returns>true if succeeded</returns>
-        public bool WriteToZippedCsvFile(string filename) => _dataManager.WriteToZippedCsvFile(filename);
-
-        /// <summary>
         /// Gets all foods of the compiled data source.
         /// </summary>
         public ICollection<Food> AllFoods => _dataManager.GetAllFoods().Values.ToHashSet();

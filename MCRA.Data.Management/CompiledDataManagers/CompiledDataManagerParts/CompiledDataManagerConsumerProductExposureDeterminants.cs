@@ -1,7 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Extensions;
-using MCRA.General.TableDefinitions;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
 using MCRA.Utils.DataFileReading;
 
@@ -80,52 +79,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                     .ThenBy(c => c.AgeLower)];
             }
             return _data.AllConsumerProductApplicationAmounts;
-        }
-
-        private static void writeConsumerProductExposureFractions(
-            string tempFolder,
-            IEnumerable<ConsumerProductExposureFraction> consumerProductExposureFraction
-        ) {
-            if (!consumerProductExposureFraction?.Any() ?? true) {
-                return;
-            }
-
-            var td = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.ConsumerProductExposureFractions);
-            var dt = td.CreateDataTable();
-            var ccr = new int[Enum.GetNames(typeof(RawConsumerProductExposureFractions)).Length];
-
-            foreach (var exposureFraction in consumerProductExposureFraction) {
-                var row = dt.NewRow();
-                row.WriteNonEmptyString(RawConsumerProductExposureFractions.IdProduct, exposureFraction.Product.Code, ccr);
-                row.WriteNonEmptyString(RawConsumerProductExposureFractions.IdSubstance, exposureFraction.Substance.Code, ccr);
-                row.WriteNonEmptyString(RawConsumerProductExposureFractions.ExposureRoute, exposureFraction.Route.ToString(), ccr);
-                row.WriteNonNullDouble(RawConsumerProductExposureFractions.ExposureFraction, exposureFraction.ExposureFraction, ccr);
-                dt.Rows.Add(row);
-            }
-
-            writeToCsv(tempFolder, td, dt, ccr);
-        }
-
-        private static void writeConsumerProductApplicationAmounts(string tempFolder, IEnumerable<ConsumerProductApplicationAmount> consumerProductApplicationAmount) {
-            if (!consumerProductApplicationAmount?.Any() ?? true) {
-                return;
-            }
-
-            var td = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.ConsumerProductApplicationAmounts);
-            var dt = td.CreateDataTable();
-            var ccr = new int[Enum.GetNames(typeof(RawConsumerProductApplicationAmounts)).Length];
-
-            foreach (var amount in consumerProductApplicationAmount) {
-                var row = dt.NewRow();
-                row.WriteNonEmptyString(RawConsumerProductApplicationAmounts.IdProduct, amount.Product.Code, ccr);
-                row.WriteNonNullDouble(RawConsumerProductApplicationAmounts.Amount, amount.Amount, ccr);
-                row.WriteNonEmptyString(RawConsumerProductApplicationAmounts.DistributionType, amount.DistributionType.ToString(), ccr);
-                row.WriteNonNullDouble(RawConsumerProductApplicationAmounts.CvVariability, amount.CvVariability, ccr);
-                row.WriteNonNullDouble(RawConsumerProductApplicationAmounts.AgeLower, amount.AgeLower, ccr);
-                row.WriteNonEmptyString(RawConsumerProductApplicationAmounts.Sex, amount.Sex.ToString(), ccr);
-                dt.Rows.Add(row);
-            }
-            writeToCsv(tempFolder, td, dt, ccr);
         }
     }
 }

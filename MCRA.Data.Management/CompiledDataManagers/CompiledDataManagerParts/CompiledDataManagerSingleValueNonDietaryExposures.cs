@@ -2,7 +2,6 @@
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Extensions;
-using MCRA.General.TableDefinitions;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
 using MCRA.Utils.DataFileReading;
 using MCRA.Utils.ExtensionMethods;
@@ -157,7 +156,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                         _data.AllSingleValueNonDietaryExposureScenarios = exposureScenarios;
 
                         // Read exposure determinants
-                        var exposureDeterminants= new Dictionary<string, ExposureDeterminant>(StringComparer.OrdinalIgnoreCase);
+                        var exposureDeterminants = new Dictionary<string, ExposureDeterminant>(StringComparer.OrdinalIgnoreCase);
                         foreach (var rawDataSourceId in rawDataSourceIds) {
                             using (var r = rdm.OpenDataReader<RawExposureDeterminants>(rawDataSourceId, out int[] fieldMap)) {
                                 while (r?.Read() ?? false) {
@@ -181,9 +180,9 @@ namespace MCRA.Data.Management.CompiledDataManagers {
 
                                     var idExposureDeterminantCombination = r.GetString(RawExposureDeterminantCombinations.IdExposureDeterminantCombination, fieldMap);
                                     var exposureDeterminantCombination = new ExposureDeterminantCombination {
-                                         Code = idExposureDeterminantCombination,
-                                         Name = r.GetStringOrNull(RawExposureDeterminants.Name, fieldMap),
-                                         Description = r.GetStringOrNull(RawExposureDeterminants.Description, fieldMap),
+                                        Code = idExposureDeterminantCombination,
+                                        Name = r.GetStringOrNull(RawExposureDeterminants.Name, fieldMap),
+                                        Description = r.GetStringOrNull(RawExposureDeterminants.Description, fieldMap),
                                     };
                                     exposureDeterminantCombinations.Add(exposureDeterminantCombination.Code, exposureDeterminantCombination);
                                 }
@@ -249,39 +248,17 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             switch (value.Property.PropertyType) {
                 case IndividualPropertyType.Boolean: {
                         value.TextValue = BooleanTypeConverter.FromString(strValue, BooleanType.False).GetDisplayName();
-                    } break;
+                    }
+                    break;
                 case IndividualPropertyType.Integer:
                 case IndividualPropertyType.Numeric: {
                         value.DoubleValue = r.GetDoubleOrNull(RawExposureDeterminantValues.DoubleValue, fieldMap);
-                    } break;
+                    }
+                    break;
                 default: {
                         value.TextValue = strValue; break;
                     }
             }
-        }
-
-        private static void writeSingleValueNonDietaryExposuresToCsv(string tempFolder, IList<ExposureEstimate> values) {
-            if (!values?.Any() ?? true) {
-                return;
-            }
-
-            TableDefinition tdc = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.ExposureEstimates);
-            var dtc = tdc.CreateDataTable();
-
-            foreach (var v in values) {
-                var rowc = dtc.NewRow();
-
-                rowc.WriteNonEmptyString(RawExposureEstimates.IdExposureScenario, v.ExposureScenario.Code);
-                rowc.WriteNonEmptyString(RawExposureEstimates.IdExposureDeterminantCombination, v.ExposureDeterminantCombination.Code);
-                rowc.WriteNonEmptyString(RawExposureEstimates.IdSubstance, v.Substance.Code);
-                rowc.WriteNonEmptyString(RawExposureEstimates.ExposureSource, v.ExposureSource);
-                rowc.WriteNonEmptyString(RawExposureEstimates.ExposureRoute, v.ExposureRoute.GetDisplayName());
-                rowc.WriteNonNullDouble(RawExposureEstimates.Value, v.Value);
-                rowc.WriteNonEmptyString(RawExposureEstimates.EstimateType, v.EstimateType);
-
-                dtc.Rows.Add(rowc);
-            }
-            writeToCsv(tempFolder, tdc, dtc);
         }
     }
 }

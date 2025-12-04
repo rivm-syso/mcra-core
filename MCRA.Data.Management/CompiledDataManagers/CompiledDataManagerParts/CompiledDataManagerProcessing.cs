@@ -1,9 +1,8 @@
-﻿using MCRA.Utils.DataFileReading;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Extensions;
-using MCRA.General.TableDefinitions;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
+using MCRA.Utils.DataFileReading;
 
 namespace MCRA.Data.Management.CompiledDataManagers {
     public partial class CompiledDataManager {
@@ -70,49 +69,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 _data.AllProcessingFactors = allProcessingFactors;
             }
             return _data.AllProcessingFactors;
-        }
-
-        private static void writeProcessingTypesDataToCsv(string tempFolder, IEnumerable<ProcessingType> types) {
-            if (!types?.Any() ?? true) {
-                return;
-            }
-
-            var tdProcessingTypes = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.ProcessingTypes);
-            var dtProcessingTypes = tdProcessingTypes.CreateDataTable();
-            var ccr = new int[Enum.GetNames(typeof(RawProcessingTypes)).Length];
-            foreach(var t in types) {
-                var r = dtProcessingTypes.NewRow();
-                r.WriteNonEmptyString(RawProcessingTypes.Name, t.Name, ccr);
-                r.WriteNonEmptyString(RawProcessingTypes.Description, t.Description, ccr);
-                r.WriteNonEmptyString(RawProcessingTypes.IdProcessingType, t.Code, ccr);
-                r.WriteNonNullBoolean(RawProcessingTypes.BulkingBlending, t.IsBulkingBlending, ccr);
-                r.WriteNonEmptyString(RawProcessingTypes.DistributionType, t.DistributionType.ToString(), ccr);
-                dtProcessingTypes.Rows.Add(r);
-            }
-            writeToCsv(tempFolder, tdProcessingTypes, dtProcessingTypes);
-        }
-
-        private static void writeProcessingFactorsDataToCsv(string tempFolder, IEnumerable<ProcessingFactor> factors) {
-            if (!factors?.Any() ?? true) {
-                return;
-            }
-
-            var tdProcessingFactors = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.ProcessingFactors);
-            var dtProcessingFactors = tdProcessingFactors.CreateDataTable();
-            var ccr = new int[Enum.GetNames(typeof(RawProcessingFactors)).Length];
-            foreach (var t in factors) {
-                var r = dtProcessingFactors.NewRow();
-                r.WriteNonEmptyString(RawProcessingFactors.IdCompound, t.Compound?.Code, ccr);
-                r.WriteNonEmptyString(RawProcessingFactors.IdFoodProcessed, t.FoodProcessed?.Code, ccr);
-                r.WriteNonEmptyString(RawProcessingFactors.IdFoodUnprocessed, t.FoodUnprocessed.Code, ccr);
-                r.WriteNonEmptyString(RawProcessingFactors.IdProcessingType, t.ProcessingType.Code, ccr);
-                r.WriteNonNaNDouble(RawProcessingFactors.Nominal, t.Nominal, ccr);
-                r.WriteNonNullDouble(RawProcessingFactors.NominalUncertaintyUpper, t.NominalUncertaintyUpper, ccr);
-                r.WriteNonNullDouble(RawProcessingFactors.Upper, t.Upper, ccr);
-                r.WriteNonNullDouble(RawProcessingFactors.UpperUncertaintyUpper, t.UpperUncertaintyUpper, ccr);
-                dtProcessingFactors.Rows.Add(r);
-            }
-            writeToCsv(tempFolder, tdProcessingFactors, dtProcessingFactors);
         }
     }
 }

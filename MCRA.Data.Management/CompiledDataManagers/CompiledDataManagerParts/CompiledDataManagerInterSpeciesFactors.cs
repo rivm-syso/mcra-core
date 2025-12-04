@@ -1,9 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Extensions;
-using MCRA.General.TableDefinitions;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
-using MCRA.Utils.DataFileReading;
 
 namespace MCRA.Data.Management.CompiledDataManagers {
     public partial class CompiledDataManager {
@@ -62,30 +60,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 _data.AllInterSpeciesFactors = allInterSpeciesFactors;
             }
             return _data.AllInterSpeciesFactors;
-        }
-
-        private static void writeInterSpeciesFactorDataToCsv(string tempFolder, IEnumerable<InterSpeciesFactor> factors) {
-            if (!factors?.Any() ?? true) {
-                return;
-            }
-
-            var tdi = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.InterSpeciesModelParameters);
-            var dti = tdi.CreateDataTable();
-
-            foreach (var factor in factors) {
-                var row = dti.NewRow();
-                row.WriteNonEmptyString(RawInterSpeciesModelParameters.IdEffect, factor.Effect?.Code);
-                row.WriteNonEmptyString(RawInterSpeciesModelParameters.IdCompound, factor.Compound?.Code);
-                row.WriteNonEmptyString(RawInterSpeciesModelParameters.Species, factor.Species);
-                row.WriteNonEmptyString(RawInterSpeciesModelParameters.AnimalBodyWeightUnit, factor.AnimalBodyWeightUnit.ToString());
-                row.WriteNonEmptyString(RawInterSpeciesModelParameters.HumanBodyWeightUnit, factor.HumanBodyWeightUnit.ToString());
-                row.WriteNonNaNDouble(RawInterSpeciesModelParameters.InterSpeciesGeometricMean, factor.InterSpeciesFactorGeometricMean);
-                row.WriteNonNaNDouble(RawInterSpeciesModelParameters.InterSpeciesGeometricStandardDeviation, factor.InterSpeciesFactorGeometricStandardDeviation);
-
-                dti.Rows.Add(row);
-            }
-
-            writeToCsv(tempFolder, tdi, dti);
         }
     }
 }

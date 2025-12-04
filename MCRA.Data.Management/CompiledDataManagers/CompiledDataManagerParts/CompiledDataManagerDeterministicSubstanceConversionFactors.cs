@@ -1,9 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.General.TableDefinitions.RawTableFieldEnums;
 using MCRA.General;
 using MCRA.General.Extensions;
-using MCRA.General.TableDefinitions;
-using MCRA.Utils.DataFileReading;
+using MCRA.General.TableDefinitions.RawTableFieldEnums;
 
 namespace MCRA.Data.Management.CompiledDataManagers {
     public partial class CompiledDataManager {
@@ -50,26 +48,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 _data.AllDeterministicSubstanceConversionFactors = allConversionFactors;
             }
             return _data.AllDeterministicSubstanceConversionFactors;
-        }
-
-        private static void writeDeterministicSubstanceConversionFactorsDataToCsv(string tempFolder, IEnumerable<DeterministicSubstanceConversionFactor> types) {
-            if (!types?.Any() ?? true) {
-                return;
-            }
-
-            var tableDef = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.DeterministicSubstanceConversionFactors);
-            var dataTable = tableDef.CreateDataTable();
-            var ccr = new int[Enum.GetNames(typeof(RawDeterministicSubstanceConversionFactors)).Length];
-            foreach (var t in types) {
-                var r = dataTable.NewRow();
-                r.WriteNonEmptyString(RawDeterministicSubstanceConversionFactors.IdActiveSubstance, t.ActiveSubstance?.Code, ccr);
-                r.WriteNonEmptyString(RawDeterministicSubstanceConversionFactors.IdMeasuredSubstance, t.MeasuredSubstance?.Code, ccr);
-                r.WriteNonNaNDouble(RawDeterministicSubstanceConversionFactors.ConversionFactor, t.ConversionFactor, ccr);
-                r.WriteNonEmptyString(RawDeterministicSubstanceConversionFactors.Reference, t.Reference, ccr);
-                r.WriteNonEmptyString(RawDeterministicSubstanceConversionFactors.IdFood, t.Food?.Code, ccr);
-                dataTable.Rows.Add(r);
-            }
-            writeToCsv(tempFolder, tableDef, dataTable);
         }
     }
 }

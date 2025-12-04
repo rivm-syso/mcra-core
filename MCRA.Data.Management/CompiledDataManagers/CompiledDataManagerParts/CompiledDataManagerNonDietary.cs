@@ -1,9 +1,8 @@
-﻿using MCRA.Utils.DataFileReading;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Extensions;
-using MCRA.General.TableDefinitions;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
+using MCRA.Utils.DataFileReading;
 
 namespace MCRA.Data.Management.CompiledDataManagers {
     public partial class CompiledDataManager {
@@ -170,81 +169,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             };
 
             set.NonDietaryExposures.Add(ndExposure);
-        }
-
-        private static void writeNonDietaryDataToCsv(string tempFolder, IEnumerable<NonDietaryExposureSet> sets) {
-            if (!sets?.Any() ?? true) {
-                return;
-            }
-
-            var tdsv = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.NonDietarySurveys);
-            var dtsv = tdsv.CreateDataTable();
-            var tdsp = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.NonDietarySurveyProperties);
-            var dtsp = tdsp.CreateDataTable();
-            var tde = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.NonDietaryExposures);
-            var dte = tde.CreateDataTable();
-            var tdu = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.NonDietaryExposuresUncertain);
-            var dtu = tdu.CreateDataTable();
-
-            var surveyIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-
-            foreach (var set in sets) {
-                var survey = set.NonDietarySurvey;
-                if (survey != null && !surveyIds.Contains(survey.Code)) {
-                    var rowsv = dtsv.NewRow();
-                    rowsv.WriteNonEmptyString(RawNonDietarySurveys.IdNonDietarySurvey, survey.Code);
-                    rowsv.WriteNonEmptyString(RawNonDietarySurveys.IdPopulation, survey.IdPopulation);
-                    rowsv.WriteNonEmptyString(RawNonDietarySurveys.Description, survey.Description);
-                    rowsv.WriteNonEmptyString(RawNonDietarySurveys.Location, survey.Location);
-                    rowsv.WriteNonEmptyString(RawNonDietarySurveys.NonDietaryIntakeUnit, survey.ExposureUnit.ToString());
-                    rowsv.WriteNonNaNDouble(RawNonDietarySurveys.ProportionZeros, survey.ProportionZeros);
-                    dtsv.Rows.Add(rowsv);
-                    surveyIds.Add(survey.Code);
-
-                    var svProperties = survey.NonDietarySurveyProperties;
-                    if (svProperties?.Count > 0) {
-                        foreach (var svProperty in svProperties) {
-                            var rowsp = dtsp.NewRow();
-                            rowsp.WriteNonEmptyString(RawNonDietarySurveyProperties.IdNonDietarySurvey, survey.Code);
-                            rowsp.WriteNonEmptyString(RawNonDietarySurveyProperties.IndividualPropertyName, svProperty.Name);
-                            rowsp.WriteNonEmptyString(RawNonDietarySurveyProperties.IndividualPropertyTextValue, svProperty.IndividualPropertyTextValue);
-                            rowsp.WriteNonNullDouble(RawNonDietarySurveyProperties.IndividualPropertyDoubleValueMin, svProperty.IndividualPropertyDoubleValueMin);
-                            rowsp.WriteNonNullDouble(RawNonDietarySurveyProperties.IndividualPropertyDoubleValueMax, svProperty.IndividualPropertyDoubleValueMax);
-                            dtsp.Rows.Add(rowsp);
-                        }
-                    }
-                }
-
-                var exposures = set.NonDietaryExposures;
-                foreach (var exp in exposures) {
-                    //use the nondietary exposure set's ID to find out whether it's
-                    //an 'uncertainty' exposure, these have a non empty setCode
-                    if (string.IsNullOrEmpty(set.Code)) {
-                        var rowe = dte.NewRow();
-                        rowe.WriteNonEmptyString(RawNonDietaryExposures.IdNonDietarySurvey, survey.Code);
-                        rowe.WriteNonEmptyString(RawNonDietaryExposures.IdIndividual, set.IndividualCode);
-                        rowe.WriteNonEmptyString(RawNonDietaryExposures.IdCompound, exp.Compound.Code);
-                        rowe.WriteNonNaNDouble(RawNonDietaryExposures.Dermal, exp.Dermal);
-                        rowe.WriteNonNaNDouble(RawNonDietaryExposures.Oral, exp.Oral);
-                        rowe.WriteNonNaNDouble(RawNonDietaryExposures.Inhalation, exp.Inhalation);
-                        dte.Rows.Add(dte);
-                    } else {
-                        var rowu = dtu.NewRow();
-                        rowu.WriteNonEmptyString(RawNonDietaryExposuresUncertain.Id, set.Code);
-                        rowu.WriteNonEmptyString(RawNonDietaryExposuresUncertain.IdNonDietarySurvey, survey.Code);
-                        rowu.WriteNonEmptyString(RawNonDietaryExposuresUncertain.IdIndividual, set.IndividualCode);
-                        rowu.WriteNonEmptyString(RawNonDietaryExposuresUncertain.IdCompound, exp.Compound.Code);
-                        rowu.WriteNonNaNDouble(RawNonDietaryExposuresUncertain.Dermal, exp.Dermal);
-                        rowu.WriteNonNaNDouble(RawNonDietaryExposuresUncertain.Oral, exp.Oral);
-                        rowu.WriteNonNaNDouble(RawNonDietaryExposuresUncertain.Inhalation, exp.Inhalation);
-                        dtu.Rows.Add(dtu);
-                    }
-                }
-            }
-            writeToCsv(tempFolder, tdsv, dtsv);
-            writeToCsv(tempFolder, tdsp, dtsp);
-            writeToCsv(tempFolder, tde, dte);
-            writeToCsv(tempFolder, tdu, dtu);
         }
     }
 }

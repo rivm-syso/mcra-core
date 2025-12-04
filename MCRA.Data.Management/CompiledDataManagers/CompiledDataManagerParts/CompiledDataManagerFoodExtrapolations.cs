@@ -1,8 +1,6 @@
-﻿using MCRA.Utils.DataFileReading;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Extensions;
-using MCRA.General.TableDefinitions;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
 
 namespace MCRA.Data.Management.CompiledDataManagers {
@@ -43,24 +41,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 _data.AllFoodExtrapolations = foodExtrapolations;
             }
             return _data.AllFoodExtrapolations;
-        }
-
-        private static void writeReadAcrossFoodTranslationsDataToCsv(string tempFolder, IDictionary<Food, ICollection<Food>> extrapolations) {
-            if (!extrapolations?.Any() ?? true) {
-                return;
-            }
-
-            var td = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.FoodExtrapolations);
-            var dt = td.CreateDataTable();
-            foreach (var t in extrapolations) {
-                foreach (var f in t.Value) {
-                    var row = dt.NewRow();
-                    row.WriteNonEmptyString(RawReadAcrossFoodTranslations.IdFromFood, t.Key.Code);
-                    row.WriteNonEmptyString(RawReadAcrossFoodTranslations.IdToFood, f.Code);
-                    dt.Rows.Add(row);
-                }
-            }
-            writeToCsv(tempFolder, td, dt);
         }
     }
 }

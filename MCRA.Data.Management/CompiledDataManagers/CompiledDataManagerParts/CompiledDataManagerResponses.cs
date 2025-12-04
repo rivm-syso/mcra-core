@@ -1,9 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.General.TableDefinitions.RawTableFieldEnums;
 using MCRA.General;
 using MCRA.General.Extensions;
-using MCRA.General.TableDefinitions;
-using MCRA.Utils.DataFileReading;
+using MCRA.General.TableDefinitions.RawTableFieldEnums;
 
 namespace MCRA.Data.Management.CompiledDataManagers {
     public partial class CompiledDataManager {
@@ -50,30 +48,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 _data.AllResponses = allResponses;
             }
             return _data.AllResponses;
-        }
-
-        private static void writeResponsesDataToCsv(string tempFolder, IEnumerable<Response> responses) {
-            if (!responses?.Any() ?? true) {
-                return;
-            }
-
-            var tdr = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.Responses);
-            var dtr = tdr.CreateDataTable();
-
-            foreach (var resp in responses) {
-                var rowResp = dtr.NewRow();
-                rowResp.WriteNonEmptyString(RawResponses.IdResponse, resp.Code);
-                rowResp.WriteNonEmptyString(RawResponses.Name, resp.Name);
-                rowResp.WriteNonEmptyString(RawResponses.Description, resp.Description);
-                rowResp.WriteNonEmptyString(RawResponses.IdSystem, resp.TestSystem.Code);
-                rowResp.WriteNonEmptyString(RawResponses.ResponseType, resp.ResponseType.ToString());
-                rowResp.WriteNonEmptyString(RawResponses.ResponseUnit, resp.ResponseUnit);
-                rowResp.WriteNonEmptyString(RawResponses.GuidelineMethod, resp.GuidelineMethod);
-
-                dtr.Rows.Add(rowResp);
-            }
-
-            writeToCsv(tempFolder, tdr, dtr);
         }
     }
 }

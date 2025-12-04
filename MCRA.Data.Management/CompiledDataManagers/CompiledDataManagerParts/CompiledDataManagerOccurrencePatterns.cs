@@ -1,8 +1,6 @@
-﻿using MCRA.Utils.DataFileReading;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Extensions;
-using MCRA.General.TableDefinitions;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
 
 namespace MCRA.Data.Management.CompiledDataManagers {
@@ -81,39 +79,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 _data.AllOccurrencePatterns = allOccurrencePatterns;
             }
             return _data.AllOccurrencePatterns;
-        }
-
-        private static void writeOccurrencePatternDataToCsv(string tempFolder, IEnumerable<OccurrencePattern> occurrencePatterns) {
-            if (!occurrencePatterns?.Any() ?? true) {
-                return;
-            }
-
-            var tda = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.AgriculturalUses);
-            var dta = tda.CreateDataTable();
-            var tdc = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.AgriculturalUsesHasCompounds);
-            var dtc = tdc.CreateDataTable();
-            var ccra = new int[Enum.GetNames(typeof(RawAgriculturalUses)).Length];
-
-            foreach (var op in occurrencePatterns) {
-                var rowa = dta.NewRow();
-                rowa.WriteNonEmptyString(RawAgriculturalUses.IdAgriculturalUse, op.Code, ccra);
-                rowa.WriteNonEmptyString(RawAgriculturalUses.IdFood, op.Food.Code, ccra);
-                rowa.WriteNonEmptyString(RawAgriculturalUses.Location, op.Location, ccra);
-                rowa.WriteNonNaNDouble(RawAgriculturalUses.PercentageCropTreated, op.OccurrenceFraction * 100D, ccra);
-                rowa.WriteNonNullDateTime(RawAgriculturalUses.StartDate, op.StartDate, ccra);
-                rowa.WriteNonNullDateTime(RawAgriculturalUses.EndDate, op.EndDate, ccra);
-                dta.Rows.Add(rowa);
-
-                foreach (var agc in op.Compounds) {
-                    var rowc = dtc.NewRow();
-                    rowc.WriteNonEmptyString(RawAgriculturalUses_has_Compounds.IdAgriculturalUse, op.Code);
-                    rowc.WriteNonEmptyString(RawAgriculturalUses_has_Compounds.IdCompound, agc.Code);
-                    dtc.Rows.Add(rowc);
-                }
-            }
-
-            writeToCsv(tempFolder, tda, dta, ccra);
-            writeToCsv(tempFolder, tdc, dtc);
         }
     }
 }

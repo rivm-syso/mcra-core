@@ -1,8 +1,6 @@
-﻿using MCRA.Utils.DataFileReading;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Extensions;
-using MCRA.General.TableDefinitions;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
 
 namespace MCRA.Data.Management.CompiledDataManagers {
@@ -56,39 +54,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 _data.AllEffects = allEffects;
             }
             return _data.AllEffects;
-        }
-
-        private static void writeEffectsDataToCsv(string tempFolder, IEnumerable<Effect> effects) {
-            if (!effects?.Any() ?? true) {
-                return;
-            }
-
-            var tde = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.Effects);
-            var dte = tde.CreateDataTable();
-
-            var ccr = new int[Enum.GetNames(typeof(RawEffects)).Length];
-
-            foreach (var eff in effects) {
-                var effectRow = dte.NewRow();
-                effectRow.WriteNonEmptyString(RawEffects.IdEffect, eff.Code, ccr);
-                effectRow.WriteNonEmptyString(RawEffects.Name, eff.Name, ccr);
-                effectRow.WriteNonEmptyString(RawEffects.Description, eff.Description, ccr);
-                effectRow.WriteNonNullBoolean(RawEffects.IsGenotoxic, eff.IsGenotoxic, ccr);
-                effectRow.WriteNonNullBoolean(RawEffects.IsAChEInhibitor, eff.IsAChEInhibitor, ccr);
-                effectRow.WriteNonNullBoolean(RawEffects.IsNonGenotoxicCarcinogenic, eff.IsNonGenotoxicCarcinogenic, ccr);
-                effectRow.WriteNonEmptyString(RawEffects.BiologicalOrganisation, eff.BiologicalOrganisationType.ToString(), ccr);
-                effectRow.WriteNonEmptyString(RawEffects.KeyEventProcess, eff.KeyEventProcess, ccr);
-                effectRow.WriteNonEmptyString(RawEffects.KeyEventObject, eff.KeyEventObject, ccr);
-                effectRow.WriteNonEmptyString(RawEffects.KeyEventAction, eff.KeyEventAction, ccr);
-                effectRow.WriteNonEmptyString(RawEffects.KeyEventCell, eff.KeyEventCell, ccr);
-                effectRow.WriteNonEmptyString(RawEffects.KeyEventOrgan, eff.KeyEventOrgan, ccr);
-                effectRow.WriteNonEmptyString(RawEffects.AOPWikiIds, eff.AOPWikiIds, ccr);
-                effectRow.WriteNonEmptyString(RawEffects.Reference, eff.Reference, ccr);
-
-                dte.Rows.Add(effectRow);
-            }
-
-            writeToCsv(tempFolder, tde, dte, ccr);
         }
     }
 }

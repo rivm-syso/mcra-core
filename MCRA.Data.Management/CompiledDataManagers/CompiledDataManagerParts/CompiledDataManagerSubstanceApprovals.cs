@@ -1,9 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Extensions;
-using MCRA.General.TableDefinitions;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
-using MCRA.Utils.DataFileReading;
 
 namespace MCRA.Data.Management.CompiledDataManagers {
     public partial class CompiledDataManager {
@@ -39,23 +37,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 _data.AllSubstanceApprovals = allSubstanceApprovals;
             }
             return _data.AllSubstanceApprovals;
-        }
-
-        private static void writeSubstanceApprovalsDataToCsv(string tempFolder, IEnumerable<SubstanceApproval> substanceApprovals) {
-            if (!substanceApprovals?.Any() ?? true) {
-                return;
-            }
-
-            var tdSubstanceApprovals = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.SubstanceApprovals);
-            var dtASubstanceApprovals = tdSubstanceApprovals.CreateDataTable();
-            var ccr = new int[Enum.GetNames(typeof(RawSubstanceApprovals)).Length];
-            foreach (var t in substanceApprovals) {
-                var r = dtASubstanceApprovals.NewRow();
-                r.WriteNonEmptyString(RawSubstanceApprovals.IdSubstance, t.Substance?.Code, ccr);
-                r.WriteNonNullBoolean(RawSubstanceApprovals.IsApproved, t.IsApproved, ccr);
-                dtASubstanceApprovals.Rows.Add(r);
-            }
-            writeToCsv(tempFolder, tdSubstanceApprovals, dtASubstanceApprovals);
         }
     }
 }

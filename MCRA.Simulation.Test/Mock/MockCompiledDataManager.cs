@@ -225,20 +225,6 @@ namespace MCRA.Simulation.Test.Mock {
             return _data.AllFocalFoodSamples;
         }
 
-        /// <summary>
-        /// Write the data of this instance to a zipped CSV file
-        /// </summary>
-        /// <param name="filename"></param>
-        /// <returns>true if succeeded</returns>
-        public bool WriteToZippedCsvFile(string filename) {
-            try {
-                CompiledDataManager.WriteDataToZippedCsv(_data, filename);
-                return true;
-            } catch (Exception) {
-                return false;
-            }
-        }
-
         public IList<PopulationConsumptionSingleValue> GetAllPopulationConsumptionSingleValues() {
             return _data.AllPopulationConsumptionSingleValues;
         }

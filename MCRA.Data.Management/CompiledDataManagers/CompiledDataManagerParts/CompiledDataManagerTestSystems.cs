@@ -1,9 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Extensions;
-using MCRA.General.TableDefinitions;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
-using MCRA.Utils.DataFileReading;
 
 namespace MCRA.Data.Management.CompiledDataManagers {
     public partial class CompiledDataManager {
@@ -57,32 +55,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 _data.AllTestSystems = allTestSystems;
             }
             return _data.AllTestSystems;
-        }
-
-        private static void writeTestSystemsDataToCsv(string tempFolder, IEnumerable<TestSystem> testSystems) {
-            if (!testSystems?.Any() ?? true) {
-                return;
-            }
-
-            var tdt = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.TestSystems);
-            var dtt = tdt.CreateDataTable();
-
-            foreach (var ts in testSystems) {
-                var rowts = dtt.NewRow();
-                rowts.WriteNonEmptyString(RawTestSystems.IdSystem, ts.Code);
-                rowts.WriteNonEmptyString(RawTestSystems.Name, ts.Name);
-                rowts.WriteNonEmptyString(RawTestSystems.Description, ts.Description);
-                rowts.WriteNonEmptyString(RawTestSystems.TestSystemType, ts.TestSystemType.ToString());
-                rowts.WriteNonEmptyString(RawTestSystems.Organ, ts.Organ);
-                rowts.WriteNonEmptyString(RawTestSystems.Species, ts.Species);
-                rowts.WriteNonEmptyString(RawTestSystems.Strain, ts.Strain);
-                rowts.WriteNonEmptyString(RawTestSystems.ExposureRouteType, ts.ExposureRoute.ToString());
-                rowts.WriteNonEmptyString(RawTestSystems.Reference, ts.Reference);
-
-                dtt.Rows.Add(rowts);
-            }
-
-            writeToCsv(tempFolder, tdt, dtt);
         }
     }
 }

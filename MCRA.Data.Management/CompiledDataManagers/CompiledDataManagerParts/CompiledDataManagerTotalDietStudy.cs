@@ -1,9 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Extensions;
-using MCRA.General.TableDefinitions;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
-using MCRA.Utils.DataFileReading;
 
 namespace MCRA.Data.Management.CompiledDataManagers {
     public partial class CompiledDataManager {
@@ -46,53 +44,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 }
             }
             return _data.AllTDSFoodSampleCompositions;
-        }
-
-        private static void writeFoodSampleCompositionsToCsv(string tempFolder, IEnumerable<TDSFoodSampleComposition> compositions) {
-            if (!compositions?.Any() ?? true) {
-                return;
-            }
-
-            var td = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.TdsFoodSampleCompositions);
-            var dt = td.CreateDataTable();
-
-            foreach (var c in compositions) {
-                var row = dt.NewRow();
-
-                row.WriteNonEmptyString(RawTDSFoodSampleCompositions.IdFood, c.Food.Code);
-                row.WriteNonEmptyString(RawTDSFoodSampleCompositions.IdTDSFood, c.TDSFood.Code);
-                row.WriteNonEmptyString(RawTDSFoodSampleCompositions.Regionality, c.Regionality);
-                row.WriteNonEmptyString(RawTDSFoodSampleCompositions.Seasonality, c.Seasonality);
-                row.WriteNonEmptyString(RawTDSFoodSampleCompositions.Description, c.Description);
-                row.WriteNonNaNDouble(RawTDSFoodSampleCompositions.PooledAmount, c.PooledAmount);
-
-                dt.Rows.Add(row);
-            }
-            writeToCsv(tempFolder, td, dt);
-        }
-
-
-        private static void writeConcentrationDistributionsDataToCsv(string tempFolder, IEnumerable<ConcentrationDistribution> distributions) {
-            if (!distributions?.Any() ?? true) {
-                return;
-            }
-
-            var td = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.ConcentrationDistributions);
-            var dt = td.CreateDataTable();
-
-            foreach (var d in distributions) {
-                var row = dt.NewRow();
-
-                row.WriteNonEmptyString(RawConcentrationDistributions.IdFood, d.Food.Code);
-                row.WriteNonEmptyString(RawConcentrationDistributions.IdCompound, d.Compound.Code);
-                row.WriteNonNaNDouble(RawConcentrationDistributions.Mean, d.Mean);
-                row.WriteNonNullDouble(RawConcentrationDistributions.Percentile, d.Percentile);
-                row.WriteNonNullDouble(RawConcentrationDistributions.Percentage, d.Percentage);
-                row.WriteNonNullDouble(RawConcentrationDistributions.Limit, d.Limit);
-
-                dt.Rows.Add(row);
-            }
-            writeToCsv(tempFolder, td, dt);
         }
     }
 }

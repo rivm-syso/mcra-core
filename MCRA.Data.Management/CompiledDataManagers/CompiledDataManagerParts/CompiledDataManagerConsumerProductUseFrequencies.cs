@@ -1,9 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Extensions;
-using MCRA.General.TableDefinitions;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
-using MCRA.Utils.DataFileReading;
 
 namespace MCRA.Data.Management.CompiledDataManagers {
     public partial class CompiledDataManager {
@@ -118,46 +116,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 _data.AllIndividualConsumerProductUseFrequencies = allIndividualConsumerProductUseFrequencies;
             }
             return _data.AllIndividualConsumerProductUseFrequencies;
-        }
-
-        private static void writeConsumerProductSurveyDataToCsv(string tempFolder, IEnumerable<ConsumerProductSurvey> surveys) {
-            if (!surveys?.Any() ?? true) {
-                return;
-            }
-
-            var tdsv = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.ConsumerProductSurveys);
-            var dtsv = tdsv.CreateDataTable();
-
-            foreach (var survey in surveys) {
-                var rowSv = dtsv.NewRow();
-                rowSv.WriteNonEmptyString(RawConsumerProductSurveys.Id, survey.Code);
-                rowSv.WriteNonEmptyString(RawConsumerProductSurveys.Name, survey.Name);
-                rowSv.WriteNonEmptyString(RawConsumerProductSurveys.Description, survey.Description);
-                rowSv.WriteNonEmptyString(RawConsumerProductSurveys.Country, survey.Country);
-                rowSv.WriteNonEmptyString(RawConsumerProductSurveys.BodyWeightUnit, survey.BodyWeightUnit.ToString());
-                rowSv.WriteNonEmptyString(RawConsumerProductSurveys.IdPopulation, survey.IdPopulation);
-                rowSv.WriteNonNullDateTime(RawConsumerProductSurveys.StartDate, survey.StartDate);
-                rowSv.WriteNonNullDateTime(RawConsumerProductSurveys.EndDate, survey.EndDate);
-                dtsv.Rows.Add(rowSv);
-            }
-            writeToCsv(tempFolder, tdsv, dtsv);
-        }
-
-        private static void writeIndividualConsumerProductUseFrequenciesToCsv(string tempFolder, IEnumerable<IndividualConsumerProductUseFrequency> frequencies) {
-            if (!frequencies?.Any() ?? true) {
-                return;
-            }
-            var tds = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.ConsumerProductUseFrequencies);
-            var dts = tds.CreateDataTable();
-
-            foreach (var freq in frequencies) {
-                var rowSample = dts.NewRow();
-                rowSample.WriteNonEmptyString(RawConsumerProductUseFrequencies.IdIndividual, freq.Individual.Code);
-                rowSample.WriteNonEmptyString(RawConsumerProductUseFrequencies.IdProduct, freq.Product.Code);
-                rowSample.WriteNonNullDouble(RawConsumerProductUseFrequencies.Frequency, freq.Frequency);
-                dts.Rows.Add(rowSample);
-            }
-            writeToCsv(tempFolder, tds, dts);
         }
     }
 }

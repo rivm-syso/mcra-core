@@ -1,9 +1,8 @@
-﻿using MCRA.Utils.DataFileReading;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Extensions;
-using MCRA.General.TableDefinitions;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
+using MCRA.Utils.DataFileReading;
 
 namespace MCRA.Data.Management.CompiledDataManagers {
     public partial class CompiledDataManager {
@@ -45,27 +44,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 _data.AllEffectRepresentations = effectRepresentations;
             }
             return _data.AllEffectRepresentations;
-        }
-
-        private static void writeEffectRepresentationsToCsv(string tempFolder, IEnumerable<EffectRepresentation> representations) {
-            if (!representations?.Any() ?? true) {
-                return;
-            }
-
-            var tde = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.EffectRepresentations);
-            var dte = tde.CreateDataTable();
-
-            foreach (var er in representations) {
-                var rdm = dte.NewRow();
-                rdm.WriteNonEmptyString(RawEffectRepresentations.IdEffect, er.Effect.Code);
-                rdm.WriteNonEmptyString(RawEffectRepresentations.IdResponse, er.Response.Code);
-                rdm.WriteNonNullDouble(RawEffectRepresentations.BenchmarkResponse, er.BenchmarkResponse);
-                rdm.WriteNonEmptyString(RawEffectRepresentations.BenchmarkResponseType, er.BenchmarkResponseType.ToString());
-
-                dte.Rows.Add(rdm);
-            }
-
-            writeToCsv(tempFolder, tde, dte);
         }
     }
 }

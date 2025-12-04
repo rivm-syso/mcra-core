@@ -104,8 +104,6 @@ namespace MCRA.Simulation.TaskExecution.TaskExecuters {
                     //save settings xml of project after the run
                     var finalSettingsXml = XmlSerialization.ToXml(project);
                     File.WriteAllText(Path.Combine(tempDataFolder.FullName, "_FinalProjectSettings.xml"), finalSettingsXml);
-                    //save zipped CSV of compiled data after the simulation has run
-                    subsetManager.WriteToZippedCsvFile(Path.Combine(tempDataFolder.FullName, "_CompiledDataCsv.zip"));
                 }
 
                 localProgress.Update("Task completed", 100);

@@ -1,9 +1,8 @@
-﻿using MCRA.Utils.DataFileReading;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Extensions;
-using MCRA.General.TableDefinitions;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
+using MCRA.Utils.DataFileReading;
 
 namespace MCRA.Data.Management.CompiledDataManagers {
     public partial class CompiledDataManager {
@@ -78,41 +77,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 _data.AllMolecularDockingModels = allMolecularDockingModels;
             }
             return _data.AllMolecularDockingModels;
-        }
-
-        private static void writeMolecularDockingModelDataToCsv(string tempFolder, IEnumerable<MolecularDockingModel> models) {
-            if (!models?.Any() ?? true) {
-                return;
-            }
-
-            var tdm = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.MolecularDockingModels);
-            var dtm = tdm.CreateDataTable();
-            var tdb = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.MolecularBindingEnergies);
-            var dtb = tdb.CreateDataTable();
-
-            foreach (var instance in models) {
-                var row = dtm.NewRow();
-                row.WriteNonEmptyString(RawMolecularDockingModels.Id, instance.Code);
-                row.WriteNonEmptyString(RawMolecularDockingModels.IdEffect, instance.Effect?.Code);
-                row.WriteNonEmptyString(RawMolecularDockingModels.Name, instance.Name);
-                row.WriteNonEmptyString(RawMolecularDockingModels.Description, instance.Description);
-                row.WriteNonEmptyString(RawMolecularDockingModels.Reference, instance.Reference);
-                row.WriteNonNullDouble(RawMolecularDockingModels.Threshold, instance.Threshold);
-                row.WriteNonNullInt32(RawMolecularDockingModels.NumberOfReceptors, instance.NumberOfReceptors);
-
-                dtm.Rows.Add(row);
-                if (instance.BindingEnergies != null) {
-                    foreach (var param in instance.BindingEnergies) {
-                        var rowb = dtb.NewRow();
-                        rowb.WriteNonEmptyString(RawMolecularBindingEnergies.IdMolecularDockingModel, instance.Code);
-                        rowb.WriteNonEmptyString(RawMolecularBindingEnergies.IdCompound, param.Key.Code);
-                        rowb.WriteNonNaNDouble(RawMolecularBindingEnergies.BindingEnergy, param.Value);
-                        dtb.Rows.Add(rowb);
-                    }
-                }
-            }
-            writeToCsv(tempFolder, tdm, dtm);
-            writeToCsv(tempFolder, tdb, dtb);
         }
     }
 }

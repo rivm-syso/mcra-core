@@ -1,7 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Extensions;
-using MCRA.General.TableDefinitions;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
 using MCRA.Utils.DataFileReading;
 
@@ -43,27 +42,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 _data.AllConsumerProductConcentrations = allConsumerProductConcentrations;
             }
             return _data.AllConsumerProductConcentrations;
-        }
-
-        private static void writeConsumerProductConcentrations(string tempFolder, IEnumerable<ConsumerProductConcentration> consumerProductConcentration) {
-            if (!consumerProductConcentration?.Any() ?? true) {
-                return;
-            }
-
-            var td = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.ConsumerProductConcentrations);
-            var dt = td.CreateDataTable();
-            var ccr = new int[Enum.GetNames(typeof(RawConsumerProductConcentrations)).Length];
-
-            foreach (var concentration in consumerProductConcentration) {
-                var row = dt.NewRow();
-                row.WriteNonEmptyString(RawConsumerProductConcentrations.IdProduct, concentration.Product.Code, ccr);
-                row.WriteNonEmptyString(RawConsumerProductConcentrations.IdSubstance, concentration.Substance.Code, ccr);
-                row.WriteNonNaNDouble(RawConsumerProductConcentrations.Concentration, concentration.Concentration, ccr);
-                row.WriteNonEmptyString(RawConsumerProductConcentrations.Unit, concentration.Unit.ToString(), ccr);
-                row.WriteNonNullDouble(RawConsumerProductConcentrations.SamplingWeight, concentration.SamplingWeight, ccr);
-                dt.Rows.Add(row);
-            }
-            writeToCsv(tempFolder, td, dt, ccr);
         }
     }
 }

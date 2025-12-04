@@ -1,7 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Extensions;
-using MCRA.General.TableDefinitions;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
 using MCRA.Utils.DataFileReading;
 
@@ -89,7 +88,8 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         };
                                         allPbkModelInstances.Add(idModelInstance, instance);
                                     }
-                                };
+                                }
+                                ;
                             }
                         }
 
@@ -122,44 +122,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 _data.AllKineticModelInstances = allPbkModelInstances.Values.ToList();
             }
             return _data.AllKineticModelInstances;
-        }
-
-        private static void writePbkModelDataToCsv(string tempFolder, IEnumerable<KineticModelInstance> instances) {
-            if (!instances?.Any() ?? true) {
-                return;
-            }
-
-            var tdi = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.KineticModelInstances);
-            var dti = tdi.CreateDataTable();
-            var tdp = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.KineticModelInstanceParameters);
-            var dtp = tdp.CreateDataTable();
-
-            foreach (var instance in instances) {
-                var row = dti.NewRow();
-                row.WriteNonEmptyString(RawKineticModelInstances.IdTestSystem, instance.IdTestSystem);
-                row.WriteNonEmptyString(RawKineticModelInstances.Substances, instance.Substances != null ? string.Join(",", instance.Substances.Select(c => c.Code)) : string.Empty);
-                row.WriteNonEmptyString(RawKineticModelInstances.IdModelInstance, instance.IdModelInstance);
-                row.WriteNonEmptyString(RawKineticModelInstances.IdModelDefinition, instance.IdModelDefinition);
-                row.WriteNonEmptyString(RawKineticModelInstances.Reference, instance.Reference);
-                row.WriteNonEmptyString(RawKineticModelInstances.IdTestSystem, instance.IdTestSystem);
-
-                dti.Rows.Add(row);
-                if (instance.KineticModelInstanceParameters != null) {
-                    foreach (var param in instance.KineticModelInstanceParameters.Values) {
-                        var rowp = dtp.NewRow();
-                        rowp.WriteNonEmptyString(RawKineticModelInstanceParameters.IdModelInstance, param.IdModelInstance);
-                        rowp.WriteNonEmptyString(RawKineticModelInstanceParameters.Parameter, param.Parameter);
-                        rowp.WriteNonEmptyString(RawKineticModelInstanceParameters.Description, param.Description);
-                        rowp.WriteNonNaNDouble(RawKineticModelInstanceParameters.Value, param.Value);
-                        rowp.WriteNonEmptyString(RawKineticModelInstanceParameters.DistributionType, param.DistributionType.ToString());
-                        rowp.WriteNonNullDouble(RawKineticModelInstanceParameters.CvVariability, param.CvVariability);
-                        rowp.WriteNonNullDouble(RawKineticModelInstanceParameters.CvUncertainty, param.CvUncertainty);
-                        dtp.Rows.Add(rowp);
-                    }
-                }
-            }
-            writeToCsv(tempFolder, tdi, dti);
-            writeToCsv(tempFolder, tdp, dtp);
         }
     }
 }

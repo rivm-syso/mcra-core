@@ -2,8 +2,6 @@
 
 namespace MCRA.Data.Management {
     public interface ICompiledDataManager {
-        bool WriteToZippedCsvFile(string filename);
-
         ICollection<OccurrencePattern> GetAllOccurrencePatterns();
         IDictionary<string, AnalyticalMethod> GetAllAnalyticalMethods();
         IDictionary<string, AnalyticalMethod> GetAllFocalFoodAnalyticalMethods();

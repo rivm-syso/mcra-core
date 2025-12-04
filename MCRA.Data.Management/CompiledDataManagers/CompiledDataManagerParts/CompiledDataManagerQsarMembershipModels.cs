@@ -1,9 +1,8 @@
-﻿using MCRA.Utils.DataFileReading;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Extensions;
-using MCRA.General.TableDefinitions;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
+using MCRA.Utils.DataFileReading;
 
 namespace MCRA.Data.Management.CompiledDataManagers {
     public partial class CompiledDataManager {
@@ -74,41 +73,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 _data.AllQsarMembershipModels = qsarMembershipModels;
             }
             return _data.AllQsarMembershipModels;
-        }
-
-        private static void writeQsarMembershipModelDataToCsv(string tempFolder, IEnumerable<QsarMembershipModel> models) {
-            if (!models?.Any() ?? true) {
-                return;
-            }
-
-            var tdm = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.QsarMembershipModels);
-            var dtm = tdm.CreateDataTable();
-            var tds = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.QsarMembershipScores);
-            var dts = tds.CreateDataTable();
-
-            foreach (var instance in models) {
-                var row = dtm.NewRow();
-                row.WriteNonEmptyString(RawQSARMembershipModels.Id, instance.Code);
-                row.WriteNonEmptyString(RawQSARMembershipModels.IdEffect, instance.Effect?.Code);
-                row.WriteNonEmptyString(RawQSARMembershipModels.Name, instance.Name);
-                row.WriteNonEmptyString(RawQSARMembershipModels.Description, instance.Description);
-                row.WriteNonEmptyString(RawQSARMembershipModels.Reference, instance.Reference);
-                row.WriteNonNullDouble(RawQSARMembershipModels.Accuracy, instance.Accuracy);
-                row.WriteNonNullDouble(RawQSARMembershipModels.Sensitivity, instance.Sensitivity);
-
-                dtm.Rows.Add(row);
-                if (instance.MembershipScores != null) {
-                    foreach (var param in instance.MembershipScores) {
-                        var rowb = dts.NewRow();
-                        rowb.WriteNonEmptyString(RawQSARMembershipScores.IdQSARMembershipModel, instance.Code);
-                        rowb.WriteNonEmptyString(RawQSARMembershipScores.IdSubstance, param.Key.Code);
-                        rowb.WriteNonNaNDouble(RawQSARMembershipScores.MembershipScore, param.Value);
-                        dts.Rows.Add(rowb);
-                    }
-                }
-            }
-            writeToCsv(tempFolder, tdm, dtm);
-            writeToCsv(tempFolder, tds, dts);
         }
     }
 }

@@ -1,9 +1,8 @@
-﻿using MCRA.Utils.DataFileReading;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Extensions;
-using MCRA.General.TableDefinitions;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
+using MCRA.Utils.DataFileReading;
 
 namespace MCRA.Data.Management.CompiledDataManagers {
     public partial class CompiledDataManager {
@@ -49,33 +48,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 _data.AllPopulationConsumptionSingleValues = allValues;
             }
             return _data.AllPopulationConsumptionSingleValues;
-        }
-
-
-        private static void writePopulationConsumptionSingleValuesToCsv(string tempFolder, IEnumerable<PopulationConsumptionSingleValue> values) {
-            if (!values?.Any() ?? true) {
-                return;
-            }
-
-            var tdc = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.PopulationConsumptionSingleValues);
-            var dtc = tdc.CreateDataTable();
-
-            var ccr = new int[Enum.GetNames(typeof(RawPopulationConsumptionSingleValues)).Length];
-
-            foreach (var v in values) {
-                var rowc = dtc.NewRow();
-
-                rowc.WriteNonEmptyString(RawPopulationConsumptionSingleValues.IdPopulation, v.Population.Code, ccr);
-                rowc.WriteNonEmptyString(RawPopulationConsumptionSingleValues.IdFood, v.Food.Code, ccr);
-                rowc.WriteNonEmptyString(RawPopulationConsumptionSingleValues.ValueType, v.ValueType.ToString(), ccr);
-                rowc.WriteNonNullDouble(RawPopulationConsumptionSingleValues.Percentile, v.Percentile, ccr);
-                rowc.WriteNonNaNDouble(RawPopulationConsumptionSingleValues.ConsumptionAmount, v.ConsumptionAmount, ccr);
-                rowc.WriteNonEmptyString(RawPopulationConsumptionSingleValues.ConsumptionUnit, v.ConsumptionUnit.ToString(), ccr);
-                rowc.WriteNonEmptyString(RawPopulationConsumptionSingleValues.Reference, v.Reference, ccr);
-
-                dtc.Rows.Add(rowc);
-            }
-            writeToCsv(tempFolder, tdc, dtc, ccr);
         }
     }
 }

@@ -1,6 +1,4 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Management.RawDataObjectConverters;
-using MCRA.Data.Management.RawDataWriters;
 using MCRA.General;
 using MCRA.General.Extensions;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
@@ -91,18 +89,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 _data.AllTargetExposureModels = allTargetExposureModels;
             }
             return _data.AllTargetExposureModels;
-        }
-
-        private static void writeTargetExposureModelsToCsv(string tempFolder, IEnumerable<TargetExposureModel> TargetExposureModels) {
-            if (!TargetExposureModels?.Any() ?? true) {
-                return;
-            }
-
-            var mapper = new RawTargetExposuresDataConverter();
-            var rawData = mapper.ToRaw(TargetExposureModels);
-            var writer = new CsvRawDataWriter(tempFolder);
-            writer.Set(rawData);
-            writer.Store();
         }
     }
 }

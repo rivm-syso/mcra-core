@@ -1,6 +1,4 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Management.RawDataObjectConverters;
-using MCRA.Data.Management.RawDataWriters;
 using MCRA.General;
 using MCRA.General.Extensions;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
@@ -76,18 +74,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                     .ToDictionary(r => r.Key, r => r.ToList(), StringComparer.OrdinalIgnoreCase);
             }
             return _data.AllRelativePotencyFactors;
-        }
-
-        private static void writeRelativePotencyFactorsDataToCsv(string tempFolder, IEnumerable<RelativePotencyFactor> data) {
-            if (!data?.Any() ?? true) {
-                return;
-            }
-
-            var mapper = new RawRelativePotencyFactorDataConverter();
-            var rawData = mapper.ToRaw(data);
-            var writer = new CsvRawDataWriter(tempFolder);
-            writer.Set(rawData);
-            writer.Store();
         }
     }
 }

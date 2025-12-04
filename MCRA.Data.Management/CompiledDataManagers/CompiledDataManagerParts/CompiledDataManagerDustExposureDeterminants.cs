@@ -1,7 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Extensions;
-using MCRA.General.TableDefinitions;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
 using MCRA.Utils.DataFileReading;
 
@@ -130,106 +129,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 _data.AllDustAvailabilityFractions = allDustAvailabilityFractions;
             }
             return _data.AllDustAvailabilityFractions;
-        }
-
-        private static void writeDustIngestionsToCsv(string tempFolder, IEnumerable<DustIngestion> dustIngestions) {
-            if (!dustIngestions?.Any() ?? true) {
-                return;
-            }
-
-            var td = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.DustIngestions);
-            var dt = td.CreateDataTable();
-            var ccr = new int[Enum.GetNames(typeof(RawDustIngestions)).Length];
-
-            foreach (var dustIngestion in dustIngestions) {
-                var row = dt.NewRow();
-                row.WriteNonEmptyString(RawDustIngestions.IdSubgroup, dustIngestion.idSubgroup, ccr);
-                row.WriteNonNullDouble(RawDustIngestions.AgeLower, dustIngestion.AgeLower, ccr);
-                row.WriteNonEmptyString(RawDustIngestions.Sex, dustIngestion.Sex.ToString(), ccr);
-                row.WriteNonNullDouble(RawDustIngestions.Value, dustIngestion.Value, ccr);
-                row.WriteNonEmptyString(RawDustIngestions.ExposureUnit, dustIngestion.ExposureUnit.ToString(), ccr);
-                row.WriteNonEmptyString(RawDustIngestions.DistributionType, dustIngestion.DistributionType.ToString(), ccr);
-                row.WriteNonNullDouble(RawDustIngestions.CvVariability, dustIngestion.CvVariability, ccr);
-                dt.Rows.Add(row);
-            }
-
-            writeToCsv(tempFolder, td, dt, ccr);
-        }
-
-        private static void writeDustBodyExposureFractionsToCsv(
-            string tempFolder,
-            IEnumerable<DustBodyExposureFraction> dustBodyExposureFractions
-        ) {
-            if (!dustBodyExposureFractions?.Any() ?? true) {
-                return;
-            }
-
-            var td = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.DustBodyExposureFractions);
-            var dt = td.CreateDataTable();
-            var ccr = new int[Enum.GetNames(typeof(RawDustBodyExposureFractions)).Length];
-
-            foreach (var dustBodyExposureFraction in dustBodyExposureFractions) {
-                var row = dt.NewRow();
-                row.WriteNonEmptyString(RawDustBodyExposureFractions.IdSubgroup, dustBodyExposureFraction.idSubgroup, ccr);
-                row.WriteNonNullDouble(RawDustBodyExposureFractions.AgeLower, dustBodyExposureFraction.AgeLower, ccr);
-                row.WriteNonEmptyString(RawDustBodyExposureFractions.Sex, dustBodyExposureFraction.Sex.ToString(), ccr);
-                row.WriteNonNullDouble(RawDustBodyExposureFractions.Value, dustBodyExposureFraction.Value, ccr);
-                row.WriteNonEmptyString(RawDustBodyExposureFractions.DistributionType, dustBodyExposureFraction.DistributionType.ToString(), ccr);
-                row.WriteNonNullDouble(RawDustBodyExposureFractions.CvVariability, dustBodyExposureFraction.CvVariability, ccr);
-                dt.Rows.Add(row);
-            }
-
-            writeToCsv(tempFolder, td, dt, ccr);
-        }
-
-        private static void writeDustAdherenceAmountsToCsv(
-            string tempFolder,
-            IEnumerable<DustAdherenceAmount> dustAdherenceAmounts
-        ) {
-            if (!dustAdherenceAmounts?.Any() ?? true) {
-                return;
-            }
-
-            var td = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.DustAdherenceAmounts);
-            var dt = td.CreateDataTable();
-            var ccr = new int[Enum.GetNames(typeof(RawDustAdherenceAmounts)).Length];
-
-            foreach (var dustAdherenceAmount in dustAdherenceAmounts) {
-                var row = dt.NewRow();
-                row.WriteNonEmptyString(RawDustAdherenceAmounts.IdSubgroup, dustAdherenceAmount.idSubgroup, ccr);
-                row.WriteNonNullDouble(RawDustAdherenceAmounts.AgeLower, dustAdherenceAmount.AgeLower, ccr);
-                row.WriteNonEmptyString(RawDustAdherenceAmounts.Sex, dustAdherenceAmount.Sex.ToString(), ccr);
-                row.WriteNonNullDouble(RawDustAdherenceAmounts.Value, dustAdherenceAmount.Value, ccr);
-                row.WriteNonEmptyString(RawDustAdherenceAmounts.DistributionType, dustAdherenceAmount.DistributionType.ToString(), ccr);
-                row.WriteNonNullDouble(RawDustAdherenceAmounts.CvVariability, dustAdherenceAmount.CvVariability, ccr);
-                dt.Rows.Add(row);
-            }
-
-            writeToCsv(tempFolder, td, dt, ccr);
-        }
-
-        private static void writeDustAvailabilityFractionsToCsv(string tempFolder, IEnumerable<DustAvailabilityFraction> dustAvailabilityFractions) {
-            if (!dustAvailabilityFractions?.Any() ?? true) {
-                return;
-            }
-
-            var td = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.DustAvailabilityFractions);
-            var dt = td.CreateDataTable();
-            var ccr = new int[Enum.GetNames(typeof(RawDustAvailabilityFractions)).Length];
-
-            foreach (var dustAvailabilityFraction in dustAvailabilityFractions) {
-                var row = dt.NewRow();
-                row.WriteNonEmptyString(RawDustAvailabilityFractions.IdSubgroup, dustAvailabilityFraction.idSubgroup, ccr);
-                row.WriteNonEmptyString(RawDustAvailabilityFractions.IdSubstance, dustAvailabilityFraction.Substance?.Code, ccr);
-                row.WriteNonNullDouble(RawDustAvailabilityFractions.AgeLower, dustAvailabilityFraction.AgeLower, ccr);
-                row.WriteNonEmptyString(RawDustAvailabilityFractions.Sex, dustAvailabilityFraction.Sex.ToString(), ccr);
-                row.WriteNonNullDouble(RawDustAvailabilityFractions.Value, dustAvailabilityFraction.Value, ccr);
-                row.WriteNonEmptyString(RawDustAvailabilityFractions.DistributionType, dustAvailabilityFraction.DistributionType.ToString(), ccr);
-                row.WriteNonNullDouble(RawDustAvailabilityFractions.CvVariability, dustAvailabilityFraction.CvVariability, ccr);
-                dt.Rows.Add(row);
-            }
-
-            writeToCsv(tempFolder, td, dt, ccr);
         }
     }
 }

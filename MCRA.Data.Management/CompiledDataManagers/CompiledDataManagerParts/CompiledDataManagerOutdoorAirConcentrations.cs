@@ -1,9 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Extensions;
-using MCRA.General.TableDefinitions;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
-using MCRA.Utils.DataFileReading;
 
 namespace MCRA.Data.Management.CompiledDataManagers {
     public partial class CompiledDataManager {
@@ -45,27 +43,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 _data.AllOutdoorAirConcentrations = allOutdoorAirConcentrations;
             }
             return _data.AllOutdoorAirConcentrations;
-        }
-
-        private static void writeOutdoorAirConcentrationsToCsv(string tempFolder, IEnumerable<OutdoorAirConcentration> outdoorAirConcentrations) {
-            if (!outdoorAirConcentrations?.Any() ?? true) {
-                return;
-            }
-
-            var td = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.OutdoorAirConcentrations);
-            var dt = td.CreateDataTable();
-            var ccr = new int[Enum.GetNames(typeof(RawOutdoorAirConcentrations)).Length];
-
-            foreach (var concentration in outdoorAirConcentrations) {
-                var row = dt.NewRow();
-                row.WriteNonEmptyString(RawOutdoorAirConcentrations.IdSample, concentration.idSample, ccr);
-                row.WriteNonEmptyString(RawOutdoorAirConcentrations.IdSubstance, concentration.Substance?.Code, ccr);
-                row.WriteNonEmptyString(RawOutdoorAirConcentrations.Location, concentration.Location, ccr);
-                row.WriteNonNaNDouble(RawOutdoorAirConcentrations.Concentration, concentration.Concentration, ccr);
-                row.WriteNonEmptyString(RawOutdoorAirConcentrations.Unit, concentration.Unit.ToString(), ccr);
-                dt.Rows.Add(row);
-            }
-            writeToCsv(tempFolder, td, dt, ccr);
         }
     }
 }

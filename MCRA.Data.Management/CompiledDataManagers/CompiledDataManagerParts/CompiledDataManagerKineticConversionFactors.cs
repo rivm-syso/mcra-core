@@ -1,7 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Extensions;
-using MCRA.General.TableDefinitions;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
 using MCRA.Utils.DataFileReading;
 
@@ -88,35 +87,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 _data.AllKineticConversionFactors = kineticConversionFactors;
             }
             return _data.AllKineticConversionFactors;
-        }
-
-        private static void writeKineticConversionFactorDataToCsv(string tempFolder, IEnumerable<KineticConversionFactor> factors) {
-            if (!factors?.Any() ?? true) {
-                return;
-            }
-
-            var td = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.KineticConversionFactors);
-            var dt = td.CreateDataTable();
-
-            foreach (var factor in factors) {
-                var row = dt.NewRow();
-                row.WriteNonEmptyString(RawKineticConversionFactors.IdKineticConversionFactor, factor.IdKineticConversionFactor);
-                row.WriteNonEmptyString(RawKineticConversionFactors.IdSubstanceFrom, factor.SubstanceFrom.Code);
-                row.WriteNonEmptyString(RawKineticConversionFactors.ExposureRouteFrom, factor.ExposureRouteFrom.ToString());
-                row.WriteNonEmptyString(RawKineticConversionFactors.BiologicalMatrixFrom, factor.BiologicalMatrixFrom.ToString());
-                row.WriteNonEmptyString(RawKineticConversionFactors.ExpressionTypeFrom, factor.ExpressionTypeFrom.ToString());
-                row.WriteNonEmptyString(RawKineticConversionFactors.DoseUnitFrom, factor.DoseUnitFrom.ToString());
-                row.WriteNonEmptyString(RawKineticConversionFactors.IdSubstanceTo, factor.SubstanceTo.Code);
-                row.WriteNonEmptyString(RawKineticConversionFactors.ExposureRouteTo, factor.ExposureRouteTo.ToString());
-                row.WriteNonEmptyString(RawKineticConversionFactors.BiologicalMatrixTo, factor.BiologicalMatrixTo.ToString());
-                row.WriteNonEmptyString(RawKineticConversionFactors.DoseUnitTo, factor.DoseUnitTo.ToString());
-                row.WriteNonEmptyString(RawKineticConversionFactors.ExpressionTypeTo, factor.ExpressionTypeTo.ToString());
-                row.WriteNonNullDouble(RawKineticConversionFactors.ConversionFactor, factor.ConversionFactor);
-                row.WriteNonEmptyString(RawKineticConversionFactors.UncertaintyDistributionType, factor.Distribution.ToString());
-                row.WriteNonNullDouble(RawKineticConversionFactors.UncertaintyUpper, factor.UncertaintyUpper);
-                dt.Rows.Add(row);
-            }
-            writeToCsv(tempFolder, td, dt);
         }
     }
 }

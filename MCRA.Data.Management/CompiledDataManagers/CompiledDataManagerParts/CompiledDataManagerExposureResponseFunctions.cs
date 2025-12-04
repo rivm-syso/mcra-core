@@ -2,7 +2,6 @@
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Extensions;
-using MCRA.General.TableDefinitions;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
 using MCRA.Utils.DataFileReading;
 using NCalc;
@@ -171,41 +170,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 _data.AllExposureResponseFunctions = allExposureResponseFunctions;
             }
             return _data.AllExposureResponseFunctions;
-        }
-
-        private static void writeExposureResponseFunctionsDataToCsv(string tempFolder, IEnumerable<ExposureResponseFunction> exposureResponseFunctions) {
-            if (!exposureResponseFunctions?.Any() ?? true) {
-                return;
-            }
-
-            var tdExposureResponseFunctions = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.ExposureResponseFunctions);
-            var dtAExposureResponseFunctions = tdExposureResponseFunctions.CreateDataTable();
-            var ccr = new int[Enum.GetNames(typeof(RawExposureResponseFunctions)).Length];
-            foreach (var erf in exposureResponseFunctions) {
-                var r = dtAExposureResponseFunctions.NewRow();
-                r.WriteNonEmptyString(RawExposureResponseFunctions.IdModel, erf.Code, ccr);
-                r.WriteNonEmptyString(RawExposureResponseFunctions.Name, erf.Name, ccr);
-                r.WriteNonEmptyString(RawExposureResponseFunctions.Description, erf.Description, ccr);
-                r.WriteNonEmptyString(RawExposureResponseFunctions.IdSubstance, erf.Substance?.Code, ccr);
-                r.WriteNonEmptyString(RawExposureResponseFunctions.IdEffect, erf.Effect?.Code, ccr);
-                r.WriteNonEmptyString(RawExposureResponseFunctions.TargetLevel, erf.TargetLevel.ToString(), ccr);
-                r.WriteNonEmptyString(RawExposureResponseFunctions.ExposureRoute, erf.ExposureRoute.ToString(), ccr);
-                r.WriteNonEmptyString(RawExposureResponseFunctions.BiologicalMatrix, erf.BiologicalMatrix.ToString(), ccr);
-                r.WriteNonEmptyString(RawExposureResponseFunctions.DoseUnit, erf.ExposureUnit.GetShortDisplayName(), ccr);
-                r.WriteNonEmptyString(RawExposureResponseFunctions.ExpressionType, erf.ExpressionType.ToString(), ccr);
-                r.WriteNonEmptyString(RawExposureResponseFunctions.EffectMetric, erf.EffectMetric.ToString(), ccr);
-                r.WriteNonEmptyString(RawExposureResponseFunctions.ExposureResponseType, erf.ExposureResponseType.ToString(), ccr);
-                r.WriteNonEmptyString(RawExposureResponseFunctions.ExposureResponseSpecification, erf.ExposureResponseSpecification.ToString(), ccr);
-                r.WriteNonEmptyString(RawExposureResponseFunctions.ExposureResponseSpecificationLower, erf.ExposureResponseSpecificationLower.ToString(), ccr);
-                r.WriteNonEmptyString(RawExposureResponseFunctions.ExposureResponseSpecificationUpper, erf.ExposureResponseSpecificationUpper.ToString(), ccr);
-                r.WriteNonEmptyString(RawExposureResponseFunctions.CounterfactualValue, erf.CounterFactualValue.ToString(), ccr);
-                r.WriteNonEmptyString(RawExposureResponseFunctions.PopulationCharacteristic, erf.PopulationCharacteristic.ToString(), ccr);
-                r.WriteNonEmptyString(RawExposureResponseFunctions.EffectThresholdLower, erf.EffectThresholdLower.ToString(), ccr);
-                r.WriteNonEmptyString(RawExposureResponseFunctions.CFVUncertaintyDistribution, erf.CFVUncertaintyDistribution.ToString(), ccr); 
-                r.WriteNonNullDouble(RawExposureResponseFunctions.CFVUpper, erf.CFVUncertaintyUpper, ccr);
-                dtAExposureResponseFunctions.Rows.Add(r);
-            }
-            writeToCsv(tempFolder, tdExposureResponseFunctions, dtAExposureResponseFunctions);
         }
 
         private static Expression parseErfString(

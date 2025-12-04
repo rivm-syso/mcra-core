@@ -59,26 +59,5 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             }
             return _data.AllFoodTranslations;
         }
-
-
-        private static void writeFoodTranslationDataToCsv(string tempFolder, IEnumerable<FoodTranslation> foodTranslations) {
-            if (!foodTranslations?.Any() ?? true) {
-                return;
-            }
-
-            var tdTrans = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.FoodTranslations);
-            var dtTrans = tdTrans.CreateDataTable();
-            var ccrTrans = new int[Enum.GetNames(typeof(RawFoodTranslations)).Length];
-
-            foreach (var t in foodTranslations) {
-                var rTrans = dtTrans.NewRow();
-                rTrans.WriteNonEmptyString(RawFoodTranslations.IdFromFood, t.FoodFrom.Code, ccrTrans);
-                rTrans.WriteNonEmptyString(RawFoodTranslations.IdToFood, t.FoodTo.Code, ccrTrans);
-                rTrans.WriteNonNaNDouble(RawFoodTranslations.Proportion, t.Proportion, ccrTrans);
-                rTrans.WriteNonEmptyString(RawFoodTranslations.IdPopulation, t.IdPopulation, ccrTrans);
-                dtTrans.Rows.Add(rTrans);
-            }
-            writeToCsv(tempFolder, tdTrans, dtTrans, ccrTrans);
-        }
     }
 }

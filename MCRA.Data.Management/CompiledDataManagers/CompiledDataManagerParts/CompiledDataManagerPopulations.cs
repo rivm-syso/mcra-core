@@ -1,7 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Extensions;
-using MCRA.General.TableDefinitions;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
 using MCRA.Utils.DataFileReading;
 
@@ -210,61 +209,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 };
                 allPopulations[idPopulation].PopulationIndividualPropertyValues[property.Code] = populationIndividualPropertyValue;
             }
-        }
-
-        /// <summary>
-        /// ZIP file populationsIndividualPropertyValues IS NOT FINISHED (UNIT TEST CompiledDataManager_WriteShallowDataObjectsZipFileTest)
-        /// </summary>
-        /// <param name="tempFolder"></param>
-        /// <param name="list"></param>
-        private static void writePopulationDataToCsv(string tempFolder, IEnumerable<Population> list) {
-            if (!list?.Any() ?? true) {
-                return;
-            }
-
-            var tdp = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.Populations);
-            var dtp = tdp.CreateDataTable();
-
-            var tdpipv = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.PopulationIndividualPropertyValues);
-            var dtpipv = tdpipv.CreateDataTable();
-
-            foreach (var item in list) {
-                var row = dtp.NewRow();
-
-                row.WriteNonEmptyString(RawPopulations.IdPopulation, item.Code);
-                row.WriteNonEmptyString(RawPopulations.Name, item.Name);
-                row.WriteNonEmptyString(RawPopulations.Description, item.Description);
-                row.WriteNonEmptyString(RawPopulations.Location, item.Location);
-                row.WriteNonNullDateTime(RawPopulations.StartDate, item.StartDate);
-                row.WriteNonNullDateTime(RawPopulations.EndDate, item.EndDate);
-                row.WriteNonNullDouble(RawPopulations.NominalBodyWeight, item.NominalBodyWeight);
-                row.WriteNonNullDouble(RawPopulations.Size, item.Size);
-
-                dtp.Rows.Add(row);
-                //population individual property values
-                //TODO this is not finished
-                if (item.PopulationIndividualPropertyValues != null) {
-
-                    foreach (var prop in item.PopulationIndividualPropertyValues) {
-                        //property values per individual
-                        var rowpv = dtpipv.NewRow();
-                        rowpv.WriteNonEmptyString(RawPopulationIndividualPropertyValues.IdIndividualProperty, prop.Key);
-                        rowpv.WriteNonEmptyString(RawPopulationIndividualPropertyValues.IdPopulation, item.Code);
-                        rowpv.WriteNonNullDouble(RawPopulationIndividualPropertyValues.MaxValue, prop.Value.MaxValue);
-                        rowpv.WriteNonNullDouble(RawPopulationIndividualPropertyValues.MinValue, prop.Value.MinValue);
-                        //rowpv.WriteNonNullDateTime(RawPopulationIndividualPropertyValues.StartDate, prop.Value.StartDate);
-                        //rowpv.WriteNonNullDateTime(RawPopulationIndividualPropertyValues.EndDate, prop.Value.EndDate);
-                        rowpv.WriteNonEmptyString(RawPopulationIndividualPropertyValues.Value, prop.Value.Value);
-                        dtpipv.Rows.Add(rowpv);
-                    }
-                } else {
-                    var rowpv = dtpipv.NewRow();
-                    rowpv.WriteNonEmptyString(RawPopulations.IdPopulation, item.Code);
-                    dtpipv.Rows.Add(rowpv);
-                }
-            }
-            writeToCsv(tempFolder, tdp, dtp);
-            writeToCsv(tempFolder, tdpipv, dtpipv);
         }
     }
 }

@@ -1,9 +1,8 @@
-﻿using MCRA.Utils.DataFileReading;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Extensions;
-using MCRA.General.TableDefinitions;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
+using MCRA.Utils.DataFileReading;
 
 namespace MCRA.Data.Management.CompiledDataManagers {
     public partial class CompiledDataManager {
@@ -31,16 +30,16 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             Name = r.GetStringOrNull(RawHumanMonitoringSurveys.Name, fieldMap),
                                             Description = r.GetStringOrNull(RawHumanMonitoringSurveys.Description, fieldMap),
                                             Location = r.GetStringOrNull(RawHumanMonitoringSurveys.Location, fieldMap),
-                                            BodyWeightUnit= r.GetEnum(RawHumanMonitoringSurveys.BodyWeightUnit, fieldMap, BodyWeightUnit.kg),
+                                            BodyWeightUnit = r.GetEnum(RawHumanMonitoringSurveys.BodyWeightUnit, fieldMap, BodyWeightUnit.kg),
                                             AgeUnitString = r.GetStringOrNull(RawHumanMonitoringSurveys.AgeUnit, fieldMap),
                                             StartDate = r.GetDateTimeOrNull(RawHumanMonitoringSurveys.StartDate, fieldMap) ?? (year > 0 ? new DateTime(year, 1, 1) : null),
                                             EndDate = r.GetDateTimeOrNull(RawHumanMonitoringSurveys.EndDate, fieldMap) ?? (year > 0 ? new DateTime(year, 12, 31) : null),
                                             NumberOfSurveyDays = r.GetInt32(RawHumanMonitoringSurveys.NumberOfSurveyDays, fieldMap),
                                             IdPopulation = r.GetStringOrNull(RawHumanMonitoringSurveys.IdPopulation, fieldMap),
-                                            LipidConcentrationUnit= r.GetEnum(RawHumanMonitoringSurveys.LipidConcentrationUnit, fieldMap, ConcentrationUnit.mgPerdL),
-                                            CholestConcentrationUnit= r.GetEnum(RawHumanMonitoringSurveys.CholestConcentrationUnit, fieldMap, ConcentrationUnit.mgPerdL),
-                                            TriglycConcentrationUnit= r.GetEnum(RawHumanMonitoringSurveys.TriglycConcentrationUnit, fieldMap, ConcentrationUnit.mgPerdL),
-                                            CreatConcentrationUnit= r.GetEnum(RawHumanMonitoringSurveys.CreatConcentrationUnit, fieldMap, ConcentrationUnit.mgPerdL)
+                                            LipidConcentrationUnit = r.GetEnum(RawHumanMonitoringSurveys.LipidConcentrationUnit, fieldMap, ConcentrationUnit.mgPerdL),
+                                            CholestConcentrationUnit = r.GetEnum(RawHumanMonitoringSurveys.CholestConcentrationUnit, fieldMap, ConcentrationUnit.mgPerdL),
+                                            TriglycConcentrationUnit = r.GetEnum(RawHumanMonitoringSurveys.TriglycConcentrationUnit, fieldMap, ConcentrationUnit.mgPerdL),
+                                            CreatConcentrationUnit = r.GetEnum(RawHumanMonitoringSurveys.CreatConcentrationUnit, fieldMap, ConcentrationUnit.mgPerdL)
                                         };
                                         allHumanMonitoringSurveys[survey.Code] = survey;
                                     }
@@ -268,92 +267,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 GetAllHumanMonitoringSamples();
             }
             return _data.HumanMonitoringSamplingMethods;
-        }
-
-        private static void writeHumanMonitoringSurveyDataToCsv(string tempFolder, IEnumerable<HumanMonitoringSurvey> surveys) {
-            if (!surveys?.Any() ?? true) {
-                return;
-            }
-
-            var tdsv = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.HumanMonitoringSurveys);
-            var dtsv = tdsv.CreateDataTable();
-
-            foreach (var survey in surveys) {
-                var rowSv = dtsv.NewRow();
-
-                rowSv.WriteNonEmptyString(RawHumanMonitoringSurveys.IdSurvey, survey.Code);
-                rowSv.WriteNonEmptyString(RawHumanMonitoringSurveys.Name, survey.Name);
-                rowSv.WriteNonEmptyString(RawHumanMonitoringSurveys.Description, survey.Description);
-                rowSv.WriteNonEmptyString(RawHumanMonitoringSurveys.Location, survey.Location);
-                rowSv.WriteNonEmptyString(RawHumanMonitoringSurveys.BodyWeightUnit, survey.BodyWeightUnit.ToString());
-                rowSv.WriteNonEmptyString(RawHumanMonitoringSurveys.AgeUnit, survey.AgeUnitString);
-                rowSv.WriteNonEmptyString(RawHumanMonitoringSurveys.IdPopulation, survey.IdPopulation);
-                rowSv.WriteNonNullDateTime(RawHumanMonitoringSurveys.StartDate, survey.StartDate);
-                rowSv.WriteNonNullDateTime(RawHumanMonitoringSurveys.EndDate, survey.EndDate);
-                rowSv.WriteValue(RawHumanMonitoringSurveys.NumberOfSurveyDays, survey.NumberOfSurveyDays);
-                rowSv.WriteNonEmptyString(RawHumanMonitoringSurveys.LipidConcentrationUnit, survey.LipidConcentrationUnit.ToString());
-                rowSv.WriteNonEmptyString(RawHumanMonitoringSurveys.TriglycConcentrationUnit, survey.TriglycConcentrationUnit.ToString());
-                rowSv.WriteNonEmptyString(RawHumanMonitoringSurveys.CholestConcentrationUnit, survey.CholestConcentrationUnit.ToString());
-                rowSv.WriteNonEmptyString(RawHumanMonitoringSurveys.CreatConcentrationUnit, survey.CreatConcentrationUnit.ToString());
-                dtsv.Rows.Add(rowSv);
-            }
-
-            writeToCsv(tempFolder, tdsv, dtsv);
-        }
-
-        private static void writeHumanMonitoringSampleDataToCsv(string tempFolder, IEnumerable<HumanMonitoringSample> samples) {
-            if (!samples?.Any() ?? true) {
-                return;
-            }
-
-            var tds = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.HumanMonitoringSamples);
-            var dts = tds.CreateDataTable();
-            var tdsa = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.HumanMonitoringSampleAnalyses);
-            var dtsa = tdsa.CreateDataTable();
-            var tdsc = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.HumanMonitoringSampleConcentrations);
-            var dtsc = tdsc.CreateDataTable();
-
-            foreach (var s in samples) {
-                var rowSample = dts.NewRow();
-                rowSample.WriteNonEmptyString(RawHumanMonitoringSamples.IdSample, s.Code);
-                rowSample.WriteNonEmptyString(RawHumanMonitoringSamples.IdIndividual, s.Individual.Code);
-                rowSample.WriteNonNullDateTime(RawHumanMonitoringSamples.DateSampling, s.DateSampling);
-                rowSample.WriteNonEmptyString(RawHumanMonitoringSamples.DayOfSurvey, s.DayOfSurvey);
-                rowSample.WriteNonEmptyString(RawHumanMonitoringSamples.TimeOfSampling, s.TimeOfSampling);
-                rowSample.WriteNonEmptyString(RawHumanMonitoringSamples.Compartment, s.SamplingMethod?.BiologicalMatrix.ToString());
-                rowSample.WriteNonEmptyString(RawHumanMonitoringSamples.ExposureRoute, s.SamplingMethod?.ExposureRoute);
-                rowSample.WriteNonEmptyString(RawHumanMonitoringSamples.SampleType, s.SamplingMethod?.SampleTypeCode);
-                rowSample.WriteNonNullDouble(RawHumanMonitoringSamples.SpecificGravity, s.SpecificGravity);
-                rowSample.WriteNonNullDouble(RawHumanMonitoringSamples.LipidEnz, s.LipidEnz);
-                rowSample.WriteNonNullDouble(RawHumanMonitoringSamples.LipidGrav, s.LipidGrav);
-                rowSample.WriteNonNullDouble(RawHumanMonitoringSamples.Cholesterol, s.Cholesterol);
-                rowSample.WriteNonNullDouble(RawHumanMonitoringSamples.Creatinine, s.Creatinine);
-                rowSample.WriteNonNullDouble(RawHumanMonitoringSamples.OsmoticConcentration, s.OsmoticConcentration);
-                rowSample.WriteNonNullDouble(RawHumanMonitoringSamples.Triglycerides, s.Triglycerides);
-                dts.Rows.Add(rowSample);
-
-                foreach (var sa in s.SampleAnalyses) {
-                    var rowsa = dtsa.NewRow();
-                    rowsa.WriteNonEmptyString(RawHumanMonitoringSampleAnalyses.IdSampleAnalysis, sa.Code);
-                    rowsa.WriteNonEmptyString(RawHumanMonitoringSampleAnalyses.IdSample, s.Code);
-                    rowsa.WriteNonEmptyString(RawHumanMonitoringSampleAnalyses.IdAnalyticalMethod, sa.AnalyticalMethod?.Code);
-                    rowsa.WriteNonNullDateTime(RawHumanMonitoringSampleAnalyses.DateAnalysis, sa.AnalysisDate);
-                    dtsa.Rows.Add(rowsa);
-
-                    foreach (var sc in sa.Concentrations) {
-                        var rowsc = dtsc.NewRow();
-                        rowsc.WriteNonEmptyString(RawHumanMonitoringSampleConcentrations.IdAnalysisSample, sa.Code);
-                        rowsc.WriteNonEmptyString(RawHumanMonitoringSampleConcentrations.IdCompound, sc.Key.Code);
-                        rowsc.WriteNonNullDouble(RawHumanMonitoringSampleConcentrations.Concentration, sc.Value.Concentration);
-                        rowsc.WriteNonEmptyString(RawHumanMonitoringSampleConcentrations.ResType, sc.Value.ResType.ToString());
-                        dtsc.Rows.Add(rowsc);
-                    }
-                }
-            }
-
-            writeToCsv(tempFolder, tds, dts);
-            writeToCsv(tempFolder, tdsa, dtsa);
-            writeToCsv(tempFolder, tdsc, dtsc);
         }
     }
 }

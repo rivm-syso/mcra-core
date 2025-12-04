@@ -1,10 +1,9 @@
-﻿using MCRA.Utils.DataFileReading;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Raw;
 using MCRA.General;
 using MCRA.General.Extensions;
-using MCRA.General.TableDefinitions;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
+using MCRA.Utils.DataFileReading;
 
 namespace MCRA.Data.Management.CompiledDataManagers {
     public partial class CompiledDataManager {
@@ -56,31 +55,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                     }
                 }
             }
-        }
-
-        private static void writeConcentrationSingleValuesToCsv(string tempFolder, IEnumerable<ConcentrationSingleValue> records) {
-            if (!records?.Any() ?? true) {
-                return;
-            }
-
-            var td = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.ConcentrationSingleValues);
-            var dt = td.CreateDataTable();
-            var ccr = new int[Enum.GetNames(typeof(RawConcentrationSingleValues)).Length];
-
-            foreach (var record in records) {
-                var row = dt.NewRow();
-                row.WriteNonEmptyString(RawConcentrationSingleValues.IdSubstance, record.Substance?.Code, ccr);
-                row.WriteNonEmptyString(RawConcentrationSingleValues.IdFood, record.Food?.Code, ccr);
-                row.WriteNonNaNDouble(RawConcentrationSingleValues.Value, record.Value, ccr);
-                row.WriteNonEmptyString(RawConcentrationSingleValues.ValueType, record.ValueType.ToString());
-                row.WriteNonNullDouble(RawConcentrationSingleValues.Percentile, record.Percentile);
-                row.WriteNonEmptyString(RawConcentrationSingleValues.ConcentrationUnit, record.ConcentrationUnit.ToString());
-                row.WriteNonEmptyString(RawConcentrationSingleValues.Reference, record.Reference);
-
-                dt.Rows.Add(row);
-            }
-
-            writeToCsv(tempFolder, td, dt, ccr);
         }
     }
 }

@@ -1,8 +1,6 @@
-﻿using MCRA.Utils.DataFileReading;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Extensions;
-using MCRA.General.TableDefinitions;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
 
 namespace MCRA.Data.Management.CompiledDataManagers {
@@ -78,40 +76,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 _data.AllAdverseOutcomePathwayNetworks = allAdverseOutcomePathwayNetworks;
             }
             return _data.AllAdverseOutcomePathwayNetworks;
-        }
-
-        private static void writeAdverseOutcomePathwayNetworksDataToCsv(string tempFolder, IEnumerable<AdverseOutcomePathwayNetwork> advNetworks) {
-            if (!advNetworks?.Any() ?? true) {
-                return;
-            }
-
-            var tda = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.AdverseOutcomePathwayNetworks);
-            var dta = tda.CreateDataTable();
-            var tde = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.EffectRelations);
-            var dte = tde.CreateDataTable();
-
-            foreach (var adv in advNetworks) {
-                var row = dta.NewRow();
-                row.WriteNonEmptyString(RawAdverseOutcomePathwayNetworks.IdAdverseOutcomePathwayNetwork, adv.Code);
-                row.WriteNonEmptyString(RawAdverseOutcomePathwayNetworks.Name, adv.Name);
-                row.WriteNonEmptyString(RawAdverseOutcomePathwayNetworks.Description, adv.Description);
-                row.WriteNonEmptyString(RawAdverseOutcomePathwayNetworks.Reference, adv.Reference);
-                row.WriteNonEmptyString(RawAdverseOutcomePathwayNetworks.RiskType, adv.RiskTypeString);
-                row.WriteNonEmptyString(RawAdverseOutcomePathwayNetworks.IdAdverseOutcome, adv.AdverseOutcome?.Code);
-
-                dta.Rows.Add(row);
-
-                foreach (var effRel in adv.EffectRelations) {
-                    var rowe = dte.NewRow();
-                    rowe.WriteNonEmptyString(RawEffectRelations.IdAdverseOutcomePathwayNetwork, adv.Code);
-                    rowe.WriteNonEmptyString(RawEffectRelations.IdUpstreamKeyEvent, effRel.UpstreamKeyEvent.Code);
-                    rowe.WriteNonEmptyString(RawEffectRelations.IdDownstreamKeyEvent, effRel.DownstreamKeyEvent.Code);
-                    dte.Rows.Add(rowe);
-                }
-            }
-
-            writeToCsv(tempFolder, tda, dta);
-            writeToCsv(tempFolder, tde, dte);
         }
     }
 }

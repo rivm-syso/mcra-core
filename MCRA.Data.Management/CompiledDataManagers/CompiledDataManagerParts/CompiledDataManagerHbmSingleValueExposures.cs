@@ -1,6 +1,4 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Management.RawDataObjectConverters;
-using MCRA.Data.Management.RawDataWriters;
 using MCRA.General;
 using MCRA.General.Extensions;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
@@ -87,24 +85,9 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                     }
                 }
 
-                _data.AllHbmSingleValueExposureSets = allHbmSingleValueExposureSets.Select(c=> c.Value).ToList();
+                _data.AllHbmSingleValueExposureSets = allHbmSingleValueExposureSets.Select(c => c.Value).ToList();
             }
             return _data.AllHbmSingleValueExposureSets;
-        }
-
-        private static void writeHbmSingleValueExposureSetsToCsv(
-            string tempFolder,
-            IEnumerable<HbmSingleValueExposureSet> hbmSingleValueExposureSets
-        ) {
-            if (!hbmSingleValueExposureSets?.Any() ?? true) {
-                return;
-            }
-
-            var mapper = new RawHbmSingleValueExposuresDataConverter();
-            var rawData = mapper.ToRaw(hbmSingleValueExposureSets);
-            var writer = new CsvRawDataWriter(tempFolder);
-            writer.Set(rawData);
-            writer.Store();
         }
     }
 }

@@ -1,10 +1,8 @@
-﻿using MCRA.Utils.DataFileReading;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Utils;
 using MCRA.General;
 using MCRA.General.Extensions;
-using MCRA.General.TableDefinitions;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
-using MCRA.Data.Compiled.Utils;
 
 namespace MCRA.Data.Management.CompiledDataManagers {
     public partial class CompiledDataManager {
@@ -159,135 +157,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 _data.AllFoodConsumptions = allFoodConsumptions;
             }
             return _data.AllFoodConsumptions;
-        }
-
-        private static void writeFoodSurveyDataToCsv(string tempFolder, IEnumerable<FoodSurvey> surveys) {
-            if (!surveys?.Any() ?? true) {
-                return;
-            }
-
-            var tdsv = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.FoodSurveys);
-            var dtsv = tdsv.CreateDataTable();
-
-            var ccr = new int[Enum.GetNames(typeof(RawFoodSurveys)).Length];
-
-            foreach (var survey in surveys) {
-                var rowsv = dtsv.NewRow();
-
-                rowsv.WriteNonEmptyString(RawFoodSurveys.IdFoodSurvey, survey.Code, ccr);
-                rowsv.WriteNonEmptyString(RawFoodSurveys.Description, survey.Description, ccr);
-                rowsv.WriteNonEmptyString(RawFoodSurveys.Location, survey.Location, ccr);
-                rowsv.WriteNonEmptyString(RawFoodSurveys.BodyWeightUnit, survey.BodyWeightUnit.ToString(), ccr);
-                rowsv.WriteNonEmptyString(RawFoodSurveys.AgeUnit, survey.AgeUnitString, ccr);
-                rowsv.WriteNonEmptyString(RawFoodSurveys.ConsumptionUnit, survey.ConsumptionUnit.ToString(), ccr);
-                rowsv.WriteNonEmptyString(RawFoodSurveys.IdPopulation, survey.IdPopulation, ccr);
-                rowsv.WriteNonNullInt32(RawFoodSurveys.NumberOfSurveyDays, survey.NumberOfSurveyDays, ccr);
-                rowsv.WriteNonNullDateTime(RawFoodSurveys.StartDate, survey.StartDate, ccr);
-                rowsv.WriteNonNullDateTime(RawFoodSurveys.EndDate, survey.EndDate, ccr);
-
-                dtsv.Rows.Add(rowsv);
-            }
-
-            writeToCsv(tempFolder, tdsv, dtsv, ccr);
-        }
-
-        private static void writeIndividualsDataToCsv(string tempFolder, IEnumerable<Individual> individuals) {
-            if (!individuals?.Any() ?? true) {
-                return;
-            }
-
-            var tdi = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.Individuals);
-            var dti = tdi.CreateDataTable();
-            var tdid = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.IndividualDays);
-            var dtid = tdid.CreateDataTable();
-            var tdp = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.IndividualProperties);
-            var dtp = tdp.CreateDataTable();
-            var tdpv = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.IndividualPropertyValues);
-            var dtpv = tdpv.CreateDataTable();
-
-            var ccri = new int[Enum.GetNames(typeof(RawIndividuals)).Length];
-            var ccrid = new int[Enum.GetNames(typeof(RawIndividualDays)).Length];
-            var ccrpv = new int[Enum.GetNames(typeof(RawIndividualPropertyValues)).Length];
-
-            var properties = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            foreach (var individual in individuals) {
-                var rowi = dti.NewRow();
-
-                rowi.WriteNonEmptyString(RawIndividuals.IdIndividual, individual.Code, ccri);
-                rowi.WriteNonEmptyString(RawIndividuals.IdFoodSurvey, individual.CodeFoodSurvey, ccri);
-                rowi.WriteNonNullInt32(RawIndividuals.NumberOfSurveyDays, individual.NumberOfDaysInSurvey, ccri);
-                rowi.WriteNonNaNDouble(RawIndividuals.BodyWeight, individual.BodyWeight, ccri);
-                rowi.WriteNonNaNDouble(RawIndividuals.SamplingWeight, individual.SamplingWeight, ccri);
-
-                dti.Rows.Add(rowi);
-
-                //individual properties and values
-                if (individual.IndividualPropertyValues.Any()) {
-                    foreach (var prop in individual.IndividualPropertyValues) {
-                        if (!properties.Contains(prop.IndividualProperty.Name)) {
-                            //unique property names
-                            var rowp = dtp.NewRow();
-                            rowp.WriteNonEmptyString(RawIndividualProperties.Name, prop.IndividualProperty.Name);
-                            dtp.Rows.Add(rowp);
-
-                            properties.Add(prop.IndividualProperty.Name);
-                        }
-
-                        //property values per individual
-                        var rowpv = dtpv.NewRow();
-                        rowpv.WriteNonEmptyString(RawIndividualPropertyValues.IdIndividual, individual.Code, ccrpv);
-                        rowpv.WriteNonEmptyString(RawIndividualPropertyValues.PropertyName, prop.IndividualProperty.Name, ccrpv);
-                        rowpv.WriteNonNullDouble(RawIndividualPropertyValues.DoubleValue, prop.DoubleValue, ccrpv);
-                        rowpv.WriteNonEmptyString(RawIndividualPropertyValues.TextValue, prop.TextValue, ccrpv);
-                        dtpv.Rows.Add(rowpv);
-                    }
-                } else {
-                    var rowp = dtp.NewRow();
-                    rowp.WriteNonEmptyString(RawIndividuals.IdIndividual, individual.Code);
-                    dtp.Rows.Add(rowp);
-                }
-
-                //individual days
-                foreach (var id in individual.IndividualDays) {
-                    //property values per individual
-                    var row = dtid.NewRow();
-                    row.WriteNonEmptyString(RawIndividualDays.IdIndividual, individual.Code, ccrpv);
-                    row.WriteNonEmptyString(RawIndividualDays.IdDay, id.Value.IdDay, ccrpv);
-                    row.WriteNonNullDateTime(RawIndividualDays.SamplingDate, id.Value.Date);
-                    dtid.Rows.Add(row);
-                }
-            }
-
-            writeToCsv(tempFolder, tdi, dti, ccri);
-            writeToCsv(tempFolder, tdid, dtid, ccrid);
-            writeToCsv(tempFolder, tdp, dtp);
-            writeToCsv(tempFolder, tdpv, dtpv, ccrpv);
-        }
-
-        private static void writeConsumptionDataToCsv(string tempFolder, IEnumerable<FoodConsumption> consumptions) {
-            if (!consumptions?.Any() ?? true) {
-                return;
-            }
-
-            var tdc = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.Consumptions);
-            var dtc = tdc.CreateDataTable();
-
-            var ccr = new int[Enum.GetNames(typeof(RawFoodConsumptions)).Length];
-
-            foreach (var consumption in consumptions) {
-                var rowc = dtc.NewRow();
-
-                rowc.WriteNonEmptyString(RawFoodConsumptions.IdIndividual, consumption.Individual.Code, ccr);
-                rowc.WriteNonEmptyString(RawFoodConsumptions.IdFood, consumption.Food.Code, ccr);
-                rowc.WriteNonEmptyString(RawFoodConsumptions.IdDay, consumption.idDay, ccr);
-                rowc.WriteNonEmptyString(RawFoodConsumptions.IdMeal, consumption.idMeal, ccr);
-                rowc.WriteNonEmptyString(RawFoodConsumptions.IdUnit, consumption.FoodConsumptionQuantification?.UnitCode, ccr);
-                rowc.WriteNonNaNDouble(RawFoodConsumptions.Amount, consumption.Amount, ccr);
-
-                dtc.Rows.Add(rowc);
-            }
-
-            writeToCsv(tempFolder, tdc, dtc, ccr);
         }
     }
 }

@@ -2,7 +2,6 @@
 using MCRA.Data.Raw;
 using MCRA.General;
 using MCRA.General.Extensions;
-using MCRA.General.TableDefinitions;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
 using MCRA.Utils.DataFileReading;
 
@@ -407,123 +406,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 _data.AllSampleProductionMethods = allSampleProductionMethods;
                 _data.AllAdditionalSampleProperties = allAdditionalSampleProperties;
             }
-        }
-
-        private static void writeAnalyticalMethodsToCsv(string tempFolder, IEnumerable<AnalyticalMethod> analyticalMethods) {
-            if (!analyticalMethods?.Any() ?? true) {
-                return;
-            }
-
-            var tdam = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.AnalyticalMethods);
-            var dtam = tdam.CreateDataTable();
-            var tdmc = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.AnalyticalMethodCompounds);
-            var dtmc = tdmc.CreateDataTable();
-
-            var ccram = new int[Enum.GetNames(typeof(RawAnalyticalMethods)).Length];
-            var ccrmc = new int[Enum.GetNames(typeof(RawAnalyticalMethodCompounds)).Length];
-
-            foreach (var am in analyticalMethods) {
-                var rowam = dtam.NewRow();
-                rowam.WriteNonEmptyString(RawAnalyticalMethods.IdAnalyticalMethod, am.Code, ccram);
-                rowam.WriteNonEmptyString(RawAnalyticalMethods.Description, am.Description, ccram);
-
-                dtam.Rows.Add(rowam);
-
-                foreach (var amc in am.AnalyticalMethodCompounds.Values) {
-                    var rowmc = dtmc.NewRow();
-                    rowmc.WriteNonEmptyString(RawAnalyticalMethodCompounds.IdAnalyticalMethod, am.Code, ccrmc);
-                    rowmc.WriteNonEmptyString(RawAnalyticalMethodCompounds.IdCompound, amc.Compound.Code, ccrmc);
-                    rowmc.WriteNonNaNDouble(RawAnalyticalMethodCompounds.LOD, amc.LOD, ccrmc);
-                    rowmc.WriteNonNaNDouble(RawAnalyticalMethodCompounds.LOQ, amc.LOQ, ccrmc);
-                    rowmc.WriteNonEmptyString(RawAnalyticalMethodCompounds.ConcentrationUnit, amc.ConcentrationUnit.ToString(), ccrmc);
-                    dtmc.Rows.Add(rowmc);
-                }
-            }
-
-            writeToCsv(tempFolder, tdam, dtam, ccram);
-            writeToCsv(tempFolder, tdmc, dtmc, ccrmc);
-        }
-
-        private static void writeAdditionalSamplePropertiesToCsv(string tempFolder, IEnumerable<SampleProperty> additionalSampleProperties) {
-            if (!additionalSampleProperties?.Any() ?? true) {
-                return;
-            }
-
-            var tdsp = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.SampleProperties);
-            var dtsp = tdsp.CreateDataTable();
-            foreach (var sp in additionalSampleProperties) {
-                foreach (var sampleProperty in additionalSampleProperties) {
-                    var row = dtsp.NewRow();
-                    row.WriteNonEmptyString(RawSampleProperties.Name, sampleProperty.Name);
-                    row.WriteNonEmptyString(RawSampleProperties.Description, sampleProperty.Description);
-                }
-            }
-            writeToCsv(tempFolder, tdsp, dtsp);
-        }
-
-        private static void writeFoodSamplesToCsv(string tempFolder, IEnumerable<FoodSample> foodSamples) {
-            if (!foodSamples?.Any() ?? true) {
-                return;
-            }
-
-            var tdfs = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.FoodSamples);
-            var dtfs = tdfs.CreateDataTable();
-            var tdas = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.AnalysisSamples);
-            var dtas = tdas.CreateDataTable();
-            var tdspv = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.SamplePropertyValues);
-            var dtspv = tdspv.CreateDataTable();
-
-            var tdc = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.ConcentrationsPerSample);
-            var dtc = tdc.CreateDataTable();
-
-            var ccrfs = new int[Enum.GetNames(typeof(RawFoodSamples)).Length];
-            var ccras = new int[Enum.GetNames(typeof(RawAnalysisSamples)).Length];
-
-            //keep foodsamples in separately keyed dictionary
-            var foodSampleCodes = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            //all samples go into analysis samples table
-            foreach (var s in foodSamples) {
-                //Add the food samples based on the IdLargeSample
-                //or code of the sample itself if it is null
-                var codeFoodSample = s.Code;
-                if (!foodSampleCodes.Contains(codeFoodSample)) {
-                    var rowfs = dtfs.NewRow();
-                    rowfs.WriteNonEmptyString(RawFoodSamples.IdFoodSample, codeFoodSample, ccrfs);
-                    rowfs.WriteNonEmptyString(RawFoodSamples.IdFood, s.Food.Code, ccrfs);
-                    dtfs.Rows.Add(rowfs);
-                    foodSampleCodes.Add(codeFoodSample);
-                }
-
-                foreach (var samplePropertyValue in s.SampleProperties) {
-                    var rowspv = dtspv.NewRow();
-                    rowspv.WriteNonEmptyString(RawSamplePropertyValues.IdSample, codeFoodSample);
-                    rowspv.WriteNonEmptyString(RawSamplePropertyValues.PropertyName, samplePropertyValue.Key.Name);
-                    rowspv.WriteNonNullDouble(RawSamplePropertyValues.DoubleValue, samplePropertyValue.Value.DoubleValue);
-                    rowspv.WriteNonEmptyString(RawSamplePropertyValues.TextValue, samplePropertyValue.Value.TextValue);
-                }
-
-                foreach (var sampleAnalysis in s.SampleAnalyses) {
-                    var row = dtas.NewRow();
-                    row.WriteNonEmptyString(RawAnalysisSamples.IdAnalysisSample, sampleAnalysis.Code, ccras);
-                    row.WriteNonEmptyString(RawAnalysisSamples.IdFoodSample, codeFoodSample, ccras);
-                    row.WriteNonEmptyString(RawAnalysisSamples.IdAnalyticalMethod, sampleAnalysis.AnalyticalMethod?.Code, ccras);
-                    row.WriteNonNullDateTime(RawAnalysisSamples.DateAnalysis, sampleAnalysis.AnalysisDate, ccras);
-                    dtas.Rows.Add(row);
-
-                    foreach (var conc in sampleAnalysis.Concentrations) {
-                        var rowc = dtc.NewRow();
-                        rowc.WriteNonEmptyString(RawConcentrationsPerSample.IdAnalysisSample, sampleAnalysis.Code);
-                        rowc.WriteNonEmptyString(RawConcentrationsPerSample.IdCompound, conc.Key.Code);
-                        rowc.WriteNonNullDouble(RawConcentrationsPerSample.Concentration, conc.Value.Concentration);
-                        rowc.WriteNonEmptyString(RawConcentrationsPerSample.ResType, conc.Value.ResType.ToString());
-                        dtc.Rows.Add(rowc);
-                    }
-                }
-            }
-            writeToCsv(tempFolder, tdfs, dtfs, ccrfs);
-            writeToCsv(tempFolder, tdas, dtas, ccras);
-            writeToCsv(tempFolder, tdc, dtc);
-            writeToCsv(tempFolder, tdspv, dtspv);
         }
     }
 

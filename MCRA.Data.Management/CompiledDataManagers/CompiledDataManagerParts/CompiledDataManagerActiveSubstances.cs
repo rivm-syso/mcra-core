@@ -1,16 +1,12 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Management.RawDataObjectConverters;
-using MCRA.Data.Management.RawDataWriters;
 using MCRA.General;
 using MCRA.General.Extensions;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
 
 namespace MCRA.Data.Management.CompiledDataManagers {
-    public partial class CompiledDataManager
-    {
+    public partial class CompiledDataManager {
 
-        public IDictionary<string, ActiveSubstanceModel> GetAllActiveSubstanceModels()
-        {
+        public IDictionary<string, ActiveSubstanceModel> GetAllActiveSubstanceModels() {
             if (_data.AllActiveSubstanceModels == null) {
                 LoadScope(SourceTableGroup.AssessmentGroupMemberships);
                 var allActiveSubstanceModels = new Dictionary<string, ActiveSubstanceModel>(StringComparer.OrdinalIgnoreCase);
@@ -90,18 +86,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 _data.AllActiveSubstanceModels = allActiveSubstanceModels;
             }
             return _data.AllActiveSubstanceModels;
-        }
-
-        private static void writeActiveSubstanceDataToCsv(string tempFolder, IEnumerable<ActiveSubstanceModel> data) {
-            if (!data?.Any() ?? true) {
-                return;
-            }
-
-            var mapper = new RawActiveSubstancesDataConverter();
-            var rawData = mapper.ToRaw(data);
-            var writer = new CsvRawDataWriter(tempFolder);
-            writer.Set(rawData);
-            writer.Store();
         }
     }
 }

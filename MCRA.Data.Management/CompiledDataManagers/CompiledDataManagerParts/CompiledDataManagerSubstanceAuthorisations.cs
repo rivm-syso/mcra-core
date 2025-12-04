@@ -1,8 +1,6 @@
-﻿using MCRA.Utils.DataFileReading;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Extensions;
-using MCRA.General.TableDefinitions;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
 
 namespace MCRA.Data.Management.CompiledDataManagers {
@@ -43,24 +41,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 _data.AllSubstanceAuthorisations = allSubstanceAuthorisations;
             }
             return _data.AllSubstanceAuthorisations;
-        }
-
-        private static void writeSubstanceAuthorisationsDataToCsv(string tempFolder, IEnumerable<SubstanceAuthorisation> authorizedUses) {
-            if (!authorizedUses?.Any() ?? true) {
-                return;
-            }
-
-            var tdSubstanceAuthorisations = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.AuthorisedUses);
-            var dtASubstanceAuthorisations = tdSubstanceAuthorisations.CreateDataTable();
-            var ccr = new int[Enum.GetNames(typeof(RawAuthorisedUses)).Length];
-            foreach (var t in authorizedUses) {
-                var r = dtASubstanceAuthorisations.NewRow();
-                r.WriteNonEmptyString(RawAuthorisedUses.IdFood, t.Food?.Code, ccr);
-                r.WriteNonEmptyString(RawAuthorisedUses.IdSubstance, t.Substance?.Code, ccr);
-                r.WriteNonEmptyString(RawAuthorisedUses.Reference, t.Reference, ccr);
-                dtASubstanceAuthorisations.Rows.Add(r);
-            }
-            writeToCsv(tempFolder, tdSubstanceAuthorisations, dtASubstanceAuthorisations);
         }
     }
 }

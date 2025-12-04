@@ -1,7 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Extensions;
-using MCRA.General.TableDefinitions;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
 using MCRA.Utils.DataFileReading;
 
@@ -37,30 +36,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 _data.AllSoilIngestions = allSoilIngestions;
             }
             return _data.AllSoilIngestions;
-        }
-
-        private static void writeSoilIngestionsToCsv(string tempFolder, IEnumerable<SoilIngestion> soilIngestions) {
-            if (!soilIngestions?.Any() ?? true) {
-                return;
-            }
-
-            var td = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.SoilIngestions);
-            var dt = td.CreateDataTable();
-            var ccr = new int[Enum.GetNames(typeof(RawSoilIngestions)).Length];
-
-            foreach (var soilIngestion in soilIngestions) {
-                var row = dt.NewRow();
-                row.WriteNonEmptyString(RawSoilIngestions.IdSubgroup, soilIngestion.idSubgroup, ccr);
-                row.WriteNonNullDouble(RawSoilIngestions.AgeLower, soilIngestion.AgeLower, ccr);
-                row.WriteNonEmptyString(RawSoilIngestions.Sex, soilIngestion.Sex.ToString(), ccr);
-                row.WriteNonNullDouble(RawSoilIngestions.Value, soilIngestion.Value, ccr);
-                row.WriteNonEmptyString(RawSoilIngestions.ExposureUnit, soilIngestion.ExposureUnit.ToString(), ccr);
-                row.WriteNonEmptyString(RawSoilIngestions.DistributionType, soilIngestion.DistributionType.ToString(), ccr);
-                row.WriteNonNullDouble(RawSoilIngestions.CvVariability, soilIngestion.CvVariability, ccr);
-                dt.Rows.Add(row);
-            }
-
-            writeToCsv(tempFolder, td, dt, ccr);
         }
     }
 }

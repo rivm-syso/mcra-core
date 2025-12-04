@@ -1,7 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Extensions;
-using MCRA.General.TableDefinitions;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
 using MCRA.Utils.DataFileReading;
 
@@ -31,7 +30,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         Effect = _data.GetOrAddEffect(idEffect),
                                         BodIndicator = r.GetEnum<BodIndicator>(RawBurdensOfDisease.BodIndicator, fieldMap),
                                         Value = r.GetDouble(RawBurdensOfDisease.Value, fieldMap),
-                                        BodUncertaintyDistribution = BodIndicatorDistributionTypeConverter.FromString(distributionTypeString,  BodIndicatorDistributionType.Constant),
+                                        BodUncertaintyDistribution = BodIndicatorDistributionTypeConverter.FromString(distributionTypeString, BodIndicatorDistributionType.Constant),
                                         BodUncertaintyLower = r.GetDoubleOrNull(RawBurdensOfDisease.BodIndicatorLower, fieldMap),
                                         BodUncertaintyUpper = r.GetDoubleOrNull(RawBurdensOfDisease.BodIndicatorUpper, fieldMap)
                                     };
@@ -73,14 +72,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                         }
                     }
                 }
-
-                //foreach (var bod in allBurdensOfDisease) {
-                //    var conversions = new List<BodIndicatorConversion>();
-                //    var allBodIndicatorConversions = getBodIndicatorConversion(bod.BodIndicator, bodIndicatorConversions, conversions);
-                //    if (allBodIndicatorConversions != null) {
-                //        bod.BodIndicatorConversions.AddRange(allBodIndicatorConversions);
-                //    }
-                //}
                 _data.AllBodIndicatorConversions = bodIndicatorConversions;
             }
             return _data.AllBodIndicatorConversions;
@@ -98,43 +89,5 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             }
             return null;
         }
-
-        private static void writeBurdensOfDiseaseDataToCsv(string tempFolder, IEnumerable<BurdenOfDisease> burdensOfDisease) {
-            if (!burdensOfDisease?.Any() ?? true) {
-                return;
-            }
-
-            var tdBurdensOfDisease = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.BurdensOfDisease);
-            var dtABurdensOfDisease = tdBurdensOfDisease.CreateDataTable();
-            var ccr = new int[Enum.GetNames(typeof(RawBurdensOfDisease)).Length];
-            foreach (var bod in burdensOfDisease) {
-                var r = dtABurdensOfDisease.NewRow();
-                r.WriteNonEmptyString(RawBurdensOfDisease.Population, bod.Population.ToString(), ccr);
-                r.WriteNonEmptyString(RawBurdensOfDisease.IdEffect, bod.Effect?.Code, ccr);
-                r.WriteNonEmptyString(RawBurdensOfDisease.BodIndicator, bod.BodIndicator.ToString(), ccr);
-                r.WriteNonNullDouble(RawBurdensOfDisease.Value, bod.Value, ccr);
-                dtABurdensOfDisease.Rows.Add(r);
-            }
-            writeToCsv(tempFolder, tdBurdensOfDisease, dtABurdensOfDisease);
-        }
-        private static void writeBodIndicatorConversionDataToCsv(string tempFolder, IEnumerable<BodIndicatorConversion> bodIndicatorConversion) {
-            if (!bodIndicatorConversion?.Any() ?? true) {
-                return;
-            }
-
-            var tdbodIndicatorConversion = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.BodIndicatorConversions);
-            var dtbodIndicatorConversion = tdbodIndicatorConversion.CreateDataTable();
-            foreach (var conversion in bodIndicatorConversion) {
-                var r = dtbodIndicatorConversion.NewRow();
-                r.WriteNonEmptyString(RawBodIndicatorConversions.FromIndicator, conversion.FromIndicator.ToString());
-                r.WriteNonEmptyString(RawBodIndicatorConversions.FromUnit, conversion.FromUnit);
-                r.WriteNonEmptyString(RawBodIndicatorConversions.ToIndicator, conversion.ToIndicator.ToString());
-                r.WriteNonEmptyString(RawBodIndicatorConversions.ToUnit, conversion.ToUnit);
-                r.WriteNonNullDouble(RawBodIndicatorConversions.Value, conversion.Value);
-                dtbodIndicatorConversion.Rows.Add(r);
-            }
-            writeToCsv(tempFolder, tdbodIndicatorConversion, dtbodIndicatorConversion);
-        }
-
     }
 }

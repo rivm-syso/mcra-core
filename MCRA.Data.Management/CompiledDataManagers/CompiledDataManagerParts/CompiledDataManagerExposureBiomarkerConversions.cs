@@ -1,9 +1,8 @@
-﻿using MCRA.Utils.DataFileReading;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Extensions;
-using MCRA.General.TableDefinitions;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
+using MCRA.Utils.DataFileReading;
 
 namespace MCRA.Data.Management.CompiledDataManagers {
     public partial class CompiledDataManager {
@@ -85,31 +84,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 _data.AllExposureBiomarkerConversions = allExposureBiomarkerConversions;
             }
             return _data.AllExposureBiomarkerConversions;
-        }
-
-        private static void writeExposureBiomarkerConversionsDataToCsv(string tempFolder, ICollection<ExposureBiomarkerConversion> exposureBiomarkerConversions) {
-            if (!exposureBiomarkerConversions?.Any() ?? true) {
-                return;
-            }
-
-            var td = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.ExposureBiomarkerConversions);
-            var dt = td.CreateDataTable();
-            foreach (var t in exposureBiomarkerConversions) {
-                var row = dt.NewRow();
-                row.WriteNonEmptyString(RawExposureBiomarkerConversions.IdExposureBiomarkerConversion, t.IdExposureBiomarkerConversion);
-                row.WriteNonEmptyString(RawExposureBiomarkerConversions.IdSubstanceFrom, t.SubstanceFrom.Code);
-                row.WriteNonEmptyString(RawExposureBiomarkerConversions.IdSubstanceTo, t.SubstanceTo.Code);
-                row.WriteNonEmptyString(RawExposureBiomarkerConversions.BiologicalMatrix, t.BiologicalMatrix.ToString());
-                row.WriteNonEmptyString(RawExposureBiomarkerConversions.ExpressionTypeFrom, t.ExpressionTypeFrom.ToString());
-                row.WriteNonEmptyString(RawExposureBiomarkerConversions.UnitFrom, t.UnitFrom.ToString());
-                row.WriteNonEmptyString(RawExposureBiomarkerConversions.UnitTo, t.UnitTo.ToString());
-                row.WriteNonEmptyString(RawExposureBiomarkerConversions.ExpressionTypeTo, t.ExpressionTypeTo.ToString());
-                row.WriteNonNullDouble(RawExposureBiomarkerConversions.ConversionFactor, t.ConversionFactor);
-                row.WriteNonEmptyString(RawExposureBiomarkerConversions.VariabilityDistributionType, t.Distribution.ToString());
-                row.WriteNonNullDouble(RawExposureBiomarkerConversions.VariabilityUpper, t.VariabilityUpper);
-                dt.Rows.Add(row);
-            }
-            writeToCsv(tempFolder, td, dt);
         }
     }
 }

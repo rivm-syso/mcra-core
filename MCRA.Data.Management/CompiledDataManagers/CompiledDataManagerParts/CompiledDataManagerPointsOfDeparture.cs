@@ -2,9 +2,7 @@
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Extensions;
-using MCRA.General.TableDefinitions;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
-using MCRA.Utils.DataFileReading;
 
 namespace MCRA.Data.Management.CompiledDataManagers {
     public partial class CompiledDataManager {
@@ -108,54 +106,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             }
 
             return _data.AllPointsOfDeparture;
-        }
-
-        private static void writePointsOfDepartureDataToCsv(string tempFolder, IEnumerable<Compiled.Objects.PointOfDeparture> hazardDoses) {
-            if (!hazardDoses?.Any() ?? true) {
-                return;
-            }
-
-            var tdh = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.HazardDoses);
-            var dth = tdh.CreateDataTable();
-            var tdu = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.HazardDosesUncertain);
-            var dtu = tdu.CreateDataTable();
-
-            foreach (var hd in hazardDoses) {
-                var rowHd = dth.NewRow();
-                rowHd.WriteNonEmptyString(RawHazardDoses.IdDoseResponseModel, hd.Code);
-                rowHd.WriteNonEmptyString(RawHazardDoses.IdEffect, hd.Effect.Code);
-                rowHd.WriteNonEmptyString(RawHazardDoses.IdCompound, hd.Compound.Code);
-                rowHd.WriteNonNaNDouble(RawHazardDoses.LimitDose, hd.LimitDose);
-                rowHd.WriteNonEmptyString(RawHazardDoses.HazardDoseType, hd.PointOfDepartureType.ToString());
-                rowHd.WriteNonEmptyString(RawHazardDoses.Species, hd.Species);
-                rowHd.WriteNonEmptyString(RawHazardDoses.DoseResponseModelEquation, hd.DoseResponseModelEquation);
-                rowHd.WriteNonEmptyString(RawHazardDoses.DoseResponseModelParameterValues, hd.DoseResponseModelParameterValues);
-                rowHd.WriteNonNaNDouble(RawHazardDoses.CriticalEffectSize, hd.CriticalEffectSize);
-                rowHd.WriteNonEmptyString(RawHazardDoses.ExposureRoute, hd.ExposureRoute.ToString());
-                rowHd.WriteNonEmptyString(RawHazardDoses.DoseUnit, hd.DoseUnit.ToString());
-                rowHd.WriteNonEmptyString(RawHazardDoses.BiologicalMatrix, hd.BiologicalMatrix.ToString());
-                rowHd.WriteNonEmptyString(RawHazardDoses.ExpressionType, hd.ExpressionType.ToString());
-                rowHd.WriteNonEmptyString(RawHazardDoses.TargetLevel, hd.TargetLevel.ToString());
-                rowHd.WriteNonEmptyString(RawHazardDoses.PublicationAuthors, hd.PublicationAuthors);
-                rowHd.WriteNonEmptyString(RawHazardDoses.PublicationTitle, hd.PublicationTitle);
-                rowHd.WriteNonEmptyString(RawHazardDoses.PublicationUri, hd.PublicationUri);
-                rowHd.WriteNonEmptyString(RawHazardDoses.PublicationYear, hd.PublicationYear.HasValue ? hd.PublicationYear.Value.ToString() : "");
-
-                dth.Rows.Add(rowHd);
-
-                foreach (var hdu in hd.PointOfDepartureUncertains) {
-                    var rowHdu = dtu.NewRow();
-                    rowHdu.WriteNonEmptyString(RawHazardDosesUncertain.IdDoseResponseModel, hd.Code);
-                    rowHdu.WriteNonEmptyString(RawHazardDosesUncertain.IdEffect, hd.Effect.Code);
-                    rowHdu.WriteNonEmptyString(RawHazardDosesUncertain.IdCompound, hd.Compound.Code);
-                    rowHdu.WriteNonNaNDouble(RawHazardDosesUncertain.LimitDose, hdu.LimitDose);
-                    rowHdu.WriteNonEmptyString(RawHazardDosesUncertain.DoseResponseModelParameterValues, hdu.DoseResponseModelParameterValues);
-                    dtu.Rows.Add(rowHdu);
-                }
-            }
-
-            writeToCsv(tempFolder, tdh, dth);
-            writeToCsv(tempFolder, tdu, dtu);
         }
     }
 }

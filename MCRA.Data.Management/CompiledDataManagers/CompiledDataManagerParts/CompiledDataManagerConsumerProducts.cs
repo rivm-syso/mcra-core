@@ -1,8 +1,6 @@
-﻿using MCRA.Utils.DataFileReading;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Extensions;
-using MCRA.General.TableDefinitions;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
 
 namespace MCRA.Data.Management.CompiledDataManagers {
@@ -48,26 +46,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 _data.AllConsumerProducts = allConsumerProducts;
             }
             return _data.AllConsumerProducts;
-        }
-
-        private static void writeConsumerProductsDataToCsv(string tempFolder, IEnumerable<ConsumerProduct> consumerProducts) {
-            if (!consumerProducts?.Any() ?? true) {
-                return;
-            }
-
-            var td = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.ConsumerProducts);
-            var dt = td.CreateDataTable();
-            var ccr = new int[Enum.GetNames(typeof(RawConsumerProducts)).Length];
-
-            foreach (var cmp in consumerProducts) {
-                var row = dt.NewRow();
-                row.WriteNonEmptyString(RawConsumerProducts.Name, cmp.Name, ccr);
-                row.WriteNonEmptyString(RawConsumerProducts.Description, cmp.Description, ccr);
-                row.WriteNonEmptyString(RawConsumerProducts.Id, cmp.Code, ccr);
-                dt.Rows.Add(row);
-            }
-
-            writeToCsv(tempFolder, td, dt, ccr);
         }
 
         private ConsumerProduct getOrAddConsumerProduct(
