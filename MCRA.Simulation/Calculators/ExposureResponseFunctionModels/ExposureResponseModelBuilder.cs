@@ -84,7 +84,7 @@ namespace MCRA.Simulation.Calculators.ExposureResponseFunctionModels {
         }
 
         private static double getValue(Expression expression) {
-            if (expression == null) {
+            if (string.IsNullOrEmpty(expression?.ExpressionString)) {
                 return double.NaN;
             }
             return Convert.ToDouble(expression.Evaluate());

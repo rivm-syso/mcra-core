@@ -20,10 +20,12 @@ namespace MCRA.Simulation.Actions.BurdensOfDisease {
 
         public BurdensOfDiseaseActionCalculator(ProjectDto project) : base(project) {
         }
+
         protected override void verify() {
             _actionDataLinkRequirements[ScopingType.BurdensOfDisease][ScopingType.Effects].AlertTypeMissingData = AlertType.Notification;
             _actionDataLinkRequirements[ScopingType.BurdensOfDisease][ScopingType.Populations].AlertTypeMissingData = AlertType.Notification;
         }
+
         public override ICollection<UncertaintySource> GetRandomSources() {
             var result = new List<UncertaintySource>();
             if (ModuleConfig.ResampleBodIndicatorValues) {
@@ -31,6 +33,7 @@ namespace MCRA.Simulation.Actions.BurdensOfDisease {
             }
             return result;
         }
+
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
             data.BurdensOfDisease = [.. subsetManager.AllBurdensOfDisease
                 .Where(r => r.Population == null
@@ -48,14 +51,9 @@ namespace MCRA.Simulation.Actions.BurdensOfDisease {
             localProgress.Update(100);
         }
 
-
         /// <summary>
         /// Load and resample distribution voor burden of disease indicator values.
         /// </summary>
-        /// <param name="data"></param>
-        /// <param name="factorialSet"></param>
-        /// <param name="uncertaintySourceGenerators"></param>
-        /// <param name="progressReport"></param>
         protected override void loadDataUncertain(
             ActionData data,
             UncertaintyFactorialSet factorialSet,

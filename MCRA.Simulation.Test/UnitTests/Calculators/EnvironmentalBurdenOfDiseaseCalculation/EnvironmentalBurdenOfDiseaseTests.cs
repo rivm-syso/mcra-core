@@ -6,6 +6,7 @@ using MCRA.Simulation.Calculators.ExposureResponseFunctionModels;
 using MCRA.Simulation.Calculators.ExposureResponseFunctionModels.CounterFactualValueModels;
 using MCRA.Simulation.Calculators.ExposureResponseFunctionModels.ExposureResponseSpecificationModels;
 using MCRA.Simulation.Calculators.ExposureResponseFunctions;
+using MCRA.Simulation.Calculators.SimulatedPopulations;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
@@ -73,11 +74,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.EnvironmentalBurdenOfDiseas
             };
 
             var bodIndicatorModel = BodIndicatorValueCalculatorFactory.Create(bod);
-
+            var population = new Population() { Size = 10000 };
             var results = calculator.Compute(
                 exposureResponseResults.First(),
                 bodIndicatorModel,
-                new Population() { Size = 10000 }
+                population
             );
 
             //Set Bod conversion factor to 20
@@ -87,7 +88,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.EnvironmentalBurdenOfDiseas
             results = calculator.Compute(
                exposureResponseResults.First(),
                bodIndicatorModel,
-               new Population() { Size = 10000 }
+               population
            );
             var totalBod2 = results.EnvironmentalBurdenOfDiseaseResultBinRecords.First().TotalBod;
 

@@ -80,5 +80,7 @@ namespace MCRA.General {
         CounterFactualValues = 38,
         [Display(Name = "Burden of disease indicator values")]
         BodIndicatorValues = 39,
+        [Display(Name = "Population sizes")]
+        PopulationSizes = 40,
     }
 }

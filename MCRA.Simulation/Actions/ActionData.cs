@@ -110,6 +110,7 @@ using MCRA.Simulation.Calculators.SoilExposureCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.Objects;
 using MCRA.Simulation.Calculators.BodIndicatorModels;
+using MCRA.Simulation.Calculators.SimulatedPopulations;
 
 namespace MCRA.Simulation {
     public class ActionData {

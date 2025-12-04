@@ -26,6 +26,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                     var idPopulation = r.GetString(RawPopulations.IdPopulation, fieldMap);
                                     var valid = IsCodeSelected(ScopingType.Populations, idPopulation);
                                     if (valid) {
+                                        var distributionTypeString = r.GetStringOrNull(RawPopulations.SizeUncertaintyDistribution, fieldMap);
                                         var population = new Population {
                                             Code = idPopulation,
                                             Name = r.GetStringOrNull(RawPopulations.Name, fieldMap),
@@ -35,6 +36,9 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             EndDate = r.GetDateTimeOrNull(RawPopulations.EndDate, fieldMap),
                                             NominalBodyWeight = r.GetDoubleOrNull(RawPopulations.NominalBodyWeight, fieldMap) ?? double.NaN,
                                             Size = r.GetDoubleOrNull(RawPopulations.Size, fieldMap) ?? double.NaN,
+                                            SizeUncertaintyDistribution = PopulationSizeDistributionTypeConverter.FromString(distributionTypeString, PopulationSizeDistributionType.Constant),
+                                            SizeUncertaintyLower = r.GetDoubleOrNull(RawPopulations.SizeLower, fieldMap),
+                                            SizeUncertaintyUpper = r.GetDoubleOrNull(RawPopulations.SizeUpper, fieldMap),
                                             PopulationIndividualPropertyValues = [],
                                         };
                                         allPopulations[population.Code] = population;

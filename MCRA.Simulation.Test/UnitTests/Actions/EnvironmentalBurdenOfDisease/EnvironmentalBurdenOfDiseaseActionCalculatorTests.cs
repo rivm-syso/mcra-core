@@ -2,6 +2,7 @@
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease;
+using MCRA.Simulation.Calculators.SimulatedPopulations;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 

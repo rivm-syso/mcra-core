@@ -2,6 +2,7 @@
 using MCRA.General;
 using MCRA.Simulation.Calculators.BodIndicatorModels;
 using MCRA.Simulation.Calculators.DustExposureCalculation;
+using MCRA.Simulation.Calculators.SimulatedPopulations;
 
 namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
 
@@ -24,17 +25,13 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
         /// </summary>
         public List<EnvironmentalBurdenOfDiseaseResultRecord> Compute(
             ICollection<IBodIndicatorValueModel> bodIndicatorValueModels,
-            Population selectedPopulation,
+            Population population,
             List<ExposureResponseResult> exposureResponseResults
         ) {
             // Compute EBDs for current ERF results
             var environmentalBurdenOfDiseases = new List<EnvironmentalBurdenOfDiseaseResultRecord>();
             foreach (var exposureResponseResult in exposureResponseResults) {
-                var erfEbdResults = Compute(
-                    exposureResponseResult,
-                    bodIndicatorValueModels,
-                    selectedPopulation
-                );
+                var erfEbdResults = Compute(exposureResponseResult, bodIndicatorValueModels, population);
                 environmentalBurdenOfDiseases.AddRange(erfEbdResults);
             }
             return environmentalBurdenOfDiseases;
@@ -48,7 +45,7 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
         public List<EnvironmentalBurdenOfDiseaseResultRecord> Compute(
             ExposureResponseResult exposureResponseResult,
             ICollection<IBodIndicatorValueModel> bodIndicatorValueModels,
-            Population selectedPopulation
+            Population population
         ) {
             var result = new List<EnvironmentalBurdenOfDiseaseResultRecord>();
 
@@ -62,7 +59,7 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
                 var resultRecord = Compute(
                     exposureResponseResult,
                     bodIndicatorValueModel,
-                    selectedPopulation
+                    population
                 );
                 result.Add(resultRecord);
             }
@@ -79,7 +76,6 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
             IBodIndicatorValueModel bodIndicatorValueModel,
             Population population
         ) {
-            var populationSize = population?.Size ?? double.NaN;
             var standardisedPopulationSize = _ebdStandardisationMethod switch {
                 EnvironmentalBodStandardisationMethod.PER100K => 1E5,
                 EnvironmentalBodStandardisationMethod.PER10K => 1E4,
@@ -102,11 +98,11 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
             var cumulative = 0d;
             var sumExposed = environmentalBurdenOfDiseaseResultBinRecords
                 .Where(r => r.ExposurePercentileBin.Percentage > 0)
-                .Sum(r => r.AttributableBod / populationSize / r.ExposurePercentileBin.Percentage * 100);
+                .Sum(r => r.AttributableBod / population.Size / r.ExposurePercentileBin.Percentage * 100);
             var cumulativeExposed = 0d;
             foreach (var record in environmentalBurdenOfDiseaseResultBinRecords) {
                 cumulative += record.AttributableBod;
-                cumulativeExposed += record.AttributableBod / populationSize / record.ExposurePercentileBin.Percentage * 100;
+                cumulativeExposed += record.AttributableBod / population.Size / record.ExposurePercentileBin.Percentage * 100;
                 record.CumulativeAttributableBod = cumulative / sum * 100;
                 record.CumulativeStandardisedExposedAttributableBod = cumulativeExposed / sumExposed * 100;
             }

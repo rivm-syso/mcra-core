@@ -31,4 +31,13 @@
     <SelectionSetting>IndividualDaySubsetDefinition</SelectionSetting>
     <SelectionSetting>NominalPopulationBodyWeight</SelectionSetting>
   </SelectionSettings>
+  <CalculationSettings>
+    <CalculationSetting source="Action">RandomSeed</CalculationSetting>
+  </CalculationSettings>
+  <UncertaintySources>
+    <UncertaintySource>PopulationSizes</UncertaintySource>
+  </UncertaintySources>
+  <UncertaintySettings>
+    <UncertaintySetting>ResamplePopulationSizes</UncertaintySetting>
+  </UncertaintySettings>
 </Module>

@@ -79,12 +79,52 @@
         <string>BodyWeight</string>
       </Aliases>
     </ColumnDefinition>
+
     <ColumnDefinition FieldType="Numeric">
       <Id>Size</Id>
       <Description>The number of individuals of this population.</Description>
       <Aliases>
         <string>Size</string>
         <string>PopulationSize</string>
+        <string>Value</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="PopulationSizeDistributionType">
+      <Id>SizeUncertaintyDistribution</Id>
+      <Description>
+        Distribution type (Uniform, or Normal).
+        If not specified, the population size is assumed to be a constant factor.
+      </Description>
+      <Aliases>
+        <string>SizeUncertaintyDistribution</string>
+        <string>SizeDistribution</string>
+      </Aliases>
+      <PossibleValues>
+        <PossibleValue>Uniform</PossibleValue>
+        <PossibleValue>Normal</PossibleValue>
+      </PossibleValues>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric">
+      <Id>SizeLower</Id>
+      <Description>
+        The lower value of the distribution. If the distribution is triangular then it is the lower bound of the uniform distribution.
+        This value should be smaller than the population size.
+      </Description>
+      <Aliases>
+        <string>SizeLower</string>
+        <string>SizeUncertaintyLower</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric">
+      <Id>SizeUpper</Id>
+      <Description>
+        The upper value of the distribution. If the distribution is uniform, then it is the upper bound of the uniform distribution.
+        If the distribution is normal, then the upper value is assumed to correspond with the p95 percentile of the distribution.
+        This value should be greater than the population size.
+      </Description>
+      <Aliases>
+        <string>SizeUpper</string>
+        <string>SizeUncertaintyUpper</string>
       </Aliases>
     </ColumnDefinition>
 

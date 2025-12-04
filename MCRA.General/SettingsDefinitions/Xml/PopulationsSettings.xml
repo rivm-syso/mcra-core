@@ -75,4 +75,10 @@
     <Description>Loop over the selected populations.</Description>
     <ValueType>Boolean</ValueType>
   </SettingsItem>
+  <SettingsItem>
+    <Id>ResamplePopulationSizes</Id>
+    <Name>Resample population sizes</Name>
+    <Description>Specifies whether the population size is resampled from a parametric uncertainty distribution.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
 </SettingsItems>

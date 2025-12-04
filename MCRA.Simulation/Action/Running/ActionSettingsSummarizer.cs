@@ -275,6 +275,12 @@ namespace MCRA.Simulation.Action {
                         project.BurdensOfDiseaseSettings.ResampleBodIndicatorValues
                     );
                 }
+                if (activeUncertaintySettings.Contains(SettingsItemType.ResamplePopulationSizes)) {
+                    section.SummarizeSetting(
+                        SettingsItemType.ResamplePopulationSizes,
+                        project.PopulationsSettings.ResamplePopulationSizes
+                    );
+                }
 
                 section.SummarizeSetting(SettingsItemType.UncertaintyLowerBound, actionConfig.UncertaintyLowerBound);
                 section.SummarizeSetting(SettingsItemType.UncertaintyUpperBound, actionConfig.UncertaintyUpperBound);

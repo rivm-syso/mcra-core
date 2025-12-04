@@ -99,6 +99,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 project.IndoorAirConcentrationsSettings.ResampleAirConcentrations = true;
                 project.ExposureResponseFunctionsSettings.ResampleCounterFactualValues = true;
                 project.BurdensOfDiseaseSettings.ResampleBodIndicatorValues = true;
+                project.PopulationsSettings.ResamplePopulationSizes = true;
                 var calculator = ActionCalculatorProvider.Create(definition.ActionType, project, false);
 
                 var sources = calculator.GetRandomSources();

@@ -1,5 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General.Action.Settings;
+using MCRA.Simulation.Objects.Populations;
 
 namespace MCRA.Simulation.Calculators.PopulationDefinitionCalculation {
     public class PopulationDefinitionBuilder {
@@ -7,13 +8,13 @@ namespace MCRA.Simulation.Calculators.PopulationDefinitionCalculation {
         /// <summary>
         /// Creates a population from specified settings and subset-definitions.
         /// </summary>
-        public Population Create(
+        public SimulatedPopulation Create(
             double nominalBodyWeight,
             bool definitionFromSubsetSettings,
             List<IndividualsSubsetDefinition> individualsSubsetDefinitions,
             IndividualDaySubsetDefinition individualDaySubsetDefinition
         ) {
-            var result = new Population() {
+            var population = new Population() {
                 Code = "Generated",
                 NominalBodyWeight = nominalBodyWeight
             };
@@ -22,10 +23,11 @@ namespace MCRA.Simulation.Calculators.PopulationDefinitionCalculation {
             if (definitionFromSubsetSettings) {
                 var populationIndividualPropertyValues = PopulationIndividualPropertyCalculator
                     .Compute(individualsSubsetDefinitions, individualDaySubsetDefinition);
-                result.PopulationIndividualPropertyValues = populationIndividualPropertyValues;
+                population.PopulationIndividualPropertyValues = populationIndividualPropertyValues;
             } else {
-                result.PopulationIndividualPropertyValues = [];
+                population.PopulationIndividualPropertyValues = [];
             }
+            var result = new SimulatedPopulation(population);
             return result;
         }
     }

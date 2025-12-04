@@ -13,10 +13,8 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         ];
 
         /// <summary>
-        /// Creates a list of populations
+        /// Creates a list of populations.
         /// </summary>
-        /// <param name="n"></param>
-        /// <returns></returns>
         public static List<Population> Create(
             int n,
             List<PopulationCharacteristicType> populationCharacteristicTypes = null,
@@ -27,16 +25,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                 var result = _defaultPopulations
                     .Take(n)
                     .Select(r => {
-                        var record = new Population() {
-                            Code = r,
-                            Name = r,
-                        };
-                        if (populationCharacteristicTypes?.Count() > 0) {
-                            record.PopulationCharacteristics = populationCharacteristicTypes
-                                .Select(r => FakePopulationCharacteristic(r, random))
-                                .ToList();
-                        }
-                        return record;
+                        return CreateSingle(r, populationCharacteristicTypes, random);
                     })
                     .ToList();
                 return result;
@@ -44,7 +33,31 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             throw new Exception($"Cannot create more than {_defaultPopulations.Length} mock populations using this method!");
         }
 
-        public static PopulationCharacteristic FakePopulationCharacteristic(
+        /// <summary>
+        /// Creates a single fake population.
+        /// </summary>
+        public static Population CreateSingle(
+            string code,
+            List<PopulationCharacteristicType> populationCharacteristicTypes = null,
+            IRandom random = null
+        ) {
+            var record = new Population() {
+                Code = code,
+                Name = $"Fake population {code} name",
+                Description = $"Fake population {code} description",
+            };
+            if (populationCharacteristicTypes?.Count > 0) {
+                record.PopulationCharacteristics = populationCharacteristicTypes?
+                    .Select(r => FakePopulationCharacteristic(r, random))
+                    .ToList() ?? [];
+            }
+            return record;
+        }
+
+        /// <summary>
+        /// Creates a fake population characteristic.
+        /// </summary>
+        private static PopulationCharacteristic FakePopulationCharacteristic(
             PopulationCharacteristicType characteristicType,
             IRandom random
         ) {
