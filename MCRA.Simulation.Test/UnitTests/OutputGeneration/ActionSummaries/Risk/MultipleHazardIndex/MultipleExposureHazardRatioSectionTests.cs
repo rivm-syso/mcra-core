@@ -69,11 +69,11 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             );
 
             Assert.AreEqual(11, section.RiskRecords.SelectMany(c => c.Records).Count());
-            Assert.IsTrue(!double.IsNaN(section.RiskRecords[0].Records[1].RiskP50UncP50));
-            Assert.IsTrue(!double.IsNaN(section.RiskRecords[0].Records[1].PLowerRiskUncP50));
-            Assert.IsTrue(!double.IsNaN(section.RiskRecords[0].Records[1].PUpperRiskUncP50));
-            Assert.IsTrue(!double.IsNaN(section.RiskRecords[0].Records[1].PLowerRiskUncLower));
-            Assert.IsTrue(!double.IsNaN(section.RiskRecords[0].Records[1].PUpperRiskUncUpper));
+            Assert.IsFalse(double.IsNaN(section.RiskRecords[0].Records[1].RiskP50UncP50));
+            Assert.IsFalse(double.IsNaN(section.RiskRecords[0].Records[1].PLowerRiskUncP50));
+            Assert.IsFalse(double.IsNaN(section.RiskRecords[0].Records[1].PUpperRiskUncP50));
+            Assert.IsFalse(double.IsNaN(section.RiskRecords[0].Records[1].PLowerRiskUncLower));
+            Assert.IsFalse(double.IsNaN(section.RiskRecords[0].Records[1].PUpperRiskUncUpper));
             RenderView(section, filename: "MultipleHExposureHazardRatioSection_TestSummarize.html");
         }
     }

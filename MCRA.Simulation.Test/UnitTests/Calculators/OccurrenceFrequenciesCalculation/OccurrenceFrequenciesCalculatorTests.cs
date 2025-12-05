@@ -598,7 +598,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
 
             // Get the substance residue collections for APPLE
             var agriculturalUseInfoApple = agriculturalUseInfo[_foodApple];
-            Assert.AreEqual(3, agriculturalUseInfoApple.Count);
+            Assert.HasCount(3, agriculturalUseInfoApple);
             Assert.AreEqual(0.1, agriculturalUseInfoApple.First(r => r.Code == "grpA").OccurrenceFraction);
             Assert.AreEqual(0.15, agriculturalUseInfoApple.First(r => r.Code == "grpAB").OccurrenceFraction);
             Assert.AreEqual(0.2, agriculturalUseInfoApple.First(r => r.Code == "grpABC").OccurrenceFraction);
@@ -609,7 +609,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
 
             // Get the substance residue collections for PINEAPPLE
             var agriculturalUseInfoPineapple = agriculturalUseInfo[_foodPineapple];
-            Assert.AreEqual(3, agriculturalUseInfoPineapple.Count);
+            Assert.HasCount(3, agriculturalUseInfoPineapple);
             Assert.AreEqual(0.055, agriculturalUseInfoPineapple.First(r => r.Code == "grpA").OccurrenceFraction, _epsilon);
             Assert.AreEqual(0.15, agriculturalUseInfoPineapple.First(r => r.Code == "grpAB").OccurrenceFraction, _epsilon);
             Assert.AreEqual(0.06, agriculturalUseInfoPineapple.First(r => r.Code == "grpABC").OccurrenceFraction, _epsilon);

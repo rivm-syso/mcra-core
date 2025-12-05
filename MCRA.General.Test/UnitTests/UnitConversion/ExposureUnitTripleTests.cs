@@ -58,7 +58,7 @@
                 foreach (var concentrationMassUnit in concentrationMassUnits) {
                     foreach (var timeScaleUnit in timeScaleUnits) {
                         var target = new ExposureUnitTriple(substanceAmountUnit, concentrationMassUnit, timeScaleUnit);
-                        Assert.IsTrue(!string.IsNullOrEmpty(target.GetShortDisplayName()));
+                        Assert.IsFalse(string.IsNullOrEmpty(target.GetShortDisplayName()));
                     }
                 }
             }

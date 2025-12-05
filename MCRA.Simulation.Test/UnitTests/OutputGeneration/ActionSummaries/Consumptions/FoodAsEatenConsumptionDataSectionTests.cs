@@ -22,7 +22,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Consum
             var section = new FoodAsEatenConsumptionDataSection();
             section.Summarize(individualDays, foods, consumptions, 25, 75);
             Assert.HasCount(3, section.Records);
-            Assert.IsTrue(!double.IsNaN(section.Records.First().MeanConsumptionAll));
+            Assert.IsFalse(double.IsNaN(section.Records.First().MeanConsumptionAll));
             AssertIsValidView(section);
         }
     }

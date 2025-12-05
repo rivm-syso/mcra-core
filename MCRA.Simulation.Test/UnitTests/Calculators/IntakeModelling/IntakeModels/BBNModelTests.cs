@@ -31,8 +31,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
 
             Assert.IsGreaterThan(0.2, summaryAmounts.VarianceBetween);
             Assert.IsGreaterThan(0.01, summaryAmounts.VarianceWithin);
-            Assert.IsTrue(!double.IsNaN(summaryAmounts._2LogLikelihood));
-            Assert.IsTrue(!double.IsNaN(summaryFrequencies._2LogLikelihood));
+            Assert.IsFalse(double.IsNaN(summaryAmounts._2LogLikelihood));
+            Assert.IsFalse(double.IsNaN(summaryFrequencies._2LogLikelihood));
             Assert.IsGreaterThan(0, summaryFrequencies.DegreesOfFreedom);
         }
 
@@ -65,8 +65,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
 
             Assert.IsGreaterThan(0.2, summaryAmounts.VarianceBetween);
             Assert.IsGreaterThan(0.01, summaryAmounts.VarianceWithin);
-            Assert.IsTrue(!double.IsNaN(summaryAmounts._2LogLikelihood));
-            Assert.IsTrue(!double.IsNaN(summaryFrequencies._2LogLikelihood));
+            Assert.IsFalse(double.IsNaN(summaryAmounts._2LogLikelihood));
+            Assert.IsFalse(double.IsNaN(summaryFrequencies._2LogLikelihood));
             Assert.AreEqual(52, summaryFrequencies.DegreesOfFreedom);
         }
     }

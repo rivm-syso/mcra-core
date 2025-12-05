@@ -31,7 +31,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
             if (!Directory.Exists(outputPath)) {
                 Directory.CreateDirectory(outputPath);
             }
-            Assert.IsTrue(!string.IsNullOrEmpty(chartCreator.ChartId));
+            Assert.IsFalse(string.IsNullOrEmpty(chartCreator.ChartId));
             chartCreator.CreateToPng(Path.Combine(outputPath, $"{name}.png"));
         }
 
@@ -50,7 +50,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
             if (!Directory.Exists(outputPath)) {
                 Directory.CreateDirectory(outputPath);
             }
-            Assert.IsTrue(!string.IsNullOrEmpty(chartCreator.ChartId));
+            Assert.IsFalse(string.IsNullOrEmpty(chartCreator.ChartId));
             if (chartFileType == ChartFileType.Svg) {
                 chartCreator.CreateToSvg(Path.Combine(outputPath, $"{name}.svg"));
             } else if (chartFileType == ChartFileType.Png) {

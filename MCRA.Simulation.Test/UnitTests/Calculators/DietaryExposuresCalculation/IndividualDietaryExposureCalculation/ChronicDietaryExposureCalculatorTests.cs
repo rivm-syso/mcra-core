@@ -56,11 +56,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.DietaryExposuresCalculation
                 seed
             );
             var totalExposure = dietaryIndividualDayIntakes.Sum(c => c.TotalExposurePerMassUnit(rpfs, memberships, false));
-            Assert.IsTrue(!double.IsNaN(totalExposure));
+            Assert.IsFalse(double.IsNaN(totalExposure));
 
             var exposurePerCompound = calculator.ComputeExposurePerCompoundRecords(dietaryIndividualDayIntakes);
             var totalExposurePerCompound = exposurePerCompound.SelectMany(c => c.Value).Sum(c => c.ExposurePerBodyWeight);
-            Assert.IsTrue(!double.IsNaN(totalExposurePerCompound));
+            Assert.IsFalse(double.IsNaN(totalExposurePerCompound));
         }
     }
 }

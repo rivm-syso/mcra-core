@@ -37,7 +37,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
 
                 var generalPopRows = individualPropertyValuesTable.Select("idPopulation = 'AB-Pop-2001'");
                 var generalPopProperties = generalPopRows.Select(r => r["idIndividualProperty"]).ToList();
-                Assert.IsTrue(!generalPopProperties.Any());
+                Assert.IsFalse(generalPopProperties.Any());
 
                 var childPopRows = individualPropertyValuesTable.Select("idPopulation = 'AB-Children-2001'");
                 var childPopProperties = childPopRows.Select(r => r["idIndividualProperty"]).ToList();
@@ -70,7 +70,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
 
                 var generalPopRows = individualPropertyValuesTable.Select("idPopulation = 'AB-Pop-2001'");
                 var generalPopProperties = generalPopRows.Select(r => r["idIndividualProperty"]).ToList();
-                Assert.IsTrue(!generalPopProperties.Any());
+                Assert.IsFalse(generalPopProperties.Any());
 
                 var childPopRows = individualPropertyValuesTable.Select("idPopulation = 'AB-Children-2001'");
                 var childPopProperties = childPopRows.Select(r => r["idIndividualProperty"]).ToList();

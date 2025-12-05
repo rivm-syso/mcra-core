@@ -176,7 +176,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 var message = ex.ToString();
                 //Missing RPF for reference substance[Compound 0(CMP0)] in RPF uncertainty set[id_1].
                 //Missing RPF for [Compound 0(CMP0)] in RPF uncertainty set[id_1].
-                Assert.IsTrue(true, "Should have thrown the exception");
             }
 
         }

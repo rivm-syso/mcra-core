@@ -31,8 +31,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             var summaryFrequencies = model.FrequencyModelSummary;
             Assert.IsGreaterThan(0.3, summaryAmounts.VarianceBetween);
             Assert.IsGreaterThan(0.05, summaryAmounts.VarianceWithin);
-            Assert.IsTrue(!double.IsNaN(summaryFrequencies._2LogLikelihood));
-            Assert.IsTrue(!double.IsNaN(summaryAmounts._2LogLikelihood));
+            Assert.IsFalse(double.IsNaN(summaryFrequencies._2LogLikelihood));
+            Assert.IsFalse(double.IsNaN(summaryAmounts._2LogLikelihood));
         }
     }
 }

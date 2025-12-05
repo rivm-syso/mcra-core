@@ -14,7 +14,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PopulationDefinitionCalcula
             var populationBuilder = new PopulationDefinitionBuilder();
             var population = populationBuilder.Create(double.NaN, true, [subsetDefinition], null);
 
-            Assert.AreEqual(1, population.PopulationIndividualPropertyValues.Count);
+            Assert.HasCount(1, population.PopulationIndividualPropertyValues);
 
             var agePropertyValue = population.PopulationIndividualPropertyValues["age"];
             Assert.AreEqual(2, agePropertyValue.MinValue);
@@ -28,7 +28,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PopulationDefinitionCalcula
             var populationBuilder = new PopulationDefinitionBuilder();
             var population = populationBuilder.Create(double.NaN, true, [subsetDefinition], null);
 
-            Assert.AreEqual(1, population.PopulationIndividualPropertyValues.Count);
+            Assert.HasCount(1, population.PopulationIndividualPropertyValues);
 
             var agePropertyValue = population.PopulationIndividualPropertyValues["age"];
             Assert.AreEqual(double.NaN, agePropertyValue.MinValue);
@@ -42,7 +42,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PopulationDefinitionCalcula
             var populationBuilder = new PopulationDefinitionBuilder();
             var population = populationBuilder.Create(double.NaN, true, [subsetDefinition], null);
 
-            Assert.AreEqual(1, population.PopulationIndividualPropertyValues.Count);
+            Assert.HasCount(1, population.PopulationIndividualPropertyValues);
 
             var agePropertyValue = population.PopulationIndividualPropertyValues["age"];
             Assert.AreEqual(4, agePropertyValue.MinValue);
@@ -56,7 +56,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PopulationDefinitionCalcula
             var populationBuilder = new PopulationDefinitionBuilder();
             var population = populationBuilder.Create(double.NaN, true, [subsetDefinition], null);
 
-            Assert.AreEqual(1, population.PopulationIndividualPropertyValues.Count);
+            Assert.HasCount(1, population.PopulationIndividualPropertyValues);
 
             var propertyValue = population.PopulationIndividualPropertyValues["cat"];
             CollectionAssert.AreEquivalent(propertyValue.CategoricalLevels.ToArray(), new[] { "CatA", "catB" });
@@ -70,7 +70,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PopulationDefinitionCalcula
             var populationBuilder = new PopulationDefinitionBuilder();
             var population = populationBuilder.Create(double.NaN, true, [subsetDefinition], null);
 
-            Assert.AreEqual(1, population.PopulationIndividualPropertyValues.Count);
+            Assert.HasCount(1, population.PopulationIndividualPropertyValues);
 
             var propertyValue = population.PopulationIndividualPropertyValues[property.Code];
             CollectionAssert.AreEquivalent(propertyValue.CategoricalLevels.ToArray(), new[] { "m" });

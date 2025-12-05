@@ -64,11 +64,11 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             );
 
             Assert.AreEqual(substances.Count + 1, section.HazardExposureRecords.SelectMany(c => c.Records).Count());
-            Assert.IsTrue(!double.IsNaN(section.HazardExposureRecords[0].Records[0].MeanExposure));
-            Assert.IsTrue(!double.IsNaN(section.HazardExposureRecords[0].Records[0].MedianHc));
-            Assert.IsTrue(!double.IsNaN(section.HazardExposureRecords[0].Records[0].LowerExposure));
+            Assert.IsFalse(double.IsNaN(section.HazardExposureRecords[0].Records[0].MeanExposure));
+            Assert.IsFalse(double.IsNaN(section.HazardExposureRecords[0].Records[0].MedianHc));
+            Assert.IsFalse(double.IsNaN(section.HazardExposureRecords[0].Records[0].LowerExposure));
             Assert.IsTrue(double.IsNaN(section.HazardExposureRecords[0].Records[0].LowerExposure_UncLower));
-            Assert.IsTrue(!double.IsNaN(section.HazardExposureRecords[0].Records[0].UpperExposure));
+            Assert.IsFalse(double.IsNaN(section.HazardExposureRecords[0].Records[0].UpperExposure));
             Assert.IsTrue(double.IsNaN(section.HazardExposureRecords[0].Records[0].UpperExposure_UncUpper));
 
             AssertIsValidView(section);
@@ -146,12 +146,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             }
 
             Assert.AreEqual(substances.Count + 1, section.HazardExposureRecords.SelectMany(c => c.Records).Count());
-            Assert.IsTrue(!double.IsNaN(section.HazardExposureRecords[0].Records[0].MeanExposure));
-            Assert.IsTrue(!double.IsNaN(section.HazardExposureRecords[0].Records[0].MedianHc));
-            Assert.IsTrue(!double.IsNaN(section.HazardExposureRecords[0].Records[0].LowerExposure));
-            Assert.IsTrue(!double.IsNaN(section.HazardExposureRecords[0].Records[0].LowerExposure_UncLower));
-            Assert.IsTrue(!double.IsNaN(section.HazardExposureRecords[0].Records[0].UpperExposure));
-            Assert.IsTrue(!double.IsNaN(section.HazardExposureRecords[0].Records[0].UpperExposure_UncUpper));
+            Assert.IsFalse(double.IsNaN(section.HazardExposureRecords[0].Records[0].MeanExposure));
+            Assert.IsFalse(double.IsNaN(section.HazardExposureRecords[0].Records[0].MedianHc));
+            Assert.IsFalse(double.IsNaN(section.HazardExposureRecords[0].Records[0].LowerExposure));
+            Assert.IsFalse(double.IsNaN(section.HazardExposureRecords[0].Records[0].LowerExposure_UncLower));
+            Assert.IsFalse(double.IsNaN(section.HazardExposureRecords[0].Records[0].UpperExposure));
+            Assert.IsFalse(double.IsNaN(section.HazardExposureRecords[0].Records[0].UpperExposure_UncUpper));
 
             AssertIsValidView(section);
             RenderView(section, filename: "TestSummarizeMoeUncertain.html");
@@ -205,11 +205,11 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             );
 
             Assert.AreEqual(substances.Count + 1, section.HazardExposureRecords.SelectMany(c => c.Records).Count());
-            Assert.IsTrue(!double.IsNaN(section.HazardExposureRecords[0].Records[0].MeanExposure));
-            Assert.IsTrue(!double.IsNaN(section.HazardExposureRecords[0].Records[0].MedianHc));
-            Assert.IsTrue(!double.IsNaN(section.HazardExposureRecords[0].Records[0].LowerExposure));
+            Assert.IsFalse(double.IsNaN(section.HazardExposureRecords[0].Records[0].MeanExposure));
+            Assert.IsFalse(double.IsNaN(section.HazardExposureRecords[0].Records[0].MedianHc));
+            Assert.IsFalse(double.IsNaN(section.HazardExposureRecords[0].Records[0].LowerExposure));
             Assert.IsTrue(double.IsNaN(section.HazardExposureRecords[0].Records[0].LowerExposure_UncLower));
-            Assert.IsTrue(!double.IsNaN(section.HazardExposureRecords[0].Records[0].UpperExposure));
+            Assert.IsFalse(double.IsNaN(section.HazardExposureRecords[0].Records[0].UpperExposure));
             Assert.IsTrue(double.IsNaN(section.HazardExposureRecords[0].Records[0].UpperExposure_UncUpper));
 
             AssertIsValidView(section);
@@ -287,12 +287,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             }
 
             Assert.AreEqual(substances.Count + 1, section.HazardExposureRecords.SelectMany(c => c.Records).Count());
-            Assert.IsTrue(!double.IsNaN(section.HazardExposureRecords[0].Records[0].MeanExposure));
-            Assert.IsTrue(!double.IsNaN(section.HazardExposureRecords[0].Records[0].MedianHc));
-            Assert.IsTrue(!double.IsNaN(section.HazardExposureRecords[0].Records[0].LowerExposure));
-            Assert.IsTrue(!double.IsNaN(section.HazardExposureRecords[0].Records[0].LowerExposure_UncLower));
-            Assert.IsTrue(!double.IsNaN(section.HazardExposureRecords[0].Records[0].UpperExposure));
-            Assert.IsTrue(!double.IsNaN(section.HazardExposureRecords[0].Records[0].UpperExposure_UncUpper));
+            Assert.IsFalse(double.IsNaN(section.HazardExposureRecords[0].Records[0].MeanExposure));
+            Assert.IsFalse(double.IsNaN(section.HazardExposureRecords[0].Records[0].MedianHc));
+            Assert.IsFalse(double.IsNaN(section.HazardExposureRecords[0].Records[0].LowerExposure));
+            Assert.IsFalse(double.IsNaN(section.HazardExposureRecords[0].Records[0].LowerExposure_UncLower));
+            Assert.IsFalse(double.IsNaN(section.HazardExposureRecords[0].Records[0].UpperExposure));
+            Assert.IsFalse(double.IsNaN(section.HazardExposureRecords[0].Records[0].UpperExposure_UncUpper));
 
             AssertIsValidView(section);
             RenderView(section, filename: "TestSummarizeHiUncertain.html");

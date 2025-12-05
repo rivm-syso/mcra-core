@@ -72,11 +72,11 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             );
 
             Assert.AreEqual(11, section.RiskRecords.SelectMany(c => c.Records).Count());
-            Assert.IsTrue(!double.IsNaN(section.RiskRecords[0].Records.First().RiskP50UncP50));
-            Assert.IsTrue(!double.IsNaN(section.RiskRecords[0].Records.First().PLowerRiskUncP50));
-            Assert.IsTrue(!double.IsNaN(section.RiskRecords[0].Records.First().PUpperRiskUncP50));
-            Assert.IsTrue(!double.IsNaN(section.RiskRecords[0].Records.First().PLowerRiskUncLower));
-            Assert.IsTrue(!double.IsNaN(section.RiskRecords[0].Records.First().PUpperRiskUncUpper));
+            Assert.IsFalse(double.IsNaN(section.RiskRecords[0].Records.First().RiskP50UncP50));
+            Assert.IsFalse(double.IsNaN(section.RiskRecords[0].Records.First().PLowerRiskUncP50));
+            Assert.IsFalse(double.IsNaN(section.RiskRecords[0].Records.First().PUpperRiskUncP50));
+            Assert.IsFalse(double.IsNaN(section.RiskRecords[0].Records.First().PLowerRiskUncLower));
+            Assert.IsFalse(double.IsNaN(section.RiskRecords[0].Records.First().PUpperRiskUncUpper));
             AssertIsValidView(section);
         }
     }

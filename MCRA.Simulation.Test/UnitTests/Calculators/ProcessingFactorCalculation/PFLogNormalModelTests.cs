@@ -20,7 +20,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ProcessingFactorCalculation
 
             var model = new PFLogNormalModel(pf);
             model.CalculateParameters();
-            Assert.IsTrue(!double.IsNaN(model?.DegreesOfFreedom ?? double.NaN));
+            Assert.IsFalse(double.IsNaN(model?.DegreesOfFreedom ?? double.NaN));
 
             var nominal = model.GetNominalValue();
             Assert.AreEqual(0.6, nominal);

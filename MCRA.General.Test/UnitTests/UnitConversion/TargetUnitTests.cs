@@ -35,8 +35,8 @@
                             concentrationMassUnit,
                             timeScaleUnit
                         );
-                        Assert.IsTrue(
-                            !string.IsNullOrEmpty(target.GetShortDisplayName(TargetUnit.DisplayOption.AppendBiologicalMatrix))
+                        Assert.IsFalse(
+                            string.IsNullOrEmpty(target.GetShortDisplayName(TargetUnit.DisplayOption.AppendBiologicalMatrix))
                         );
                     }
                 }
@@ -80,9 +80,9 @@
                 foreach (var consumptionIntakeUnit in consumptionIntakeUnits) {
                     foreach (var bodyWeightUnit in bodyWeightUnits) {
                         var target = TargetUnit.CreateSingleValueDietaryExposureUnit(concentrationUnit, consumptionIntakeUnit, bodyWeightUnit, true);
-                        Assert.IsTrue(!string.IsNullOrEmpty(target.GetShortDisplayName()));
+                        Assert.IsFalse(string.IsNullOrEmpty(target.GetShortDisplayName()));
                         target = TargetUnit.CreateSingleValueDietaryExposureUnit(concentrationUnit, consumptionIntakeUnit, bodyWeightUnit, false);
-                        Assert.IsTrue(!string.IsNullOrEmpty(target.GetShortDisplayName()));
+                        Assert.IsFalse(string.IsNullOrEmpty(target.GetShortDisplayName()));
                     }
                 }
             }

@@ -14,7 +14,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.Helpers {
             var builder = new ReportBuilder(null);
             var outputInfo = createFakeOutputInfo();
             var html = builder.RenderDisplayReport(outputInfo, false, null);
-            Assert.IsTrue(!string.IsNullOrEmpty(html));
+            Assert.IsFalse(string.IsNullOrEmpty(html));
         }
 
         /// <summary>
@@ -26,7 +26,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.Helpers {
             var toc = createFakeSummaryToc();
             var outputInfo = createFakeOutputInfo();
             var html = builder.RenderPartialReport(toc, outputInfo, false, null);
-            Assert.IsTrue(!string.IsNullOrEmpty(html));
+            Assert.IsFalse(string.IsNullOrEmpty(html));
         }
 
         /// <summary>

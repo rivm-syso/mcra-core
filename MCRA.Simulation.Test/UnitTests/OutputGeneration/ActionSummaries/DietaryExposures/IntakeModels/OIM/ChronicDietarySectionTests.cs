@@ -46,7 +46,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
             );
             subHeader = header.GetSubSectionHeader<IntakePercentileSection>();
             var percentileSection = subHeader.GetSummarySection() as IntakePercentileSection;
-            Assert.IsTrue(!double.IsNaN(percentileSection.Percentiles[0].ReferenceValue));
+            Assert.IsFalse(double.IsNaN(percentileSection.Percentiles[0].ReferenceValue));
             section.SummarizeUncertainty(
                 header,
                 dietaryObservedIndividualMeans,

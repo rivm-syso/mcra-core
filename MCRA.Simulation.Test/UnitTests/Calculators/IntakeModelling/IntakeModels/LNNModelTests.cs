@@ -34,7 +34,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             var summaryAmounts = model.FrequencyAmountModelSummary;
             Assert.IsGreaterThan(0.3, summaryAmounts.VarianceBetween);
             Assert.IsGreaterThan(0.05, summaryAmounts.VarianceWithin);
-            Assert.IsTrue(!double.IsNaN(summaryAmounts._2LogLikelihood));
+            Assert.IsFalse(double.IsNaN(summaryAmounts._2LogLikelihood));
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             var summaryAmounts = lnnModel.FrequencyAmountModelSummary;
             Assert.IsGreaterThan(0.3, summaryAmounts.VarianceBetween);
             Assert.IsGreaterThan(0.05, summaryAmounts.VarianceWithin);
-            Assert.IsTrue(!double.IsNaN(summaryAmounts._2LogLikelihood));
+            Assert.IsFalse(double.IsNaN(summaryAmounts._2LogLikelihood));
         }
     }
 }

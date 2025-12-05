@@ -48,7 +48,7 @@ namespace MCRA.General.Test.UnitTests.TableDefinitions {
                 if (definition.Value.IsStrongEntity) {
                     Assert.IsTrue(definition.Value.ColumnDefinitions.Any(r => r.IsPrimaryKey));
                 } else {
-                    Assert.IsTrue(!definition.Value.ColumnDefinitions.Any(r => r.IsPrimaryKey));
+                    Assert.IsFalse(definition.Value.ColumnDefinitions.Any(r => r.IsPrimaryKey));
                 }
             }
         }

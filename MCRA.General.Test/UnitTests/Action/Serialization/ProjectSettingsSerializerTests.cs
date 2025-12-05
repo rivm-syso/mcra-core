@@ -214,7 +214,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             config = settingsDto.EffectsSettings;
             effectsScopeKeys = getScope(settingsDto);
             Assert.AreEqual(codeEffect, config.CodeFocalEffect);
-            Assert.IsTrue(!effectsScopeKeys.Any());
+            Assert.IsFalse(effectsScopeKeys.Any());
 
             xml = createMockSettingsXml(
                 "<EffectSettings>" +

@@ -22,7 +22,7 @@
             foreach (var unit in enumValues) {
                 foreach (var target in enumValues) {
                     var value = unit.GetMultiplicationFactor(target, 100);
-                    Assert.IsTrue(!double.IsNaN(value));
+                    Assert.IsFalse(double.IsNaN(value));
                 }
             }
         }

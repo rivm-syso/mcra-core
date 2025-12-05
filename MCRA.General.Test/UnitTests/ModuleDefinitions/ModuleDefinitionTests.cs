@@ -83,7 +83,6 @@ namespace MCRA.General.Test.UnitTests.ModuleDefinitions {
             foreach (var value in enumValues.Where(r => (int)r >= 0)) {
                 _ = McraModuleDefinitions.Instance.GetActionClass(value);
             }
-            Assert.IsTrue(true);
         }
 
         [TestMethod]

@@ -77,7 +77,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             // Check for missing module settings
             var moduleSettings = calculator.ModuleDefinition.AllModuleSettings;
             var undefinedModuleSettings = summarizedSettings.Where(r => !moduleSettings.Contains(r)).ToList();
-            Assert.IsTrue(!undefinedModuleSettings.Any(), $"The following settings were not defined in the module definition:\r\n-{string.Join("\r\n-", undefinedModuleSettings)}");
+            Assert.IsFalse(undefinedModuleSettings.Any(), $"The following settings were not defined in the module definition:\r\n-{string.Join("\r\n-", undefinedModuleSettings)}");
 
             if (!string.IsNullOrEmpty(reportFileName)) {
                 WriteOutput(calculator, data, null, Path.GetFileNameWithoutExtension(reportFileName));
