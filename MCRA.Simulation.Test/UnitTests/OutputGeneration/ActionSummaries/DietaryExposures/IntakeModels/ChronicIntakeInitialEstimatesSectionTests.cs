@@ -19,10 +19,20 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
                 new IntakeModelCalculationSettings(),
                 new IntakeModelCalculationSettings()
             ) {
-                FrequencyInitials = new FrequencyModelSummary(),
-                AmountInitials = new NormalAmountsModelSummary(),
+                FrequencyInitials = new FrequencyModelSummary() {
+                    DispersionEstimates = new ParameterEstimates(),
+                    FrequencyModelEstimates = []
+                },
+                AmountInitials = new NormalAmountsModelSummary() {
+                    AmountModelEstimates = [],
+                },
                 FallBackModel = IntakeModelType.LNN,
-                FrequencyAmountModelSummary = new FrequencyAmountModelSummary(),
+                FrequencyAmountModelSummary = new FrequencyAmountModelSummary() {
+                    AmountModelEstimates = [],
+                    FrequencyModelEstimates = [],
+                    DispersionEstimates = new ParameterEstimates(),
+                    CorrelationEstimates = new ParameterEstimates() { ParameterName = "NA"}
+                },
             };
             var section = new ChronicIntakeInitialEstimatesSection();
             section.SummarizeModels(new SectionHeader(), lnnModel);
