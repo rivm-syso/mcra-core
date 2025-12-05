@@ -49,13 +49,13 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
                 SectionTypeName = "test",
                 SummarySectionName = "test",
             };
-            Assert.AreEqual(header.Name, "test");
+            Assert.AreEqual("test", header.Name);
 
             var header1 = new SectionHeader() { Name = "test" };
-            Assert.AreEqual(header1.Name, "test");
+            Assert.AreEqual("test", header1.Name);
 
             var subHeader = header.AddSubSectionHeaderFor(dietarySection, "DietaryIntakeDistributionSection", 0);
-            Assert.AreEqual(subHeader.SectionTypeName, "MCRA.Simulation.OutputGeneration.DietaryIntakeDistributionSection");
+            Assert.AreEqual("MCRA.Simulation.OutputGeneration.DietaryIntakeDistributionSection", subHeader.SectionTypeName);
             var percentileSection = new IntakePercentileSection() {  };
             var subSubHeader = subHeader.AddSubSectionHeaderFor(percentileSection, "IntakePercentileSection", 0);
 
@@ -63,14 +63,14 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
             //Assert.AreEqual(sectionPercentile.Reference.Name, "referenceName");
 
             subHeader = header.GetSubSectionHeader<DietaryIntakeDistributionSection>();
-            Assert.AreEqual(subHeader.SummarySectionName, "DietaryIntakeDistributionSection");
+            Assert.AreEqual("DietaryIntakeDistributionSection", subHeader.SummarySectionName);
 
             _ = subHeader.AddSubSectionHeaderFor(new IntakePercentileSection(), "dietary", 0);
             subSubHeader = subHeader.GetSubSectionHeaderFromTitleString<IntakePercentileSection>("DIETARY");
             Assert.IsNull(subSubHeader);
 
             subSubHeader = header.GetSubSectionHeaderFromTitleString<IntakePercentileSection>("dietary");
-            Assert.AreEqual(subSubHeader.Name, "dietary");
+            Assert.AreEqual("dietary", subSubHeader.Name);
 
             var guid = Guid.NewGuid();
             subSubHeader = header.GetSubSectionHeader(guid);

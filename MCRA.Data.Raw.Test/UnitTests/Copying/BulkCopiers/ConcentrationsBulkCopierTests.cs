@@ -249,9 +249,9 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
                 var concentrationRecordCounts = rawSampleConcentrations
                     .GroupBy(r => r.idAnalysisSample)
                     .ToDictionary(r => r.Key, r => r.Count());
-                Assert.AreEqual(concentrationRecordCounts["SA1:1"], 3);
-                Assert.AreEqual(concentrationRecordCounts["SA1:2"], 3);
-                Assert.AreEqual(concentrationRecordCounts["SA2"], 2);
+                Assert.AreEqual(3, concentrationRecordCounts["SA1:1"]);
+                Assert.AreEqual(3, concentrationRecordCounts["SA1:2"]);
+                Assert.AreEqual(2, concentrationRecordCounts["SA2"]);
             }
         }
 

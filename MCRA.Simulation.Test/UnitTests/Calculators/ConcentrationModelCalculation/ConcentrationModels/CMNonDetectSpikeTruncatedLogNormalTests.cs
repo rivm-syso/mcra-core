@@ -378,7 +378,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             concentrationModel.CalculateParameters();
 
             // Check model type
-            Assert.AreEqual(concentrationModel.ModelType, ConcentrationModelType.NonDetectSpikeTruncatedLogNormal);
+            Assert.AreEqual(ConcentrationModelType.NonDetectSpikeTruncatedLogNormal, concentrationModel.ModelType);
 
             // GenStat estimates
             var muGen = 5.007748592877e+00;

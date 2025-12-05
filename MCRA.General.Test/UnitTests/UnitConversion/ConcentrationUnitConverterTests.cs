@@ -71,90 +71,90 @@ namespace MCRA.General.Test.UnitTests.UnitConversion {
         /// </summary>
         [TestMethod]
         public void ConcentrationUnitConverter_TestFromString() {
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("kg/kg"), ConcentrationUnit.kgPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("kilogram/kilogram"), ConcentrationUnit.kgPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("kilogram/kg"), ConcentrationUnit.kgPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("0"), ConcentrationUnit.kgPerKg);
+            Assert.AreEqual(ConcentrationUnit.kgPerKg, ConcentrationUnitConverter.FromString("kg/kg"));
+            Assert.AreEqual(ConcentrationUnit.kgPerKg, ConcentrationUnitConverter.FromString("kilogram/kilogram"));
+            Assert.AreEqual(ConcentrationUnit.kgPerKg, ConcentrationUnitConverter.FromString("kilogram/kg"));
+            Assert.AreEqual(ConcentrationUnit.kgPerKg, ConcentrationUnitConverter.FromString("0"));
 
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("g/kg"), ConcentrationUnit.gPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("gram/kilogram"), ConcentrationUnit.gPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("gram/kg"), ConcentrationUnit.gPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("G015A"), ConcentrationUnit.gPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("-3"), ConcentrationUnit.gPerKg);
+            Assert.AreEqual(ConcentrationUnit.gPerKg, ConcentrationUnitConverter.FromString("g/kg"));
+            Assert.AreEqual(ConcentrationUnit.gPerKg, ConcentrationUnitConverter.FromString("gram/kilogram"));
+            Assert.AreEqual(ConcentrationUnit.gPerKg, ConcentrationUnitConverter.FromString("gram/kg"));
+            Assert.AreEqual(ConcentrationUnit.gPerKg, ConcentrationUnitConverter.FromString("G015A"));
+            Assert.AreEqual(ConcentrationUnit.gPerKg, ConcentrationUnitConverter.FromString("-3"));
 
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("mg/kg"), ConcentrationUnit.mgPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("milligram/kilogram"), ConcentrationUnit.mgPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("milligram/kg"), ConcentrationUnit.mgPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("milligr/kg"), ConcentrationUnit.mgPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("G061A"), ConcentrationUnit.mgPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("G049A"), ConcentrationUnit.mgPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("-6"), ConcentrationUnit.mgPerKg);
+            Assert.AreEqual(ConcentrationUnit.mgPerKg, ConcentrationUnitConverter.FromString("mg/kg"));
+            Assert.AreEqual(ConcentrationUnit.mgPerKg, ConcentrationUnitConverter.FromString("milligram/kilogram"));
+            Assert.AreEqual(ConcentrationUnit.mgPerKg, ConcentrationUnitConverter.FromString("milligram/kg"));
+            Assert.AreEqual(ConcentrationUnit.mgPerKg, ConcentrationUnitConverter.FromString("milligr/kg"));
+            Assert.AreEqual(ConcentrationUnit.mgPerKg, ConcentrationUnitConverter.FromString("G061A"));
+            Assert.AreEqual(ConcentrationUnit.mgPerKg, ConcentrationUnitConverter.FromString("G049A"));
+            Assert.AreEqual(ConcentrationUnit.mgPerKg, ConcentrationUnitConverter.FromString("-6"));
 
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("µg/kg"), ConcentrationUnit.ugPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("microgram/kilogram"), ConcentrationUnit.ugPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("microgram/kg"), ConcentrationUnit.ugPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("microgr/kg"), ConcentrationUnit.ugPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("G050A"), ConcentrationUnit.ugPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("-9"), ConcentrationUnit.ugPerKg);
+            Assert.AreEqual(ConcentrationUnit.ugPerKg, ConcentrationUnitConverter.FromString("µg/kg"));
+            Assert.AreEqual(ConcentrationUnit.ugPerKg, ConcentrationUnitConverter.FromString("microgram/kilogram"));
+            Assert.AreEqual(ConcentrationUnit.ugPerKg, ConcentrationUnitConverter.FromString("microgram/kg"));
+            Assert.AreEqual(ConcentrationUnit.ugPerKg, ConcentrationUnitConverter.FromString("microgr/kg"));
+            Assert.AreEqual(ConcentrationUnit.ugPerKg, ConcentrationUnitConverter.FromString("G050A"));
+            Assert.AreEqual(ConcentrationUnit.ugPerKg, ConcentrationUnitConverter.FromString("-9"));
 
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("ng/kg"), ConcentrationUnit.ngPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("nanogram/kilogram"), ConcentrationUnit.ngPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("nanogram/kg"), ConcentrationUnit.ngPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("nanogr/kg"), ConcentrationUnit.ngPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("G077A"), ConcentrationUnit.ngPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("-12"), ConcentrationUnit.ngPerKg);
+            Assert.AreEqual(ConcentrationUnit.ngPerKg, ConcentrationUnitConverter.FromString("ng/kg"));
+            Assert.AreEqual(ConcentrationUnit.ngPerKg, ConcentrationUnitConverter.FromString("nanogram/kilogram"));
+            Assert.AreEqual(ConcentrationUnit.ngPerKg, ConcentrationUnitConverter.FromString("nanogram/kg"));
+            Assert.AreEqual(ConcentrationUnit.ngPerKg, ConcentrationUnitConverter.FromString("nanogr/kg"));
+            Assert.AreEqual(ConcentrationUnit.ngPerKg, ConcentrationUnitConverter.FromString("G077A"));
+            Assert.AreEqual(ConcentrationUnit.ngPerKg, ConcentrationUnitConverter.FromString("-12"));
 
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("pg/kg"), ConcentrationUnit.pgPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("picogram/kilogram"), ConcentrationUnit.pgPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("picogram/kg"), ConcentrationUnit.pgPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("picogr/kg"), ConcentrationUnit.pgPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("G081A"), ConcentrationUnit.pgPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("-15"), ConcentrationUnit.pgPerKg);
+            Assert.AreEqual(ConcentrationUnit.pgPerKg, ConcentrationUnitConverter.FromString("pg/kg"));
+            Assert.AreEqual(ConcentrationUnit.pgPerKg, ConcentrationUnitConverter.FromString("picogram/kilogram"));
+            Assert.AreEqual(ConcentrationUnit.pgPerKg, ConcentrationUnitConverter.FromString("picogram/kg"));
+            Assert.AreEqual(ConcentrationUnit.pgPerKg, ConcentrationUnitConverter.FromString("picogr/kg"));
+            Assert.AreEqual(ConcentrationUnit.pgPerKg, ConcentrationUnitConverter.FromString("G081A"));
+            Assert.AreEqual(ConcentrationUnit.pgPerKg, ConcentrationUnitConverter.FromString("-15"));
 
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("kg/L"), ConcentrationUnit.kgPerL);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("kg/l"), ConcentrationUnit.kgPerL);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("kilogram/liter"), ConcentrationUnit.kgPerL);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("kilogram/litre"), ConcentrationUnit.kgPerL);
+            Assert.AreEqual(ConcentrationUnit.kgPerL, ConcentrationUnitConverter.FromString("kg/L"));
+            Assert.AreEqual(ConcentrationUnit.kgPerL, ConcentrationUnitConverter.FromString("kg/l"));
+            Assert.AreEqual(ConcentrationUnit.kgPerL, ConcentrationUnitConverter.FromString("kilogram/liter"));
+            Assert.AreEqual(ConcentrationUnit.kgPerL, ConcentrationUnitConverter.FromString("kilogram/litre"));
 
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("g/L"), ConcentrationUnit.gPerL);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("g/l"), ConcentrationUnit.gPerL);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("gram/liter"), ConcentrationUnit.gPerL);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("gram/litre"), ConcentrationUnit.gPerL);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("gr/l"), ConcentrationUnit.gPerL);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("gr/L"), ConcentrationUnit.gPerL);
+            Assert.AreEqual(ConcentrationUnit.gPerL, ConcentrationUnitConverter.FromString("g/L"));
+            Assert.AreEqual(ConcentrationUnit.gPerL, ConcentrationUnitConverter.FromString("g/l"));
+            Assert.AreEqual(ConcentrationUnit.gPerL, ConcentrationUnitConverter.FromString("gram/liter"));
+            Assert.AreEqual(ConcentrationUnit.gPerL, ConcentrationUnitConverter.FromString("gram/litre"));
+            Assert.AreEqual(ConcentrationUnit.gPerL, ConcentrationUnitConverter.FromString("gr/l"));
+            Assert.AreEqual(ConcentrationUnit.gPerL, ConcentrationUnitConverter.FromString("gr/L"));
 
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("mg/L"), ConcentrationUnit.mgPerL);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("mg/l"), ConcentrationUnit.mgPerL);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("milligram/liter"), ConcentrationUnit.mgPerL);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("milligram/litre"), ConcentrationUnit.mgPerL);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("milligr/l"), ConcentrationUnit.mgPerL);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("milligr/L"), ConcentrationUnit.mgPerL);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("G052A"), ConcentrationUnit.mgPerL);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("G062A"), ConcentrationUnit.mgPerL);
+            Assert.AreEqual(ConcentrationUnit.mgPerL, ConcentrationUnitConverter.FromString("mg/L"));
+            Assert.AreEqual(ConcentrationUnit.mgPerL, ConcentrationUnitConverter.FromString("mg/l"));
+            Assert.AreEqual(ConcentrationUnit.mgPerL, ConcentrationUnitConverter.FromString("milligram/liter"));
+            Assert.AreEqual(ConcentrationUnit.mgPerL, ConcentrationUnitConverter.FromString("milligram/litre"));
+            Assert.AreEqual(ConcentrationUnit.mgPerL, ConcentrationUnitConverter.FromString("milligr/l"));
+            Assert.AreEqual(ConcentrationUnit.mgPerL, ConcentrationUnitConverter.FromString("milligr/L"));
+            Assert.AreEqual(ConcentrationUnit.mgPerL, ConcentrationUnitConverter.FromString("G052A"));
+            Assert.AreEqual(ConcentrationUnit.mgPerL, ConcentrationUnitConverter.FromString("G062A"));
 
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("µg/L"), ConcentrationUnit.ugPerL);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("µg/l"), ConcentrationUnit.ugPerL);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("microgram/liter"), ConcentrationUnit.ugPerL);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("microgram/litre"), ConcentrationUnit.ugPerL);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("microgr/L"), ConcentrationUnit.ugPerL);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("microgr/l"), ConcentrationUnit.ugPerL);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("G051A"), ConcentrationUnit.ugPerL);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("G079A"), ConcentrationUnit.ugPerL);
+            Assert.AreEqual(ConcentrationUnit.ugPerL, ConcentrationUnitConverter.FromString("µg/L"));
+            Assert.AreEqual(ConcentrationUnit.ugPerL, ConcentrationUnitConverter.FromString("µg/l"));
+            Assert.AreEqual(ConcentrationUnit.ugPerL, ConcentrationUnitConverter.FromString("microgram/liter"));
+            Assert.AreEqual(ConcentrationUnit.ugPerL, ConcentrationUnitConverter.FromString("microgram/litre"));
+            Assert.AreEqual(ConcentrationUnit.ugPerL, ConcentrationUnitConverter.FromString("microgr/L"));
+            Assert.AreEqual(ConcentrationUnit.ugPerL, ConcentrationUnitConverter.FromString("microgr/l"));
+            Assert.AreEqual(ConcentrationUnit.ugPerL, ConcentrationUnitConverter.FromString("G051A"));
+            Assert.AreEqual(ConcentrationUnit.ugPerL, ConcentrationUnitConverter.FromString("G079A"));
 
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("ng/L"), ConcentrationUnit.ngPerL);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("ng/l"), ConcentrationUnit.ngPerL);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("nanogram/liter"), ConcentrationUnit.ngPerL);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("nanogram/litre"), ConcentrationUnit.ngPerL);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("nanogr/l"), ConcentrationUnit.ngPerL);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("nanogr/L"), ConcentrationUnit.ngPerL);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("G078A"), ConcentrationUnit.ngPerL);
+            Assert.AreEqual(ConcentrationUnit.ngPerL, ConcentrationUnitConverter.FromString("ng/L"));
+            Assert.AreEqual(ConcentrationUnit.ngPerL, ConcentrationUnitConverter.FromString("ng/l"));
+            Assert.AreEqual(ConcentrationUnit.ngPerL, ConcentrationUnitConverter.FromString("nanogram/liter"));
+            Assert.AreEqual(ConcentrationUnit.ngPerL, ConcentrationUnitConverter.FromString("nanogram/litre"));
+            Assert.AreEqual(ConcentrationUnit.ngPerL, ConcentrationUnitConverter.FromString("nanogr/l"));
+            Assert.AreEqual(ConcentrationUnit.ngPerL, ConcentrationUnitConverter.FromString("nanogr/L"));
+            Assert.AreEqual(ConcentrationUnit.ngPerL, ConcentrationUnitConverter.FromString("G078A"));
 
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("pg/L"), ConcentrationUnit.pgPerL);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("pg/l"), ConcentrationUnit.pgPerL);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("picogram/liter"), ConcentrationUnit.pgPerL);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("picogram/litre"), ConcentrationUnit.pgPerL);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("picogr/L"), ConcentrationUnit.pgPerL);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("picogr/l"), ConcentrationUnit.pgPerL);
+            Assert.AreEqual(ConcentrationUnit.pgPerL, ConcentrationUnitConverter.FromString("pg/L"));
+            Assert.AreEqual(ConcentrationUnit.pgPerL, ConcentrationUnitConverter.FromString("pg/l"));
+            Assert.AreEqual(ConcentrationUnit.pgPerL, ConcentrationUnitConverter.FromString("picogram/liter"));
+            Assert.AreEqual(ConcentrationUnit.pgPerL, ConcentrationUnitConverter.FromString("picogram/litre"));
+            Assert.AreEqual(ConcentrationUnit.pgPerL, ConcentrationUnitConverter.FromString("picogr/L"));
+            Assert.AreEqual(ConcentrationUnit.pgPerL, ConcentrationUnitConverter.FromString("picogr/l"));
 
             try {
                 var unit = ConcentrationUnitConverter.FromString("askdha");
@@ -169,49 +169,49 @@ namespace MCRA.General.Test.UnitTests.UnitConversion {
         /// </summary>
         [TestMethod]
         public void ConcentrationUnitConverter_TestFromStringWithDefault() {
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("kg/kg", ConcentrationUnit.kgPerKg), ConcentrationUnit.kgPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("kilogram/kilogram", ConcentrationUnit.kgPerKg), ConcentrationUnit.kgPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("kilogram/kg", ConcentrationUnit.kgPerKg), ConcentrationUnit.kgPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("0", ConcentrationUnit.kgPerKg), ConcentrationUnit.kgPerKg);
+            Assert.AreEqual(ConcentrationUnit.kgPerKg, ConcentrationUnitConverter.FromString("kg/kg", ConcentrationUnit.kgPerKg));
+            Assert.AreEqual(ConcentrationUnit.kgPerKg, ConcentrationUnitConverter.FromString("kilogram/kilogram", ConcentrationUnit.kgPerKg));
+            Assert.AreEqual(ConcentrationUnit.kgPerKg, ConcentrationUnitConverter.FromString("kilogram/kg", ConcentrationUnit.kgPerKg));
+            Assert.AreEqual(ConcentrationUnit.kgPerKg, ConcentrationUnitConverter.FromString("0", ConcentrationUnit.kgPerKg));
 
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("g/kg", ConcentrationUnit.kgPerKg), ConcentrationUnit.gPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("gram/kilogram", ConcentrationUnit.kgPerKg), ConcentrationUnit.gPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("gram/kg", ConcentrationUnit.kgPerKg), ConcentrationUnit.gPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("G015A", ConcentrationUnit.kgPerKg), ConcentrationUnit.gPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("-3", ConcentrationUnit.kgPerKg), ConcentrationUnit.gPerKg);
+            Assert.AreEqual(ConcentrationUnit.gPerKg, ConcentrationUnitConverter.FromString("g/kg", ConcentrationUnit.kgPerKg));
+            Assert.AreEqual(ConcentrationUnit.gPerKg, ConcentrationUnitConverter.FromString("gram/kilogram", ConcentrationUnit.kgPerKg));
+            Assert.AreEqual(ConcentrationUnit.gPerKg, ConcentrationUnitConverter.FromString("gram/kg", ConcentrationUnit.kgPerKg));
+            Assert.AreEqual(ConcentrationUnit.gPerKg, ConcentrationUnitConverter.FromString("G015A", ConcentrationUnit.kgPerKg));
+            Assert.AreEqual(ConcentrationUnit.gPerKg, ConcentrationUnitConverter.FromString("-3", ConcentrationUnit.kgPerKg));
 
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("mg/kg", ConcentrationUnit.kgPerKg), ConcentrationUnit.mgPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("milligram/kilogram", ConcentrationUnit.kgPerKg), ConcentrationUnit.mgPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("milligram/kg", ConcentrationUnit.kgPerKg), ConcentrationUnit.mgPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("milligr/kg", ConcentrationUnit.kgPerKg), ConcentrationUnit.mgPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("G061A", ConcentrationUnit.kgPerKg), ConcentrationUnit.mgPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("G049A", ConcentrationUnit.kgPerKg), ConcentrationUnit.mgPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("-6", ConcentrationUnit.kgPerKg), ConcentrationUnit.mgPerKg);
+            Assert.AreEqual(ConcentrationUnit.mgPerKg, ConcentrationUnitConverter.FromString("mg/kg", ConcentrationUnit.kgPerKg));
+            Assert.AreEqual(ConcentrationUnit.mgPerKg, ConcentrationUnitConverter.FromString("milligram/kilogram", ConcentrationUnit.kgPerKg));
+            Assert.AreEqual(ConcentrationUnit.mgPerKg, ConcentrationUnitConverter.FromString("milligram/kg", ConcentrationUnit.kgPerKg));
+            Assert.AreEqual(ConcentrationUnit.mgPerKg, ConcentrationUnitConverter.FromString("milligr/kg", ConcentrationUnit.kgPerKg));
+            Assert.AreEqual(ConcentrationUnit.mgPerKg, ConcentrationUnitConverter.FromString("G061A", ConcentrationUnit.kgPerKg));
+            Assert.AreEqual(ConcentrationUnit.mgPerKg, ConcentrationUnitConverter.FromString("G049A", ConcentrationUnit.kgPerKg));
+            Assert.AreEqual(ConcentrationUnit.mgPerKg, ConcentrationUnitConverter.FromString("-6", ConcentrationUnit.kgPerKg));
 
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("µg/kg", ConcentrationUnit.kgPerKg), ConcentrationUnit.ugPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("microgram/kilogram", ConcentrationUnit.kgPerKg), ConcentrationUnit.ugPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("microgram/kg", ConcentrationUnit.kgPerKg), ConcentrationUnit.ugPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("microgr/kg", ConcentrationUnit.kgPerKg), ConcentrationUnit.ugPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("G050A", ConcentrationUnit.kgPerKg), ConcentrationUnit.ugPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("-9", ConcentrationUnit.kgPerKg), ConcentrationUnit.ugPerKg);
+            Assert.AreEqual(ConcentrationUnit.ugPerKg, ConcentrationUnitConverter.FromString("µg/kg", ConcentrationUnit.kgPerKg));
+            Assert.AreEqual(ConcentrationUnit.ugPerKg, ConcentrationUnitConverter.FromString("microgram/kilogram", ConcentrationUnit.kgPerKg));
+            Assert.AreEqual(ConcentrationUnit.ugPerKg, ConcentrationUnitConverter.FromString("microgram/kg", ConcentrationUnit.kgPerKg));
+            Assert.AreEqual(ConcentrationUnit.ugPerKg, ConcentrationUnitConverter.FromString("microgr/kg", ConcentrationUnit.kgPerKg));
+            Assert.AreEqual(ConcentrationUnit.ugPerKg, ConcentrationUnitConverter.FromString("G050A", ConcentrationUnit.kgPerKg));
+            Assert.AreEqual(ConcentrationUnit.ugPerKg, ConcentrationUnitConverter.FromString("-9", ConcentrationUnit.kgPerKg));
 
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("ng/kg", ConcentrationUnit.kgPerKg), ConcentrationUnit.ngPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("nanogram/kilogram", ConcentrationUnit.kgPerKg), ConcentrationUnit.ngPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("nanogram/kg", ConcentrationUnit.kgPerKg), ConcentrationUnit.ngPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("nanogr/kg", ConcentrationUnit.kgPerKg), ConcentrationUnit.ngPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("G077A", ConcentrationUnit.kgPerKg), ConcentrationUnit.ngPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("-12", ConcentrationUnit.kgPerKg), ConcentrationUnit.ngPerKg);
+            Assert.AreEqual(ConcentrationUnit.ngPerKg, ConcentrationUnitConverter.FromString("ng/kg", ConcentrationUnit.kgPerKg));
+            Assert.AreEqual(ConcentrationUnit.ngPerKg, ConcentrationUnitConverter.FromString("nanogram/kilogram", ConcentrationUnit.kgPerKg));
+            Assert.AreEqual(ConcentrationUnit.ngPerKg, ConcentrationUnitConverter.FromString("nanogram/kg", ConcentrationUnit.kgPerKg));
+            Assert.AreEqual(ConcentrationUnit.ngPerKg, ConcentrationUnitConverter.FromString("nanogr/kg", ConcentrationUnit.kgPerKg));
+            Assert.AreEqual(ConcentrationUnit.ngPerKg, ConcentrationUnitConverter.FromString("G077A", ConcentrationUnit.kgPerKg));
+            Assert.AreEqual(ConcentrationUnit.ngPerKg, ConcentrationUnitConverter.FromString("-12", ConcentrationUnit.kgPerKg));
 
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("pg/kg", ConcentrationUnit.kgPerKg), ConcentrationUnit.pgPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("picogram/kilogram", ConcentrationUnit.kgPerKg), ConcentrationUnit.pgPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("picogram/kg", ConcentrationUnit.kgPerKg), ConcentrationUnit.pgPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("picogr/kg", ConcentrationUnit.kgPerKg), ConcentrationUnit.pgPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("G081A", ConcentrationUnit.kgPerKg), ConcentrationUnit.pgPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString("-15", ConcentrationUnit.kgPerKg), ConcentrationUnit.pgPerKg);
+            Assert.AreEqual(ConcentrationUnit.pgPerKg, ConcentrationUnitConverter.FromString("pg/kg", ConcentrationUnit.kgPerKg));
+            Assert.AreEqual(ConcentrationUnit.pgPerKg, ConcentrationUnitConverter.FromString("picogram/kilogram", ConcentrationUnit.kgPerKg));
+            Assert.AreEqual(ConcentrationUnit.pgPerKg, ConcentrationUnitConverter.FromString("picogram/kg", ConcentrationUnit.kgPerKg));
+            Assert.AreEqual(ConcentrationUnit.pgPerKg, ConcentrationUnitConverter.FromString("picogr/kg", ConcentrationUnit.kgPerKg));
+            Assert.AreEqual(ConcentrationUnit.pgPerKg, ConcentrationUnitConverter.FromString("G081A", ConcentrationUnit.kgPerKg));
+            Assert.AreEqual(ConcentrationUnit.pgPerKg, ConcentrationUnitConverter.FromString("-15", ConcentrationUnit.kgPerKg));
 
-            Assert.AreEqual(ConcentrationUnitConverter.FromString(string.Empty, ConcentrationUnit.kgPerKg), ConcentrationUnit.kgPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString(string.Empty, ConcentrationUnit.mgPerKg), ConcentrationUnit.mgPerKg);
-            Assert.AreEqual(ConcentrationUnitConverter.FromString(string.Empty, ConcentrationUnit.pgPerKg), ConcentrationUnit.pgPerKg);
+            Assert.AreEqual(ConcentrationUnit.kgPerKg, ConcentrationUnitConverter.FromString(string.Empty, ConcentrationUnit.kgPerKg));
+            Assert.AreEqual(ConcentrationUnit.mgPerKg, ConcentrationUnitConverter.FromString(string.Empty, ConcentrationUnit.mgPerKg));
+            Assert.AreEqual(ConcentrationUnit.pgPerKg, ConcentrationUnitConverter.FromString(string.Empty, ConcentrationUnit.pgPerKg));
 
             try {
                 var unit = ConcentrationUnitConverter.FromString("askdha");

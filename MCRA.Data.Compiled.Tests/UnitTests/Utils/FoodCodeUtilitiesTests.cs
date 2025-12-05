@@ -177,8 +177,8 @@ namespace MCRA.Data.Compiled.Test {
         public void FoodCodeUtilities_TestSplitFoodEx2FullFacetCode_Valid() {
             var fullFacetCode = "F28.A07GR";
             var result = FoodCodeUtilities.SplitFoodEx2FoodFacetCode(fullFacetCode);
-            Assert.AreEqual(result.FacetCode, "F28");
-            Assert.AreEqual(result.DescriptorCode, "A07GR");
+            Assert.AreEqual("F28", result.FacetCode);
+            Assert.AreEqual("A07GR", result.DescriptorCode);
         }
 
         [TestMethod]
@@ -241,8 +241,8 @@ namespace MCRA.Data.Compiled.Test {
 
         [TestMethod]
         public void FoodCodeUtilities_TestGetProcessedFoodBaseCode() {
-            Assert.AreEqual(FoodCodeUtilities.GetProcessedFoodBaseCode("P0211000A-F28.A07GV$F28.A07KV"), "P0211000A");
-            Assert.AreEqual(FoodCodeUtilities.GetProcessedFoodBaseCode("P0211000A-1-3"), "P0211000A");
+            Assert.AreEqual("P0211000A", FoodCodeUtilities.GetProcessedFoodBaseCode("P0211000A-F28.A07GV$F28.A07KV"));
+            Assert.AreEqual("P0211000A", FoodCodeUtilities.GetProcessedFoodBaseCode("P0211000A-1-3"));
             Assert.IsNull(FoodCodeUtilities.GetFoodProcessingParts("P0211000A"));
             Assert.IsNull(FoodCodeUtilities.GetFoodProcessingParts(null));
             Assert.IsNull(FoodCodeUtilities.GetFoodProcessingParts(""));

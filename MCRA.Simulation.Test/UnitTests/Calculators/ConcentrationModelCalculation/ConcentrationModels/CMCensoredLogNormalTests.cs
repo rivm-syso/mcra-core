@@ -291,8 +291,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             };
 
             Assert.IsTrue(concentrationModel.CalculateParameters());
-            Assert.AreEqual(concentrationModel.Mu, 0, 1e-2);
-            Assert.AreEqual(concentrationModel.Sigma, 1, 1e-1);
+            Assert.AreEqual(0, concentrationModel.Mu, 1e-2);
+            Assert.AreEqual(1, concentrationModel.Sigma, 1e-1);
         }
 
         [TestMethod]

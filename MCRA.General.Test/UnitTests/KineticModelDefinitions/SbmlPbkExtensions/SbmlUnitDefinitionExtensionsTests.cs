@@ -22,7 +22,7 @@ namespace MCRA.General.Test.UnitTests.KineticModelDefinitions.SbmlPbkExtensions 
                 scale
             );
             var result = unitDefinition.ToTimeUnit();
-            Assert.AreEqual(result, expected);
+            Assert.AreEqual(expected, result);
         }
 
         private static SbmlUnitDefinition createUnitDefinition(

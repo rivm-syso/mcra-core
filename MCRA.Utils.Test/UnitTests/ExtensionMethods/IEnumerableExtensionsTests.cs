@@ -76,7 +76,7 @@ namespace MCRA.Utils.Test.UnitTests {
             };
             var actual = sets.FullSelfIntersect();
             Assert.AreEqual(1, actual.Count());
-            Assert.AreEqual(actual.Single(), 5);
+            Assert.AreEqual(5, actual.Single());
         }
 
         [TestMethod]

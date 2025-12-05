@@ -78,7 +78,7 @@ namespace MCRA.General.Test.UnitTests.UnitConversion {
             double expected
         ) {
             var eps = 1e-6;
-            Assert.AreEqual(ExposureUnitExtensions.GetConcentrationUnitMultiplier(exposureUnit, concentrationUnit), expected, eps);
+            Assert.AreEqual(expected, ExposureUnitExtensions.GetConcentrationUnitMultiplier(exposureUnit, concentrationUnit), eps);
         }
 
         /// <summary>

@@ -609,10 +609,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
 
             // Get the substance residue collections for PINEAPPLE
             var agriculturalUseInfoPineapple = agriculturalUseInfo[_foodPineapple];
-            Assert.AreEqual(agriculturalUseInfoPineapple.Count, 3);
-            Assert.AreEqual(agriculturalUseInfoPineapple.First(r => r.Code == "grpA").OccurrenceFraction, 0.055, _epsilon);
-            Assert.AreEqual(agriculturalUseInfoPineapple.First(r => r.Code == "grpAB").OccurrenceFraction, 0.15, _epsilon);
-            Assert.AreEqual(agriculturalUseInfoPineapple.First(r => r.Code == "grpABC").OccurrenceFraction, 0.06, _epsilon);
+            Assert.AreEqual(3, agriculturalUseInfoPineapple.Count);
+            Assert.AreEqual(0.055, agriculturalUseInfoPineapple.First(r => r.Code == "grpA").OccurrenceFraction, _epsilon);
+            Assert.AreEqual(0.15, agriculturalUseInfoPineapple.First(r => r.Code == "grpAB").OccurrenceFraction, _epsilon);
+            Assert.AreEqual(0.06, agriculturalUseInfoPineapple.First(r => r.Code == "grpABC").OccurrenceFraction, _epsilon);
         }
 
 

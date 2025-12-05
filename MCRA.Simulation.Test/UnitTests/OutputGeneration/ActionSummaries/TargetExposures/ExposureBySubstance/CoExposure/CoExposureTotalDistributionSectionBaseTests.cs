@@ -41,7 +41,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var recordSingle = fullExposureRecords.First(r => r.NumberOfSubstances == 1);
 
             // All records with at least one substance include the single substance percentage
-            Assert.AreEqual(100D - recordZero.Percentage, 66.27, 1e-1);
+            Assert.AreEqual(66.27, 100D - recordZero.Percentage, 1e-1);
         }
 
         /// <summary>

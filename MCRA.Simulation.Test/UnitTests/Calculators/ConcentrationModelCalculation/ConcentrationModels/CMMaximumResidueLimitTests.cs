@@ -256,7 +256,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             }
             var observed = generatedResidues.Sum() / generatedResidues.Count;
 
-            Assert.AreEqual(observed, 0.25, 1e-2);
+            Assert.AreEqual(0.25, observed, 1e-2);
             Assert.AreEqual(0.5, concentrationModel.DrawFromDistributionExceptZeroes(random, concentrationModel.NonDetectsHandlingMethod));
             Assert.AreEqual(0.25, concentrationModel.GetDistributionMean(concentrationModel.NonDetectsHandlingMethod));
             Assert.AreEqual(0.5, concentrationModel.FractionPositives);

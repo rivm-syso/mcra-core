@@ -35,7 +35,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.AdjustmentFactorCalculation
             var factor = calculator.GetNominal();
             Assert.AreEqual(1, factor);
             var factorUnc = calculator.DrawFromDistribution(random);
-            Assert.AreEqual(factorUnc, 1);
+            Assert.AreEqual(1, factorUnc);
         }
 
         /// <summary>
