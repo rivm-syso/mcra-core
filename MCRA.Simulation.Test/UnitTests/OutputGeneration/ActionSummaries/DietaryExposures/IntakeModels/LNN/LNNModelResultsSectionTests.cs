@@ -13,10 +13,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
         [TestMethod]
         public void LNNModelResultsSection_Test1() {
             var section = new LNNModelResultsSection() {
-                VarianceEstimates = new ParameterEstimates(),
-                FrequencyModelEstimates = [],
-                AmountsModelEstimates = [],
-                CorrelationEstimates= new ParameterEstimates(),
+                FrequencyModelFitSummaryRecords = [],
+                AmountModelFitSummaryRecords = []
             };
             AssertIsValidView(section);
         }
