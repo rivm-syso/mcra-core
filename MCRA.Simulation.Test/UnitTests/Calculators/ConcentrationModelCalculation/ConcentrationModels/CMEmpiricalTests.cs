@@ -299,8 +299,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var pObserved = (double)observed / repetitions;
             var pExpected = concentrationModel.CorrectedWeightedAgriculturalUseFraction;
             var sigma = Math.Sqrt((pExpected * (1 - pExpected)) / repetitions) + 1e-10;
-            Assert.IsTrue(pObserved > pExpected - 1.96 * sigma);
-            Assert.IsTrue(pObserved < pExpected + 1.96 * sigma);
+            Assert.IsGreaterThan(pExpected - 1.96 * sigma, pObserved);
+            Assert.IsLessThan(pExpected + 1.96 * sigma, pObserved);
 
             Assert.AreEqual(lor, concentrationModel.DrawAccordingToNonDetectsHandlingMethod(random, concentrationModel.NonDetectsHandlingMethod, 1D));
             Assert.AreEqual(lor, concentrationModel.DrawFromDistributionExceptZeroes(random, concentrationModel.NonDetectsHandlingMethod));
@@ -349,16 +349,16 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var pObserved = (double)observed / repetitions;
             var pExpected = 0.5;
             var sigma = Math.Sqrt((pExpected * (1 - pExpected)) / repetitions);
-            Assert.IsTrue(pObserved > pExpected - 1.96 * sigma);
-            Assert.IsTrue(pObserved < pExpected + 1.96 * sigma);
+            Assert.IsGreaterThan(pExpected - 1.96 * sigma, pObserved);
+            Assert.IsLessThan(pExpected + 1.96 * sigma, pObserved);
 
             // Test lors
             observed = generatedResidues.Count(r => r == lor);
             pObserved = (double)observed / repetitions;
             pExpected = 0.5;
             sigma = Math.Sqrt((pExpected * (1 - pExpected)) / repetitions);
-            Assert.IsTrue(pObserved > pExpected - 1.96 * sigma);
-            Assert.IsTrue(pObserved < pExpected + 1.96 * sigma);
+            Assert.IsGreaterThan(pExpected - 1.96 * sigma, pObserved);
+            Assert.IsLessThan(pExpected + 1.96 * sigma, pObserved);
 
             // Draw from positives or censored
             generatedResidues = new List<double>(repetitions);
@@ -371,16 +371,16 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             pObserved = (double)observed / repetitions;
             pExpected = 0.5;
             sigma = Math.Sqrt((pExpected * (1 - pExpected)) / repetitions);
-            Assert.IsTrue(pObserved > pExpected - 1.96 * sigma);
-            Assert.IsTrue(pObserved < pExpected + 1.96 * sigma);
+            Assert.IsGreaterThan(pExpected - 1.96 * sigma, pObserved);
+            Assert.IsLessThan(pExpected + 1.96 * sigma, pObserved);
 
             // Test zeros
             observed = generatedResidues.Count(r => r == lor);
             pObserved = (double)observed / repetitions;
             pExpected = 0.5;
             sigma = Math.Sqrt((pExpected * (1 - pExpected)) / repetitions);
-            Assert.IsTrue(pObserved > pExpected - 1.96 * sigma);
-            Assert.IsTrue(pObserved < pExpected + 1.96 * sigma);
+            Assert.IsGreaterThan(pExpected - 1.96 * sigma, pObserved);
+            Assert.IsLessThan(pExpected + 1.96 * sigma, pObserved);
 
             Assert.AreEqual(lor, concentrationModel.DrawAccordingToNonDetectsHandlingMethod(random, concentrationModel.NonDetectsHandlingMethod, 1D));
             Assert.AreEqual((pos + lor) / 2, concentrationModel.GetDistributionMean(concentrationModel.NonDetectsHandlingMethod));
@@ -433,16 +433,16 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var pObserved = (double)observed / repetitions;
             var pExpected = 0.5;
             var sigma = Math.Sqrt((pExpected * (1 - pExpected)) / repetitions);
-            Assert.IsTrue(pObserved > pExpected - 1.96 * sigma);
-            Assert.IsTrue(pObserved < pExpected + 1.96 * sigma);
+            Assert.IsGreaterThan(pExpected - 1.96 * sigma, pObserved);
+            Assert.IsLessThan(pExpected + 1.96 * sigma, pObserved);
 
             // Test zeros
             observed = generatedResidues.Count(r => r == 0);
             pObserved = (double)observed / repetitions;
             pExpected = 0.5;
             sigma = Math.Sqrt((pExpected * (1 - pExpected)) / repetitions);
-            Assert.IsTrue(pObserved > pExpected - 1.96 * sigma);
-            Assert.IsTrue(pObserved < pExpected + 1.96 * sigma);
+            Assert.IsGreaterThan(pExpected - 1.96 * sigma, pObserved);
+            Assert.IsLessThan(pExpected + 1.96 * sigma, pObserved);
 
             Assert.AreEqual(lor, concentrationModel.DrawAccordingToNonDetectsHandlingMethod(random, concentrationModel.NonDetectsHandlingMethod, 1D));
             Assert.AreEqual(pos, concentrationModel.DrawFromDistributionExceptZeroes(random, concentrationModel.NonDetectsHandlingMethod));
@@ -500,16 +500,16 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var pObserved = (double)observed / repetitions;
             var pExpected = 0.5;
             var sigma = Math.Sqrt((pExpected * (1 - pExpected)) / repetitions);
-            Assert.IsTrue(pObserved > pExpected - 1.96 * sigma);
-            Assert.IsTrue(pObserved < pExpected + 1.96 * sigma);
+            Assert.IsGreaterThan(pExpected - 1.96 * sigma, pObserved);
+            Assert.IsLessThan(pExpected + 1.96 * sigma, pObserved);
 
             // Test lors
             observed = generatedResidues.Count(r => r == lor);
             pObserved = (double)observed / repetitions;
             pExpected = 0.25;
             sigma = Math.Sqrt((pExpected * (1 - pExpected)) / repetitions);
-            Assert.IsTrue(pObserved > pExpected - 1.96 * sigma);
-            Assert.IsTrue(pObserved < pExpected + 1.96 * sigma);
+            Assert.IsGreaterThan(pExpected - 1.96 * sigma, pObserved);
+            Assert.IsLessThan(pExpected + 1.96 * sigma, pObserved);
 
             //==========================================
             // DrawFromCensoredOrPositives
@@ -525,16 +525,16 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             pObserved = (double)observed / repetitions;
             pExpected = 2D / 3;
             sigma = Math.Sqrt((pExpected * (1 - pExpected)) / repetitions);
-            Assert.IsTrue(pObserved > pExpected - 1.96 * sigma);
-            Assert.IsTrue(pObserved < pExpected + 1.96 * sigma);
+            Assert.IsGreaterThan(pExpected - 1.96 * sigma, pObserved);
+            Assert.IsLessThan(pExpected + 1.96 * sigma, pObserved);
 
             // Test zeros
             observed = generatedResidues.Count(r => r == lor);
             pObserved = (double)observed / repetitions;
             pExpected = 1D / 3;
             sigma = Math.Sqrt((pExpected * (1 - pExpected)) / repetitions);
-            Assert.IsTrue(pObserved > pExpected - 1.96 * sigma);
-            Assert.IsTrue(pObserved < pExpected + 1.96 * sigma);
+            Assert.IsGreaterThan(pExpected - 1.96 * sigma, pObserved);
+            Assert.IsLessThan(pExpected + 1.96 * sigma, pObserved);
 
             //==========================================
             // Other

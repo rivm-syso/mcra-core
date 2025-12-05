@@ -20,8 +20,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             var surveys = _getFoodSurveysDelegate.Invoke();
             var individuals = _getIndividualsDelegate.Invoke();
 
-            Assert.AreEqual(3, surveys.Count);
-            Assert.AreEqual(5, individuals.Count);
+            Assert.HasCount(3, surveys);
+            Assert.HasCount(5, individuals);
 
             CollectionAssert.AreEquivalent(new[] { "S1", "S2", "S3" }, surveys.Keys.ToList());
             CollectionAssert.AreEquivalent(new[] { "1", "2", "3", "4", "5" }, individuals.Keys.ToList());
@@ -38,8 +38,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             var surveys = _getFoodSurveysDelegate.Invoke();
             var individuals = _getIndividualsDelegate.Invoke();
 
-            Assert.AreEqual(1, surveys.Count);
-            Assert.AreEqual(2, individuals.Count);
+            Assert.HasCount(1, surveys);
+            Assert.HasCount(2, individuals);
 
             CollectionAssert.AreEquivalent(new[] { "S2" }, surveys.Keys.ToList());
             CollectionAssert.AreEquivalent(new[] { "3", "4" }, individuals.Keys.ToList());
@@ -55,9 +55,9 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             var individuals = _getIndividualsDelegate.Invoke();
             var consumptions = _getFoodConsumptionsDelegate.Invoke();
 
-            Assert.AreEqual(0, surveys.Count);
-            Assert.AreEqual(0, individuals.Count);
-            Assert.AreEqual(0, consumptions.Count);
+            Assert.IsEmpty(surveys);
+            Assert.IsEmpty(individuals);
+            Assert.IsEmpty(consumptions);
         }
 
         [TestMethod]
@@ -73,10 +73,10 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             var consumptions = _getFoodConsumptionsDelegate.Invoke();
             var foods = _getFoodsDelegate.Invoke();
 
-            Assert.AreEqual(3, surveys.Count);
-            Assert.AreEqual(5, individuals.Count);
-            Assert.AreEqual(4, foods.Count);
-            Assert.AreEqual(14, consumptions.Count);
+            Assert.HasCount(3, surveys);
+            Assert.HasCount(5, individuals);
+            Assert.HasCount(4, foods);
+            Assert.HasCount(14, consumptions);
 
             CollectionAssert.AreEquivalent(new[] { "S1", "S2", "S3" }, surveys.Keys.ToList());
             CollectionAssert.AreEquivalent(new[] { "1", "2", "3", "4", "5" }, individuals.Keys.ToList());
@@ -97,10 +97,10 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             var consumptions = _getFoodConsumptionsDelegate.Invoke();
             var foods = _getFoodsDelegate.Invoke();
 
-            Assert.AreEqual(3, surveys.Count);
-            Assert.AreEqual(5, individuals.Count);
-            Assert.AreEqual(4, foods.Count);
-            Assert.AreEqual(14, consumptions.Count);
+            Assert.HasCount(3, surveys);
+            Assert.HasCount(5, individuals);
+            Assert.HasCount(4, foods);
+            Assert.HasCount(14, consumptions);
 
             CollectionAssert.AreEquivalent(new[] { "S1", "S2", "S3" }, surveys.Keys.ToList());
             CollectionAssert.AreEquivalent(new[] { "1", "2", "3", "4", "5" }, individuals.Keys.ToList());
@@ -122,10 +122,10 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             var consumptions = _getFoodConsumptionsDelegate.Invoke();
             var foods = _getFoodsDelegate.Invoke();
 
-            Assert.AreEqual(3, surveys.Count);
-            Assert.AreEqual(5, individuals.Count);
-            Assert.AreEqual(2, foods.Count);
-            Assert.AreEqual(6, consumptions.Count);
+            Assert.HasCount(3, surveys);
+            Assert.HasCount(5, individuals);
+            Assert.HasCount(2, foods);
+            Assert.HasCount(6, consumptions);
 
             CollectionAssert.AreEquivalent(new[] { "S1", "S2", "S3" }, surveys.Keys.ToList());
             CollectionAssert.AreEquivalent(new[] { "1", "2", "3", "4", "5" }, individuals.Keys.ToList());

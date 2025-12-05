@@ -12,8 +12,8 @@ namespace MCRA.Utils.Test.UnitTests {
         public void UncertainDataPointCollection_TestPercentilesCollections() {
             var pc = new UncertainDataPointCollection<double>([0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]);
             pc.ReferenceValues = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-            Assert.IsTrue(pc.ReferenceValues.Count() == 9);
-            Assert.IsTrue(pc.XValues.Count() == 9);
+            Assert.AreEqual(9, pc.ReferenceValues.Count());
+            Assert.AreEqual(9, pc.XValues.Count());
             pc.AddUncertaintyValues([0, 1, 2, 3, 4, 5, 6, 7, 8]);
             pc.AddUncertaintyValues([2, 3, 4, 5, 6, 7, 8, 9, 10]);
             foreach (var p in pc) {

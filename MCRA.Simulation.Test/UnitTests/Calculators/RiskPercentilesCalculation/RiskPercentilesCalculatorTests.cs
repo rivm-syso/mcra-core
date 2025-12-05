@@ -34,7 +34,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SingleValueConcentrationsCa
                 useInverseDistribution
             );
             var result = calculator.Compute(individualEffects);
-            Assert.AreEqual(1, result.Count);
+            Assert.HasCount(1, result);
         }
     }
 }

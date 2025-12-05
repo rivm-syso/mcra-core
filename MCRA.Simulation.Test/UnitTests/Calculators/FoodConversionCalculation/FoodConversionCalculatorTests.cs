@@ -56,7 +56,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FoodConversionCalculation {
                 foodCompositions: translations
             );
             var result = calculator.CalculateFoodConversions(foodsAsEaten, substances);
-            Assert.AreEqual(1, result.Count);
+            Assert.HasCount(1, result);
             Assert.AreEqual(FoodConversionStepType.CompositionExact, result.First().ConversionStepResults.First().Step);
         }
 
@@ -92,7 +92,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FoodConversionCalculation {
                 processingTypes: processingTypes
             );
             var result = calculator.CalculateFoodConversions(foodsAsEaten, substances);
-            Assert.AreEqual(1, result.Count);
+            Assert.HasCount(1, result);
             Assert.AreEqual(FoodConversionStepType.ProcessingTranslation, result.First().ConversionStepResults.First().Step);
             CollectionAssert.AreEquivalent(processingTypes.ToList(), result.First().ProcessingTypes.ToList());
         }
@@ -115,7 +115,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FoodConversionCalculation {
             };
             var calculator = new FoodConversionCalculator(settings, allFoods, samplesPerFoodCompound, foodsAsMeasured);
             var result = calculator.CalculateFoodConversions(foodsAsEaten, substances);
-            Assert.AreEqual(1, result.Count);
+            Assert.HasCount(1, result);
             Assert.AreEqual(FoodConversionStepType.DefaultProcessing, result.First().ConversionStepResults.First().Step);
         }
 
@@ -155,7 +155,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FoodConversionCalculation {
                 marketShares: marketShares
             );
             var result = calculator.CalculateFoodConversions(foodsAsEaten, substances);
-            Assert.AreEqual(2, result.Count);
+            Assert.HasCount(2, result);
             Assert.AreEqual(FoodConversionStepType.Subtype, result.First().ConversionStepResults.First().Step);
             Assert.AreEqual(0.5, result.First().MarketShare);
         }
@@ -185,7 +185,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FoodConversionCalculation {
                 foodsAsMeasured
             );
             var result = calculator.CalculateFoodConversions(foodsAsEaten, substances);
-            Assert.AreEqual(1, result.Count);
+            Assert.HasCount(1, result);
             Assert.AreEqual(FoodConversionStepType.Supertype, result.First().ConversionStepResults.First().Step);
         }
 
@@ -220,7 +220,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FoodConversionCalculation {
                 tdsFoodSampleCompositionDictionary: tdsCompositions.ToDictionary(r => r.Food, r => r.TDSFood)
             );
             var result = calculator.CalculateFoodConversions(foodsAsEaten, substances);
-            Assert.AreEqual(1, result.Count);
+            Assert.HasCount(1, result);
             Assert.AreEqual(FoodConversionStepType.TDSCompositionExact, result.First().ConversionStepResults.First().Step);
         }
 
@@ -256,7 +256,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FoodConversionCalculation {
                 readAcrossFoodTranslations
             );
             var result = calculator.CalculateFoodConversions(foodsAsEaten, substances);
-            Assert.AreEqual(1, result.Count);
+            Assert.HasCount(1, result);
             Assert.AreEqual(FoodConversionStepType.ReadAcross, result.First().ConversionStepResults.First().Step);
         }
 
@@ -289,7 +289,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FoodConversionCalculation {
                 foodsAsMeasured
             );
             var result = calculator.CalculateFoodConversions(foodsAsEaten, substances);
-            Assert.AreEqual(1, result.Count);
+            Assert.HasCount(1, result);
             Assert.AreEqual(FoodConversionStepType.RemoveFacets, result.First().ConversionStepResults.First().Step);
         }
 
@@ -321,7 +321,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FoodConversionCalculation {
                 processingTypes: processingTypes
             );
             var result = calculator.CalculateFoodConversions(foodsAsEaten, substances);
-            Assert.AreEqual(1, result.Count);
+            Assert.HasCount(1, result);
             Assert.AreEqual(FoodConversionStepType.CompositeFacetProcessing, result.First().ConversionStepResults.First().Step);
             CollectionAssert.AreEquivalent(processingTypes, result.First().ProcessingTypes.ToList());
         }

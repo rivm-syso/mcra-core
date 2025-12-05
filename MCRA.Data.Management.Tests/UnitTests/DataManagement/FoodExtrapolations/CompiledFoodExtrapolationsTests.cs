@@ -16,7 +16,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             var foods = _getFoodsDelegate.Invoke();
             var foodExtrapolations = _getFoodExtrapolationsDelegate.Invoke();
 
-            Assert.AreEqual(3, foodExtrapolations.Count);
+            Assert.HasCount(3, foodExtrapolations);
 
             foods.TryGetValue("A", out Food apple);
             foods.TryGetValue("P", out Food pear);
@@ -38,7 +38,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             var foods = _getFoodsDelegate.Invoke();
             var foodExtrapolations = _getFoodExtrapolationsDelegate.Invoke();
 
-            Assert.AreEqual(5, foods.Count);
+            Assert.HasCount(5, foods);
             Assert.IsTrue(foods.TryGetValue("A", out Food apple) && apple.Name.Equals("A"));
             Assert.IsTrue(foods.TryGetValue("P", out Food pear) && pear.Name.Equals("P"));
             Assert.IsTrue(foods.TryGetValue("M", out Food mandarins) && mandarins.Name.Equals("M"));

@@ -44,8 +44,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var subsetManager = new SubsetManager(dataManager, project);
             var calculator = new DoseResponseDataActionCalculator(project);
             var header = TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoadNonMixtures");
-            Assert.AreEqual(doseResponseExperiments.Count, data.AvailableDoseResponseExperiments.Count);
-            Assert.AreEqual(doseResponseExperiments.Count, data.SelectedResponseExperiments.Count);
+            Assert.HasCount(doseResponseExperiments.Count, data.AvailableDoseResponseExperiments);
+            Assert.HasCount(doseResponseExperiments.Count, data.SelectedResponseExperiments);
             writeOutput(data, "TestLoadNonMixtures");
         }
 
@@ -70,8 +70,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var subsetManager = new SubsetManager(dataManager, project);
             var calculator = new DoseResponseDataActionCalculator(project);
             var header = TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoadMixtureData");
-            Assert.AreEqual(doseResponseExperiments.Count, data.AvailableDoseResponseExperiments.Count);
-            Assert.AreEqual(doseResponseExperiments.Count, data.SelectedResponseExperiments.Count);
+            Assert.HasCount(doseResponseExperiments.Count, data.AvailableDoseResponseExperiments);
+            Assert.HasCount(doseResponseExperiments.Count, data.SelectedResponseExperiments);
             WriteReport(header, "TestLoadMixtureData.html");
             writeOutput(data, "TestLoadMixtureData");
         }
@@ -99,8 +99,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
             var calculator = new DoseResponseDataActionCalculator(project);
             var header = TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoad2");
-            Assert.AreEqual(doseResponseExperiments.Count, data.AvailableDoseResponseExperiments.Count);
-            Assert.AreEqual(responses.Count, data.SelectedResponseExperiments.Count);
+            Assert.HasCount(doseResponseExperiments.Count, data.AvailableDoseResponseExperiments);
+            Assert.HasCount(responses.Count, data.SelectedResponseExperiments);
             WriteReport(header, "TestMergeExperiments.html");
             writeOutput(data, "TestMergeExperiments");
         }

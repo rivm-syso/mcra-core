@@ -71,10 +71,10 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
                     .Count(c => c == ResType.VAL.ToString());
                 var LODLOQCount = getColumnValues<string>(tables["RawConcentrationsPerSample"], nameof(RawConcentrationsPerSample.ResType))
                     .Count(c => c != ResType.VAL.ToString());
-                Assert.AreEqual(5, tables["RawAnalyticalMethods"].Rows.Count);
-                Assert.AreEqual(12, tables["RawAnalyticalMethodCompounds"].Rows.Count);
-                Assert.AreEqual(20, tables["RawFoodSamples"].Rows.Count);
-                Assert.AreEqual(20, tables["RawAnalysisSamples"].Rows.Count);
+                Assert.HasCount(5, tables["RawAnalyticalMethods"].Rows);
+                Assert.HasCount(12, tables["RawAnalyticalMethodCompounds"].Rows);
+                Assert.HasCount(20, tables["RawFoodSamples"].Rows);
+                Assert.HasCount(20, tables["RawAnalysisSamples"].Rows);
                 Assert.AreEqual(32, VALCount);
                 Assert.AreEqual(6, LODLOQCount);
 
@@ -208,10 +208,10 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
                 var tables = dataSourceWriter.DataTables;
 
                 var rawFoodSamples = getRawDataRecords<RTA.RawFoodSample>(tables["RawFoodSamples"]);
-                Assert.AreEqual(4, rawFoodSamples.Count);
+                Assert.HasCount(4, rawFoodSamples);
 
                 var rawSampleAnalyses = getRawDataRecords<RTA.RawAnalysisSample>(tables["RawAnalysisSamples"]);
-                Assert.AreEqual(7, rawSampleAnalyses.Count);
+                Assert.HasCount(7, rawSampleAnalyses);
 
                 var rawSampleConcentrations = getRawDataRecords<RTA.RawConcentrationsPerSample>(tables["RawConcentrationsPerSample"]);
 
@@ -271,14 +271,14 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
                     .Count(c => c == ResType.VAL.ToString());
                 var LODLOQCount = getColumnValues<string>(tables["RawConcentrationsPerSample"], nameof(RawConcentrationsPerSample.ResType))
                     .Count(c => c != ResType.VAL.ToString());
-                Assert.AreEqual(5, tables["RawAnalyticalMethods"].Rows.Count);
-                Assert.AreEqual(12, tables["RawAnalyticalMethodCompounds"].Rows.Count);
-                Assert.AreEqual(20, tables["RawFoodSamples"].Rows.Count);
-                Assert.AreEqual(20, tables["RawAnalysisSamples"].Rows.Count);
+                Assert.HasCount(5, tables["RawAnalyticalMethods"].Rows);
+                Assert.HasCount(12, tables["RawAnalyticalMethodCompounds"].Rows);
+                Assert.HasCount(20, tables["RawFoodSamples"].Rows);
+                Assert.HasCount(20, tables["RawAnalysisSamples"].Rows);
                 Assert.AreEqual(32, VALCount);
                 Assert.AreEqual(6, LODLOQCount);
-                Assert.AreEqual(3, tables["RawSampleProperties"].Rows.Count);
-                Assert.AreEqual(23, tables["RawSamplePropertyValues"].Rows.Count);
+                Assert.HasCount(3, tables["RawSampleProperties"].Rows);
+                Assert.HasCount(23, tables["RawSamplePropertyValues"].Rows);
 
                 var properties = getDistinctColumnValues<string>(tables["RawSampleProperties"], nameof(RawSampleProperties.Name)).Order();
                 Assert.AreEqual("FieldTrialType|sampStrategy|Season", string.Join('|', properties));
@@ -332,14 +332,14 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
                 var substancesAnalyticalMethodCompounds = tables["RawAnalyticalMethodCompounds"].Rows
                     .OfType<DataRow>().Select(r => r["idCompound"].ToString()).Distinct().ToList();
 
-                Assert.IsTrue(substancesAnalyticalMethodCompounds.Contains("SubstanceA"));
-                Assert.IsFalse(substancesAnalyticalMethodCompounds.Contains("CompoundA"));
+                Assert.Contains("SubstanceA", substancesAnalyticalMethodCompounds);
+                Assert.DoesNotContain("CompoundA", substancesAnalyticalMethodCompounds);
 
                 var foodSampleFoods = tables["RawFoodSamples"].Rows
                     .OfType<DataRow>().Select(r => r["idFood"]).Distinct().ToList();
 
-                Assert.IsTrue(foodSampleFoods.Contains("XXX_APPLE_XXX"));
-                Assert.IsFalse(foodSampleFoods.Contains("APPLE"));
+                Assert.Contains("XXX_APPLE_XXX", foodSampleFoods);
+                Assert.DoesNotContain("APPLE", foodSampleFoods);
             }
         }
 
@@ -365,14 +365,14 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
                 var substancesAnalyticalMethodCompounds = tables["RawAnalyticalMethodCompounds"].Rows
                     .OfType<DataRow>().Select(r => r["idCompound"].ToString()).Distinct().ToList();
 
-                Assert.IsTrue(substancesAnalyticalMethodCompounds.Contains("SubstanceA"));
-                Assert.IsFalse(substancesAnalyticalMethodCompounds.Contains("CompoundA"));
+                Assert.Contains("SubstanceA", substancesAnalyticalMethodCompounds);
+                Assert.DoesNotContain("CompoundA", substancesAnalyticalMethodCompounds);
 
                 var foodSampleFoods = tables["RawFoodSamples"].Rows
                     .OfType<DataRow>().Select(r => r["idFood"]).Distinct().ToList();
 
-                Assert.IsTrue(foodSampleFoods.Contains("XXX_APPLE_XXX"));
-                Assert.IsFalse(foodSampleFoods.Contains("APPLE"));
+                Assert.Contains("XXX_APPLE_XXX", foodSampleFoods);
+                Assert.DoesNotContain("APPLE", foodSampleFoods);
             }
         }
 
@@ -387,11 +387,11 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
                 var bulkCopier = new ConcentrationsBulkCopier(dataSourceWriter, null, null);
                 bulkCopier.TryCopy(reader, new ProgressState());
                 var tables = dataSourceWriter.DataTables;
-                Assert.AreEqual(10, tables["RawAnalyticalMethods"].Rows.Count);
-                Assert.AreEqual(10, tables["RawAnalyticalMethodCompounds"].Rows.Count);
-                Assert.AreEqual(30, tables["RawFoodSamples"].Rows.Count);
-                Assert.AreEqual(30, tables["RawAnalysisSamples"].Rows.Count);
-                Assert.AreEqual(15, tables["RawConcentrationsPerSample"].Rows.Count);
+                Assert.HasCount(10, tables["RawAnalyticalMethods"].Rows);
+                Assert.HasCount(10, tables["RawAnalyticalMethodCompounds"].Rows);
+                Assert.HasCount(30, tables["RawFoodSamples"].Rows);
+                Assert.HasCount(30, tables["RawAnalysisSamples"].Rows);
+                Assert.HasCount(15, tables["RawConcentrationsPerSample"].Rows);
 
                 var foodSampleFoods = tables["RawFoodSamples"].Rows
                     .OfType<DataRow>()
@@ -429,11 +429,11 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
                 var bulkCopier = new ConcentrationsBulkCopier(dataSourceWriter, null, null);
                 bulkCopier.TryCopy(reader, new ProgressState());
                 var tables = dataSourceWriter.DataTables;
-                Assert.AreEqual(5, tables["RawAnalyticalMethods"].Rows.Count);
-                Assert.AreEqual(12, tables["RawAnalyticalMethodCompounds"].Rows.Count);
-                Assert.AreEqual(20, tables["RawFoodSamples"].Rows.Count);
-                Assert.AreEqual(20, tables["RawAnalysisSamples"].Rows.Count);
-                Assert.AreEqual(32, tables["RawConcentrationsPerSample"].Rows.Count);
+                Assert.HasCount(5, tables["RawAnalyticalMethods"].Rows);
+                Assert.HasCount(12, tables["RawAnalyticalMethodCompounds"].Rows);
+                Assert.HasCount(20, tables["RawFoodSamples"].Rows);
+                Assert.HasCount(20, tables["RawAnalysisSamples"].Rows);
+                Assert.HasCount(32, tables["RawConcentrationsPerSample"].Rows);
             }
         }
 
@@ -448,11 +448,11 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
                 var bulkCopier = new ConcentrationsBulkCopier(dataSourceWriter, null, null);
                 bulkCopier.TryCopy(reader, new ProgressState());
                 var tables = dataSourceWriter.DataTables;
-                Assert.AreEqual(5, tables["RawAnalyticalMethods"].Rows.Count);
-                Assert.AreEqual(12, tables["RawAnalyticalMethodCompounds"].Rows.Count);
-                Assert.AreEqual(20, tables["RawFoodSamples"].Rows.Count);
-                Assert.AreEqual(20, tables["RawAnalysisSamples"].Rows.Count);
-                Assert.AreEqual(32, tables["RawConcentrationsPerSample"].Rows.Count);
+                Assert.HasCount(5, tables["RawAnalyticalMethods"].Rows);
+                Assert.HasCount(12, tables["RawAnalyticalMethodCompounds"].Rows);
+                Assert.HasCount(20, tables["RawFoodSamples"].Rows);
+                Assert.HasCount(20, tables["RawAnalysisSamples"].Rows);
+                Assert.HasCount(32, tables["RawConcentrationsPerSample"].Rows);
             }
         }
 
@@ -495,14 +495,14 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
                 var substancesAnalyticalMethodCompounds = tables["RawAnalyticalMethodCompounds"].Rows
                     .OfType<DataRow>().Select(r => r["idCompound"].ToString()).Distinct().ToList();
 
-                Assert.IsTrue(substancesAnalyticalMethodCompounds.Contains("SubstanceA"));
-                Assert.IsFalse(substancesAnalyticalMethodCompounds.Contains("CompoundA"));
+                Assert.Contains("SubstanceA", substancesAnalyticalMethodCompounds);
+                Assert.DoesNotContain("CompoundA", substancesAnalyticalMethodCompounds);
 
                 var foodSampleFoods = tables["RawFoodSamples"].Rows
                     .OfType<DataRow>().Select(r => r["idFood"]).Distinct().ToList();
 
-                Assert.IsTrue(foodSampleFoods.Contains("XXX_APPLE_XXX"));
-                Assert.IsFalse(foodSampleFoods.Contains("APPLE"));
+                Assert.Contains("XXX_APPLE_XXX", foodSampleFoods);
+                Assert.DoesNotContain("APPLE", foodSampleFoods);
             }
         }
     }

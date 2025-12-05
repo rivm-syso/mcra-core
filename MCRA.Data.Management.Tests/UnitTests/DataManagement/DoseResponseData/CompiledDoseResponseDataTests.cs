@@ -17,16 +17,16 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             var experiments = _getExperimentsDelegate.Invoke();
             //only experiments with all matching codes are loaded
             //(matching response codes are mandatory)
-            Assert.AreEqual(2, experiments.Count);
+            Assert.HasCount(2, experiments);
 
             var substances = _getSubstancesDelegate.Invoke();
 
             //Substances are loaded from valid experiments
-            Assert.AreEqual(5, substances.Count);
+            Assert.HasCount(5, substances);
 
             var responses = _getResponsesDelegate.Invoke();
 
-            Assert.AreEqual(3, responses.Count);
+            Assert.HasCount(3, responses);
         }
 
         [TestMethod]
@@ -41,7 +41,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             var experiments = _getExperimentsDelegate.Invoke();
 
-            Assert.AreEqual(6, experiments.Count);
+            Assert.HasCount(6, experiments);
             CollectionAssert.AreEquivalent(
                 new[] { "x10", "x11", "x14", "x19", "x20", "x23" },
                 experiments.Keys.ToList()
@@ -59,7 +59,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             var experiments = _getExperimentsDelegate.Invoke();
 
-            Assert.AreEqual(18, experiments.Count);
+            Assert.HasCount(18, experiments);
             CollectionAssert.AreEquivalent(
                 new[] { "x10", "x11", "x12", "x13", "x14", "x15", "x16", "x17", "x18", "x19", "x20", "x21", "x22", "x23", "x24", "x25", "x26", "x27" },
                 experiments.Keys.ToList()
@@ -77,7 +77,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             var experiments = _getExperimentsDelegate.Invoke();
 
-            Assert.AreEqual(12, experiments.Count);
+            Assert.HasCount(12, experiments);
             CollectionAssert.AreEquivalent(
                 new[] { "x01", "x02", "x05", "x10", "x11", "x14", "x19", "x20", "x23", "x28", "x29", "x32" },
                 experiments.Keys.ToList()

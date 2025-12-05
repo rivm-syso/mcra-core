@@ -127,7 +127,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             compoundCodes = analyticalMethods["Am4"].AnalyticalMethodCompounds.Keys.Select(c => c.Code).ToList();
             CollectionAssert.AreEquivalent(new[] { "P" }, compoundCodes);
 
-            Assert.AreEqual(0, analyticalMethods["Am5"].AnalyticalMethodCompounds.Count);
+            Assert.IsEmpty(analyticalMethods["Am5"].AnalyticalMethodCompounds);
         }
 
         [TestMethod]
@@ -237,7 +237,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             );
 
             var foodSamples = _getAllFocalFoodSamplesDelegate.Invoke().Values;
-            Assert.AreEqual(20, foodSamples.Count);
+            Assert.HasCount(20, foodSamples);
 
             var foods = _getFoodsDelegate.Invoke();
             var foodApple = foods["APPLE"];
@@ -267,7 +267,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             var foodSamples = _getAllFocalFoodSamplesDelegate.Invoke().Values;
             var analyticalMethods = _getFocalFoodsAnalyticalMethodsDelegate.Invoke().Values;
 
-            Assert.AreEqual(5, analyticalMethods.Count);
+            Assert.HasCount(5, analyticalMethods);
 
             var analyticalMethod1 = analyticalMethods.Single(am => am.Code == "AM1");
             var analyticalMethod2 = analyticalMethods.Single(am => am.Code == "AM2");
@@ -305,7 +305,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             var foodSamples = _getAllFocalFoodSamplesDelegate.Invoke().Values;
             var analyticalMethods = _getFocalFoodsAnalyticalMethodsDelegate.Invoke().Values;
 
-            Assert.AreEqual(5, analyticalMethods.Count);
+            Assert.HasCount(5, analyticalMethods);
 
             var compounds = _getSubstancesDelegate.Invoke();
             var compoundA = compounds["CompoundA"];

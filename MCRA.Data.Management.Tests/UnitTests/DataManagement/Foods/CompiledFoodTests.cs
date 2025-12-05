@@ -20,7 +20,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             var foods = _getFoodsDelegate.Invoke();
 
-            Assert.AreEqual(3, foods.Count);
+            Assert.HasCount(3, foods);
 
             Assert.IsTrue(foods.TryGetValue("A", out var f) && f.Name.Equals("Apple"));
             Assert.IsTrue(foods.TryGetValue("B", out f) && f.Name.Equals("Banana"));
@@ -35,7 +35,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["A", "C"]);
 
             var foods = _getFoodsDelegate.Invoke();
-            Assert.AreEqual(2, foods.Count);
+            Assert.HasCount(2, foods);
 
             Assert.IsTrue(foods.TryGetValue("A", out var f) && f.Name.Equals("Apple"));
             Assert.IsTrue(foods.TryGetValue("C", out f) && f.Name.Equals("Cucumber"));
@@ -50,17 +50,17 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             var foods = _getFoodsDelegate.Invoke();
 
-            Assert.AreEqual(4, foods.Count);
+            Assert.HasCount(4, foods);
 
             Assert.IsTrue(foods.TryGetValue("A", out Food apple));
             Assert.IsTrue(foods.TryGetValue("F", out Food flour));
             Assert.IsTrue(foods.TryGetValue("W", out Food wheat));
             Assert.IsTrue(foods.TryGetValue("AP", out Food pie));
 
-            Assert.AreEqual(0, apple.Children.Count);
-            Assert.AreEqual(1, flour.Children.Count);
-            Assert.AreEqual(2, pie.Children.Count);
-            Assert.AreEqual(0, wheat.Children.Count);
+            Assert.IsEmpty(apple.Children);
+            Assert.HasCount(1, flour.Children);
+            Assert.HasCount(2, pie.Children);
+            Assert.IsEmpty(wheat.Children);
             Assert.AreEqual(flour, wheat.Parent);
             Assert.AreEqual(pie, flour.Parent);
             Assert.AreEqual(pie, apple.Parent);
@@ -76,13 +76,13 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["AP", "F"]);
             var foods = _getFoodsDelegate.Invoke();
 
-            Assert.AreEqual(2, foods.Count);
+            Assert.HasCount(2, foods);
 
             Assert.IsTrue(foods.TryGetValue("F", out Food flour));
             Assert.IsTrue(foods.TryGetValue("AP", out Food pie));
 
-            Assert.AreEqual(0, flour.Children.Count);
-            Assert.AreEqual(1, pie.Children.Count);
+            Assert.IsEmpty(flour.Children);
+            Assert.HasCount(1, pie.Children);
             Assert.AreEqual(pie, flour.Parent);
             Assert.IsNull(pie.Parent);
         }
@@ -94,7 +94,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             );
 
             var foods = _getFoodsDelegate.Invoke();
-            Assert.AreEqual(4, foods.Count);
+            Assert.HasCount(4, foods);
         }
 
         [TestMethod]
@@ -106,13 +106,13 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             var foods = _getFoodsDelegate.Invoke();
 
-            Assert.AreEqual(4, foods.Count);
+            Assert.HasCount(4, foods);
             Assert.IsTrue(foods.TryGetValue("A", out Food apple) && apple.Name.Equals("Apple"));
             Assert.IsTrue(foods.TryGetValue("F", out Food flour) && flour.Name.Equals("Flour"));
             Assert.IsTrue(foods.TryGetValue("W", out Food wheat) && wheat.Name.Equals("Wheat"));
             Assert.IsTrue(foods.TryGetValue("AP", out Food pie) && pie.Name.Equals("Apple Pie"));
 
-            Assert.AreEqual(2, apple.FoodConsumptionQuantifications.Count);
+            Assert.HasCount(2, apple.FoodConsumptionQuantifications);
             Assert.AreEqual(73.4, apple.FoodConsumptionQuantifications["piece"].UnitWeight);
             Assert.AreEqual(14.3, apple.FoodConsumptionQuantifications["piece"].UnitWeightUncertainty);
             Assert.AreEqual(10, apple.FoodConsumptionQuantifications["piece"].AmountUncertainty);
@@ -120,14 +120,14 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             Assert.AreEqual(10.5, apple.FoodConsumptionQuantifications["slice"].UnitWeightUncertainty);
             Assert.AreEqual(5, apple.FoodConsumptionQuantifications["slice"].AmountUncertainty);
 
-            Assert.AreEqual(0, wheat.FoodConsumptionQuantifications.Count);
+            Assert.IsEmpty(wheat.FoodConsumptionQuantifications);
 
-            Assert.AreEqual(1, flour.FoodConsumptionQuantifications.Count);
+            Assert.HasCount(1, flour.FoodConsumptionQuantifications);
             Assert.AreEqual(32.39, flour.FoodConsumptionQuantifications["cup"].UnitWeight);
             Assert.AreEqual(8.3, flour.FoodConsumptionQuantifications["cup"].UnitWeightUncertainty);
             Assert.AreEqual(12.12, flour.FoodConsumptionQuantifications["cup"].AmountUncertainty);
 
-            Assert.AreEqual(2, pie.FoodConsumptionQuantifications.Count);
+            Assert.HasCount(2, pie.FoodConsumptionQuantifications);
             Assert.AreEqual(400, pie.FoodConsumptionQuantifications["piece"].UnitWeight);
             Assert.AreEqual(25, pie.FoodConsumptionQuantifications["piece"].UnitWeightUncertainty);
             Assert.AreEqual(0, pie.FoodConsumptionQuantifications["piece"].AmountUncertainty);
@@ -144,7 +144,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             );
             var foods = _getFoodsDelegate.Invoke();
 
-            Assert.AreEqual(3, foods.Count);
+            Assert.HasCount(3, foods);
             Assert.IsTrue(foods.TryGetValue("A", out var f) && f.Name == "A");
             Assert.IsTrue(foods.TryGetValue("F", out f) && f.Name == "F");
             Assert.IsTrue(foods.TryGetValue("AP", out f) && f.Name == "AP");
@@ -158,7 +158,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             );
             var foods = _getFoodsDelegate.Invoke();
 
-            Assert.AreEqual(3, foods.Count);
+            Assert.HasCount(3, foods);
 
             Assert.IsTrue(foods.TryGetValue("A", out Food apple));
             Assert.IsTrue(foods.TryGetValue("B", out Food banana));
@@ -181,7 +181,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             );
             var foods = _getFoodsDelegate.Invoke();
 
-            Assert.AreEqual(3, foods.Count);
+            Assert.HasCount(3, foods);
 
             Assert.IsTrue(foods.TryGetValue("A", out var f) && f.Name == "A");
             Assert.IsTrue(foods.TryGetValue("B", out f) && f.Name == "B");
@@ -198,7 +198,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             var consumptions = _compiledDataManager.GetAllFoodConsumptions();
             var foods = _getFoodsDelegate.Invoke();
 
-            Assert.AreEqual(3, foods.Count);
+            Assert.HasCount(3, foods);
             Assert.IsTrue(foods.TryGetValue("A", out var f) && f.Name.Equals("A"));
             Assert.IsTrue(foods.TryGetValue("B", out f) && f.Name.Equals("B"));
             Assert.IsTrue(foods.TryGetValue("C", out f) && f.Name.Equals("C"));
@@ -216,7 +216,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _compiledDataManager.GetAllFoodConsumptions();
             var foods = _getFoodsDelegate.Invoke();
 
-            Assert.AreEqual(1, foods.Count);
+            Assert.HasCount(1, foods);
             Assert.IsTrue(foods.TryGetValue("B", out var f) && f.Name.Equals("B"));
         }
 
@@ -229,7 +229,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _compiledDataManager.GetAllProcessingFactors();
             var foods = _getFoodsDelegate.Invoke();
 
-            Assert.AreEqual(3, foods.Count);
+            Assert.HasCount(3, foods);
             Assert.IsTrue(foods.TryGetValue("A", out var f) && f.Name.Equals("A"));
             Assert.IsTrue(foods.TryGetValue("B", out f) && f.Name.Equals("B"));
             Assert.IsTrue(foods.TryGetValue("C", out f) && f.Name.Equals("C"));
@@ -245,7 +245,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _compiledDataManager.GetAllProcessingFactors();
             var foods = _getFoodsDelegate.Invoke();
 
-            Assert.AreEqual(2, foods.Count);
+            Assert.HasCount(2, foods);
             Assert.IsTrue(foods.TryGetValue("A", out var f) && f.Name.Equals("A"));
             Assert.IsTrue(foods.TryGetValue("B", out f) && f.Name.Equals("B"));
         }
@@ -263,7 +263,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _compiledDataManager.GetAllProcessingFactors();
             var foods = _getFoodsDelegate.Invoke();
 
-            Assert.AreEqual(3, foods.Count);
+            Assert.HasCount(3, foods);
             Assert.IsTrue(foods.TryGetValue("A", out var f) && f.Name.Equals("A"));
             Assert.IsTrue(foods.TryGetValue("B", out f) && f.Name.Equals("B"));
             Assert.IsTrue(foods.TryGetValue("C", out f) && f.Name.Equals("C"));
@@ -279,7 +279,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             var foods = _getFoodsDelegate.Invoke();
 
-            Assert.AreEqual(4, foods.Count);
+            Assert.HasCount(4, foods);
 
             Assert.IsTrue(foods.TryGetValue("A0001", out Food afood));
             Assert.IsTrue(foods.TryGetValue("A0001#F01.DESCB", out Food bfood));
@@ -291,16 +291,16 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             Assert.AreEqual("C0001 - Descriptor A - Descriptor C", cfood.Name);
             Assert.AreEqual("C0001", cparent.Name);
 
-            Assert.AreEqual(0, afood.FoodFacets.Count);
-            Assert.AreEqual(1, bfood.FoodFacets.Count);
-            Assert.AreEqual(2, cfood.FoodFacets.Count);
+            Assert.IsEmpty(afood.FoodFacets);
+            Assert.HasCount(1, bfood.FoodFacets);
+            Assert.HasCount(2, cfood.FoodFacets);
 
             Assert.AreEqual(afood, bfood.Parent);
             Assert.AreEqual(cparent, cfood.Parent);
 
             //not added to children (?)
-            Assert.AreEqual(0, afood.Children.Count);
-            Assert.AreEqual(0, cparent.Children.Count);
+            Assert.IsEmpty(afood.Children);
+            Assert.IsEmpty(cparent.Children);
         }
     }
 }

@@ -14,7 +14,7 @@ namespace MCRA.Utils.Test.UnitTests {
             Assert.AreEqual(1, mlrResult.RegressionCoefficients[0], 1e-6);
             Assert.AreEqual(1, mlrResult.RegressionCoefficients[1], 1e-6);
             Assert.AreEqual(2, mlrResult.RegressionCoefficients[2], 1e-6);
-            Assert.IsTrue(mlrResult.DegreesOfFreedom == 5);
+            Assert.AreEqual(5, mlrResult.DegreesOfFreedom);
         }
     }
 }

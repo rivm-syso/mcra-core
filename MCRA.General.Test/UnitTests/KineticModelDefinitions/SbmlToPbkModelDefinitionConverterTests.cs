@@ -14,9 +14,9 @@ namespace MCRA.General.Test.UnitTests.KineticModelDefinitions {
             var converter = new SbmlToPbkModelDefinitionConverter();
             var def = converter.Convert(sbmlModel);
 
-            Assert.AreEqual(1, def.Forcings.Count);
-            Assert.AreEqual(5, def.Outputs.Count);
-            Assert.AreEqual(14, def.Parameters.Count);
+            Assert.HasCount(1, def.Forcings);
+            Assert.HasCount(5, def.Outputs);
+            Assert.HasCount(14, def.Parameters);
 
             var paramsDict = def.Parameters.ToDictionary(r => r.Id);
             Assert.AreEqual(PbkModelParameterType.BodyWeight, paramsDict["BW"].Type);

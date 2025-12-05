@@ -112,7 +112,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
 
             var result02 = getExposurePatternFrequencies2(data.records.ToList(), data.compounds).ToArray();
 
-            Assert.AreEqual(result02.Length, result01.Length);
+            Assert.HasCount(result02.Length, result01);
 
             var sb01 = new StringBuilder();
             var sb02 = new StringBuilder();
@@ -143,7 +143,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var result02 = getExposurePatternFrequencies2(data.records.ToList(), data.compounds).ToArray();
             sw.Stop();
             Debug.WriteLine($"algorithm 02: {sw.Elapsed}");
-            Assert.AreEqual(result02.Length, result01.Length);
+            Assert.HasCount(result02.Length, result01);
         }
 
         [TestMethod, TestCategory("Sandbox Tests")]
@@ -151,7 +151,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var (records, compounds) = createData(8, 8);
 
             var result = getExposurePatternFrequencies2(records.ToList(), compounds).ToArray();
-            Assert.AreEqual(8, result.Length);
+            Assert.HasCount(8, result);
 
             var sb = new StringBuilder();
             for (int i = 0; i < result.Length; i++) {

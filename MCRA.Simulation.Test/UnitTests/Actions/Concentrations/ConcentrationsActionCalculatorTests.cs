@@ -56,8 +56,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             Assert.IsNotNull(data.MeasuredSubstanceSampleCollections);
             Assert.IsNotNull(data.ActiveSubstanceSampleCollections);
-            Assert.AreEqual(3, data.ActiveSubstanceSampleCollections.Count);
-            Assert.AreEqual(3, data.MeasuredSubstanceSampleCollections.Count);
+            Assert.HasCount(3, data.ActiveSubstanceSampleCollections);
+            Assert.HasCount(3, data.MeasuredSubstanceSampleCollections);
 
             var factorialSet = new UncertaintyFactorialSet(UncertaintySource.Concentrations);
             var uncertaintySourceGenerators = factorialSet.UncertaintySources.ToDictionary(r => r, r => random as IRandom);
@@ -113,7 +113,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var calculator = new ConcentrationsActionCalculator(project);
             var header = TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoadFocal0");
 
-            Assert.AreEqual(50, data.ActiveSubstanceSampleCollections.Values.First().SampleCompoundRecords.Count);
+            Assert.HasCount(50, data.ActiveSubstanceSampleCollections.Values.First().SampleCompoundRecords);
 
             var factorialSet = new UncertaintyFactorialSet(UncertaintySource.Concentrations, UncertaintySource.FocalCommodityReplacement);
             var uncertaintySourceGenerators = factorialSet.UncertaintySources.ToDictionary(r => r, r => random as IRandom);
@@ -402,7 +402,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var calculator = new ConcentrationsActionCalculator(project);
             var header = TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoadFocal");
 
-            Assert.AreEqual(50, data.ActiveSubstanceSampleCollections.Values.First().SampleCompoundRecords.Count);
+            Assert.HasCount(50, data.ActiveSubstanceSampleCollections.Values.First().SampleCompoundRecords);
 
             var factorialSet = new UncertaintyFactorialSet(UncertaintySource.Concentrations, UncertaintySource.FocalCommodityReplacement);
             var uncertaintySourceGenerators = factorialSet.UncertaintySources.ToDictionary(r => r, r => random as IRandom);
@@ -458,9 +458,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             _ = TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoadAndSummarizeFocalFood");
 
             var groupedSamples = data.MeasuredSubstanceSampleCollections.Values.ToDictionary(r => r.Food.Code);
-            Assert.AreEqual(12, groupedSamples["APPLE"].SampleCompoundRecords.Count);
-            Assert.AreEqual(5, groupedSamples["BANANAS"].SampleCompoundRecords.Count);
-            Assert.AreEqual(10, groupedSamples["PINEAPPLE"].SampleCompoundRecords.Count);
+            Assert.HasCount(12, groupedSamples["APPLE"].SampleCompoundRecords);
+            Assert.HasCount(5, groupedSamples["BANANAS"].SampleCompoundRecords);
+            Assert.HasCount(10, groupedSamples["PINEAPPLE"].SampleCompoundRecords);
         }
 
         /// <summary>
@@ -641,8 +641,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             Assert.IsNotNull(data.MeasuredSubstanceSampleCollections);
             Assert.IsNotNull(data.ActiveSubstanceSampleCollections);
-            Assert.AreEqual(nrOfFoods + 1, data.ActiveSubstanceSampleCollections.Count);        // +1 for water
-            Assert.AreEqual(nrOfFoods, data.MeasuredSubstanceSampleCollections.Count);
+            Assert.HasCount(nrOfFoods + 1, data.ActiveSubstanceSampleCollections);        // +1 for water
+            Assert.HasCount(nrOfFoods, data.MeasuredSubstanceSampleCollections);
 
             var random = new McraRandomGenerator(seed);
             var factorialSet = new UncertaintyFactorialSet(UncertaintySource.Concentrations);

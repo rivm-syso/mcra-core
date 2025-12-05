@@ -98,7 +98,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var calculator = new SingleValueConsumptionsActionCalculator(project);
             project.SingleValueConsumptionsSettings.IsCompute = true;
             TestRunUpdateSummarizeNominal(project, calculator, data, "ConsumptionsByModelledFood_1");
-            Assert.AreEqual(3, data.SingleValueConsumptionModels.Count);
+            Assert.HasCount(3, data.SingleValueConsumptionModels);
         }
 
         /// <summary>
@@ -125,7 +125,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var calculator = new SingleValueConsumptionsActionCalculator(project);
             project.SingleValueConsumptionsSettings.IsProcessing = true;
             TestRunUpdateSummarizeNominal(project, calculator, data, "ConsumptionsByModelledFood_1");
-            Assert.AreEqual(12, data.SingleValueConsumptionModels.Count);
+            Assert.HasCount(12, data.SingleValueConsumptionModels);
         }
     }
 }

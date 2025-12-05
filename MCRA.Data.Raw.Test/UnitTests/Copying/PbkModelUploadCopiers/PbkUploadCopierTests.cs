@@ -28,8 +28,8 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.PbkModelUploadCopiers {
                     bulkCopier.TryCopy(reader, new ProgressState());
                 }
             }
-            Assert.IsTrue(parsedTableGroups.Contains(SourceTableGroup.PbkModelDefinitions));
-            Assert.IsTrue(parsedTables.Contains(RawDataSourceTableID.KineticModelDefinitions));
+            Assert.Contains(SourceTableGroup.PbkModelDefinitions, parsedTableGroups);
+            Assert.Contains(RawDataSourceTableID.KineticModelDefinitions, parsedTables);
             var fileSbml = Path.Combine(outputPath, filename);
             var fileCsv = Path.Combine(outputPath, "RawPbkModelDefinitions.csv");
             Assert.IsTrue(File.Exists(fileSbml));

@@ -57,7 +57,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             CollectionAssert.AreEquivalent(new[] { "B", "C" }, compoundCodes);
             compoundCodes = opPatterns["au4"].Compounds.Select(c => c.Code).ToList();
             CollectionAssert.AreEquivalent(new[] { "A", "D" }, compoundCodes);
-            Assert.AreEqual(0, opPatterns["au5"].Compounds.Count);
+            Assert.IsEmpty(opPatterns["au5"].Compounds);
             compoundCodes = opPatterns["au6"].Compounds.Select(c => c.Code).ToList();
             CollectionAssert.AreEquivalent(new[] { "A", "B" }, compoundCodes);
             compoundCodes = opPatterns["au7"].Compounds.Select(c => c.Code).ToList();
@@ -86,7 +86,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             CollectionAssert.AreEquivalent(new[] { "B", "C" }, compoundCodes);
             compoundCodes = opPatterns["au4"].Compounds.Select(c => c.Code).ToList();
             CollectionAssert.AreEquivalent(new[] { "A", "D" }, compoundCodes);
-            Assert.AreEqual(0, opPatterns["au5"].Compounds.Count);
+            Assert.IsEmpty(opPatterns["au5"].Compounds);
         }
 
         [TestMethod]
@@ -107,8 +107,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             var compoundCodes = opPatterns["au3"].Compounds.Select(c => c.Code).ToList();
             CollectionAssert.AreEquivalent(new[] { "B", "C" }, compoundCodes);
-            Assert.AreEqual(0, opPatterns["au4"].Compounds.Count);
-            Assert.AreEqual(0, opPatterns["au5"].Compounds.Count);
+            Assert.IsEmpty(opPatterns["au4"].Compounds);
+            Assert.IsEmpty(opPatterns["au5"].Compounds);
         }
 
         [TestMethod]
@@ -132,11 +132,11 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             CollectionAssert.AreEquivalent(new[] { "B", "C" }, compoundCodes);
             compoundCodes = opPatterns["au3"].Compounds.Select(c => c.Code).ToList();
             CollectionAssert.AreEquivalent(new[] { "B", "C" }, compoundCodes);
-            Assert.AreEqual(0, opPatterns["au4"].Compounds.Count);
-            Assert.AreEqual(0, opPatterns["au5"].Compounds.Count);
+            Assert.IsEmpty(opPatterns["au4"].Compounds);
+            Assert.IsEmpty(opPatterns["au5"].Compounds);
             compoundCodes = opPatterns["au6"].Compounds.Select(c => c.Code).ToList();
             CollectionAssert.AreEquivalent(new[] { "B" }, compoundCodes);
-            Assert.AreEqual(0, opPatterns["au7"].Compounds.Count);
+            Assert.IsEmpty(opPatterns["au7"].Compounds);
             compoundCodes = opPatterns["au8"].Compounds.Select(c => c.Code).ToList();
             CollectionAssert.AreEquivalent(new[] { "B" }, compoundCodes);
         }

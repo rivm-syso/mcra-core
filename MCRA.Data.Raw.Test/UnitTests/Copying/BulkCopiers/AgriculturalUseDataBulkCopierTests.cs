@@ -82,7 +82,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
             );
 
             Assert.IsNotNull(result);
-            Assert.AreEqual(1, result.Count);
+            Assert.HasCount(1, result);
             Assert.AreEqual(SourceTableGroup.AgriculturalUse, result.Single());
 
             readerMock.Verify(x => x.Open(), Times.Once);

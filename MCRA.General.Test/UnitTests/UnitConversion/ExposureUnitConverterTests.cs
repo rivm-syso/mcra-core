@@ -119,7 +119,7 @@ namespace MCRA.General.Test.UnitTests.UnitConversion {
         public void ExposureUnitConverter_TestGetSubstanceAmountUnitAll() {
             var enumValues = Enum.GetValues(typeof(ExternalExposureUnit)).Cast<ExternalExposureUnit>().ToList();
             foreach (var value in enumValues) {
-                Assert.IsFalse(value.GetSubstanceAmountUnit() == SubstanceAmountUnit.Undefined);
+                Assert.AreNotEqual(SubstanceAmountUnit.Undefined, value.GetSubstanceAmountUnit());
             }
         }
 
@@ -149,7 +149,7 @@ namespace MCRA.General.Test.UnitTests.UnitConversion {
         public void ExposureUnitConverter_TestGetConcentrationMassUnitAll() {
             var enumValues = Enum.GetValues(typeof(ExternalExposureUnit)).Cast<ExternalExposureUnit>().ToList();
             foreach (var value in enumValues) {
-                Assert.IsFalse(value.GetConcentrationMassUnit() == ConcentrationMassUnit.Undefined);
+                Assert.AreNotEqual(ConcentrationMassUnit.Undefined, value.GetConcentrationMassUnit());
             }
         }
 

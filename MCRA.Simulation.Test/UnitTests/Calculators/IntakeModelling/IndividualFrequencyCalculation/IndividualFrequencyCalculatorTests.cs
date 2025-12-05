@@ -21,7 +21,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling.IndividualF
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var exposures = FakeSimpleIndividualDayIntakeGenerator.Create(individualDays, 0.3, random);
             var frequencies = IndividualFrequencyCalculator.Compute(exposures);
-            Assert.AreEqual(individuals.Count, frequencies.Count);
+            Assert.HasCount(individuals.Count, frequencies);
         }
     }
 }

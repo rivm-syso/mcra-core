@@ -27,7 +27,7 @@ namespace MCRA.Data.Management.Test.UnitTests.ActionSettingsManagement {
                 }
             }
 
-            Assert.AreEqual(expectedTypes.Count, instantiatedTypes.Count,
+            Assert.HasCount(expectedTypes.Count, instantiatedTypes,
                 $"Expected:\n{string.Join("\n", expectedTypes)}\n\nInstantiated:\n{string.Join("\n", instantiatedTypes)}");
         }
     }

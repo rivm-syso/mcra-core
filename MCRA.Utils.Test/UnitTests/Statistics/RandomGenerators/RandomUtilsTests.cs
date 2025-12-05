@@ -85,12 +85,12 @@ namespace MCRA.Utils.Test.UnitTests {
 
                 // Collision within this seed
                 var innerCollisionRate = (double)innerCollisionCount / innerCount;
-                Assert.IsTrue(innerCollisionRate < 0.01);
+                Assert.IsLessThan(0.01, innerCollisionRate);
             }
 
             // Collisions over all seeds
             var collisionRate = (double)totalCollisionCount / totalCount;
-            Assert.IsTrue(collisionRate < 0.001);
+            Assert.IsLessThan(0.001, collisionRate);
         }
 
         /// <summary>
@@ -159,12 +159,12 @@ namespace MCRA.Utils.Test.UnitTests {
 
                 // Collision within this seed
                 var innerCollisionRate = (double)innerCollisionCount / innerCount;
-                Assert.IsTrue(innerCollisionRate < 0.01);
+                Assert.IsLessThan(0.01, innerCollisionRate);
             }
 
             // Collisions over all seeds
             var collisionRate = (double)totalCollisionCount / totalCount;
-            Assert.IsTrue(collisionRate < 0.001);
+            Assert.IsLessThan(0.001, collisionRate);
         }
 
         private static List<int> createSeeds(Random rnd, int numSeeds) {

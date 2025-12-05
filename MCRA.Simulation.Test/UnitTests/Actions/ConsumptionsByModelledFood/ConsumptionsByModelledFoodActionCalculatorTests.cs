@@ -49,7 +49,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             Assert.IsNotNull(data.ModelledFoodConsumerDays);
             Assert.IsNotNull(data.SelectedFoodConsumptions);
             Assert.IsNotNull(data.ConsumptionsByModelledFood);
-            Assert.AreEqual(5, data.ModelledFoodConsumers.Count);
+            Assert.HasCount(5, data.ModelledFoodConsumers);
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             Assert.IsNotNull(data.ModelledFoodConsumerDays);
             Assert.IsNotNull(data.SelectedFoodConsumptions);
             Assert.IsNotNull(data.ConsumptionsByModelledFood);
-            Assert.AreEqual(5, data.ModelledFoodConsumers.Count);
+            Assert.HasCount(5, data.ModelledFoodConsumers);
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             Assert.IsNotNull(data.ModelledFoodConsumerDays);
             Assert.IsNotNull(data.SelectedFoodConsumptions);
             Assert.IsNotNull(data.ConsumptionsByModelledFood);
-            Assert.IsTrue(data.ModelledFoodConsumers.Count > 0);
+            Assert.IsNotEmpty(data.ModelledFoodConsumers);
         }
     }
 }

@@ -74,7 +74,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             // For the full exposure records, all frequencies should sum up to 100 percent and the total number of exposures.
             Assert.AreEqual(100D, fullExposureRecords.Sum(r => r.Percentage), 1e-5);
             Assert.AreEqual(numExposures, fullExposureRecords.Sum(r => r.Frequency));
-            Assert.AreEqual(substanceIndividualExposures.Distinct().Count(), fullExposureRecords.Count);
+            Assert.HasCount(substanceIndividualExposures.Distinct().Count(), fullExposureRecords);
         }
     }
 }

@@ -49,7 +49,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
             var section = new TotalDistributionFoodCompoundSection();
             section.Summarize(exposures, rpfs, membershipProbabilities, foods, substances, ExposureType.Acute, 2.5, 97.5, 2.5, 97.5, false);
 
-            Assert.AreEqual(foods.Count * substances.Count, section.Records.Count);
+            Assert.HasCount(foods.Count * substances.Count, section.Records);
             Assert.IsTrue(section.Records.All(r => !double.IsNaN(r.Contribution)));
             AssertIsValidView(section);
         }
@@ -97,7 +97,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
             var sumContributions = section.Records.Sum(c => c.ContributionPercentage);
             Assert.AreEqual(100, sumContributions, 1e-1);
             foreach (var record in section.Records) {
-                Assert.AreEqual(1, record.Contributions.Count);
+                Assert.HasCount(1, record.Contributions);
             }
 
             AssertIsValidView(section);
@@ -140,7 +140,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
             var section = new TotalDistributionFoodCompoundSection();
             section.Summarize(exposures, null, null, foods, substances, ExposureType.Chronic, 2.5, 97.5, 2.5, 97.5, false);
 
-            Assert.AreEqual(foods.Count * substances.Count, section.Records.Count);
+            Assert.HasCount(foods.Count * substances.Count, section.Records);
             Assert.IsTrue(section.Records.All(r => double.IsNaN(r.Contribution)));
             AssertIsValidView(section);
         }
@@ -188,7 +188,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
             var sumContributions = section.Records.Sum(c => c.ContributionPercentage);
             Assert.AreEqual(100, sumContributions, 1e-1);
             foreach (var record in section.Records) {
-                Assert.AreEqual(1, record.Contributions.Count);
+                Assert.HasCount(1, record.Contributions);
             }
 
             AssertIsValidView(section);

@@ -41,7 +41,7 @@ namespace MCRA.General.Test.UnitTests.SettingsDefinitions {
                 Assert.IsNotNull(definition);
                 Assert.IsNotNull(definition.SystemType ?? definition.ValueType);
             }
-            Assert.AreEqual(0, emptyTypes.Count, $"Missing types for: {string.Join(',', emptyTypes)}.");
+            Assert.IsEmpty(emptyTypes, $"Missing types for: {string.Join(',', emptyTypes)}.");
         }
         /// <summary>
         /// Checkes whether all enum values are in XML and checks equality of  Names and Description of enums compared to XML.

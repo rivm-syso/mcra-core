@@ -70,9 +70,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             var meanMarginals = marginals.First().ModelBasedIntakes.Average();
             var meanConditionals = conditionals.First().ConditionalUsualIntakes.Average();
             var meanIndividuals = individuals.Average(c => c.UsualIntake);
-            Assert.IsTrue(meanMarginals > 1);
-            Assert.IsTrue(meanConditionals > 1);
-            Assert.IsTrue(meanIndividuals > 1);
+            Assert.IsGreaterThan(1, meanMarginals);
+            Assert.IsGreaterThan(1, meanConditionals);
+            Assert.IsGreaterThan(1, meanIndividuals);
         }
 
         /// <summary>
@@ -124,9 +124,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             var meanMarginals = marginals.First().ModelBasedIntakes.Average();
             var meanConditionals = conditionals.First().ConditionalUsualIntakes.Average();
             var meanIndividuals = individuals.Average(c => c.UsualIntake);
-            Assert.IsTrue(meanMarginals > 1);
-            Assert.IsTrue(meanConditionals > 1);
-            Assert.IsTrue(meanIndividuals > 1);
+            Assert.IsGreaterThan(1, meanMarginals);
+            Assert.IsGreaterThan(1, meanConditionals);
+            Assert.IsGreaterThan(1, meanIndividuals);
         }
     }
 }

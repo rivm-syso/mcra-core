@@ -133,7 +133,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             compoundCodes = analyticalMethods["Am4"].AnalyticalMethodCompounds.Keys.Select(c => c.Code).ToList();
             CollectionAssert.AreEquivalent(new[] { "P" }, compoundCodes);
 
-            Assert.AreEqual(0, analyticalMethods["Am5"].AnalyticalMethodCompounds.Count);
+            Assert.IsEmpty(analyticalMethods["Am5"].AnalyticalMethodCompounds);
         }
 
         [TestMethod]
@@ -293,7 +293,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             var foodSamples = _getFoodSamplesDelegate.Invoke();
             var sampleAnalyses = foodSamples.SelectMany(c => c.Value.SampleAnalyses).ToDictionary(c => c.Code);
-            Assert.AreEqual(20, sampleAnalyses.Count);
+            Assert.HasCount(20, sampleAnalyses);
 
             var foods = _getFoodsDelegate.Invoke();
             var foodApple = foods["APPLE"];
@@ -326,7 +326,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             var sampleAnalyses = foodSamples.SelectMany(c => c.Value.SampleAnalyses).ToDictionary(c => c.Code);
             var analyticalMethods = _getAnalyticalMethodsDelegate.Invoke().Values;
 
-            Assert.AreEqual(5, analyticalMethods.Count);
+            Assert.HasCount(5, analyticalMethods);
 
             var analyticalMethod1 = analyticalMethods.Single(am => am.Code == "AM1");
             var analyticalMethod2 = analyticalMethods.Single(am => am.Code == "AM2");
@@ -367,7 +367,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             var sampleAnalyses = foodSamples.SelectMany(c => c.Value.SampleAnalyses).ToDictionary(c => c.Code);
             var analyticalMethods = _getAnalyticalMethodsDelegate.Invoke().Values;
 
-            Assert.AreEqual(5, analyticalMethods.Count);
+            Assert.HasCount(5, analyticalMethods);
 
             var compounds = _getSubstancesDelegate.Invoke();
             var compoundA = compounds["CompoundA"];

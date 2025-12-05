@@ -216,7 +216,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             Assert.IsFalse(sampleIsPresentForIndividualDay(5, "1"));
 
             var hbmSampleSubstanceCollections = data.HbmSampleSubstanceCollections.ToList();
-            Assert.AreEqual(hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords.Count, hbmSampleSubstanceCollections[1].HumanMonitoringSampleSubstanceRecords.Count);
+            Assert.HasCount(hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords.Count, hbmSampleSubstanceCollections[1].HumanMonitoringSampleSubstanceRecords);
         }
 
         [TestMethod]

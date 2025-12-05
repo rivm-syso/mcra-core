@@ -24,8 +24,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
 
             var section = new FrequencyAmountSummarySection();
             section.Summarize(exposures, rpfs, memberships, false);
-            Assert.IsTrue(section.ExposureSummaryRecords.First().Mean > 0);
-            Assert.IsTrue(section.FrequencyAmountRelations[0].Median > 0);
+            Assert.IsGreaterThan(0, section.ExposureSummaryRecords.First().Mean);
+            Assert.IsGreaterThan(0, section.FrequencyAmountRelations[0].Median);
             AssertIsValidView(section);
         }
     }

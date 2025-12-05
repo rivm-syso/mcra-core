@@ -25,7 +25,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
                 var tables = dataSourceWriter.DataTables;
                 var tableDefinition = getTableDefinition(RawDataSourceTableID.Compounds);
 
-                Assert.AreEqual(4, tables[tableDefinition.TargetDataTable].Rows.Count);
+                Assert.HasCount(4, tables[tableDefinition.TargetDataTable].Rows);
 
                 var substanceIds = getDistinctColumnValues<string>(
                     tables[tableDefinition.TargetDataTable],
@@ -57,7 +57,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
                 var tables = dataSourceWriter.DataTables;
                 var tableDefinition = getTableDefinition(RawDataSourceTableID.Compounds);
 
-                Assert.AreEqual(4, tables[tableDefinition.TargetDataTable].Rows.Count);
+                Assert.HasCount(4, tables[tableDefinition.TargetDataTable].Rows);
 
                 var substanceIds = getDistinctColumnValues<string>(
                     tables[tableDefinition.TargetDataTable],

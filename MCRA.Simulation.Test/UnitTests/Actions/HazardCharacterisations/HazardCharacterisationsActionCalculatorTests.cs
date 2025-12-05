@@ -402,7 +402,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             TestLoadAndSummarizeNominal(calculator, data, subsetManager, nameof(LoadData_DifferentExpressionTypes_ShouldApplyCorrectDoseUnitAlignmentFactor));
 
             Assert.IsNotNull(data.HazardCharacterisationModelsCollections);
-            Assert.AreEqual(1, data.HazardCharacterisationModelsCollections.Count);
+            Assert.HasCount(1, data.HazardCharacterisationModelsCollections);
             var hazardCharacterisationModels = data.HazardCharacterisationModelsCollections.First().HazardCharacterisationModels;
 
             var valuesIn = compiledData.AllHazardCharacterisations.Select(h => h.Value).ToList();

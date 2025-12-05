@@ -41,7 +41,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
                 referenceSubstance
             );
 
-            Assert.AreEqual(25, individualEffects.Count);
+            Assert.HasCount(25, individualEffects);
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
                 memberships
             );
 
-            Assert.AreEqual(25, individualEffects.Count);
+            Assert.HasCount(25, individualEffects);
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
                     sum += individualEffectsDictionary[substance].Sum(c => c.HazardExposureRatio);
                 }
 
-                Assert.AreEqual(individuals.Count, individualEffectsDictionary.First().Value.Count);
+                Assert.HasCount(individuals.Count, individualEffectsDictionary.First().Value);
             }
         }
 
@@ -152,7 +152,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
                 memberships
             );
 
-            Assert.AreEqual(3, individualEffects.Count);
+            Assert.HasCount(3, individualEffects);
             // All exposures per substance for individual 1 are zero
             Assert.AreEqual(33333333, individualEffects[0].HazardExposureRatio, 1);
             Assert.AreEqual(0, individualEffects[0].ExposureHazardRatio);
@@ -207,7 +207,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
                 memberships
             );
 
-            Assert.AreEqual(1, individualEffects.Count);
+            Assert.HasCount(1, individualEffects);
             // Exposures for an individual are 0, 1 or 3 times HC
             Assert.AreEqual(333.3333, individualEffects[0].HazardExposureRatio, 0.01);
             Assert.AreEqual(0.003, individualEffects[0].ExposureHazardRatio, 0.0001);

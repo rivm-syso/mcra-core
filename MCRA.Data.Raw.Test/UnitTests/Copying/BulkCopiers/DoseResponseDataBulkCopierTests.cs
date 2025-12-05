@@ -32,27 +32,27 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
                     .Select(r => r["idExperiment"])
                     .GroupBy(r => r)
                     .ToDictionary(r => r.Key, r => r.Count());
-                Assert.AreEqual(3, experiments.Count);
+                Assert.HasCount(3, experiments);
 
                 var dosesTable = getRawDataSourceTable(RawDataSourceTableID.DoseResponseExperimentDoses, tables);
-                Assert.AreEqual(31, dosesTable.Rows.Count);
+                Assert.HasCount(31, dosesTable.Rows);
                 var dosesExperiments = dosesTable
                     .Rows
                     .OfType<DataRow>()
                     .Select(r => r["idExperiment"])
                     .GroupBy(r => r)
                     .ToDictionary(r => r.Key, r => r.Count());
-                Assert.AreEqual(3, dosesExperiments.Count);
+                Assert.HasCount(3, dosesExperiments);
 
                 var measurementsTable = getRawDataSourceTable(RawDataSourceTableID.DoseResponseExperimentMeasurements, tables);
-                Assert.AreEqual(31, measurementsTable.Rows.Count);
+                Assert.HasCount(31, measurementsTable.Rows);
                 var measurementsExperiments = measurementsTable
                     .Rows
                     .OfType<DataRow>()
                     .Select(r => r["idExperiment"])
                     .GroupBy(r => r)
                     .ToDictionary(r => r.Key, r => r.Count());
-                Assert.AreEqual(3, measurementsExperiments.Count);
+                Assert.HasCount(3, measurementsExperiments);
             }
         }
     }

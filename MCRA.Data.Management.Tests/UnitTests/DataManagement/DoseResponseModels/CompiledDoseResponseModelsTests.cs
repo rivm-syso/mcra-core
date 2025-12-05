@@ -16,14 +16,14 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             // Only experiments with all matching codes are loaded (matching response codes are mandatory)
             var models = _getResponseModelsDelegate.Invoke();
-            Assert.AreEqual(2, models.Count);
+            Assert.HasCount(2, models);
 
             // Substances are loaded from valid experiments, so only 4 in this case
             var substances = _getSubstancesDelegate.Invoke();
-            Assert.AreEqual(5, substances.Count);
+            Assert.HasCount(5, substances);
 
             var responses = _getResponsesDelegate.Invoke();
-            Assert.AreEqual(3, responses.Count);
+            Assert.HasCount(3, responses);
         }
 
         [TestMethod]
@@ -37,7 +37,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             // Only experiments with all matching codes are loaded (matching response codes are mandatory)
             var models = _getResponseModelsDelegate.Invoke();
-            Assert.AreEqual(2, models.Count);
+            Assert.HasCount(2, models);
 
             // Check benchmark doses and benchmark dose uncertainty values
             Assert.AreEqual(7, models.SelectMany(r => r.DoseResponseModelBenchmarkDoses.Values).Count());
@@ -48,10 +48,10 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             // Substances are loaded from valid experiments, so only 4 in this case
             var substances = _getSubstancesDelegate.Invoke();
-            Assert.AreEqual(5, substances.Count);
+            Assert.HasCount(5, substances);
 
             var responses = _getResponsesDelegate.Invoke();
-            Assert.AreEqual(3, responses.Count);
+            Assert.HasCount(3, responses);
         }
 
         [TestMethod]
@@ -66,7 +66,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             var models = _getResponseModelsDelegate.Invoke();
 
-            Assert.AreEqual(6, models.Count);
+            Assert.HasCount(6, models);
 
             CollectionAssert.AreEquivalent(
                 new[] { "drm15", "drm16", "drm19", "drm22", "drm23", "drm26" },
@@ -87,7 +87,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             var models = _getResponseModelsDelegate.Invoke();
 
-            Assert.AreEqual(3, models.Count);
+            Assert.HasCount(3, models);
 
             CollectionAssert.AreEquivalent(
                 new[] { "drm15", "drm16", "drm19" },
@@ -95,7 +95,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             );
 
             var substances = _getSubstancesDelegate.Invoke();
-            Assert.AreEqual(2, substances.Count);
+            Assert.HasCount(2, substances);
 
             CollectionAssert.AreEquivalent(
                 new[] { "a", "b" },

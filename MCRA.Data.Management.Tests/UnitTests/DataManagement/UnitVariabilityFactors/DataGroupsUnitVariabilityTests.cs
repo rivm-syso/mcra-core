@@ -18,7 +18,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 [SourceTableGroup.UnitVariabilityFactors, SourceTableGroup.Foods, SourceTableGroup.Compounds]);
 
             var unitVariabilityFactors = _compiledDataManager.GetAllUnitVariabilityFactors();
-            Assert.AreEqual(5, unitVariabilityFactors.Count);
+            Assert.HasCount(5, unitVariabilityFactors);
 
             var foods = _compiledDataManager.GetAllFoods();
             var foodApple = foods["APPLE"];
@@ -68,9 +68,9 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             var processingTypeJuicing = processingTypes.Single(pt => pt.Value.Name == "Juicing").Value;
             var processingTypePeeling = processingTypes.Single(pt => pt.Value.Name == "Peeling").Value;
 
-            Assert.AreEqual(3, unitVariabilityFactors[foodApple].UnitVariabilityFactors.Count);
-            Assert.AreEqual(1, unitVariabilityFactors[foodBananas].UnitVariabilityFactors.Count);
-            Assert.AreEqual(1, unitVariabilityFactors[foodPineapple].UnitVariabilityFactors.Count);
+            Assert.HasCount(3, unitVariabilityFactors[foodApple].UnitVariabilityFactors);
+            Assert.HasCount(1, unitVariabilityFactors[foodBananas].UnitVariabilityFactors);
+            Assert.HasCount(1, unitVariabilityFactors[foodPineapple].UnitVariabilityFactors);
 
             // Apple
             var processingTypeAppleCompoundAPeeling = unitVariabilityFactors[foodApple].GetOrCeateMostSpecificVariabilityFactor(compoundA, processingTypePeeling, 0, 0);

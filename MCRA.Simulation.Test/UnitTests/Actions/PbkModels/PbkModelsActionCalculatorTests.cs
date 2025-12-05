@@ -48,7 +48,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var calculator = new PbkModelsActionCalculator(project);
             var header = TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoad");
 
-            Assert.AreEqual(1, data.KineticModelInstances.Count);
+            Assert.HasCount(1, data.KineticModelInstances);
             var factorialSet = new UncertaintyFactorialSet() {
                 UncertaintySources = [UncertaintySource.PbkModelParameters]
             };

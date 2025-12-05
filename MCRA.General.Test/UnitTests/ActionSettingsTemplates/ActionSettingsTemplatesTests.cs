@@ -166,7 +166,7 @@ namespace MCRA.General.Test.UnitTests.SettingTemplates {
                         ActionSettingsManagerBase.SetTier(settings, tier);
                         //check current actiontype's tier settings in project config
                         var errors = checkTierSettingValuesRecursive(actionType, tier, settings, [actionType]);
-                        Assert.AreEqual(0, errors.Count, string.Join('\n', errors));
+                        Assert.IsEmpty(errors, string.Join('\n', errors));
                     }
                 }
             }

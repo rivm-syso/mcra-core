@@ -123,14 +123,13 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.SbmlMod
             var positiveInternalExposures = internalExposures
                 .Where(r => r.IsPositiveTargetExposure(targetUnit.Target))
                 .ToList();
-            Assert.AreEqual(
+            Assert.HasCount(
                 positiveExternalExposures.Count,
-                positiveInternalExposures.Count
-            );
+                positiveInternalExposures);
 
             var targetExposurePattern = positiveInternalExposures.First()
                 .GetSubstanceTargetExposure(targetUnit.Target, substance) as SubstanceTargetExposurePattern;
-            Assert.AreEqual(10 * 24 + 1, targetExposurePattern.TargetExposuresPerTimeUnit.Count);
+            Assert.HasCount(10 * 24 + 1, targetExposurePattern.TargetExposuresPerTimeUnit);
         }
 
         private KineticModelInstance createFakeModelInstance(

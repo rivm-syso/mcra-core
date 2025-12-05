@@ -30,9 +30,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
                 isSplineFit: false
             ));
             model.CalculateParameters(individualDayIntakes);
-            Assert.IsTrue(model.TransformationResult.VarianceBetweenUnit > 0.75);
-            Assert.IsTrue(model.TransformationResult.VarianceWithinUnit <= 0.25);
-            Assert.AreEqual(21, model.FrequencyResult.DiscreteFrequencies.Count);
+            Assert.IsGreaterThan(0.75, model.TransformationResult.VarianceBetweenUnit);
+            Assert.IsLessThanOrEqualTo(0.25, model.TransformationResult.VarianceWithinUnit);
+            Assert.HasCount(21, model.FrequencyResult.DiscreteFrequencies);
         }
 
         /// <summary>
@@ -50,8 +50,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
                 isSplineFit: true
             ));
             model.CalculateParameters(individualDayIntakes);
-            Assert.IsTrue(model.TransformationResult.VarianceBetweenUnit > 0.75);
-            Assert.IsTrue(model.TransformationResult.VarianceWithinUnit <= 0.25);
+            Assert.IsGreaterThan(0.75, model.TransformationResult.VarianceBetweenUnit);
+            Assert.IsLessThanOrEqualTo(0.25, model.TransformationResult.VarianceWithinUnit);
         }
 
         /// <summary>
@@ -69,8 +69,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
                 isSplineFit : false
             ));
             model.CalculateParameters(individualDayIntakes);
-            Assert.IsTrue(model.TransformationResult.VarianceBetweenUnit > 0.75);
-            Assert.IsTrue(model.TransformationResult.VarianceWithinUnit <= 0.25);
+            Assert.IsGreaterThan(0.75, model.TransformationResult.VarianceBetweenUnit);
+            Assert.IsLessThanOrEqualTo(0.25, model.TransformationResult.VarianceWithinUnit);
         }
 
         /// <summary>
@@ -88,8 +88,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
                 isSplineFit: false
             ));
             model.CalculateParameters(individualDayIntakes);
-            Assert.IsTrue(model.TransformationResult.VarianceBetweenUnit > 0.75);
-            Assert.IsTrue(model.TransformationResult.VarianceWithinUnit <= 0.25);
+            Assert.IsGreaterThan(0.75, model.TransformationResult.VarianceBetweenUnit);
+            Assert.IsLessThanOrEqualTo(0.25, model.TransformationResult.VarianceWithinUnit);
         }
         /// <summary>
         /// Calculate parameters ISUF model: TransformType.Power, IsSpline = true
@@ -106,8 +106,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
                 isSplineFit: true
             ));
             model.CalculateParameters(individualDayIntakes);
-            Assert.IsTrue(model.TransformationResult.VarianceBetweenUnit > 0.75);
-            Assert.IsTrue(model.TransformationResult.VarianceWithinUnit <= 0.25);
+            Assert.IsGreaterThan(0.75, model.TransformationResult.VarianceBetweenUnit);
+            Assert.IsLessThanOrEqualTo(0.25, model.TransformationResult.VarianceWithinUnit);
         }
     }
 }

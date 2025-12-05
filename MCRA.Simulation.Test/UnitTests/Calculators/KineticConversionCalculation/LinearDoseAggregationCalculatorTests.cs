@@ -44,7 +44,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticConversionCalculatio
                     new ProgressState(),
                     random
                 );
-            Assert.AreEqual(result.Count, individualDays.Count);
+            Assert.HasCount(result.Count, individualDays);
         }
 
         /// <summary>

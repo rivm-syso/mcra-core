@@ -51,8 +51,8 @@ namespace MCRA.Utils.Test.UnitTests {
             var ranVar = ran.Variance();
             var diffMean = Math.Abs((exactMean - ranMean) / exactMean);
             var diffVar = Math.Abs((exactVar - ranVar) / exactVar);
-            Assert.IsTrue(diffMean < tolMean);
-            Assert.IsTrue(diffVar < tolVar);
+            Assert.IsLessThan(tolMean, diffMean);
+            Assert.IsLessThan(tolVar, diffVar);
         }
 
         /// <summary>

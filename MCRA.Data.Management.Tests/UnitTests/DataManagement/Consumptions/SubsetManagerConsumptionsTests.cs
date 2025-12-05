@@ -13,7 +13,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement.Consumptions {
         public void SubsetManagerConsumptions_TestLoadFoodSurveys() {
             _rawDataProvider.SetDataGroupsFromFolder(1, "_DataGroupsTest", SourceTableGroup.Survey);
             var foodSurveys = _compiledDataManager.GetAllFoodSurveys().Values;
-            Assert.AreEqual(2, foodSurveys.Count);
+            Assert.HasCount(2, foodSurveys);
             var foodSurveyCodes = foodSurveys.Select(fs => fs.Code).ToList();
             CollectionAssert.AreEquivalent(new List<string>() { "ValidationSurvey", "EmptySurvey" }, foodSurveyCodes);
         }
@@ -32,13 +32,13 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement.Consumptions {
             var foodBananas = foods["BANANAS"];
             var foodPineapple = foods["PINEAPPLE"];
 
-            Assert.AreEqual(27, consumptions.Count);
+            Assert.HasCount(27, consumptions);
             var consumptionsApple = consumptions.Where(c => c.Food == foodApple).ToList();
             var consumptionsBananas = consumptions.Where(c => c.Food == foodBananas).ToList();
             var consumptionsPineapple = consumptions.Where(c => c.Food == foodPineapple).ToList();
-            Assert.AreEqual(17, consumptionsApple.Count);
-            Assert.AreEqual(7, consumptionsBananas.Count);
-            Assert.AreEqual(3, consumptionsPineapple.Count);
+            Assert.HasCount(17, consumptionsApple);
+            Assert.HasCount(7, consumptionsBananas);
+            Assert.HasCount(3, consumptionsPineapple);
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement.Consumptions {
         public void SubsetManagerConsumptions_TestLoadIndividuals() {
             _rawDataProvider.SetDataGroupsFromFolder(1, "_DataGroupsTest", SourceTableGroup.Survey);
             var individuals = _compiledDataManager.GetAllIndividuals();
-            Assert.AreEqual(10, individuals.Count);
+            Assert.HasCount(10, individuals);
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement.Consumptions {
             // Check the cofactors
             var coFactors = _subsetManager.AllIndividualProperties.Values;
             var coFactorNames = coFactors.Select(c => c.Name).ToList();
-            Assert.AreEqual(4, coFactors.Count);
+            Assert.HasCount(4, coFactors);
             CollectionAssert.Contains(coFactorNames, "Age");
             CollectionAssert.Contains(coFactorNames, "Gender");
             CollectionAssert.Contains(coFactorNames, "ExtraCofactor");
@@ -74,7 +74,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement.Consumptions {
             // Check the covariates
             var coVariables = _subsetManager.CovariableIndividualProperties;
             var coVariableNames = coVariables.Select(c => c.Name).ToList();
-            Assert.AreEqual(2, coVariables.Count);
+            Assert.HasCount(2, coVariables);
             CollectionAssert.Contains(coVariableNames, "Age");
             CollectionAssert.Contains(coVariableNames, "ExtraCovariate");
         }
@@ -116,7 +116,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement.Consumptions {
                 (ScopingType.DietaryIndividuals, @"ConsumptionsTests/Individuals")
             );
             var selected = _subsetManager.AllIndividuals;
-            Assert.AreEqual(5, selected.Count);
+            Assert.HasCount(5, selected);
         }
 
         [TestMethod]
@@ -127,7 +127,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement.Consumptions {
             );
             _project.SetFilterCodes(ScopingType.FoodSurveys, new List<string>() { "ZZ" });
             var selected = _subsetManager.AllIndividuals;
-            Assert.AreEqual(5, selected.Count);
+            Assert.HasCount(5, selected);
         }
 
         [TestMethod]
@@ -152,11 +152,11 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement.Consumptions {
 
             var list = _subsetManager.AllIndividualProperties.Values;
 
-            Assert.AreEqual(5, list.Count);
+            Assert.HasCount(5, list);
             Assert.AreEqual("Age,Gender,Factor,Salary,Bcode", string.Join(",", list.Select(p => p.Code)));
 
             var covariables = _subsetManager.CovariableIndividualProperties;
-            Assert.AreEqual(3, covariables.Count);
+            Assert.HasCount(3, covariables);
             Assert.AreEqual("Age,Factor,Salary", string.Join(",", covariables.Select(p => p.Code)));
 
             var covariable = _subsetManager.CovariableIndividualProperty;

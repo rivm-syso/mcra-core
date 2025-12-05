@@ -31,7 +31,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.DietaryExposuresCalculation
                 var prunedResult = individualDayIntakePruner.Prune(individualDayIntake);
                 var expectedTotal = individualDayIntake.TotalExposurePerMassUnit(rpfs, memberships, false);
                 var prunedTotal = individualDayIntake.TotalExposurePerMassUnit(rpfs, memberships, false);
-                Assert.IsTrue(prunedResult.IntakesPerFood.Count <= foods.Count);
+                Assert.IsLessThanOrEqualTo(foods.Count, prunedResult.IntakesPerFood.Count);
                 Assert.AreEqual(expectedTotal, prunedTotal);
             }
         }

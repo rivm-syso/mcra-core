@@ -30,7 +30,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HbmExposureBiomarkerConvers
             };
             var model = ExposureBiomarkerConversionCalculatorFactory.Create(conversion, false);
             var draw = model.Draw(random, null, GenderType.Undefined);
-            Assert.IsTrue(draw > 0);
+            Assert.IsGreaterThan(0, draw);
         }
 
         [TestMethod]
@@ -43,7 +43,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HbmExposureBiomarkerConvers
             var model = new ExposureBiomarkerConversionConstantModel(conversion, false);
             model.CalculateParameters();
             var draw = model.Draw(random, null, GenderType.Undefined);
-            Assert.IsTrue(draw > 0);
+            Assert.IsGreaterThan(0, draw);
         }
 
         [TestMethod]
@@ -57,7 +57,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HbmExposureBiomarkerConvers
             var model = new ExposureBiomarkerConversionLogNormalModel(conversion, false);
             model.CalculateParameters();
             var draw = model.Draw(random, null, GenderType.Undefined);
-            Assert.IsTrue(draw > 0);
+            Assert.IsGreaterThan(0, draw);
         }
 
         [TestMethod]
@@ -71,7 +71,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HbmExposureBiomarkerConvers
             var model = new ExposureBiomarkerConversionUniformModel(conversion, false);
             model.CalculateParameters();
             var draw = model.Draw(random, null, GenderType.Undefined);
-            Assert.IsTrue(draw > 0);
+            Assert.IsGreaterThan(0, draw);
         }
 
         [TestMethod]
@@ -85,7 +85,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HbmExposureBiomarkerConvers
             var model = new ExposureBiomarkerConversionBetaModel(conversion, false);
             model.CalculateParameters();
             var draw = model.Draw(random, null, GenderType.Undefined);
-            Assert.IsTrue(draw > 0);
+            Assert.IsGreaterThan(0, draw);
         }
     }
 }

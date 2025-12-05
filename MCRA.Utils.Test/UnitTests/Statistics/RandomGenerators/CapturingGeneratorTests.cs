@@ -24,7 +24,7 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.RandomGenerators {
             }
 
             foreach (var numbers in refNumbers.Zip(actualNumbers, (r, a) => new { r, a })) {
-                Assert.IsTrue(numbers.r == numbers.a);
+                Assert.AreEqual(numbers.a, numbers.r);
             }
         }
 
@@ -60,13 +60,13 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.RandomGenerators {
             Assert.IsTrue(cg.IsCapturing);
 
             foreach (var numbers in refNumbers.Zip(actualNumbers, (r, a) => new { r, a }).Take(10)) {
-                Assert.IsTrue(numbers.r == numbers.a);
+                Assert.AreEqual(numbers.a, numbers.r);
             }
             foreach (var numbers in refNumbers.Zip(actualNumbers, (r, a) => new { r, a }).Skip(10)) {
-                Assert.IsFalse(numbers.r == numbers.a);
+                Assert.AreNotEqual(numbers.a, numbers.r);
             }
             foreach (var numbers in refNumbers.Take(10).Zip(actualNumbers.Skip(10), (r, a) => new { r, a })) {
-                Assert.IsTrue(numbers.r == numbers.a);
+                Assert.AreEqual(numbers.a, numbers.r);
             }
         }
     }

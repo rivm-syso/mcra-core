@@ -89,7 +89,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions.AirExposures {
 
             Assert.IsNotNull(data.IndividualAirExposures);
             Assert.IsNotNull(data.AirExposureUnit);
-            Assert.AreEqual(numberOfIndividuals, data.IndividualAirExposures.Count);
+            Assert.HasCount(numberOfIndividuals, data.IndividualAirExposures);
         }
 
         /// <summary>
@@ -145,7 +145,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions.AirExposures {
 
             Assert.IsNotNull(data.IndividualAirExposures);
             Assert.IsNotNull(data.AirExposureUnit);
-            Assert.AreEqual(numberOfIndividuals, data.IndividualAirExposures.Count);
+            Assert.HasCount(numberOfIndividuals, data.IndividualAirExposures);
         }
     }
 }

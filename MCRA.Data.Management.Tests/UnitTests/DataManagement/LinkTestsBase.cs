@@ -25,7 +25,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         ) {
             var record = reports[sourceTable].ReadingSummary;
             Assert.AreEqual(sourceTable, record.ScopingType);
-            Assert.AreEqual(totalRefCount, record.CodesInSource.Count);
+            Assert.HasCount(totalRefCount, record.CodesInSource);
             checkKeysList(codesSourceAndScope, record.CodesInSourceAndScope, sep);
             checkKeysList(codesScopeNotSource, record.CodesInScopeNotInSource, sep);
             checkKeysList(codesSourceNotScope, record.CodesInSourceNotInScope, sep);
@@ -60,7 +60,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             var record = reports[sourceTable].LinkingSummaries[targetTable];
             Assert.AreEqual(sourceTable, record.ScopingType);
             Assert.AreEqual(targetTable, record.ReferencedScopingType);
-            Assert.AreEqual(totalRefCount, record.CodesInSource.Count);
+            Assert.HasCount(totalRefCount, record.CodesInSource);
             checkKeysList(codesSourceAndScope, record.CodesInSourceAndScope, sep);
             checkKeysList(codesScopeNotSource, record.CodesInScopeNotInSource, sep);
             checkKeysList(codesSourceNotScope, record.CodesInSourceNotInScope, sep);
@@ -85,10 +85,10 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
         private void checkKeysList(string checks, HashSet<string> codes, char sep = ',') {
             if (string.IsNullOrEmpty(checks)) {
-                Assert.AreEqual(0, codes.Count);
+                Assert.IsEmpty(codes);
             } else {
                 var checkCodes = checks.Split(sep);
-                Assert.AreEqual(checkCodes.Length, codes.Count);
+                Assert.HasCount(checkCodes.Length, codes);
                 Assert.IsTrue(checkCodes.All(s => codes.Contains(s)));
             }
         }

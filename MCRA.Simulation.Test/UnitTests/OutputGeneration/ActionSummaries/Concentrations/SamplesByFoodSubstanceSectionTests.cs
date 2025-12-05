@@ -25,7 +25,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
             var section = new SamplesByFoodSubstanceSection();
             section.Summarize(sampleCompoundCollections.Values, null, 2.5, 97.5);
             var number = section.NumberOfCompoundsWithConcentrations;
-            Assert.AreEqual(9, section.ConcentrationInputDataRecords.Count);
+            Assert.HasCount(9, section.ConcentrationInputDataRecords);
             Assert.AreEqual(3, number);
             AssertIsValidView(section);
         }

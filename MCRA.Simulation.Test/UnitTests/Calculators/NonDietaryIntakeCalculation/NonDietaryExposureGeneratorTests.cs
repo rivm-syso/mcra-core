@@ -34,7 +34,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 substances,
                 routes,
                 123456);
-            Assert.AreEqual(result.ExternalIndividualDayExposures.Count, individualDays.Count);
+            Assert.HasCount(result.ExternalIndividualDayExposures.Count, individualDays);
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 substances,
                 routes,
                 123456);
-            Assert.AreEqual(result.ExternalIndividualDayExposures.Count, individualDays.Count);
+            Assert.HasCount(result.ExternalIndividualDayExposures.Count, individualDays);
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 routes,
                 123456);
 
-            Assert.AreEqual(result.ExternalIndividualDayExposures.Count, individualDays.Count);
+            Assert.HasCount(result.ExternalIndividualDayExposures.Count, individualDays);
         }
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 substances,
                 routes,
                 123456);
-            Assert.AreEqual(result.ExternalIndividualDayExposures.Count, individualDays.Count);
+            Assert.HasCount(result.ExternalIndividualDayExposures.Count, individualDays);
         }
 
         /// <summary>
@@ -138,7 +138,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 123456
             );
 
-            Assert.AreEqual(result.ExternalIndividualDayExposures.Count, individualDays.Count);
+            Assert.HasCount(result.ExternalIndividualDayExposures.Count, individualDays);
         }
 
         /// <summary>
@@ -166,7 +166,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 substances,
                 routes,
                 123456);
-            Assert.AreEqual(result.ExternalIndividualDayExposures.Count, individualDays.Count);
+            Assert.HasCount(result.ExternalIndividualDayExposures.Count, individualDays);
         }
 
         /// <summary>
@@ -190,7 +190,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 substances,
                 routes,
                 seed);
-            Assert.AreEqual(result.ExternalIndividualDayExposures.Count, individualDays.Count);
+            Assert.HasCount(result.ExternalIndividualDayExposures.Count, individualDays);
         }
 
         /// <summary>

@@ -21,7 +21,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ActiveSubstancesCalculators
             var dockingModels = new List<MolecularDockingModel>();
             var qsarModels = new List<QsarMembershipModel>();
             var result = calculator.CalculateAvailableMembershipModels(dockingModels, qsarModels, substances, effects);
-            Assert.AreEqual(result.Count, 0);
+            Assert.IsEmpty(result);
         }
 
         /// <summary>

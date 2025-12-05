@@ -39,7 +39,7 @@ namespace MCRA.Utils.Test.UnitTests {
         [DataRow(2.7, 2.7, 1000, 1000)]
         public void GriddingFunctions_TestArange_OutputSize(double min, double max, int n, int expected) {
             var actual = GriddingFunctions.Arange(min, max, n).ToList();
-            Assert.AreEqual(expected, actual.Count);
+            Assert.HasCount(expected, actual);
             Assert.AreEqual(min, actual.First());
             Assert.AreEqual(max, actual.Last());
         }
@@ -47,7 +47,7 @@ namespace MCRA.Utils.Test.UnitTests {
         [TestMethod]
         public void GriddingFunctions_TestGetPlotPercentages() {
             var percentages = GriddingFunctions.GetPlotPercentages();
-            Assert.AreEqual(percentages.Distinct().Count(), percentages.Length);
+            Assert.HasCount(percentages.Distinct().Count(), percentages);
             Assert.IsTrue(percentages.All(r => r > 0 && r < 100));
         }
     }

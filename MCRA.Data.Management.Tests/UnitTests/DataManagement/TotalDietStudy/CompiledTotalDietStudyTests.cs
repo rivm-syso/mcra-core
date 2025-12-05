@@ -13,7 +13,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             var compositions = _getItemsDelegate.Invoke();
 
-            Assert.AreEqual(15, compositions.Count);
+            Assert.HasCount(15, compositions);
 
             var codes = compositions.Select(c => c.Food.Code).Distinct().ToList();
             CollectionAssert.AreEquivalent(new[] { "f1", "f2", "f4", "f5", "f6" }, codes);
@@ -31,7 +31,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             var compositions = _getItemsDelegate.Invoke();
 
-            Assert.AreEqual(3, compositions.Count);
+            Assert.HasCount(3, compositions);
 
             var codes = compositions.Select(c => c.Food.Code).Distinct().ToList();
             CollectionAssert.AreEquivalent(new[] { "f1", "f2" }, codes);

@@ -138,7 +138,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleCompoundCollections {
             // ------------------------------------------------------------------------------
 
             var sampleCompoundRecordsApple = sampleCompoundCollections.Values.Single(scr => scr.Food.Code == "APPLE").SampleCompoundRecords;
-            Assert.AreEqual(5, sampleCompoundRecordsApple.Count);
+            Assert.HasCount(5, sampleCompoundRecordsApple);
 
             var missingValuesAppleCompoundA = sampleCompoundRecordsApple.SelectMany(scr => scr.SampleCompounds.Where(sc => sc.Key.Code == "CompoundA" && sc.Value.IsMissingValue));
             var missingValuesAppleCompoundB = sampleCompoundRecordsApple.SelectMany(scr => scr.SampleCompounds.Where(sc => sc.Key.Code == "CompoundB" && sc.Value.IsMissingValue));
@@ -172,7 +172,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleCompoundCollections {
             // ------------------------------------------------------------------------------
 
             var sampleCompoundRecordsBananas = sampleCompoundCollections.Values.Single(scr => scr.Food.Code == "BANANAS").SampleCompoundRecords;
-            Assert.AreEqual(5, sampleCompoundRecordsBananas.Count);
+            Assert.HasCount(5, sampleCompoundRecordsBananas);
 
             var missingValuesBananasCompoundA = sampleCompoundRecordsBananas.SelectMany(scr => scr.SampleCompounds.Where(sc => sc.Key.Code == "CompoundA" && sc.Value.IsMissingValue));
             var missingValuesBananasCompoundB = sampleCompoundRecordsBananas.SelectMany(scr => scr.SampleCompounds.Where(sc => sc.Key.Code == "CompoundB" && sc.Value.IsMissingValue));
@@ -206,7 +206,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleCompoundCollections {
             // ------------------------------------------------------------------------------
 
             var sampleCompoundRecordsPineapple = sampleCompoundCollections.Values.Single(scr => scr.Food.Code == "PINEAPPLE").SampleCompoundRecords;
-            Assert.AreEqual(10, sampleCompoundRecordsPineapple.Count);
+            Assert.HasCount(10, sampleCompoundRecordsPineapple);
 
             var missingValuesPineappleCompoundA = sampleCompoundRecordsPineapple.SelectMany(scr => scr.SampleCompounds.Where(sc => sc.Key.Code == "CompoundA" && sc.Value.IsMissingValue));
             var missingValuesPineappleCompoundB = sampleCompoundRecordsPineapple.SelectMany(scr => scr.SampleCompounds.Where(sc => sc.Key.Code == "CompoundB" && sc.Value.IsMissingValue));
@@ -307,15 +307,15 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleCompoundCollections {
             Assert.AreEqual(5, compoundResidueCollectionAppleCompoundC.NumberOfResidues);
             Assert.AreEqual(5, compoundResidueCollectionAppleCompoundD.NumberOfResidues);
 
-            Assert.AreEqual(5, compoundResidueCollectionAppleCompoundA.Positives.Count);
-            Assert.AreEqual(5, compoundResidueCollectionAppleCompoundB.Positives.Count);
-            Assert.AreEqual(5, compoundResidueCollectionAppleCompoundC.Positives.Count);
-            Assert.AreEqual(0, compoundResidueCollectionAppleCompoundD.Positives.Count);
+            Assert.HasCount(5, compoundResidueCollectionAppleCompoundA.Positives);
+            Assert.HasCount(5, compoundResidueCollectionAppleCompoundB.Positives);
+            Assert.HasCount(5, compoundResidueCollectionAppleCompoundC.Positives);
+            Assert.IsEmpty(compoundResidueCollectionAppleCompoundD.Positives);
 
-            Assert.AreEqual(0, compoundResidueCollectionAppleCompoundA.CensoredValues.Count);
-            Assert.AreEqual(0, compoundResidueCollectionAppleCompoundB.CensoredValues.Count);
-            Assert.AreEqual(0, compoundResidueCollectionAppleCompoundC.CensoredValues.Count);
-            Assert.AreEqual(5, compoundResidueCollectionAppleCompoundD.CensoredValues.Count);
+            Assert.IsEmpty(compoundResidueCollectionAppleCompoundA.CensoredValues);
+            Assert.IsEmpty(compoundResidueCollectionAppleCompoundB.CensoredValues);
+            Assert.IsEmpty(compoundResidueCollectionAppleCompoundC.CensoredValues);
+            Assert.HasCount(5, compoundResidueCollectionAppleCompoundD.CensoredValues);
 
             Assert.AreEqual(1, compoundResidueCollectionAppleCompoundA.FractionPositives);
             Assert.AreEqual(1, compoundResidueCollectionAppleCompoundB.FractionPositives);
@@ -336,15 +336,15 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleCompoundCollections {
             Assert.AreEqual(0, compoundResidueCollectionBananasCompoundC.NumberOfResidues);
             Assert.AreEqual(0, compoundResidueCollectionBananasCompoundD.NumberOfResidues);
 
-            Assert.AreEqual(3, compoundResidueCollectionBananasCompoundA.Positives.Count);
-            Assert.AreEqual(3, compoundResidueCollectionBananasCompoundB.Positives.Count);
-            Assert.AreEqual(0, compoundResidueCollectionBananasCompoundC.Positives.Count);
-            Assert.AreEqual(0, compoundResidueCollectionBananasCompoundD.Positives.Count);
+            Assert.HasCount(3, compoundResidueCollectionBananasCompoundA.Positives);
+            Assert.HasCount(3, compoundResidueCollectionBananasCompoundB.Positives);
+            Assert.IsEmpty(compoundResidueCollectionBananasCompoundC.Positives);
+            Assert.IsEmpty(compoundResidueCollectionBananasCompoundD.Positives);
 
-            Assert.AreEqual(2, compoundResidueCollectionBananasCompoundA.CensoredValues.Count);
-            Assert.AreEqual(2, compoundResidueCollectionBananasCompoundB.CensoredValues.Count);
-            Assert.AreEqual(0, compoundResidueCollectionBananasCompoundC.CensoredValues.Count);
-            Assert.AreEqual(0, compoundResidueCollectionBananasCompoundD.CensoredValues.Count);
+            Assert.HasCount(2, compoundResidueCollectionBananasCompoundA.CensoredValues);
+            Assert.HasCount(2, compoundResidueCollectionBananasCompoundB.CensoredValues);
+            Assert.IsEmpty(compoundResidueCollectionBananasCompoundC.CensoredValues);
+            Assert.IsEmpty(compoundResidueCollectionBananasCompoundD.CensoredValues);
 
             Assert.AreEqual(.6, compoundResidueCollectionBananasCompoundA.FractionPositives);
             Assert.AreEqual(.6, compoundResidueCollectionBananasCompoundB.FractionPositives);
@@ -365,15 +365,15 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleCompoundCollections {
             Assert.AreEqual(1, compoundResidueCollectionPineappleCompoundC.NumberOfResidues);
             Assert.AreEqual(7, compoundResidueCollectionPineappleCompoundD.NumberOfResidues);
 
-            Assert.AreEqual(3, compoundResidueCollectionPineappleCompoundA.Positives.Count);
-            Assert.AreEqual(0, compoundResidueCollectionPineappleCompoundB.Positives.Count);
-            Assert.AreEqual(1, compoundResidueCollectionPineappleCompoundC.Positives.Count);
-            Assert.AreEqual(7, compoundResidueCollectionPineappleCompoundD.Positives.Count);
+            Assert.HasCount(3, compoundResidueCollectionPineappleCompoundA.Positives);
+            Assert.IsEmpty(compoundResidueCollectionPineappleCompoundB.Positives);
+            Assert.HasCount(1, compoundResidueCollectionPineappleCompoundC.Positives);
+            Assert.HasCount(7, compoundResidueCollectionPineappleCompoundD.Positives);
 
-            Assert.AreEqual(7, compoundResidueCollectionPineappleCompoundA.CensoredValues.Count);
-            Assert.AreEqual(0, compoundResidueCollectionPineappleCompoundB.CensoredValues.Count);
-            Assert.AreEqual(0, compoundResidueCollectionPineappleCompoundC.CensoredValues.Count);
-            Assert.AreEqual(0, compoundResidueCollectionPineappleCompoundD.CensoredValues.Count);
+            Assert.HasCount(7, compoundResidueCollectionPineappleCompoundA.CensoredValues);
+            Assert.IsEmpty(compoundResidueCollectionPineappleCompoundB.CensoredValues);
+            Assert.IsEmpty(compoundResidueCollectionPineappleCompoundC.CensoredValues);
+            Assert.IsEmpty(compoundResidueCollectionPineappleCompoundD.CensoredValues);
 
             Assert.AreEqual(.3, compoundResidueCollectionPineappleCompoundA.FractionPositives);
             Assert.IsTrue(double.IsNaN(compoundResidueCollectionPineappleCompoundB.FractionPositives));
@@ -464,22 +464,22 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleCompoundCollections {
             Assert.AreEqual(6, compoundResidueCollectionAppleCompoundC.NumberOfResidues);
             Assert.AreEqual(0, compoundResidueCollectionAppleCompoundD.NumberOfResidues);
 
-            Assert.AreEqual(2, compoundResidueCollectionAppleCompoundA.Positives.Count);
-            Assert.AreEqual(0, compoundResidueCollectionAppleCompoundB.Positives.Count);
-            Assert.AreEqual(3, compoundResidueCollectionAppleCompoundC.Positives.Count);
-            Assert.AreEqual(0, compoundResidueCollectionAppleCompoundD.Positives.Count);
+            Assert.HasCount(2, compoundResidueCollectionAppleCompoundA.Positives);
+            Assert.IsEmpty(compoundResidueCollectionAppleCompoundB.Positives);
+            Assert.HasCount(3, compoundResidueCollectionAppleCompoundC.Positives);
+            Assert.IsEmpty(compoundResidueCollectionAppleCompoundD.Positives);
 
-            Assert.AreEqual(1, compoundResidueCollectionAppleCompoundA.CensoredValues.Count);
-            Assert.AreEqual(3, compoundResidueCollectionAppleCompoundB.CensoredValues.Count);
-            Assert.AreEqual(3, compoundResidueCollectionAppleCompoundC.CensoredValues.Count);
-            Assert.AreEqual(0, compoundResidueCollectionAppleCompoundD.CensoredValues.Count);
+            Assert.HasCount(1, compoundResidueCollectionAppleCompoundA.CensoredValues);
+            Assert.HasCount(3, compoundResidueCollectionAppleCompoundB.CensoredValues);
+            Assert.HasCount(3, compoundResidueCollectionAppleCompoundC.CensoredValues);
+            Assert.IsEmpty(compoundResidueCollectionAppleCompoundD.CensoredValues);
 
             //-------------------------------------------------------------------------------
             // Tests SampleCompoundCollections
             // ------------------------------------------------------------------------------
 
             var sampleCompoundRecordsApple = sampleCompoundCollections[foodApple].SampleCompoundRecords;
-            Assert.AreEqual(12, sampleCompoundRecordsApple.Count);
+            Assert.HasCount(12, sampleCompoundRecordsApple);
 
             var missingValuesAppleCompoundA = sampleCompoundRecordsApple.SelectMany(scr => scr.SampleCompounds.Where(sc => sc.Key.Code == "CompoundA" && sc.Value.IsMissingValue));
             var missingValuesAppleCompoundB = sampleCompoundRecordsApple.SelectMany(scr => scr.SampleCompounds.Where(sc => sc.Key.Code == "CompoundB" && sc.Value.IsMissingValue));

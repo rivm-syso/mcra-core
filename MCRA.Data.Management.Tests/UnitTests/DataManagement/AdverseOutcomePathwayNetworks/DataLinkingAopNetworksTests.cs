@@ -18,7 +18,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             CollectionAssert.AreEqual(new[] { "P1", "P2", "P3", "P4", "P5", "P6" }, scope.ToArray());
 
             var allSourceEntities = _compiledLinkManager.GetAllSourceEntities(ScopingType.AdverseOutcomePathwayNetworks);
-            Assert.AreEqual(6, allSourceEntities.Count);
+            Assert.HasCount(6, allSourceEntities);
 
             var report = _compiledLinkManager.GetDataReadingReports(SourceTableGroup.AdverseOutcomePathwayNetworks);
 
@@ -43,10 +43,10 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             CollectionAssert.AreEqual(new[] { "P3","P4","P5" }, scope.ToArray());
 
             var allEntities = _compiledLinkManager.GetAllEntities(ScopingType.AdverseOutcomePathwayNetworks);
-            Assert.AreEqual(6, allEntities.Count);
+            Assert.HasCount(6, allEntities);
 
             var allSourceEntities = _compiledLinkManager.GetAllSourceEntities(ScopingType.AdverseOutcomePathwayNetworks);
-            Assert.AreEqual(6, allSourceEntities.Count);
+            Assert.HasCount(6, allSourceEntities);
 
             var report = _compiledLinkManager.GetDataReadingReports(SourceTableGroup.AdverseOutcomePathwayNetworks);
             AssertDataReadingSummaryRecord(report, ScopingType.AdverseOutcomePathwayNetworks, 6, "p3,p4,p5", "p1,p2,p6", "");

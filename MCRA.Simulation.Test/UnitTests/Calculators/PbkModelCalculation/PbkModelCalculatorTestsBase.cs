@@ -72,10 +72,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation {
             var positiveInternalExposures = internalExposures
                 .Where(r => r.IsPositiveTargetExposure(targetUnit.Target))
                 .ToList();
-            Assert.AreEqual(
+            Assert.HasCount(
                 positiveExternalExposures.Count,
-                positiveInternalExposures.Count
-            );
+                positiveInternalExposures);
 
             var targetExposurePattern = positiveInternalExposures.First()
                 .GetSubstanceTargetExposure(targetUnit.Target, substance) as SubstanceTargetExposurePattern;
@@ -83,7 +82,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation {
                     * TimeUnit.Days.GetTimeUnitMultiplier(instance.KineticModelDefinition.Resolution)
                     * instance.KineticModelDefinition.EvaluationFrequency
                     + 1;
-            Assert.AreEqual(timePoints, targetExposurePattern.TargetExposuresPerTimeUnit.Count);
+            Assert.HasCount((int)timePoints, targetExposurePattern.TargetExposuresPerTimeUnit);
         }
 
         protected void testForwardChronic(
@@ -121,10 +120,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation {
             var positiveInternalExposures = internalExposures
                 .Where(r => r.IsPositiveTargetExposure(targetUnit.Target))
                 .ToList();
-            Assert.AreEqual(
+            Assert.HasCount(
                 positiveExternalExposures.Count,
-                positiveInternalExposures.Count
-            );
+                positiveInternalExposures);
 
             var targetExposurePattern = positiveInternalExposures.First()
                 .GetSubstanceTargetExposure(targetUnit.Target, substance) as SubstanceTargetExposurePattern;
@@ -132,7 +130,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation {
                 * TimeUnit.Days.GetTimeUnitMultiplier(instance.KineticModelDefinition.Resolution)
                 * instance.KineticModelDefinition.EvaluationFrequency
                 + 1;
-            Assert.AreEqual(timePoints, targetExposurePattern.TargetExposuresPerTimeUnit.Count);
+            Assert.HasCount((int)timePoints, targetExposurePattern.TargetExposuresPerTimeUnit);
         }
 
         public string CreateTestOutputPath(string testName) {

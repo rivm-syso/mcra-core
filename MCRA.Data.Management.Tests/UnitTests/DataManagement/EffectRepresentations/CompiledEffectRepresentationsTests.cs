@@ -13,7 +13,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             var representations = _getItemsDelegate.Invoke();
 
-            Assert.AreEqual(0, representations.Count);
+            Assert.IsEmpty(representations);
         }
 
         [TestMethod]
@@ -28,7 +28,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             var representations = _getItemsDelegate.Invoke();
 
-            Assert.AreEqual(0, representations.Count);
+            Assert.IsEmpty(representations);
         }
 
         [TestMethod]
@@ -39,7 +39,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             );
             var representations = _getItemsDelegate.Invoke();
 
-            Assert.AreEqual(9, representations.Count);
+            Assert.HasCount(9, representations);
 
             var effects = representations.Select(r => r.Effect.Code).Distinct().ToList();
             CollectionAssert.AreEquivalent(new[] { "Eff1", "Eff2", "Eff3", "Eff4", "Eff5" }, effects);
@@ -58,7 +58,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             var representations = _getItemsDelegate.Invoke();
 
-            Assert.AreEqual(1, representations.Count);
+            Assert.HasCount(1, representations);
 
             var effects = representations.Select(r => r.Effect.Code).Distinct().ToList();
             CollectionAssert.AreEquivalent(new[] { "Eff1" }, effects);
@@ -77,7 +77,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             var representations = _getItemsDelegate.Invoke();
 
-            Assert.AreEqual(3, representations.Count);
+            Assert.HasCount(3, representations);
 
             var effects = representations.Select(r => r.Effect.Code).Distinct().ToList();
             CollectionAssert.AreEquivalent(new[] { "Eff2", "Eff3", "Eff4" }, effects);
@@ -97,7 +97,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             var representations = _getItemsDelegate.Invoke();
 
-            Assert.AreEqual(8, representations.Count);
+            Assert.HasCount(8, representations);
 
             var effects = representations.Select(r => r.Effect.Code).Distinct().ToList();
             CollectionAssert.AreEquivalent(new[] { "Eff1", "Eff2", "Eff3", "Eff4", "Eff5" }, effects);
@@ -120,7 +120,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             var representations = _getItemsDelegate.Invoke();
 
-            Assert.AreEqual(1, representations.Count);
+            Assert.HasCount(1, representations);
 
             var effects = representations.Select(r => r.Effect.Code).Distinct().ToList();
             CollectionAssert.AreEquivalent(new[] { "Eff2" }, effects);

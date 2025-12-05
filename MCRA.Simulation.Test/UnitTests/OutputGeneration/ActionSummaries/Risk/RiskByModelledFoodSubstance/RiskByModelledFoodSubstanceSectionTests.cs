@@ -39,9 +39,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             );
 
             foreach (var item in section.Records) {
-                Assert.IsTrue(item.NotAtRisk >= 0);
-                Assert.IsTrue(item.AtRiskWithOrWithout >= 0);
-                Assert.IsTrue(item.AtRiskDueToModelledFoodSubstance >= 0);
+                Assert.IsGreaterThanOrEqualTo(0, item.NotAtRisk);
+                Assert.IsGreaterThanOrEqualTo(0, item.AtRiskWithOrWithout);
+                Assert.IsGreaterThanOrEqualTo(0, item.AtRiskDueToModelledFoodSubstance);
             }
             AssertIsValidView(section);
         }
@@ -72,9 +72,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             );
 
             foreach (var item in section.Records) {
-                Assert.IsTrue(item.NotAtRisk >= 0);
-                Assert.IsTrue(item.AtRiskWithOrWithout >= 0);
-                Assert.IsTrue(item.AtRiskDueToModelledFoodSubstance >= 0);
+                Assert.IsGreaterThanOrEqualTo(0, item.NotAtRisk);
+                Assert.IsGreaterThanOrEqualTo(0, item.AtRiskWithOrWithout);
+                Assert.IsGreaterThanOrEqualTo(0, item.AtRiskDueToModelledFoodSubstance);
             }
             AssertIsValidView(section);
         }

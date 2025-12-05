@@ -7,7 +7,7 @@ namespace MCRA.Utils.Test.UnitTests {
         public void DesignUtils_AddConstantColumn1() {
             double[,] x = null;
             var m = DesignUtils.AddConstantColumn(x, 3);
-            Assert.AreEqual(3, m.Length);
+            Assert.HasCount(3, m);
             Assert.AreEqual(1, m[0, 0]);
             Assert.AreEqual(1, m[1, 0]);
             Assert.AreEqual(1, m[2, 0]);

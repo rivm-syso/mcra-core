@@ -17,7 +17,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             var distributions = _getConcentrationDistributionsDelegate.Invoke();
 
-            Assert.AreEqual(15, distributions.Count);
+            Assert.HasCount(15, distributions);
 
             var codes = distributions.Select(c => c.Food.Code).Distinct().ToList();
             CollectionAssert.AreEquivalent(new[] { "f1", "f2", "t3", "f4", "f5", "t5", "f7", "f8" }, codes);
@@ -40,7 +40,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             var distributions = _getConcentrationDistributionsDelegate.Invoke();
 
-            Assert.AreEqual(4, distributions.Count);
+            Assert.HasCount(4, distributions);
 
             var codes = distributions.Select(c => c.Food.Code).Distinct().ToList();
             CollectionAssert.AreEquivalent(new[] { "f1", "t3" }, codes);
@@ -62,7 +62,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
             var distributions = _getConcentrationDistributionsDelegate.Invoke();
 
-            Assert.AreEqual(6, distributions.Count);
+            Assert.HasCount(6, distributions);
 
             var codes = distributions.Select(c => c.Food.Code).Distinct().ToList();
             CollectionAssert.AreEquivalent(new[] { "f2", "t3", "f4", "f7" }, codes);
@@ -84,7 +84,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
             var distributions = _getConcentrationDistributionsDelegate.Invoke();
 
-            Assert.AreEqual(1, distributions.Count);
+            Assert.HasCount(1, distributions);
 
             var codes = distributions.Select(c => c.Food.Code).Distinct().ToList();
             CollectionAssert.AreEquivalent(new[] { "t3" }, codes);

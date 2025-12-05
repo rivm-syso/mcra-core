@@ -36,7 +36,7 @@ namespace MCRA.Simulation.Test.UnitTests.UncertaintyFactorialCalculation {
                 source,
                 design);
 
-            Assert.AreEqual(2, results.Count);
+            Assert.HasCount(2, results);
         }
     }
 }

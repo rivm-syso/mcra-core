@@ -32,7 +32,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
             }
             var section = new TdsPotentialReductionFactorsSection();
             section.Summarize(concentrationDistributions, foods.Select(c => c.Code).ToList(), ConcentrationUnit.mgPerKg);
-            Assert.AreEqual(9, section.Records.Count);
+            Assert.HasCount(9, section.Records);
             AssertIsValidView(section);
         }
     }

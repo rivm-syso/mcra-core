@@ -33,7 +33,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling.IntakeModel
             var individualDayIntakes = individualDayIntakesCalculator.Compute(dietaryIndividualDayIntakes);
             var oims = OIMCalculator.CalculateObservedIndividualMeans(individualDayIntakes);
             var usualExposureTotal = oims.Sum(c => c.DietaryIntakePerMassUnit);
-            Assert.AreEqual(individuals.Count, oims.Count);
+            Assert.HasCount(individuals.Count, oims);
 
             var sumTotalIntakes = dietaryIndividualDayIntakes
                 .GroupBy(r => r.SimulatedIndividual.Id)

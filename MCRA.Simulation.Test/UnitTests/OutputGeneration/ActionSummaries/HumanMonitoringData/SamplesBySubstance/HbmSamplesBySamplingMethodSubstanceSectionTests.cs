@@ -46,8 +46,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
                 [],
                 true
             );
-            Assert.AreEqual(substances.Count, section.HbmPercentilesRecords[samplingMethod].Count);
-            Assert.AreEqual(substances.Count, section.HbmPercentilesAllRecords[samplingMethod].Count);
+            Assert.HasCount(substances.Count, section.HbmPercentilesRecords[samplingMethod]);
+            Assert.HasCount(substances.Count, section.HbmPercentilesAllRecords[samplingMethod]);
         }
     }
 }

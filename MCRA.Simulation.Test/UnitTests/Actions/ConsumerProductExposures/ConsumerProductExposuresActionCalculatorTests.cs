@@ -94,7 +94,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions.ConsumerProductExposures {
 
             Assert.IsNotNull(data.ConsumerProductIndividualExposures);
             Assert.IsNotNull(data.ConsumerProductExposureUnit);
-            Assert.AreEqual(numberOfIndividuals, data.ConsumerProductIndividualExposures.Count);
+            Assert.HasCount(numberOfIndividuals, data.ConsumerProductIndividualExposures);
         }
     }
 }

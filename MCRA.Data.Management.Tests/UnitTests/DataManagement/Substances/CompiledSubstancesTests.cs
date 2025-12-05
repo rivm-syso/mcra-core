@@ -13,7 +13,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             var substances = _getSubstancesDelegate.Invoke();
 
-            Assert.AreEqual(5, substances.Count);
+            Assert.HasCount(5, substances);
             Assert.IsTrue(substances.TryGetValue("A", out var c) && c.Name.Equals("SubstanceA"));
             Assert.IsTrue(substances.TryGetValue("B", out c) && c.Name.Equals("SubstanceB"));
             Assert.IsTrue(substances.TryGetValue("C", out c) && c.Name.Equals("SubstanceC"));
@@ -30,7 +30,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             var substances = _getSubstancesDelegate.Invoke();
 
-            Assert.AreEqual(2, substances.Count);
+            Assert.HasCount(2, substances);
             Assert.IsTrue(substances.TryGetValue("B", out var c) && c.Name.Equals("SubstanceB"));
             Assert.IsTrue(substances.TryGetValue("D", out c) && c.Name.Equals("SubstanceD"));
         }

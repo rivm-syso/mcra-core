@@ -42,7 +42,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
                     memberships,
                     referenceSubstance
                  );
-            Assert.AreEqual(50, individualEffects.Count);
+            Assert.HasCount(50, individualEffects);
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
                 hazardCharacterisations,
                 targetUnit,
                 substances);
-            Assert.AreEqual(individualDays.Count, individualEffectsDictionary.First().Value.Count);
+            Assert.HasCount(individualDays.Count, individualEffectsDictionary.First().Value);
         }
     }
 }

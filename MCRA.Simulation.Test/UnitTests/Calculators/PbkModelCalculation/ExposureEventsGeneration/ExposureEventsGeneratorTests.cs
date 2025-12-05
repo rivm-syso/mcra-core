@@ -39,7 +39,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.Exposur
                 random
             );
 
-            Assert.AreEqual(routes.Length, events.Count);
+            Assert.HasCount(routes.Length, events);
             CollectionAssert.AreEquivalent(routes, events.Select(r => r.Route).ToArray());
             Assert.IsTrue(events.All(e => e is RepeatingExposureEvent));
             var expectedInterval = timeUnit == TimeUnit.Hours ? 24 : 1;
@@ -129,7 +129,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.Exposur
             var expectedEventsCount = specifyEvents
                 ? settings.SelectedEvents.Length * settings.NumberOfSimulatedDays
                 : settings.NumberOfOralDosesPerDay * settings.NumberOfSimulatedDays;
-            Assert.AreEqual(expectedEventsCount, events.Count);
+            Assert.HasCount(expectedEventsCount, events);
             Assert.IsTrue(events.All(r => r.Route == ExposureRoute.Oral));
             Assert.IsTrue(events.All(e => e is SingleExposureEvent));
         }

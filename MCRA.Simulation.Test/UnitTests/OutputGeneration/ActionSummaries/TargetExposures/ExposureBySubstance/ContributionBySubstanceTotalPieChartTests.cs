@@ -62,7 +62,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 if (aggregateIndividualExposures.Any(r => r.IsPositiveTargetExposure(targetUnit.Target))) {
                     Assert.AreEqual(100D, section.Records.Sum(c => c.ContributionPercentage), .001);
                 }
-                Assert.AreEqual(substances.Count, section.Records.Count);
+                Assert.HasCount(substances.Count, section.Records);
                 var chart = new ContributionBySubstanceTotalPieChartCreator(section, false);
                 RenderChart(chart, $"TestCreate1{numIndividuals}");
                 AssertIsValidView(section);

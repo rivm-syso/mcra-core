@@ -107,10 +107,10 @@ namespace MCRA.Utils.Test.UnitTests.R.REngines.RDotNet {
 
                 // verify by roundtrip boolean vector
                 var outputList = instance.EvaluateBooleanVector(name);
-                Assert.AreEqual(inputList.Count, outputList.Count);
+                Assert.HasCount(inputList.Count, outputList);
                 Assert.AreEqual(inputList[0], outputList[0]);
                 Assert.AreEqual(inputList[1], outputList[1]);
-                Assert.AreEqual(true, outputList[2]);   // No roundtrip for nullable bool, returns true value instead
+                Assert.IsTrue(outputList[2]);   // No roundtrip for nullable bool, returns true value instead
             }
         }
 
@@ -138,7 +138,7 @@ namespace MCRA.Utils.Test.UnitTests.R.REngines.RDotNet {
 
                 // verify by roundtrip integer vector
                 var outputList = instance.EvaluateIntegerVector(name);
-                Assert.AreEqual(inputList.Count, outputList.Count);
+                Assert.HasCount(inputList.Count, outputList);
                 Assert.AreEqual(inputList[0], outputList[0]);
                 Assert.AreEqual(int.MinValue, outputList[1]);   // No roundtrip for nullable int, returns min value instead
             }
@@ -184,7 +184,7 @@ namespace MCRA.Utils.Test.UnitTests.R.REngines.RDotNet {
 
                 // verify by roundtrip numeric vector
                 var output = instance.EvaluateNumericVector(name);
-                Assert.AreEqual(input.Count, output.Count);
+                Assert.HasCount(input.Count, output);
                 Assert.AreEqual(input[0], output[0]);
                 Assert.AreEqual(input[1], output[1]);
                 Assert.AreEqual(double.NaN, output[2]);     // No roundtrip for nullable double, returns NaN value instead

@@ -26,7 +26,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Substa
             };
             var section = new SubstanceConversionsDataSection();
             section.Summarize(substanceConversions);
-            Assert.AreEqual(1, section.Records.Count);
+            Assert.HasCount(1, section.Records);
             AssertIsValidView(section);
         }
     }

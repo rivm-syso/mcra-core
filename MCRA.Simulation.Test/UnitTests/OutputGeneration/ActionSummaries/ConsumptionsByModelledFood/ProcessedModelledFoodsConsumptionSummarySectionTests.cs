@@ -21,7 +21,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Consum
             var consumptions = FakeConsumptionsByModelledFoodGenerator.Create(foods, individualDays);
             var section = new ProcessedModelledFoodConsumptionSummarySection();
             section.Summarize(individualDays, consumptions, 2.5, 97.5);
-            Assert.AreEqual(3, section.Records.Count);
+            Assert.HasCount(3, section.Records);
             AssertIsValidView(section);
         }
     }

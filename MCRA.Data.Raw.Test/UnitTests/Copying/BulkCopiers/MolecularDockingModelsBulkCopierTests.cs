@@ -26,8 +26,8 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
 
                 var tables = dataSourceWriter.DataTables;
 
-                Assert.AreEqual(2, tables[modelsTableDefinition.TargetDataTable].Rows.Count);
-                Assert.AreEqual(8, tables[membershipsTableDefinition.TargetDataTable].Rows.Count);
+                Assert.HasCount(2, tables[modelsTableDefinition.TargetDataTable].Rows);
+                Assert.HasCount(8, tables[membershipsTableDefinition.TargetDataTable].Rows);
 
                 var modelIds = getDistinctColumnValues<string>(tables[modelsTableDefinition.TargetDataTable], RawMolecularDockingModels.Id.ToString()).ToArray();
                 CollectionAssert.AreEquivalent(
@@ -59,8 +59,8 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
 
                 var tables = dataSourceWriter.DataTables;
 
-                Assert.AreEqual(2, tables[modelsTableDefinition.TargetDataTable].Rows.Count);
-                Assert.AreEqual(9, tables[membershipsTableDefinition.TargetDataTable].Rows.Count);
+                Assert.HasCount(2, tables[modelsTableDefinition.TargetDataTable].Rows);
+                Assert.HasCount(9, tables[membershipsTableDefinition.TargetDataTable].Rows);
 
                 var modelIds = getDistinctColumnValues<string>(tables[modelsTableDefinition.TargetDataTable], RawMolecularDockingModels.Id.ToString()).ToArray();
                 CollectionAssert.AreEquivalent(

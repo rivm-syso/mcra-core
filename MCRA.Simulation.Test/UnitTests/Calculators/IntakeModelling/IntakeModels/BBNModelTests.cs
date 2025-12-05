@@ -29,11 +29,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             var summaryAmounts = bbnModel.AmountsModelSummary as NormalAmountsModelSummary;
             var summaryFrequencies = bbnModel.FrequencyModelSummary;
 
-            Assert.IsTrue(summaryAmounts.VarianceBetween > 0.2);
-            Assert.IsTrue(summaryAmounts.VarianceWithin > 0.01);
+            Assert.IsGreaterThan(0.2, summaryAmounts.VarianceBetween);
+            Assert.IsGreaterThan(0.01, summaryAmounts.VarianceWithin);
             Assert.IsTrue(!double.IsNaN(summaryAmounts._2LogLikelihood));
             Assert.IsTrue(!double.IsNaN(summaryFrequencies._2LogLikelihood));
-            Assert.IsTrue(summaryFrequencies.DegreesOfFreedom > 0);
+            Assert.IsGreaterThan(0, summaryFrequencies.DegreesOfFreedom);
         }
 
         /// <summary>
@@ -63,8 +63,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             var summaryAmounts = bbnModel.AmountsModelSummary as NormalAmountsModelSummary;
             var summaryFrequencies = bbnModel.FrequencyModelSummary;
 
-            Assert.IsTrue(summaryAmounts.VarianceBetween > 0.2);
-            Assert.IsTrue(summaryAmounts.VarianceWithin > 0.01);
+            Assert.IsGreaterThan(0.2, summaryAmounts.VarianceBetween);
+            Assert.IsGreaterThan(0.01, summaryAmounts.VarianceWithin);
             Assert.IsTrue(!double.IsNaN(summaryAmounts._2LogLikelihood));
             Assert.IsTrue(!double.IsNaN(summaryFrequencies._2LogLikelihood));
             Assert.AreEqual(52, summaryFrequencies.DegreesOfFreedom);

@@ -44,7 +44,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
                 referenceSubstances
             );
             CollectionAssert.AreEquivalent(risksByFood.Keys, foodsAsMeasured);
-            Assert.AreEqual(risksByFood.Values.First().Count, individualDays.Count);
+            Assert.HasCount(risksByFood.Values.First().Count, individualDays);
             Assert.IsTrue(risksByFood.Values.All(rbf => rbf.All(r => !double.IsNaN(r.HazardExposureRatio))));
             Assert.IsTrue(risksByFood.Values.All(rbf => rbf.All(r => !double.IsNaN(r.ExposureHazardRatio))));
         }
@@ -86,7 +86,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
                 referenceSubstances
             );
             CollectionAssert.AreEquivalent(risksByFood.Keys, foodsAsMeasured);
-            Assert.AreEqual(risksByFood.Values.First().Count, individuals.Count);
+            Assert.HasCount(risksByFood.Values.First().Count, individuals);
             Assert.IsTrue(risksByFood.Values.All(rbf => rbf.All(r => !double.IsNaN(r.HazardExposureRatio))));
             Assert.IsTrue(risksByFood.Values.All(rbf => rbf.All(r => !double.IsNaN(r.ExposureHazardRatio))));
         }

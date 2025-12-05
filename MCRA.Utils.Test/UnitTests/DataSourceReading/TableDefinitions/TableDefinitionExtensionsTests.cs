@@ -19,7 +19,7 @@ namespace MCRA.Utils.Test.UnitTests.DataSourceReading.TableDefinitions {
         [TestMethod]
         public void TableDefinition_TestCreateFromTypeSimple() {
             var tableDef = TableDefinitionExtensions.FromType(typeof(TestSimple));
-            Assert.AreEqual(6, tableDef.ColumnDefinitions.Count);
+            Assert.HasCount(6, tableDef.ColumnDefinitions);
             Assert.AreEqual("IntField", tableDef.ColumnDefinitions[0].Id);
             Assert.AreEqual(FieldType.Integer.ToString(), tableDef.ColumnDefinitions[0].FieldType);
             Assert.IsFalse(tableDef.ColumnDefinitions[0].Required);
@@ -45,7 +45,7 @@ namespace MCRA.Utils.Test.UnitTests.DataSourceReading.TableDefinitions {
         [TestMethod]
         public void TableDefinition_TestCreateFromType_Ignore() {
             var tableDef = TableDefinitionExtensions.FromType(typeof(TestIgnore));
-            Assert.AreEqual(1, tableDef.ColumnDefinitions.Count);
+            Assert.HasCount(1, tableDef.ColumnDefinitions);
             Assert.AreEqual("Include", tableDef.ColumnDefinitions.First().Id);
         }
 
@@ -60,7 +60,7 @@ namespace MCRA.Utils.Test.UnitTests.DataSourceReading.TableDefinitions {
         [TestMethod]
         public void TableDefinition_TestCreateFromType_RequiredNullable() {
             var tableDef = TableDefinitionExtensions.FromType(typeof(TestRequiredNullable));
-            Assert.AreEqual(2, tableDef.ColumnDefinitions.Count);
+            Assert.HasCount(2, tableDef.ColumnDefinitions);
             Assert.IsTrue(tableDef.ColumnDefinitions[0].Required);
             Assert.IsFalse(tableDef.ColumnDefinitions[1].Required);
         }
@@ -72,7 +72,7 @@ namespace MCRA.Utils.Test.UnitTests.DataSourceReading.TableDefinitions {
         [TestMethod]
         public void TableDefinition_TestCreateFromType_EnumType() {
             var tableDef = TableDefinitionExtensions.FromType(typeof(TestEnum));
-            Assert.AreEqual(1, tableDef.ColumnDefinitions.Count);
+            Assert.HasCount(1, tableDef.ColumnDefinitions);
             Assert.AreEqual("FieldTypeEnum", tableDef.ColumnDefinitions.First().Id);
             // Enum types are always required
             Assert.IsTrue(tableDef.ColumnDefinitions.First().Required);

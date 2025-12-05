@@ -6,7 +6,7 @@ namespace MCRA.Utils.Test.UnitTests.PerformanceReporting {
         [TestMethod]
         public void Test_GetTotalRam() {
             var totalMemory = PerformanceInfo.GetTotalMemory();
-            Assert.IsTrue(totalMemory > (2L * 1024));
+            Assert.IsGreaterThan(2UL * 1024, totalMemory);
         }
     }
 }

@@ -70,7 +70,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleFilters {
             var filter = new AnalysedSubstancesFoodSampleFilter(substances);
             var foodSamples = mockFoodSamples();
             var filteredSamples = foodSamples.Where(r => filter.Passes(r)).ToList();
-            Assert.AreEqual(2, filteredSamples.Count);
+            Assert.HasCount(2, filteredSamples);
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleFilters {
             var filter = new AnalysedSubstancesFoodSampleFilter(substances);
             var foodSamples = mockFoodSamples();
             var filteredSamples = foodSamples.Where(r => filter.Passes(r)).ToList();
-            Assert.AreEqual(0, filteredSamples.Count);
+            Assert.IsEmpty(filteredSamples);
         }
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleFilters {
             var filter = new AnalysedSubstancesFoodSampleFilter(substances);
             var foodSamples = mockFoodSamples();
             var filteredSamples = foodSamples.Where(r => filter.Passes(r)).ToList();
-            Assert.AreEqual(6, filteredSamples.Count);
+            Assert.HasCount(6, filteredSamples);
         }
     }
 }

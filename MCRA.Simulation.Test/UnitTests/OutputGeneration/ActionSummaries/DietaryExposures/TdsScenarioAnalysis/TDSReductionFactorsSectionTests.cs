@@ -27,7 +27,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
             }
             var section = new TdsReductionFactorsSection();
             section.Summarize(reductionFactors);
-            Assert.AreEqual(section.Records.Count, 9);
+            Assert.HasCount(9, section.Records);
             AssertIsValidView(section);
         }
 
@@ -46,7 +46,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
             }
             var section = new TdsReductionFactorsSection();
             section.Summarize(reductionFactors);
-            Assert.AreEqual(section.Records.Count, 0);
+            Assert.IsEmpty(section.Records);
             AssertIsValidView(section);
         }
     }

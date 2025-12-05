@@ -10,7 +10,7 @@ namespace MCRA.Data.Compiled.Test {
         public void AdverseOutcomePathwayNetworkExtensions_TestGetAllEffects() {
             var fake = FakeAopNetwork;
             var allEffects = fake.GetAllEffects();
-            Assert.AreEqual(8, allEffects.Count);
+            Assert.HasCount(8, allEffects);
         }
 
         [TestMethod]
@@ -23,7 +23,7 @@ namespace MCRA.Data.Compiled.Test {
                 new[] { "MIE1", "MIE3", "KE1A", "KE1B" },
                 subNetworkEffects.Select(r => r.Code).ToArray()
             );
-            Assert.AreEqual(4, subNetwork.GetAllEffects().Count);
+            Assert.HasCount(4, subNetwork.GetAllEffects());
         }
 
         #region Fakes

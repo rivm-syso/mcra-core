@@ -31,7 +31,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Active
             };
             var section = new ActiveSubstancesSummarySection();
             section.Summarize(memberships, substances, model.Effect);
-            Assert.AreEqual(1, section.Records.Count);
+            Assert.HasCount(1, section.Records);
         }
     }
 }

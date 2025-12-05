@@ -20,12 +20,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SubstanceTranslationsCalcul
 
             var calculator = new SubstanceConversionSetsCalculator();
             var generalTranslationSets = calculator.ComputeGeneralTranslationSets(substanceConversions.ToLookup(r => r.MeasuredSubstance));
-            Assert.AreEqual(1, generalTranslationSets.Values.Count);
+            Assert.HasCount(1, generalTranslationSets.Values);
 
             var translationCollection = generalTranslationSets.Values.First();
-            Assert.AreEqual(2, translationCollection.SubstanceTranslationSets.Count);
+            Assert.HasCount(2, translationCollection.SubstanceTranslationSets);
             Assert.AreEqual(dimethoateRd, translationCollection.MeasuredSubstance);
-            Assert.AreEqual(2, translationCollection.LinkedActiveSubstances.Count);
+            Assert.HasCount(2, translationCollection.LinkedActiveSubstances);
 
             Assert.AreEqual(1D, translationCollection.SubstanceTranslationSets.Sum(r => r.TranslationProportion));
             Assert.IsTrue(translationCollection.SubstanceTranslationSets
@@ -48,12 +48,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SubstanceTranslationsCalcul
             // Compute without authorised uses
             var calculator = new SubstanceConversionSetsCalculator();
             var generalTranslationSets = calculator.ComputeFoodSpecificTranslationSets(food, substanceConversions.ToLookup(r => r.MeasuredSubstance));
-            Assert.AreEqual(1, generalTranslationSets.Values.Count);
+            Assert.HasCount(1, generalTranslationSets.Values);
 
             var translationCollection = generalTranslationSets.Values.First();
-            Assert.AreEqual(2, translationCollection.SubstanceTranslationSets.Count);
+            Assert.HasCount(2, translationCollection.SubstanceTranslationSets);
             Assert.AreEqual(dimethoateRd, translationCollection.MeasuredSubstance);
-            Assert.AreEqual(2, translationCollection.LinkedActiveSubstances.Count);
+            Assert.HasCount(2, translationCollection.LinkedActiveSubstances);
 
             Assert.IsTrue(translationCollection.SubstanceTranslationSets.All(r => r.IsAuthorised));
             Assert.AreEqual(1D, translationCollection.SubstanceTranslationSets.Sum(r => r.TranslationProportion));
@@ -81,12 +81,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SubstanceTranslationsCalcul
             var calculator = new SubstanceConversionSetsCalculator();
             var generalTranslationSets = calculator
                 .ComputeFoodSpecificTranslationSets(food, substanceConversions.ToLookup(r => r.MeasuredSubstance), substanceAuthorisations, true);
-            Assert.AreEqual(1, generalTranslationSets.Values.Count);
+            Assert.HasCount(1, generalTranslationSets.Values);
 
             var translationCollection = generalTranslationSets.Values.First();
-            Assert.AreEqual(1, translationCollection.SubstanceTranslationSets.Count);
+            Assert.HasCount(1, translationCollection.SubstanceTranslationSets);
             Assert.AreEqual(dimethoateRd, translationCollection.MeasuredSubstance);
-            Assert.AreEqual(2, translationCollection.LinkedActiveSubstances.Count);
+            Assert.HasCount(2, translationCollection.LinkedActiveSubstances);
 
             Assert.IsTrue(translationCollection.SubstanceTranslationSets.All(r => r.IsAuthorised));
             Assert.AreEqual(1D, translationCollection.SubstanceTranslationSets.Sum(r => r.TranslationProportion));
@@ -112,12 +112,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SubstanceTranslationsCalcul
             var calculator = new SubstanceConversionSetsCalculator();
             var generalTranslationSets = calculator
                 .ComputeFoodSpecificTranslationSets(food, substanceConversions.ToLookup(r => r.MeasuredSubstance), substanceAuthorisations, false);
-            Assert.AreEqual(1, generalTranslationSets.Values.Count);
+            Assert.HasCount(1, generalTranslationSets.Values);
 
             var translationCollection = generalTranslationSets.Values.First();
-            Assert.AreEqual(2, translationCollection.SubstanceTranslationSets.Count);
+            Assert.HasCount(2, translationCollection.SubstanceTranslationSets);
             Assert.AreEqual(dimethoateRd, translationCollection.MeasuredSubstance);
-            Assert.AreEqual(2, translationCollection.LinkedActiveSubstances.Count);
+            Assert.HasCount(2, translationCollection.LinkedActiveSubstances);
 
             Assert.AreEqual(1, translationCollection.SubstanceTranslationSets.Count(r => r.IsAuthorised));
             Assert.AreEqual(1D, translationCollection.SubstanceTranslationSets.Sum(r => r.TranslationProportion));
@@ -143,12 +143,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SubstanceTranslationsCalcul
             var calculator = new SubstanceConversionSetsCalculator();
             var generalTranslationSets = calculator
                 .ComputeFoodSpecificTranslationSets(food, substanceConversions.ToLookup(r => r.MeasuredSubstance), substanceAuthorisations, true);
-            Assert.AreEqual(1, generalTranslationSets.Values.Count);
+            Assert.HasCount(1, generalTranslationSets.Values);
 
             var translationCollection = generalTranslationSets.Values.First();
-            Assert.AreEqual(2, translationCollection.SubstanceTranslationSets.Count);
+            Assert.HasCount(2, translationCollection.SubstanceTranslationSets);
             Assert.AreEqual(dimethoateRd, translationCollection.MeasuredSubstance);
-            Assert.AreEqual(2, translationCollection.LinkedActiveSubstances.Count);
+            Assert.HasCount(2, translationCollection.LinkedActiveSubstances);
 
             Assert.IsTrue(translationCollection.SubstanceTranslationSets.All(r => !r.IsAuthorised));
             Assert.AreEqual(1D, translationCollection.SubstanceTranslationSets.Sum(r => r.TranslationProportion));

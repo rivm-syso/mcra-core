@@ -65,7 +65,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IndividualsSubsetCalculatio
                 surveyIndividualProperties,
                 IndividualSubsetType.MatchToPopulationDefinition
             );
-            Assert.AreEqual(4, filters.Count);
+            Assert.HasCount(4, filters);
 
             var ageFilter = filters.FirstOrDefault(r => r.IndividualProperty == ageProperty);
             Assert.IsNotNull(ageFilter);
@@ -112,7 +112,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IndividualsSubsetCalculatio
             var filters = builder.Create(population, [], IndividualSubsetType.MatchToPopulationDefinition, []);
 
             // Should pass, no filters should be added
-            Assert.AreEqual(0, filters.Count);
+            Assert.IsEmpty(filters);
         }
     }
 }

@@ -1041,7 +1041,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             Assert.IsNotNull(data.DietaryObservedIndividualMeans);
             var mean = data.DietaryObservedIndividualMeans.Average(c => c.DietaryIntakePerMassUnit);
             Assert.IsTrue(!double.IsNaN(mean));
-            Assert.AreEqual(10, data.DietaryObservedIndividualMeans.Count);
+            Assert.HasCount(10, data.DietaryObservedIndividualMeans);
         }
 
         /// <summary>
@@ -1126,7 +1126,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 .Compute(data.DietaryIndividualDayIntakes);
             var mean = simpleIndividualDayIntakes.Average(c => c.Amount);
             Assert.IsTrue(!double.IsNaN(mean));
-            Assert.AreEqual(100, data.DietaryIndividualDayIntakes.Count);
+            Assert.HasCount(100, data.DietaryIndividualDayIntakes);
         }
     }
 }

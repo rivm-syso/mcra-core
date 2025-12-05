@@ -30,7 +30,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ProcessingFactorCalculation
 
             var n = 500;
             var samples = runUncertains(model, random, n);
-            Assert.IsTrue(samples.Median() >= 1 );
+            Assert.IsGreaterThanOrEqualTo(1, samples.Median());
         }
     }
 }

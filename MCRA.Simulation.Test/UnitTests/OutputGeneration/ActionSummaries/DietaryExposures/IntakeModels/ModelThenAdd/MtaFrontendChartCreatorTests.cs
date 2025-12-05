@@ -79,8 +79,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
             var sectionXml = fakeOutputSectionXml();
             var section = XmlSerialization.FromXml<UsualIntakeDistributionPerFoodAsMeasuredSection>(sectionXml);
             Assert.IsNotNull(section);
-            Assert.AreEqual(2, section.IndividualExposuresByCategory.Count);
-            Assert.AreEqual(3, section.Categories.Count);
+            Assert.HasCount(2, section.IndividualExposuresByCategory);
+            Assert.HasCount(3, section.Categories);
         }
 
         private static UsualIntakeDistributionPerFoodAsMeasuredSection createFakeModelThenAddDataSection(

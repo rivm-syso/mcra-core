@@ -109,7 +109,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
             populateAgriculturalUsesFromString(s);
             var result = calculator.Compute(_foods.Values, _substances.Values, _agriculturalUses.Cast<MarginalOccurrencePattern>().ToList());
 
-            Assert.AreEqual(12, result.Count);
+            Assert.HasCount(12, result);
             //check all food-substance combinations, concatenated codes separated by comma
             Assert.AreEqual(
                 "fAsA,fAsB,fAsC,fAsD,fAsE,fAsX,fBsA,fBsB,fBsC,fBsD,fBsE,fBsX",
@@ -144,7 +144,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
             var result = calculator.Compute(_foods.Values, _substances.Values, _agriculturalUses.Cast<MarginalOccurrencePattern>().ToList());
 
             //extra substances are listed
-            Assert.AreEqual(16, result.Count);
+            Assert.HasCount(16, result);
             //check all food-substance combinations, concatenated codes separated by comma
             Assert.AreEqual(
                 "fAsA,fAsB,fAsC,fAsD,fAsE,fAsX,fAsQ,fAsZ,fBsA,fBsB,fBsC,fBsD,fBsE,fBsX,fBsQ,fBsZ",
@@ -175,7 +175,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
             var result = calculator.Compute(_foods.Values, _substances.Values, _agriculturalUses.Cast<MarginalOccurrencePattern>().ToList());
 
             //extra substances are listed
-            Assert.AreEqual(10, result.Count);
+            Assert.HasCount(10, result);
             //check all food-substance combinations, concatenated codes, followed by colon and
             //WeightedAgriculturalUseFraction separated by comma
             Assert.AreEqual(
@@ -239,7 +239,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
             var result = calculator.Compute(_foods.Values, _substances.Values, _agriculturalUses.Cast<MarginalOccurrencePattern>().ToList());
 
             //extra substances are listed
-            Assert.AreEqual(10, result.Count);
+            Assert.HasCount(10, result);
             //check all food-substance combinations, concatenated codes, followed by colon and
             //WeightedAgriculturalUseFraction separated by comma
             Assert.AreEqual(
@@ -276,7 +276,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
             var result = calculator.ComputeLocationBased(_foods.Values, _substances.Values, _agriculturalUses, new Dictionary<Food, List<ISampleOrigin>>());
 
             //extra substances are listed
-            Assert.AreEqual(10, result.Count);
+            Assert.HasCount(10, result);
             //check all food-substance combinations, concatenated codes, followed by colon and
             //WeightedAgriculturalUseFraction separated by comma
             Assert.AreEqual(
@@ -320,7 +320,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
             var result = calculator.ComputeLocationBased(_foods.Values, _substances.Values, _agriculturalUses, origins);
 
             //extra substances are listed
-            Assert.AreEqual(6, result.Count);
+            Assert.HasCount(6, result);
             Assert.IsTrue(result.All(r => r.Value.LocationOccurrenceFractions.Count == 2));
             Assert.IsTrue(result.All(r => r.Value.LocationOccurrenceFractions.ContainsKey("NL")));
             Assert.IsTrue(result.All(r => r.Value.LocationOccurrenceFractions.ContainsKey("DE")));
@@ -371,7 +371,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
             var result = calculator.ComputeLocationBased(_foods.Values, _substances.Values, _agriculturalUses, _sampleOrigins);
 
             // Get the substance residue collections for APPLE - Compound A
-            Assert.AreEqual(2, result[(_foodApple, _compoundA)].LocationOccurrenceFractions.Count);
+            Assert.HasCount(2, result[(_foodApple, _compoundA)].LocationOccurrenceFractions);
             Assert.IsTrue(result[(_foodApple, _compoundA)].UseFound("NL"));
             Assert.AreEqual(0.45, result[(_foodApple, _compoundA)].GetOccurrenceFrequencyForLocation("NL"), _epsilon);
             Assert.IsFalse(result[(_foodApple, _compoundA)].UseFound("undefined"));
@@ -379,7 +379,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
             Assert.AreEqual(0.45, result[(_foodApple, _compoundA)].OccurrenceFrequency, _epsilon);
 
             // Get the substance residue collections for APPLE - Compound B
-            Assert.AreEqual(2, result[(_foodApple, _compoundB)].LocationOccurrenceFractions.Count);
+            Assert.HasCount(2, result[(_foodApple, _compoundB)].LocationOccurrenceFractions);
             Assert.IsTrue(result[(_foodApple, _compoundB)].UseFound("NL"));
             Assert.AreEqual(0.35, result[(_foodApple, _compoundB)].GetOccurrenceFrequencyForLocation("NL"), _epsilon);
             Assert.IsFalse(result[(_foodApple, _compoundB)].UseFound("undefined"));
@@ -387,7 +387,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
             Assert.AreEqual(0.35, result[(_foodApple, _compoundB)].OccurrenceFrequency, _epsilon);
 
             // Get the substance residue collections for APPLE - Compound C
-            Assert.AreEqual(2, result[(_foodApple, _compoundC)].LocationOccurrenceFractions.Count);
+            Assert.HasCount(2, result[(_foodApple, _compoundC)].LocationOccurrenceFractions);
             Assert.IsTrue(result[(_foodApple, _compoundC)].UseFound("NL"));
             Assert.AreEqual(0.2, result[(_foodApple, _compoundC)].GetOccurrenceFrequencyForLocation("NL"), _epsilon);
             Assert.IsFalse(result[(_foodApple, _compoundC)].UseFound("undefined"));
@@ -395,7 +395,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
             Assert.AreEqual(0.2, result[(_foodApple, _compoundC)].OccurrenceFrequency, _epsilon);
 
             // Get the substance residue collections for APPLE - Compound D
-            Assert.AreEqual(2, result[(_foodApple, _compoundD)].LocationOccurrenceFractions.Count);
+            Assert.HasCount(2, result[(_foodApple, _compoundD)].LocationOccurrenceFractions);
             Assert.IsFalse(result[(_foodApple, _compoundD)].UseFound("NL"));
             Assert.AreEqual(0D, result[(_foodApple, _compoundD)].GetOccurrenceFrequencyForLocation("NL"), _epsilon);
             Assert.IsFalse(result[(_foodApple, _compoundD)].UseFound("undefined"));
@@ -403,7 +403,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
             Assert.AreEqual(0D, result[(_foodApple, _compoundD)].OccurrenceFrequency, _epsilon);
 
             // Get the substance residue collections for BANANAS - Compound A
-            Assert.AreEqual(2, result[(_foodBananas, _compoundA)].LocationOccurrenceFractions.Count);
+            Assert.HasCount(2, result[(_foodBananas, _compoundA)].LocationOccurrenceFractions);
             Assert.IsFalse(result[(_foodBananas, _compoundA)].UseFound("DE"));
             Assert.AreEqual(0D, result[(_foodBananas, _compoundA)].GetOccurrenceFrequencyForLocation("DE"), _epsilon);
             Assert.IsFalse(result[(_foodBananas, _compoundA)].UseFound("undefined"));
@@ -411,7 +411,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
             Assert.AreEqual(0D, result[(_foodBananas, _compoundA)].OccurrenceFrequency, _epsilon);
 
             // Get the substance residue collections for BANANAS - Compound B
-            Assert.AreEqual(2, result[(_foodBananas, _compoundB)].LocationOccurrenceFractions.Count);
+            Assert.HasCount(2, result[(_foodBananas, _compoundB)].LocationOccurrenceFractions);
             Assert.IsFalse(result[(_foodBananas, _compoundB)].UseFound("DE"));
             Assert.AreEqual(0D, result[(_foodBananas, _compoundB)].GetOccurrenceFrequencyForLocation("DE"), _epsilon);
             Assert.IsFalse(result[(_foodBananas, _compoundB)].UseFound("undefined"));
@@ -419,19 +419,19 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
             Assert.AreEqual(0D, result[(_foodBananas, _compoundB)].OccurrenceFrequency, _epsilon);
 
             // Get the substance residue collections for BANANAS - Compound C
-            Assert.AreEqual(2, result[(_foodBananas, _compoundC)].LocationOccurrenceFractions.Count);
+            Assert.HasCount(2, result[(_foodBananas, _compoundC)].LocationOccurrenceFractions);
             Assert.IsFalse(result[(_foodBananas, _compoundC)].UseFound("undefined"));
             Assert.AreEqual(0D, result[(_foodBananas, _compoundC)].GetOccurrenceFrequencyForLocation("undefined"), _epsilon);
             Assert.AreEqual(0D, result[(_foodBananas, _compoundC)].OccurrenceFrequency, _epsilon);
 
             // Get the substance residue collections for BANANAS - Compound D
-            Assert.AreEqual(2, result[(_foodBananas, _compoundD)].LocationOccurrenceFractions.Count);
+            Assert.HasCount(2, result[(_foodBananas, _compoundD)].LocationOccurrenceFractions);
             Assert.IsFalse(result[(_foodBananas, _compoundD)].UseFound("undefined"));
             Assert.AreEqual(0D, result[(_foodBananas, _compoundD)].GetOccurrenceFrequencyForLocation("undefined"), _epsilon);
             Assert.AreEqual(0D, result[(_foodBananas, _compoundD)].OccurrenceFrequency, _epsilon);
 
             // Get the substance residue collections for PINEAPPLE - Compound A
-            Assert.AreEqual(3, result[(_foodPineapple, _compoundA)].LocationOccurrenceFractions.Count);
+            Assert.HasCount(3, result[(_foodPineapple, _compoundA)].LocationOccurrenceFractions);
             Assert.IsTrue(result[(_foodPineapple, _compoundA)].UseFound("NL"));
             Assert.AreEqual(0.25, result[(_foodPineapple, _compoundA)].GetOccurrenceFrequencyForLocation("NL"), _epsilon);
             Assert.IsTrue(result[(_foodPineapple, _compoundA)].UseFound("DE"));
@@ -441,13 +441,13 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
             Assert.AreEqual(0.265, result[(_foodPineapple, _compoundA)].OccurrenceFrequency, _epsilon);
 
             // Get the substance residue collections for PINEAPPLE - Compound B
-            Assert.AreEqual(3, result[(_foodPineapple, _compoundB)].LocationOccurrenceFractions.Count);
+            Assert.HasCount(3, result[(_foodPineapple, _compoundB)].LocationOccurrenceFractions);
             Assert.IsTrue(result[(_foodPineapple, _compoundB)].UseFound("undefined"));
             Assert.AreEqual(0.15, result[(_foodPineapple, _compoundB)].GetOccurrenceFrequencyForLocation("undefined"));
             Assert.AreEqual(0.21, result[(_foodPineapple, _compoundB)].OccurrenceFrequency, _epsilon);
 
             // Get the substance residue collections for PINEAPPLE - Compound C
-            Assert.AreEqual(3, result[(_foodPineapple, _compoundC)].LocationOccurrenceFractions.Count);
+            Assert.HasCount(3, result[(_foodPineapple, _compoundC)].LocationOccurrenceFractions);
             Assert.IsFalse(result[(_foodPineapple, _compoundC)].UseFound("NL"));
             Assert.AreEqual(0D, result[(_foodPineapple, _compoundC)].GetOccurrenceFrequencyForLocation("NL"), _epsilon);
             Assert.IsFalse(result[(_foodPineapple, _compoundC)].UseFound("undefined"));
@@ -455,7 +455,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
             Assert.AreEqual(0.06, result[(_foodPineapple, _compoundC)].OccurrenceFrequency, _epsilon);
 
             // Get the substance residue collections for PINEAPPLE - Compound D
-            Assert.AreEqual(3, result[(_foodPineapple, _compoundD)].LocationOccurrenceFractions.Count);
+            Assert.HasCount(3, result[(_foodPineapple, _compoundD)].LocationOccurrenceFractions);
             Assert.IsFalse(result[(_foodPineapple, _compoundD)].UseFound("NL"));
             Assert.AreEqual(0D, result[(_foodPineapple, _compoundD)].GetOccurrenceFrequencyForLocation("NL"), _epsilon);
             Assert.IsFalse(result[(_foodPineapple, _compoundD)].UseFound("undefined"));
@@ -484,7 +484,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
             var result = calculator.ComputeLocationBased(_foods.Values, _substances.Values, _agriculturalUses, _sampleOrigins);
 
             // Get the substance residue collections for APPLE - Compound A
-            Assert.AreEqual(2, result[(_foodApple, _compoundA)].LocationOccurrenceFractions.Count);
+            Assert.HasCount(2, result[(_foodApple, _compoundA)].LocationOccurrenceFractions);
             Assert.IsTrue(result[(_foodApple, _compoundA)].UseFound("NL"));
             Assert.AreEqual(0.45 + 0.55, result[(_foodApple, _compoundA)].GetOccurrenceFrequencyForLocation("NL"), _epsilon);
             Assert.IsTrue(result[(_foodApple, _compoundA)].UseFound("undefined"));
@@ -492,7 +492,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
             Assert.AreEqual(0.45 + 0.55, result[(_foodApple, _compoundA)].OccurrenceFrequency, _epsilon);
 
             // Get the substance residue collections for APPLE - Compound B
-            Assert.AreEqual(2, result[(_foodApple, _compoundB)].LocationOccurrenceFractions.Count);
+            Assert.HasCount(2, result[(_foodApple, _compoundB)].LocationOccurrenceFractions);
             Assert.IsTrue(result[(_foodApple, _compoundB)].UseFound("NL"));
             Assert.AreEqual(0.35 + 0.55, result[(_foodApple, _compoundB)].GetOccurrenceFrequencyForLocation("NL"), _epsilon);
             Assert.IsTrue(result[(_foodApple, _compoundB)].UseFound("undefined"));
@@ -500,7 +500,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
             Assert.AreEqual(0.35 + 0.55, result[(_foodApple, _compoundB)].OccurrenceFrequency, _epsilon);
 
             // Get the substance residue collections for APPLE - Compound C
-            Assert.AreEqual(2, result[(_foodApple, _compoundC)].LocationOccurrenceFractions.Count);
+            Assert.HasCount(2, result[(_foodApple, _compoundC)].LocationOccurrenceFractions);
             Assert.IsTrue(result[(_foodApple, _compoundC)].UseFound("NL"));
             Assert.AreEqual(0.2 + 0.55, result[(_foodApple, _compoundC)].GetOccurrenceFrequencyForLocation("NL"), _epsilon);
             Assert.IsTrue(result[(_foodApple, _compoundC)].UseFound("undefined"));
@@ -508,7 +508,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
             Assert.AreEqual(0.2 + 0.55, result[(_foodApple, _compoundC)].OccurrenceFrequency, _epsilon);
 
             // Get the substance residue collections for APPLE - Compound D
-            Assert.AreEqual(2, result[(_foodApple, _compoundD)].LocationOccurrenceFractions.Count);
+            Assert.HasCount(2, result[(_foodApple, _compoundD)].LocationOccurrenceFractions);
             Assert.IsTrue(result[(_foodApple, _compoundD)].UseFound("NL"));
             Assert.AreEqual(0D + 0.55, result[(_foodApple, _compoundD)].GetOccurrenceFrequencyForLocation("NL"), _epsilon);
             Assert.IsTrue(result[(_foodApple, _compoundD)].UseFound("undefined"));
@@ -516,7 +516,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
             Assert.AreEqual(0D + 0.55, result[(_foodApple, _compoundD)].OccurrenceFrequency, _epsilon);
 
             // Get the substance residue collections for BANANAS - Compound A
-            Assert.AreEqual(2, result[(_foodBananas, _compoundA)].LocationOccurrenceFractions.Count);
+            Assert.HasCount(2, result[(_foodBananas, _compoundA)].LocationOccurrenceFractions);
             Assert.IsTrue(result[(_foodBananas, _compoundA)].UseFound("DE"));
             Assert.AreEqual(1D, result[(_foodBananas, _compoundA)].GetOccurrenceFrequencyForLocation("DE"), _epsilon);
             Assert.IsTrue(result[(_foodBananas, _compoundA)].UseFound("undefined"));
@@ -524,7 +524,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
             Assert.AreEqual(1D, result[(_foodBananas, _compoundA)].OccurrenceFrequency, _epsilon);
 
             // Get the substance residue collections for BANANAS - Compound B
-            Assert.AreEqual(2, result[(_foodBananas, _compoundB)].LocationOccurrenceFractions.Count);
+            Assert.HasCount(2, result[(_foodBananas, _compoundB)].LocationOccurrenceFractions);
             Assert.IsTrue(result[(_foodBananas, _compoundB)].UseFound("DE"));
             Assert.AreEqual(1D, result[(_foodBananas, _compoundB)].GetOccurrenceFrequencyForLocation("DE"), _epsilon);
             Assert.IsTrue(result[(_foodBananas, _compoundB)].UseFound("undefined"));
@@ -532,19 +532,19 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
             Assert.AreEqual(1D, result[(_foodBananas, _compoundB)].OccurrenceFrequency, _epsilon);
 
             // Get the substance residue collections for BANANAS - Compound C
-            Assert.AreEqual(2, result[(_foodBananas, _compoundC)].LocationOccurrenceFractions.Count);
+            Assert.HasCount(2, result[(_foodBananas, _compoundC)].LocationOccurrenceFractions);
             Assert.IsTrue(result[(_foodBananas, _compoundC)].UseFound("undefined"));
             Assert.AreEqual(1D, result[(_foodBananas, _compoundC)].GetOccurrenceFrequencyForLocation("undefined"), _epsilon);
             Assert.AreEqual(1D, result[(_foodBananas, _compoundC)].OccurrenceFrequency, _epsilon);
 
             // Get the substance residue collections for BANANAS - Compound D
-            Assert.AreEqual(2, result[(_foodBananas, _compoundD)].LocationOccurrenceFractions.Count);
+            Assert.HasCount(2, result[(_foodBananas, _compoundD)].LocationOccurrenceFractions);
             Assert.IsTrue(result[(_foodBananas, _compoundD)].UseFound("undefined"));
             Assert.AreEqual(1D, result[(_foodBananas, _compoundD)].GetOccurrenceFrequencyForLocation("undefined"), _epsilon);
             Assert.AreEqual(1D, result[(_foodBananas, _compoundD)].OccurrenceFrequency, _epsilon);
 
             // Get the substance residue collections for PINEAPPLE - Compound A
-            Assert.AreEqual(3, result[(_foodPineapple, _compoundA)].LocationOccurrenceFractions.Count);
+            Assert.HasCount(3, result[(_foodPineapple, _compoundA)].LocationOccurrenceFractions);
             Assert.IsTrue(result[(_foodPineapple, _compoundA)].UseFound("NL"));
             Assert.AreEqual(1D, result[(_foodPineapple, _compoundA)].GetOccurrenceFrequencyForLocation("NL"), _epsilon);
             Assert.IsTrue(result[(_foodPineapple, _compoundA)].UseFound("DE"));
@@ -554,13 +554,13 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
             Assert.AreEqual(1D, result[(_foodPineapple, _compoundA)].OccurrenceFrequency, _epsilon);
 
             // Get the substance residue collections for PINEAPPLE - Compound B
-            Assert.AreEqual(3, result[(_foodPineapple, _compoundB)].LocationOccurrenceFractions.Count);
+            Assert.HasCount(3, result[(_foodPineapple, _compoundB)].LocationOccurrenceFractions);
             Assert.IsTrue(result[(_foodPineapple, _compoundB)].UseFound("undefined"));
             Assert.AreEqual(0.95, result[(_foodPineapple, _compoundB)].GetOccurrenceFrequencyForLocation("undefined"), _epsilon);
             Assert.AreEqual(0.945, result[(_foodPineapple, _compoundB)].OccurrenceFrequency, _epsilon);
 
             // Get the substance residue collections for PINEAPPLE - Compound C
-            Assert.AreEqual(3, result[(_foodPineapple, _compoundC)].LocationOccurrenceFractions.Count);
+            Assert.HasCount(3, result[(_foodPineapple, _compoundC)].LocationOccurrenceFractions);
             Assert.IsTrue(result[(_foodPineapple, _compoundC)].UseFound("NL"));
             Assert.AreEqual(0.75, result[(_foodPineapple, _compoundC)].GetOccurrenceFrequencyForLocation("NL"), _epsilon);
             Assert.IsTrue(result[(_foodPineapple, _compoundC)].UseFound("undefined"));
@@ -568,7 +568,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
             Assert.AreEqual(0.795, result[(_foodPineapple, _compoundC)].OccurrenceFrequency, _epsilon);
 
             // Get the substance residue collections for PINEAPPLE - Compound D
-            Assert.AreEqual(3, result[(_foodPineapple, _compoundD)].LocationOccurrenceFractions.Count);
+            Assert.HasCount(3, result[(_foodPineapple, _compoundD)].LocationOccurrenceFractions);
             Assert.IsTrue(result[(_foodPineapple, _compoundD)].UseFound("NL"));
             Assert.AreEqual(0.75, result[(_foodPineapple, _compoundD)].GetOccurrenceFrequencyForLocation("NL"), _epsilon);
             Assert.IsTrue(result[(_foodPineapple, _compoundD)].UseFound("undefined"));
@@ -598,14 +598,14 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
 
             // Get the substance residue collections for APPLE
             var agriculturalUseInfoApple = agriculturalUseInfo[_foodApple];
-            Assert.IsTrue(agriculturalUseInfoApple.Count == 3);
-            Assert.IsTrue(agriculturalUseInfoApple.First(r => r.Code == "grpA").OccurrenceFraction == 0.1);
-            Assert.IsTrue(agriculturalUseInfoApple.First(r => r.Code == "grpAB").OccurrenceFraction == 0.15);
-            Assert.IsTrue(agriculturalUseInfoApple.First(r => r.Code == "grpABC").OccurrenceFraction == 0.2);
+            Assert.AreEqual(3, agriculturalUseInfoApple.Count);
+            Assert.AreEqual(0.1, agriculturalUseInfoApple.First(r => r.Code == "grpA").OccurrenceFraction);
+            Assert.AreEqual(0.15, agriculturalUseInfoApple.First(r => r.Code == "grpAB").OccurrenceFraction);
+            Assert.AreEqual(0.2, agriculturalUseInfoApple.First(r => r.Code == "grpABC").OccurrenceFraction);
 
             // Get the substance residue collections for BANANAS
             var agriculturalUseInfoBananas = agriculturalUseInfo[_foodBananas];
-            Assert.IsTrue(agriculturalUseInfoBananas.Count == 0);
+            Assert.IsEmpty(agriculturalUseInfoBananas);
 
             // Get the substance residue collections for PINEAPPLE
             var agriculturalUseInfoPineapple = agriculturalUseInfo[_foodPineapple];

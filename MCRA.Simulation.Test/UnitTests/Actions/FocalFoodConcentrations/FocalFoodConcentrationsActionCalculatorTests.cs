@@ -35,7 +35,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var calculator = new FocalFoodConcentrationsActionCalculator(project);
             var header = TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoadAndSummarize");
 
-            Assert.AreEqual(5, data.FocalCommoditySamples.Count);
+            Assert.HasCount(5, data.FocalCommoditySamples);
 
             WriteReport(header, "TestLoadAndSummarize.html");
         }
@@ -62,7 +62,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var calculator = new FocalFoodConcentrationsActionCalculator(project);
             var header = TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoadAndSummarizeNoFocalCommoditySelection");
 
-            Assert.AreEqual(0, data.FocalCommoditySamples.Count);
+            Assert.IsEmpty(data.FocalCommoditySamples);
 
             WriteReport(header, "TestLoadAndSummarizeNoFocalCommoditySelection.html");
         }

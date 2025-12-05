@@ -34,7 +34,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.AOPNet
             });
             var section = new EffectRelationshipsSummarySection();
             section.Summarize(adverseOutcomePathwayNetwork0, effects);
-            Assert.AreEqual(5, section.Records.Count);
+            Assert.HasCount(5, section.Records);
             AssertIsValidView(section);
         }
     }

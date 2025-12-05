@@ -171,7 +171,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                 .ThenBy(c => c.Residue)
                 .ToList();
 
-            Assert.AreEqual(samplesIn.Count, samplesOut.Count);
+            Assert.HasCount(samplesIn.Count, samplesOut);
             for (var i = 0; i < samplesIn.Count; ++i) {
                 var sampleIn = samplesIn[i];
                 var sampleOut = samplesOut[i];

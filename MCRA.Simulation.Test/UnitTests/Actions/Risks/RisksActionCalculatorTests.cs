@@ -166,7 +166,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                     .Select(ihi => ihi.ExposureHazardRatio)
                     .Percentile(95)
                 );
-            Assert.IsTrue(hiCumUpperPercentile < sumHiSubsUpperPercentile);
+            Assert.IsLessThan(sumHiSubsUpperPercentile, hiCumUpperPercentile);
 
             var factorialSet = new UncertaintyFactorialSet(
                 UncertaintySource.Concentrations,
@@ -531,7 +531,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var risksActionResultNom = resultNom as RisksActionResult;
             Assert.IsNotNull(risksActionResultNom);
             Assert.IsNotNull(risksActionResultNom.IndividualEffectsBySubstanceCollections.Count == 1);
-            Assert.AreEqual(substances.Count, risksActionResultNom.IndividualEffectsBySubstanceCollections.First().IndividualEffects.Count);
+            Assert.HasCount(substances.Count, risksActionResultNom.IndividualEffectsBySubstanceCollections.First().IndividualEffects);
         }
 
         /// <summary>
@@ -624,7 +624,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var risksActionResultNom = resultNom as RisksActionResult;
             Assert.IsNotNull(risksActionResultNom);
             Assert.IsNotNull(risksActionResultNom.IndividualEffectsBySubstanceCollections.Count == 1);
-            Assert.AreEqual(substances.Count, risksActionResultNom.IndividualEffectsBySubstanceCollections.First().IndividualEffects.Count);
+            Assert.HasCount(substances.Count, risksActionResultNom.IndividualEffectsBySubstanceCollections.First().IndividualEffects);
         }
     }
 }

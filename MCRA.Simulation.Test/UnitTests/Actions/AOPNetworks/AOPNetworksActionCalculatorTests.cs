@@ -61,7 +61,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var calculator = new AOPNetworksActionCalculator(project);
             TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoad1");
             Assert.IsNotNull(data.RelevantEffects);
-            Assert.AreEqual(2, data.RelevantEffects.Count);
+            Assert.HasCount(2, data.RelevantEffects);
             Assert.IsNotNull(data.AdverseOutcomePathwayNetwork);
         }
 
@@ -113,7 +113,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var calculator = new AOPNetworksActionCalculator(project);
             TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoad2");
             Assert.IsNotNull(data.RelevantEffects);
-            Assert.AreEqual(2, data.RelevantEffects.Count);
+            Assert.HasCount(2, data.RelevantEffects);
             Assert.IsNotNull(data.AdverseOutcomePathwayNetwork);
         }
     }

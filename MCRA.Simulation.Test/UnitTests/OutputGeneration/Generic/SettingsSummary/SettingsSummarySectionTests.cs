@@ -32,7 +32,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.Generic {
                 IsValid = version != null
             };
             section.SummarizeDataSource(actionDataSummaryRecord);
-            Assert.AreEqual(1, section.DataSourceSummaryRecords.Count);
+            Assert.HasCount(1, section.DataSourceSummaryRecords);
             AssertIsValidView(section);
         }
     }

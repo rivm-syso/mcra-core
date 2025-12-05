@@ -32,7 +32,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var calculator = new NonDietaryExposureSourcesActionCalculator(project);
             var header = TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoad");
             Assert.IsNotNull(data.NonDietaryExposureSources);
-            Assert.AreEqual(5, data.NonDietaryExposureSources.Count);
+            Assert.HasCount(5, data.NonDietaryExposureSources);
         }
     }
 }

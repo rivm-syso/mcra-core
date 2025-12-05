@@ -36,10 +36,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
                 intraSpeciesFactorModels
             );
 
-            Assert.AreEqual(_noelsCramerClassI.Length, calculator.NoelsCramerClassI.Count);
-            Assert.AreEqual(_noelsCramerClassII.Length, calculator.NoelsCramerClassII.Count);
-            Assert.AreEqual(_noelsCramerClassIII.Length, calculator.NoelsCramerClassIII.Count);
-            Assert.AreEqual(_noelsCramerClassUnknown.Length, calculator.NoelsCramerClassUnknown.Count);
+            Assert.HasCount(_noelsCramerClassI.Length, calculator.NoelsCramerClassI);
+            Assert.HasCount(_noelsCramerClassII.Length, calculator.NoelsCramerClassII);
+            Assert.HasCount(_noelsCramerClassIII.Length, calculator.NoelsCramerClassIII);
+            Assert.HasCount(_noelsCramerClassUnknown.Length, calculator.NoelsCramerClassUnknown);
 
             Assert.AreEqual(_noelsCramerClassI.Average(), calculator.NoelsCramerClassI.Average(), 1e-4);
             Assert.AreEqual(_noelsCramerClassII.Average(), calculator.NoelsCramerClassII.Average(), 1e-4);
@@ -188,8 +188,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
 
             var nominalValueCramerClassI = 1D / _noelsCramerClassI.Average(r => 1 / r);
             Assert.AreEqual(nominalValueCramerClassI * .1 * .1 * .001, imputeNominal.Value, 1e-5);
-            Assert.IsTrue(imputeNominal.Value > lower);
-            Assert.IsTrue(imputeNominal.Value < upper);
+            Assert.IsGreaterThan(lower, imputeNominal.Value);
+            Assert.IsLessThan(upper, imputeNominal.Value);
         }
 
         #region Mocks & constants

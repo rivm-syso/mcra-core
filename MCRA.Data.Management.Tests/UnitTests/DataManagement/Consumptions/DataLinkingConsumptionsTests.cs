@@ -13,7 +13,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _compiledLinkManager.LoadScope(SourceTableGroup.Survey);
 
             var scope = _compiledLinkManager.GetCodesInScope(ScopingType.DietaryIndividuals);
-            Assert.AreEqual(5, scope.Count);
+            Assert.HasCount(5, scope);
             CollectionAssert.AreEqual(new[] { "1", "2", "3", "4", "5" }, scope.ToArray());
 
             var report = _compiledLinkManager.GetDataReadingReports(SourceTableGroup.Survey);
@@ -34,7 +34,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             var scope = _compiledLinkManager.GetCodesInScope(ScopingType.DietaryIndividuals);
 
-            Assert.AreEqual(2, scope.Count);
+            Assert.HasCount(2, scope);
             CollectionAssert.AreEqual(new[] { "3", "4" }, scope.ToArray());
 
             var report = _compiledLinkManager.GetDataReadingReports(SourceTableGroup.Survey);
@@ -52,7 +52,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _compiledLinkManager.LoadScope(SourceTableGroup.Survey);
 
             var scope = _compiledLinkManager.GetCodesInScope(ScopingType.DietaryIndividuals);
-            Assert.AreEqual(0, scope.Count);
+            Assert.IsEmpty(scope);
 
             var report = _compiledLinkManager.GetDataReadingReports(SourceTableGroup.Survey);
             AssertDataLinkingSummaryRecord(report, ScopingType.Consumptions, ScopingType.DietaryIndividuals, 6, "", "1,2,3,4,5,6", "");
@@ -73,7 +73,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _compiledLinkManager.LoadScope(SourceTableGroup.Survey);
 
             var scope = _compiledLinkManager.GetCodesInScope(ScopingType.DietaryIndividuals);
-            Assert.AreEqual(5, scope.Count);
+            Assert.HasCount(5, scope);
             CollectionAssert.AreEqual(new[] { "1", "2", "3", "4", "5" }, scope.ToArray());
 
             var report = _compiledLinkManager.GetDataReadingReports(SourceTableGroup.Survey);
@@ -98,11 +98,11 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _compiledLinkManager.LoadScope(SourceTableGroup.Survey);
 
             var scope = _compiledLinkManager.GetCodesInScope(ScopingType.FoodSurveys);
-            Assert.AreEqual(3, scope.Count);
+            Assert.HasCount(3, scope);
             CollectionAssert.AreEqual(new[] { "S1", "S2", "S3" }, scope.ToArray());
 
             scope = _compiledLinkManager.GetCodesInScope(ScopingType.DietaryIndividuals);
-            Assert.AreEqual(5, scope.Count);
+            Assert.HasCount(5, scope);
             CollectionAssert.AreEqual(new[] { "1", "2", "3", "4", "5" }, scope.ToArray());
 
             var report = _compiledLinkManager.GetDataReadingReports(SourceTableGroup.Survey);
@@ -127,11 +127,11 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _compiledLinkManager.LoadScope(SourceTableGroup.Survey);
 
             var scope = _compiledLinkManager.GetCodesInScope(ScopingType.FoodSurveys);
-            Assert.AreEqual(3, scope.Count);
+            Assert.HasCount(3, scope);
             CollectionAssert.AreEqual(new[] { "S1", "S2", "S3" }, scope.ToArray());
 
             scope = _compiledLinkManager.GetCodesInScope(ScopingType.DietaryIndividuals);
-            Assert.AreEqual(5, scope.Count);
+            Assert.HasCount(5, scope);
             CollectionAssert.AreEqual(new[] { "1", "2", "3", "4", "5" }, scope.ToArray());
 
             var report = _compiledLinkManager.GetDataReadingReports(SourceTableGroup.Survey);

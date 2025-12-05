@@ -68,7 +68,7 @@ namespace MCRA.Simulation.Test.UnitTests.Objects {
             Assert.AreEqual(pathDictionary[p4], p4_value);
 
             // Dictionary should contain exactly 3 unique keys (p1 and p1_clone are the same)
-            Assert.AreEqual(3, pathDictionary.Count);            
+            Assert.HasCount(3, pathDictionary);            
         }
     }
 }

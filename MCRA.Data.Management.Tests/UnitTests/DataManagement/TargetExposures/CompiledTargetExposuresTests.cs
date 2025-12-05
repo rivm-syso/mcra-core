@@ -16,7 +16,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             // Only experiments with all matching codes are loaded (matching response codes are mandatory)
             var models = _getTargetExposuresDelegate.Invoke();
-            Assert.AreEqual(2, models.Count);
+            Assert.HasCount(2, models);
 
             // Count 4 percentiles
             Assert.IsTrue(models.Values.All(r => r.TargetExposurePercentiles.Count == 4));
@@ -26,7 +26,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             // Substances are loaded from valid experiments, so only 4 in this case
             var substances = _getSubstancesDelegate.Invoke();
-            Assert.AreEqual(1, substances.Count);
+            Assert.HasCount(1, substances);
         }
     }
 }

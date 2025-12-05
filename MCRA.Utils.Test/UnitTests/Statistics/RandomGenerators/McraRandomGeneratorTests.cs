@@ -22,7 +22,7 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.McraRandomGenerators {
         public void McraRandomGenerator_TestSeedsDifferent() {
             var random1 = new McraRandomGenerator(1);
             var random2 = new McraRandomGenerator(2);
-            Assert.IsTrue(random1.NextDouble() != random2.NextDouble());
+            Assert.AreNotEqual(random2.NextDouble(), random1.NextDouble());
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.McraRandomGenerators {
         public void McraRandomGenerator_TestUnEqualSeeds(int[] seeds1, int[] seeds2) {
             var random1 = new McraRandomGenerator(seeds1);
             var random2 = new McraRandomGenerator(seeds2);
-            Assert.IsFalse(random1.Seed == random2.Seed);
+            Assert.AreNotEqual(random2.Seed, random1.Seed);
         }
 
         /// <summary>
@@ -86,8 +86,8 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.McraRandomGenerators {
             seeds.Sort();
             var min = seeds.Min();
             var max = seeds.Max();
-            Assert.IsTrue(min < short.MinValue);
-            Assert.IsTrue(max > short.MaxValue);
+            Assert.IsLessThan(short.MinValue, min);
+            Assert.IsGreaterThan(short.MaxValue, max);
 
         }
     }

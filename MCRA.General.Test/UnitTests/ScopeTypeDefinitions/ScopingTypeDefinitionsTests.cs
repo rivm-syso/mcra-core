@@ -45,7 +45,7 @@ namespace MCRA.General.Test.UnitTests.ScopeTypeDefinitions {
                         Assert.IsNotNull(linkingColumn);
 
                         // Assert that the foreign key reference is also defined in the table/column definition
-                        Assert.IsTrue(linkingColumn.ForeignKeyTables.Contains(linkedTableId.ToString()));
+                        Assert.Contains(linkedTableId.ToString(), linkingColumn.ForeignKeyTables);
                     }
                 }
             }

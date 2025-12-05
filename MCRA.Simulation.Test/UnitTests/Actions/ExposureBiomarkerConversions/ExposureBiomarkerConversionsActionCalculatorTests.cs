@@ -36,7 +36,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             // Assert
             Assert.IsNotNull(data.ExposureBiomarkerConversions);
-            Assert.AreEqual(4, data.ExposureBiomarkerConversions.Count);
+            Assert.HasCount(4, data.ExposureBiomarkerConversions);
 
             WriteReport(header, "TestLoadAndSummarize.html");
         }

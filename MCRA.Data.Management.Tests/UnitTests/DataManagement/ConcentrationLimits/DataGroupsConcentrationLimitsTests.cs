@@ -27,7 +27,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement.MaximumResidueLimit
             var concentrationLimits = _compiledDataManager.GetAllMaximumConcentrationLimits();
             var concentrationLimitsApple = concentrationLimits.Where(m => m.Food == foodApple).ToList();
 
-            Assert.AreEqual(3, concentrationLimitsApple.Count);
+            Assert.HasCount(3, concentrationLimitsApple);
             CollectionAssert.Contains(concentrationLimitsApple.Select(m => m.Compound).ToList(), compoundB);
             CollectionAssert.Contains(concentrationLimitsApple.Select(m => m.Compound).ToList(), compoundC);
             CollectionAssert.Contains(concentrationLimitsApple.Select(m => m.Compound).ToList(), compoundA);
@@ -37,7 +37,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement.MaximumResidueLimit
             Assert.AreEqual(3, concentrationLimitsApple.Single(m => m.Compound == compoundC).Limit);
 
             var maximumResidueLimitsBananas = concentrationLimits.Where(m => m.Food == foodBananas).ToList();
-            Assert.AreEqual(2, maximumResidueLimitsBananas.Count);
+            Assert.HasCount(2, maximumResidueLimitsBananas);
             CollectionAssert.Contains(maximumResidueLimitsBananas.Select(m => m.Compound).ToList(), compoundA);
             CollectionAssert.Contains(maximumResidueLimitsBananas.Select(m => m.Compound).ToList(), compoundD);
 

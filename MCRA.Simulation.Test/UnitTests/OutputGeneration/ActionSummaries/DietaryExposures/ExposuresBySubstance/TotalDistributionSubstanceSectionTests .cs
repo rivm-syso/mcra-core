@@ -26,7 +26,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
             var section = new TotalDistributionCompoundSection();
             section.Summarize(exposures, substances, rpfs, memberships, ExposureType.Acute, 25, 75, 2.5, 97.5, false);
             Assert.AreEqual(100D, section.Records.Sum(c => c.ContributionPercentage), .001);
-            Assert.AreEqual(substances.Count, section.Records.Count);
+            Assert.HasCount(substances.Count, section.Records);
 
             section.SummarizeUncertainty(exposures, substances, rpfs, memberships, ExposureType.Acute, false);
             Assert.AreEqual(3, section.Records.SelectMany(c => c.Contributions).Count());
@@ -50,7 +50,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
             section.Summarize(exposures, substances, rpfs, memberships, ExposureType.Chronic, 25, 75, 2.5, 97.5, false);
 
             Assert.AreEqual(100D, section.Records.Sum(c => c.ContributionPercentage), .001);
-            Assert.AreEqual(substances.Count, section.Records.Count);
+            Assert.HasCount(substances.Count, section.Records);
 
             section.SummarizeUncertainty(exposures, substances, rpfs, memberships, ExposureType.Chronic, false);
             Assert.AreEqual(3, section.Records.SelectMany(c => c.Contributions).Count());

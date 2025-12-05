@@ -83,7 +83,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions.SoilExposures {
 
             Assert.IsNotNull(data.IndividualSoilExposures);
             Assert.IsNotNull(data.SoilExposureUnit);
-            Assert.AreEqual(numberOfIndividuals, data.IndividualSoilExposures.Count);
+            Assert.HasCount(numberOfIndividuals, data.IndividualSoilExposures);
         }
 
         /// <summary>
@@ -132,7 +132,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions.SoilExposures {
 
             Assert.IsNotNull(data.IndividualSoilExposures);
             Assert.IsNotNull(data.SoilExposureUnit);
-            Assert.AreEqual(numberOfIndividuals, data.IndividualSoilExposures.Count);
+            Assert.HasCount(numberOfIndividuals, data.IndividualSoilExposures);
         }
     }
 }

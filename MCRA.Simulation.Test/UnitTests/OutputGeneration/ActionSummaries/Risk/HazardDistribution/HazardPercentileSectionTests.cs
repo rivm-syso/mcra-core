@@ -44,9 +44,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             }
             var result = section.GetHazardPercentileRecords();
             Assert.AreEqual(result[0].ReferenceValue, section.Percentiles[0].ReferenceValue);
-            Assert.IsTrue(result[0].ReferenceValue > 0);
-            Assert.IsTrue(result[0].LowerBound > 0);
-            Assert.IsTrue(result[0].UpperBound > 0);
+            Assert.IsGreaterThan(0, result[0].ReferenceValue);
+            Assert.IsGreaterThan(0, result[0].LowerBound);
+            Assert.IsGreaterThan(0, result[0].UpperBound);
 
             var percentiles = new UncertainDataPointCollection<double>() {
                 XValues = new List<double>() { 50, 95 },
@@ -89,9 +89,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var result = section.GetHazardPercentileRecords();
 
             Assert.AreEqual(result[0].ReferenceValue, section.Percentiles[0].ReferenceValue);
-            Assert.IsTrue(result[0].ReferenceValue > 0);
-            Assert.IsTrue(result[0].LowerBound > 0);
-            Assert.IsTrue(result[0].UpperBound > 0);
+            Assert.IsGreaterThan(0, result[0].ReferenceValue);
+            Assert.IsGreaterThan(0, result[0].LowerBound);
+            Assert.IsGreaterThan(0, result[0].UpperBound);
             AssertIsValidView(section);
         }
     }

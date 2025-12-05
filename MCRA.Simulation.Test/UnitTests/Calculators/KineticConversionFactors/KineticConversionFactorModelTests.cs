@@ -39,7 +39,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticConversionFactors {
                 // This is an uncertainty draw; it is be very suspicious when it is
                 // exactly the same as the nominal value
                 Assert.AreNotEqual(0.4, draw);
-                Assert.IsTrue(draw > 0);
+                Assert.IsGreaterThan(0, draw);
             }
         }
 
@@ -91,7 +91,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticConversionFactors {
                     // This is an uncertainty draw; it is be very suspicious when it is
                     // exactly the same as the nominal value
                     Assert.AreNotEqual(scenario.expectedConst, draw);
-                    Assert.IsTrue(draw > 0);
+                    Assert.IsGreaterThan(0, draw);
                 }
             }
         }
@@ -154,8 +154,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticConversionFactors {
 
             var min = draws.Min();
             var max = draws.Max();
-            Assert.IsTrue(min < nominal);
-            Assert.IsTrue(max > nominal);
+            Assert.IsLessThan(nominal, min);
+            Assert.IsGreaterThan(nominal, max);
         }
 
         private static KineticConversionFactor createKineticConversionFactor(

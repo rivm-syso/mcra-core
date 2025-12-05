@@ -33,7 +33,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
                 TargetDoseSelectionMethod.Aggregate,
                 random
             );
-            Assert.AreEqual(3, result.Count);
+            Assert.HasCount(3, result);
             var expectedValues = hazardCharacterisations.Select(r => r.Value).ToList();
             var resultValues = result.Values.Select(r => r.Value).ToList();
             CollectionAssert.AreEquivalent(expectedValues, resultValues);

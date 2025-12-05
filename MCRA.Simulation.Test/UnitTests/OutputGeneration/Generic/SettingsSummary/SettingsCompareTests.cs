@@ -13,7 +13,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.Generic.SettingsSummar
 
             var mockedSettings = project.GetMockedObject(typeof(EffectsModuleConfig));
             Assert.IsNotNull(mockedSettings);
-            Assert.AreEqual(0, mockedSettings.Invocations.Count);
+            Assert.IsEmpty(mockedSettings.Invocations);
 
         }
     }

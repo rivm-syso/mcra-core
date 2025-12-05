@@ -13,21 +13,21 @@ namespace MCRA.Utils.Test.UnitTests {
             foreach (var r in s.GetRangeStrings()) {
                 Trace.WriteLine(r);
             }
-            Assert.IsTrue(s.GetRangeStrings().Count() == 2);
+            Assert.AreEqual(2, s.GetRangeStrings().Count());
         }
 
         [TestMethod]
         public void GetSmallerThanString() {
             var s = "12,13,20-50,-10,60-100,300-";
             var actual = s.GetSmallerEqualString();
-            Assert.IsTrue(actual == "-10");
+            Assert.AreEqual("-10", actual);
         }
 
         [TestMethod]
         public void GetGreaterThanString() {
             var s = "12,13,20-50,-10,60-100,300-";
             var actual = s.GetGreaterEqualString();
-            Assert.IsTrue(actual == "300-");
+            Assert.AreEqual("300-", actual);
         }
 
         /// <summary>
@@ -41,9 +41,9 @@ namespace MCRA.Utils.Test.UnitTests {
             var mungeString = "Blablabla";
             var guidString = guid.ToString();
             var result = guidString.MungeToGuid(mungeString);
-            Assert.IsTrue(result == "619a5d4b-af7f-5f59-9dee-a86b338443eb");
+            Assert.AreEqual("619a5d4b-af7f-5f59-9dee-a86b338443eb", result);
             result = guidString.MungeToGuid(mungeString + "a");
-            Assert.IsFalse(result == "619a5d4b-af7f-5f59-9dee-a86b338443eb");
+            Assert.AreNotEqual("619a5d4b-af7f-5f59-9dee-a86b338443eb", result);
         }
 
         /// <summary>
@@ -57,23 +57,23 @@ namespace MCRA.Utils.Test.UnitTests {
             var mungeString = "Blablabla";
             var guidString = guid.ToString();
             var result = guidString.MungeToGuid(mungeString);
-            Assert.IsTrue(result == "b97ca4f2-6f00-3502-c25e-3a9efe58343d");
+            Assert.AreEqual("b97ca4f2-6f00-3502-c25e-3a9efe58343d", result);
             result = guidString.MungeToGuid(mungeString + "a");
-            Assert.IsFalse(result == "b97ca4f2-6f00-3502-c25e-3a9efe58343d");
+            Assert.AreNotEqual("b97ca4f2-6f00-3502-c25e-3a9efe58343d", result);
         }
 
         [TestMethod]
         public void SplitStringInToInt() {
             var s = " 1 2 3     4   ";
             var actual = s.SplitToIntArray();
-            Assert.AreEqual(4, actual.Length);
+            Assert.HasCount(4, actual);
         }
 
         [TestMethod]
         public void SplitStringInToDouble() {
             var s = "  1.0 2 3   4   ";
             var actual = s.SplitToInvariantDoubleArray();
-            Assert.AreEqual(4, actual.Length);
+            Assert.HasCount(4, actual);
         }
     }
 }

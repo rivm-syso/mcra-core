@@ -258,21 +258,21 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             if (hbmConvertToSingleTargetMatrix) {
                 if (missingValueImputationMethod == MissingValueImputationMethod.SetZero) {
                     //for Subst 2 alle missing values are replaced by zero, therefor no positives available
-                    Assert.IsTrue(section.IndividualRecords.Count > 0);
+                    Assert.IsNotEmpty(section.IndividualRecords);
                 } else {
                     //for Subst 2 all missing values are replaced by data = MV,
                     //therefor all samples are replaced from matrix conversion on the second sampling method
-                    Assert.IsTrue(section.IndividualRecords.Count > 0);
+                    Assert.IsNotEmpty(section.IndividualRecords);
                 }
             } else {
-                Assert.IsTrue(section.IndividualRecords.Count > 0);
+                Assert.IsNotEmpty(section.IndividualRecords);
             }
             if (nonDetectImputationMethod == NonDetectImputationMethod.CensoredLogNormal) {
                 Assert.IsNotNull(hbmResults.HbmConcentrationModels);
-                Assert.IsTrue(hbmResults.HbmConcentrationModels.Count(c => c.Value.ModelType == ConcentrationModelType.CensoredLogNormal) > 0);
-                Assert.IsTrue(hbmResults.HbmConcentrationModels.Count(c => c.Value.ModelType == ConcentrationModelType.Empirical) > 0);
-                Assert.IsTrue((hbmResults.HbmConcentrationModels.First().Value as CMCensoredLogNormal).Mu > 0);
-                Assert.IsTrue((hbmResults.HbmConcentrationModels.First().Value as CMCensoredLogNormal).Sigma > 0);
+                Assert.IsGreaterThan(0, hbmResults.HbmConcentrationModels.Count(c => c.Value.ModelType == ConcentrationModelType.CensoredLogNormal));
+                Assert.IsGreaterThan(0, hbmResults.HbmConcentrationModels.Count(c => c.Value.ModelType == ConcentrationModelType.Empirical));
+                Assert.IsGreaterThan(0, (hbmResults.HbmConcentrationModels.First().Value as CMCensoredLogNormal).Mu);
+                Assert.IsGreaterThan(0, (hbmResults.HbmConcentrationModels.First().Value as CMCensoredLogNormal).Sigma);
                 Assert.AreEqual(meanSubst1Cens, section.IndividualRecords[1].MeanAll, 1e-3);
 
             } else {
@@ -423,21 +423,21 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             if (hbmConvertToSingleTargetMatrix) {
                 if (missingValueImputationMethod == MissingValueImputationMethod.SetZero) {
                     //for Subst 2 all missing values are replaced by zero, therefor no positives available
-                    Assert.IsTrue(section.IndividualDayRecords.Count > 0);
+                    Assert.IsNotEmpty(section.IndividualDayRecords);
                 } else {
                     //for Subst 2 all missing values are replaced by data = MV,
                     //therefor all samples are replaced from matrix conversion on the second sampkling method
-                    Assert.IsTrue(section.IndividualDayRecords.Count > 0);
+                    Assert.IsNotEmpty(section.IndividualDayRecords);
                 }
             } else {
-                Assert.IsTrue(section.IndividualDayRecords.Count > 0);
+                Assert.IsNotEmpty(section.IndividualDayRecords);
             }
             if (nonDetectImputationMethod == NonDetectImputationMethod.CensoredLogNormal) {
                 Assert.IsNotNull(result.HbmConcentrationModels);
-                Assert.IsTrue(result.HbmConcentrationModels.Count(c => c.Value.ModelType == ConcentrationModelType.CensoredLogNormal) > 0);
-                Assert.IsTrue(result.HbmConcentrationModels.Count(c => c.Value.ModelType == ConcentrationModelType.Empirical) > 0);
-                Assert.IsTrue((result.HbmConcentrationModels.First().Value as CMCensoredLogNormal).Mu > 0);
-                Assert.IsTrue((result.HbmConcentrationModels.First().Value as CMCensoredLogNormal).Sigma > 0);
+                Assert.IsGreaterThan(0, result.HbmConcentrationModels.Count(c => c.Value.ModelType == ConcentrationModelType.CensoredLogNormal));
+                Assert.IsGreaterThan(0, result.HbmConcentrationModels.Count(c => c.Value.ModelType == ConcentrationModelType.Empirical));
+                Assert.IsGreaterThan(0, (result.HbmConcentrationModels.First().Value as CMCensoredLogNormal).Mu);
+                Assert.IsGreaterThan(0, (result.HbmConcentrationModels.First().Value as CMCensoredLogNormal).Sigma);
                 Assert.AreEqual(meanSubst1Cens, section.IndividualDayRecords[1].MeanAll, 1e-3);
 
             } else {

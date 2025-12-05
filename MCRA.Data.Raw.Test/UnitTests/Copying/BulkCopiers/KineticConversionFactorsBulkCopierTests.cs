@@ -26,8 +26,8 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
 
                 var tables = dataSourceWriter.DataTables;
 
-                Assert.AreEqual(30, tables[KcfTableDefinition.TargetDataTable].Rows.Count);
-                Assert.AreEqual(180, tables[SgTableDefinition.TargetDataTable].Rows.Count);
+                Assert.HasCount(30, tables[KcfTableDefinition.TargetDataTable].Rows);
+                Assert.HasCount(180, tables[SgTableDefinition.TargetDataTable].Rows);
 
                 var modelIds = getDistinctColumnValues<string>(tables[SgTableDefinition.TargetDataTable], RawKineticConversionFactorSGs.IdKineticConversionFactor.ToString());
 

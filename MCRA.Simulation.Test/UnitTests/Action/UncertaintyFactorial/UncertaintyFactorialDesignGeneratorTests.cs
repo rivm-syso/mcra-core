@@ -25,7 +25,7 @@ namespace MCRA.Simulation.Test.UnitTests.Action.UncertaintyFactorial {
                 new List<string>() { "Concentrations", "Individuals", "MC"},
                 design.UncertaintySources
             );
-            Assert.AreEqual(4, design.TruthTable.Count);
+            Assert.HasCount(4, design.TruthTable);
             Assert.AreEqual(4, design.Count);
             Assert.AreEqual(4, design.DesignMatrix.GetLength(0));
             Assert.AreEqual(3, design.DesignMatrix.GetLength(1));

@@ -74,7 +74,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var header = TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoad");
 
             Assert.IsNotNull(data.MarginalOccurrencePatterns);
-            Assert.AreEqual(2, data.MarginalOccurrencePatterns.Count);
+            Assert.HasCount(2, data.MarginalOccurrencePatterns);
 
             var factorialSet = new UncertaintyFactorialSet(UncertaintySource.Concentrations);
             var uncertaintySourceGenerators = factorialSet.UncertaintySources.ToDictionary(r => r, r => random as IRandom);
@@ -115,7 +115,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var calculator = new OccurrencePatternsActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, "AgriculturalUse1");
             Assert.IsNotNull(data.MarginalOccurrencePatterns);
-            Assert.AreEqual(2, data.MarginalOccurrencePatterns.Count);
+            Assert.HasCount(2, data.MarginalOccurrencePatterns);
 
             var factorialSet = new UncertaintyFactorialSet(UncertaintySource.Concentrations);
             var uncertaintySourceGenerators = factorialSet.UncertaintySources.ToDictionary(r => r, r => random as IRandom);
@@ -155,7 +155,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var calculator = new OccurrencePatternsActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, "AgriculturalUse2");
             Assert.IsNotNull(data.MarginalOccurrencePatterns);
-            Assert.AreEqual(2, data.MarginalOccurrencePatterns.Count);
+            Assert.HasCount(2, data.MarginalOccurrencePatterns);
 
             var factorialSet = new UncertaintyFactorialSet(UncertaintySource.Concentrations);
             var uncertaintySourceGenerators = factorialSet.UncertaintySources.ToDictionary(r => r, r => random as IRandom);

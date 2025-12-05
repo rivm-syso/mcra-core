@@ -22,7 +22,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             AssertDataReadingSummaryRecord(report, ScopingType.Compounds, 0, "", "", "A,B,C,D,E,F");
 
             var records = _compiledLinkManager.GetAllScopeEntities(ScopingType.HazardCharacterisations);
-            Assert.AreEqual(13, records.Count);
+            Assert.HasCount(13, records);
         }
 
 

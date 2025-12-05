@@ -31,9 +31,9 @@ namespace MCRA.Utils.Test.UnitTests {
             System.Diagnostics.Trace.WriteLine($"1e: {polynomial.Result[0][n]:F7}   2e: {polynomial.Result[1][n]:F7}   3e: {polynomial.Result[2][n]:F7} ");
             System.Diagnostics.Trace.WriteLine("TestValue " );
             System.Diagnostics.Trace.WriteLine($"1e: {result[0]:F7}   2e: {result[1]:F7}   3e: {result[2]:F7} ");
-            Assert.IsTrue(polynomial.Result[0][n] == result[0]);
-            Assert.IsTrue(polynomial.Result[1][n] == result[1]);
-            Assert.IsTrue(polynomial.Result[2][n] == result[2]);
+            Assert.AreEqual(result[0], polynomial.Result[0][n]);
+            Assert.AreEqual(result[1], polynomial.Result[1][n]);
+            Assert.AreEqual(result[2], polynomial.Result[2][n]);
         }
     }
 }

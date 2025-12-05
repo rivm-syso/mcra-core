@@ -16,14 +16,14 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement.Concentrations {
             config.RestrictToModelledFoodSubset = true;
             config.ModelledFoodSubset = ["A"];
 
-            Assert.AreEqual(2, _subsetManager.SelectedFoodSamples.Count);
+            Assert.HasCount(2, _subsetManager.SelectedFoodSamples);
             Assert.AreEqual("FS1,FS2", string.Join(",", _subsetManager.SelectedFoodSamples.Select(i => i.Code)));
 
             // Reset subset manager and change project settings
             _subsetManager = new SubsetManager(_compiledDataManager, _project);
             config.RestrictToModelledFoodSubset = false;
 
-            Assert.AreEqual(4, _subsetManager.SelectedFoodSamples.Count);
+            Assert.HasCount(4, _subsetManager.SelectedFoodSamples);
             Assert.AreEqual("FS1,FS2,FS3,FS4", string.Join(",", _subsetManager.SelectedFoodSamples.Select(i => i.Code)));
         }
     }

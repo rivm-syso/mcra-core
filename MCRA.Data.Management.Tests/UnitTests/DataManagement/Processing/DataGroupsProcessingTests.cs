@@ -15,7 +15,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             var processingTypes = _compiledDataManager.GetAllProcessingTypes();
             var processingTypeCodes = processingTypes.Keys.ToList();
 
-            Assert.AreEqual(5, processingTypes.Count);
+            Assert.HasCount(5, processingTypes);
             CollectionAssert.Contains(processingTypeCodes, "1");
             CollectionAssert.Contains(processingTypeCodes, "2");
             CollectionAssert.Contains(processingTypeCodes, "3");
@@ -41,8 +41,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             var processingFactorsCooking = processingFactors.Where(pf => pf.ProcessingType.Name == "Cooking").ToList();
             var processingFactorsPeeling = processingFactors.Where(pf => pf.ProcessingType.Name == "Peeling").ToList();
 
-            Assert.AreEqual(2, processingFactorsCooking.Count);
-            Assert.AreEqual(2, processingFactorsPeeling.Count);
+            Assert.HasCount(2, processingFactorsCooking);
+            Assert.HasCount(2, processingFactorsPeeling);
         }
 
     }

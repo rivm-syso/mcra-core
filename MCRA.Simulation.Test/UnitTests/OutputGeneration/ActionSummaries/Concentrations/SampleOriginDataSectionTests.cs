@@ -22,7 +22,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
             var sampleOriginInfos = SampleOriginCalculator.Calculate(foodSamples.ToLookup(c => c.Food));
             var section = new SampleOriginsSummarySection();
             section.Summarize(sampleOriginInfos.SelectMany(r => r.Value).ToList());
-            Assert.AreEqual(9, section.Records.Count);
+            Assert.HasCount(9, section.Records);
             AssertIsValidView(section);
         }
     }

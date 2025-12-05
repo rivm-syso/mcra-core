@@ -72,7 +72,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
                 1,
                 random
             );
-            Assert.AreEqual(3, result.Count);
+            Assert.HasCount(3, result);
 
             var expected = new[] { 100D, 1000D, 10000D };
             for (int i = 0; i < 3; i++) {
@@ -245,7 +245,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
                 1,
                 random
             );
-            Assert.AreEqual(numSubstances, result.Count);
+            Assert.HasCount(numSubstances, result);
             var targetDoses = result.Select(r => r.Value).ToArray();
             for (int i = 0; i < numSubstances; i++) {
                 Assert.AreEqual(expected[i], targetDoses[i], 1e-10);

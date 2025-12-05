@@ -84,7 +84,7 @@ namespace MCRA.Simulation.Test.UnitTests.UnitVariabilityCalculation {
             compoundConcentrations.Add(compoundConcentration2);
             compoundConcentrations.Add(compoundConcentration3);
             var result = calculator.CalculateResidues(compoundConcentrations, foods.First(), random);
-            Assert.AreEqual(3, result.Count);
+            Assert.HasCount(3, result);
         }
         /// <summary>
         /// Calculate unit variability: UnitVariabilityModelType.BetaDistribution
@@ -127,7 +127,7 @@ namespace MCRA.Simulation.Test.UnitTests.UnitVariabilityCalculation {
 
             compoundConcentrations.Add(compoundConcentration1);
             var result = calculator.CalculateResidues(compoundConcentrations, foods.First(), random);
-            Assert.AreEqual(1, result.Count);
+            Assert.HasCount(1, result);
         }
         /// <summary>
         /// Calculate unit variability: UnitVariabilityModelType.LogNormalDistribution
@@ -169,7 +169,7 @@ namespace MCRA.Simulation.Test.UnitTests.UnitVariabilityCalculation {
 
             compoundConcentrations.Add(compoundConcentration1);
             var result = calculator.CalculateResidues(compoundConcentrations, foods.First(), random);
-            Assert.AreEqual(1, result.Count);
+            Assert.HasCount(1, result);
         }
     }
 }

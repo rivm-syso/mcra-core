@@ -99,7 +99,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions.DustExposures {
 
             Assert.IsNotNull(data.IndividualDustExposures);
             Assert.IsNotNull(data.DustExposureUnit);
-            Assert.AreEqual(numberOfIndividuals, data.IndividualDustExposures.Count);
+            Assert.HasCount(numberOfIndividuals, data.IndividualDustExposures);
         }
 
         /// <summary>
@@ -163,7 +163,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions.DustExposures {
 
             Assert.IsNotNull(data.IndividualDustExposures);
             Assert.IsNotNull(data.DustExposureUnit);
-            Assert.AreEqual(numberOfIndividuals, data.IndividualDustExposures.Count);
+            Assert.HasCount(numberOfIndividuals, data.IndividualDustExposures);
         }
     }
 }

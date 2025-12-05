@@ -174,10 +174,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 var calculator = new ConsumptionsActionCalculator(project);
                 TestLoadAndSummarizeNominal(calculator, data, subsetManager, $"Consumptions_3_{count}");
 
-                Assert.AreEqual(consumerCount, data.ConsumerIndividuals.Count);
-                Assert.AreEqual(daysCount, data.ConsumerIndividualDays.Count);
-                Assert.AreEqual(foodsCount, data.FoodsAsEaten.Count);
-                Assert.AreEqual(consumptionsCount, data.SelectedFoodConsumptions.Count);
+                Assert.HasCount(consumerCount, data.ConsumerIndividuals);
+                Assert.HasCount(daysCount, data.ConsumerIndividualDays);
+                Assert.HasCount(foodsCount, data.FoodsAsEaten);
+                Assert.HasCount(consumptionsCount, data.SelectedFoodConsumptions);
             }
         }
 

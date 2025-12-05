@@ -38,7 +38,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleFilters {
             var filter = new SampleLocationFilter(locationSubsetDefinition, true);
             var foodSamples = fakeFoodSamples();
             var filteredSamples = foodSamples.Where(filter.Passes).ToList();
-            Assert.AreEqual(4, filteredSamples.Count);
+            Assert.HasCount(4, filteredSamples);
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleFilters {
             var filter = new SampleLocationFilter(locationSubsetDefinition, false);
             var foodSamples = fakeFoodSamples();
             var filteredSamples = foodSamples.Where(filter.Passes).ToList();
-            Assert.AreEqual(2, filteredSamples.Count);
+            Assert.HasCount(2, filteredSamples);
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleFilters {
             var filter = new SampleLocationFilter(locationSubsetDefinition, false);
             var foodSamples = fakeFoodSamples();
             var filteredSamples = foodSamples.Where(filter.Passes).ToList();
-            Assert.AreEqual(8, filteredSamples.Count);
+            Assert.HasCount(8, filteredSamples);
         }
     }
 }

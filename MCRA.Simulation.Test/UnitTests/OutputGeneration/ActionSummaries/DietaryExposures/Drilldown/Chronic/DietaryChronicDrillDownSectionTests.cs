@@ -52,7 +52,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
                 50,
                 false
             );
-            Assert.AreEqual(9, section.OverallIndividualDrillDownRecords.Count);
+            Assert.HasCount(9, section.OverallIndividualDrillDownRecords);
 
             AssertIsValidView(section);
         }
@@ -105,7 +105,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
                 50,
                 false
             );
-            Assert.AreEqual(9, section.OverallIndividualDrillDownRecords.Count);
+            Assert.HasCount(9, section.OverallIndividualDrillDownRecords);
             AssertIsValidView(section);
         }
         /// <summary>
@@ -156,7 +156,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
                 true,
                 50,
                 false);
-            Assert.AreEqual(9, section.OverallIndividualDrillDownRecords.Count);
+            Assert.HasCount(9, section.OverallIndividualDrillDownRecords);
             AssertIsValidView(section);
         }
     }

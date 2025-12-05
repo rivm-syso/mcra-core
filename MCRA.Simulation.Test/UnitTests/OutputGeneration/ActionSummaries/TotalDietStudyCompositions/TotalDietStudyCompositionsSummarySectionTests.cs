@@ -27,7 +27,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.TotalD
             };
             var section = new TotalDietStudyCompositionsSummarySection();
             section.Summarize(new SectionHeader(), tDSFoodSampleCompositions.ToLookup(c => c.Food));
-            Assert.AreEqual(1, section.Records.Count);
+            Assert.HasCount(1, section.Records);
             AssertIsValidView(section);
         }
     }

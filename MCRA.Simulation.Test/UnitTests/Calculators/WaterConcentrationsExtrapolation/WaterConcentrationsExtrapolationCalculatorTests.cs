@@ -61,7 +61,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.WaterConcentrationsExtrapol
 
             Assert.IsNotNull(result);
             Assert.AreEqual(water, result.Food);
-            Assert.AreEqual(1, result.SampleCompoundRecords.Count);
+            Assert.HasCount(1, result.SampleCompoundRecords);
             var sampleCompoundRecord = result.SampleCompoundRecords.First().SampleCompounds;
 
             Assert.IsTrue(sampleCompoundRecord[substances[0]].IsZeroConcentration);
@@ -105,7 +105,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.WaterConcentrationsExtrapol
 
             Assert.IsNotNull(result);
             Assert.AreEqual(water, result.Food);
-            Assert.AreEqual(1, result.SampleCompoundRecords.Count);
+            Assert.HasCount(1, result.SampleCompoundRecords);
             var sampleCompoundRecord = result.SampleCompoundRecords.First().SampleCompounds;
             foreach (var record in sampleCompoundRecord) {
                 Assert.IsTrue(substanceApprovals[record.Key].IsApproved ? sampleCompoundRecord[record.Key].IsPositiveResidue
@@ -148,7 +148,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.WaterConcentrationsExtrapol
 
             Assert.IsNotNull(result);
             Assert.AreEqual(water, result.Food);
-            Assert.AreEqual(1, result.SampleCompoundRecords.Count);
+            Assert.HasCount(1, result.SampleCompoundRecords);
             var sampleCompoundRecord = result.SampleCompoundRecords.First().SampleCompounds;
 
             var rpfLowerLimit = rpfs.Select(kv => kv.Value).ToList()[rpfs.Count - nrOfmostToxicSubstances];

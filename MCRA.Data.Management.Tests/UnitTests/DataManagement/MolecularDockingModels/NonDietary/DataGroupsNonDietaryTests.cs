@@ -23,11 +23,11 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             var compoundA = _compiledDataManager.GetAllCompounds()["CompoundA"];
             var compoundD = _compiledDataManager.GetAllCompounds()["CompoundD"];
 
-            Assert.AreEqual(3, exposuresIndividualsSurvey1.Count);
+            Assert.HasCount(3, exposuresIndividualsSurvey1);
 
             var nonDietaryExposuresNd1 = exposuresIndividualsSurvey1.Single(nde => nde.IndividualCode == "ND1");
             var nonminalNonDietaryExposuresNd1 = nonDietaryExposuresNd1.NonDietaryExposures;
-            Assert.AreEqual(2, nonminalNonDietaryExposuresNd1.Count);
+            Assert.HasCount(2, nonminalNonDietaryExposuresNd1);
             Assert.AreEqual(1, nonminalNonDietaryExposuresNd1.Single(nnde => nnde.Compound == compoundA).Dermal);
             Assert.AreEqual(2, nonminalNonDietaryExposuresNd1.Single(nnde => nnde.Compound == compoundA).Oral);
             Assert.AreEqual(3, nonminalNonDietaryExposuresNd1.Single(nnde => nnde.Compound == compoundA).Inhalation);
@@ -37,14 +37,14 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             var nonDietaryExposuresNd2 = exposuresIndividualsSurvey1.Single(nde => nde.IndividualCode == "ND2");
             var nonminalNonDietaryExposuresNd2 = nonDietaryExposuresNd2.NonDietaryExposures;
-            Assert.AreEqual(1, nonminalNonDietaryExposuresNd2.Count);
+            Assert.HasCount(1, nonminalNonDietaryExposuresNd2);
             Assert.AreEqual(1, nonminalNonDietaryExposuresNd2.Single(nnde => nnde.Compound == compoundA).Dermal);
             Assert.AreEqual(2, nonminalNonDietaryExposuresNd2.Single(nnde => nnde.Compound == compoundA).Oral);
             Assert.AreEqual(3, nonminalNonDietaryExposuresNd2.Single(nnde => nnde.Compound == compoundA).Inhalation);
 
             var nonDietaryExposuresNd3 = exposuresIndividualsSurvey1.Single(nde => nde.IndividualCode == "ND3");
             var nonminalNonDietaryExposuresNd3 = nonDietaryExposuresNd3.NonDietaryExposures;
-            Assert.AreEqual(2, nonminalNonDietaryExposuresNd3.Count);
+            Assert.HasCount(2, nonminalNonDietaryExposuresNd3);
             Assert.AreEqual(1, nonminalNonDietaryExposuresNd3.Single(nnde => nnde.Compound == compoundA).Dermal);
             Assert.AreEqual(2, nonminalNonDietaryExposuresNd3.Single(nnde => nnde.Compound == compoundA).Oral);
             Assert.AreEqual(3, nonminalNonDietaryExposuresNd3.Single(nnde => nnde.Compound == compoundA).Inhalation);
@@ -71,41 +71,41 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             var compoundA = _compiledDataManager.GetAllCompounds()["CompoundA"];
             var individuals = _compiledDataManager.GetAllIndividuals();
 
-            Assert.AreEqual(7, exposuresMatchedIndividualsSurvey1.Count);
+            Assert.HasCount(7, exposuresMatchedIndividualsSurvey1);
 
             var nonDietaryExposuresIndividual1 = exposuresMatchedIndividualsSurvey1.Single(nde => nde.IndividualCode == "1");
             var nonminalNonDietaryExposuresNd1 = nonDietaryExposuresIndividual1.NonDietaryExposures;
-            Assert.AreEqual(1, nonminalNonDietaryExposuresNd1.Count);
+            Assert.HasCount(1, nonminalNonDietaryExposuresNd1);
             Assert.AreEqual(4.1, nonminalNonDietaryExposuresNd1.Single(nnde => nnde.Compound == compoundA).Dermal);
 
             var nonDietaryExposuresIndividual2 = exposuresMatchedIndividualsSurvey1.Single(nde => nde.IndividualCode == "2");
             var nonminalNonDietaryExposuresNd2 = nonDietaryExposuresIndividual2.NonDietaryExposures;
-            Assert.AreEqual(1, nonminalNonDietaryExposuresNd2.Count);
+            Assert.HasCount(1, nonminalNonDietaryExposuresNd2);
             Assert.AreEqual(4.2, nonminalNonDietaryExposuresNd2.Single(nnde => nnde.Compound == compoundA).Dermal);
 
             var nonDietaryExposuresIndividual3 = exposuresMatchedIndividualsSurvey1.Single(nde => nde.IndividualCode == "3");
             var nonminalNonDietaryExposuresNd3 = nonDietaryExposuresIndividual3.NonDietaryExposures;
-            Assert.AreEqual(1, nonminalNonDietaryExposuresNd3.Count);
+            Assert.HasCount(1, nonminalNonDietaryExposuresNd3);
             Assert.AreEqual(4.3, nonminalNonDietaryExposuresNd3.Single(nnde => nnde.Compound == compoundA).Dermal);
 
             var nonDietaryExposuresIndividual4 = exposuresMatchedIndividualsSurvey1.Single(nde => nde.IndividualCode == "4");
             var nonminalNonDietaryExposuresNd4 = nonDietaryExposuresIndividual4.NonDietaryExposures;
-            Assert.AreEqual(1, nonminalNonDietaryExposuresNd4.Count);
+            Assert.HasCount(1, nonminalNonDietaryExposuresNd4);
             Assert.AreEqual(4.4, nonminalNonDietaryExposuresNd4.Single(nnde => nnde.Compound == compoundA).Dermal);
 
             var nonDietaryExposuresIndividual5 = exposuresMatchedIndividualsSurvey1.Single(nde => nde.IndividualCode == "5");
             var nonminalNonDietaryExposuresNd5 = nonDietaryExposuresIndividual5.NonDietaryExposures;
-            Assert.AreEqual(1, nonminalNonDietaryExposuresNd5.Count);
+            Assert.HasCount(1, nonminalNonDietaryExposuresNd5);
             Assert.AreEqual(4.5, nonminalNonDietaryExposuresNd5.Single(nnde => nnde.Compound == compoundA).Dermal);
 
             var nonDietaryExposuresIndividual6 = exposuresMatchedIndividualsSurvey1.Single(nde => nde.IndividualCode == "6");
             var nonminalNonDietaryExposuresNd6 = nonDietaryExposuresIndividual6.NonDietaryExposures;
-            Assert.AreEqual(1, nonminalNonDietaryExposuresNd6.Count);
+            Assert.HasCount(1, nonminalNonDietaryExposuresNd6);
             Assert.AreEqual(4.6, nonminalNonDietaryExposuresNd6.Single(nnde => nnde.Compound == compoundA).Dermal);
 
             var nonDietaryExposuresIndividual7 = exposuresMatchedIndividualsSurvey1.Single(nde => nde.IndividualCode == "7");
             var nonminalNonDietaryExposuresNd7 = nonDietaryExposuresIndividual7.NonDietaryExposures;
-            Assert.AreEqual(1, nonminalNonDietaryExposuresNd7.Count);
+            Assert.HasCount(1, nonminalNonDietaryExposuresNd7);
             Assert.AreEqual(4.7, nonminalNonDietaryExposuresNd7.Single(nnde => nnde.Compound == compoundA).Dermal);
         }
     }

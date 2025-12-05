@@ -42,15 +42,15 @@ namespace MCRA.Utils.Test.UnitTests {
         public void IEnumerableExtensions_ResampleTest1() {
             var a = new List<double>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
             var b = a.Resample();
-            Assert.IsTrue(a.Count == b.Count());
+            Assert.HasCount(b.Count(), a);
         }
 
         [TestMethod]
         public void IEnumerableExtensions_PartitionTest1() {
             var a = new List<double>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-            Assert.IsTrue(a.Partition(3).Count() == 4);
-            Assert.IsTrue(a.Partition(2).Count() == 5);
-            Assert.IsTrue(a.Partition(30).Count() == 1);
+            Assert.AreEqual(4, a.Partition(3).Count());
+            Assert.AreEqual(5, a.Partition(2).Count());
+            Assert.AreEqual(1, a.Partition(30).Count());
         }
 
         [TestMethod]
@@ -75,14 +75,14 @@ namespace MCRA.Utils.Test.UnitTests {
                 new() { 5 }
             };
             var actual = sets.FullSelfIntersect();
-            Assert.IsTrue(actual.Count() == 1);
+            Assert.AreEqual(1, actual.Count());
             Assert.AreEqual(actual.Single(), 5);
         }
 
         [TestMethod]
         public void IEnumerableExtensions_AverageOrZeroTest1() {
             var l = new List<double>();
-            Assert.IsTrue(l.AverageOrZero() == 0);
+            Assert.AreEqual(0, l.AverageOrZero());
         }
 
         [TestMethod]
@@ -153,7 +153,7 @@ namespace MCRA.Utils.Test.UnitTests {
         [TestMethod]
         public void IEnumerableExtensions_VarianceTest1() {
             var numbers = new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, double.NaN };
-            Assert.IsTrue(numbers.Variance() == numbers.AsEnumerable().Variance());
+            Assert.AreEqual(numbers.AsEnumerable().Variance(), numbers.Variance());
         }
 
         [TestMethod]
@@ -185,21 +185,21 @@ namespace MCRA.Utils.Test.UnitTests {
         public void IEnumerableExtensions_GetPatternIdTest2() {
             var l = new string[] { "A", "B", "C" };
             var p1 = l.GetPatternId(s => !string.IsNullOrEmpty(s));
-            Assert.IsTrue(p1 == 7);
+            Assert.AreEqual(7, p1);
         }
 
         [TestMethod]
         public void IEnumerableExtensions_GetPatternIdTest3() {
             var l = new string[] { "", "B", "C" };
             var p1 = l.GetPatternId(s => !string.IsNullOrEmpty(s));
-            Assert.IsTrue(p1 == 6);
+            Assert.AreEqual(6, p1);
         }
 
         [TestMethod]
         public void IEnumerableExtensions_GetPatternIdTest4() {
             var l = new string[] { "A", "", "C" };
             var p1 = l.GetPatternId(s => !string.IsNullOrEmpty(s));
-            Assert.IsTrue(p1 == 5);
+            Assert.AreEqual(5, p1);
         }
 
         [TestMethod]

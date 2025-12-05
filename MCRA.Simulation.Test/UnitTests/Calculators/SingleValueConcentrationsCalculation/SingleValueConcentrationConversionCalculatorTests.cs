@@ -25,7 +25,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SingleValueConcentrationsCa
 
             var calculator = new SingleValueConcentrationConversionCalculator();
             var result = calculator.Compute(activeSubstance, singleValueConcentrationModels, conversionFactors);
-            Assert.AreEqual(singleValueConcentrationModels.Count, result.Count);
+            Assert.HasCount(singleValueConcentrationModels.Count, result);
         }
     }
 }

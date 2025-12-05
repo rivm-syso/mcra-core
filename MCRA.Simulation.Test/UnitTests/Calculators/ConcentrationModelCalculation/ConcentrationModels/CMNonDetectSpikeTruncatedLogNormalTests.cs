@@ -117,16 +117,16 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var pObservedPositives = (double)generatedPositives.Count / repetitions;
             var pExpectedPositives = 0.5;
             var sigmaPositives = Math.Sqrt((pExpectedPositives * (1 - pExpectedPositives)) / repetitions);
-            Assert.IsTrue(pObservedPositives > pExpectedPositives - 1.96 * sigma);
-            Assert.IsTrue(pObservedPositives < pExpectedPositives + 1.96 * sigma);
+            Assert.IsGreaterThan(pExpectedPositives - 1.96 * sigma, pObservedPositives);
+            Assert.IsLessThan(pExpectedPositives + 1.96 * sigma, pObservedPositives);
 
             // Test lors
             var generatedLors = generatedResidues.Where(s => s == lor).ToList();
             var pObservedLors = (double)generatedLors.Count / repetitions;
             var pExpectedLors = 0.5;
             var sigmaLors = Math.Sqrt((pExpectedLors * (1 - pExpectedLors)) / repetitions);
-            Assert.IsTrue(pObservedLors > pExpectedLors - 1.96 * sigma);
-            Assert.IsTrue(pObservedLors < pExpectedLors + 1.96 * sigma);
+            Assert.IsGreaterThan(pExpectedLors - 1.96 * sigma, pObservedLors);
+            Assert.IsLessThan(pExpectedLors + 1.96 * sigma, pObservedLors);
 
             //==========================================
             // DrawFromCensoredOrPositives
@@ -142,16 +142,16 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             pObservedPositives = (double)generatedPositives.Count / repetitions;
             pExpectedPositives = 0.5;
             sigmaPositives = Math.Sqrt((pExpectedPositives * (1 - pExpectedPositives)) / repetitions);
-            Assert.IsTrue(pObservedPositives > pExpectedPositives - 1.96 * sigma);
-            Assert.IsTrue(pObservedPositives < pExpectedPositives + 1.96 * sigma);
+            Assert.IsGreaterThan(pExpectedPositives - 1.96 * sigma, pObservedPositives);
+            Assert.IsLessThan(pExpectedPositives + 1.96 * sigma, pObservedPositives);
 
             // Test lors
             generatedLors = generatedResidues.Where(s => s == lor).ToList();
             pObservedLors = (double)generatedLors.Count / repetitions;
             pExpectedLors = 0.5;
             sigmaLors = Math.Sqrt((pExpectedLors * (1 - pExpectedLors)) / repetitions);
-            Assert.IsTrue(pObservedLors > pExpectedLors - 1.96 * sigma);
-            Assert.IsTrue(pObservedLors < pExpectedLors + 1.96 * sigma);
+            Assert.IsGreaterThan(pExpectedLors - 1.96 * sigma, pObservedLors);
+            Assert.IsLessThan(pExpectedLors + 1.96 * sigma, pObservedLors);
 
             //==========================================
             // Other
@@ -207,16 +207,16 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var pObservedPositives = (double)generatedPositives.Count / repetitions;
             var pExpectedPositives = 0.5;
             var sigmaPositives = Math.Sqrt((pExpectedPositives * (1 - pExpectedPositives)) / repetitions);
-            Assert.IsTrue(pObservedPositives > pExpectedPositives - 1.96 * sigma);
-            Assert.IsTrue(pObservedPositives < pExpectedPositives + 1.96 * sigma);
+            Assert.IsGreaterThan(pExpectedPositives - 1.96 * sigma, pObservedPositives);
+            Assert.IsLessThan(pExpectedPositives + 1.96 * sigma, pObservedPositives);
 
             // Test lors
             var generatedLors = generatedResidues.Where(s => s == 0).ToList();
             var pObservedLors = (double)generatedLors.Count / repetitions;
             var pExpectedLors = 0.5;
             var sigmaLors = Math.Sqrt((pExpectedLors * (1 - pExpectedLors)) / repetitions);
-            Assert.IsTrue(pObservedLors > pExpectedLors - 1.96 * sigma);
-            Assert.IsTrue(pObservedLors < pExpectedLors + 1.96 * sigma);
+            Assert.IsGreaterThan(pExpectedLors - 1.96 * sigma, pObservedLors);
+            Assert.IsLessThan(pExpectedLors + 1.96 * sigma, pObservedLors);
 
             //==========================================
             // DrawFromCensoredOrPositives
@@ -232,8 +232,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             pObservedPositives = (double)generatedPositives.Count / repetitions;
             pExpectedPositives = 1D;
             sigmaPositives = Math.Sqrt((pExpectedPositives * (1 - pExpectedPositives)) / repetitions);
-            Assert.IsTrue(pObservedPositives > pExpectedPositives - 1.96 * sigma);
-            Assert.IsTrue(pObservedPositives < pExpectedPositives + 1.96 * sigma);
+            Assert.IsGreaterThan(pExpectedPositives - 1.96 * sigma, pObservedPositives);
+            Assert.IsLessThan(pExpectedPositives + 1.96 * sigma, pObservedPositives);
 
             //==========================================
             // Other
@@ -289,16 +289,16 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var pObservedPositives = (double)generatedPositives.Count / repetitions;
             var pExpectedPositives = 0.5;
             var sigmaPositives = Math.Sqrt((pExpectedPositives * (1 - pExpectedPositives)) / repetitions);
-            Assert.IsTrue(pObservedPositives > pExpectedPositives - 1.96 * sigma);
-            Assert.IsTrue(pObservedPositives < pExpectedPositives + 1.96 * sigma);
+            Assert.IsGreaterThan(pExpectedPositives - 1.96 * sigma, pObservedPositives);
+            Assert.IsLessThan(pExpectedPositives + 1.96 * sigma, pObservedPositives);
 
             // Test lors
             var generatedLors = generatedResidues.Where(s => s == 0).ToList();
             var pObservedLors = (double)generatedLors.Count / repetitions;
             var pExpectedLors = 0.25;
             var sigmaLors = Math.Sqrt((pExpectedLors * (1 - pExpectedLors)) / repetitions);
-            Assert.IsTrue(pObservedLors > pExpectedLors - 1.96 * sigma);
-            Assert.IsTrue(pObservedLors < pExpectedLors + 1.96 * sigma);
+            Assert.IsGreaterThan(pExpectedLors - 1.96 * sigma, pObservedLors);
+            Assert.IsLessThan(pExpectedLors + 1.96 * sigma, pObservedLors);
 
             //==========================================
             // DrawFromCensoredOrPositives
@@ -314,16 +314,16 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             pObservedPositives = (double)generatedPositives.Count / repetitions;
             pExpectedPositives = 2D / 3;
             sigmaPositives = Math.Sqrt((pExpectedPositives * (1 - pExpectedPositives)) / repetitions);
-            Assert.IsTrue(pObservedPositives > pExpectedPositives - 1.96 * sigma);
-            Assert.IsTrue(pObservedPositives < pExpectedPositives + 1.96 * sigma);
+            Assert.IsGreaterThan(pExpectedPositives - 1.96 * sigma, pObservedPositives);
+            Assert.IsLessThan(pExpectedPositives + 1.96 * sigma, pObservedPositives);
 
             // Test lors
             generatedLors = generatedResidues.Where(s => s == lor).ToList();
             pObservedLors = (double)generatedLors.Count / repetitions;
             pExpectedLors = 1D / 3;
             sigmaLors = Math.Sqrt((pExpectedLors * (1 - pExpectedLors)) / repetitions);
-            Assert.IsTrue(pObservedLors > pExpectedLors - 1.96 * sigma);
-            Assert.IsTrue(pObservedLors < pExpectedLors + 1.96 * sigma);
+            Assert.IsGreaterThan(pExpectedLors - 1.96 * sigma, pObservedLors);
+            Assert.IsLessThan(pExpectedLors + 1.96 * sigma, pObservedLors);
 
             //==========================================
             // Other
@@ -393,8 +393,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var tol3 = 1.0e-2;
             var diffMu = Math.Abs((mu - muGen) / mu);
             var diffSigma = Math.Abs((sigma - sigmaGen) / sigma);
-            Assert.IsTrue(diffMu < tol3);
-            Assert.IsTrue(diffSigma < tol3);
+            Assert.IsLessThan(tol3, diffMu);
+            Assert.IsLessThan(tol3, diffSigma);
 
             // Check variance-covariance matrix; use the same estimates as produced by GenStat
             var tol10 = 1.0e-10;
@@ -407,9 +407,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var diff11 = Math.Abs((concentrationModel.Vcov.GetElement(0, 0) - vcovGen00) / concentrationModel.Vcov.GetElement(0, 0));
             var diff12 = Math.Abs((concentrationModel.Vcov.GetElement(0, 1) - vcovGen01) / concentrationModel.Vcov.GetElement(0, 1));
             var diff22 = Math.Abs((concentrationModel.Vcov.GetElement(1, 1) - vcovGen11) / concentrationModel.Vcov.GetElement(1, 1));
-            Assert.IsTrue(diff11 < tol10);
-            Assert.IsTrue(diff12 < tol10);
-            Assert.IsTrue(diff22 < tol10);
+            Assert.IsLessThan(tol10, diff11);
+            Assert.IsLessThan(tol10, diff12);
+            Assert.IsLessThan(tol10, diff22);
 
             // Check Parametric drawing
             var ndraws = 10000;
@@ -453,13 +453,13 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
 
             // Assert
             var tol1 = 1.0e-1;
-            Assert.IsTrue(diffSpike1 < tol1);
-            Assert.IsTrue(diffSpike2 < tol1);
-            Assert.IsTrue(diffMu1 < tol1);
-            Assert.IsTrue(diffMu2 < tol1);
-            Assert.IsTrue(diffSigma1 < tol1);
-            Assert.IsTrue(diffSigma2 < tol1);
-            Assert.IsTrue(diffCovar < tol1);
+            Assert.IsLessThan(tol1, diffSpike1);
+            Assert.IsLessThan(tol1, diffSpike2);
+            Assert.IsLessThan(tol1, diffMu1);
+            Assert.IsLessThan(tol1, diffMu2);
+            Assert.IsLessThan(tol1, diffSigma1);
+            Assert.IsLessThan(tol1, diffSigma2);
+            Assert.IsLessThan(tol1, diffCovar);
         }
     }
 }

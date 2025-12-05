@@ -43,7 +43,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
                 : [ExposureSource.Diet];
             CollectionAssert.AreEquivalent(expectedRoutes, settingsDto.TargetExposuresSettings.ExposureRoutes);
             CollectionAssert.AreEquivalent(expectedSources, settingsDto.TargetExposuresSettings.ExposureSources);
-            Assert.IsTrue(settingsDto.TargetExposuresSettings.IndividualReferenceSet == ExposureSource.Diet);
+            Assert.AreEqual(ExposureSource.Diet, settingsDto.TargetExposuresSettings.IndividualReferenceSet);
         }
 
         private string createActionXml(

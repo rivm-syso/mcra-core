@@ -70,7 +70,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 var header = TestLoadAndSummarizeNominal(calculator, data, subsetManager, $"TestLoad1_{count}");
 
                 Assert.IsNotNull(data.MembershipProbabilities);
-                Assert.AreEqual(activeCount, data.ActiveSubstances.Count);
+                Assert.HasCount(activeCount, data.ActiveSubstances);
                 Assert.IsNotNull(data.AvailableActiveSubstanceModels);
                 Assert.IsNotNull(data.ActiveSubstances);
             }
@@ -135,7 +135,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 var calculator = new ActiveSubstancesActionCalculator(project);
                 var header = TestRunUpdateSummarizeNominal(new ProjectDto(), calculator, data, $"AssessmentGroupMemberships_{count}");
                 Assert.IsNotNull(data.MembershipProbabilities);
-                Assert.AreEqual(activeCount, data.ActiveSubstances.Count);
+                Assert.HasCount(activeCount, data.ActiveSubstances);
             }
         }
 

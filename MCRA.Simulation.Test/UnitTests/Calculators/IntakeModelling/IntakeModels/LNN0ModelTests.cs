@@ -29,8 +29,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             model.CalculateParameters(individualDayIntakes);
             var summaryAmounts = model.AmountsModelSummary as NormalAmountsModelSummary;
             var summaryFrequencies = model.FrequencyModelSummary;
-            Assert.IsTrue(summaryAmounts.VarianceBetween > 0.3);
-            Assert.IsTrue(summaryAmounts.VarianceWithin > 0.05);
+            Assert.IsGreaterThan(0.3, summaryAmounts.VarianceBetween);
+            Assert.IsGreaterThan(0.05, summaryAmounts.VarianceWithin);
             Assert.IsTrue(!double.IsNaN(summaryFrequencies._2LogLikelihood));
             Assert.IsTrue(!double.IsNaN(summaryAmounts._2LogLikelihood));
         }

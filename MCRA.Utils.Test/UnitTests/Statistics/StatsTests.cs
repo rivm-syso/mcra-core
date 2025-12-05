@@ -39,7 +39,7 @@ namespace MCRA.Utils.Test.UnitTests {
             sw.Start();
             var var = x.Average(w);
             sw.Stop();
-            Assert.IsTrue(sw.ElapsedMilliseconds < 3000);
+            Assert.IsLessThan(3000, sw.ElapsedMilliseconds);
         }
 
         [TestMethod]

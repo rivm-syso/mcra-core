@@ -283,7 +283,7 @@ namespace MCRA.General.Test.UnitTests.UnitConversion {
         public void ConcentrationUnitConverter_TestGetSubstanceAmountUnitAll() {
             var enumValues = Enum.GetValues(typeof(ConcentrationUnit)).Cast<ConcentrationUnit>().ToList();
             foreach (var value in enumValues) {
-                Assert.IsFalse(value.GetSubstanceAmountUnit() == SubstanceAmountUnit.Undefined);
+                Assert.AreNotEqual(SubstanceAmountUnit.Undefined, value.GetSubstanceAmountUnit());
             }
         }
 
@@ -317,8 +317,8 @@ namespace MCRA.General.Test.UnitTests.UnitConversion {
         public void ConcentrationUnitConverter_TestGetConcentrationMassUnitAll() {
             var enumValues = Enum.GetValues(typeof(ConcentrationUnit)).Cast<ConcentrationUnit>().ToList();
             foreach (var value in enumValues) {
-                Assert.IsFalse(value.GetConcentrationMassUnit() == ConcentrationMassUnit.Undefined);
-                Assert.IsFalse(value.GetConcentrationMassUnit() == ConcentrationMassUnit.PerUnit);
+                Assert.AreNotEqual(ConcentrationMassUnit.Undefined, value.GetConcentrationMassUnit());
+                Assert.AreNotEqual(ConcentrationMassUnit.PerUnit, value.GetConcentrationMassUnit());
             }
         }
     }

@@ -100,7 +100,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
                 TestingLevel = 0.05
             };
             model.CalculateParameters(individualIntakeFrequencies, predictionLevels);
-            Assert.AreEqual(20, model.GetConditionalPredictions().ConditionalPrediction.Count);
+            Assert.HasCount(20, model.GetConditionalPredictions().ConditionalPrediction);
 
             (var chronicPredictions, _) = model.GetDistribution(
                 model.ConditionalPredictions,
@@ -138,7 +138,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
                 TestingLevel = 0.05,
             };
             model.CalculateParameters(individualIntakeFrequencies, predictionLevels);
-            Assert.AreEqual(2, model.GetConditionalPredictions().ConditionalPrediction.Count);
+            Assert.HasCount(2, model.GetConditionalPredictions().ConditionalPrediction);
         }
     }
 }

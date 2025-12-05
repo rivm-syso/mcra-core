@@ -34,7 +34,7 @@ namespace MCRA.Utils.Test.UnitTests.DataSourceReading.DataReaders {
                 var dataReader = CreateWrappedCsvReader(stream, emptyTableDef);
                 var table = emptyTableDef.CreateDataTable();
                 table.Load(dataReader, LoadOption.OverwriteChanges);
-                Assert.AreEqual(7, table.Rows.Count);
+                Assert.HasCount(7, table.Rows);
             }
         }
 

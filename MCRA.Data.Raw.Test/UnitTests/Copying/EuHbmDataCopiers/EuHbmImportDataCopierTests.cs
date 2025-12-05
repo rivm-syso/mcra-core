@@ -28,7 +28,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.EuHbmDataCopiers {
                     var tables = dataSourceWriter.DataTables;
                     void checkTableRecordsCount(RawDataSourceTableID tableId, int count) {
                         var tableDefinition = getTableDefinition(tableId);
-                        Assert.AreEqual(count, tables[tableDefinition.TargetDataTable].Rows.Count);
+                        Assert.HasCount(count, tables[tableDefinition.TargetDataTable].Rows);
                     }
                     checkTableRecordsCount(RawDataSourceTableID.HumanMonitoringSurveys, 1);
                     checkTableRecordsCount(RawDataSourceTableID.Individuals, 10);
@@ -42,14 +42,14 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.EuHbmDataCopiers {
                     checkTableRecordsCount(RawDataSourceTableID.HumanMonitoringSampleConcentrations, 180);
                 }
             }
-            Assert.IsTrue(parsedTableGroups.Contains(SourceTableGroup.Compounds));
-            Assert.IsTrue(parsedTableGroups.Contains(SourceTableGroup.HumanMonitoringData));
-            Assert.IsTrue(parsedTables.Contains(RawDataSourceTableID.HumanMonitoringSampleAnalyses));
-            Assert.IsTrue(parsedTables.Contains(RawDataSourceTableID.HumanMonitoringSampleConcentrations));
-            Assert.IsTrue(parsedTables.Contains(RawDataSourceTableID.HumanMonitoringSamples));
-            Assert.IsTrue(parsedTables.Contains(RawDataSourceTableID.HumanMonitoringSurveys));
-            Assert.IsTrue(parsedTables.Contains(RawDataSourceTableID.AnalyticalMethods));
-            Assert.IsTrue(parsedTables.Contains(RawDataSourceTableID.AnalyticalMethodCompounds));
+            Assert.Contains(SourceTableGroup.Compounds, parsedTableGroups);
+            Assert.Contains(SourceTableGroup.HumanMonitoringData, parsedTableGroups);
+            Assert.Contains(RawDataSourceTableID.HumanMonitoringSampleAnalyses, parsedTables);
+            Assert.Contains(RawDataSourceTableID.HumanMonitoringSampleConcentrations, parsedTables);
+            Assert.Contains(RawDataSourceTableID.HumanMonitoringSamples, parsedTables);
+            Assert.Contains(RawDataSourceTableID.HumanMonitoringSurveys, parsedTables);
+            Assert.Contains(RawDataSourceTableID.AnalyticalMethods, parsedTables);
+            Assert.Contains(RawDataSourceTableID.AnalyticalMethodCompounds, parsedTables);
         }
 
         /// <summary>
@@ -89,8 +89,8 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.EuHbmDataCopiers {
                 }
 
                 var tableDefinition = getTableDefinition(RawDataSourceTableID.Compounds);
-                Assert.AreEqual(9, dataSourceWriter.DataTables[tableDefinition.TargetDataTable].Rows.Count);
-                Assert.IsTrue(parsedTables.Contains(RawDataSourceTableID.Compounds));
+                Assert.HasCount(9, dataSourceWriter.DataTables[tableDefinition.TargetDataTable].Rows);
+                Assert.Contains(RawDataSourceTableID.Compounds, parsedTables);
             }
         }
     }

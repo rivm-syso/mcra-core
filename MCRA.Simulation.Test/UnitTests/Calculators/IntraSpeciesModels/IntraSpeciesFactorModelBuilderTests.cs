@@ -63,7 +63,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntraSpeciesModels {
                 .ToList();
             var builder = new IntraSpeciesFactorModelBuilder();
             var intraSpeciesFactorModels = builder.Create(effects, substances, factors, 10);
-            Assert.AreEqual(2, intraSpeciesFactorModels.Count);
+            Assert.HasCount(2, intraSpeciesFactorModels);
             CollectionAssert.Contains(intraSpeciesFactorModels.Keys, ((Effect)null, (Compound)null));
         }
 

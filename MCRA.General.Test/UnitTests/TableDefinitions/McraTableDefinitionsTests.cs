@@ -32,7 +32,7 @@ namespace MCRA.General.Test.UnitTests.TableDefinitions {
             var tableDefinitions = definitionsInstance.TableDefinitions.Select(c => c.Value.Id).ToList();
             var dataGroupTables = definitionsInstance.DataGroupDefinitions.SelectMany(c => c.Value.DataGroupTables.Select(c => c.Id)).ToList();
             foreach (var value in tableDefinitions) {
-                Assert.IsTrue(dataGroupTables.Contains(value), $"Table \"{value}\" is not found in any table group");
+                Assert.Contains(value, dataGroupTables, $"Table \"{value}\" is not found in any table group");
             }
         }
 
@@ -99,7 +99,7 @@ namespace MCRA.General.Test.UnitTests.TableDefinitions {
                             }
                             Assert.AreEqual(-1, columnDefinition.FieldSize, $"Error in field {columnDefinition.Id} of table {tableDefinition.Id}: field size should not be defined for units and controlled terminology types.");
                         } else {
-                            Assert.IsTrue(fieldType != FieldType.Undefined);
+                            Assert.AreNotEqual(FieldType.Undefined, fieldType);
                         }
                     }
                 }
@@ -128,9 +128,9 @@ namespace MCRA.General.Test.UnitTests.TableDefinitions {
             var instances = McraTableDefinitions.Instance;
             foreach (var tableDefinition in instances.TableDefinitions.Values) {
                 if (!string.IsNullOrEmpty(tableDefinition.TargetDataTable)) {
-                    Assert.IsTrue(
-                        tableDefinition.HiddenAliases.Contains(tableDefinition.TargetDataTable),
-                        $"Target table id should be included as an alias in table definition {tableDefinition.Id}"
+                    Assert.Contains(
+tableDefinition.TargetDataTable,
+                        tableDefinition.HiddenAliases, $"Target table id should be included as an alias in table definition {tableDefinition.Id}"
                     );
                 }
             }
@@ -168,7 +168,7 @@ namespace MCRA.General.Test.UnitTests.TableDefinitions {
                     var formats = groupDefinition.DataFormats.ToList();
                     // Check unique ids
                     var formatIds = formats.Select(r => r.Id).ToHashSet(StringComparer.OrdinalIgnoreCase);
-                    Assert.AreEqual(formats.Count, formatIds.Count);
+                    Assert.HasCount(formats.Count, formatIds);
                     // Check referenced tables
                     foreach (var format in formats) {
                         foreach (var tableId in format.TableIds) {

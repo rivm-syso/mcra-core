@@ -45,7 +45,7 @@ namespace MCRA.Data.Compiled.Test {
                 instances[4]
             };
             var warning = checkPBKmodels(selectedInstances);
-            Assert.AreEqual(0, warning.Count);
+            Assert.IsEmpty(warning);
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace MCRA.Data.Compiled.Test {
                 instances[5]
             };
             var warning = checkPBKmodels(selectedInstances);
-            Assert.AreEqual(2, warning.Count);
+            Assert.HasCount(2, warning);
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace MCRA.Data.Compiled.Test {
                 instances[6]
             };
             var warning = checkPBKmodels(selectedInstances);
-            Assert.AreEqual(2, warning.Count);
+            Assert.HasCount(2, warning);
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace MCRA.Data.Compiled.Test {
                 instances[6]
             };
             var warning = checkPBKmodels(selectedInstances);
-            Assert.AreEqual(2, warning.Count);
+            Assert.HasCount(2, warning);
         }
         /// <summary>
         /// Not OK, this one should be possible when 1 is not metabolized to 2, we don't know so throw warning
@@ -110,7 +110,7 @@ namespace MCRA.Data.Compiled.Test {
                 instances[3],
             };
             var warning = checkPBKmodels(selectedInstances);
-            Assert.AreEqual(1, warning.Count);
+            Assert.HasCount(1, warning);
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace MCRA.Data.Compiled.Test {
                 instances[6],
             };
             var warning = checkPBKmodels(selectedInstances);
-            Assert.AreEqual(1, warning.Count);
+            Assert.HasCount(1, warning);
         }
 
         /// <summary>
@@ -142,7 +142,7 @@ namespace MCRA.Data.Compiled.Test {
                 instances[7],
             };
             var warning = checkPBKmodels(selectedInstances);
-            Assert.AreEqual(2, warning.Count);
+            Assert.HasCount(2, warning);
         }
 
         /// <summary>
@@ -158,7 +158,7 @@ namespace MCRA.Data.Compiled.Test {
                 instances[9],
             };
             var warning = checkPBKmodels(selectedInstances);
-            Assert.AreEqual(1, warning.Count);
+            Assert.HasCount(1, warning);
         }
 
         /// <summary>
@@ -174,7 +174,7 @@ namespace MCRA.Data.Compiled.Test {
                 instances[10],
             };
             var warning = checkPBKmodels(selectedInstances);
-            Assert.AreEqual(1, warning.Count);
+            Assert.HasCount(1, warning);
         }
 
         /// <summary>
@@ -190,7 +190,7 @@ namespace MCRA.Data.Compiled.Test {
                 instances[11],
             };
             var warning = checkPBKmodels(selectedInstances);
-            Assert.AreEqual(1, warning.Count);
+            Assert.HasCount(1, warning);
         }
 
         /// <summary>
@@ -208,7 +208,7 @@ namespace MCRA.Data.Compiled.Test {
                 instances[13],
             };
             var warning = checkPBKmodels(selectedInstances);
-            Assert.AreEqual(3, warning.Count);
+            Assert.HasCount(3, warning);
         }
 
         /// <summary>
@@ -224,7 +224,7 @@ namespace MCRA.Data.Compiled.Test {
                 instances[14],
             };
             var warning = checkPBKmodels(selectedInstances);
-            Assert.AreEqual(1, warning.Count);
+            Assert.HasCount(1, warning);
         }
 
         private List<string> checkPBKmodels(List<KineticModelInstance> selectedInstances) {

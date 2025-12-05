@@ -27,7 +27,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Consum
             var section = new IndividualConsumptionDataSection();
 
             section.Summarize(new FoodSurvey() { Code = "Test" }, individuals, individualDays, consumptions, null, IndividualSubsetType.IgnorePopulationDefinition, false, null);
-            Assert.AreEqual(3, section.Records.Count);
+            Assert.HasCount(3, section.Records);
 
             AssertIsValidView(section);
         }
@@ -55,7 +55,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Consum
             var individuals = individualDays.Select(c => c.Individual).ToList();
             var section = new IndividualConsumptionDataSection();
             section.Summarize(new FoodSurvey() { Code = "Test" }, individuals, individualDays, foodConsumptions, consumptionsByModelledFood, IndividualSubsetType.IgnorePopulationDefinition, false, null);
-            Assert.AreEqual(3, section.Records.Count);
+            Assert.HasCount(3, section.Records);
             AssertIsValidView(section);
         }
     }

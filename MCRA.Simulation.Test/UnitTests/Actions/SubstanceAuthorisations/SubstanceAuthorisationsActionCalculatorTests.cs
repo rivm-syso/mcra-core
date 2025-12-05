@@ -29,7 +29,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var calculator = new SubstanceAuthorisationsActionCalculator(project);
             var header =TestLoadAndSummarizeNominal(calculator, data, subsetManager, $"SubstanceAuthorisations");
             Assert.IsNotNull(data.SubstanceAuthorisations);
-            Assert.AreEqual(9,data.SubstanceAuthorisations.Count);
+            Assert.HasCount(9, data.SubstanceAuthorisations);
             WriteReport(header, "TestLoadAndSummarize.html");
         }
     }

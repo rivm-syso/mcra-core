@@ -34,7 +34,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling.IndividualA
             );
             var calculator = new SimpleIndividualDayIntakesCalculator(substances, rpfs, memberships, true, null);
             var amounts = calculator.ComputeIndividualAmounts(exposures);
-            Assert.AreEqual(individuals.Count, amounts.Count);
+            Assert.HasCount(individuals.Count, amounts);
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling.IndividualA
             foreach (var category in categories) {
                 var calculator = new SimpleIndividualDayIntakesCalculator(substances, rpfs, memberships, true, category);
                 var amounts = calculator.ComputeIndividualAmounts(exposures);
-                Assert.AreEqual(individuals.Count, amounts.Count);
+                Assert.HasCount(individuals.Count, amounts);
             }
         }
     }

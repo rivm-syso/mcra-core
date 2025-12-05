@@ -28,7 +28,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
                 var tables = dataSourceWriter.DataTables;
 
                 var individualPropertiesTable = getRawDataSourceTable(RawDataSourceTableID.IndividualProperties, tables);
-                Assert.AreEqual(6, individualPropertiesTable.Rows.Count);
+                Assert.HasCount(6, individualPropertiesTable.Rows);
 
                 var propertyCodes = getDistinctColumnValues<string>(individualPropertiesTable, RawIndividualProperties.IdIndividualProperty.ToString()).ToArray();
                 CollectionAssert.AreEquivalent(propertyCodes, new[] { "Age", "Gender", "Region", "Month", "Period", "Height"});
@@ -43,7 +43,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
                 var childPopProperties = childPopRows.Select(r => r["idIndividualProperty"]).ToList();
                 CollectionAssert.AreEquivalent(childPopProperties, new[] { "Age", "Period" });
 
-                Assert.AreEqual(6, individualPropertiesTable.Rows.Count);
+                Assert.HasCount(6, individualPropertiesTable.Rows);
             }
         }
 
@@ -61,7 +61,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
                 var tables = dataSourceWriter.DataTables;
 
                 var individualPropertiesTable = getRawDataSourceTable(RawDataSourceTableID.IndividualProperties, tables);
-                Assert.AreEqual(6, individualPropertiesTable.Rows.Count);
+                Assert.HasCount(6, individualPropertiesTable.Rows);
 
                 var propertyCodes = getDistinctColumnValues<string>(individualPropertiesTable, RawIndividualProperties.IdIndividualProperty.ToString()).ToArray();
                 CollectionAssert.AreEquivalent(propertyCodes, new[] { "Age", "Gender", "Region", "Month", "Period", "Height" });
@@ -76,7 +76,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
                 var childPopProperties = childPopRows.Select(r => r["idIndividualProperty"]).ToList();
                 CollectionAssert.AreEquivalent(childPopProperties, new[] { "Age", "Period" });
 
-                Assert.AreEqual(6, individualPropertiesTable.Rows.Count);
+                Assert.HasCount(6, individualPropertiesTable.Rows);
             }
         }
 
@@ -93,10 +93,10 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
                 bulkCopier.TryCopy(reader, new ProgressState());
                 var tables = dataSourceWriter.DataTables;
 
-                Assert.AreEqual(1, tables.Count);
+                Assert.HasCount(1, tables);
 
                 var populationsTable = getRawDataSourceTable(RawDataSourceTableID.Populations, tables);
-                Assert.AreEqual(7, populationsTable.Rows.Count);
+                Assert.HasCount(7, populationsTable.Rows);
             }
         }
     }

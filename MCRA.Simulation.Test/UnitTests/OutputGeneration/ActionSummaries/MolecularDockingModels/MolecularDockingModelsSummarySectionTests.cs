@@ -26,7 +26,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Molecu
 
             var section = new MolecularDockingModelsSummarySection();
             section.Summarize(dockingModels, substances.ToHashSet());
-            Assert.AreEqual(3, section.Records.Count);
+            Assert.HasCount(3, section.Records);
             AssertIsValidView(section);
             //RenderView(section, filename: "TestSummarize.html");
         }

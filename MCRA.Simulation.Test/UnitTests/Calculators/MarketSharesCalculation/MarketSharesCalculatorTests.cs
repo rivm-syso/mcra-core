@@ -30,7 +30,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MarketSharesCalculation {
                     } else {
                         Assert.IsTrue(result.Sum() >= 0 && result.Sum() <= 1);
                     }
-                    Assert.AreEqual(marketShares.Length, result.Length);
+                    Assert.HasCount(marketShares.Length, result);
                 }
             }
         }
@@ -56,7 +56,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MarketSharesCalculation {
                     } else {
                         Assert.IsTrue(result.Sum() >= 0 && result.Sum() <= 1);
                     }
-                    Assert.AreEqual(marketShares.Length, result.Length);
+                    Assert.HasCount(marketShares.Length, result);
                 }
             }
         }
@@ -84,7 +84,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MarketSharesCalculation {
                     } else {
                         Assert.IsTrue(result.Sum() >= 0 && result.Sum() <= 1);
                     }
-                    Assert.AreEqual(marketShares.Length, result.Length);
+                    Assert.HasCount(marketShares.Length, result);
                 }
             }
         }

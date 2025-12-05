@@ -13,7 +13,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             var effects = _getEffectsDelegate.Invoke();
 
-            Assert.AreEqual(4, effects.Count);
+            Assert.HasCount(4, effects);
             for (int i = 1; i < 5; i++) {
                 Assert.IsTrue(effects.TryGetValue($"EFF{i}", out var effect) && effect.Name.Equals($"Effect {i}"));
             }
@@ -28,7 +28,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             var effects = _getEffectsDelegate.Invoke();
 
-            Assert.AreEqual(2, effects.Count);
+            Assert.HasCount(2, effects);
             Assert.IsTrue(effects.TryGetValue("eff1", out var effect) && effect.Name.Equals("Effect 1"));
             Assert.IsTrue(effects.TryGetValue("eff3", out effect) && effect.Name.Equals("Effect 3"));
         }

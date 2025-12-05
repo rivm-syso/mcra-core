@@ -104,16 +104,16 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
                 var sources = calculator.GetRandomSources();
                 foreach (var source in sources) {
-                    Assert.IsTrue(
-                        definition.UncertaintySources.Contains(source),
-                        $"Uncertainty source {source} specified by action calculator is not found in definition of module {definition.ActionType}"
+                    Assert.Contains(
+source,
+                        definition.UncertaintySources, $"Uncertainty source {source} specified by action calculator is not found in definition of module {definition.ActionType}"
                     );
                 }
 
                 foreach (var source in definition.UncertaintySources) {
-                    Assert.IsTrue(
-                        sources.Contains(source),
-                        $"Uncertainty source {source} specified in module definition is not used by action calculator of module {definition.ActionType}"
+                    Assert.Contains(
+source,
+                        sources, $"Uncertainty source {source} specified in module definition is not used by action calculator of module {definition.ActionType}"
                     );
                 }
             }

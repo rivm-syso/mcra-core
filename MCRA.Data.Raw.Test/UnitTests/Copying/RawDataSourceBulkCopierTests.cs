@@ -60,7 +60,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying {
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(0, result.Count);
+            Assert.IsEmpty(result);
 
             // Assert that a reader was opened for every source table group
             var enumCount = Enum.GetValues(typeof(SourceTableGroup))
@@ -112,7 +112,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying {
             );
 
             Assert.IsNotNull(result);
-            Assert.AreEqual(0, result.Count);
+            Assert.IsEmpty(result);
 
             readerMock.Verify(x => x.Open(), Times.Once);
             readerMock.Verify(x => x.Close(), Times.Once);
@@ -151,16 +151,16 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying {
             );
 
             Assert.IsNotNull(result);
-            Assert.AreEqual(0, result.Count);
+            Assert.IsEmpty(result);
 
             readerMock.Verify(x => x.Open(), Times.Once);
             readerMock.Verify(x => x.Close(), Times.Once);
             readerMock.Verify(x => x.GetDataReaderByDefinition(It.IsAny<TableDefinition>(), out name), Times.Exactly(2));
 
             // Check all source table groups against the enum, all source table groups in the array should have been called
-            Assert.AreEqual(2, readTableNames.Count);
-            Assert.IsTrue(readTableNames.Contains(RawDataSourceTableID.Compounds.ToString()));
-            Assert.IsTrue(readTableNames.Contains(RawDataSourceTableID.ConcentrationsSSD.ToString()));
+            Assert.HasCount(2, readTableNames);
+            Assert.Contains(RawDataSourceTableID.Compounds.ToString(), readTableNames);
+            Assert.Contains(RawDataSourceTableID.ConcentrationsSSD.ToString(), readTableNames);
         }
 
         /// <summary>
@@ -193,7 +193,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying {
             );
 
             Assert.IsNotNull(result);
-            Assert.AreEqual(1, result.Count);
+            Assert.HasCount(1, result);
             Assert.AreEqual(SourceTableGroup.Compounds, result.Single());
 
             readerMock.Verify(x => x.Open(), Times.Once);
@@ -233,7 +233,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying {
             );
 
             Assert.IsNotNull(result);
-            Assert.AreEqual(1, result.Count);
+            Assert.HasCount(1, result);
             Assert.AreEqual(SourceTableGroup.Compounds, result.Single());
 
             readerMock.Verify(x => x.Open(), Times.Once);
@@ -270,7 +270,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying {
             );
 
             Assert.IsNotNull(result);
-            Assert.AreEqual(0, result.Count);
+            Assert.IsEmpty(result);
         }
 
         /// <summary>
@@ -316,7 +316,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying {
             // Use an empty data table as data source, this should not throw an exception
             var result = copier.CopyFromDataTables([], allowEmptyDataSource: true);
             //but also no results
-            Assert.AreEqual(0, result.Count);
+            Assert.IsEmpty(result);
         }
 
         /// <summary>

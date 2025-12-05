@@ -28,14 +28,14 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.Histograms {
         public void MakeHistogramBinsTest0() {
             List<double> data = [];
             var bins = data.MakeHistogramBins();
-            Assert.AreEqual(0, bins.Count);
+            Assert.IsEmpty(bins);
         }
 
         [TestMethod]
         public void MakeHistogramBinsTest1() {
             List<double> data = [];
             var bins = data.MakeHistogramBins(4, 1, 4);
-            Assert.AreEqual(4, bins.Count);
+            Assert.HasCount(4, bins);
         }
 
         [TestMethod]
@@ -51,8 +51,8 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.Histograms {
                 Number = 1000,
             });
             var bins = persons.Select(v=>v.Number).MakeHistogramBins(10);
-            Assert.IsTrue(bins[0].Frequency == 1000);
-            Assert.IsTrue(bins[9].Frequency == 1);
+            Assert.AreEqual(1000, bins[0].Frequency);
+            Assert.AreEqual(1, bins[9].Frequency);
         }
 
         [TestMethod]
@@ -76,7 +76,7 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.Histograms {
 
             var bins = persons.Select(v => v.Number).MakeHistogramBins(10, 0, 1);
             var n = bins.Sum(b => b.Frequency);
-            Assert.IsTrue(bins.Sum(b => b.Frequency) == 1000);
+            Assert.AreEqual(1000, bins.Sum(b => b.Frequency));
         }
 
         [TestMethod]
@@ -98,7 +98,7 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.Histograms {
             });
 
             var bins = persons.Select(v => v.Number).MakeHistogramBins(10, 0, 1,OutlierHandlingMethod.IncludeHigher);
-            Assert.IsTrue(bins.Sum(b => b.Frequency) == 1001);
+            Assert.AreEqual(1001, bins.Sum(b => b.Frequency));
         }
 
         [TestMethod]
@@ -119,7 +119,7 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.Histograms {
                 Number = -1000,
             });
             var bins = persons.Select(v => v.Number).MakeHistogramBins(10, 0, 1, OutlierHandlingMethod.IncludeLower);
-            Assert.IsTrue(bins.Sum(b => b.Frequency) == 1001);
+            Assert.AreEqual(1001, bins.Sum(b => b.Frequency));
         }
 
         [TestMethod]
@@ -141,7 +141,7 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.Histograms {
             });
 
             var bins = persons.Select(v => v.Number).MakeHistogramBins(10, 0, 1, OutlierHandlingMethod.IncludeBoth);
-            Assert.IsTrue(bins.Sum(b => b.Frequency) == 1002);
+            Assert.AreEqual(1002, bins.Sum(b => b.Frequency));
         }
 
         [TestMethod]
@@ -163,23 +163,23 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.Histograms {
             var random = new McraRandomGenerator();
             List<double> data = [0.1, 0.2];
             var bins = data.MakeHistogramBins(10);
-            Assert.IsTrue(bins.GetTotalFrequency() == 2);
+            Assert.AreEqual(2, bins.GetTotalFrequency());
         }
 
         [TestMethod]
                 public void MakeHistogramBinsTest9() {
             List<double> data = [1];
             var bins = data.MakeHistogramBins();
-            Assert.IsTrue(bins.GetTotalFrequency() == 1);
-            Assert.IsTrue(bins.First().XMinValue < 1);
-            Assert.IsTrue(bins.Last().XMaxValue > 1);
+            Assert.AreEqual(1, bins.GetTotalFrequency());
+            Assert.IsLessThan(1, bins.First().XMinValue);
+            Assert.IsGreaterThan(1, bins.Last().XMaxValue);
         }
 
         [TestMethod]
                 public void MakeHistogramBinsTest10() {
             List<double> data = [-1, -1, -1];
             var bins = data.MakeHistogramBins();
-            Assert.IsTrue(bins.First().XMinValue < bins.First().XMaxValue);
+            Assert.IsLessThan(bins.First().XMaxValue, bins.First().XMinValue);
         }
 
         [TestMethod]
@@ -188,7 +188,7 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.Histograms {
             Func<Person, List<CategoryContribution<Gender>>> categoryExtractor = (x) => x.Children.GroupBy(c => c).Select(g => new CategoryContribution<Gender>(g.Key, g.Count())).ToList();
             Func<Person, double> valueExtractor = (x) => x.NumberOfChildren;
             var categorizedBins = persons.MakeCategorizedHistogramBins<Person, Gender>(categoryExtractor, valueExtractor);
-            Assert.AreEqual(0, categorizedBins.Count);
+            Assert.IsEmpty(categorizedBins);
         }
 
         [TestMethod]
@@ -197,7 +197,7 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.Histograms {
             Func<Person, List<CategoryContribution<Gender>>> categoryExtractor = (x) => x.Children.GroupBy(c => c).Select(g => new CategoryContribution<Gender>(g.Key, g.Count())).ToList();
             Func<Person, double> valueExtractor = (x) => x.NumberOfChildren;
             var categorizedBins = persons.MakeCategorizedHistogramBins<Person, Gender>(categoryExtractor, valueExtractor, null, 4, 1, 4);
-            Assert.AreEqual(4, categorizedBins.Count);
+            Assert.HasCount(4, categorizedBins);
         }
 
         [TestMethod]
@@ -256,7 +256,7 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.Histograms {
             Func<Person, List<CategoryContribution<Gender>>> categoryExtractor = (x) => x.Children.GroupBy(c => c).Select(g => new CategoryContribution<Gender>(g.Key, g.Count())).ToList();
             Func<Person, double> valueExtractor = (x) => x.NumberOfChildren;
             var categorizedBins = persons.MakeCategorizedHistogramBins<Person, Gender>(categoryExtractor, valueExtractor);
-            Assert.IsTrue(categorizedBins.GetTotalFrequency() == 1);
+            Assert.AreEqual(1, categorizedBins.GetTotalFrequency());
         }
 
         [TestMethod]
@@ -265,8 +265,8 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.Histograms {
             Func<int, List<CategoryContribution<int>>> categoryExtractor = (x) => [new CategoryContribution<int>(x, 1D)];
             Func<int, double> valueExtractor = (x) => x;
             var bins = values.MakeCategorizedHistogramBins<int, int>(categoryExtractor, valueExtractor);
-            Assert.IsTrue(bins.GetTotalFrequency() == 3);
-            Assert.IsTrue(bins.First().XMinValue < bins.First().XMaxValue);
+            Assert.AreEqual(3, bins.GetTotalFrequency());
+            Assert.IsLessThan(bins.First().XMaxValue, bins.First().XMinValue);
         }
     }
 }

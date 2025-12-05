@@ -39,7 +39,7 @@ namespace Biometris.Test.UnitTests.Converters {
             var testValue = JsonSerializer.Deserialize<TestValues>(json, options);
 
             Assert.IsNotNull(testValue?.ValueArray);
-            Assert.AreEqual(0, testValue.ValueArray.Length);
+            Assert.IsEmpty(testValue.ValueArray);
         }
 
         [TestMethod]
@@ -54,7 +54,7 @@ namespace Biometris.Test.UnitTests.Converters {
             var testValue = JsonSerializer.Deserialize<TestValues>(json, options);
 
             Assert.IsNotNull(testValue);
-            Assert.AreEqual(1, testValue.ValueArray.Length);
+            Assert.HasCount(1, testValue.ValueArray);
             Assert.AreEqual(double.NaN, testValue.ValueArray[0]);
         }
 
@@ -70,7 +70,7 @@ namespace Biometris.Test.UnitTests.Converters {
             var testValue = JsonSerializer.Deserialize<TestValues>(json, options);
 
             Assert.IsNotNull(testValue);
-            Assert.AreEqual(1, testValue.ValueArray.Length);
+            Assert.HasCount(1, testValue.ValueArray);
             Assert.AreEqual(double.NaN, testValue.ValueArray[0]);
         }
 
@@ -86,7 +86,7 @@ namespace Biometris.Test.UnitTests.Converters {
             var testValue = JsonSerializer.Deserialize<TestValues>(json, options);
 
             Assert.IsNotNull(testValue);
-            Assert.AreEqual(1, testValue.ValueArray.Length);
+            Assert.HasCount(1, testValue.ValueArray);
             Assert.AreEqual(3.23930E-89, testValue.ValueArray[0]);
         }
 
@@ -102,7 +102,7 @@ namespace Biometris.Test.UnitTests.Converters {
             var testValue = JsonSerializer.Deserialize<TestValues>(json, options);
 
             Assert.IsNotNull(testValue);
-            Assert.AreEqual(4, testValue.ValueArray.Length);
+            Assert.HasCount(4, testValue.ValueArray);
             Assert.AreEqual(3.390123, testValue.ValueArray[0]);
             Assert.AreEqual(-903.4239, testValue.ValueArray[1]);
             Assert.AreEqual(double.NaN, testValue.ValueArray[2]);
@@ -121,7 +121,7 @@ namespace Biometris.Test.UnitTests.Converters {
             var testValue = JsonSerializer.Deserialize<TestValues>(json, options);
 
             Assert.IsNotNull(testValue);
-            Assert.AreEqual(1, testValue.ValueArray.Length);
+            Assert.HasCount(1, testValue.ValueArray);
             Assert.AreEqual(3.23930E-89, testValue.ValueArray[0]);
         }
 
@@ -137,7 +137,7 @@ namespace Biometris.Test.UnitTests.Converters {
             var testValue = JsonSerializer.Deserialize<TestValues>(json, options);
 
             Assert.IsNotNull(testValue);
-            Assert.AreEqual(4, testValue.ValueArray.Length);
+            Assert.HasCount(4, testValue.ValueArray);
             Assert.AreEqual(3.390123, testValue.ValueArray[0]);
             Assert.AreEqual(-903.4239, testValue.ValueArray[1]);
             Assert.AreEqual(double.NaN, testValue.ValueArray[2]);
@@ -156,7 +156,7 @@ namespace Biometris.Test.UnitTests.Converters {
             var testValue = JsonSerializer.Deserialize<TestValues>(json, options);
 
             Assert.IsNotNull(testValue);
-            Assert.AreEqual(6, testValue.ValueArray.Length);
+            Assert.HasCount(6, testValue.ValueArray);
             Assert.AreEqual(double.NaN, testValue.ValueArray[0]);
             Assert.AreEqual(double.PositiveInfinity, testValue.ValueArray[1]);
             Assert.AreEqual(double.NegativeInfinity, testValue.ValueArray[2]);

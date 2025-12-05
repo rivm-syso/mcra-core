@@ -162,7 +162,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var xml = createMockSettingsXml(settingsXml, new Version(10, 0, 0));
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settingsDto);
-            Assert.IsTrue(settingsDto.HumanMonitoringDataSettings.CodesHumanMonitoringSamplingMethods.Contains("BloodSerum_Serum"));
+            Assert.Contains("BloodSerum_Serum", settingsDto.HumanMonitoringDataSettings.CodesHumanMonitoringSamplingMethods);
         }
 
         /// <summary>
@@ -287,7 +287,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.IsNotNull(settingsDto);
             var config= settingsDto.HazardCharacterisationsSettings;
             Assert.AreEqual(20, config.AdditionalAssessmentFactor);
-            Assert.AreEqual(true, config.HazardCharacterisationsConvertToSingleTargetMatrix);
+            Assert.IsTrue(config.HazardCharacterisationsConvertToSingleTargetMatrix);
         }
 
 
@@ -420,7 +420,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.AreEqual(1.23456, config.AmountModelVarianceRatio);
             var models = config.IntakeModelsPerCategory;
             Assert.IsNotNull(models);
-            Assert.AreEqual(2, models.Count);
+            Assert.HasCount(2, models);
             Assert.AreEqual(IntakeModelType.LNN0, models[0].ModelType);
             Assert.AreEqual(TransformType.NoTransform, models[0].TransformType);
             Assert.AreEqual("BANANA,Pear", string.Join(",", models[0].FoodsAsMeasured));
@@ -450,7 +450,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.IsNotNull(settings);
             var config = settings.ConsumptionsSettings;
             var individualsDefs = config.IndividualsSubsetDefinitions;
-            Assert.AreEqual(2, individualsDefs.Count);
+            Assert.HasCount(2, individualsDefs);
             Assert.AreEqual("Age", individualsDefs[0].NameIndividualProperty);
             Assert.AreEqual("45-76", individualsDefs[0].IndividualPropertyQuery);
             Assert.AreEqual(QueryDefinitionType.Range, individualsDefs[0].GetQueryDefinitionType());
@@ -491,7 +491,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.IsNotNull(settings);
             var config = settings.ConcentrationsSettings;
             var samplesDefs = config.SamplesSubsetDefinitions;
-            Assert.AreEqual(2, samplesDefs.Count);
+            Assert.HasCount(2, samplesDefs);
             Assert.AreEqual("Proper1", samplesDefs[0].PropertyName);
             Assert.IsTrue(samplesDefs[0].AlignSubsetWithPopulation);
             Assert.IsTrue(samplesDefs[0].IncludeMissingValueRecords);
@@ -528,7 +528,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var config = settings.ConcentrationModelsSettings;
             var models = config.ConcentrationModelTypesFoodSubstance;
             Assert.IsNotNull(models);
-            Assert.AreEqual(2, models.Count);
+            Assert.HasCount(2, models);
             Assert.AreEqual("BANANA", models[0].FoodCode);
             Assert.AreEqual("Diclocrap", models[0].SubstanceCode);
             Assert.AreEqual(ConcentrationModelType.ZeroSpikeCensoredLogNormal, models[0].ModelType);
@@ -561,7 +561,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settings);
             var focalFoods = settings.ConcentrationsSettings.FocalFoods;
-            Assert.AreEqual(3, focalFoods.Count);
+            Assert.HasCount(3, focalFoods);
 
             Assert.AreEqual("BANANA Apple Cherry", string.Join(" ", focalFoods.Select(f => f.CodeFood)));
             Assert.AreEqual("30-230-33 CB123 Fluazifazi", string.Join(" ", focalFoods.Select(f => f.CodeSubstance)));

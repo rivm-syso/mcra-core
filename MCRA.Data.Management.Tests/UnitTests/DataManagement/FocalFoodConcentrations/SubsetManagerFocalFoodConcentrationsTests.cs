@@ -18,10 +18,10 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement.FocalFoods {
             config.FocalCommodity = true;
             config.FocalFoods = [new() { CodeFood = "A" }];
 
-            Assert.AreEqual(2, _subsetManager.SelectedFocalCommoditySamples.Count);
+            Assert.HasCount(2, _subsetManager.SelectedFocalCommoditySamples);
             Assert.AreEqual("FS1,FS2", string.Join(",", _subsetManager.SelectedFocalCommoditySamples.Select(i => i.Code)));
 
-            Assert.AreEqual(1, _subsetManager.SelectedFocalCommodityFoods.Count);
+            Assert.HasCount(1, _subsetManager.SelectedFocalCommodityFoods);
             Assert.AreEqual("A", string.Join(",", _subsetManager.SelectedFocalCommodityFoods.Select(i => i.Code)));
         }
 
@@ -37,10 +37,10 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement.FocalFoods {
             config.FocalCommodity = true;
             config.FocalFoods = [new() { CodeFood = "B" }, new() { CodeFood = "D" }];
 
-            Assert.AreEqual(2, _subsetManager.SelectedFocalCommoditySamples.Count);
+            Assert.HasCount(2, _subsetManager.SelectedFocalCommoditySamples);
             Assert.AreEqual("FS3,FS4", string.Join(",", _subsetManager.SelectedFocalCommoditySamples.Select(i => i.Code)));
 
-            Assert.AreEqual(2, _subsetManager.SelectedFocalCommodityFoods.Count);
+            Assert.HasCount(2, _subsetManager.SelectedFocalCommodityFoods);
             Assert.AreEqual("B,D", string.Join(",", _subsetManager.SelectedFocalCommodityFoods.Select(i => i.Code)));
         }
     }

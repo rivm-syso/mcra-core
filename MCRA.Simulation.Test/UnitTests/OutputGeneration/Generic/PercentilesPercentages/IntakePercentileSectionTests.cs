@@ -67,10 +67,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
                 section.SummarizeUncertainty(intakes, weights, 2.5, 97.5);
             }
             Assert.AreEqual(110.552, section.Percentiles.First().MedianUncertainty, 1E-3);
-            Assert.AreEqual(50, section.Percentiles.First().UncertainValues.Count);
+            Assert.HasCount(50, section.Percentiles.First().UncertainValues);
 
             var bootstrapRecords = section.GetPercentileBootstrapRecords(false);
-            Assert.AreEqual(percentages.Length * 50, bootstrapRecords.Count);
+            Assert.HasCount(percentages.Length * 50, bootstrapRecords);
             Assert.IsNotNull(section.IntakePercentileRecords);
             AssertIsValidView(section);
         }
@@ -96,9 +96,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
                 section.SummarizeUncertainty(intakes, weights, 2.5, 97.5);
             }
             Assert.AreEqual(110.552, section.Percentiles.First().MedianUncertainty, 1E-3);
-            Assert.AreEqual(50, section.Percentiles.First().UncertainValues.Count);
+            Assert.HasCount(50, section.Percentiles.First().UncertainValues);
             var bootstrapRecords = section.GetPercentileBootstrapRecords(true);
-            Assert.AreEqual(percentages.Length * 50 + percentages.Length, bootstrapRecords.Count);
+            Assert.HasCount(percentages.Length * 50 + percentages.Length, bootstrapRecords);
             var percentileRecords = section.IntakePercentileRecords;
             AssertIsValidView(section);
         }
@@ -124,9 +124,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
                 section.SummarizeUncertainty(intakes, weights, 2.5, 97.5);
             }
             Assert.AreEqual(110.552, section.Percentiles.First().MedianUncertainty, 1E-3);
-            Assert.AreEqual(50, section.Percentiles.First().UncertainValues.Count);
+            Assert.HasCount(50, section.Percentiles.First().UncertainValues);
             var bootstrapRecords = section.GetPercentileBootstrapRecords(true);
-            Assert.AreEqual(percentages.Length * 50 + percentages.Length, bootstrapRecords.Count);
+            Assert.HasCount(percentages.Length * 50 + percentages.Length, bootstrapRecords);
             var percentileRecords = section.IntakePercentileRecords;
             AssertIsValidView(section);
         }

@@ -23,7 +23,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Author
             }
             var section = new AuthorisationsByFoodSubstanceSummarySection();
             section.Summarize(substanceAuthorisations);
-            Assert.AreEqual(9, section.Records.Count);
+            Assert.HasCount(9, section.Records);
             AssertIsValidView(section);
         }
     }

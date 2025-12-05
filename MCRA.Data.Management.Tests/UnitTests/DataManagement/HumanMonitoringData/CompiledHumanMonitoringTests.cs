@@ -26,8 +26,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             var individuals = _getIndividualsDelegate.Invoke();
             var surveys = _getSurveysDelegate.Invoke();
 
-            Assert.AreEqual(3, surveys.Count);
-            Assert.AreEqual(5, individuals.Count);
+            Assert.HasCount(3, surveys);
+            Assert.HasCount(5, individuals);
 
             CollectionAssert.AreEquivalent(new[] { "s1", "s2", "s3" }, surveys.Keys.ToList());
             CollectionAssert.AreEquivalent(new[] { "1", "2", "3", "4", "5" }, individuals.Keys.ToList());
@@ -43,8 +43,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             var individuals = _getIndividualsDelegate.Invoke();
             var surveys = _getSurveysDelegate.Invoke();
 
-            Assert.AreEqual(1, surveys.Count);
-            Assert.AreEqual(2, individuals.Count);
+            Assert.HasCount(1, surveys);
+            Assert.HasCount(2, individuals);
 
             CollectionAssert.AreEquivalent(new[] { "s2" }, surveys.Keys.ToList());
             CollectionAssert.AreEquivalent(new[] { "3", "4" }, individuals.Keys.ToList());
@@ -146,7 +146,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             Assert.AreEqual("AS1", samples["HS1"].SampleAnalyses.Select(s => s.Code).Single());
             Assert.AreEqual("AS2", samples["HS2"].SampleAnalyses.Select(s => s.Code).Single());
-            Assert.AreEqual(0, samples["HS3"].SampleAnalyses.Count);
+            Assert.IsEmpty(samples["HS3"].SampleAnalyses);
             Assert.AreEqual("AS4", samples["HS4"].SampleAnalyses.Select(s => s.Code).Single());
         }
 
@@ -178,7 +178,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             Assert.AreNotEqual(0, samples.Values.Sum(s => s.SampleAnalyses.Count));
 
-            Assert.AreEqual(0, samples["HS3"].SampleAnalyses.Count);
+            Assert.IsEmpty(samples["HS3"].SampleAnalyses);
             Assert.AreEqual("AS4", samples["HS4"].SampleAnalyses.Select(s => s.Code).Single());
         }
 
@@ -223,7 +223,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             Assert.AreEqual("AS2", s2.Code);
             CollectionAssert.AreEquivalent(new[] { "R", "S" }, s2.Concentrations.Keys.Select(c => c.Code).ToList());
 
-            Assert.AreEqual(0, samples["HS3"].SampleAnalyses.Count);
+            Assert.IsEmpty(samples["HS3"].SampleAnalyses);
 
             var s4 = samples["HS4"].SampleAnalyses.Single();
             Assert.AreEqual("AS4", s4.Code);
@@ -261,7 +261,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             Assert.AreNotEqual(0, samples.Values.Sum(s => s.SampleAnalyses.Count));
 
-            Assert.AreEqual(0, samples["HS3"].SampleAnalyses.Count);
+            Assert.IsEmpty(samples["HS3"].SampleAnalyses);
 
             var s4 = samples["HS4"].SampleAnalyses.Single();
             Assert.AreEqual("AS4", s4.Code);

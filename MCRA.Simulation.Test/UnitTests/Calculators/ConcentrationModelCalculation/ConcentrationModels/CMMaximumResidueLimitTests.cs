@@ -137,8 +137,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var pObserved = (double)observed / repetitions;
             var pExpected = concentrationModel.CorrectedWeightedAgriculturalUseFraction;
             var sigma = Math.Sqrt((pExpected * (1 - pExpected)) / repetitions);
-            Assert.IsTrue(pObserved > pExpected - 1.96 * sigma);
-            Assert.IsTrue(pObserved < pExpected + 1.96 * sigma);
+            Assert.IsGreaterThan(pExpected - 1.96 * sigma, pObserved);
+            Assert.IsLessThan(pExpected + 1.96 * sigma, pObserved);
 
             Assert.AreEqual(mrl, concentrationModel.DrawFromDistributionExceptZeroes(random, concentrationModel.NonDetectsHandlingMethod));
             Assert.AreEqual(0.5 * mrl, concentrationModel.GetDistributionMean(concentrationModel.NonDetectsHandlingMethod));

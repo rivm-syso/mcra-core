@@ -26,10 +26,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             var calculator = new CovariateGroupCalculator(predictionLevels, CovariateModelType.Constant, CovariateModelType.Constant);
 
             var dataBasedCovariateGroups = calculator.ComputeDataBasedCovariateGroups(exposures);
-            Assert.AreEqual(1, dataBasedCovariateGroups.Count);
+            Assert.HasCount(1, dataBasedCovariateGroups);
 
             var specifiedPredictionsCovariateGroups = calculator.ComputeSpecifiedPredictionsCovariateGroups(exposures);
-            Assert.AreEqual(1, specifiedPredictionsCovariateGroups.Count);
+            Assert.HasCount(1, specifiedPredictionsCovariateGroups);
         }
 
         /// <summary>
@@ -51,10 +51,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             );
 
             var dataBasedCovariateGroups = calculator.ComputeDataBasedCovariateGroups(exposures);
-            Assert.AreEqual(2, dataBasedCovariateGroups.Count);
+            Assert.HasCount(2, dataBasedCovariateGroups);
 
             var specifiedPredictionsCovariateGroups = calculator.ComputeSpecifiedPredictionsCovariateGroups(exposures);
-            Assert.AreEqual(2, specifiedPredictionsCovariateGroups.Count);
+            Assert.HasCount(2, specifiedPredictionsCovariateGroups);
         }
 
         /// <summary>
@@ -76,10 +76,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             );
 
             var dataBasedCovariateGroups = calculator.ComputeDataBasedCovariateGroups(exposures);
-            Assert.AreEqual(20, dataBasedCovariateGroups.Count);
+            Assert.HasCount(20, dataBasedCovariateGroups);
 
             var specifiedPredictionsCovariateGroups = calculator.ComputeSpecifiedPredictionsCovariateGroups(exposures);
-            Assert.AreEqual(20, specifiedPredictionsCovariateGroups.Count);
+            Assert.HasCount(20, specifiedPredictionsCovariateGroups);
         }
 
         /// <summary>
@@ -101,10 +101,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             );
 
             var dataBasedCovariateGroups = calculator.ComputeDataBasedCovariateGroups(exposures);
-            Assert.AreEqual(20, dataBasedCovariateGroups.Count);
+            Assert.HasCount(20, dataBasedCovariateGroups);
 
             var specifiedPredictionsCovariateGroups = calculator.ComputeSpecifiedPredictionsCovariateGroups(exposures);
-            Assert.AreEqual(40, specifiedPredictionsCovariateGroups.Count);
+            Assert.HasCount(40, specifiedPredictionsCovariateGroups);
         }
 
         /// <summary>
@@ -126,10 +126,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             );
 
             var dataBasedCovariateGroups = calculator.ComputeDataBasedCovariateGroups(exposures);
-            Assert.AreEqual(20, dataBasedCovariateGroups.Count);
+            Assert.HasCount(20, dataBasedCovariateGroups);
 
             var specifiedPredictionsCovariateGroups = calculator.ComputeSpecifiedPredictionsCovariateGroups(exposures);
-            Assert.AreEqual(40, specifiedPredictionsCovariateGroups.Count);
+            Assert.HasCount(40, specifiedPredictionsCovariateGroups);
         }
     }
 }

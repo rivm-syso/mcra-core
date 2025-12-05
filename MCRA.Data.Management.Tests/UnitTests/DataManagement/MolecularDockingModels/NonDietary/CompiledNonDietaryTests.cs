@@ -13,7 +13,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             );
 
             var ndSets = _getItemsDelegate.Invoke();
-            Assert.AreEqual(0, ndSets.Count);
+            Assert.IsEmpty(ndSets);
         }
 
         [TestMethod]
@@ -21,7 +21,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetFilterCodes(ScopingType.NonDietarySurveys, ["s2"]);
             var ndSets = _getItemsDelegate.Invoke();
 
-            Assert.AreEqual(0, ndSets.Count);
+            Assert.IsEmpty(ndSets);
         }
 
         [TestMethod]
@@ -32,7 +32,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetFilterCodes(ScopingType.NonDietarySurveys, ["s2"]);
             var ndSets = _getItemsDelegate.Invoke();
 
-            Assert.AreEqual(0, ndSets.Count);
+            Assert.IsEmpty(ndSets);
         }
 
         [TestMethod]
@@ -44,7 +44,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             var ndSets = _getItemsDelegate.Invoke();
 
-            Assert.AreEqual(7, ndSets.Count);
+            Assert.HasCount(7, ndSets);
             Assert.IsTrue(ndSets.All(s => string.IsNullOrWhiteSpace(s.Code)));
             Assert.AreEqual(
                 "S1-1-A;S1-1-B;S1-2-C;S1-2-D;S1-3-A;S1-3-D;S1-4-B;S1-4-D;S2-4-C;S2-4-E;S2-5-A;S2-5-F;S2-6-C;S2-6-F",
@@ -65,7 +65,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             var ndSets = _getItemsDelegate.Invoke();
 
-            Assert.AreEqual(5, ndSets.Count);
+            Assert.HasCount(5, ndSets);
             Assert.IsTrue(ndSets.All(s => string.IsNullOrWhiteSpace(s.Code)));
             Assert.AreEqual(
                 "S1-1-B;S1-2-C;S1-4-B;S2-4-C;S2-6-C",
@@ -85,7 +85,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             var ndSets = _getItemsDelegate.Invoke();
 
-            Assert.AreEqual(3, ndSets.Count);
+            Assert.HasCount(3, ndSets);
             Assert.IsTrue(ndSets.All(s => string.IsNullOrWhiteSpace(s.Code)));
             Assert.AreEqual(
                 "S2-4-C;S2-4-E;S2-5-A;S2-5-F;S2-6-C;S2-6-F",
@@ -105,7 +105,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             var ndSets = _getItemsDelegate.Invoke();
 
-            Assert.AreEqual(7, ndSets.Count);
+            Assert.HasCount(7, ndSets);
             Assert.IsTrue(ndSets.All(s => string.IsNullOrWhiteSpace(s.Code)));
             Assert.AreEqual(
                 "S1-1-A;S1-1-B;S1-2-C;S1-2-D;S1-3-A;S1-3-D;S1-4-B;S1-4-D;S2-4-C;S2-4-E;S2-5-A;S2-5-F;S2-6-C;S2-6-F",

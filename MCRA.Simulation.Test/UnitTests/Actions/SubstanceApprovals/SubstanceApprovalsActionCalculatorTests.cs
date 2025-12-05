@@ -33,7 +33,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             // Assert
             Assert.IsNotNull(data.SubstanceApprovals);
-            Assert.AreEqual(9, data.SubstanceApprovals.Count);
+            Assert.HasCount(9, data.SubstanceApprovals);
             var approvalsIn = compiledData.AllSubstanceApprovals.Select(f => f.IsApproved).ToList();
             var approvalsOut = data.SubstanceApprovals.Select(f => f.Value.IsApproved).ToList();
             CollectionAssert.AreEquivalent(approvalsIn, approvalsOut);

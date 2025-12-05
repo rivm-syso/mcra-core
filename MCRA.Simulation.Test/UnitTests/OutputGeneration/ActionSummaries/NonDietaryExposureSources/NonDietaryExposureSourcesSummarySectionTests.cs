@@ -30,7 +30,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Foods 
             var fakes = FakeNonDietaryExposureSourcesGenerator.Create(5);
             var section = new NonDietaryExposureSourcesSummarySection();
             section.Summarize(fakes);
-            Assert.AreEqual(5, section.Records.Count);
+            Assert.HasCount(5, section.Records);
             AssertIsValidView(section);
             RenderView(section, filename: "TestSummarize.html");
         }

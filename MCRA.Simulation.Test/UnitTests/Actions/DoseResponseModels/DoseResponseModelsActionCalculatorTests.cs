@@ -36,7 +36,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var data = new ActionData();
             var subsetManager = new SubsetManager(dataManager, project);
             var header = TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoad1");
-            Assert.AreEqual(2, data.DoseResponseModels.Count);
+            Assert.HasCount(2, data.DoseResponseModels);
         }
 
         /// <summary>

@@ -19,7 +19,7 @@ namespace MCRA.Utils.Test.UnitTests.DataSourceReading.DataReaders {
         public void CsvDataReader_ParseRow(string[] expected, string line) {
             var parsed = CsvDataReader.ParseRow(line, ',', '#');
             CollectionAssert.AreEqual(expected, parsed);
-            Assert.AreEqual(expected.Length, parsed.Length);
+            Assert.HasCount(expected.Length, parsed);
         }
 
         [TestMethod]
@@ -52,7 +52,7 @@ namespace MCRA.Utils.Test.UnitTests.DataSourceReading.DataReaders {
 
                 var table = emptyTableDef.CreateDataTable();
                 table.Load(csvReader, LoadOption.OverwriteChanges);
-                Assert.AreEqual(7, table.Rows.Count);
+                Assert.HasCount(7, table.Rows);
             }
         }
 

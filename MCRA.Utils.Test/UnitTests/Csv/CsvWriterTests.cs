@@ -32,7 +32,7 @@ namespace MCRA.Utils.Csv.Tests {
             var csvWriter = new CsvWriter();
             csvWriter.WriteToCsvFile(new List<Tuple<string, string>>(), _tempCsvName, false);
             var data = File.ReadAllLines(_tempCsvName);
-            Assert.AreEqual(0, data.Length);
+            Assert.IsEmpty(data);
         }
 
         /// <summary>
@@ -44,14 +44,14 @@ namespace MCRA.Utils.Csv.Tests {
             var csvWriter = new CsvWriter();
             csvWriter.WriteToCsvFile(new List<Tuple<string, string>>(), _tempCsvName);
             var data = File.ReadAllLines(_tempCsvName);
-            Assert.AreEqual(1, data.Length);
+            Assert.HasCount(1, data);
             Assert.AreEqual("\"Item1\",\"Item2\"", data[0]);
 
             //overwrite file using type parameter
             var records = new Tuple<int, double, bool>[0];
             csvWriter.WriteToCsvFile(records, typeof(Tuple<int, double, bool>), _tempCsvName);
             data = File.ReadAllLines(_tempCsvName);
-            Assert.AreEqual(1, data.Length);
+            Assert.HasCount(1, data);
             Assert.AreEqual("\"Item1\",\"Item2\",\"Item3\"", data[0]);
         }
 
@@ -68,7 +68,7 @@ namespace MCRA.Utils.Csv.Tests {
             var csvWriter = new CsvWriter();
             csvWriter.WriteToCsvFile(records, _tempCsvName);
             var data = File.ReadAllLines(_tempCsvName);
-            Assert.AreEqual(3, data.Length);
+            Assert.HasCount(3, data);
             Assert.AreEqual("\"Item1\",\"Item2\",\"Item3\",\"Item4\"", data[0]);
             Assert.AreEqual("\"A\",2,0.5,\"True\"", data[1]);
             Assert.AreEqual("\"No\",-100,NaN,\"False\"", data[2]);
@@ -107,7 +107,7 @@ namespace MCRA.Utils.Csv.Tests {
 
             var data = File.ReadAllLines(_tempCsvName);
             var i = 0;
-            Assert.AreEqual(records.Length + 1, data.Length);
+            Assert.HasCount(records.Length + 1, data);
             Assert.AreEqual("\"Item1\",\"Item2\"", data[i++]);
             Assert.AreEqual("2,3.94E-51", data[i++]);
             Assert.AreEqual("-39049874,5.56E44", data[i++]);

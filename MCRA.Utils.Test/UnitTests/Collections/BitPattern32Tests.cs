@@ -69,7 +69,7 @@ namespace MCRA.Utils.Test.UnitTests {
             var groups = list.Select(s => new BitPattern32(s))
                 .GroupBy(p => p).ToList();
 
-            Assert.AreEqual(7, groups.Count);
+            Assert.HasCount(7, groups);
         }
 
         [TestMethod]

@@ -27,7 +27,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ProcessingFactorCalculation
                 .Create(processedFoods, substances, random, processingTypes);
             var builder = new ProcessingFactorModelCollectionBuilder();
             var result = builder.Create(processingFactors, isDistribution, allowHigherThanOne);
-            Assert.AreEqual(processingFactors.Count, result.Count);
+            Assert.HasCount(processingFactors.Count, result);
         }
 
         [TestMethod]
@@ -50,7 +50,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ProcessingFactorCalculation
                 .Create(processedFoods, substances, random, processingTypes);
             var builder = new ProcessingFactorModelCollectionBuilder();
             var result = builder.Create(processingFactors, isDistribution, allowHigherThanOne);
-            Assert.AreEqual(processingFactors.Count, result.Count);
+            Assert.HasCount(processingFactors.Count, result);
         }
 
         [TestMethod]
@@ -66,7 +66,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ProcessingFactorCalculation
                 .Create(processedFoods, substances, random, processingTypes, true);
             var builder = new ProcessingFactorModelCollectionBuilder();
             var result = builder.Create(processingFactors, true, false);
-            Assert.AreEqual(processingFactors.Count, result.Count);
+            Assert.HasCount(processingFactors.Count, result);
             Assert.IsTrue(result.All(r => r is IDistributionProcessingFactorModel));
         }
 

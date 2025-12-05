@@ -58,7 +58,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.UseAgriculturalUsePercentage = true;
             var calculator = new OccurrenceFrequenciesActionCalculator(project);
             var header = TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoad");
-            Assert.AreEqual(2, data.OccurrenceFractions.Count);
+            Assert.HasCount(2, data.OccurrenceFractions);
 
             var factorialSet = new UncertaintyFactorialSet(UncertaintySource.Concentrations);
             var uncertaintySourceGenerators = factorialSet.UncertaintySources.ToDictionary(r => r, r => random as IRandom);
@@ -125,7 +125,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var calculator = new OccurrenceFrequenciesActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, null);
             Assert.IsNotNull(data.OccurrenceFractions);
-            Assert.AreEqual(6, data.OccurrenceFractions.Count);
+            Assert.HasCount(6, data.OccurrenceFractions);
 
             var factorialSet = new UncertaintyFactorialSet(UncertaintySource.Concentrations);
             var uncertaintySourceGenerators = factorialSet.UncertaintySources.ToDictionary(r => r, r => random as IRandom);
@@ -192,7 +192,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, null);
 
             Assert.IsNotNull(data.OccurrenceFractions);
-            Assert.AreEqual(6, data.OccurrenceFractions.Count);
+            Assert.HasCount(6, data.OccurrenceFractions);
 
             var factorialSet = new UncertaintyFactorialSet(UncertaintySource.Concentrations);
             var uncertaintySourceGenerators = factorialSet.UncertaintySources.ToDictionary(r => r, r => random as IRandom);

@@ -74,7 +74,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.Desolve
                     * TimeUnit.Days.GetTimeUnitMultiplier(instance.KineticModelDefinition.Resolution)
                     * instance.KineticModelDefinition.EvaluationFrequency
                     + 1;
-                Assert.AreEqual(timePoints, targetExposurePattern.TargetExposuresPerTimeUnit.Count);
+                Assert.HasCount((int)timePoints, targetExposurePattern.TargetExposuresPerTimeUnit);
             }
         }
     }

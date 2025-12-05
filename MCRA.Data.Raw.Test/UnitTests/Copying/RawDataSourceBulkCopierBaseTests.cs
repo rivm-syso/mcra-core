@@ -163,11 +163,11 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying {
             Assert.AreEqual(tableIdTest.ToString(), writtenTableId, true);
             Assert.AreEqual(tableDefTest.TargetDataTable, writtenTableName);
 
-            Assert.AreEqual(2, propertyTables.Count);
+            Assert.HasCount(2, propertyTables);
             var propTable = propertyTables["RawIndividualProperties"];
             var valTable = propertyTables["RawIndividualPropertyValues"];
-            Assert.AreEqual(6, propTable.Rows.Count);
-            Assert.AreEqual(6, valTable.Rows.Count);
+            Assert.HasCount(6, propTable.Rows);
+            Assert.HasCount(6, valTable.Rows);
 
             Assert.AreEqual("TestCStr0001", propTable.Rows[0]["idIndividualProperty"].ToString());
             Assert.AreEqual("TestCDbl0001", propTable.Rows[1]["idIndividualProperty"].ToString());

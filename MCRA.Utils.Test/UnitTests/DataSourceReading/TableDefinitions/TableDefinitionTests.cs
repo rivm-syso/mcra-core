@@ -26,7 +26,7 @@ namespace MCRA.Utils.Test.UnitTests.DataSourceReading.TableDefinitions {
 
             var dataTable = fake.CreateDataTable();
             Assert.IsNotNull(dataTable);
-            Assert.AreEqual(fieldTypes.Count, dataTable.Columns.Count);
+            Assert.HasCount(fieldTypes.Count, dataTable.Columns);
         }
     }
 }

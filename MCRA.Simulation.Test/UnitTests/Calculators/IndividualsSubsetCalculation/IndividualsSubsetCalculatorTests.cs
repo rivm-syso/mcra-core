@@ -37,7 +37,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IndividualsSubsetCalculatio
                 filters
             );
 
-            Assert.AreEqual(6, subset.Count);
+            Assert.HasCount(6, subset);
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IndividualsSubsetCalculatio
                 filters
             );
 
-            Assert.AreEqual(3, subset.Count);
+            Assert.HasCount(3, subset);
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IndividualsSubsetCalculatio
                 filters
             );
 
-            Assert.AreEqual(4, subset.Count);
+            Assert.HasCount(4, subset);
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IndividualsSubsetCalculatio
                 filters
             );
 
-            Assert.AreEqual(7, subset.Count);
+            Assert.HasCount(7, subset);
         }
 
         /// <summary>
@@ -141,7 +141,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IndividualsSubsetCalculatio
                 filters
             );
 
-            Assert.AreEqual(2, subset.Count);
+            Assert.HasCount(2, subset);
         }
 
         private static void setIndividualPropertyTextValues(

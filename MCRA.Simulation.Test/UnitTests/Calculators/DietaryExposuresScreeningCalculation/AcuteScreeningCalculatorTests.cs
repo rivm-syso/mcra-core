@@ -40,8 +40,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.DietaryExposuresScreeningCa
             var section = new AcuteScreeningCalculator(95, 95, 0, false);
 
             var screeningResult = section.Calculate(foodConversionResults, individualDays, foodConsumptions, compoundResidueCollections, memberships, null);
-            Assert.IsTrue(screeningResult.EffectiveCumulativeSelectionPercentage > 95);
-            Assert.IsTrue(screeningResult.SelectedNumberOfSccRecords > 0);
+            Assert.IsGreaterThan(95, screeningResult.EffectiveCumulativeSelectionPercentage);
+            Assert.IsGreaterThan(0, screeningResult.SelectedNumberOfSccRecords);
 
             var section1 = new ScreeningSummarySection();
             section1.Summarize(screeningResult, 95, 95, 0);

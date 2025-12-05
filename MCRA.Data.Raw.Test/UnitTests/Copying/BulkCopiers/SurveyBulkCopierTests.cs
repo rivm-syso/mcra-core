@@ -26,7 +26,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
                 var tables = dataSourceWriter.DataTables;
 
                 var individualPropertiesTable = getRawDataSourceTable(RawDataSourceTableID.IndividualProperties, tables);
-                Assert.AreEqual(5, individualPropertiesTable.Rows.Count);
+                Assert.HasCount(5, individualPropertiesTable.Rows);
 
                 var propertyCodes = getDistinctColumnValues<string>(individualPropertiesTable, RawIndividualProperties.IdIndividualProperty.ToString()).ToArray();
                 CollectionAssert.AreEquivalent(propertyCodes, new[] { "Age", "Gender", "Factor", "Salary", "bcode" });

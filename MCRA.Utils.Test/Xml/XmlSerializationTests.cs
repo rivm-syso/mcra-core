@@ -19,7 +19,7 @@ namespace MCRA.Utils.Xml {
             var p = createFakePerson();
             var s = p.ToCompressedXml();
             Assert.IsNotNull(s);
-            Assert.IsTrue(s.Length > 0);
+            Assert.IsNotEmpty(s);
             var p2 = XmlSerialization.FromCompressedXml<Person>(s);
             Assert.AreEqual(p, p2);
         }

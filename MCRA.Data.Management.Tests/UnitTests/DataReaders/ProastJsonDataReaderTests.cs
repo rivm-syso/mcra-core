@@ -158,7 +158,7 @@ namespace MCRA.Data.Management.Test.DataReaders {
         ) {
             var modelRecord = data.DoseResponseModels.FirstOrDefault(r => r.DoseResponseModelType == type);
             var bmdRecords = data.BenchmarkDoses.Where(r => r.idDoseResponseModel == modelRecord.idDoseResponseModel).ToList();
-            Assert.AreEqual(bmdRecordCount, bmdRecords.Count);
+            Assert.HasCount(bmdRecordCount, bmdRecords);
 
             var bmdRecord = bmdRecords.FirstOrDefault(r => (string.IsNullOrEmpty(covariate) || r.Covariates == covariate)
                 && (string.IsNullOrEmpty(substance) || r.idSubstance == substance));

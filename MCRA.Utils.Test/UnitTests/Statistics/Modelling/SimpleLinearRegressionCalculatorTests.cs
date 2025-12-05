@@ -64,8 +64,8 @@ namespace MCRA.Utils.Test.UnitTests {
             var x = new List<double> { 0, 10 };
             var y = new List<double> { 0, 10 };
             var slrResult = SimpleLinearRegressionCalculator.Compute(x, y);
-            Assert.IsTrue(slrResult.Constant == 0);
-            Assert.IsTrue(slrResult.Coefficient == 1);
+            Assert.AreEqual(0, slrResult.Constant);
+            Assert.AreEqual(1, slrResult.Coefficient);
         }
     }
 }

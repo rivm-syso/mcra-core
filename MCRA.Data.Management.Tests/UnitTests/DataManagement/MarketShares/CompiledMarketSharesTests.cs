@@ -11,7 +11,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             );
 
             var marketShares = _compiledDataManager.GetAllMarketShares();
-            Assert.AreEqual(3, marketShares.Count);
+            Assert.HasCount(3, marketShares);
             Assert.AreEqual(20, marketShares.First(c => c.Food.Code=="A").Percentage);
             Assert.AreEqual(80, marketShares.First(c => c.Food.Code=="B").Percentage);
             Assert.AreEqual(0.1, marketShares.First(c => c.Food.Code == "C").Percentage);

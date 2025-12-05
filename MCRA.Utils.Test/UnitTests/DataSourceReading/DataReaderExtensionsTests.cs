@@ -26,8 +26,8 @@ namespace MCRA.Utils.Test.UnitTests.DataSourceReading {
                 Assert.AreEqual(2, record.DateField.Month);
                 Assert.AreEqual(1, record.DateField.Day);
                 Assert.AreEqual("EE E", record.AlphaNumericField);
-                Assert.AreEqual(false, record.BooleanField);
-                Assert.AreEqual(7, records.Count);
+                Assert.IsFalse(record.BooleanField);
+                Assert.HasCount(7, records);
             }
         }
 

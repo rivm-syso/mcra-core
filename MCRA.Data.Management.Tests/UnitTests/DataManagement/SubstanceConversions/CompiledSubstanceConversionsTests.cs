@@ -15,7 +15,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             var allDefinitions = _getItemsDelegate.Invoke();
 
-            Assert.AreEqual(2, allDefinitions.Count);
+            Assert.HasCount(2, allDefinitions);
         }
 
         [TestMethod]
@@ -28,7 +28,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             var allDefinitions = _compiledDataManager.GetAllSubstanceConversions();
 
-            Assert.AreEqual(1, allDefinitions.Count);
+            Assert.HasCount(1, allDefinitions);
         }
     }
 }

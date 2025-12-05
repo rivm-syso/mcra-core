@@ -70,17 +70,17 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             CollectionAssert.AreEqual(new[] { "P1", "P3", "P4", "P5" }, allAops.Keys.ToList());
 
-            Assert.AreEqual(1, allAops["P1"].EffectRelations.Count);
+            Assert.HasCount(1, allAops["P1"].EffectRelations);
             CollectionAssert.AreEqual(new[] { "E1" }, allAops["P1"].EffectRelations.Select(r => r.UpstreamKeyEvent.Code).ToList());
             CollectionAssert.AreEqual(new[] { "E2" }, allAops["P1"].EffectRelations.Select(r => r.DownstreamKeyEvent.Code).ToList());
 
-            Assert.AreEqual(0, allAops["P3"].EffectRelations.Count);
+            Assert.IsEmpty(allAops["P3"].EffectRelations);
 
-            Assert.AreEqual(1, allAops["P4"].EffectRelations.Count);
+            Assert.HasCount(1, allAops["P4"].EffectRelations);
             CollectionAssert.AreEqual(new[] { "E1" }, allAops["P4"].EffectRelations.Select(r => r.UpstreamKeyEvent.Code).ToList());
             CollectionAssert.AreEqual(new[] { "E2" }, allAops["P4"].EffectRelations.Select(r => r.DownstreamKeyEvent.Code).ToList());
 
-            Assert.AreEqual(0, allAops["P5"].EffectRelations.Count);
+            Assert.IsEmpty(allAops["P5"].EffectRelations);
         }
     }
 }

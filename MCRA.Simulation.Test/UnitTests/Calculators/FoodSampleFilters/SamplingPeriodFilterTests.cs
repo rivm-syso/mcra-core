@@ -40,7 +40,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleFilters {
             var filter = new SamplePeriodFilter(periodSubsetDefinition.YearsSubsetTimeRanges, true);
             var foodSamples = mockFoodSamples();
             var filteredSamples = foodSamples.Where(r => filter.Passes(r)).ToList();
-            Assert.AreEqual(4, filteredSamples.Count);
+            Assert.HasCount(4, filteredSamples);
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleFilters {
             var filter = new SamplePeriodFilter(periodSubsetDefinition.YearsSubsetTimeRanges, false);
             var foodSamples = mockFoodSamples();
             var filteredSamples = foodSamples.Where(r => filter.Passes(r)).ToList();
-            Assert.AreEqual(2, filteredSamples.Count);
+            Assert.HasCount(2, filteredSamples);
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleFilters {
             var filter = new SamplePeriodFilter(periodSubsetDefinition.YearsSubsetTimeRanges, true);
             var foodSamples = mockFoodSamples();
             var filteredSamples = foodSamples.Where(r => filter.Passes(r)).ToList();
-            Assert.AreEqual(8, filteredSamples.Count);
+            Assert.HasCount(8, filteredSamples);
         }
     }
 }

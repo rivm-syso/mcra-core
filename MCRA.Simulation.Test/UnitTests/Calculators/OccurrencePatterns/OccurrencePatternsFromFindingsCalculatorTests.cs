@@ -23,11 +23,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
             var sampleCompounds = new Dictionary<Food, SampleCompoundCollection>();
             var result = calculator.Compute(foods, sampleCompounds);
             Assert.IsNotNull(result);
-            Assert.AreEqual(0, result.Count);
+            Assert.IsEmpty(result);
             foods.Add(new Food());
             result = calculator.Compute(foods, sampleCompounds);
             Assert.IsNotNull(result);
-            Assert.AreEqual(1, result.Count);
+            Assert.HasCount(1, result);
             Assert.AreEqual(foods[0], result.Single().Food);
             Assert.AreEqual(0, result.Single().PositiveFindingsCount);
         }
@@ -49,15 +49,15 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
 
             var result = calculator.Compute(foods, collection);
             Assert.IsNotNull(result);
-            Assert.AreEqual(1, result.Count);
+            Assert.HasCount(1, result);
             var marginalUse = result.Single();
 
-            Assert.AreEqual(1, marginalUse.Compounds.Count);
+            Assert.HasCount(1, marginalUse.Compounds);
             Assert.AreEqual(foodA, marginalUse.Food);
             Assert.AreEqual(1, marginalUse.PositiveFindingsCount);
             Assert.AreEqual(1, marginalUse.OccurrenceFraction);
             Assert.AreEqual(1, marginalUse.AnalyticalScopeCount);
-            Assert.AreEqual(false, marginalUse.AuthorisedUse);
+            Assert.IsFalse(marginalUse.AuthorisedUse);
 
         }
         /// <summary>
@@ -79,15 +79,15 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
 
             var result = calculator.Compute(foods, collection);
             Assert.IsNotNull(result);
-            Assert.AreEqual(1, result.Count);
+            Assert.HasCount(1, result);
             var marginalUse = result.Single();
 
-            Assert.AreEqual(0, marginalUse.Compounds.Count);
+            Assert.IsEmpty(marginalUse.Compounds);
             Assert.AreEqual(foodA, marginalUse.Food);
             Assert.AreEqual(0, marginalUse.PositiveFindingsCount);
             Assert.AreEqual(1, marginalUse.OccurrenceFraction);
             Assert.AreEqual(0, marginalUse.AnalyticalScopeCount);
-            Assert.AreEqual(true, marginalUse.AuthorisedUse);
+            Assert.IsTrue(marginalUse.AuthorisedUse);
         }
 
         /// <summary>
@@ -109,15 +109,15 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
 
             var result = calculator.Compute(foods, collection);
             Assert.IsNotNull(result);
-            Assert.AreEqual(1, result.Count);
+            Assert.HasCount(1, result);
             var marginalUse = result.Single();
 
-            Assert.AreEqual(0, marginalUse.Compounds.Count);
+            Assert.IsEmpty(marginalUse.Compounds);
             Assert.AreEqual(foodA, marginalUse.Food);
             Assert.AreEqual(0, marginalUse.PositiveFindingsCount);
             Assert.AreEqual(1, marginalUse.OccurrenceFraction);
             Assert.AreEqual(0, marginalUse.AnalyticalScopeCount);
-            Assert.AreEqual(true, marginalUse.AuthorisedUse);
+            Assert.IsTrue(marginalUse.AuthorisedUse);
         }
 
         /// <summary>
@@ -140,20 +140,20 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
 
             var result = calculator.Compute(foods, collection).ToArray();
 
-            Assert.AreEqual(2, result.Length);
+            Assert.HasCount(2, result);
 
             var marginalUse = result[0];
-            Assert.AreEqual(2, marginalUse.Compounds.Count);
+            Assert.HasCount(2, marginalUse.Compounds);
             Assert.AreEqual(1, marginalUse.PositiveFindingsCount);
             Assert.AreEqual(.5, marginalUse.OccurrenceFraction);
             Assert.AreEqual(2, marginalUse.AnalyticalScopeCount);
-            Assert.AreEqual(false, marginalUse.AuthorisedUse);
+            Assert.IsFalse(marginalUse.AuthorisedUse);
             marginalUse = result[1];
-            Assert.AreEqual(0, marginalUse.Compounds.Count);
+            Assert.IsEmpty(marginalUse.Compounds);
             Assert.AreEqual(0, marginalUse.PositiveFindingsCount);
             Assert.AreEqual(.5, marginalUse.OccurrenceFraction);
             Assert.AreEqual(0, marginalUse.AnalyticalScopeCount);
-            Assert.AreEqual(true, marginalUse.AuthorisedUse);
+            Assert.IsTrue(marginalUse.AuthorisedUse);
 
             //with rescale
             settings = new OccurrencePatternsFromFindingsCalculatorSettings(new () {
@@ -164,15 +164,15 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
             calculator = new OccurrencePatternsFromFindingsCalculator(settings);
             result = calculator.Compute(foods, collection).ToArray();
 
-            Assert.AreEqual(1, result.Length);
+            Assert.HasCount(1, result);
 
             marginalUse = result[0];
 
-            Assert.AreEqual(2, marginalUse.Compounds.Count);
+            Assert.HasCount(2, marginalUse.Compounds);
             Assert.AreEqual(1, marginalUse.PositiveFindingsCount);
             Assert.AreEqual(1, marginalUse.OccurrenceFraction);
             Assert.AreEqual(2, marginalUse.AnalyticalScopeCount);
-            Assert.AreEqual(false, marginalUse.AuthorisedUse);
+            Assert.IsFalse(marginalUse.AuthorisedUse);
 
             //with rescale, only authorized
             settings = new OccurrencePatternsFromFindingsCalculatorSettings(new () {
@@ -183,20 +183,20 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
             calculator = new OccurrencePatternsFromFindingsCalculator(settings);
             result = calculator.Compute(foods, collection).ToArray();
 
-            Assert.AreEqual(2, result.Length);
+            Assert.HasCount(2, result);
 
             marginalUse = result[0];
-            Assert.AreEqual(2, marginalUse.Compounds.Count);
+            Assert.HasCount(2, marginalUse.Compounds);
             Assert.AreEqual(1, marginalUse.PositiveFindingsCount);
             Assert.AreEqual(.5, marginalUse.OccurrenceFraction);
             Assert.AreEqual(2, marginalUse.AnalyticalScopeCount);
-            Assert.AreEqual(false, marginalUse.AuthorisedUse);
+            Assert.IsFalse(marginalUse.AuthorisedUse);
             marginalUse = result[1];
-            Assert.AreEqual(0, marginalUse.Compounds.Count);
+            Assert.IsEmpty(marginalUse.Compounds);
             Assert.AreEqual(0, marginalUse.PositiveFindingsCount);
             Assert.AreEqual(.5, marginalUse.OccurrenceFraction);
             Assert.AreEqual(0, marginalUse.AnalyticalScopeCount);
-            Assert.AreEqual(true, marginalUse.AuthorisedUse);
+            Assert.IsTrue(marginalUse.AuthorisedUse);
 
         }
         /// <summary>
@@ -223,28 +223,28 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
 
             var result = calculator.Compute(foods, collection).ToArray();
 
-            Assert.AreEqual(5, result.Length);
+            Assert.HasCount(5, result);
 
-            Assert.AreEqual(4, result[0].Compounds.Count);
+            Assert.HasCount(4, result[0].Compounds);
             Assert.AreEqual(1, result[0].PositiveFindingsCount);
             Assert.AreEqual(0.05, result[0].OccurrenceFraction);
-            Assert.AreEqual(true, result[0].AuthorisedUse);
-            Assert.AreEqual(3, result[1].Compounds.Count);
+            Assert.IsTrue(result[0].AuthorisedUse);
+            Assert.HasCount(3, result[1].Compounds);
             Assert.AreEqual(2, result[1].PositiveFindingsCount);
             Assert.AreEqual(0.1, result[1].OccurrenceFraction);
-            Assert.AreEqual(true, result[1].AuthorisedUse);
-            Assert.AreEqual(2, result[2].Compounds.Count);
+            Assert.IsTrue(result[1].AuthorisedUse);
+            Assert.HasCount(2, result[2].Compounds);
             Assert.AreEqual(3, result[2].PositiveFindingsCount);
             Assert.AreEqual(0.15, result[2].OccurrenceFraction);
-            Assert.AreEqual(true, result[2].AuthorisedUse);
-            Assert.AreEqual(1, result[3].Compounds.Count);
+            Assert.IsTrue(result[2].AuthorisedUse);
+            Assert.HasCount(1, result[3].Compounds);
             Assert.AreEqual(4, result[3].PositiveFindingsCount);
             Assert.AreEqual(0.2, result[3].OccurrenceFraction);
-            Assert.AreEqual(true, result[3].AuthorisedUse);
-            Assert.AreEqual(0, result[4].Compounds.Count);
+            Assert.IsTrue(result[3].AuthorisedUse);
+            Assert.IsEmpty(result[4].Compounds);
             Assert.AreEqual(0, result[4].PositiveFindingsCount);
             Assert.AreEqual(0.5, result[4].OccurrenceFraction);
-            Assert.AreEqual(true, result[4].AuthorisedUse);
+            Assert.IsTrue(result[4].AuthorisedUse);
         }
 
         /// <summary>
@@ -271,23 +271,23 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
 
             var result = calculator.Compute(foods, collection).ToArray();
 
-            Assert.AreEqual(4, result.Length);
-            Assert.AreEqual(4, result[0].Compounds.Count);
+            Assert.HasCount(4, result);
+            Assert.HasCount(4, result[0].Compounds);
             Assert.AreEqual(1, result[0].PositiveFindingsCount);
             Assert.AreEqual(0.1, result[0].OccurrenceFraction);
-            Assert.AreEqual(true, result[0].AuthorisedUse);
-            Assert.AreEqual(3, result[1].Compounds.Count);
+            Assert.IsTrue(result[0].AuthorisedUse);
+            Assert.HasCount(3, result[1].Compounds);
             Assert.AreEqual(2, result[1].PositiveFindingsCount);
             Assert.AreEqual(0.2, result[1].OccurrenceFraction);
-            Assert.AreEqual(true, result[1].AuthorisedUse);
-            Assert.AreEqual(2, result[2].Compounds.Count);
+            Assert.IsTrue(result[1].AuthorisedUse);
+            Assert.HasCount(2, result[2].Compounds);
             Assert.AreEqual(3, result[2].PositiveFindingsCount);
             Assert.AreEqual(0.3, result[2].OccurrenceFraction);
-            Assert.AreEqual(true, result[2].AuthorisedUse);
-            Assert.AreEqual(1, result[3].Compounds.Count);
+            Assert.IsTrue(result[2].AuthorisedUse);
+            Assert.HasCount(1, result[3].Compounds);
             Assert.AreEqual(4, result[3].PositiveFindingsCount);
             Assert.AreEqual(0.4, result[3].OccurrenceFraction);
-            Assert.AreEqual(true, result[3].AuthorisedUse);
+            Assert.IsTrue(result[3].AuthorisedUse);
         }
 
         /// <summary>
@@ -313,27 +313,27 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
             var calculator = new OccurrencePatternsFromFindingsCalculator(settings);
             var result = calculator.Compute(foods, collection).ToArray();
 
-            Assert.AreEqual(5, result.Length);
-            Assert.AreEqual(3, result[0].Compounds.Count);
+            Assert.HasCount(5, result);
+            Assert.HasCount(3, result[0].Compounds);
             Assert.AreEqual(1, result[0].PositiveFindingsCount);
             Assert.AreEqual(0.05, result[0].OccurrenceFraction);
-            Assert.AreEqual(true, result[0].AuthorisedUse);
-            Assert.AreEqual(4, result[1].Compounds.Count);
+            Assert.IsTrue(result[0].AuthorisedUse);
+            Assert.HasCount(4, result[1].Compounds);
             Assert.AreEqual(2, result[1].PositiveFindingsCount);
             Assert.AreEqual(0.1, result[1].OccurrenceFraction);
-            Assert.AreEqual(false, result[1].AuthorisedUse);
-            Assert.AreEqual(3, result[2].Compounds.Count);
+            Assert.IsFalse(result[1].AuthorisedUse);
+            Assert.HasCount(3, result[2].Compounds);
             Assert.AreEqual(3, result[2].PositiveFindingsCount);
             Assert.AreEqual(0.15, result[2].OccurrenceFraction);
-            Assert.AreEqual(false, result[2].AuthorisedUse);
-            Assert.AreEqual(1, result[3].Compounds.Count);
+            Assert.IsFalse(result[2].AuthorisedUse);
+            Assert.HasCount(1, result[3].Compounds);
             Assert.AreEqual(4, result[3].PositiveFindingsCount);
             Assert.AreEqual(0.2, result[3].OccurrenceFraction);
-            Assert.AreEqual(true, result[3].AuthorisedUse);
-            Assert.AreEqual(0, result[4].Compounds.Count);
+            Assert.IsTrue(result[3].AuthorisedUse);
+            Assert.IsEmpty(result[4].Compounds);
             Assert.AreEqual(0, result[4].PositiveFindingsCount);
             Assert.AreEqual(0.5, result[4].OccurrenceFraction);
-            Assert.AreEqual(true, result[4].AuthorisedUse);
+            Assert.IsTrue(result[4].AuthorisedUse);
         }
 
         /// <summary>
@@ -360,23 +360,23 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
 
             var result = calculator.Compute(foods, collection).ToArray();
 
-            Assert.AreEqual(4, result.Length);
-            Assert.AreEqual(3, result[0].Compounds.Count);
+            Assert.HasCount(4, result);
+            Assert.HasCount(3, result[0].Compounds);
             Assert.AreEqual(1, result[0].PositiveFindingsCount);
             Assert.AreEqual(0.1, result[0].OccurrenceFraction, 1E-10);
-            Assert.AreEqual(true, result[0].AuthorisedUse);
-            Assert.AreEqual(4, result[1].Compounds.Count);
+            Assert.IsTrue(result[0].AuthorisedUse);
+            Assert.HasCount(4, result[1].Compounds);
             Assert.AreEqual(2, result[1].PositiveFindingsCount);
             Assert.AreEqual(0.2, result[1].OccurrenceFraction, 1E-10);
-            Assert.AreEqual(false, result[1].AuthorisedUse);
-            Assert.AreEqual(3, result[2].Compounds.Count);
+            Assert.IsFalse(result[1].AuthorisedUse);
+            Assert.HasCount(3, result[2].Compounds);
             Assert.AreEqual(3, result[2].PositiveFindingsCount);
             Assert.AreEqual(0.3, result[2].OccurrenceFraction, 1E-10);
-            Assert.AreEqual(false, result[2].AuthorisedUse);
-            Assert.AreEqual(1, result[3].Compounds.Count);
+            Assert.IsFalse(result[2].AuthorisedUse);
+            Assert.HasCount(1, result[3].Compounds);
             Assert.AreEqual(4, result[3].PositiveFindingsCount);
             Assert.AreEqual(0.4, result[3].OccurrenceFraction, 1E-10);
-            Assert.AreEqual(true, result[3].AuthorisedUse);
+            Assert.IsTrue(result[3].AuthorisedUse);
         }
 
         /// <summary>
@@ -403,23 +403,23 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
 
             var result = calculator.Compute(foods, collection).ToArray();
 
-            Assert.AreEqual(4, result.Length);
-            Assert.AreEqual(3, result[0].Compounds.Count);
+            Assert.HasCount(4, result);
+            Assert.HasCount(3, result[0].Compounds);
             Assert.AreEqual(1, result[0].PositiveFindingsCount);
             Assert.AreEqual(0.15, result[0].OccurrenceFraction, 1E-10);
-            Assert.AreEqual(true, result[0].AuthorisedUse);
-            Assert.AreEqual(4, result[1].Compounds.Count);
+            Assert.IsTrue(result[0].AuthorisedUse);
+            Assert.HasCount(4, result[1].Compounds);
             Assert.AreEqual(2, result[1].PositiveFindingsCount);
             Assert.AreEqual(0.1, result[1].OccurrenceFraction, 1E-10);
-            Assert.AreEqual(false, result[1].AuthorisedUse);
-            Assert.AreEqual(3, result[2].Compounds.Count);
+            Assert.IsFalse(result[1].AuthorisedUse);
+            Assert.HasCount(3, result[2].Compounds);
             Assert.AreEqual(3, result[2].PositiveFindingsCount);
             Assert.AreEqual(0.15, result[2].OccurrenceFraction, 1E-10);
-            Assert.AreEqual(false, result[2].AuthorisedUse);
-            Assert.AreEqual(1, result[3].Compounds.Count);
+            Assert.IsFalse(result[2].AuthorisedUse);
+            Assert.HasCount(1, result[3].Compounds);
             Assert.AreEqual(4, result[3].PositiveFindingsCount);
             Assert.AreEqual(0.6, result[3].OccurrenceFraction, 1E-10);
-            Assert.AreEqual(true, result[3].AuthorisedUse);
+            Assert.IsTrue(result[3].AuthorisedUse);
         }
 
         /// <summary>
@@ -467,16 +467,16 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
 
             var result = calculator.Compute(foods, collection).ToArray();
 
-            Assert.AreEqual(2, result.Length);
+            Assert.HasCount(2, result);
 
-            Assert.AreEqual(2, result[0].Compounds.Count);
+            Assert.HasCount(2, result[0].Compounds);
             Assert.AreEqual(10, result[0].PositiveFindingsCount);
             Assert.AreEqual(0.5, result[0].OccurrenceFraction, 1E-10);
-            Assert.AreEqual(true, result[0].AuthorisedUse);
-            Assert.AreEqual(2, result[1].Compounds.Count);
+            Assert.IsTrue(result[0].AuthorisedUse);
+            Assert.HasCount(2, result[1].Compounds);
             Assert.AreEqual(10, result[1].PositiveFindingsCount);
             Assert.AreEqual(0.5, result[1].OccurrenceFraction, 1E-10);
-            Assert.AreEqual(false, result[1].AuthorisedUse);
+            Assert.IsFalse(result[1].AuthorisedUse);
         }
 
         /// <summary>
@@ -500,15 +500,15 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
             var calculator = new OccurrencePatternsFromFindingsCalculator(settings);
             var result = calculator.Compute(foods, collection).ToArray();
 
-            Assert.AreEqual(2, result.Length);
-            Assert.AreEqual(2, result[0].Compounds.Count);
+            Assert.HasCount(2, result);
+            Assert.HasCount(2, result[0].Compounds);
             Assert.AreEqual(10, result[0].PositiveFindingsCount);
             Assert.AreEqual(0.5, result[0].OccurrenceFraction, 1E-10);
-            Assert.AreEqual(true, result[0].AuthorisedUse);
-            Assert.AreEqual(2, result[1].Compounds.Count);
+            Assert.IsTrue(result[0].AuthorisedUse);
+            Assert.HasCount(2, result[1].Compounds);
             Assert.AreEqual(10, result[1].PositiveFindingsCount);
             Assert.AreEqual(0.5, result[1].OccurrenceFraction, 1E-10);
-            Assert.AreEqual(false, result[1].AuthorisedUse);
+            Assert.IsFalse(result[1].AuthorisedUse);
         }
 
         /// <summary>

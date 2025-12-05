@@ -14,8 +14,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             CollectionAssert.AreEqual(new[] { "Agm1", "Agm2" }, models.Keys.ToList());
 
-            Assert.AreEqual(0, models["agm1"].MembershipProbabilities.Count);
-            Assert.AreEqual(0, models["agm2"].MembershipProbabilities.Count);
+            Assert.IsEmpty(models["agm1"].MembershipProbabilities);
+            Assert.IsEmpty(models["agm2"].MembershipProbabilities);
         }
 
         [TestMethod]
@@ -31,7 +31,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             CollectionAssert.AreEqual(new[] { "Agm2" }, models.Keys.ToList());
 
-            Assert.AreEqual(0, models["agm2"].MembershipProbabilities.Count);
+            Assert.IsEmpty(models["agm2"].MembershipProbabilities);
             Assert.AreEqual("eff2", models["agm2"].Effect.Code.ToLower());
         }
 

@@ -51,8 +51,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.Helpers {
             var templateHtml = "<div section-path=\"Title1|*\" header-level=\"2\" section-title=\"New section title\" class=\"section-outlet\"></div>";
             var resolvedHtml = builder.ResolveReportTemplate(templateHtml);
             var sectionHash = fakeToc.SubSectionHeaders.First(r => r.Name == "Title1").SectionHash;
-            Assert.IsTrue(resolvedHtml.Contains($"<h2 class=\"sectionHeader\" id=\"{sectionHash}\">New section title</h2>"));
-            Assert.IsTrue(resolvedHtml.Contains("<div class=\"section-outlet\" render-recursive=\"true\" section-id=\"10000000-0000-0000-0000-000000000000\" header-level=\"2\"></div>"));
+            Assert.Contains($"<h2 class=\"sectionHeader\" id=\"{sectionHash}\">New section title</h2>", resolvedHtml);
+            Assert.Contains("<div class=\"section-outlet\" render-recursive=\"true\" section-id=\"10000000-0000-0000-0000-000000000000\" header-level=\"2\"></div>", resolvedHtml);
         }
 
         [TestMethod]
@@ -64,8 +64,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.Helpers {
             var pathValue = string.Join("|", sectionPath);
             var templateHtml = $"<div class='section-outlet' id='asdfsaf' section-path='{pathValue}'></div>";
             var resolvedHtml = builder.ResolveReportTemplate(templateHtml);
-            Assert.IsTrue(resolvedHtml.Contains("<div class=\"section\" id=\"asdfsaf\" data-section-id=\"1ad00000-0000-0000-0000-000000000000\">"));
-            Assert.IsTrue(resolvedHtml.Contains("<div class=\"section-outlet\" section-id=\"1ad00000-0000-0000-0000-000000000000\">"));
+            Assert.Contains("<div class=\"section\" id=\"asdfsaf\" data-section-id=\"1ad00000-0000-0000-0000-000000000000\">", resolvedHtml);
+            Assert.Contains("<div class=\"section-outlet\" section-id=\"1ad00000-0000-0000-0000-000000000000\">", resolvedHtml);
         }
 
         [TestMethod]
@@ -76,8 +76,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.Helpers {
             var sectionLabel = "sectionLabel1AD";
             var templateHtml = $"<div class='section-outlet' id='asdfsaf' section-label='{sectionLabel}'></div>";
             var resolvedHtml = builder.ResolveReportTemplate(templateHtml);
-            Assert.IsTrue(resolvedHtml.Contains("<div class=\"section\" id=\"asdfsaf\" data-section-id=\"1ad00000-0000-0000-0000-000000000000\">"));
-            Assert.IsTrue(resolvedHtml.Contains("<div class=\"section-outlet\" section-id=\"1ad00000-0000-0000-0000-000000000000\">"));
+            Assert.Contains("<div class=\"section\" id=\"asdfsaf\" data-section-id=\"1ad00000-0000-0000-0000-000000000000\">", resolvedHtml);
+            Assert.Contains("<div class=\"section-outlet\" section-id=\"1ad00000-0000-0000-0000-000000000000\">", resolvedHtml);
         }
 
         [TestMethod]

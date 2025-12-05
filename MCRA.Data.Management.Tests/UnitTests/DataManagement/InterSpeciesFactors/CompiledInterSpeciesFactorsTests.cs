@@ -32,7 +32,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff1"]);
 
             var factors = _getItemsDelegate.Invoke();
-            Assert.AreEqual(1, factors.Count);
+            Assert.HasCount(1, factors);
             var f = factors.First();
 
             Assert.IsNull(f.Compound);

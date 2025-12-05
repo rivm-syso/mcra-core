@@ -96,7 +96,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var calculator = new KineticModelsActionCalculator(project);
             var header = TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoad");
 
-            Assert.AreEqual(3, data.AbsorptionFactors.Count);
+            Assert.HasCount(3, data.AbsorptionFactors);
             Assert.IsNotNull(data.AbsorptionFactors);
             var factorialSet = new UncertaintyFactorialSet() { };
             var uncertaintySourceGenerators = new Dictionary<UncertaintySource, IRandom> { };

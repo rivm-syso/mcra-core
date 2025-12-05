@@ -46,7 +46,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 externalExposuresUnit,
                 false
             );
-            Assert.AreEqual(substances.Count, section.ExposureRecords.Count);
+            Assert.HasCount(substances.Count, section.ExposureRecords);
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 externalExposuresUnit,
                 false
             );
-            Assert.AreEqual(substances.Count, section.ExposureRecords.Count);
+            Assert.HasCount(substances.Count, section.ExposureRecords);
         }
     }
 }

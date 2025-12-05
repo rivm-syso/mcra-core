@@ -30,7 +30,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ActiveSubstancesCalculators
                 combinationMethodMembershipInfoAndPodPresence: default
             );
             var result = calculator.Compute(models, substances, focalEffect, null);
-            Assert.AreEqual(result.MembershipProbabilities.Count, substances.Count);
+            Assert.HasCount(result.MembershipProbabilities.Count, substances);
             Assert.IsTrue(result.MembershipProbabilities.All(r => r.Value == 1D));
         }
 
@@ -52,7 +52,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ActiveSubstancesCalculators
                 combinationMethodMembershipInfoAndPodPresence: default
             );
             var result = calculator.Compute(models, substances, focalEffect, null);
-            Assert.AreEqual(result.MembershipProbabilities.Count, substances.Count);
+            Assert.HasCount(result.MembershipProbabilities.Count, substances);
             CollectionAssert.AreEquivalent(
                 new[] { 0D, 0D, 1D, 1D, 1D },
                 result.MembershipProbabilities.Values.ToArray()
@@ -77,7 +77,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ActiveSubstancesCalculators
                 combinationMethodMembershipInfoAndPodPresence: default
             );
             var result = calculator.Compute(models, substances, focalEffect, null);
-            Assert.AreEqual(result.MembershipProbabilities.Count, substances.Count);
+            Assert.HasCount(result.MembershipProbabilities.Count, substances);
             CollectionAssert.AreEquivalent(
                 new[] { 0D, 1D, 1D, 1D, 1D },
                 result.MembershipProbabilities.Values.ToArray()
@@ -102,7 +102,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ActiveSubstancesCalculators
                 combinationMethodMembershipInfoAndPodPresence: default
             );
             var result = calculator.Compute(models, substances, focalEffect, null);
-            Assert.AreEqual(result.MembershipProbabilities.Count, substances.Count);
+            Assert.HasCount(result.MembershipProbabilities.Count, substances);
             CollectionAssert.AreEquivalent(
                 new[] { 0D, 0.25, 0.5, 0.75, 1D },
                 result.MembershipProbabilities.Values.ToArray()

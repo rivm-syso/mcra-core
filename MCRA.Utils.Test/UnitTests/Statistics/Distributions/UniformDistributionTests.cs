@@ -13,8 +13,8 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.Distributions {
             var random = new McraRandomGenerator(1);
             for (int i = 0; i < n; i++) {
                 var val = distribution.Draw(random);
-                Assert.IsTrue(val >= a);
-                Assert.IsTrue(val <= b);
+                Assert.IsGreaterThanOrEqualTo(a, val);
+                Assert.IsLessThanOrEqualTo(b, val);
             }
         }
 

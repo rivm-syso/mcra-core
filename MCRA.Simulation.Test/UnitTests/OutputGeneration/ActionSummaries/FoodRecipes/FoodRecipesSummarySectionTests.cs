@@ -28,7 +28,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.FoodRe
             var processingTypes = new List<ProcessingType>();
             var section = new FoodRecipesSummarySection();
             section.Summarize(recipes, foods, processingTypes);
-            Assert.AreEqual(7, section.Records.Count);
+            Assert.HasCount(7, section.Records);
             AssertIsValidView(section);
         }
 
@@ -51,7 +51,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.FoodRe
             var processingTypes = new List<ProcessingType>();
             var section = new FoodRecipesSummarySection();
             section.Summarize(recipes, foods, processingTypes);
-            Assert.AreEqual(1, section.Records.Count);
+            Assert.HasCount(1, section.Records);
             AssertIsValidView(section);
         }
     }

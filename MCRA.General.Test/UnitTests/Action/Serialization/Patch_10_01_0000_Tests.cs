@@ -132,7 +132,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.IsTrue(modSettings.IsParametric);
             Assert.IsTrue(modSettings.ResampleConcentrations);
 
-            Assert.AreEqual(2, modSettings.ConcentrationModelTypesFoodSubstance.Count);
+            Assert.HasCount(2, modSettings.ConcentrationModelTypesFoodSubstance);
             Assert.AreEqual("Aa", modSettings.ConcentrationModelTypesFoodSubstance[0].FoodCode);
             Assert.AreEqual("Bb", modSettings.ConcentrationModelTypesFoodSubstance[0].SubstanceCode);
             Assert.AreEqual(ConcentrationModelType.SummaryStatistics, modSettings.ConcentrationModelTypesFoodSubstance[0].ModelType);
@@ -190,13 +190,13 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.AreEqual(3.3333D, modSettings.VariabilityLowerPercentage);
             Assert.AreEqual(88.888D, modSettings.VariabilityUpperPercentage);
 
-            Assert.AreEqual(2, modSettings.FocalFoods.Count);
+            Assert.HasCount(2, modSettings.FocalFoods);
             Assert.AreEqual("Aa", modSettings.FocalFoods[0].CodeFood);
             Assert.AreEqual("Bb", modSettings.FocalFoods[0].CodeSubstance);
             Assert.AreEqual("Cc", modSettings.FocalFoods[1].CodeFood);
             Assert.AreEqual("Dd", modSettings.FocalFoods[1].CodeSubstance);
 
-            Assert.AreEqual(3, modSettings.SamplesSubsetDefinitions.Count);
+            Assert.HasCount(3, modSettings.SamplesSubsetDefinitions);
             var subsetDef = modSettings.SamplesSubsetDefinitions[0];
             Assert.AreEqual("Aa,B b,C  c", string.Join(",", subsetDef.KeyWords));
             Assert.IsTrue(subsetDef.IsProductionMethodSubset);
@@ -340,7 +340,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.IsTrue(modSettings.IntakeFirstModelThenAdd);
             Assert.IsTrue(modSettings.IntakeCovariateModelling);
             //intake models
-            Assert.AreEqual(3, modSettings.IntakeModelsPerCategory.Count);
+            Assert.HasCount(3, modSettings.IntakeModelsPerCategory);
             var itm = modSettings.IntakeModelsPerCategory[0];
             Assert.AreEqual(IntakeModelType.LNN0, itm.ModelType);
             Assert.AreEqual(TransformType.NoTransform, itm.TransformType);
@@ -531,7 +531,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
 
             var modSettings = settings.FocalFoodConcentrationsSettings;
 
-            Assert.AreEqual(2, modSettings.FocalFoods.Count);
+            Assert.HasCount(2, modSettings.FocalFoods);
             Assert.AreEqual("Aa", modSettings.FocalFoods[0].CodeFood);
             Assert.AreEqual("Bb", modSettings.FocalFoods[0].CodeSubstance);
             Assert.AreEqual("Cc", modSettings.FocalFoods[1].CodeFood);
@@ -848,7 +848,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
 
             var modSettings = settings.NonDietaryExposuresSettings;
 
-            Assert.IsTrue(modSettings.NonDietaryPopulationAlignmentMethod == PopulationAlignmentMethod.MatchIndividualID);
+            Assert.AreEqual(PopulationAlignmentMethod.MatchIndividualID, modSettings.NonDietaryPopulationAlignmentMethod);
             Assert.IsTrue(modSettings.ResampleNonDietaryExposures);
         }
 
@@ -950,7 +950,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.IsTrue(modSettings.PopulationSubsetSelection);
             Assert.AreEqual(123.45D, modSettings.NominalPopulationBodyWeight);
 
-            Assert.AreEqual(3, modSettings.IndividualsSubsetDefinitions.Count);
+            Assert.HasCount(3, modSettings.IndividualsSubsetDefinitions);
             var idv = modSettings.IndividualsSubsetDefinitions[0];
             Assert.AreEqual("DoubleRange", idv.NameIndividualProperty);
             Assert.AreEqual("61-93", idv.IndividualPropertyQuery);

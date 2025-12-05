@@ -41,7 +41,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var calculator = new SingleValueRisksActionCalculator(project);
             _ = TestRunUpdateSummarizeNominal(project, calculator, data, $"SingleValue");
 
-            Assert.AreEqual(data.SingleValueDietaryExposureResults.Count, data.SingleValueRiskCalculationResults.Count);
+            Assert.HasCount(data.SingleValueDietaryExposureResults.Count, data.SingleValueRiskCalculationResults);
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var calculator = new SingleValueRisksActionCalculator(project);
             _ = TestRunUpdateSummarizeNominal(project, calculator, data, $"TestAcuteMOENom");
-            Assert.AreEqual(1, data.SingleValueRiskCalculationResults.Count);
+            Assert.HasCount(1, data.SingleValueRiskCalculationResults);
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var calculator = new SingleValueRisksActionCalculator(project);
             _ = TestRunUpdateSummarizeNominal(project, calculator, data, $"TestAcuteMOEInvNom");
-            Assert.AreEqual(1, data.SingleValueRiskCalculationResults.Count);
+            Assert.HasCount(1, data.SingleValueRiskCalculationResults);
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var calculator = new SingleValueRisksActionCalculator(project);
             _ = TestRunUpdateSummarizeNominal(project, calculator, data, $"TestAcuteHINom");
-            Assert.AreEqual(1, data.SingleValueRiskCalculationResults.Count);
+            Assert.HasCount(1, data.SingleValueRiskCalculationResults);
         }
 
         /// <summary>
@@ -157,7 +157,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var calculator = new SingleValueRisksActionCalculator(project);
             _ = TestRunUpdateSummarizeNominal(project, calculator, data, "TestAcuteHIInvNom");
-            Assert.AreEqual(1, data.SingleValueRiskCalculationResults.Count);
+            Assert.HasCount(1, data.SingleValueRiskCalculationResults);
         }
 
         /// <summary>
@@ -201,7 +201,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var calculator = new SingleValueRisksActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, null);
-            Assert.AreEqual(1, data.SingleValueRiskCalculationResults.Count);
+            Assert.HasCount(1, data.SingleValueRiskCalculationResults);
 
             var factorialSet = new UncertaintyFactorialSet(UncertaintySource.Concentrations, UncertaintySource.Individuals, UncertaintySource.SingleValueRiskAdjustmentFactors);
             var uncertaintySourceGenerators = factorialSet.UncertaintySources.ToDictionary(r => r, r => random as IRandom);
@@ -249,7 +249,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var calculator = new SingleValueRisksActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, null);
-            Assert.AreEqual(1, data.SingleValueRiskCalculationResults.Count);
+            Assert.HasCount(1, data.SingleValueRiskCalculationResults);
 
             var factorialSet = new UncertaintyFactorialSet(UncertaintySource.Concentrations, UncertaintySource.Individuals, UncertaintySource.SingleValueRiskAdjustmentFactors);
             var uncertaintySourceGenerators = factorialSet.UncertaintySources.ToDictionary(r => r, r => random as IRandom);
@@ -317,7 +317,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var calculator = new SingleValueRisksActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, null);
-            Assert.AreEqual(1, data.SingleValueRiskCalculationResults.Count);
+            Assert.HasCount(1, data.SingleValueRiskCalculationResults);
 
             var factorialSet = new UncertaintyFactorialSet(UncertaintySource.Concentrations, UncertaintySource.Individuals, UncertaintySource.SingleValueRiskAdjustmentFactors);
             var uncertaintySourceGenerators = factorialSet.UncertaintySources.ToDictionary(r => r, r => random as IRandom);
@@ -385,7 +385,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var calculator = new SingleValueRisksActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, null);
-            Assert.AreEqual(1, data.SingleValueRiskCalculationResults.Count);
+            Assert.HasCount(1, data.SingleValueRiskCalculationResults);
 
             var factorialSet = new UncertaintyFactorialSet(UncertaintySource.Concentrations, UncertaintySource.Individuals, UncertaintySource.SingleValueRiskAdjustmentFactors);
             var uncertaintySourceGenerators = factorialSet.UncertaintySources.ToDictionary(r => r, r => random as IRandom);
@@ -453,7 +453,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var calculator = new SingleValueRisksActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, null);
-            Assert.AreEqual(1, data.SingleValueRiskCalculationResults.Count);
+            Assert.HasCount(1, data.SingleValueRiskCalculationResults);
 
             var factorialSet = new UncertaintyFactorialSet(UncertaintySource.Concentrations, UncertaintySource.Individuals, UncertaintySource.SingleValueRiskAdjustmentFactors);
             var uncertaintySourceGenerators = factorialSet.UncertaintySources.ToDictionary(r => r, r => random as IRandom);
@@ -522,7 +522,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var calculator = new SingleValueRisksActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, null);
-            Assert.AreEqual(1, data.SingleValueRiskCalculationResults.Count);
+            Assert.HasCount(1, data.SingleValueRiskCalculationResults);
             var factorialSet = new UncertaintyFactorialSet(UncertaintySource.Concentrations, UncertaintySource.Individuals, UncertaintySource.SingleValueRiskAdjustmentFactors);
             var uncertaintySourceGenerators = factorialSet.UncertaintySources.ToDictionary(r => r, r => random as IRandom);
             TestRunUpdateSummarizeUncertainty(calculator, data, header, random, factorialSet, uncertaintySourceGenerators, reportFileName: "TestAdjustmentFactorBackGroundChronicHIUnc");

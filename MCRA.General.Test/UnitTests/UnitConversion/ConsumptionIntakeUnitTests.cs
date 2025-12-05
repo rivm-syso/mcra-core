@@ -47,8 +47,8 @@
             foreach (var value in enumValues) {
                 var isPerPerson = value.IsPerPerson();
             }
-            Assert.AreEqual(true, ConsumptionIntakeUnit.gPerDay.IsPerPerson());
-            Assert.AreEqual(false, ConsumptionIntakeUnit.gPerKgBWPerDay.IsPerPerson());
+            Assert.IsTrue(ConsumptionIntakeUnit.gPerDay.IsPerPerson());
+            Assert.IsFalse(ConsumptionIntakeUnit.gPerKgBWPerDay.IsPerPerson());
         }
 
         /// <summary>

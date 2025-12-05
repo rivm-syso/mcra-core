@@ -28,7 +28,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f1"]);
 
             var records = _getItemsDelegate.Invoke();
-            Assert.AreEqual(1, records.Count);
+            Assert.HasCount(1, records);
             var f = records.First();
 
             Assert.AreEqual("B", f.Substance.Code);

@@ -34,7 +34,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoad");
 
-            Assert.AreEqual(1, data.AllCompounds.Count);
+            Assert.HasCount(1, data.AllCompounds);
             Assert.IsNull(data.ReferenceSubstance);
         }
 
@@ -85,7 +85,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoad");
 
-            Assert.AreEqual(3, data.AllCompounds.Count);
+            Assert.HasCount(3, data.AllCompounds);
             Assert.IsNull(data.ReferenceSubstance);
         }
 
@@ -113,7 +113,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoad");
 
             // We should not get here, but if we do, this is what we expect
-            Assert.AreEqual(3, data.AllCompounds.Count);
+            Assert.HasCount(3, data.AllCompounds);
             Assert.IsNull(data.ReferenceSubstance);
         }
 
@@ -142,7 +142,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoad");
 
-            Assert.AreEqual(1, data.AllCompounds.Count);
+            Assert.HasCount(1, data.AllCompounds);
             Assert.IsNull(data.ReferenceSubstance);
         }
 
