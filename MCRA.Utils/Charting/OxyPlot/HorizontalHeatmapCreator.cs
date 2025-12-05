@@ -1,5 +1,5 @@
 ﻿using OxyPlot;
-using OxyPlot.Core.Drawing;
+using OxyPlot.SkiaSharp;
 
 namespace MCRA.Utils.Charting.OxyPlot {
     public class HorizontalHeatmapCreator : OxyPlotHeatMapCreator {

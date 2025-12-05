@@ -16,14 +16,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.0" />
-    <PackageReference Include="MSTest.TestAdapter" Version="4.2.1" />
-    <PackageReference Include="MSTest.TestFramework" Version="4.2.1" />
-    <PackageReference Include="coverlet.collector" Version="6.0.4">
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.7.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="4.2.3" />
+    <PackageReference Include="MSTest.TestFramework" Version="4.2.3" />
+    <PackageReference Include="coverlet.collector" Version="10.0.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="NCalcSync" Version="5.2.11" />
+    <PackageReference Include="NCalcSync" Version="6.4.0" />
   </ItemGroup>
 
   <ItemGroup>

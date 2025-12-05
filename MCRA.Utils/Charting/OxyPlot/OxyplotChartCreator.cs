@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using OxyPlot;
-using OxyPlot.Core.Drawing;
+using OxyPlot.SkiaSharp;
 using SvgExporter = OxyPlot.SvgExporter;
 
 namespace MCRA.Utils.Charting.OxyPlot {
@@ -67,7 +67,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
                 var exporter = new PngExporter {
                     Height = scale * Height,
                     Width = scale * Width,
-                    Resolution = scale * 96
+                    Dpi = scale * 96
                 };
                 exporter.Export(plotModel, stream);
             }

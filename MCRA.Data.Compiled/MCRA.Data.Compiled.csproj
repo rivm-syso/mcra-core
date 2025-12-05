@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <PackageReference Include="MathNet.Numerics" Version="5.0.0" />
-    <PackageReference Include="NCalcSync" Version="5.2.11" />
+    <PackageReference Include="NCalcSync" Version="6.4.0" />
   </ItemGroup>
 
   <ItemGroup>

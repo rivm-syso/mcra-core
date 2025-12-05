@@ -1,10 +1,9 @@
 ﻿using MathNet.Numerics.Distributions;
 using MCRA.Utils.Charting.OxyPlot;
 using MCRA.Utils.Test.Helpers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OxyPlot;
 using OxyPlot.Axes;
-using OxyPlot.Core.Drawing;
+using OxyPlot.SkiaSharp;
 
 namespace MCRA.Utils.Test.UnitTests {
     [TestClass]

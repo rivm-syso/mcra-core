@@ -1,6 +1,6 @@
 ﻿using OxyPlot;
 using OxyPlot.Axes;
-using OxyPlot.Core.Drawing;
+using OxyPlot.SkiaSharp;
 
 namespace MCRA.Utils.Charting.OxyPlot {
     /// <summary>

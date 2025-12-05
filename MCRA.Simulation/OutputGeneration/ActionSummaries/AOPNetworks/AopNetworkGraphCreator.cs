@@ -2,8 +2,10 @@
 using MCRA.General;
 using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
+using SkiaSharp;
 using Svg;
 using Svg.DataTypes;
+using Svg.Skia;
 
 namespace MCRA.Simulation.OutputGeneration.ActionSummaries.AOPNetworks {
     public class AopNetworkGraphCreator : IReportChartCreator {
@@ -51,7 +53,22 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.AOPNetworks {
         }
 
         public void CreateToPng(string filename) {
-            throw new NotImplementedException();
+            var doc = create(_section, ShowTitle ? Title : null);
+            var svgText = doc.GetXML();
+            using var svg = new SKSvg();
+            svg.FromSvg(svgText);
+            using var bitmap = new SKBitmap(
+                (int)svg.Picture.CullRect.Width,
+                (int)svg.Picture.CullRect.Height
+            );
+            using var canvas = new SKCanvas(bitmap);
+            canvas.Clear(SKColors.White);
+            canvas.DrawPicture(svg.Picture);
+            canvas.Flush();
+            using var image = SKImage.FromBitmap(bitmap);
+            using var data = image.Encode(SKEncodedImageFormat.Png, 100);
+            using var stream = File.OpenWrite(filename);
+            data.SaveTo(stream);
         }
 
         public void CreateToSvg(string fileName) {
@@ -59,7 +76,21 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.AOPNetworks {
         }
 
         public void WritePngToStream(Stream stream) {
-            throw new NotImplementedException();
+            var doc = create(_section, ShowTitle ? Title : null);
+            var svgText = doc.GetXML();
+            using var svg = new SKSvg();
+            svg.FromSvg(svgText);
+            using var bitmap = new SKBitmap(
+                (int)svg.Picture.CullRect.Width,
+                (int)svg.Picture.CullRect.Height
+            );
+            using var canvas = new SKCanvas(bitmap);
+            canvas.Clear(SKColors.White);
+            canvas.DrawPicture(svg.Picture);
+            canvas.Flush();
+            using var image = SKImage.FromBitmap(bitmap);
+            using var data = image.Encode(SKEncodedImageFormat.Png, 100);
+            data.SaveTo(stream);
         }
 
         public string ToSvgString(int width, int height) {
@@ -111,7 +142,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.AOPNetworks {
                     Dx = [(float)width / 2f],
                     Fill = new SvgColourServer(Color.Black),
                 };
-                text.Dy = [2 * text.Bounds.Height];
+                text.Dy = [2 * 14];
                 doc.Children.Add(text);
             }
 
@@ -189,9 +220,9 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.AOPNetworks {
                         X = [(float)x],
                         Y = [(float)y],
                         Dx = [(float)BlockWidth / 2f],
-                        Fill = new SvgColourServer(Color.Black),
+                    Fill = new SvgColourServer(Color.Black),
                     };
-                    text.Dy = [(float)BlockHeight / 2f + text.Bounds.Height / 4f];
+                    text.Dy = [(float)BlockHeight / 2f + text.FontSize.Value / 4f];
                     group.Children.Add(text);
 
                     doc.Children.Add(group);
@@ -219,10 +250,10 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.AOPNetworks {
                 var startNode = keyEventNodes[ker.CodeUpstreamKeyEvent];
                 var endNode = keyEventNodes[ker.CodeDownstreamKeyEvent];
                 var line = new SvgLine() {
-                    StartX = startNode.X + startNode.Width,
-                    StartY = startNode.Y + startNode.Height / 2,
+                    StartX = new SvgUnit(startNode.X.Value + startNode.Width.Value),
+                    StartY = new SvgUnit(startNode.Y.Value + startNode.Height.Value / 2),
                     EndX = endNode.X,
-                    EndY = endNode.Y + startNode.Height / 2,
+                    EndY = new SvgUnit(endNode.Y.Value + startNode.Height.Value / 2),
                     Stroke = new SvgColourServer(Color.Black),
                     MarkerEnd = new Uri($"url(#{arrowMarker.ID})", UriKind.Relative)
                 };
