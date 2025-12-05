@@ -39,10 +39,13 @@ namespace MCRA.Simulation.OutputGeneration {
                         EffectMetric = r.EffectMetric.GetDisplayName(),
                         ExposureResponseType = r.ExposureResponseType.GetDisplayName(),
                         ExposureResponseSpecification = r.ExposureResponseSpecification.ExpressionString,
-                        ExposureResponseSpecificationLower = r.ExposureResponseSpecificationLower.ExpressionString.Length != 0
+                        ErSpecificationUncertaintyType = r.ERFUncertaintyDistribution != ExposureResponseSpecificationDistributionType.Constant
+                            ? r.ERFUncertaintyDistribution.GetShortDisplayName()
+                            : null,
+                        ErSpecificationUncLower = r.ExposureResponseSpecificationLower.ExpressionString.Length != 0
                             ? r.ExposureResponseSpecificationLower.ExpressionString
                             : null,
-                        ExposureResponseSpecificationUpper = r.ExposureResponseSpecificationUpper.ExpressionString.Length != 0
+                        ErSpecificationUncUpper = r.ExposureResponseSpecificationUpper.ExpressionString.Length != 0
                             ? r.ExposureResponseSpecificationUpper.ExpressionString
                             : null,
                         CounterfactualValue = r.CounterFactualValue,

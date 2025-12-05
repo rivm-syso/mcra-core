@@ -14,6 +14,7 @@ namespace MCRA.Simulation.Calculators.ExposureResponseFunctionModels.ExposureRes
                 ExposureResponseSpecificationDistributionType.Normal => NormalDistribution.FromMeanAndUpper(getNominal(), getUpper()),
                 ExposureResponseSpecificationDistributionType.LogNormal => LogNormalDistribution.FromMeanAndUpper(getNominal(), getUpper()),
                 ExposureResponseSpecificationDistributionType.Triangular => TriangularDistribution.FromModeLowerandUpper(getNominal(), getLower(), getUpper()),
+                ExposureResponseSpecificationDistributionType.Uniform => UniformDistribution.FromMeanAndUpper(getNominal(), getUpper()),
                 ExposureResponseSpecificationDistributionType.Constant => null,
                 _ => throw new NotImplementedException(),
             };

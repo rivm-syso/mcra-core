@@ -188,13 +188,9 @@
       </Description>
       <Aliases>
         <string>ERFUncertaintyDistribution</string>
+        <string>ERUncertaintyDistribution</string>
         <string>ERFDistribution</string>
       </Aliases>
-      <PossibleValues>
-        <PossibleValue>Uniform</PossibleValue>
-        <PossibleValue>LogNormal</PossibleValue>
-        <PossibleValue>Triangular</PossibleValue>
-      </PossibleValues>
     </ColumnDefinition>
     <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
       <Id>ExposureResponseSpecificationLower</Id>
@@ -205,6 +201,7 @@
       </Description>
       <Aliases>
         <string>ExposureResponseSpecificationLower</string>
+        <string>ErfUncertaintyLower</string>
         <string>ErfLower</string>
       </Aliases>
     </ColumnDefinition>
@@ -217,6 +214,7 @@
       </Description>
       <Aliases>
         <string>ExposureResponseSpecificationUpper</string>
+        <string>ErfUncertaintyUpper</string>
         <string>ErfUpper</string>
       </Aliases>
     </ColumnDefinition>

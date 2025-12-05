@@ -20,6 +20,20 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Value")]
         public double Value { get; set; }
 
+        [Description("Uncertainty distribution type.")]
+        [DisplayName("Uncertainty distribution")]
+        public string BodUncertaintyDistribution { get; set; }
+
+        [Description("The specified lower bound of the uncertainty distribution.")]
+        [DisplayFormat(DataFormatString = "{0:G3}")]
+        [DisplayName("Uncertainty lower")]
+        public double? UncLower { get; set; }
+
+        [Description("The specified upper bound of the uncertainty distribution.")]
+        [DisplayFormat(DataFormatString = "{0:G3}")]
+        [DisplayName("Uncertainty upper")]
+        public double? UncUpper { get; set; }
+
     }
 }
 

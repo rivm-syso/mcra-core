@@ -36,19 +36,22 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             var hiddenProperties = new List<string>();
             if (Model.ErfSummaryRecords.All(r => string.IsNullOrEmpty(r.ExposureRoute))) {
-                hiddenProperties.Add("ExposureRoute");
+                hiddenProperties.Add(nameof(ErfSummaryRecord.ExposureRoute));
             }
             if (Model.ErfSummaryRecords.All(r => string.IsNullOrEmpty(r.BiologicalMatrix))) {
-                hiddenProperties.Add("BiologicalMatrix");
+                hiddenProperties.Add(nameof(ErfSummaryRecord.BiologicalMatrix));
             }
             if (Model.ErfSummaryRecords.All(r => string.IsNullOrEmpty(r.ExpressionType))) {
-                hiddenProperties.Add("ExpressionType");
+                hiddenProperties.Add(nameof(ErfSummaryRecord.ExpressionType));
             }
-            if (Model.ErfSummaryRecords.All(r => string.IsNullOrEmpty(r.ExposureResponseSpecificationLower))) {
-                hiddenProperties.Add("ExposureResponseSpecificationLower");
-            }
-            if (Model.ErfSummaryRecords.All(r => string.IsNullOrEmpty(r.ExposureResponseSpecificationUpper))) {
-                hiddenProperties.Add("ExposureResponseSpecificationUpper");
+            if (Model.ErfSummaryRecords.All(r => string.IsNullOrEmpty(r.ErSpecificationUncertaintyType))) {
+                hiddenProperties.Add(nameof(ErfSummaryRecord.ErSpecificationUncertaintyType));
+                hiddenProperties.Add(nameof(ErfSummaryRecord.ErSpecificationUncLower));
+                hiddenProperties.Add(nameof(ErfSummaryRecord.ErSpecificationUncUpper));
+            } else if (Model.ErfSummaryRecords.All(r => string.IsNullOrEmpty(r.ErSpecificationUncLower))) {
+                hiddenProperties.Add(nameof(ErfSummaryRecord.ErSpecificationUncLower));
+            } else if (Model.ErfSummaryRecords.All(r => string.IsNullOrEmpty(r.ErSpecificationUncUpper))) {
+                hiddenProperties.Add(nameof(ErfSummaryRecord.ErSpecificationUncUpper));
             }
 
             sb.AppendTable(

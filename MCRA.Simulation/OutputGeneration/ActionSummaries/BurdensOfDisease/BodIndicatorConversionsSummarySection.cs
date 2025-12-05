@@ -1,4 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.OutputGeneration {
@@ -16,7 +17,11 @@ namespace MCRA.Simulation.OutputGeneration {
                     Population = r.Population.Code,
                     Effect = r.Effect.Name,
                     BodIndicator = r.BodIndicator.GetDisplayName(),
-                    Value = r.Value
+                    Value = r.Value,
+                    BodUncertaintyDistribution = r.BodUncertaintyDistribution != BodIndicatorDistributionType.Constant
+                        ? r.BodUncertaintyDistribution.GetDisplayName() : null,
+                    UncLower = r.BodUncertaintyLower,
+                    UncUpper = r.BodUncertaintyUpper
                 }
             )];
         }

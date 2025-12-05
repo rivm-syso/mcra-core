@@ -40,5 +40,16 @@
         <Alias>Triangular</Alias>
       </Aliases>
     </Unit>
+    <Unit>
+      <Id>Uniform</Id>
+      <Name>Uniform</Name>
+      <ShortName>Uniform</ShortName>
+      <Description>
+        Uniform distribution specified by a mean and upper boundary.
+      </Description>
+      <Aliases>
+        <Alias>Uniform</Alias>
+      </Aliases>
+    </Unit>
   </Units>
 </UnitDefinition>

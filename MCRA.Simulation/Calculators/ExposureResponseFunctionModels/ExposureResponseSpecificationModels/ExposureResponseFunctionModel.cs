@@ -20,7 +20,7 @@ namespace MCRA.Simulation.Calculators.ExposureResponseFunctionModels.ExposureRes
         public int UncertaintySeed { get; set; }
 
         /// <summary>
-        /// Delegate function to create/fit (uncertainty) distribution from nominal, lowwer, and upper.
+        /// Delegate function to create/fit (uncertainty) distribution from nominal, lower, and upper.
         /// </summary>
         private readonly Func<Func<double>, Func<double>, Func<double>, Distribution> _fitDistribution;
 

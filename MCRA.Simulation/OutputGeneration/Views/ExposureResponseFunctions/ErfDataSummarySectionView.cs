@@ -8,34 +8,37 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             var hiddenProperties = new List<string>();
             if (Model.Records.All(r => string.IsNullOrEmpty(r.ExposureRoute))) {
-                hiddenProperties.Add("ExposureRoute");
+                hiddenProperties.Add(nameof(ErfDataSummaryRecord.ExposureRoute));
             }
             if (Model.Records.All(r => string.IsNullOrEmpty(r.BiologicalMatrix))) {
-                hiddenProperties.Add("BiologicalMatrix");
+                hiddenProperties.Add(nameof(ErfDataSummaryRecord.BiologicalMatrix));
             }
             if (Model.Records.All(r => string.IsNullOrEmpty(r.ExpressionType))) {
-                hiddenProperties.Add("ExpressionType");
+                hiddenProperties.Add(nameof(ErfDataSummaryRecord.ExpressionType));
             }
             if (Model.Records.All(r => string.IsNullOrEmpty(r.PopulationCharacteristic))) {
-                hiddenProperties.Add("PopulationCharacteristic");
+                hiddenProperties.Add(nameof(ErfDataSummaryRecord.PopulationCharacteristic));
             }
             if (Model.Records.All(r => r.EffectThresholdLower == null)) {
-                hiddenProperties.Add("EffectThresholdLower");
+                hiddenProperties.Add(nameof(ErfDataSummaryRecord.EffectThresholdLower));
             }
             if (Model.Records.All(r => r.EffectThresholdUpper == null)) {
-                hiddenProperties.Add("EffectThresholdUpper");
+                hiddenProperties.Add(nameof(ErfDataSummaryRecord.EffectThresholdUpper));
             }
-            if (Model.Records.All(r => string.IsNullOrEmpty(r.ExposureResponseSpecificationLower))) {
-                hiddenProperties.Add("ExposureResponseSpecificationLower");
+            if (Model.Records.All(r => string.IsNullOrEmpty(r.ErSpecificationUncertaintyType))) {
+                hiddenProperties.Add(nameof(ErfDataSummaryRecord.ErSpecificationUncertaintyType));
             }
-            if (Model.Records.All(r => string.IsNullOrEmpty(r.ExposureResponseSpecificationUpper))) {
-                hiddenProperties.Add("ExposureResponseSpecificationUpper");
+            if (Model.Records.All(r => string.IsNullOrEmpty(r.ErSpecificationUncLower))) {
+                hiddenProperties.Add(nameof(ErfDataSummaryRecord.ErSpecificationUncLower));
+            }
+            if (Model.Records.All(r => string.IsNullOrEmpty(r.ErSpecificationUncUpper))) {
+                hiddenProperties.Add(nameof(ErfDataSummaryRecord.ErSpecificationUncUpper));
             }
             if (Model.Records.All(r => !r.CfvUncertaintyLower.HasValue || double.IsNaN(r.CfvUncertaintyLower.Value))) {
-                hiddenProperties.Add("CfvUncertaintyLower");
+                hiddenProperties.Add(nameof(ErfDataSummaryRecord.CfvUncertaintyLower));
             }
             if (Model.Records.All(r => !r.CfvUncertaintyUpper.HasValue || double.IsNaN(r.CfvUncertaintyUpper.Value))) {
-                hiddenProperties.Add("CfvUncertaintyUpper");
+                hiddenProperties.Add(nameof(ErfDataSummaryRecord.CfvUncertaintyUpper));
             }
 
             sb.AppendTable(
