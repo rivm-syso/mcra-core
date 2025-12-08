@@ -161,7 +161,8 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         predictionLevels
                     ) {
                         TransformType = transformType,
-                        NumberOfMonteCarloIterations = _numberOfMonteCarloIterations
+                        NumberOfMonteCarloIterations = _numberOfMonteCarloIterations,
+                        VarianceRatio = _varianceRatio.Value
                     };
                 case IntakeModelType.LNN0:
                     return new LNN0Model(

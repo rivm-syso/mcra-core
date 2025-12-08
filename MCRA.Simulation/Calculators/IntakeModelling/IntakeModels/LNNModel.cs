@@ -34,6 +34,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
         private LNN0Model lnn0Model;
 
         public List<double> PredictionLevels { get; set; }
+        public double VarianceRatio { get; set; }
 
         private List<ModelledIndividualAmount> conditionalAmountsPredictions;
         private List<ModelledIndividualAmount> specifiedAmountsPredictions;
@@ -57,11 +58,13 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
         public LNNModel(
             IIntakeModelCalculationSettings frequencyModelSettings,
             IIntakeModelCalculationSettings amountModelSettings,
-            List<double> predictionLevels = null
+            List<double> predictionLevels = null,
+            double varianceRatio = 1
         ) {
             FrequencyModelSettings = frequencyModelSettings;
             AmountModelSettings = amountModelSettings;
             PredictionLevels = predictionLevels;
+            VarianceRatio = varianceRatio;
         }
 
         /// <summary>
@@ -247,7 +250,8 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                 TransformType = TransformType,
                 FrequencyModelSettings = FrequencyModelSettings,
                 AmountModelSettings = AmountModelSettings,
-                NumberOfMonteCarloIterations = NumberOfMonteCarloIterations
+                NumberOfMonteCarloIterations = NumberOfMonteCarloIterations,
+                VarianceRatio = VarianceRatio
             };
         }
 
@@ -507,7 +511,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                 GaussHermitePoints = 10,
                 GaussHermitePrune = -1.0,
                 MaxEvaluations = 200,
-                Tolerance = 1.0 - 6,
+                Tolerance = 1e-5,
                 SeMaxCycle = 2,
                 SeReturn = "none",
                 ScaleAmountInAlgorithm = false,
