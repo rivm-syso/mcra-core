@@ -4,3 +4,4 @@
 // associated with an assembly.
 [assembly: AssemblyTitle("ModuleDiagramCreator.Test")]
 [assembly: AssemblyProduct("ModuleDiagramCreator.Test")]
+[assembly: Parallelize]

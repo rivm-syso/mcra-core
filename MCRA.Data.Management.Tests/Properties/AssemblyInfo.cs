@@ -4,3 +4,4 @@
 // associated with an assembly.
 [assembly: AssemblyTitle("MCRA.Data.Management.Test")]
 [assembly: AssemblyProduct("MCRA.Data.Management.Test")]
+[assembly: DoNotParallelize]
