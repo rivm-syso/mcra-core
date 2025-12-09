@@ -8,14 +8,14 @@
   <TableGroup>DustConcentrationDistributions</TableGroup>
   <IsAdvancedActionType>true</IsAdvancedActionType>
   <Description>
-    Dust concentration distributions data are analytical measurements of chemical substances occurring in dust samples.
-    In their simplest form, concentration data can just be used as provided by datasets.
+    Dust concentration distributions are specified by a mean, cv and distribution type (lognormal).
+    Specify the occurrence percentage as the percentage of samples that has positive concentrations.
   </Description>
   <ShortDescription>
     Dust concentration distributions data are data on analytical measurements of chemical substances occurring in dust samples.
   </ShortDescription>
   <CalculationDescription>
-    Dust concentration distributions are computed ...
+    Dust concentration distributions are computed from dust concentrations data.
   </CalculationDescription>
   <DataDescription>
     Dust concentration distributions data can be entered using the internal, relational data format.

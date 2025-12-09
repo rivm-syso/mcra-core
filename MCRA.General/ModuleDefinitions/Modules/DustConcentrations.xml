@@ -7,10 +7,11 @@
   <TableGroup>DustConcentrations</TableGroup>
   <IsAdvancedActionType>true</IsAdvancedActionType>
   <Description>
-    Dust concentration data are ...
+    Dust concentrations are analytical measurements of chemical substances occurring in dust samples.
+    In their simplest form, concentration data can just be used as provided by datasets.
   </Description>
   <ShortDescription>
-    Dust concentration data are ...
+    Dust concentrations are analytical measurements of chemical substances occurring in dust samples.
   </ShortDescription>
   <DataDescription>
     Dust concentration data can be entered using the internal, relational data format.
