@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <SettingsItems>
-  <!-- Burden of disease settings  -->
+  <!-- Burdens of disease settings  -->
   <SettingsItem>
     <Id>ResampleBodIndicatorValues</Id>
     <Name>Resample burden of disease values</Name>
