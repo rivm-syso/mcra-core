@@ -1,19 +1,20 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Management.Tests.UnitTests.DataManagement;
 using MCRA.General;
 
 namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
+    [TestClass]
     public class CompiledPopulationsTests : CompiledTestsBase {
 
-        protected Func<IDictionary<string, Population>> _getPopulationsDelegate;
-
         [TestMethod]
-        public void CompiledPopulationsTest() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledPopulationsTest(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                  (ScopingType.Populations, @"PopulationsTests/Populations"),
                  (ScopingType.PopulationIndividualPropertyValues, @"PopulationsTests/PopulationIndividualPropertyValues")
             );
 
-            var populations = _getPopulationsDelegate.Invoke();
+            var populations = GetAllPopulations(managerType);
 
             Assert.HasCount(10, populations);
 
@@ -25,14 +26,16 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
 
         [TestMethod]
-        public void CompiledPopulationsFilterTest() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledPopulationsFilterTest(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                  (ScopingType.Populations, @"PopulationsTests/Populations"),
                  (ScopingType.PopulationIndividualPropertyValues, @"PopulationsTests/PopulationIndividualPropertyValues")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Populations, ["DE-N"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Populations, ["DE-N"]);
 
-            var populations = _getPopulationsDelegate.Invoke();
+            var populations = GetAllPopulations(managerType);
             Assert.HasCount(1, populations);
             var f = populations.First();
 
@@ -40,14 +43,16 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledPopulationsIndividualPropertyMultiValuesTest() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledPopulationsIndividualPropertyMultiValuesTest(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                  (ScopingType.Populations, @"PopulationsTests/Populations"),
                  (ScopingType.PopulationIndividualProperties, @"PopulationsTests/IndividualProperties"),
                  (ScopingType.PopulationIndividualPropertyValues, @"PopulationsTests/PopulationIndividualPropertyMultiValues")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Populations, ["DE","DE-N","DE-S"]);
-            var populations = _getPopulationsDelegate.Invoke();
+            RawDataProvider.SetFilterCodes(ScopingType.Populations, ["DE", "DE-N", "DE-S"]);
+            var populations = GetAllPopulations(managerType);
             Assert.HasCount(3, populations);
             var pop = populations["DE"];
 

@@ -1,4 +1,4 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Management.Tests.UnitTests.DataManagement;
 using MCRA.General;
 
 namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
@@ -9,17 +9,18 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
     /// These tests are run multiple times (the subclasses) because of the redundancy in
     /// non-dietary exposure sources retrieval in the CompiledDataManager and SubsetManager.
     /// </summary>
+    [TestClass]
     public class CompiledNonDietaryExposureSourceTests : CompiledTestsBase {
 
-        protected Func<IDictionary<string, NonDietaryExposureSource>> _getNonDietaryExposureSourcesDelegate;
-
         [TestMethod]
-        public virtual void CompiledNonDietaryExposureSources_TestGetAllNonDietaryExposureSources() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public virtual void CompiledNonDietaryExposureSources_TestGetAllNonDietaryExposureSources(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.NonDietaryExposureSources, @"NonDietaryExposureSourcesTests/NonDietaryExposureSourcesSimple")
             );
 
-            var sources = _getNonDietaryExposureSourcesDelegate.Invoke();
+            var sources = GetAllNonDietaryExposureSources(managerType);
 
             Assert.HasCount(3, sources);
 
@@ -29,13 +30,15 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public virtual void CompiledNonDietaryExposureSources_TestGetAllNonDietaryExposureSourcesFiltered() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public virtual void CompiledNonDietaryExposureSources_TestGetAllNonDietaryExposureSourcesFiltered(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.NonDietaryExposureSources, @"NonDietaryExposureSourcesTests/NonDietaryExposureSourcesSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.NonDietaryExposureSources, ["A", "C"]);
+            RawDataProvider.SetFilterCodes(ScopingType.NonDietaryExposureSources, ["A", "C"]);
 
-            var sources = _getNonDietaryExposureSourcesDelegate.Invoke();
+            var sources = GetAllNonDietaryExposureSources(managerType);
             Assert.HasCount(2, sources);
 
             Assert.IsTrue(sources.TryGetValue("A", out var s) && s.Name.Equals("Aftershave"));

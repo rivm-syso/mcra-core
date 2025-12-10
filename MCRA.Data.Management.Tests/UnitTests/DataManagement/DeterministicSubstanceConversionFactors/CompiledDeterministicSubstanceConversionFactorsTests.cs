@@ -1,46 +1,53 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Management.Tests.UnitTests.DataManagement;
 using MCRA.General;
 
 namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
+    [TestClass]
     public class CompiledDeterministicSubstanceConversionFactorsTests : CompiledTestsBase {
-
-        protected Func<ICollection<DeterministicSubstanceConversionFactor>> _getItemsDelegate;
-
         [TestMethod]
-        public void CompiledDeterministicSubstanceConversionFactors_TestSimple() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledDeterministicSubstanceConversionFactors_TestSimple(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.Compounds, @"SubstancesTests/SubstancesSimple"),
                 (ScopingType.Foods, @"FoodsTests/FoodsSimple"),
-                (ScopingType.DeterministicSubstanceConversionFactors, @"DeterministicSubstanceConversionFactorsTests/DeterministicSubstanceConversionFactorsSimple")
+                (ScopingType.DeterministicSubstanceConversionFactors,
+                    @"DeterministicSubstanceConversionFactorsTests/DeterministicSubstanceConversionFactorsSimple")
             );
 
-            var allDefinitions = _getItemsDelegate.Invoke();
+            var allDefinitions = GetAllDeterministicSubstanceConversionFactors(managerType);
 
             Assert.HasCount(3, allDefinitions);
         }
 
         [TestMethod]
-        public void CompiledDeterministicSubstanceConversionFactors_TestAutoScopeSubstances() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledDeterministicSubstanceConversionFactors_TestAutoScopeSubstances(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.Foods, @"FoodsTests/FoodsSimple"),
-                (ScopingType.DeterministicSubstanceConversionFactors, @"DeterministicSubstanceConversionFactorsTests/DeterministicSubstanceConversionFactorsSimple")
+                (ScopingType.DeterministicSubstanceConversionFactors,
+                    @"DeterministicSubstanceConversionFactorsTests/DeterministicSubstanceConversionFactorsSimple")
             );
 
-            var allDefinitions = _getItemsDelegate.Invoke();
+            var allDefinitions = GetAllDeterministicSubstanceConversionFactors(managerType);
 
             Assert.HasCount(3, allDefinitions);
         }
 
         [TestMethod]
-        public void CompiledDeterministicSubstanceConversionFactors_TestScopeSubstances() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledDeterministicSubstanceConversionFactors_TestScopeSubstances(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.Compounds, @"SubstancesTests/SubstancesSimple"),
                 (ScopingType.Foods, @"FoodsTests/FoodsSimple"),
-                (ScopingType.DeterministicSubstanceConversionFactors, @"DeterministicSubstanceConversionFactorsTests/DeterministicSubstanceConversionFactorsSimple")
+                (ScopingType.DeterministicSubstanceConversionFactors,
+                    @"DeterministicSubstanceConversionFactorsTests/DeterministicSubstanceConversionFactorsSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["A", "B"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Compounds, ["A", "B"]);
 
-            var allDefinitions = _getItemsDelegate.Invoke();
+            var allDefinitions = GetAllDeterministicSubstanceConversionFactors(managerType);
 
             Assert.HasCount(2, allDefinitions);
         }

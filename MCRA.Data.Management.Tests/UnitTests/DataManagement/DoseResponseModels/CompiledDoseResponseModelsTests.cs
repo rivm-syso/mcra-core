@@ -1,34 +1,36 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Management.Tests.UnitTests.DataManagement;
 using MCRA.General;
 
 namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
+    [TestClass]
     public class CompiledDoseResponseModelsTests : CompiledTestsBase {
-        protected Func<IList<DoseResponseModel>> _getResponseModelsDelegate;
-        protected Func<IDictionary<string, Response>> _getResponsesDelegate;
-        protected Func<IDictionary<string, Compound>> _getSubstancesDelegate;
 
         [TestMethod]
-        public void CompiledDoseResponseModels_TestSimple() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledDoseResponseModels_TestSimple(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.DoseResponseModels, @"DoseResponseTests/DoseResponseModelsSimple"),
                 (ScopingType.Responses, @"DoseResponseTests/ResponsesSimple")
             );
 
             // Only experiments with all matching codes are loaded (matching response codes are mandatory)
-            var models = _getResponseModelsDelegate.Invoke();
+            var models = GetAllDoseResponseModels(managerType);
             Assert.HasCount(2, models);
 
             // Substances are loaded from valid experiments, so only 4 in this case
-            var substances = _getSubstancesDelegate.Invoke();
+            var substances = GetAllCompounds(managerType);
             Assert.HasCount(5, substances);
 
-            var responses = _getResponsesDelegate.Invoke();
+            var responses = GetAllResponses(managerType);
             Assert.HasCount(3, responses);
         }
 
         [TestMethod]
-        public void CompiledDoseResponseModels_TestBenchmarkDoses() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledDoseResponseModels_TestBenchmarkDoses(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.DoseResponseModels, @"DoseResponseTests/DoseResponseModelsSimple"),
                 (ScopingType.DoseResponseModelBenchmarkDoses, @"DoseResponseTests/DoseResponseModelBenchmarkDosesSimple"),
                 (ScopingType.DoseResponseModelBenchmarkDosesUncertain, @"DoseResponseTests/DoseResponseModelBenchmarkDosesUncertainSimple"),
@@ -36,7 +38,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             );
 
             // Only experiments with all matching codes are loaded (matching response codes are mandatory)
-            var models = _getResponseModelsDelegate.Invoke();
+            var models = GetAllDoseResponseModels(managerType);
             Assert.HasCount(2, models);
 
             // Check benchmark doses and benchmark dose uncertainty values
@@ -47,24 +49,26 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             Assert.AreEqual(3, uncertaintySets.Select(r => r.IdUncertaintySet).Distinct().Count());
 
             // Substances are loaded from valid experiments, so only 4 in this case
-            var substances = _getSubstancesDelegate.Invoke();
+            var substances = GetAllCompounds(managerType);
             Assert.HasCount(5, substances);
 
-            var responses = _getResponsesDelegate.Invoke();
+            var responses = GetAllResponses(managerType);
             Assert.HasCount(3, responses);
         }
 
         [TestMethod]
-        public void CompiledDoseResponseModelsFilterSubstancesResponsesTest() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledDoseResponseModelsFilterSubstancesResponsesTest(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.DoseResponseModels, @"DoseResponseTests/DoseResponseModelsForFiltering"),
                 (ScopingType.Responses, @"DoseResponseTests/ResponsesSimple")
             );
 
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["A", "B"]);
-            _rawDataProvider.SetFilterCodes(ScopingType.Responses, ["R2"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Compounds, ["A", "B"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Responses, ["R2"]);
 
-            var models = _getResponseModelsDelegate.Invoke();
+            var models = GetAllDoseResponseModels(managerType);
 
             Assert.HasCount(6, models);
 
@@ -75,17 +79,19 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledDoseResponseModels_TestFilterSubstancesResponsesExperiments() {
-            _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledDoseResponseModels_TestFilterSubstancesResponsesExperiments(ManagerType managerType) {
+            RawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
+            RawDataProvider.SetDataTables(
                 (ScopingType.DoseResponseModels, @"DoseResponseTests/DoseResponseModelsForFiltering"),
                 (ScopingType.Responses, @"DoseResponseTests/ResponsesSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["a", "b"]);
-            _rawDataProvider.SetFilterCodes(ScopingType.Responses, ["R2"]);
-            _rawDataProvider.SetFilterCodes(ScopingType.DoseResponseExperiments, ["Exp1"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Compounds, ["a", "b"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Responses, ["R2"]);
+            RawDataProvider.SetFilterCodes(ScopingType.DoseResponseExperiments, ["Exp1"]);
 
-            var models = _getResponseModelsDelegate.Invoke();
+            var models = GetAllDoseResponseModels(managerType);
 
             Assert.HasCount(3, models);
 
@@ -94,7 +100,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 models.Select(m => m.IdDoseResponseModel.ToLower()).ToList()
             );
 
-            var substances = _getSubstancesDelegate.Invoke();
+            var substances = GetAllCompounds(managerType);
             Assert.HasCount(2, substances);
 
             CollectionAssert.AreEquivalent(

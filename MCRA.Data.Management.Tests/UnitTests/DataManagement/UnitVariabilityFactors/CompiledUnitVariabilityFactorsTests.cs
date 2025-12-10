@@ -1,17 +1,18 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Management.Tests.UnitTests.DataManagement;
 using MCRA.General;
 
 namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
+    [TestClass]
     public class CompiledUnitVariabilityFactorsTests : CompiledTestsBase {
-        protected Func<ICollection<UnitVariabilityFactor>> _getItemsDelegate;
-
         [TestMethod]
-        public void CompiledUnitVariabilityFactorsSimpleTest() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledUnitVariabilityFactorsSimpleTest(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.UnitVariabilityFactors, @"UnitVariabilityFactorsTests/UnitVariabilityFactorsSimple")
             );
 
-            var factors = _getItemsDelegate.Invoke();
+            var factors = GetAllUnitVariabilityFactors(managerType);
 
             Assert.AreEqual(5, factors.Count(f => f.Compound == null));
             Assert.AreEqual(10, factors.Count(f => f.Compound != null));
@@ -28,12 +29,14 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledUnitVariabilityFactorsSimpleProcessingTypesFilterTest() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledUnitVariabilityFactorsSimpleProcessingTypesFilterTest(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.UnitVariabilityFactors, @"UnitVariabilityFactorsTests/UnitVariabilityFactorsSimple")
             );
 
-            var factors = _getItemsDelegate.Invoke();
+            var factors = GetAllUnitVariabilityFactors(managerType);
 
             Assert.AreEqual(5, factors.Count(f => f.Compound == null));
             Assert.AreEqual(10, factors.Count(f => f.Compound != null));
@@ -50,13 +53,15 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledUnitVariabilityFactorsSimpleFoodsFilterTest() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledUnitVariabilityFactorsSimpleFoodsFilterTest(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.UnitVariabilityFactors, @"UnitVariabilityFactorsTests/UnitVariabilityFactorsSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f1"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Foods, ["f1"]);
 
-            var factors = _getItemsDelegate.Invoke();
+            var factors = GetAllUnitVariabilityFactors(managerType);
             Assert.HasCount(1, factors);
             var f = factors.First();
 
@@ -66,13 +71,15 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledUnitVariabilityFactorsSimpleCompoundsFilterTest() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledUnitVariabilityFactorsSimpleCompoundsFilterTest(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.UnitVariabilityFactors, @"UnitVariabilityFactorsTests/UnitVariabilityFactorsSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
-            var factors = _getItemsDelegate.Invoke();
+            var factors = GetAllUnitVariabilityFactors(managerType);
 
             Assert.AreEqual(5, factors.Count(f => f.Compound == null));
             Assert.AreEqual(4, factors.Count(f => f.Compound != null));
@@ -89,14 +96,16 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledUnitVariabilityFactorsFilterFoodsAndCompoundsSimpleTest() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledUnitVariabilityFactorsFilterFoodsAndCompoundsSimpleTest(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.UnitVariabilityFactors, @"UnitVariabilityFactorsTests/UnitVariabilityFactorsSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f1", "f4", "f7"]);
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Foods, ["f1", "f4", "f7"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
-            var factors = _getItemsDelegate.Invoke();
+            var factors = GetAllUnitVariabilityFactors(managerType);
 
             Assert.AreEqual(3, factors.Count(f => f.Compound == null));
             Assert.AreEqual(1, factors.Count(f => f.Compound != null));

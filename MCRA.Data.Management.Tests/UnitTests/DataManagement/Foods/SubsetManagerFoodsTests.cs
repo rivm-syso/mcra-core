@@ -6,42 +6,37 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
     /// Runs specific SubsetManager tests with regard to foods
     /// </summary>
     [TestClass]
-    public class SubsetManagerFoodsTests : SubsetManagerTestsBase {
-
-        [TestInitialize]
-        public override void TestInitialize() {
-            base.TestInitialize();
-        }
+    public class SubsetManagerFoodsTests : CompiledTestsBase {
 
         [TestMethod]
         public void SubsetManagerFoods_SubsetManagerMeasuredFoodsNoSamplesTest() {
-            _rawDataProvider.SetDataTables((ScopingType.Foods, @"FoodsTests/FoodsSimple"));
+            RawDataProvider.SetDataTables((ScopingType.Foods, @"FoodsTests/FoodsSimple"));
 
-            Assert.IsEmpty(_subsetManager.AllConsumedFoods);
-            Assert.IsEmpty(_subsetManager.AllModelledFoods);
-            Assert.HasCount(3, _subsetManager.AllFoods);
+            Assert.IsEmpty(SubsetManager.AllConsumedFoods);
+            Assert.IsEmpty(SubsetManager.AllModelledFoods);
+            Assert.HasCount(3, SubsetManager.AllFoods);
         }
 
         [TestMethod]
         public void SubsetManagerFoods_SubsetManagerConsumedFoodsNoConsumptionsTest() {
-            _rawDataProvider.SetDataTables((ScopingType.Foods, @"FoodsTests/FoodsSimple"));
+            RawDataProvider.SetDataTables((ScopingType.Foods, @"FoodsTests/FoodsSimple"));
 
-            Assert.IsEmpty(_subsetManager.AllModelledFoods);
-            Assert.IsEmpty(_subsetManager.AllConsumedFoods);
-            Assert.HasCount(3, _subsetManager.AllFoods);
+            Assert.IsEmpty(SubsetManager.AllModelledFoods);
+            Assert.IsEmpty(SubsetManager.AllConsumedFoods);
+            Assert.HasCount(3, SubsetManager.AllFoods);
         }
 
         [TestMethod]
         public void SubsetManagerFoods_SubsetManagerMeasuredFoodsFromSamplesTest() {
-            _rawDataProvider.SetDataTables(
+            RawDataProvider.SetDataTables(
                 (ScopingType.FoodSamples, @"ConcentrationsTests/FoodSamplesSimple"),
                 (ScopingType.SampleAnalyses, @"ConcentrationsTests/AnalysisSamplesSimple")
             );
 
-            Assert.HasCount(3, _subsetManager.AllModelledFoods);
-            Assert.HasCount(3, _subsetManager.AllFoods);
-            Assert.IsEmpty(_subsetManager.AllConsumedFoods);
-            Assert.AreEqual("A,B,D", string.Join(",", _subsetManager.AllModelledFoods.Select(f => f.Code)));
+            Assert.HasCount(3, SubsetManager.AllModelledFoods);
+            Assert.HasCount(3, SubsetManager.AllFoods);
+            Assert.IsEmpty(SubsetManager.AllConsumedFoods);
+            Assert.AreEqual("A,B,D", string.Join(",", SubsetManager.AllModelledFoods.Select(f => f.Code)));
         }
 
         /// <summary>
@@ -50,13 +45,13 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         /// </summary>
         [TestMethod]
         public void FoodsDataTest_Foods() {
-            _rawDataProvider.SetDataGroupsFromFolder(
+            RawDataProvider.SetDataGroupsFromFolder(
                 1,
                 "_DataGroupsTest",
                 [SourceTableGroup.Foods, SourceTableGroup.FoodTranslations, SourceTableGroup.Processing]);
-            _compiledDataManager.GetAllFoodTranslations();
-            _compiledDataManager.GetAllProcessingFactors();
-            var foods = _compiledDataManager.GetAllFoods();
+            CompiledDataManager.GetAllFoodTranslations();
+            CompiledDataManager.GetAllProcessingFactors();
+            var foods = CompiledDataManager.GetAllFoods();
             var foodCodes = foods.Keys.ToList();
 
             Assert.HasCount(8, foods);
@@ -78,14 +73,14 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         /// </summary>
         [TestMethod]
         public void FoodsDataTest_FoodProperties() {
-            _rawDataProvider.SetDataGroupsFromFolder(
+            RawDataProvider.SetDataGroupsFromFolder(
                 1,
                 "_DataGroupsTest",
                 [SourceTableGroup.Foods, SourceTableGroup.Processing, SourceTableGroup.FoodTranslations, SourceTableGroup.MarketShares]);
-            var foods = _compiledDataManager.GetAllFoods();
-            _compiledDataManager.GetAllProcessingFactors();
-            _compiledDataManager.GetAllFoodTranslations();
-            _compiledDataManager.GetAllMarketShares();
+            var foods = CompiledDataManager.GetAllFoods();
+            CompiledDataManager.GetAllProcessingFactors();
+            CompiledDataManager.GetAllFoodTranslations();
+            CompiledDataManager.GetAllMarketShares();
 
             var foodFruitMix = foods["FRUITMIX"];
             var foodApple = foods["APPLE"];
@@ -122,8 +117,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         /// </summary>
         [TestMethod]
         public void FoodsDataTest_MarketShares() {
-            _rawDataProvider.SetDataGroupsFromFolder(1, "_DataGroupsTest", [SourceTableGroup.Foods, SourceTableGroup.MarketShares]);
-            var marketShares = _compiledDataManager.GetAllMarketShares();
+            RawDataProvider.SetDataGroupsFromFolder(1, "_DataGroupsTest", [SourceTableGroup.Foods, SourceTableGroup.MarketShares]);
+            var marketShares = CompiledDataManager.GetAllMarketShares();
             var marketSharesFoodCodes = marketShares.Select(ms => ms.Food.Code).ToList();
             Assert.HasCount(4, marketShares);
             CollectionAssert.Contains(marketSharesFoodCodes, "APPLE$FUJI");
@@ -139,9 +134,9 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         /// </summary>
         [TestMethod]
         public void FoodsDataTest_FoodTranslations() {
-            _rawDataProvider.SetDataGroupsFromFolder(1, "_DataGroupsTest", [SourceTableGroup.Foods, SourceTableGroup.FoodTranslations]);
-            var foodTranslations = _compiledDataManager.GetAllFoodTranslations();
-            var foods = _compiledDataManager.GetAllFoods().Values;
+            RawDataProvider.SetDataGroupsFromFolder(1, "_DataGroupsTest", [SourceTableGroup.Foods, SourceTableGroup.FoodTranslations]);
+            var foodTranslations = CompiledDataManager.GetAllFoodTranslations();
+            var foods = CompiledDataManager.GetAllFoods().Values;
             Assert.HasCount(3, foodTranslations);
             var codesFoodTo = foodTranslations.Select(ft => ft.FoodTo.Code).ToList();
             CollectionAssert.Contains(codesFoodTo, "PINEAPPLE");

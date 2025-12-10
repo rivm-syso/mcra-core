@@ -1,18 +1,21 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Management.Tests.UnitTests.DataManagement;
 using MCRA.General;
+using MCRA.General.Action.Settings;
 
 namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
+    [TestClass]
     public class CompiledConcentrationLimitsTests : CompiledTestsBase {
 
-        protected Func<ICollection<ConcentrationLimit>> _getItemsDelegate;
-
         [TestMethod]
-        public void CompiledConcentrationLimits_TestSimple() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledConcentrationLimits_TestSimple(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.ConcentrationLimits, @"MaximumResidueLimitsTests/MaximumResidueLimitsSimple")
             );
 
-            var limits = _getItemsDelegate.Invoke();
+            var limits = GetAllMaximumConcentrationLimits(managerType);
 
             var compoundCodes = limits.Select(f => f.Compound.Code).Distinct();
             var foodCodes = limits.Select(f => f.Food.Code).Distinct();
@@ -22,15 +25,17 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledConcentrationLimits_TestSimpleFoodsFilter() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledConcentrationLimits_TestSimpleFoodsFilter(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.ConcentrationLimits, @"MaximumResidueLimitsTests/MaximumResidueLimitsSimple")
             );
 
             //set a filter scope on Foods
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f1"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Foods, ["f1"]);
 
-            var limits = _getItemsDelegate.Invoke();
+            var limits = GetAllMaximumConcentrationLimits(managerType);
             Assert.HasCount(1, limits);
             var f = limits.First();
 
@@ -39,15 +44,17 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledConcentrationLimits_TestSimpleCompoundsFilter() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledConcentrationLimits_TestSimpleCompoundsFilter(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.ConcentrationLimits, @"MaximumResidueLimitsTests/MaximumResidueLimitsSimple")
             );
 
             //set a filter scope on compounds
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
-            var limits = _getItemsDelegate.Invoke();
+            var limits = GetAllMaximumConcentrationLimits(managerType);
 
             var compoundCodes = limits.Select(f => f.Compound.Code).Distinct();
             var foodCodes = limits.Select(f => f.Food.Code).Distinct();
@@ -57,17 +64,19 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledConcentrationLimits_TestFilterFoodsAndCompoundsSimple() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledConcentrationLimits_TestFilterFoodsAndCompoundsSimple(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.ConcentrationLimits, @"MaximumResidueLimitsTests/MaximumResidueLimitsSimple")
             );
 
             //set a filter scope on Foods
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f1", "f4"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Foods, ["f1", "f4"]);
             //set a filter scope on compounds
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
-            var limits = _getItemsDelegate.Invoke();
+            var limits = GetAllMaximumConcentrationLimits(managerType);
 
             var compoundCodes = limits.Select(f => f.Compound.Code).Distinct();
             var foodCodes = limits.Select(f => f.Food.Code).Distinct();

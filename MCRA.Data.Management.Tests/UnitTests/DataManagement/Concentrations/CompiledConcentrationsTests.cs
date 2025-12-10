@@ -1,26 +1,24 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Management.Tests.UnitTests.DataManagement;
 using MCRA.General;
 
 namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
+    [TestClass]
     public class CompiledConcentrationsTests : CompiledTestsBase {
-        protected Func<IDictionary<string, AnalyticalMethod>> _getAnalyticalMethodsDelegate;
-        protected Func<IDictionary<string, FoodSample>> _getFoodSamplesDelegate;
-        protected Func<IDictionary<string, Food>> _getFoodsDelegate;
-        protected Func<IDictionary<string, Compound>> _getSubstancesDelegate;
-        protected bool _isSubSetManagerTest = false;
 
         [TestMethod]
-        public void CompiledConcentrations_TestFoodAndAnalysisSamples() {
-            _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
-            _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledConcentrations_TestFoodAndAnalysisSamples(ManagerType managerType) {
+            RawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
+            RawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
+            RawDataProvider.SetDataTables(
                 (ScopingType.FoodSamples, @"ConcentrationsTests/FoodSamplesSimple"),
                 (ScopingType.SampleAnalyses, @"ConcentrationsTests/AnalysisSamplesSimple")
             );
 
-            var analyticalMethods = _getAnalyticalMethodsDelegate.Invoke();
-            var foods = _getFoodsDelegate.Invoke();
-            var foodSamples = _getFoodSamplesDelegate.Invoke();
+            var analyticalMethods = GetAllAnalyticalMethods(managerType);
+            var foods = GetAllFoods(managerType);
+            var foodSamples = GetAllFoodSamples(managerType);
             var sampleAnalyses = foodSamples.SelectMany(c => c.Value.SampleAnalyses).ToDictionary(c => c.Code);
             CollectionAssert.AreEquivalent(new[] { "A", "B", "D" }, foods.Keys.ToList());
             CollectionAssert.AreEquivalent(new[] { "Am1", "Am2", "Am3", "Am5" }, analyticalMethods.Keys.ToList());
@@ -29,43 +27,47 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledConcentrations_TestFoodAndMissingAnalysisSamples() {
-            _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
-            _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledConcentrations_TestFoodAndMissingAnalysisSamples(ManagerType managerType) {
+            RawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
+            RawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
+            RawDataProvider.SetDataTables(
                 (ScopingType.FoodSamples, @"ConcentrationsTests/FoodSamplesSimple"),
                 (ScopingType.SampleAnalyses, @"ConcentrationsTests/AnalysisSamplesMissing")
             );
 
-            var foodSamples = _getFoodSamplesDelegate.Invoke();
+            var foodSamples = GetAllFoodSamples(managerType);
             var sampleAnalyses = foodSamples.SelectMany(c => c.Value.SampleAnalyses).ToDictionary(c => c.Code);
-            var analyticalMethods = _getAnalyticalMethodsDelegate.Invoke();
-            var foods = _getFoodsDelegate.Invoke();
+            var analyticalMethods = GetAllAnalyticalMethods(managerType);
+            var foods = GetAllFoods(managerType);
 
             CollectionAssert.AreEquivalent(new[] { "A", "B", "D" }, foods.Keys.ToList());
             CollectionAssert.AreEquivalent(new[] { "Am2", "Am3" }, analyticalMethods.Keys.ToList());
             CollectionAssert.AreEquivalent(new[] { "FS1", "FS2", "FS3", "FS4" }, foodSamples.Keys.ToList());
-            CollectionAssert.AreEquivalent(new[] { "AS1", "AS4"}, sampleAnalyses.Keys.ToList());
+            CollectionAssert.AreEquivalent(new[] { "AS1", "AS4" }, sampleAnalyses.Keys.ToList());
 
             Assert.AreEqual(0, analyticalMethods.Values.Sum(a => a.AnalyticalMethodCompounds.Count));
             Assert.AreEqual(0, sampleAnalyses.Values.Sum(a => a.Concentrations.Count));
         }
 
         [TestMethod]
-        public void CompiledConcentrations_TestAnalyticalMethodCompounds() {
-            _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
-            _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledConcentrations_TestAnalyticalMethodCompounds(ManagerType managerType) {
+            RawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
+            RawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
+            RawDataProvider.SetDataTables(
                 (ScopingType.FoodSamples, @"ConcentrationsTests/FoodSamplesSimple"),
                 (ScopingType.SampleAnalyses, @"ConcentrationsTests/AnalysisSamplesSimple"),
                 (ScopingType.AnalyticalMethods, @"ConcentrationsTests/AnalyticalMethodsSimple"),
                 (ScopingType.AnalyticalMethodCompounds, @"ConcentrationsTests/AnalyticalMethodCompoundsSimple")
             );
 
-            var foods = _getFoodsDelegate.Invoke();
-            var compounds = _getSubstancesDelegate.Invoke();
-            var analyticalMethods = _getAnalyticalMethodsDelegate.Invoke();
-            var foodSamples = _getFoodSamplesDelegate.Invoke();
+            var foods = GetAllFoods(managerType);
+            var compounds = GetAllCompounds(managerType);
+            var analyticalMethods = GetAllAnalyticalMethods(managerType);
+            var foodSamples = GetAllFoodSamples(managerType);
             var sampleAnalyses = foodSamples.SelectMany(c => c.Value.SampleAnalyses).ToDictionary(c => c.Code);
 
             CollectionAssert.AreEquivalent(new[] { "A", "B", "D" }, foods.Keys.ToList());
@@ -94,22 +96,24 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledConcentrations_TestAnalyticalMethodCompoundsFilterCompounds() {
-            _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
-            _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledConcentrations_TestAnalyticalMethodCompoundsFilterCompounds(ManagerType managerType) {
+            RawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
+            RawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
+            RawDataProvider.SetDataTables(
                 (ScopingType.FoodSamples, @"ConcentrationsTests/FoodSamplesSimple"),
                 (ScopingType.SampleAnalyses, @"ConcentrationsTests/AnalysisSamplesSimple"),
                 (ScopingType.AnalyticalMethods, @"ConcentrationsTests/AnalyticalMethodsSimple"),
                 (ScopingType.AnalyticalMethodCompounds, @"ConcentrationsTests/AnalyticalMethodCompoundsSimple")
             );
 
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["P", "S"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Compounds, ["P", "S"]);
 
-            var foods = _getFoodsDelegate.Invoke();
-            var compounds = _getSubstancesDelegate.Invoke();
-            var analyticalMethods = _getAnalyticalMethodsDelegate.Invoke();
-            var foodSamples = _getFoodSamplesDelegate.Invoke();
+            var foods = GetAllFoods(managerType);
+            var compounds = GetAllCompounds(managerType);
+            var analyticalMethods = GetAllAnalyticalMethods(managerType);
+            var foodSamples = GetAllFoodSamples(managerType);
             var sampleAnalyses = foodSamples.SelectMany(c => c.Value.SampleAnalyses).ToDictionary(c => c.Code);
 
             CollectionAssert.AreEquivalent(new[] { "A", "B", "D" }, foods.Keys.ToList());
@@ -137,23 +141,25 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledConcentrations_TestAnalyticalMethodCompoundsFilterFoodsCompounds() {
-            _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
-            _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledConcentrations_TestAnalyticalMethodCompoundsFilterFoodsCompounds(ManagerType managerType) {
+            RawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
+            RawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
+            RawDataProvider.SetDataTables(
                 (ScopingType.FoodSamples, @"ConcentrationsTests/FoodSamplesSimple"),
                 (ScopingType.SampleAnalyses, @"ConcentrationsTests/AnalysisSamplesSimple"),
                 (ScopingType.AnalyticalMethods, @"ConcentrationsTests/AnalyticalMethodsSimple"),
                 (ScopingType.AnalyticalMethodCompounds, @"ConcentrationsTests/AnalyticalMethodCompoundsSimple")
             );
 
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["A"]);
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["P", "S"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Foods, ["A"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Compounds, ["P", "S"]);
 
-            var foods = _getFoodsDelegate.Invoke();
-            var compounds = _getSubstancesDelegate.Invoke();
-            var analyticalMethods = _getAnalyticalMethodsDelegate.Invoke();
-            var foodSamples = _getFoodSamplesDelegate.Invoke();
+            var foods = GetAllFoods(managerType);
+            var compounds = GetAllCompounds(managerType);
+            var analyticalMethods = GetAllAnalyticalMethods(managerType);
+            var foodSamples = GetAllFoodSamples(managerType);
             var sampleAnalyses = foodSamples.SelectMany(c => c.Value.SampleAnalyses).ToDictionary(c => c.Code);
 
             CollectionAssert.AreEquivalent(new[] { "A" }, foods.Keys.ToList());
@@ -179,10 +185,12 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledConcentrations_TestAllDataSimple() {
-            _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
-            _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledConcentrations_TestAllDataSimple(ManagerType managerType) {
+            RawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
+            RawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
+            RawDataProvider.SetDataTables(
                 (ScopingType.FoodSamples, @"ConcentrationsTests/FoodSamplesSimple"),
                 (ScopingType.SampleAnalyses, @"ConcentrationsTests/AnalysisSamplesSimple"),
                 (ScopingType.AnalyticalMethods, @"ConcentrationsTests/AnalyticalMethodsSimple"),
@@ -190,10 +198,10 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.ConcentrationsPerSample, @"ConcentrationsTests/ConcentrationsPerSampleSimple")
             );
 
-            var foods = _getFoodsDelegate.Invoke();
-            var compounds = _getSubstancesDelegate.Invoke();
-            var analyticalMethods = _getAnalyticalMethodsDelegate.Invoke();
-            var foodSamples = _getFoodSamplesDelegate.Invoke();
+            var foods = GetAllFoods(managerType);
+            var compounds = GetAllCompounds(managerType);
+            var analyticalMethods = GetAllAnalyticalMethods(managerType);
+            var foodSamples = GetAllFoodSamples(managerType);
             var sampleAnalyses = foodSamples.SelectMany(c => c.Value.SampleAnalyses).ToDictionary(c => c.Code);
 
             CollectionAssert.AreEquivalent(new[] { "A", "B", "D" }, foods.Keys.ToList());
@@ -237,10 +245,12 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledConcentrations_TestMissingMethodCompounds() {
-            _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
-            _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledConcentrations_TestMissingMethodCompounds(ManagerType managerType) {
+            RawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
+            RawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
+            RawDataProvider.SetDataTables(
                 (ScopingType.FoodSamples, @"ConcentrationsTests/FoodSamplesSimple"),
                 (ScopingType.SampleAnalyses, @"ConcentrationsTests/AnalysisSamplesSimple"),
                 (ScopingType.AnalyticalMethods, @"ConcentrationsTests/AnalyticalMethodsSimple"),
@@ -248,10 +258,10 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.ConcentrationsPerSample, @"ConcentrationsTests/ConcentrationsPerSampleSimple")
             );
 
-            var foods = _getFoodsDelegate.Invoke();
-            var compounds = _getSubstancesDelegate.Invoke();
+            var foods = GetAllFoods(managerType);
+            var compounds = GetAllCompounds(managerType);
             //an exception will be thrown when the samples are loaded as part of getting the analyticalmethods
-            Assert.ThrowsExactly<KeyNotFoundException>(_getAnalyticalMethodsDelegate.Invoke);
+            Assert.ThrowsExactly<KeyNotFoundException>(() => GetAllAnalyticalMethods(managerType));
         }
 
 
@@ -259,8 +269,10 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         /// Test correct loading of additional sample properties.
         /// </summary>
         [TestMethod]
-        public void CompiledConcentrations_TestAdditionalSampleProperties() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledConcentrations_TestAdditionalSampleProperties(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.FoodSamples, @"ConcentrationsTests/FoodSamplesSubset"),
                 (ScopingType.FoodSamplePropertyValues, @"ConcentrationsTests/FoodSamplesSubsetPropertyValues"),
                 (ScopingType.SampleAnalyses, @"ConcentrationsTests/AnalysisSamplesSubset"),
@@ -268,7 +280,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.AnalyticalMethodCompounds, @"ConcentrationsTests/AnalyticalMethodCompoundsSimple")
             );
 
-            var foodSamples = _getFoodSamplesDelegate.Invoke();
+            var foodSamples = GetAllFoodSamples(managerType);
             var properties = foodSamples
                 .SelectMany(r => r.Value.SampleProperties)
                 .GroupBy(r => r.Key)
@@ -281,21 +293,23 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         /// with the specified concentration data.
         /// </summary>
         [TestMethod]
-        public void CompiledConcentrations_TestDataGroups1() {
-            _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
-            _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledConcentrations_TestDataGroups1(ManagerType managerType) {
+            RawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
+            RawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
+            RawDataProvider.SetDataTables(
                 (ScopingType.FoodSamples, @"_DataGroupsTest/FoodSamples"),
                 (ScopingType.SampleAnalyses, @"_DataGroupsTest/SampleAnalyses"),
                 (ScopingType.AnalyticalMethods, @"_DataGroupsTest/AnalyticalMethods"),
                 (ScopingType.AnalyticalMethodCompounds, @"_DataGroupsTest/AnalyticalMethodCompounds")
             );
 
-            var foodSamples = _getFoodSamplesDelegate.Invoke();
+            var foodSamples = GetAllFoodSamples(managerType);
             var sampleAnalyses = foodSamples.SelectMany(c => c.Value.SampleAnalyses).ToDictionary(c => c.Code);
             Assert.HasCount(20, sampleAnalyses);
 
-            var foods = _getFoodsDelegate.Invoke();
+            var foods = GetAllFoods(managerType);
             var foodApple = foods["APPLE"];
             var foodBananas = foods["BANANAS"];
             var foodPineapple = foods["PINEAPPLE"];
@@ -312,19 +326,21 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         ///  = 5, AM3 = 1, AM4 = 3, and AM5 = 6).
         /// </summary>
         [TestMethod]
-        public void CompiledConcentrations_TestDataGroups2() {
-            _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
-            _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledConcentrations_TestDataGroups2(ManagerType managerType) {
+            RawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
+            RawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
+            RawDataProvider.SetDataTables(
                 (ScopingType.FoodSamples, @"_DataGroupsTest/FoodSamples"),
                 (ScopingType.SampleAnalyses, @"_DataGroupsTest/SampleAnalyses"),
                 (ScopingType.AnalyticalMethods, @"_DataGroupsTest/AnalyticalMethods"),
                 (ScopingType.AnalyticalMethodCompounds, @"_DataGroupsTest/AnalyticalMethodCompounds")
             );
 
-            var foodSamples = _getFoodSamplesDelegate.Invoke();
+            var foodSamples = GetAllFoodSamples(managerType);
             var sampleAnalyses = foodSamples.SelectMany(c => c.Value.SampleAnalyses).ToDictionary(c => c.Code);
-            var analyticalMethods = _getAnalyticalMethodsDelegate.Invoke().Values;
+            var analyticalMethods = GetAllAnalyticalMethods(managerType).Values;
 
             Assert.HasCount(5, analyticalMethods);
 
@@ -353,23 +369,25 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         /// substance (A = 5, B = 2, C = 2, D = 3).
         /// </summary>
         [TestMethod]
-        public void CompiledConcentrations_TestDataGroups3() {
-            _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
-            _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledConcentrations_TestDataGroups3(ManagerType managerType) {
+            RawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
+            RawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
+            RawDataProvider.SetDataTables(
                 (ScopingType.FoodSamples, @"_DataGroupsTest/FoodSamples"),
                 (ScopingType.SampleAnalyses, @"_DataGroupsTest/SampleAnalyses"),
                 (ScopingType.AnalyticalMethods, @"_DataGroupsTest/AnalyticalMethods"),
                 (ScopingType.AnalyticalMethodCompounds, @"_DataGroupsTest/AnalyticalMethodCompounds")
             );
 
-            var foodSamples = _getFoodSamplesDelegate.Invoke();
+            var foodSamples = GetAllFoodSamples(managerType);
             var sampleAnalyses = foodSamples.SelectMany(c => c.Value.SampleAnalyses).ToDictionary(c => c.Code);
-            var analyticalMethods = _getAnalyticalMethodsDelegate.Invoke().Values;
+            var analyticalMethods = GetAllAnalyticalMethods(managerType).Values;
 
             Assert.HasCount(5, analyticalMethods);
 
-            var compounds = _getSubstancesDelegate.Invoke();
+            var compounds = GetAllCompounds(managerType);
             var compoundA = compounds["CompoundA"];
             var compoundB = compounds["CompoundB"];
             var compoundC = compounds["CompoundC"];

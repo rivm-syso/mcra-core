@@ -1,18 +1,19 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Management.Tests.UnitTests.DataManagement;
 using MCRA.General;
 
 namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
+    [TestClass]
     public class CompiledRelativePotencyFactorsTests : CompiledTestsBase {
 
-        protected Func<IDictionary<string, List<RelativePotencyFactor>>> _getItemsDelegate;
-
         [TestMethod]
-        public void CompiledRelativePotencyFactors_TestSimple() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledRelativePotencyFactors_TestSimple(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.RelativePotencyFactors, @"RelativePotencyFactorsTests/RelativePotencyFactorsSimple")
             );
 
-            var factors = _getItemsDelegate.Invoke();
+            var factors = GetAllRelativePotencyFactors(managerType);
 
             var compoundCodes = factors.SelectMany(f => f.Value).Select(f => f.Compound.Code).Distinct().ToList();
             var effectCodes = factors.SelectMany(f => f.Value).Select(f => f.Effect.Code).Distinct().ToList();
@@ -23,13 +24,15 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
 
         [TestMethod]
-        public void CompiledRelativePotencyFactors_TestEffectsFilter() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledRelativePotencyFactors_TestEffectsFilter(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.RelativePotencyFactors, @"RelativePotencyFactorsTests/RelativePotencyFactorsSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff1"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff1"]);
 
-            var factors = _getItemsDelegate.Invoke();
+            var factors = GetAllRelativePotencyFactors(managerType);
             Assert.HasCount(1, factors);
             var f = factors.Values.Single().Single();
 
@@ -38,13 +41,15 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledRelativePotencyFactors_TestCompoundsFilter() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledRelativePotencyFactors_TestCompoundsFilter(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.RelativePotencyFactors, @"RelativePotencyFactorsTests/RelativePotencyFactorsSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
-            var factors = _getItemsDelegate.Invoke();
+            var factors = GetAllRelativePotencyFactors(managerType);
 
             var compoundCodes = factors.SelectMany(f => f.Value).Select(f => f.Compound.Code).Distinct().ToList();
             var effectCodes = factors.SelectMany(f => f.Value).Select(f => f.Effect.Code).Distinct().ToList();
@@ -54,14 +59,16 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledRelativePotencyFactors_TestFilterEffectsAndCompoundsSimple() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledRelativePotencyFactors_TestFilterEffectsAndCompoundsSimple(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.RelativePotencyFactors, @"RelativePotencyFactorsTests/RelativePotencyFactorsSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff1", "Eff4"]);
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff1", "Eff4"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
-            var factors = _getItemsDelegate.Invoke();
+            var factors = GetAllRelativePotencyFactors(managerType);
 
             var compoundCodes = factors.SelectMany(f => f.Value).Select(f => f.Compound.Code).Distinct().ToList();
             var effectCodes = factors.SelectMany(f => f.Value).Select(f => f.Effect.Code).Distinct().ToList();

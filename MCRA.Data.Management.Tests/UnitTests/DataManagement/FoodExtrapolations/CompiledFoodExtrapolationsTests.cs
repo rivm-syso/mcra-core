@@ -1,20 +1,21 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Management.Tests.UnitTests.DataManagement;
 using MCRA.General;
 
 namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
+    [TestClass]
     public class CompiledFoodExtrapolationsTests : CompiledTestsBase {
-        protected Func<IDictionary<string, Food>> _getFoodsDelegate;
-        protected Func<IDictionary<Food, ICollection<Food>>> _getFoodExtrapolationsDelegate;
-
         [TestMethod]
-        public void CompiledFoodExtrapolations_TestGetAllFoodExtrapolationsMatched() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledFoodExtrapolations_TestGetAllFoodExtrapolationsMatched(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.Foods, @"FoodExtrapolationsTests/FoodExtrapolationFoods"),
                 (ScopingType.FoodExtrapolations, @"FoodExtrapolationsTests/FoodExtrapolations")
             );
 
-            var foods = _getFoodsDelegate.Invoke();
-            var foodExtrapolations = _getFoodExtrapolationsDelegate.Invoke();
+            var foods = GetAllFoods(managerType);
+            var foodExtrapolations = GetAllFoodExtrapolations(managerType);
 
             Assert.HasCount(3, foodExtrapolations);
 
@@ -30,13 +31,15 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledFoodExtrapolations_TestGetAllFoodExtrapolationsScope() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledFoodExtrapolations_TestGetAllFoodExtrapolationsScope(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.FoodExtrapolations, @"FoodExtrapolationsTests/FoodExtrapolations")
             );
 
-            var foods = _getFoodsDelegate.Invoke();
-            var foodExtrapolations = _getFoodExtrapolationsDelegate.Invoke();
+            var foods = GetAllFoods(managerType);
+            var foodExtrapolations = GetAllFoodExtrapolations(managerType);
 
             Assert.HasCount(5, foods);
             Assert.IsTrue(foods.TryGetValue("A", out Food apple) && apple.Name.Equals("A"));

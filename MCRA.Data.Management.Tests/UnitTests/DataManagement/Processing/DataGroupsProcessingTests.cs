@@ -3,6 +3,7 @@
 namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
     [TestClass]
     public class DataGroupsProcessingTests : CompiledTestsBase {
+
         /// <summary>
         /// Tests correct loading of the processing types. Verification by making sure that only
         /// the expected processing types exist in the compiled datasource. Check total count
@@ -11,8 +12,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         /// </summary>
         [TestMethod]
         public void ProcessingFactorsDataTest1() {
-            _rawDataProvider.SetDataGroupsFromFolder(1, "_DataGroupsTest", SourceTableGroup.Foods);
-            var processingTypes = _compiledDataManager.GetAllProcessingTypes();
+            RawDataProvider.SetDataGroupsFromFolder(1, "_DataGroupsTest", SourceTableGroup.Foods);
+            var processingTypes = CompiledDataManager.GetAllProcessingTypes();
             var processingTypeCodes = processingTypes.Keys.ToList();
 
             Assert.HasCount(5, processingTypes);
@@ -21,7 +22,6 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             CollectionAssert.Contains(processingTypeCodes, "3");
             CollectionAssert.Contains(processingTypeCodes, "9");
             CollectionAssert.Contains(processingTypeCodes, "99");
-
         }
 
         /// <summary>
@@ -32,18 +32,17 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         /// </summary>
         [TestMethod]
         public void ProcessingFactorsDataTest2() {
-            _rawDataProvider.SetDataGroupsFromFolder(
+            RawDataProvider.SetDataGroupsFromFolder(
                 1,
                 "_DataGroupsTest",
                 [SourceTableGroup.Foods, SourceTableGroup.Processing]);
 
-            var processingFactors = _compiledDataManager.GetAllProcessingFactors();
+            var processingFactors = CompiledDataManager.GetAllProcessingFactors();
             var processingFactorsCooking = processingFactors.Where(pf => pf.ProcessingType.Name == "Cooking").ToList();
             var processingFactorsPeeling = processingFactors.Where(pf => pf.ProcessingType.Name == "Peeling").ToList();
 
             Assert.HasCount(2, processingFactorsCooking);
             Assert.HasCount(2, processingFactorsPeeling);
         }
-
     }
 }

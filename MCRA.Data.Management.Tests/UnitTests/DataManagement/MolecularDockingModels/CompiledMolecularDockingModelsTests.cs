@@ -1,44 +1,49 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Management.Tests.UnitTests.DataManagement;
 using MCRA.General;
 
 namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
+    [TestClass]
     public class CompiledMolecularDockingModelsTests : CompiledTestsBase {
 
-        protected Func<IDictionary<string, MolecularDockingModel>> _getItemsDelegate;
-
         [TestMethod]
-        public void CompiledMolecularDockingModelsSimpleTest() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledMolecularDockingModelsSimpleTest(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.MolecularDockingModels, @"MolecularDockingModelsTests/MolecularDockingModelsSimple")
             );
 
-            var allDockingModels = _getItemsDelegate.Invoke();
+            var allDockingModels = GetAllMolecularDockingModels(managerType);
 
             CollectionAssert.AreEqual(new[] { "MD1", "MD2", "MD3" }, allDockingModels.Keys.ToList());
         }
 
 
         [TestMethod]
-        public void CompiledMolecularDockingModelsSimpleEffectsFilterTest() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledMolecularDockingModelsSimpleEffectsFilterTest(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.MolecularDockingModels, @"MolecularDockingModelsTests/MolecularDockingModelsSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff1"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff1"]);
 
-            var allDockingModels = _compiledDataManager.GetAllMolecularDockingModels();
+            var allDockingModels = CompiledDataManager.GetAllMolecularDockingModels();
 
             CollectionAssert.AreEqual(new[] { "MD1", "MD3" }, allDockingModels.Keys.ToList());
 
         }
 
         [TestMethod]
-        public void CompiledMolecularBindingEnergiesSimpleTest() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledMolecularBindingEnergiesSimpleTest(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.MolecularDockingModels, @"MolecularDockingModelsTests/MolecularDockingModelsSimple"),
                 (ScopingType.MolecularBindingEnergies, @"MolecularDockingModelsTests/MolecularBindingEnergiesSimple")
             );
 
-            var allDockingModels = _compiledDataManager.GetAllMolecularDockingModels();
+            var allDockingModels = CompiledDataManager.GetAllMolecularDockingModels();
 
             CollectionAssert.AreEqual(new[] { "MD1", "MD2", "MD3" }, allDockingModels.Keys.ToList());
 
@@ -53,15 +58,17 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledMolecularBindingEnergiesFilterEffectsAndCompoundsSimpleTest() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledMolecularBindingEnergiesFilterEffectsAndCompoundsSimpleTest(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.MolecularDockingModels, @"MolecularDockingModelsTests/MolecularDockingModelsSimple"),
                 (ScopingType.MolecularBindingEnergies, @"MolecularDockingModelsTests/MolecularBindingEnergiesSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff1"]);
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["A", "B", "D"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff1"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Compounds, ["A", "B", "D"]);
 
-            var allDockingModels = _compiledDataManager.GetAllMolecularDockingModels();
+            var allDockingModels = CompiledDataManager.GetAllMolecularDockingModels();
 
             CollectionAssert.AreEqual(new[] { "MD1", "MD3" }, allDockingModels.Keys.ToList());
 

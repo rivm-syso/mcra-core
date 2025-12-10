@@ -1,17 +1,18 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Management.Tests.UnitTests.DataManagement;
 using MCRA.General;
 
 namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
+    [TestClass]
     public class CompiledSubstanceAuthorisationsTests : CompiledTestsBase {
-        protected Func<ICollection<SubstanceAuthorisation>> _getItemsDelegate;
-
         [TestMethod]
-        public void CompiledSubstanceAuthorisations_TestSimple() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledSubstanceAuthorisations_TestSimple(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.SubstanceAuthorisations, @"AuthorisedUsesTests/AuthorisedUsesSimple")
             );
 
-            var records = _getItemsDelegate.Invoke();
+            var records = GetAllSubstanceAuthorisations(managerType);
 
             var compoundCodes = records.Select(f => f.Substance.Code).Distinct();
             var foodCodes = records.Select(f => f.Food.Code).Distinct();
@@ -21,13 +22,15 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledSubstanceAuthorisations_TestSimpleFoodsFilter() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledSubstanceAuthorisations_TestSimpleFoodsFilter(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.SubstanceAuthorisations, @"AuthorisedUsesTests/AuthorisedUsesSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f1"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Foods, ["f1"]);
 
-            var records = _getItemsDelegate.Invoke();
+            var records = GetAllSubstanceAuthorisations(managerType);
             Assert.HasCount(1, records);
             var f = records.First();
 
@@ -36,13 +39,15 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledSubstanceAuthorisations_TestSimpleCompoundsFilter() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledSubstanceAuthorisations_TestSimpleCompoundsFilter(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.SubstanceAuthorisations, @"AuthorisedUsesTests/AuthorisedUsesSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
-            var records = _getItemsDelegate.Invoke();
+            var records = GetAllSubstanceAuthorisations(managerType);
 
             var compoundCodes = records.Select(f => f.Substance.Code).Distinct();
             var foodCodes = records.Select(f => f.Food.Code).Distinct();
@@ -52,14 +57,16 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledSubstanceAuthorisations_TestFilterFoodsAndCompoundsSimple() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledSubstanceAuthorisations_TestFilterFoodsAndCompoundsSimple(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.SubstanceAuthorisations, @"AuthorisedUsesTests/AuthorisedUsesSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f1", "f4"]);
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Foods, ["f1", "f4"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
-            var records = _getItemsDelegate.Invoke();
+            var records = GetAllSubstanceAuthorisations(managerType);
 
             var compoundCodes = records.Select(f => f.Substance.Code).Distinct();
             var foodCodes = records.Select(f => f.Food.Code).Distinct();

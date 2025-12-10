@@ -1,48 +1,55 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Management.Tests.UnitTests.DataManagement;
 using MCRA.General;
 
 namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
+    [TestClass]
     public class CompiledNonDietaryTests : CompiledTestsBase {
 
-        protected Func<ICollection<NonDietaryExposureSet>> _getItemsDelegate;
-
         [TestMethod]
-        public void CompiledNonDietary_TestSurveysOnly() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledNonDietary_TestSurveysOnly(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.NonDietarySurveys, @"NonDietaryTests/NonDietarySurveys")
             );
 
-            var ndSets = _getItemsDelegate.Invoke();
+            var ndSets = GetAllNonDietaryExposureSets(managerType);
             Assert.IsEmpty(ndSets);
         }
 
         [TestMethod]
-        public void CompiledNonDietary_TestSurveysOnlyScope() {
-            _rawDataProvider.SetFilterCodes(ScopingType.NonDietarySurveys, ["s2"]);
-            var ndSets = _getItemsDelegate.Invoke();
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledNonDietary_TestSurveysOnlyScope(ManagerType managerType) {
+            RawDataProvider.SetFilterCodes(ScopingType.NonDietarySurveys, ["s2"]);
+            var ndSets = GetAllNonDietaryExposureSets(managerType);
 
             Assert.IsEmpty(ndSets);
         }
 
         [TestMethod]
-        public void CompiledNonDietary_TestSurveysOnlyWithSurveyScope() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledNonDietary_TestSurveysOnlyWithSurveyScope(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.NonDietarySurveys, @"NonDietaryTests/NonDietarySurveys")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.NonDietarySurveys, ["s2"]);
-            var ndSets = _getItemsDelegate.Invoke();
+            RawDataProvider.SetFilterCodes(ScopingType.NonDietarySurveys, ["s2"]);
+            var ndSets = GetAllNonDietaryExposureSets(managerType);
 
             Assert.IsEmpty(ndSets);
         }
 
         [TestMethod]
-        public void CompiledNonDietary_TestSurveysAndExposures() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledNonDietary_TestSurveysAndExposures(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.NonDietarySurveys, @"NonDietaryTests/NonDietarySurveys"),
                 (ScopingType.NonDietaryExposures, @"NonDietaryTests/NonDietaryExposures")
             );
 
-            var ndSets = _getItemsDelegate.Invoke();
+            var ndSets = GetAllNonDietaryExposureSets(managerType);
 
             Assert.HasCount(7, ndSets);
             Assert.IsTrue(ndSets.All(s => string.IsNullOrWhiteSpace(s.Code)));
@@ -55,15 +62,17 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledNonDietary_TestSurveysAndExposuresFilterCompoundsTest() {
-            _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledNonDietary_TestSurveysAndExposuresFilterCompoundsTest(ManagerType managerType) {
+            RawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
+            RawDataProvider.SetDataTables(
                 (ScopingType.NonDietarySurveys, @"NonDietaryTests/NonDietarySurveys"),
                 (ScopingType.NonDietaryExposures, @"NonDietaryTests/NonDietaryExposures")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
-            var ndSets = _getItemsDelegate.Invoke();
+            var ndSets = GetAllNonDietaryExposureSets(managerType);
 
             Assert.HasCount(5, ndSets);
             Assert.IsTrue(ndSets.All(s => string.IsNullOrWhiteSpace(s.Code)));
@@ -76,14 +85,16 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledNonDietary_TestFilterSurvey() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledNonDietary_TestFilterSurvey(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.NonDietarySurveys, @"NonDietaryTests/NonDietarySurveys"),
                 (ScopingType.NonDietaryExposures, @"NonDietaryTests/NonDietaryExposures")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.NonDietarySurveys, ["s2"]);
+            RawDataProvider.SetFilterCodes(ScopingType.NonDietarySurveys, ["s2"]);
 
-            var ndSets = _getItemsDelegate.Invoke();
+            var ndSets = GetAllNonDietaryExposureSets(managerType);
 
             Assert.HasCount(3, ndSets);
             Assert.IsTrue(ndSets.All(s => string.IsNullOrWhiteSpace(s.Code)));
@@ -96,14 +107,16 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledNonDietary_TestCombineWithIndividualsTest() {
-            _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Survey);
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledNonDietary_TestCombineWithIndividualsTest(ManagerType managerType) {
+            RawDataProvider.SetEmptyDataSource(SourceTableGroup.Survey);
+            RawDataProvider.SetDataTables(
                 (ScopingType.NonDietarySurveys, @"NonDietaryTests/NonDietarySurveys"),
                 (ScopingType.NonDietaryExposures, @"NonDietaryTests/NonDietaryExposures")
             );
 
-            var ndSets = _getItemsDelegate.Invoke();
+            var ndSets = GetAllNonDietaryExposureSets(managerType);
 
             Assert.HasCount(7, ndSets);
             Assert.IsTrue(ndSets.All(s => string.IsNullOrWhiteSpace(s.Code)));

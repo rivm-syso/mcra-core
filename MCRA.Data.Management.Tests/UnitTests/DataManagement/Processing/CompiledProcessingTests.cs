@@ -1,18 +1,19 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Management.Tests.UnitTests.DataManagement;
 using MCRA.General;
 
 namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
+    [TestClass]
     public class CompiledProcessingTests : CompiledTestsBase {
 
-        protected Func<ICollection<ProcessingFactor>> _getItemsDelegate;
-
         [TestMethod]
-        public void CompiledProcessing_TestSimple() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledProcessing_TestSimple(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.ProcessingFactors, @"ProcessingTests/ProcessingFactorsSimple")
             );
 
-            var factors = _getItemsDelegate.Invoke();
+            var factors = GetAllProcessingFactors(managerType);
 
             Assert.AreEqual(3, factors.Count(f => f.Compound == null));
             Assert.AreEqual(8, factors.Count(f => f.Compound != null));
@@ -26,13 +27,15 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledProcessing_TestSimpleFoodsFilter() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledProcessing_TestSimpleFoodsFilter(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.ProcessingFactors, @"ProcessingTests/ProcessingFactorsSimpleOld")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f1", "f2"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Foods, ["f1", "f2"]);
 
-            var factors = _getItemsDelegate.Invoke();
+            var factors = GetAllProcessingFactors(managerType);
             Assert.AreEqual(1, factors.Count(f => f.Compound == null));
             Assert.AreEqual(3, factors.Count(f => f.Compound != null));
             var compoundCodes = factors.Where(f => f.Compound != null).Select(f => f.Compound.Code).Distinct();
@@ -45,13 +48,15 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledProcessing_TestSimpleCompoundsFilter() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledProcessing_TestSimpleCompoundsFilter(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.ProcessingFactors, @"ProcessingTests/ProcessingFactorsSimpleOld")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
-            var factors = _getItemsDelegate.Invoke();
+            var factors = GetAllProcessingFactors(managerType);
 
             Assert.AreEqual(3, factors.Count(f => f.Compound == null));
             Assert.AreEqual(4, factors.Count(f => f.Compound != null));
@@ -65,16 +70,18 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledProcessingFactors_TestFilterFoodsAndCompoundsSimple() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledProcessingFactors_TestFilterFoodsAndCompoundsSimple(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.ProcessingFactors, @"ProcessingTests/ProcessingFactorsSimpleOld")
             );
             //set a filter scope on Foods
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f1", "f2", "f4"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Foods, ["f1", "f2", "f4"]);
             //set a filter scope on compounds
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
-            var factors = _getItemsDelegate.Invoke();
+            var factors = GetAllProcessingFactors(managerType);
 
             Assert.AreEqual(1, factors.Count(f => f.Compound == null));
             Assert.AreEqual(2, factors.Count(f => f.Compound != null));

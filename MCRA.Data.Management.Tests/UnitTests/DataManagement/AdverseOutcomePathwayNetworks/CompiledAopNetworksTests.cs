@@ -1,43 +1,48 @@
-﻿using MCRA.General;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Management.Tests.UnitTests.DataManagement;
+using MCRA.General;
 
 namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
+    [TestClass]
     public class CompiledAopNetworksTests : CompiledTestsBase {
-        protected Func<IDictionary<string, AdverseOutcomePathwayNetwork>> _getItemsDelegate;
-
         [TestMethod]
-        public void CompiledAdverseOutcomePathwayNetworks_TestSimple() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledAdverseOutcomePathwayNetworks_TestSimple(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.AdverseOutcomePathwayNetworks, @"AdverseOutcomePathwayNetworksTests/AopNetworksSimple")
             );
 
-            var allAops = _getItemsDelegate.Invoke();
+            var allAops = GetAllAdverseOutcomePathwayNetworks(managerType);
 
             CollectionAssert.AreEqual(new[] { "P1", "P2", "P3", "P4", "P5", "P6" }, allAops.Keys.ToList());
         }
 
         [TestMethod]
-        public void CompiledAdverseOutcomePathwayNetworks_TestSimpleEffectsFilter() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledAdverseOutcomePathwayNetworks_TestSimpleEffectsFilter(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.AdverseOutcomePathwayNetworks, @"AdverseOutcomePathwayNetworksTests/AopNetworksSimple")
             );
 
             //set a filter scope on effects
-            _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["E2"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Effects, ["E2"]);
 
-            var allAops = _getItemsDelegate.Invoke();
+            var allAops = GetAllAdverseOutcomePathwayNetworks(managerType);
 
             CollectionAssert.AreEqual(new[] { "P3", "P4", "P5" }, allAops.Keys.ToList());
         }
 
         [TestMethod]
-        public void CompiledAdverseOutcomePathwayNetworks_TestCompiledEffectRelationsSimple() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledAdverseOutcomePathwayNetworks_TestCompiledEffectRelationsSimple(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.AdverseOutcomePathwayNetworks, @"AdverseOutcomePathwayNetworksTests/AopNetworksSimple"),
                 (ScopingType.EffectRelations, @"AdverseOutcomePathwayNetworksTests/EffectRelationsSimple")
             );
 
-            var allAops = _getItemsDelegate.Invoke();
+            var allAops = GetAllAdverseOutcomePathwayNetworks(managerType);
 
             CollectionAssert.AreEqual(new[] { "P1", "P2", "P3", "P4", "P5", "P6" }, allAops.Keys.ToList());
             var ldsafdsaf = allAops["P1"].EffectRelations.SelectMany(r => r.UpstreamKeyEvent.Code).ToList();
@@ -57,16 +62,18 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledAdverseOutcomePathwayNetworks_TestCompiledEffectRelationsSimpleEffectsFilter() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledAdverseOutcomePathwayNetworks_TestCompiledEffectRelationsSimpleEffectsFilter(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.AdverseOutcomePathwayNetworks, @"AdverseOutcomePathwayNetworksTests/AopNetworksSimple"),
                 (ScopingType.EffectRelations, @"AdverseOutcomePathwayNetworksTests/EffectRelationsSimple")
             );
 
             //set a filter scope on effects
-            _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["E1", "E2"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Effects, ["E1", "E2"]);
 
-            var allAops = _getItemsDelegate.Invoke();
+            var allAops = GetAllAdverseOutcomePathwayNetworks(managerType);
 
             CollectionAssert.AreEqual(new[] { "P1", "P3", "P4", "P5" }, allAops.Keys.ToList());
 

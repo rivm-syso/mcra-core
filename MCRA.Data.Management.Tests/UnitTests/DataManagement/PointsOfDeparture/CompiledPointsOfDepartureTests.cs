@@ -1,16 +1,18 @@
-﻿using MCRA.General;
+﻿using MCRA.Data.Management.Tests.UnitTests.DataManagement;
+using MCRA.General;
 
 namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
+    [TestClass]
     public class CompiledPointsOfDepartureTests : CompiledTestsBase {
-        protected Func<ICollection<Compiled.Objects.PointOfDeparture>> _getItemsDelegate;
-
         [TestMethod]
-        public void CompiledPointsOfDeparture_TestSimple() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledPointsOfDeparture_TestSimple(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.PointsOfDeparture, @"HazardDosesTests/HazardDosesSimple")
             );
 
-            var factors = _getItemsDelegate.Invoke();
+            var factors = GetAllPointsOfDeparture(managerType);
 
             var compoundCodes = factors.Select(f => f.Compound.Code).Distinct();
             var effectCodes = factors.Select(f => f.Effect.Code).Distinct();
@@ -21,13 +23,15 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
 
         [TestMethod]
-        public void CompiledPointsOfDeparture_TestSimpleEffectsFilter() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledPointsOfDeparture_TestSimpleEffectsFilter(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.PointsOfDeparture, @"HazardDosesTests/HazardDosesSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff1"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff1"]);
 
-            var factors = _getItemsDelegate.Invoke();
+            var factors = GetAllPointsOfDeparture(managerType);
             var compoundCodes = factors.Select(f => f.Compound.Code).Distinct();
             var effectCodes = factors.Select(f => f.Effect.Code).Distinct();
 
@@ -36,13 +40,15 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledPointsOfDeparture_TestSimpleCompoundsFilter() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledPointsOfDeparture_TestSimpleCompoundsFilter(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.PointsOfDeparture, @"HazardDosesTests/HazardDosesSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
-            var factors = _getItemsDelegate.Invoke();
+            var factors = GetAllPointsOfDeparture(managerType);
 
             var compoundCodes = factors.Select(f => f.Compound.Code).Distinct();
             var effectCodes = factors.Select(f => f.Effect.Code).Distinct();
@@ -52,14 +58,16 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledPointsOfDeparture_TestFilterEffectsAndCompoundsSimple() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledPointsOfDeparture_TestFilterEffectsAndCompoundsSimple(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.PointsOfDeparture, @"HazardDosesTests/HazardDosesSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff1", "Eff4"]);
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff1", "Eff4"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
-            var factors = _getItemsDelegate.Invoke();
+            var factors = GetAllPointsOfDeparture(managerType);
 
             var compoundCodes = factors.Select(f => f.Compound.Code).Distinct();
             var effectCodes = factors.Select(f => f.Effect.Code).Distinct();

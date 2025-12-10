@@ -1,21 +1,21 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Management.Tests.UnitTests.DataManagement;
 using MCRA.General;
 
 namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
+    [TestClass]
     public class CompiledRisksTests : CompiledTestsBase {
-        protected Func<IDictionary<string, RiskModel>> _getRisksDelegate;
-        protected Func<IDictionary<string, Compound>> _getSubstancesDelegate;
-
         [TestMethod]
-        public void CompiledRisks_TestSimple() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledRisks_TestSimple(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.RiskModels, @"RisksTests/RiskModels"),
                 (ScopingType.RiskPercentiles, @"RisksTests/RiskPercentiles"),
                 (ScopingType.RiskPercentilesUncertain, @"RisksTests/RiskPercentilesUncertain")
             );
 
             // Only experiments with all matching codes are loaded (matching response codes are mandatory)
-            var models = _getRisksDelegate.Invoke();
+            var models = GetAllRiskModels(managerType);
             Assert.HasCount(2, models);
 
             // Count 4 percentiles
@@ -25,7 +25,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             Assert.IsTrue(models.Values.All(r => r.RiskPercentiles.All(p => p.Value.RiskUncertainties.Count == 5)));
 
             // Substances are loaded from valid experiments, so only 4 in this case
-            var substances = _getSubstancesDelegate.Invoke();
+            var substances = GetAllCompounds(managerType);
             Assert.HasCount(1, substances);
         }
     }

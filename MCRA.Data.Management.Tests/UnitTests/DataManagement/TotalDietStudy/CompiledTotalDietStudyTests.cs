@@ -1,17 +1,18 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Management.Tests.UnitTests.DataManagement;
 using MCRA.General;
 
 namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
+    [TestClass]
     public class CompiledTotalDietStudyTests : CompiledTestsBase {
-        protected Func<IList<TDSFoodSampleComposition>> _getItemsDelegate;
-
         [TestMethod]
-        public void CompiledTotalDietStudy_TestSimple() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledTotalDietStudy_TestSimple(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.TdsFoodSampleCompositions, @"TotalDietStudyTests/TDSFoodSampleCompositionsSimple")
             );
 
-            var compositions = _getItemsDelegate.Invoke();
+            var compositions = GetAllTDSFoodSampleCompositions(managerType);
 
             Assert.HasCount(15, compositions);
 
@@ -23,13 +24,15 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledTotalDietStudy_TestFoodFilter() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledTotalDietStudy_TestFoodFilter(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.TdsFoodSampleCompositions, @"TotalDietStudyTests/TDSFoodSampleCompositionsSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f1", "f2", "t1", "t2"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Foods, ["f1", "f2", "t1", "t2"]);
 
-            var compositions = _getItemsDelegate.Invoke();
+            var compositions = GetAllTDSFoodSampleCompositions(managerType);
 
             Assert.HasCount(3, compositions);
 

@@ -1,11 +1,11 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Management.Tests.UnitTests.DataManagement;
 using MCRA.General;
+using MCRA.General.Action.Settings;
 
 namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
+    [TestClass]
     public class CompiledFoodTranslationsTests : CompiledTestsBase {
-        protected Func<IDictionary<string, Food>> _getFoodsDelegate;
-        protected Func<IList<FoodTranslation>> _getFoodTranslationsDelegate;
-
         private void assertCompiledFoodsGetAllFoodTranslationsHierarchy(
             Food pie,
             Food apple,
@@ -27,14 +27,16 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledFoodsGetAllFoodTranslationsMatchedTest() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledFoodsGetAllFoodTranslationsMatchedTest(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.Foods, @"FoodTranslationTests/FoodTranslationFoods"),
                 (ScopingType.FoodTranslations, @"FoodTranslationTests/FoodTranslations")
             );
 
-            var foods = _getFoodsDelegate.Invoke();
-            var foodRecipes = _getFoodTranslationsDelegate.Invoke();
+            var foods = GetAllFoods(managerType);
+            var foodRecipes = GetAllFoodTranslations(managerType);
 
             Assert.HasCount(4, foods);
             Assert.IsTrue(foods.TryGetValue("A", out Food apple) && apple.Name.Equals("Apple"));
@@ -46,13 +48,15 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledFoodsGetAllFoodTranslationsScopeTest() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledFoodsGetAllFoodTranslationsScopeTest(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.FoodTranslations, @"FoodTranslationTests/FoodTranslations")
             );
 
-            var foods = _getFoodsDelegate.Invoke();
-            var foodRecipes = _getFoodTranslationsDelegate.Invoke();
+            var foods = GetAllFoods(managerType);
+            var foodRecipes = GetAllFoodTranslations(managerType);
 
             Assert.HasCount(4, foods);
             Assert.IsTrue(foods.TryGetValue("A", out Food apple) && apple.Name.Equals("A"));

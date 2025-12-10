@@ -1,17 +1,19 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Management.Tests.UnitTests.DataManagement;
 using MCRA.General;
 
 namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
+    [TestClass]
     public class CompiledOccurrencePatternsTests : CompiledTestsBase {
-        protected Func<IDictionary<string, OccurrencePattern>> _getItemsDelegate;
 
         [TestMethod]
-        public void CompiledOccurrencePatterns_TestSimple() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledOccurrencePatterns_TestSimple(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.OccurrencePatterns, @"AgriculturalUsesTests/AgriculturalUses")
             );
 
-            var opPatterns = _getItemsDelegate.Invoke();
+            var opPatterns = GetAllOccurrencePatterns(managerType);
 
             CollectionAssert.AreEqual(
                 new[] { "au1", "au2", "au3", "au4", "au5", "au6", "au7", "au8" },
@@ -21,13 +23,15 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledOccurrencePatterns_TestSimpleFoodsFilter() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledOccurrencePatterns_TestSimpleFoodsFilter(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.OccurrencePatterns, @"AgriculturalUsesTests/AgriculturalUses")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["F2"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Foods, ["F2"]);
 
-            var opPatterns = _getItemsDelegate.Invoke();
+            var opPatterns = GetAllOccurrencePatterns(managerType);
 
             CollectionAssert.AreEqual(new[] { "au3", "au4", "au5" }, opPatterns.Keys.ToList());
 
@@ -36,13 +40,15 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledOccurrencePatterns_TestCompoundsSimple() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledOccurrencePatterns_TestCompoundsSimple(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.OccurrencePatterns, @"AgriculturalUsesTests/AgriculturalUses"),
                 (ScopingType.OccurrencePatternsHasCompounds, @"AgriculturalUsesTests/AgriculturalUsesCompounds")
             );
 
-            var opPatterns = _getItemsDelegate.Invoke();
+            var opPatterns = GetAllOccurrencePatterns(managerType);
 
             CollectionAssert.AreEqual(
                 new[] { "au1", "au2", "au3", "au4", "au5", "au6", "au7", "au8" },
@@ -68,14 +74,16 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledOccurrencePatterns_TestCompoundsFoodsFilter() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledOccurrencePatterns_TestCompoundsFoodsFilter(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.OccurrencePatterns, @"AgriculturalUsesTests/AgriculturalUses"),
                 (ScopingType.OccurrencePatternsHasCompounds, @"AgriculturalUsesTests/AgriculturalUsesCompounds")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f2"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Foods, ["f2"]);
 
-            var opPatterns = _getItemsDelegate.Invoke();
+            var opPatterns = GetAllOccurrencePatterns(managerType);
 
             CollectionAssert.AreEqual(
                 new[] { "au3", "au4", "au5" },
@@ -90,15 +98,17 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledOccurrencePatterns_TestCompoundsFoodsCompoundsFilter() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledOccurrencePatterns_TestCompoundsFoodsCompoundsFilter(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.OccurrencePatterns, @"AgriculturalUsesTests/AgriculturalUses"),
                 (ScopingType.OccurrencePatternsHasCompounds, @"AgriculturalUsesTests/AgriculturalUsesCompounds")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f2"]);
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Foods, ["f2"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
-            var opPatterns = _getItemsDelegate.Invoke();
+            var opPatterns = GetAllOccurrencePatterns(managerType);
 
             CollectionAssert.AreEqual(
                 new[] { "au3", "au4", "au5" },
@@ -112,14 +122,16 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledOccurrencePatterns_TestCompoundsCompoundsFilter() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledOccurrencePatterns_TestCompoundsCompoundsFilter(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.OccurrencePatterns, @"AgriculturalUsesTests/AgriculturalUses"),
                 (ScopingType.OccurrencePatternsHasCompounds, @"AgriculturalUsesTests/AgriculturalUsesCompounds")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
-            var opPatterns = _getItemsDelegate.Invoke();
+            var opPatterns = GetAllOccurrencePatterns(managerType);
 
             CollectionAssert.AreEqual(
                 new[] { "au1", "au2", "au3", "au4", "au5", "au6", "au7", "au8" },

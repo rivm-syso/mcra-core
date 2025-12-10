@@ -3,7 +3,7 @@
 namespace MCRA.Data.Management.Test.UnitTests.DataManagement.Consumptions {
 
     [TestClass]
-    public class SubsetManagerConsumptionsTests : SubsetManagerTestsBase {
+    public class SubsetManagerConsumptionsTests : CompiledTestsBase {
 
         /// <summary>
         /// Tests correct loading of the food surveys. Verification by checking the expected
@@ -11,8 +11,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement.Consumptions {
         /// </summary>
         [TestMethod]
         public void SubsetManagerConsumptions_TestLoadFoodSurveys() {
-            _rawDataProvider.SetDataGroupsFromFolder(1, "_DataGroupsTest", SourceTableGroup.Survey);
-            var foodSurveys = _compiledDataManager.GetAllFoodSurveys().Values;
+            RawDataProvider.SetDataGroupsFromFolder(1, "_DataGroupsTest", SourceTableGroup.Survey);
+            var foodSurveys = CompiledDataManager.GetAllFoodSurveys().Values;
             Assert.HasCount(2, foodSurveys);
             var foodSurveyCodes = foodSurveys.Select(fs => fs.Code).ToList();
             CollectionAssert.AreEquivalent(new List<string>() { "ValidationSurvey", "EmptySurvey" }, foodSurveyCodes);
@@ -24,10 +24,10 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement.Consumptions {
         /// </summary>
         [TestMethod]
         public void SubsetManagerConsumptions_TestLoadConsumptions() {
-            _rawDataProvider.SetDataGroupsFromFolder(1, "_DataGroupsTest", SourceTableGroup.Survey);
-            var consumptions = _compiledDataManager.GetAllFoodConsumptions();
+            RawDataProvider.SetDataGroupsFromFolder(1, "_DataGroupsTest", SourceTableGroup.Survey);
+            var consumptions = CompiledDataManager.GetAllFoodConsumptions();
 
-            var foods = _compiledDataManager.GetAllFoods();
+            var foods = CompiledDataManager.GetAllFoods();
             var foodApple = foods["APPLE"];
             var foodBananas = foods["BANANAS"];
             var foodPineapple = foods["PINEAPPLE"];
@@ -47,8 +47,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement.Consumptions {
         /// </summary>
         [TestMethod]
         public void SubsetManagerConsumptions_TestLoadIndividuals() {
-            _rawDataProvider.SetDataGroupsFromFolder(1, "_DataGroupsTest", SourceTableGroup.Survey);
-            var individuals = _compiledDataManager.GetAllIndividuals();
+            RawDataProvider.SetDataGroupsFromFolder(1, "_DataGroupsTest", SourceTableGroup.Survey);
+            var individuals = CompiledDataManager.GetAllIndividuals();
             Assert.HasCount(10, individuals);
         }
 
@@ -59,11 +59,11 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement.Consumptions {
         /// </summary>
         [TestMethod]
         public void SubsetManagerConsumptions_TestLoadIndividualProperties() {
-            _rawDataProvider.SetDataGroupsFromFolder(1, "_DataGroupsTest", SourceTableGroup.Survey);
-            var consumptions = _compiledDataManager.GetAllFoodConsumptions();
+            RawDataProvider.SetDataGroupsFromFolder(1, "_DataGroupsTest", SourceTableGroup.Survey);
+            var consumptions = CompiledDataManager.GetAllFoodConsumptions();
 
             // Check the cofactors
-            var coFactors = _subsetManager.AllIndividualProperties.Values;
+            var coFactors = SubsetManager.AllIndividualProperties.Values;
             var coFactorNames = coFactors.Select(c => c.Name).ToList();
             Assert.HasCount(4, coFactors);
             CollectionAssert.Contains(coFactorNames, "Age");
@@ -72,7 +72,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement.Consumptions {
             CollectionAssert.Contains(coFactorNames, "ExtraCovariate");
 
             // Check the covariates
-            var coVariables = _subsetManager.CovariableIndividualProperties;
+            var coVariables = SubsetManager.CovariableIndividualProperties;
             var coVariableNames = coVariables.Select(c => c.Name).ToList();
             Assert.HasCount(2, coVariables);
             CollectionAssert.Contains(coVariableNames, "Age");
@@ -81,94 +81,94 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement.Consumptions {
 
         [TestMethod]
         public void SubsetManagerConsumptions_SelectedFoodSurveyTestNoSurvey() {
-            _rawDataProvider.SetDataTables(
+            RawDataProvider.SetDataTables(
                 (ScopingType.FoodSurveys, @"ConsumptionsTests/FoodSurveys")
             );
-            var selected = _subsetManager.SelectedFoodSurvey;
+            var selected = SubsetManager.SelectedFoodSurvey;
             Assert.IsNull(selected);
         }
 
         [TestMethod]
         public void SubsetManagerConsumptions_SelectedFoodSurveyTestWrongSurvey() {
-            _rawDataProvider.SetDataTables(
+            RawDataProvider.SetDataTables(
                 (ScopingType.FoodSurveys, @"ConsumptionsTests/FoodSurveys")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.FoodSurveys, new List<string>() { "ZZ" });
-            var selected = _subsetManager.SelectedFoodSurvey;
+            RawDataProvider.SetFilterCodes(ScopingType.FoodSurveys, new List<string>() { "ZZ" });
+            var selected = SubsetManager.SelectedFoodSurvey;
             Assert.IsNull(selected);
         }
 
         [TestMethod]
         public void SubsetManagerConsumptions_SelectedFoodSurveyTest() {
-            _rawDataProvider.SetDataTables(
+            RawDataProvider.SetDataTables(
                 (ScopingType.FoodSurveys, @"ConsumptionsTests/FoodSurveys")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.FoodSurveys, new List<string>() { "s1" });
-            var selected = _subsetManager.SelectedFoodSurvey;
+            RawDataProvider.SetFilterCodes(ScopingType.FoodSurveys, new List<string>() { "s1" });
+            var selected = SubsetManager.SelectedFoodSurvey;
             Assert.AreEqual("S1", selected.Code);
-            Assert.AreEqual(_subsetManager.AllFoodSurveys["s1"], selected);
+            Assert.AreEqual(SubsetManager.AllFoodSurveys["s1"], selected);
         }
 
         [TestMethod]
         public void SubsetManagerConsumptions_AvailableIndividualsTestNoSurvey() {
-            _rawDataProvider.SetDataTables(
+            RawDataProvider.SetDataTables(
                 (ScopingType.FoodSurveys, @"ConsumptionsTests/FoodSurveys"),
                 (ScopingType.DietaryIndividuals, @"ConsumptionsTests/Individuals")
             );
-            var selected = _subsetManager.AllIndividuals;
+            var selected = SubsetManager.AllIndividuals;
             Assert.HasCount(5, selected);
         }
 
         [TestMethod]
         public void SubsetManagerConsumptions_AvailableIndividualsTestWrongSurvey() {
-            _rawDataProvider.SetDataTables(
+            RawDataProvider.SetDataTables(
                 (ScopingType.FoodSurveys, @"ConsumptionsTests/FoodSurveys"),
                 (ScopingType.DietaryIndividuals, @"ConsumptionsTests/Individuals")
             );
-            _project.SetFilterCodes(ScopingType.FoodSurveys, new List<string>() { "ZZ" });
-            var selected = _subsetManager.AllIndividuals;
+            Project.SetFilterCodes(ScopingType.FoodSurveys, new List<string>() { "ZZ" });
+            var selected = SubsetManager.AllIndividuals;
             Assert.HasCount(5, selected);
         }
 
         [TestMethod]
         public void SubsetManagerConsumptions_AvailableIndividualsTest() {
-            _rawDataProvider.SetDataTables(
+            RawDataProvider.SetDataTables(
                 (ScopingType.FoodSurveys, @"ConsumptionsTests/FoodSurveys"),
                 (ScopingType.DietaryIndividuals, @"ConsumptionsTests/Individuals")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.FoodSurveys, new List<string>() { "s2" });
-            var selected = _subsetManager.AllIndividuals.Values;
+            RawDataProvider.SetFilterCodes(ScopingType.FoodSurveys, new List<string>() { "s2" });
+            var selected = SubsetManager.AllIndividuals.Values;
             Assert.AreEqual("3,4", string.Join(",", selected.Select(i => i.Code)));
         }
 
         [TestMethod]
         public void SubsetManagerConsumptions_AllIndividualPropertiesTest() {
-            _rawDataProvider.SetDataTables(
+            RawDataProvider.SetDataTables(
                 (ScopingType.FoodSurveys, @"ConsumptionsTests/FoodSurveys"),
                 (ScopingType.DietaryIndividuals, @"ConsumptionsTests/Individuals"),
                 (ScopingType.DietaryIndividualProperties, @"ConsumptionsTests/IndividualProperties"),
                 (ScopingType.DietaryIndividualPropertyValues, @"ConsumptionsTests/IndividualPropertyValues")
             );
 
-            var list = _subsetManager.AllIndividualProperties.Values;
+            var list = SubsetManager.AllIndividualProperties.Values;
 
             Assert.HasCount(5, list);
             Assert.AreEqual("Age,Gender,Factor,Salary,Bcode", string.Join(",", list.Select(p => p.Code)));
 
-            var covariables = _subsetManager.CovariableIndividualProperties;
+            var covariables = SubsetManager.CovariableIndividualProperties;
             Assert.HasCount(3, covariables);
             Assert.AreEqual("Age,Factor,Salary", string.Join(",", covariables.Select(p => p.Code)));
 
-            var covariable = _subsetManager.CovariableIndividualProperty;
-            var cofactor = _subsetManager.CofactorIndividualProperty;
+            var covariable = SubsetManager.CovariableIndividualProperty;
+            var cofactor = SubsetManager.CofactorIndividualProperty;
             Assert.IsNull(covariable);
             Assert.IsNull(cofactor);
 
-            var config = _project.DietaryExposuresSettings;
+            var config = Project.DietaryExposuresSettings;
             config.NameCofactor = "factor";
             config.NameCovariable = "gender";
-            covariable = _subsetManager.CovariableIndividualProperty;
-            cofactor = _subsetManager.CofactorIndividualProperty;
+            covariable = SubsetManager.CovariableIndividualProperty;
+            cofactor = SubsetManager.CofactorIndividualProperty;
             Assert.AreEqual("Gender", covariable.Code);
             Assert.AreEqual("Factor", cofactor.Code);
         }

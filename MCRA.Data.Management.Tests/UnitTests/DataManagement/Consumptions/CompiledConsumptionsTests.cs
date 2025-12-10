@@ -1,24 +1,21 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Management.Tests.UnitTests.DataManagement;
 using MCRA.General;
 
 namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
+    [TestClass]
     public class CompiledConsumptionsTests : CompiledTestsBase {
-
-        protected Func<IDictionary<string, FoodSurvey>> _getFoodSurveysDelegate;
-        protected Func<IDictionary<string, Individual>> _getIndividualsDelegate;
-        protected Func<IDictionary<string, Food>> _getFoodsDelegate;
-        protected Func<IList<FoodConsumption>> _getFoodConsumptionsDelegate;
-        protected Func<IList<IndividualDay>> _getIndividualDayDelegate;
-
         [TestMethod]
-        public void CompiledConsumptions_TestIndividualsOnly() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledConsumptions_TestIndividualsOnly(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.FoodSurveys, @"ConsumptionsTests/FoodSurveys"),
                 (ScopingType.DietaryIndividuals, @"ConsumptionsTests/Individuals")
             );
 
-            var surveys = _getFoodSurveysDelegate.Invoke();
-            var individuals = _getIndividualsDelegate.Invoke();
+            var surveys = GetAllFoodSurveys(managerType);
+            var individuals = GetAllIndividuals(managerType);
 
             Assert.HasCount(3, surveys);
             Assert.HasCount(5, individuals);
@@ -28,15 +25,17 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledConsumptions_TestIndividualsOnlyWithSurveyScope() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledConsumptions_TestIndividualsOnlyWithSurveyScope(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.FoodSurveys, @"ConsumptionsTests/FoodSurveys"),
                 (ScopingType.DietaryIndividuals, @"ConsumptionsTests/Individuals")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.FoodSurveys, ["s2"]);
+            RawDataProvider.SetFilterCodes(ScopingType.FoodSurveys, ["s2"]);
 
-            var surveys = _getFoodSurveysDelegate.Invoke();
-            var individuals = _getIndividualsDelegate.Invoke();
+            var surveys = GetAllFoodSurveys(managerType);
+            var individuals = GetAllIndividuals(managerType);
 
             Assert.HasCount(1, surveys);
             Assert.HasCount(2, individuals);
@@ -46,14 +45,16 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledConsumptions_TestConsumptionsOnly() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledConsumptions_TestConsumptionsOnly(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.Consumptions, @"ConsumptionsTests/Consumptions")
             );
 
-            var surveys = _getFoodSurveysDelegate.Invoke();
-            var individuals = _getIndividualsDelegate.Invoke();
-            var consumptions = _getFoodConsumptionsDelegate.Invoke();
+            var surveys = GetAllFoodSurveys(managerType);
+            var individuals = GetAllIndividuals(managerType);
+            var consumptions = GetAllFoodConsumptions(managerType);
 
             Assert.IsEmpty(surveys);
             Assert.IsEmpty(individuals);
@@ -61,17 +62,19 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledConsumptions_TestWithIndividuals() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledConsumptions_TestWithIndividuals(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.FoodSurveys, @"ConsumptionsTests/FoodSurveys"),
                 (ScopingType.Consumptions, @"ConsumptionsTests/Consumptions"),
                 (ScopingType.DietaryIndividuals, @"ConsumptionsTests/Individuals")
             );
 
-            var surveys = _getFoodSurveysDelegate.Invoke();
-            var individuals = _getIndividualsDelegate.Invoke();
-            var consumptions = _getFoodConsumptionsDelegate.Invoke();
-            var foods = _getFoodsDelegate.Invoke();
+            var surveys = GetAllFoodSurveys(managerType);
+            var individuals = GetAllIndividuals(managerType);
+            var consumptions = GetAllFoodConsumptions(managerType);
+            var foods = GetAllFoods(managerType);
 
             Assert.HasCount(3, surveys);
             Assert.HasCount(5, individuals);
@@ -85,17 +88,19 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledConsumptions_TestIndividualsSurvey() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledConsumptions_TestIndividualsSurvey(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.FoodSurveys, @"ConsumptionsTests/FoodSurveys"),
                 (ScopingType.Consumptions, @"ConsumptionsTests/Consumptions"),
                 (ScopingType.DietaryIndividuals, @"ConsumptionsTests/Individuals")
             );
 
-            var surveys = _getFoodSurveysDelegate.Invoke();
-            var individuals = _getIndividualsDelegate.Invoke();
-            var consumptions = _getFoodConsumptionsDelegate.Invoke();
-            var foods = _getFoodsDelegate.Invoke();
+            var surveys = GetAllFoodSurveys(managerType);
+            var individuals = GetAllIndividuals(managerType);
+            var consumptions = GetAllFoodConsumptions(managerType);
+            var foods = GetAllFoods(managerType);
 
             Assert.HasCount(3, surveys);
             Assert.HasCount(5, individuals);
@@ -109,18 +114,20 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledConsumptions_TestIndividualsSurveyFilterFoods() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledConsumptions_TestIndividualsSurveyFilterFoods(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.FoodSurveys, @"ConsumptionsTests/FoodSurveys"),
                 (ScopingType.Consumptions, @"ConsumptionsTests/Consumptions"),
                 (ScopingType.DietaryIndividuals, @"ConsumptionsTests/Individuals")
             );
 
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f2", "f3"]);
-            var surveys = _getFoodSurveysDelegate.Invoke();
-            var individuals = _getIndividualsDelegate.Invoke();
-            var consumptions = _getFoodConsumptionsDelegate.Invoke();
-            var foods = _getFoodsDelegate.Invoke();
+            RawDataProvider.SetFilterCodes(ScopingType.Foods, ["f2", "f3"]);
+            var surveys = GetAllFoodSurveys(managerType);
+            var individuals = GetAllIndividuals(managerType);
+            var consumptions = GetAllFoodConsumptions(managerType);
+            var foods = GetAllFoods(managerType);
 
             Assert.HasCount(3, surveys);
             Assert.HasCount(5, individuals);
@@ -138,16 +145,18 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         /// Moved here from MCRA.Test
         /// </summary>
         [TestMethod]
-        public void CompiledConsumptions_TestFoodEx2Data() {
-            _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledConsumptions_TestFoodEx2Data(ManagerType managerType) {
+            RawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
+            RawDataProvider.SetDataTables(
                 (ScopingType.FoodSurveys, @"ConsumptionsTests/FoodEx2Survey"),
                 (ScopingType.Consumptions, @"ConsumptionsTests/FoodEx2Consumptions"),
                 (ScopingType.DietaryIndividuals, @"ConsumptionsTests/FoodEx2Individuals")
             );
 
-            _getFoodConsumptionsDelegate.Invoke();
-            var foods = _getFoodsDelegate.Invoke().Values.ToList();
+            GetAllFoodConsumptions(managerType);
+            var foods = GetAllFoods(managerType).Values.ToList();
             var foodWithFacets = foods.First(f => f.Code == "A01CE#F20.A07QF");
             var foodCodes = foods.Select(f => f.Code).ToList();
             CollectionAssert.Contains(foodCodes, "A01CE#F20.A07QF");
@@ -155,16 +164,18 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledConsumptions_TestFoodEx2FoodHierarchy() {
-            _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledConsumptions_TestFoodEx2FoodHierarchy(ManagerType managerType) {
+            RawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
+            RawDataProvider.SetDataTables(
                 (ScopingType.FoodSurveys, @"ConsumptionsTests/FoodEx2Survey"),
                 (ScopingType.Consumptions, @"ConsumptionsTests/FoodEx2Consumptions"),
                 (ScopingType.DietaryIndividuals, @"ConsumptionsTests/FoodEx2Individuals")
             );
 
-            _getFoodConsumptionsDelegate.Invoke();
-            var foods = _getFoodsDelegate.Invoke().Values.ToList();
+            GetAllFoodConsumptions(managerType);
+            var foods = GetAllFoods(managerType).Values.ToList();
             var orderedFoods = TreeOrder(foods).ToList();
         }
 

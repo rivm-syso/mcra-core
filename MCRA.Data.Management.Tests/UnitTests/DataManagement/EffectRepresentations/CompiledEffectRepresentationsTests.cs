@@ -1,43 +1,48 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Management.Tests.UnitTests.DataManagement;
 using MCRA.General;
 
 namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
+    [TestClass]
     public class CompiledEffectRepresentationsTests : CompiledTestsBase {
-        protected Func<IList<EffectRepresentation>> _getItemsDelegate;
-
         [TestMethod]
-        public void CompiledEffectRepresentations_TestOnly() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledEffectRepresentations_TestOnly(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.EffectRepresentations, @"EffectRepresentationsTests/EffectRepresentationsSimple")
             );
 
-            var representations = _getItemsDelegate.Invoke();
+            var representations = GetAllEffectRepresentations(managerType);
 
             Assert.IsEmpty(representations);
         }
 
         [TestMethod]
-        public void CompiledEffectRepresentations_TestOnlyWithResponsesScope() {
-            _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Responses);
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledEffectRepresentations_TestOnlyWithResponsesScope(ManagerType managerType) {
+            RawDataProvider.SetEmptyDataSource(SourceTableGroup.Responses);
+            RawDataProvider.SetDataTables(
                 (ScopingType.EffectRepresentations, @"EffectRepresentationsTests/EffectRepresentationsSimple")
             );
 
             //set a filter scope on responses
-            _rawDataProvider.SetFilterCodes(ScopingType.Responses, ["R2"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Responses, ["R2"]);
 
-            var representations = _getItemsDelegate.Invoke();
+            var representations = GetAllEffectRepresentations(managerType);
 
             Assert.IsEmpty(representations);
         }
 
         [TestMethod]
-        public void CompiledEffectRepresentations_TestSimple() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledEffectRepresentations_TestSimple(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.EffectRepresentations, @"EffectRepresentationsTests/EffectRepresentationsSimple"),
                 (ScopingType.Responses, @"EffectRepresentationsTests/ResponsesSimple")
             );
-            var representations = _getItemsDelegate.Invoke();
+            var representations = GetAllEffectRepresentations(managerType);
 
             Assert.HasCount(9, representations);
 
@@ -49,14 +54,16 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledEffectRepresentations_TestFilterEffectsSimple() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledEffectRepresentations_TestFilterEffectsSimple(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.EffectRepresentations, @"EffectRepresentationsTests/EffectRepresentationsSimple"),
                 (ScopingType.Responses, @"EffectRepresentationsTests/ResponsesSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff1"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff1"]);
 
-            var representations = _getItemsDelegate.Invoke();
+            var representations = GetAllEffectRepresentations(managerType);
 
             Assert.HasCount(1, representations);
 
@@ -68,14 +75,16 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledEffectRepresentations_FilterResponsesSimpleTest() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledEffectRepresentations_FilterResponsesSimpleTest(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.EffectRepresentations, @"EffectRepresentationsTests/EffectRepresentationsSimple"),
                 (ScopingType.Responses, @"EffectRepresentationsTests/ResponsesSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Responses, ["R2"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Responses, ["R2"]);
 
-            var representations = _getItemsDelegate.Invoke();
+            var representations = GetAllEffectRepresentations(managerType);
 
             Assert.HasCount(3, representations);
 
@@ -87,15 +96,17 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledEffectRepresentations_TestFilterTestsystemsSimple() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledEffectRepresentations_TestFilterTestsystemsSimple(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.EffectRepresentations, @"EffectRepresentationsTests/EffectRepresentationsSimple"),
                 (ScopingType.Responses, @"EffectRepresentationsTests/ResponsesSimple"),
                 (ScopingType.TestSystems, @"DoseResponseTests/TestSystemsSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.TestSystems, ["sys1"]);
+            RawDataProvider.SetFilterCodes(ScopingType.TestSystems, ["sys1"]);
 
-            var representations = _getItemsDelegate.Invoke();
+            var representations = GetAllEffectRepresentations(managerType);
 
             Assert.HasCount(8, representations);
 
@@ -107,18 +118,20 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledEffectRepresentations_TestFilterAll() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledEffectRepresentations_TestFilterAll(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.EffectRepresentations, @"EffectRepresentationsTests/EffectRepresentationsSimple"),
                 (ScopingType.Responses, @"DoseResponseTests/ResponsesSimple"),
                 (ScopingType.TestSystems, @"DoseResponseTests/TestSystemsSimple"),
                 (ScopingType.Effects, @"EffectsTests/EffectsSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.TestSystems, ["sys1"]);
-            _rawDataProvider.SetFilterCodes(ScopingType.Responses, ["R2"]);
-            _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff2", "Eff5"]);
+            RawDataProvider.SetFilterCodes(ScopingType.TestSystems, ["sys1"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Responses, ["R2"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff2", "Eff5"]);
 
-            var representations = _getItemsDelegate.Invoke();
+            var representations = GetAllEffectRepresentations(managerType);
 
             Assert.HasCount(1, representations);
 

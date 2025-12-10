@@ -1,45 +1,46 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Management.Tests.UnitTests.DataManagement;
 using MCRA.General;
 
 namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
+    [TestClass]
     public class CompiledDoseResponseDataTests : CompiledTestsBase {
-        protected Func<IDictionary<string, DoseResponseExperiment>> _getExperimentsDelegate;
-        protected Func<IDictionary<string, Response>> _getResponsesDelegate;
-        protected Func<IDictionary<string, Compound>> _getSubstancesDelegate;
-
         [TestMethod]
-        public void CompiledDoseResponseExperiments_TestSimple() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledDoseResponseExperiments_TestSimple(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.DoseResponseExperiments, @"DoseResponseTests/ExperimentsSimple"),
                 (ScopingType.Responses, @"DoseResponseTests/ResponsesSimple")
             );
 
-            var experiments = _getExperimentsDelegate.Invoke();
+            var experiments = GetAllDoseResponseExperiments(managerType);
             //only experiments with all matching codes are loaded
             //(matching response codes are mandatory)
             Assert.HasCount(2, experiments);
 
-            var substances = _getSubstancesDelegate.Invoke();
+            var substances = GetAllCompounds(managerType);
 
             //Substances are loaded from valid experiments
             Assert.HasCount(5, substances);
 
-            var responses = _getResponsesDelegate.Invoke();
+            var responses = GetAllResponses(managerType);
 
             Assert.HasCount(3, responses);
         }
 
         [TestMethod]
-        public void CompiledDoseResponseExperiments_TestFilterSubstancesResponses() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledDoseResponseExperiments_TestFilterSubstancesResponses(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.DoseResponseExperiments, @"DoseResponseTests/ExperimentsForFiltering"),
                 (ScopingType.Responses, @"DoseResponseTests/ResponsesSimple")
             );
 
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["A", "B"]);
-            _rawDataProvider.SetFilterCodes(ScopingType.Responses, ["R2"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Compounds, ["A", "B"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Responses, ["R2"]);
 
-            var experiments = _getExperimentsDelegate.Invoke();
+            var experiments = GetAllDoseResponseExperiments(managerType);
 
             Assert.HasCount(6, experiments);
             CollectionAssert.AreEquivalent(
@@ -49,15 +50,17 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledDoseResponseExperiments_TestFilterResponses() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledDoseResponseExperiments_TestFilterResponses(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.DoseResponseExperiments, @"DoseResponseTests/ExperimentsForFiltering"),
                 (ScopingType.Responses, @"DoseResponseTests/ResponsesSimple")
             );
 
-            _rawDataProvider.SetFilterCodes(ScopingType.Responses, ["R2"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Responses, ["R2"]);
 
-            var experiments = _getExperimentsDelegate.Invoke();
+            var experiments = GetAllDoseResponseExperiments(managerType);
 
             Assert.HasCount(18, experiments);
             CollectionAssert.AreEquivalent(
@@ -67,15 +70,17 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledDoseResponseExperiments_TestFilterSubstances() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledDoseResponseExperiments_TestFilterSubstances(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.DoseResponseExperiments, @"DoseResponseTests/ExperimentsForFiltering"),
                 (ScopingType.Responses, @"DoseResponseTests/ResponsesSimple")
             );
 
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["A", "B"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Compounds, ["A", "B"]);
 
-            var experiments = _getExperimentsDelegate.Invoke();
+            var experiments = GetAllDoseResponseExperiments(managerType);
 
             Assert.HasCount(12, experiments);
             CollectionAssert.AreEquivalent(

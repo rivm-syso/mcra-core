@@ -1,44 +1,48 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Management.Tests.UnitTests.DataManagement;
 using MCRA.General;
 
 namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
+    [TestClass]
     public class CompiledQsarMembershipModelsTests : CompiledTestsBase {
 
-        protected Func<IDictionary<string, QsarMembershipModel>> _getItemsDelegate;
-
         [TestMethod]
-        public void CompiledQsarMembershipModels_TestSimple() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledQsarMembershipModels_TestSimple(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.QsarMembershipModels, @"QsarMembershipModelsTests/QsarMembershipModelsSimple")
             );
 
-            var models = _getItemsDelegate.Invoke();
+            var models = GetAllQsarMembershipModels(managerType);
 
             CollectionAssert.AreEqual(new[] { "MD1", "MD2", "MD3" }, models.Keys.ToList());
         }
 
-
         [TestMethod]
-        public void CompiledQsarMembershipModels_TestSimpleEffectsFilter() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledQsarMembershipModels_TestSimpleEffectsFilter(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.QsarMembershipModels, @"QsarMembershipModelsTests/QsarMembershipModelsSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff1"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff1"]);
 
-            var models = _getItemsDelegate.Invoke();
+            var models = GetAllQsarMembershipModels(managerType);
 
             CollectionAssert.AreEqual(new[] { "MD1", "MD3" }, models.Keys.ToList());
 
         }
 
         [TestMethod]
-        public void CompiledQsarMembershipModels_TestMembershipScoresSimple() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledQsarMembershipModels_TestMembershipScoresSimple(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.QsarMembershipModels, @"QsarMembershipModelsTests/QsarMembershipModelsSimple"),
                 (ScopingType.QsarMembershipScores, @"QsarMembershipModelsTests/QsarMembershipScoresSimple")
             );
 
-            var models = _getItemsDelegate.Invoke();
+            var models = GetAllQsarMembershipModels(managerType);
 
             CollectionAssert.AreEqual(new[] { "MD1", "MD2", "MD3" }, models.Keys.ToList());
 
@@ -53,15 +57,17 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledQsarMembershipModels_TestMembershipScoresFilterEffectsAndCompounds() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledQsarMembershipModels_TestMembershipScoresFilterEffectsAndCompounds(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.QsarMembershipModels, @"QsarMembershipModelsTests/QsarMembershipModelsSimple"),
                 (ScopingType.QsarMembershipScores, @"QsarMembershipModelsTests/QsarMembershipScoresSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff1"]);
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["A", "B", "D"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff1"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Compounds, ["A", "B", "D"]);
 
-            var models = _getItemsDelegate.Invoke();
+            var models = GetAllQsarMembershipModels(managerType);
 
             CollectionAssert.AreEqual(new[] { "MD1", "MD3" }, models.Keys.ToList());
 

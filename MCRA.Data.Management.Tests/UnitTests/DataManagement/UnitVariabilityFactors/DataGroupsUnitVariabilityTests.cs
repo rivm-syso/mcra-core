@@ -3,8 +3,7 @@ using MCRA.General;
 
 namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
     [TestClass]
-    public class DataGroupsUnitVariabilityTests:CompiledTestsBase {
-
+    public class DataGroupsUnitVariabilityTests : CompiledTestsBase {
         /// <summary>
         /// Tests correct loading of the unit variability factors by counting the number of
         /// unit variability factors loaded from the data and counting the unit variability
@@ -12,24 +11,24 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         /// </summary>
         [TestMethod]
         public void UnitVariabilityFactorsDataTest1() {
-            _rawDataProvider.SetDataGroupsFromFolder(
+            RawDataProvider.SetDataGroupsFromFolder(
                 1,
                 "_DataGroupsTest",
                 [SourceTableGroup.UnitVariabilityFactors, SourceTableGroup.Foods, SourceTableGroup.Compounds]);
 
-            var unitVariabilityFactors = _compiledDataManager.GetAllUnitVariabilityFactors();
+            var unitVariabilityFactors = CompiledDataManager.GetAllUnitVariabilityFactors();
             Assert.HasCount(5, unitVariabilityFactors);
 
-            var foods = _compiledDataManager.GetAllFoods();
+            var foods = CompiledDataManager.GetAllFoods();
             var foodApple = foods["APPLE"];
             var foodBananas = foods["BANANAS"];
             var foodPineapple = foods["PINEAPPLE"];
 
-            var compounds = _compiledDataManager.GetAllCompounds();
+            var compounds = CompiledDataManager.GetAllCompounds();
             var compoundA = compounds["CompoundA"];
             var compoundB = compounds["CompoundB"];
 
-            var processingTypes = _compiledDataManager.GetAllProcessingTypes().Values;
+            var processingTypes = CompiledDataManager.GetAllProcessingTypes().Values;
             var processingTypeJuicing = processingTypes.Single(pt => pt.Name == "Juicing");
             var processingTypePeeling = processingTypes.Single(pt => pt.Name == "Peeling");
 
@@ -45,26 +44,26 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         /// </summary>
         [TestMethod]
         public void UnitVariabilityFactorsDataTest2() {
-            _rawDataProvider.SetDataGroupsFromFolder(
+            RawDataProvider.SetDataGroupsFromFolder(
                 1,
                 "_DataGroupsTest",
                 [SourceTableGroup.UnitVariabilityFactors, SourceTableGroup.Foods, SourceTableGroup.Compounds]
             );
-            var unitVariabilityFactors = _compiledDataManager.GetAllUnitVariabilityFactors()
+            var unitVariabilityFactors = CompiledDataManager.GetAllUnitVariabilityFactors()
                     .GroupBy(uv => uv.Food)
                     .Select(g => new FoodUnitVariabilityInfo(g.Key, g.ToList()))
                     .ToDictionary(r => r.Food);
 
-            var foods = _compiledDataManager.GetAllFoods();
+            var foods = CompiledDataManager.GetAllFoods();
             var foodApple = foods["APPLE"];
             var foodBananas = foods["BANANAS"];
             var foodPineapple = foods["PINEAPPLE"];
 
-            var compounds = _compiledDataManager.GetAllCompounds();
+            var compounds = CompiledDataManager.GetAllCompounds();
             var compoundA = compounds["CompoundA"];
             var compoundB = compounds["CompoundB"];
 
-            var processingTypes = _compiledDataManager.GetAllProcessingTypes();
+            var processingTypes = CompiledDataManager.GetAllProcessingTypes();
             var processingTypeJuicing = processingTypes.Single(pt => pt.Value.Name == "Juicing").Value;
             var processingTypePeeling = processingTypes.Single(pt => pt.Value.Name == "Peeling").Value;
 
@@ -101,8 +100,6 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             Assert.AreEqual(12, processingTypeAppleCompoundBPeeling.UnitsInCompositeSample);
             Assert.AreEqual(100, processingTypeAppleCompoundAJuicing.UnitsInCompositeSample);
             Assert.AreEqual(12, processingTypeAppleCompoundBJuicing.UnitsInCompositeSample);
-
         }
-
     }
 }

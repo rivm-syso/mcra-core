@@ -1,18 +1,19 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Management.Tests.UnitTests.DataManagement;
 using MCRA.General;
 
 namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
+    [TestClass]
     public class CompiledIntraSpeciesFactorsTests : CompiledTestsBase {
 
-        protected Func<ICollection<IntraSpeciesFactor>> _getItemsDelegate;
-
         [TestMethod]
-        public void CompiledIntraSpeciesFactorsSimpleTest() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledIntraSpeciesFactorsSimpleTest(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.IntraSpeciesModelParameters, @"IntraSpeciesFactorsTests/IntraSpeciesModelParametersSimple")
             );
 
-            var factors = _getItemsDelegate.Invoke();
+            var factors = GetAllIntraSpeciesFactors(managerType);
 
             Assert.AreEqual(2, factors.Count(f => f.Compound == null));
             Assert.AreEqual(9, factors.Count(f => f.Compound != null));
@@ -25,13 +26,15 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
 
         [TestMethod]
-        public void CompiledIntraSpeciesFactorsSimpleEffectsFilterTest() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledIntraSpeciesFactorsSimpleEffectsFilterTest(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.IntraSpeciesModelParameters, @"IntraSpeciesFactorsTests/IntraSpeciesModelParametersSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff1"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff1"]);
 
-            var factors = _getItemsDelegate.Invoke();
+            var factors = GetAllIntraSpeciesFactors(managerType);
             Assert.HasCount(1, factors);
             var f = factors.First();
 
@@ -40,13 +43,15 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledIntraSpeciesFactorsSimpleCompoundsFilterTest() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledIntraSpeciesFactorsSimpleCompoundsFilterTest(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.IntraSpeciesModelParameters, @"IntraSpeciesFactorsTests/IntraSpeciesModelParametersSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
-            var factors = _getItemsDelegate.Invoke();
+            var factors = GetAllIntraSpeciesFactors(managerType);
 
             Assert.AreEqual(2, factors.Count(f => f.Compound == null));
             Assert.AreEqual(4, factors.Count(f => f.Compound != null));
@@ -58,14 +63,16 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledIntraSpeciesModelParametersFilterEffectsAndCompoundsSimpleTest() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledIntraSpeciesModelParametersFilterEffectsAndCompoundsSimpleTest(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.IntraSpeciesModelParameters, @"IntraSpeciesFactorsTests/IntraSpeciesModelParametersSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff1", "Eff4"]);
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff1", "Eff4"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
-            var factors = _getItemsDelegate.Invoke();
+            var factors = GetAllIntraSpeciesFactors(managerType);
 
             Assert.AreEqual(1, factors.Count(f => f.Compound == null));
             Assert.AreEqual(1, factors.Count(f => f.Compound != null));

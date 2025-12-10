@@ -1,4 +1,5 @@
-﻿using MCRA.General;
+﻿using MCRA.Data.Management.Tests.UnitTests.DataManagement;
+using MCRA.General;
 
 namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
     [TestClass]
@@ -8,20 +9,21 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         /// Check the nominal non-dietary exposures of non-dietary survey 1 with unmatched individual exposures.
         /// </summary>
         [TestMethod]
-        public void NonDietaryDataTests1() {
-            _rawDataProvider.SetDataGroupsFromFolder(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void NonDietaryDataTests1(ManagerType managerType) {
+            RawDataProvider.SetDataGroupsFromFolder(
                 1,
                 "_DataGroupsTest",
                 [SourceTableGroup.NonDietary, SourceTableGroup.Compounds, SourceTableGroup.Survey]);
 
-            var nonDietaryExposureSets = _compiledDataManager.GetAllNonDietaryExposureSets();
+            var nonDietaryExposureSets = CompiledDataManager.GetAllNonDietaryExposureSets();
 
             var nonDietarySurvey1 = nonDietaryExposureSets.Select(c => c.NonDietarySurvey).Distinct().Single(nds => nds.Code == "NonDietarySurvey1");
             var exposuresIndividualsSurvey1 = nonDietaryExposureSets.Where(c => c.NonDietarySurvey == nonDietarySurvey1).ToList();
-            //var exposuresIndividualsSurvey1 = nonDietarySurvey1.NonDietaryExposureIndividualSets;
 
-            var compoundA = _compiledDataManager.GetAllCompounds()["CompoundA"];
-            var compoundD = _compiledDataManager.GetAllCompounds()["CompoundD"];
+            var compoundA = CompiledDataManager.GetAllCompounds()["CompoundA"];
+            var compoundD = CompiledDataManager.GetAllCompounds()["CompoundD"];
 
             Assert.HasCount(3, exposuresIndividualsSurvey1);
 
@@ -57,19 +59,21 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         /// Check the nominal non-dietary exposures of non-dietary survey 2 with matched individual exposures.
         /// </summary>
         [TestMethod]
-        public void NonDietaryDataTests2() {
-            _rawDataProvider.SetDataGroupsFromFolder(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void NonDietaryDataTests2(ManagerType managerType) {
+            RawDataProvider.SetDataGroupsFromFolder(
                 1,
                 "_DataGroupsTest",
                 [SourceTableGroup.NonDietary, SourceTableGroup.Compounds, SourceTableGroup.Survey]);
 
-            var nonDietaryExposureSets = _compiledDataManager.GetAllNonDietaryExposureSets();
+            var nonDietaryExposureSets = CompiledDataManager.GetAllNonDietaryExposureSets();
 
             var nonDietarySurvey2 = nonDietaryExposureSets.Select(c => c.NonDietarySurvey).Distinct().Single(nds => nds.Code == "NonDietarySurvey2");
             var exposuresMatchedIndividualsSurvey1 = nonDietaryExposureSets.Where(c => c.NonDietarySurvey == nonDietarySurvey2).ToList();
 
-            var compoundA = _compiledDataManager.GetAllCompounds()["CompoundA"];
-            var individuals = _compiledDataManager.GetAllIndividuals();
+            var compoundA = CompiledDataManager.GetAllCompounds()["CompoundA"];
+            var individuals = CompiledDataManager.GetAllIndividuals();
 
             Assert.HasCount(7, exposuresMatchedIndividualsSurvey1);
 

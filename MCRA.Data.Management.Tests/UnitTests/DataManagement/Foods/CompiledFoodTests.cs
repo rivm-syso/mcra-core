@@ -1,4 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Management.Tests.UnitTests.DataManagement;
 using MCRA.General;
 
 namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
@@ -8,17 +9,17 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
     /// These tests are run multiple times (the subclasses) because of the redundancy in food retrieval
     /// in the CompiledDataManager and SubsetManager: this needs refactoring...
     /// </summary>
+    [TestClass]
     public class CompiledFoodTests : CompiledTestsBase {
-
-        protected Func<IDictionary<string, Food>> _getFoodsDelegate;
-
         [TestMethod]
-        public virtual void CompiledFoods_TestGetAllFoods() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public virtual void CompiledFoods_TestGetAllFoods(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.Foods, @"FoodsTests/FoodsSimple")
             );
 
-            var foods = _getFoodsDelegate.Invoke();
+            var foods = GetAllFoods(managerType);
 
             Assert.HasCount(3, foods);
 
@@ -28,13 +29,15 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public virtual void CompiledFoods_TestGetAllFoodsFiltered() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public virtual void CompiledFoods_TestGetAllFoodsFiltered(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.Foods, @"FoodsTests/FoodsSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["A", "C"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Foods, ["A", "C"]);
 
-            var foods = _getFoodsDelegate.Invoke();
+            var foods = GetAllFoods(managerType);
             Assert.HasCount(2, foods);
 
             Assert.IsTrue(foods.TryGetValue("A", out var f) && f.Name.Equals("Apple"));
@@ -42,13 +45,15 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public virtual void CompiledFoods_TestGetAllFoodHierarchiesMatched() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public virtual void CompiledFoods_TestGetAllFoodHierarchiesMatched(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.Foods, @"FoodTranslationTests/FoodTranslationFoods"),
                 (ScopingType.FoodHierarchies, @"FoodsTests/FoodHierarchies")
             );
 
-            var foods = _getFoodsDelegate.Invoke();
+            var foods = GetAllFoods(managerType);
 
             Assert.HasCount(4, foods);
 
@@ -68,13 +73,15 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public virtual void CompiledFoods_TestGetAllFoodHierarchiesMatchedFilter() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public virtual void CompiledFoods_TestGetAllFoodHierarchiesMatchedFilter(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.Foods, @"FoodTranslationTests/FoodTranslationFoods"),
                 (ScopingType.FoodHierarchies, @"FoodsTests/FoodHierarchies")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["AP", "F"]);
-            var foods = _getFoodsDelegate.Invoke();
+            RawDataProvider.SetFilterCodes(ScopingType.Foods, ["AP", "F"]);
+            var foods = GetAllFoods(managerType);
 
             Assert.HasCount(2, foods);
 
@@ -88,23 +95,27 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public virtual void CompiledFoods_TestGetAllFoodHierarchiesUnmatched() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public virtual void CompiledFoods_TestGetAllFoodHierarchiesUnmatched(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.FoodHierarchies, @"FoodsTests/FoodHierarchies")
             );
 
-            var foods = _getFoodsDelegate.Invoke();
+            var foods = GetAllFoods(managerType);
             Assert.HasCount(4, foods);
         }
 
         [TestMethod]
-        public virtual void CompiledFoods_TestGetAllFoodConsumptionQuantificationsMatched() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public virtual void CompiledFoods_TestGetAllFoodConsumptionQuantificationsMatched(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.Foods, @"FoodTranslationTests/FoodTranslationFoods"),
                 (ScopingType.FoodConsumptionQuantifications, @"FoodsTests/FoodConsumptionQuantifications")
             );
 
-            var foods = _getFoodsDelegate.Invoke();
+            var foods = GetAllFoods(managerType);
 
             Assert.HasCount(4, foods);
             Assert.IsTrue(foods.TryGetValue("A", out Food apple) && apple.Name.Equals("Apple"));
@@ -138,11 +149,13 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public virtual void CompiledFoods_TestGetAllFoodConsumptionQuantificationsUnmatched() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public virtual void CompiledFoods_TestGetAllFoodConsumptionQuantificationsUnmatched(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.FoodConsumptionQuantifications, @"FoodsTests/FoodConsumptionQuantifications")
             );
-            var foods = _getFoodsDelegate.Invoke();
+            var foods = GetAllFoods(managerType);
 
             Assert.HasCount(3, foods);
             Assert.IsTrue(foods.TryGetValue("A", out var f) && f.Name == "A");
@@ -151,12 +164,14 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public virtual void CompiledFoods_TestGetAllFoodPropertiesMatched() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public virtual void CompiledFoods_TestGetAllFoodPropertiesMatched(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.Foods, @"FoodsTests/FoodsSimple"),
                 (ScopingType.FoodProperties, @"FoodsTests/FoodsSimpleProperties")
             );
-            var foods = _getFoodsDelegate.Invoke();
+            var foods = GetAllFoods(managerType);
 
             Assert.HasCount(3, foods);
 
@@ -175,11 +190,13 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public virtual void CompiledFoods_TestGetAllFoodPropertiesUnmatched() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public virtual void CompiledFoods_TestGetAllFoodPropertiesUnmatched(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.FoodProperties, @"FoodsTests/FoodsSimpleProperties")
             );
-            var foods = _getFoodsDelegate.Invoke();
+            var foods = GetAllFoods(managerType);
 
             Assert.HasCount(3, foods);
 
@@ -189,14 +206,16 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public virtual void CompiledFoods_TestGetAllFoodsFromConsumptions() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public virtual void CompiledFoods_TestGetAllFoodsFromConsumptions(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.FoodSurveys, @"FoodsTests/FoodSurveysSimple"),
                 (ScopingType.Consumptions, @"FoodsTests/FoodConsumptionsSimple"),
                 (ScopingType.DietaryIndividuals, @"FoodsTests/IndividualsSimple")
             );
-            var consumptions = _compiledDataManager.GetAllFoodConsumptions();
-            var foods = _getFoodsDelegate.Invoke();
+            var consumptions = CompiledDataManager.GetAllFoodConsumptions();
+            var foods = GetAllFoods(managerType);
 
             Assert.HasCount(3, foods);
             Assert.IsTrue(foods.TryGetValue("A", out var f) && f.Name.Equals("A"));
@@ -205,29 +224,33 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public virtual void CompiledFoods_TestGetAllFoodsFromConsumptionsFiltered() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public virtual void CompiledFoods_TestGetAllFoodsFromConsumptionsFiltered(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.FoodSurveys, @"FoodsTests/FoodSurveysSimple"),
                 (ScopingType.Consumptions, @"FoodsTests/FoodConsumptionsSimple"),
                 (ScopingType.DietaryIndividuals, @"FoodsTests/IndividualsSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["B"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Foods, ["B"]);
 
-            _compiledDataManager.GetAllFoodConsumptions();
-            var foods = _getFoodsDelegate.Invoke();
+            CompiledDataManager.GetAllFoodConsumptions();
+            var foods = GetAllFoods(managerType);
 
             Assert.HasCount(1, foods);
             Assert.IsTrue(foods.TryGetValue("B", out var f) && f.Name.Equals("B"));
         }
 
         [TestMethod]
-        public virtual void CompiledFoods_TestGetAllFoodsFromProcessingFactors() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public virtual void CompiledFoods_TestGetAllFoodsFromProcessingFactors(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.ProcessingFactors, @"FoodsTests/ProcessingFactorsSimple")
             );
 
-            _compiledDataManager.GetAllProcessingFactors();
-            var foods = _getFoodsDelegate.Invoke();
+            CompiledDataManager.GetAllProcessingFactors();
+            var foods = GetAllFoods(managerType);
 
             Assert.HasCount(3, foods);
             Assert.IsTrue(foods.TryGetValue("A", out var f) && f.Name.Equals("A"));
@@ -236,14 +259,16 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public virtual void CompiledFoods_TestGetAllFoodsFromProcessingFactorsFiltered() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public virtual void CompiledFoods_TestGetAllFoodsFromProcessingFactorsFiltered(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.ProcessingFactors, @"FoodsTests/ProcessingFactorsSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["A", "B"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Foods, ["A", "B"]);
 
-            _compiledDataManager.GetAllProcessingFactors();
-            var foods = _getFoodsDelegate.Invoke();
+            CompiledDataManager.GetAllProcessingFactors();
+            var foods = GetAllFoods(managerType);
 
             Assert.HasCount(2, foods);
             Assert.IsTrue(foods.TryGetValue("A", out var f) && f.Name.Equals("A"));
@@ -251,17 +276,19 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public virtual void CompiledFoods_TestGetAllFoodsWithSameFoodsFromConsumptionsAndProcessingFactors() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public virtual void CompiledFoods_TestGetAllFoodsWithSameFoodsFromConsumptionsAndProcessingFactors(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.FoodSurveys, @"FoodsTests/FoodSurveysSimple"),
                 (ScopingType.DietaryIndividuals, @"FoodsTests/IndividualsSimple"),
                 (ScopingType.Consumptions, @"FoodsTests/FoodConsumptionsSimple"),
                 (ScopingType.ProcessingFactors, @"FoodsTests/ProcessingFactorsSimple")
             );
 
-            _compiledDataManager.GetAllFoodConsumptions();
-            _compiledDataManager.GetAllProcessingFactors();
-            var foods = _getFoodsDelegate.Invoke();
+            CompiledDataManager.GetAllFoodConsumptions();
+            CompiledDataManager.GetAllProcessingFactors();
+            var foods = GetAllFoods(managerType);
 
             Assert.HasCount(3, foods);
             Assert.IsTrue(foods.TryGetValue("A", out var f) && f.Name.Equals("A"));
@@ -270,14 +297,16 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public virtual void CompiledFoods_TestGetAllFoodEx2FoodsAndFacets() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public virtual void CompiledFoods_TestGetAllFoodEx2FoodsAndFacets(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.FacetDescriptors, @"FoodsTests/FoodEx2FacetDescriptors"),
                 (ScopingType.Foods, @"FoodsTests/FoodEx2Foods"),
                 (ScopingType.Facets, @"FoodsTests/FoodEx2Facets")
             );
 
-            var foods = _getFoodsDelegate.Invoke();
+            var foods = GetAllFoods(managerType);
 
             Assert.HasCount(4, foods);
 

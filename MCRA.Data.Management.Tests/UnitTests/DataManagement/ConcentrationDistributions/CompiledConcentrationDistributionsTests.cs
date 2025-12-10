@@ -1,21 +1,20 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Management.Tests.UnitTests.DataManagement;
 using MCRA.General;
 
 namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
+    [TestClass]
     public class CompiledConcentrationDistributionsTests : CompiledTestsBase {
-
-        protected Func<ICollection<ConcentrationDistribution>> _getConcentrationDistributionsDelegate;
-        protected bool _isSubSetManagerTest = false;
-
         [TestMethod]
-        public void CompiledConcentrationDistributions_SimpleTest() {
-            _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
-            _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledConcentrationDistributions_SimpleTest(ManagerType managerType) {
+            RawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
+            RawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
+            RawDataProvider.SetDataTables(
                 (ScopingType.ConcentrationDistributions, @"ConcentrationsTests/ConcentrationDistributionsSimple")
             );
 
-            var distributions = _getConcentrationDistributionsDelegate.Invoke();
+            var distributions = GetAllConcentrationDistributions(managerType);
 
             Assert.HasCount(15, distributions);
 
@@ -27,18 +26,20 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledConcentrationDistributions_SimpleFoodsFilterTest() {
-            _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
-            _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledConcentrationDistributions_SimpleFoodsFilterTest(ManagerType managerType) {
+            RawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
+            RawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
 
-            _rawDataProvider.SetDataTables(
+            RawDataProvider.SetDataTables(
                 (ScopingType.ConcentrationDistributions, @"ConcentrationsTests/ConcentrationDistributionsSimple")
             );
 
             //set a filter scope on foods
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f1", "t3"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Foods, ["f1", "t3"]);
 
-            var distributions = _getConcentrationDistributionsDelegate.Invoke();
+            var distributions = GetAllConcentrationDistributions(managerType);
 
             Assert.HasCount(4, distributions);
 
@@ -50,17 +51,19 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledConcentrationDistributions_SimpleCompoundsFilterTest() {
-            _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
-            _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledConcentrationDistributions_SimpleCompoundsFilterTest(ManagerType managerType) {
+            RawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
+            RawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
 
-            _rawDataProvider.SetDataTables(
+            RawDataProvider.SetDataTables(
                 (ScopingType.ConcentrationDistributions, @"ConcentrationsTests/ConcentrationDistributionsSimple")
             );
 
             //set a filter scope on compounds
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
-            var distributions = _getConcentrationDistributionsDelegate.Invoke();
+            RawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
+            var distributions = GetAllConcentrationDistributions(managerType);
 
             Assert.HasCount(6, distributions);
 
@@ -72,17 +75,19 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledConcentrationDistributions_FilterFoodsAndCompoundsSimpleTest() {
-            _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
-            _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledConcentrationDistributions_FilterFoodsAndCompoundsSimpleTest(ManagerType managerType) {
+            RawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
+            RawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
 
-            _rawDataProvider.SetDataTables(
+            RawDataProvider.SetDataTables(
                 (ScopingType.ConcentrationDistributions, @"ConcentrationsTests/ConcentrationDistributionsSimple")
             );
 
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f1", "t3"]);
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
-            var distributions = _getConcentrationDistributionsDelegate.Invoke();
+            RawDataProvider.SetFilterCodes(ScopingType.Foods, ["f1", "t3"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
+            var distributions = GetAllConcentrationDistributions(managerType);
 
             Assert.HasCount(1, distributions);
 

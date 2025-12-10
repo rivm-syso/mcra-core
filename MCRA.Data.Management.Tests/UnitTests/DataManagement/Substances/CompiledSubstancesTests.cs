@@ -1,17 +1,20 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Management.Tests.UnitTests.DataManagement;
 using MCRA.General;
 
 namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
+    [TestClass]
     public class CompiledSubstancesTests : CompiledTestsBase {
-        protected Func<IDictionary<string, Compound>> _getSubstancesDelegate;
 
         [TestMethod]
-        public void CompiledSubstances_TestGetAllSubstances() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        [DataRow(ManagerType.SubsetManager, true)]
+        public void CompiledSubstances_TestGetAllSubstances(ManagerType managerType, bool useDictionary = false) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.Compounds, @"SubstancesTests/SubstancesSimple")
             );
 
-            var substances = _getSubstancesDelegate.Invoke();
+            var substances = GetAllCompounds(managerType, useDictionary);
 
             Assert.HasCount(5, substances);
             Assert.IsTrue(substances.TryGetValue("A", out var c) && c.Name.Equals("SubstanceA"));
@@ -22,13 +25,16 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledSubstances_TestGetAllSubstancesFiltered() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        [DataRow(ManagerType.SubsetManager, true)]
+        public void CompiledSubstances_TestGetAllSubstancesFiltered(ManagerType managerType, bool useDictionary = false) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.Compounds, @"SubstancesTests/SubstancesSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "D"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "D"]);
 
-            var substances = _getSubstancesDelegate.Invoke();
+            var substances = GetAllCompounds(managerType, useDictionary);
 
             Assert.HasCount(2, substances);
             Assert.IsTrue(substances.TryGetValue("B", out var c) && c.Name.Equals("SubstanceB"));

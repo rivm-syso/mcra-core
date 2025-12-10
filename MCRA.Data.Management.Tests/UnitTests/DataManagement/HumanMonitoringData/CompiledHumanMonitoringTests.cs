@@ -1,30 +1,19 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Management.Tests.UnitTests.DataManagement;
 using MCRA.General;
 
 namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
+    [TestClass]
     public class CompiledHumanMonitoringTests : CompiledTestsBase {
-        protected Func<IDictionary<string, HumanMonitoringSurvey>> _getSurveysDelegate;
-        protected Func<IDictionary<string, Individual>> _getIndividualsDelegate;
-        protected Func<IDictionary<string, HumanMonitoringSample>> _getSamplesDelegate;
-        protected Func<IDictionary<string, AnalyticalMethod>> _getAnalyticalMethodsDelegate;
-
-        [TestInitialize]
-        public override void TestInitialize() {
-            base.TestInitialize();
-            //explicitly set data sources
-            _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
-            _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Concentrations);
-        }
-
         [TestMethod]
-        public void CompiledHumanMonitoringData_TestIndividualsOnly() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledHumanMonitoringData_TestIndividualsOnly(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.HumanMonitoringIndividuals, @"ConsumptionsTests/Individuals")
             );
 
-
-            var individuals = _getIndividualsDelegate.Invoke();
-            var surveys = _getSurveysDelegate.Invoke();
+            var individuals = GetAllHumanMonitoringIndividuals(managerType);
+            var surveys = GetAllHumanMonitoringSurveys(managerType);
 
             Assert.HasCount(3, surveys);
             Assert.HasCount(5, individuals);
@@ -34,14 +23,16 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledHumanMonitoringData_TestIndividualsOnlyWithSurveyScope() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledHumanMonitoringData_TestIndividualsOnlyWithSurveyScope(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.HumanMonitoringIndividuals, @"ConsumptionsTests/Individuals")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.HumanMonitoringSurveys, ["s2"]);
+            RawDataProvider.SetFilterCodes(ScopingType.HumanMonitoringSurveys, ["s2"]);
 
-            var individuals = _getIndividualsDelegate.Invoke();
-            var surveys = _getSurveysDelegate.Invoke();
+            var individuals = GetAllHumanMonitoringIndividuals(managerType);
+            var surveys = GetAllHumanMonitoringSurveys(managerType);
 
             Assert.HasCount(1, surveys);
             Assert.HasCount(2, individuals);
@@ -51,29 +42,33 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledHumanMonitoringData_TestDataIndividualsOnlyWithSurveyData() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledHumanMonitoringData_TestDataIndividualsOnlyWithSurveyData(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.HumanMonitoringIndividuals, @"ConsumptionsTests/Individuals"),
                 (ScopingType.HumanMonitoringSurveys, @"HumanMonitoringDataTests/HumanMonitoringSurveys")
             );
 
-            var individuals = _getIndividualsDelegate.Invoke();
-            var surveys = _getSurveysDelegate.Invoke();
+            var individuals = GetAllHumanMonitoringIndividuals(managerType);
+            var surveys = GetAllHumanMonitoringSurveys(managerType);
 
             CollectionAssert.AreEquivalent(new[] { "S1", "S2", "s3" }, surveys.Keys.ToList());
             CollectionAssert.AreEquivalent(new[] { "1", "2", "3", "4", "5" }, individuals.Keys.ToList());
         }
 
         [TestMethod]
-        public void CompiledHumanMonitoringData_TestSamplesIndividuals() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledHumanMonitoringData_TestSamplesIndividuals(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.HumanMonitoringIndividuals, @"ConsumptionsTests/Individuals"),
                 (ScopingType.HumanMonitoringSamples, @"HumanMonitoringDataTests/HumanMonitoringSamplesSimple")
             );
 
-            var individuals = _getIndividualsDelegate.Invoke();
-            var samples = _getSamplesDelegate.Invoke();
-            var surveys = _getSurveysDelegate.Invoke();
+            var individuals = GetAllHumanMonitoringIndividuals(managerType);
+            var samples = GetAllHumanMonitoringSamples(managerType);
+            var surveys = GetAllHumanMonitoringSurveys(managerType);
 
             CollectionAssert.AreEquivalent(new[] { "s1", "s2", "s3" }, surveys.Keys.ToList());
             CollectionAssert.AreEquivalent(new[] { "1", "2", "3", "4", "5" }, individuals.Keys.ToList());
@@ -91,16 +86,18 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledHumanMonitoringData_TestSamplesIndividualsSurveyFilter() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledHumanMonitoringData_TestSamplesIndividualsSurveyFilter(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.HumanMonitoringIndividuals, @"ConsumptionsTests/Individuals"),
                 (ScopingType.HumanMonitoringSamples, @"HumanMonitoringDataTests/HumanMonitoringSamplesSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.HumanMonitoringSurveys, ["s2"]);
+            RawDataProvider.SetFilterCodes(ScopingType.HumanMonitoringSurveys, ["s2"]);
 
-            var surveys = _getSurveysDelegate.Invoke();
-            var individuals = _getIndividualsDelegate.Invoke();
-            var samples = _getSamplesDelegate.Invoke();
+            var surveys = GetAllHumanMonitoringSurveys(managerType);
+            var individuals = GetAllHumanMonitoringIndividuals(managerType);
+            var samples = GetAllHumanMonitoringSamples(managerType);
 
             CollectionAssert.AreEquivalent(new[] { "s2" }, surveys.Keys.ToList());
             CollectionAssert.AreEquivalent(new[] { "3", "4" }, individuals.Keys.ToList());
@@ -114,8 +111,10 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledHumanMonitoringData_TestSampleAnalysesIndividuals() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledHumanMonitoringData_TestSampleAnalysesIndividuals(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.HumanMonitoringIndividuals, @"ConsumptionsTests/Individuals"),
                 (ScopingType.HumanMonitoringAnalyticalMethods, @"HumanMonitoringDataTests/AnalyticalMethodsSimple"),
                 (ScopingType.HumanMonitoringAnalyticalMethodCompounds, @"HumanMonitoringDataTests/AnalyticalMethodCompoundsSimple"),
@@ -123,10 +122,10 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.HumanMonitoringSampleAnalyses, @"HumanMonitoringDataTests/HumanMonitoringSampleAnalysesSimple")
             );
 
-            var individuals = _getIndividualsDelegate.Invoke();
-            var surveys = _getSurveysDelegate.Invoke();
-            var samples = _getSamplesDelegate.Invoke();
-            var analyticalMethods = _getAnalyticalMethodsDelegate.Invoke();
+            var individuals = GetAllHumanMonitoringIndividuals(managerType);
+            var surveys = GetAllHumanMonitoringSurveys(managerType);
+            var samples = GetAllHumanMonitoringSamples(managerType);
+            var analyticalMethods = GetAllHumanMonitoringAnalyticalMethods(managerType);
 
             CollectionAssert.AreEquivalent(new[] { "s1", "s2", "s3" }, surveys.Keys.ToList());
             CollectionAssert.AreEquivalent(new[] { "1", "2", "3", "4", "5" }, individuals.Keys.ToList());
@@ -151,20 +150,22 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledHumanMonitoringData_TestSampleAnalysesIndividualsSurveyFilter() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledHumanMonitoringData_TestSampleAnalysesIndividualsSurveyFilter(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.HumanMonitoringIndividuals, @"ConsumptionsTests/Individuals"),
                 (ScopingType.HumanMonitoringAnalyticalMethods, @"HumanMonitoringDataTests/AnalyticalMethodsSimple"),
                 (ScopingType.HumanMonitoringAnalyticalMethodCompounds, @"HumanMonitoringDataTests/AnalyticalMethodCompoundsSimple"),
                 (ScopingType.HumanMonitoringSamples, @"HumanMonitoringDataTests/HumanMonitoringSamplesSimple"),
                 (ScopingType.HumanMonitoringSampleAnalyses, @"HumanMonitoringDataTests/HumanMonitoringSampleAnalysesSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.HumanMonitoringSurveys, ["s2"]);
+            RawDataProvider.SetFilterCodes(ScopingType.HumanMonitoringSurveys, ["s2"]);
 
-            var individuals = _getIndividualsDelegate.Invoke();
-            var surveys = _getSurveysDelegate.Invoke();
-            var samples = _getSamplesDelegate.Invoke();
-            var analyticalMethods = _getAnalyticalMethodsDelegate.Invoke();
+            var individuals = GetAllHumanMonitoringIndividuals(managerType);
+            var surveys = GetAllHumanMonitoringSurveys(managerType);
+            var samples = GetAllHumanMonitoringSamples(managerType);
+            var analyticalMethods = GetAllHumanMonitoringAnalyticalMethods(managerType);
 
             CollectionAssert.AreEquivalent(new[] { "s2" }, surveys.Keys.ToList());
             CollectionAssert.AreEquivalent(new[] { "3", "4" }, individuals.Keys.ToList());
@@ -182,10 +183,11 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             Assert.AreEqual("AS4", samples["HS4"].SampleAnalyses.Select(s => s.Code).Single());
         }
 
-
         [TestMethod]
-        public void CompiledHumanMonitoringData_TestSampleAnalysesConcentrationsIndividuals() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledHumanMonitoringData_TestSampleAnalysesConcentrationsIndividuals(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.HumanMonitoringIndividuals, @"ConsumptionsTests/Individuals"),
                 (ScopingType.HumanMonitoringAnalyticalMethods, @"HumanMonitoringDataTests/AnalyticalMethodsSimple"),
                 (ScopingType.HumanMonitoringAnalyticalMethodCompounds, @"HumanMonitoringDataTests/AnalyticalMethodCompoundsSimple"),
@@ -194,10 +196,10 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.HumanMonitoringSampleConcentrations, @"HumanMonitoringDataTests/HumanMonitoringSampleConcentrations")
             );
 
-            var individuals = _getIndividualsDelegate.Invoke();
-            var surveys = _getSurveysDelegate.Invoke();
-            var samples = _getSamplesDelegate.Invoke();
-            var analyticalMethods = _getAnalyticalMethodsDelegate.Invoke();
+            var individuals = GetAllHumanMonitoringIndividuals(managerType);
+            var surveys = GetAllHumanMonitoringSurveys(managerType);
+            var samples = GetAllHumanMonitoringSamples(managerType);
+            var analyticalMethods = GetAllHumanMonitoringAnalyticalMethods(managerType);
 
             CollectionAssert.AreEquivalent(new[] { "s1", "s2", "s3" }, surveys.Keys.ToList());
             CollectionAssert.AreEquivalent(new[] { "1", "2", "3", "4", "5" }, individuals.Keys.ToList());
@@ -230,10 +232,11 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             CollectionAssert.AreEquivalent(new[] { "Q", "S", "T" }, s4.Concentrations.Keys.Select(c => c.Code).ToList());
         }
 
-
         [TestMethod]
-        public void CompiledHumanMonitoringData_TestSampleAnalysesConcentrationsIndividualsFilterSurveyCompounds() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledHumanMonitoringData_TestSampleAnalysesConcentrationsIndividualsFilterSurveyCompounds(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.HumanMonitoringIndividuals, @"ConsumptionsTests/Individuals"),
                 (ScopingType.HumanMonitoringAnalyticalMethods, @"HumanMonitoringDataTests/AnalyticalMethodsSimple"),
                 (ScopingType.HumanMonitoringAnalyticalMethodCompounds, @"HumanMonitoringDataTests/AnalyticalMethodCompoundsSimple"),
@@ -241,13 +244,13 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.HumanMonitoringSampleAnalyses, @"HumanMonitoringDataTests/HumanMonitoringSampleAnalysesSimple"),
                 (ScopingType.HumanMonitoringSampleConcentrations, @"HumanMonitoringDataTests/HumanMonitoringSampleConcentrations")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["P", "S"]);
-            _rawDataProvider.SetFilterCodes(ScopingType.HumanMonitoringSurveys, ["s2"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Compounds, ["P", "S"]);
+            RawDataProvider.SetFilterCodes(ScopingType.HumanMonitoringSurveys, ["s2"]);
 
-            var individuals = _getIndividualsDelegate.Invoke();
-            var surveys = _getSurveysDelegate.Invoke();
-            var samples = _getSamplesDelegate.Invoke();
-            var analyticalMethods = _getAnalyticalMethodsDelegate.Invoke();
+            var individuals = GetAllHumanMonitoringIndividuals(managerType);
+            var surveys = GetAllHumanMonitoringSurveys(managerType);
+            var samples = GetAllHumanMonitoringSamples(managerType);
+            var analyticalMethods = GetAllHumanMonitoringAnalyticalMethods(managerType);
 
             CollectionAssert.AreEquivalent(new[] { "s2" }, surveys.Keys.ToList());
             CollectionAssert.AreEquivalent(new[] { "3", "4" }, individuals.Keys.ToList());

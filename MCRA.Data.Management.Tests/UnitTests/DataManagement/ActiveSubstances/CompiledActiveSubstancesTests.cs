@@ -1,16 +1,18 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Management.Tests.UnitTests.DataManagement;
 using MCRA.General;
 
 namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
+    [TestClass]
     public class CompiledActiveSubstancesTests : CompiledTestsBase {
-        protected Func<IDictionary<string, ActiveSubstanceModel>> _getItemsDelegate;
-
-        public void CompiledActiveSubstances_TestModelsOnly() {
-            _rawDataProvider.SetDataTables(
+        [TestMethod]
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledActiveSubstances_TestModelsOnly(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.ActiveSubstancesModels, @"AssessmentGroupMembershipsTests/AssessmentGroupMembershipModels")
             );
 
-            var models = _getItemsDelegate.Invoke();
+            var models = GetAllActiveSubstanceModels(managerType);
 
             CollectionAssert.AreEqual(new[] { "Agm1", "Agm2" }, models.Keys.ToList());
 
@@ -19,15 +21,17 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledActiveSubstances_TestSimpleEffectsFilter() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledActiveSubstances_TestSimpleEffectsFilter(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.ActiveSubstancesModels, @"AssessmentGroupMembershipsTests/AssessmentGroupMembershipModels")
             );
 
             //set a filter scope on effects
-            _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["eff2"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Effects, ["eff2"]);
 
-            var models = _getItemsDelegate.Invoke();
+            var models = GetAllActiveSubstanceModels(managerType);
 
             CollectionAssert.AreEqual(new[] { "Agm2" }, models.Keys.ToList());
 
@@ -36,13 +40,15 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledActiveSubstances_TestSimple() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledActiveSubstances_TestSimple(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.ActiveSubstancesModels, @"AssessmentGroupMembershipsTests/AssessmentGroupMembershipModels"),
                 (ScopingType.ActiveSubstances, @"AssessmentGroupMembershipsTests/AssessmentGroupMemberships")
             );
 
-            var models = _getItemsDelegate.Invoke();
+            var models = GetAllActiveSubstanceModels(managerType);
 
             CollectionAssert.AreEqual(new[] { "Agm1", "Agm2" }, models.Keys.ToList());
 
@@ -54,16 +60,18 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledActiveSubstances_TestEffectsFilter() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledActiveSubstances_TestEffectsFilter(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.ActiveSubstancesModels, @"AssessmentGroupMembershipsTests/AssessmentGroupMembershipModels"),
                 (ScopingType.ActiveSubstances, @"AssessmentGroupMembershipsTests/AssessmentGroupMemberships")
             );
 
             //set a filter scope on effects
-            _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["eff2"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Effects, ["eff2"]);
 
-            var models = _getItemsDelegate.Invoke();
+            var models = GetAllActiveSubstanceModels(managerType);
 
             CollectionAssert.AreEqual(new[] { "Agm2" }, models.Keys.ToList());
 
@@ -72,17 +80,19 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledActiveSubstances_TestEffectsCompoundsFilter() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledActiveSubstances_TestEffectsCompoundsFilter(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.ActiveSubstancesModels, @"AssessmentGroupMembershipsTests/AssessmentGroupMembershipModels"),
                 (ScopingType.ActiveSubstances, @"AssessmentGroupMembershipsTests/AssessmentGroupMemberships")
             );
 
             //set a filter scope on effects
-            _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["eff2"]);
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Effects, ["eff2"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
-            var models = _getItemsDelegate.Invoke();
+            var models = GetAllActiveSubstanceModels(managerType);
 
             CollectionAssert.AreEqual(new[] { "Agm2" }, models.Keys.ToList());
 
@@ -91,16 +101,18 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         }
 
         [TestMethod]
-        public void CompiledActiveSubstances_TestCompoundsFilter() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledActiveSubstances_TestCompoundsFilter(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.ActiveSubstancesModels, @"AssessmentGroupMembershipsTests/AssessmentGroupMembershipModels"),
                 (ScopingType.ActiveSubstances, @"AssessmentGroupMembershipsTests/AssessmentGroupMemberships")
             );
 
             //set a filter scope on compounds
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
+            RawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
-            var models = _getItemsDelegate.Invoke();
+            var models = GetAllActiveSubstanceModels(managerType);
 
             CollectionAssert.AreEqual(new[] { "Agm1", "Agm2" }, models.Keys.ToList());
 

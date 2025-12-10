@@ -4,20 +4,20 @@ using MCRA.General;
 namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
     [TestClass]
-    public class SubsetMangerEffectsTests : SubsetManagerTestsBase {
+    public class SubsetMangerEffectsTests : CompiledTestsBase {
         [TestMethod]
         public void SubsetManager_TestGetSelectedEffect() {
-            _rawDataProvider.SetDataTables((ScopingType.Effects, @"EffectsTests/EffectsSimple"));
+            RawDataProvider.SetDataTables((ScopingType.Effects, @"EffectsTests/EffectsSimple"));
 
-            var selectedEffect = _subsetManager.SelectedEffect;
+            var selectedEffect = SubsetManager.SelectedEffect;
             Assert.IsNull(selectedEffect);
-            var config = _project.EffectsSettings;
+            var config = Project.EffectsSettings;
             config.IncludeAopNetwork = true;
             config.CodeFocalEffect = "EFF2";
 
-            selectedEffect = _subsetManager.SelectedEffect;
+            selectedEffect = SubsetManager.SelectedEffect;
             Assert.AreEqual("Eff2", selectedEffect.Code);
-            Assert.AreEqual(_subsetManager.AllEffects["EFF2"], selectedEffect);
+            Assert.AreEqual(SubsetManager.AllEffects["EFF2"], selectedEffect);
         }
 
         /// <summary>
@@ -27,9 +27,9 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         /// </summary>
         [TestMethod]
         public void SubsetManager_TestGetAllEffects() {
-            _rawDataProvider.SetDataGroupsFromFolder(1, "_DataGroupsTest", SourceTableGroup.Effects);
+            RawDataProvider.SetDataGroupsFromFolder(1, "_DataGroupsTest", SourceTableGroup.Effects);
 
-            var effects = _compiledDataManager.GetAllEffects();
+            var effects = CompiledDataManager.GetAllEffects();
             var effectCodes = effects.Keys.ToList();
             CollectionAssert.AreEquivalent(new List<string>() { "EffectGroup1", "EffectGroup2" }, effectCodes);
         }
@@ -40,20 +40,20 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         /// </summary>
         [TestMethod]
         public void SubsetManager_TestGetAllRelativePotencyFactors() {
-            _rawDataProvider.SetDataGroupsFromFolder(
+            RawDataProvider.SetDataGroupsFromFolder(
                 1,
                 "_DataGroupsTest",
                 [SourceTableGroup.Compounds, SourceTableGroup.Effects, SourceTableGroup.RelativePotencyFactors]);
 
-            var effects = _compiledDataManager.GetAllEffects();
+            var effects = CompiledDataManager.GetAllEffects();
             var effectGroup1 = effects["EffectGroup1"];
             var effectGroup2 = effects["EffectGroup2"];
 
-            var relativePotencyFactors = _compiledDataManager.GetAllRelativePotencyFactors();
+            var relativePotencyFactors = CompiledDataManager.GetAllRelativePotencyFactors();
             var compoundCodesEffectGroup1 = relativePotencyFactors[effectGroup1.Code].Select(r => r.Compound).ToList();
             var compoundCodesEffectGroup2 = relativePotencyFactors[effectGroup2.Code].Select(r => r.Compound).ToList();
 
-            var compounds = _compiledDataManager.GetAllCompounds();
+            var compounds = CompiledDataManager.GetAllCompounds();
             var compoundA = compounds["CompoundA"];
             var compoundB = compounds["CompoundB"];
             var compoundC = compounds["CompoundC"];

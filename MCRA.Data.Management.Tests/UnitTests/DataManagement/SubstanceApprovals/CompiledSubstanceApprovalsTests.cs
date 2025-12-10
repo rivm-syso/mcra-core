@@ -1,17 +1,18 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Management.Tests.UnitTests.DataManagement;
 using MCRA.General;
 
 namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
+    [TestClass]
     public class CompiledSubstanceApprovalsTests : CompiledTestsBase {
-        protected Func<ICollection<SubstanceApproval>> _getItemsDelegate;
-
         [TestMethod]
-        public void CompiledSubstanceApprovals_TestSimple() {
-            _rawDataProvider.SetDataTables(
+        [DataRow(ManagerType.CompiledDataManager)]
+        [DataRow(ManagerType.SubsetManager)]
+        public void CompiledSubstanceApprovals_TestSimple(ManagerType managerType) {
+            RawDataProvider.SetDataTables(
                 (ScopingType.SubstanceApprovals, @"SubstanceApprovalsTests/SubstanceApprovalsSimple")
             );
 
-            var records = _getItemsDelegate.Invoke();
+            var records = GetAllSubstanceApprovals(managerType);
 
             var compoundCodes = records.Select(f => f.Substance.Code).Distinct().ToList();
             var approvals = records.Select(f => f.IsApproved).ToList();

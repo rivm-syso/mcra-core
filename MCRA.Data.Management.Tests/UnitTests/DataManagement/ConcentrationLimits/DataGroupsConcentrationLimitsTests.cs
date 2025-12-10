@@ -9,22 +9,22 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement.MaximumResidueLimit
         /// </summary>
         [TestMethod]
         public void ConcentrationLimitsDataTest1() {
-            _rawDataProvider.SetDataGroupsFromFolder(
+            RawDataProvider.SetDataGroupsFromFolder(
                 1,
                 "_DataGroupsTest",
                 [SourceTableGroup.MaximumResidueLimits, SourceTableGroup.Foods, SourceTableGroup.Compounds]);
-            var foods = _compiledDataManager.GetAllFoods();
+            var foods = CompiledDataManager.GetAllFoods();
 
             var foodApple = foods["APPLE"];
             var foodBananas = foods["BANANAS"];
 
-            var compounds = _compiledDataManager.GetAllCompounds();
+            var compounds = CompiledDataManager.GetAllCompounds();
             var compoundA = compounds["CompoundA"];
             var compoundB = compounds["CompoundB"];
             var compoundC = compounds["CompoundC"];
             var compoundD = compounds["CompoundD"];
 
-            var concentrationLimits = _compiledDataManager.GetAllMaximumConcentrationLimits();
+            var concentrationLimits = CompiledDataManager.GetAllMaximumConcentrationLimits();
             var concentrationLimitsApple = concentrationLimits.Where(m => m.Food == foodApple).ToList();
 
             Assert.HasCount(3, concentrationLimitsApple);
