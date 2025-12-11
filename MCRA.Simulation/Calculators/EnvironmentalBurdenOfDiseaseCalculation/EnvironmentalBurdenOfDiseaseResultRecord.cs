@@ -4,7 +4,10 @@ using MCRA.Simulation.Calculators.ExposureResponseFunctions;
 
 namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
     public sealed class EnvironmentalBurdenOfDiseaseResultRecord {
-        public BurdenOfDisease BurdenOfDisease { get; set; }
+        public List<string> SourceIndicatorList { get; set; }
+        public BodIndicator BodIndicator { get; set; }
+        public Effect Effect { get; set; }
+        public Population Population { get; set; }
         public IExposureResponseModel ExposureResponseModel { get; set; }
         public ExposureUnitTriple ErfDoseUnit { get; set; }
         public Compound Substance { get; set; }

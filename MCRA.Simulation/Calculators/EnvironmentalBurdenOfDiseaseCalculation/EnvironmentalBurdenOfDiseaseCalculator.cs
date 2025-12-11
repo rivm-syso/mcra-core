@@ -2,7 +2,7 @@
 using MCRA.General;
 using MCRA.Simulation.Calculators.BodIndicatorModels;
 using MCRA.Simulation.Calculators.DustExposureCalculation;
-using MCRA.Simulation.Calculators.SimulatedPopulations;
+using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
 
@@ -24,14 +24,13 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
         /// Exposure-Response Results across all Burdens of Disease.
         /// </summary>
         public List<EnvironmentalBurdenOfDiseaseResultRecord> Compute(
-            ICollection<IBodIndicatorValueModel> bodIndicatorValueModels,
-            Population population,
+            ICollection<IBodIndicatorModel> bodIndicatorModels,
             List<ExposureResponseResult> exposureResponseResults
         ) {
             // Compute EBDs for current ERF results
             var environmentalBurdenOfDiseases = new List<EnvironmentalBurdenOfDiseaseResultRecord>();
             foreach (var exposureResponseResult in exposureResponseResults) {
-                var erfEbdResults = Compute(exposureResponseResult, bodIndicatorValueModels, population);
+                var erfEbdResults = Compute(exposureResponseResult, bodIndicatorModels);
                 environmentalBurdenOfDiseases.AddRange(erfEbdResults);
             }
             return environmentalBurdenOfDiseases;
@@ -44,22 +43,19 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
         /// </summary>
         public List<EnvironmentalBurdenOfDiseaseResultRecord> Compute(
             ExposureResponseResult exposureResponseResult,
-            ICollection<IBodIndicatorValueModel> bodIndicatorValueModels,
-            Population population
+            ICollection<IBodIndicatorModel> bodIndicatorModels
         ) {
             var result = new List<EnvironmentalBurdenOfDiseaseResultRecord>();
 
             // Compute EBDs for burdens of disease for effect of ERF
             var erf = exposureResponseResult.ExposureResponseFunctionModel;
-
-            var effectBurdensOfDisease = bodIndicatorValueModels
-                .Where(r => r.BurdenOfDisease.Effect == erf.Effect)
+            var effectBurdensOfDisease = bodIndicatorModels
+                .Where(r => r.Effect == erf.Effect)
                 .ToList();
-            foreach (var bodIndicatorValueModel in effectBurdensOfDisease) {
+            foreach (var bodIndicatorModel in effectBurdensOfDisease) {
                 var resultRecord = Compute(
                     exposureResponseResult,
-                    bodIndicatorValueModel,
-                    population
+                    bodIndicatorModel
                 );
                 result.Add(resultRecord);
             }
@@ -73,8 +69,7 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
         /// </summary>
         public EnvironmentalBurdenOfDiseaseResultRecord Compute(
             ExposureResponseResult exposureResponseResult,
-            IBodIndicatorValueModel bodIndicatorValueModel,
-            Population population
+            IBodIndicatorModel bodIndicatorModel
         ) {
             var standardisedPopulationSize = _ebdStandardisationMethod switch {
                 EnvironmentalBodStandardisationMethod.PER100K => 1E5,
@@ -82,18 +77,16 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
                 EnvironmentalBodStandardisationMethod.PER1M => 1E6,
                 _ => 1E5,
             };
-            var conversionFactor = getBodIndicatorConversionFactor(bodIndicatorValueModel);
             var environmentalBurdenOfDiseaseResultBinRecords = exposureResponseResult.ExposureResponseResultRecords
                 .Select(r => computeBinResults(
                     r,
                     exposureResponseResult.EffectMetric,
-                    population,
-                    bodIndicatorValueModel,
-                    conversionFactor,
+                    bodIndicatorModel,
                     _bodApproach,
                     standardisedPopulationSize
                 ))
                 .ToList();
+            var population = bodIndicatorModel.Population;
             var sum = environmentalBurdenOfDiseaseResultBinRecords.Sum(c => c.AttributableBod);
             var cumulative = 0d;
             var sumExposed = environmentalBurdenOfDiseaseResultBinRecords
@@ -107,7 +100,12 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
                 record.CumulativeStandardisedExposedAttributableBod = cumulativeExposed / sumExposed * 100;
             }
             var result = new EnvironmentalBurdenOfDiseaseResultRecord {
-                BurdenOfDisease = bodIndicatorValueModel.BurdenOfDisease,
+                Population = bodIndicatorModel.Population,
+                Effect = bodIndicatorModel.Effect,
+                BodIndicator = bodIndicatorModel.BodIndicator,
+                SourceIndicatorList = (bodIndicatorModel is DerivedBodIndicatorModel)
+                    ? [.. (bodIndicatorModel as DerivedBodIndicatorModel).Conversions.Select(r => r.FromIndicator.GetShortDisplayName())]
+                    : [],
                 ExposureResponseModel = exposureResponseResult.ExposureResponseFunctionModel,
                 ErfDoseUnit = exposureResponseResult.ExposureResponseFunctionModel.TargetUnit.ExposureUnit,
                 Substance = exposureResponseResult.ExposureResponseFunctionModel.Substance,
@@ -118,33 +116,14 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
             return result;
         }
 
-        /// <summary>
-        /// Get the burden of disease indicator conversion factor
-        /// </summary>
-        /// <param name="bodIndicatorValueModel"></param>
-        /// <returns></returns>
-        private static double getBodIndicatorConversionFactor(IBodIndicatorValueModel bodIndicatorValueModel) {
-            var conversionFactor = 1d;
-            if (bodIndicatorValueModel.BurdenOfDisease is DerivedBurdenOfDisease) {
-                var conversions = (bodIndicatorValueModel.BurdenOfDisease as DerivedBurdenOfDisease).Conversions;
-                foreach (var conversion in conversions) {
-                    conversionFactor *= conversion.Value;
-                }
-            }
-            return conversionFactor;
-        }
-
         private EnvironmentalBurdenOfDiseaseResultBinRecord computeBinResults(
             ExposureResponseResultRecord exposureResponseResultRecord,
             EffectMetric effectMetric,
-            Population population,
-            IBodIndicatorValueModel bodIndicatorValueModel,
-            double conversionFactor,
+            IBodIndicatorModel bodIndicatorModel,
             BodApproach bodApproach,
             double standardisedPopulationSize
         ) {
-            var totalBod = bodIndicatorValueModel.GetBodIndicatorValue()
-                * conversionFactor
+            var totalBod = bodIndicatorModel.GetBodIndicatorValue()
                 * exposureResponseResultRecord.PercentileInterval.Percentage / 100;
             var responseValue = exposureResponseResultRecord.PercentileSpecificRisk;
             var result = new EnvironmentalBurdenOfDiseaseResultBinRecord {
@@ -160,14 +139,14 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
             if (bodApproach == BodApproach.TopDown) {
                 var attributableFraction = computeAttributableFraction(
                     exposureResponseResultRecord,
-                    population,
+                    bodIndicatorModel.Population,
                     responseValue,
                     effectMetric
                 );
                 result.AttributableFraction = attributableFraction;
                 result.AttributableBod = totalBod * attributableFraction;
             } else {
-                result.AttributableBod = totalBod * responseValue * population.Size;
+                result.AttributableBod = totalBod * responseValue * bodIndicatorModel.Population.Size;
             }
 
             return result;

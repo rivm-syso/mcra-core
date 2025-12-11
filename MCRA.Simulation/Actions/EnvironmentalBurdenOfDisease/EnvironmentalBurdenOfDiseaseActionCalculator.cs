@@ -1,5 +1,4 @@
-﻿using MCRA.Data.Compiled.Objects;
-using MCRA.General;
+﻿using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
 using MCRA.General.ModuleDefinitions.Settings;
@@ -80,21 +79,9 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
                 throw new Exception("Population size is required for bottom-up burden of disease computations.");
             }
 
-            // Get burdens of disease
-            var bodIndicatorValueModels = data.BodIndicatorValueModels;
-            if (data.BodIndicatorConversions != null) {
-                // Get derived burdens of disease from BoD indicator conversions
-                var bodIndicatorConversionsCalculator = new BoDConversionsCalculator();
-                var derivedBodIndicatorValueModels = bodIndicatorConversionsCalculator
-                    .GetDerivedBurdensOfDisease(
-                        bodIndicatorValueModels,
-                        data.BodIndicatorConversions
-                    );
-                bodIndicatorValueModels = [.. bodIndicatorValueModels.Union(derivedBodIndicatorValueModels)];
-            }
-
             // Only keep BoDs for selected indicators
-            bodIndicatorValueModels = [.. bodIndicatorValueModels.Where(r => ModuleConfig.BodIndicators.Contains(r.BurdenOfDisease.BodIndicator))];
+            var bodIndicatorModels = data.BodIndicatorModels;
+            bodIndicatorModels = [.. bodIndicatorModels.Where(r => ModuleConfig.BodIndicators.Contains(r.BodIndicator))];
 
             // Compute exposure response
             var erCalculator = new ExposureResponseCalculator(
@@ -130,8 +117,7 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
                 ModuleConfig.EbdStandardisation
             );
             var environmentalBurdenOfDiseases = ebdCalculator.Compute(
-                bodIndicatorValueModels,
-                data.SelectedPopulation,
+                bodIndicatorModels,
                 exposureResponseResults
             );
 

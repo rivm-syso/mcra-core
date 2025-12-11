@@ -488,9 +488,9 @@ namespace MCRA.Simulation {
             set => GetOrCreateModuleOutputData<BurdensOfDiseaseOutputData>(ActionType.BurdensOfDisease).BodIndicatorConversions = value;
         }
         //BodIndicatorValueModels
-        public ICollection<IBodIndicatorValueModel> BodIndicatorValueModels {
-            get => GetOrCreateModuleOutputData<BurdensOfDiseaseOutputData>(ActionType.BurdensOfDisease).BodIndicatorValueModels;
-            set => GetOrCreateModuleOutputData<BurdensOfDiseaseOutputData>(ActionType.BurdensOfDisease).BodIndicatorValueModels = value;
+        public ICollection<IBodIndicatorModel> BodIndicatorModels {
+            get => GetOrCreateModuleOutputData<BurdensOfDiseaseOutputData>(ActionType.BurdensOfDisease).BodIndicatorModels;
+            set => GetOrCreateModuleOutputData<BurdensOfDiseaseOutputData>(ActionType.BurdensOfDisease).BodIndicatorModels = value;
         }
         // ExposureBiomarkerConversions
         public ICollection<ExposureBiomarkerConversion> ExposureBiomarkerConversions {

@@ -40,19 +40,19 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             var totalAttributableBod = ebdResultRecord.EnvironmentalBurdenOfDiseaseResultBinRecords
                 .Sum(bin => bin.AttributableBod);
-            var population = ebdResultRecord.BurdenOfDisease.Population;
+            var population = ebdResultRecord.Population;
             return new EnvironmentalBurdenOfDiseaseSummaryRecord {
                 PopulationSize = population?.Size > 0 ? population.Size : double.NaN,
-                BodIndicator = ebdResultRecord.BurdenOfDisease.BodIndicator.GetShortDisplayName(),
-                SourceIndicators = (ebdResultRecord.BurdenOfDisease is DerivedBurdenOfDisease)
-                    ? string.Join(" -> ", (ebdResultRecord.BurdenOfDisease as DerivedBurdenOfDisease).Conversions.Select(r => r.FromIndicator))
+                BodIndicator = ebdResultRecord.BodIndicator.GetShortDisplayName(),
+                SourceIndicators = (ebdResultRecord.SourceIndicatorList.Count > 0)
+                    ? string.Join(" -> ", ebdResultRecord.SourceIndicatorList)
                     : string.Empty,
-                PopulationCode = ebdResultRecord.BurdenOfDisease.Population?.Code,
-                PopulationName = ebdResultRecord.BurdenOfDisease.Population?.Name,
+                PopulationCode = ebdResultRecord.Population?.Code,
+                PopulationName = ebdResultRecord.Population?.Name,
                 SubstanceCode = ebdResultRecord.ExposureResponseModel.Substance.Code,
                 SubstanceName = ebdResultRecord.ExposureResponseModel.Substance.Name,
-                EffectCode = ebdResultRecord.BurdenOfDisease.Effect.Code,
-                EffectName = ebdResultRecord.BurdenOfDisease.Effect.Name,
+                EffectCode = ebdResultRecord.Effect.Code,
+                EffectName = ebdResultRecord.Effect.Name,
                 ErfCode = ebdResultRecord.ExposureResponseModel.Code,
                 ErfName = ebdResultRecord.ExposureResponseModel.Name,
                 TotalAttributableBod = totalAttributableBod,

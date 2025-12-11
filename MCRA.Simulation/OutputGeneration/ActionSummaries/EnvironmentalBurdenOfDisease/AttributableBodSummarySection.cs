@@ -1,4 +1,5 @@
 ﻿using MCRA.General;
+using MCRA.Simulation.Calculators.BodIndicatorModels;
 using MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation;
 using MCRA.Utils.ExtensionMethods;
 
@@ -48,9 +49,9 @@ namespace MCRA.Simulation.OutputGeneration {
             EnvironmentalBurdenOfDiseaseResultRecord ebdResultRecord
         ) {
             var multiplicator = 1d;
-            var nameIndicator = ebdResultRecord.BurdenOfDisease.BodIndicator.GetShortDisplayName();
+            var nameIndicator = ebdResultRecord.BodIndicator.GetShortDisplayName();
             var environmentalBurdenOfDiseaseResultBinRecords = ebdResultRecord.EnvironmentalBurdenOfDiseaseResultBinRecords;
-            var population = ebdResultRecord.BurdenOfDisease.Population;
+            var population = ebdResultRecord.Population;
             var records = environmentalBurdenOfDiseaseResultBinRecords
                 .Select(r => new AttributableBodSummaryRecord {
                     ExposureBinId = r.ExposureBinId,
@@ -59,13 +60,11 @@ namespace MCRA.Simulation.OutputGeneration {
                     PopulationSize = population?.Size > 0 ? population.Size : double.NaN,
                     SubstanceCode = ebdResultRecord.Substance.Code,
                     SubstanceName = ebdResultRecord.Substance.Name,
-                    EffectCode = ebdResultRecord.BurdenOfDisease.Effect.Code,
-                    EffectName = ebdResultRecord.BurdenOfDisease.Effect.Name,
-                    BodIndicator = ebdResultRecord.BurdenOfDisease.BodIndicator.GetShortDisplayName(),
-                    SourceIndicatorList = (ebdResultRecord.BurdenOfDisease is DerivedBurdenOfDisease)
-                        ? (ebdResultRecord.BurdenOfDisease as DerivedBurdenOfDisease).Conversions
-                            .Select(r => r.FromIndicator.GetShortDisplayName())
-                            .ToList()
+                    EffectCode = ebdResultRecord.Effect.Code,
+                    EffectName = ebdResultRecord.Effect.Name,
+                    BodIndicator = ebdResultRecord.BodIndicator.GetShortDisplayName(),
+                    SourceIndicatorList = (ebdResultRecord.SourceIndicatorList.Count > 0 )
+                        ? [.. ebdResultRecord.SourceIndicatorList.Select(r => r)]
                         : [],
                     ErfCode = ebdResultRecord.ExposureResponseModel.Code,
                     BinPercentage = r.ExposurePercentileBin.Percentage,

@@ -19,7 +19,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.EnvironmentalBurdenOfDiseas
             Assert.AreEqual(5.01, result);
         }
 
-
         [TestMethod]
         public void ExposureResponseFunctionModel_TestComputeFunction() {
             var erf = new ExposureResponseFunction() {

@@ -2,7 +2,6 @@
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease;
-using MCRA.Simulation.Calculators.SimulatedPopulations;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 
@@ -24,8 +23,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.BodIndicators = [BodIndicator.DALY];
             var data = fakeActionData(random);
             var calculator = new EnvironmentalBurdenOfDiseaseActionCalculator(project);
-            (var header, var result) = TestRunUpdateSummarizeNominal(project, calculator, data, "TestRunNominal");
-
+            (_, var result) = TestRunUpdateSummarizeNominal(project, calculator, data, "TestRunNominal");
             Assert.IsNotNull(result);
         }
 
@@ -81,21 +79,21 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                     random.Next()
                 );
 
-            var burdenOfDiseases = effects.Select(r => FakeBurdenOfDiseasesGenerator.Create(r)).ToList();
-            var bodIndicatorValueModels = FakeBurdenOfDiseasesGenerator
-                .FakeBodIndicatorValueModel(burdenOfDiseases);
             var populationCharacteristicTypes = exposureResponseFunctionModels
                 .Select(r => r.PopulationCharacteristic)
                 .Distinct()
                 .ToList();
             var population = FakePopulationsGenerator
                 .Create(1, populationCharacteristicTypes, seed: 1).First();
+            var burdenOfDiseases = effects.Select(r => FakeBurdenOfDiseasesGenerator.Create(r, population)).ToList();
+            var bodIndicatorModels = FakeBurdenOfDiseasesGenerator
+                .FakeBodIndicatorValueModel(burdenOfDiseases);
             var data = new ActionData() {
                 AllEffects = effects,
                 SelectedPopulation = population,
                 ExposureResponseFunctionModels = exposureResponseFunctionModels,
                 BurdensOfDisease = burdenOfDiseases,
-                BodIndicatorValueModels = bodIndicatorValueModels,
+                BodIndicatorModels = bodIndicatorModels,
                 HbmIndividualCollections = [new() {
                     TargetUnit = targetUnit,
                         HbmIndividualConcentrations = hbmIndividualConcentrations

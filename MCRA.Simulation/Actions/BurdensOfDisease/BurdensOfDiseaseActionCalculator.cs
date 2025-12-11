@@ -1,4 +1,5 @@
-﻿using MCRA.Data.Management;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Management;
 using MCRA.Data.Management.CompiledDataManagers.DataReadingSummary;
 using MCRA.General;
 using MCRA.General.Action.Settings;
@@ -40,8 +41,18 @@ namespace MCRA.Simulation.Actions.BurdensOfDisease {
                     || data.SelectedPopulation.Code == "Generated"
                     || r.Population == data.SelectedPopulation
                 )];
+            data.BodIndicatorModels = [.. data.BurdensOfDisease.Select(BodIndicatorModelFactory.Create)];
             data.BodIndicatorConversions = [.. subsetManager.AllBodIndicatorConversions];
-            data.BodIndicatorValueModels = [.. data.BurdensOfDisease.Select(BodIndicatorValueCalculatorFactory.Create)];
+            if (data.BodIndicatorConversions?.Count > 0) {
+                var bodIndicatorConversionsCalculator = new BodConversionsCalculator();
+                var conversionsLookup = data.BodIndicatorConversions.ToLookup(r => r.FromIndicator);
+                var derivedBodIndicatorModels = bodIndicatorConversionsCalculator
+                    .Compute(
+                        data.BodIndicatorModels,
+                        conversionsLookup
+                    );
+                data.BodIndicatorModels = [..data.BodIndicatorModels.Union(derivedBodIndicatorModels)];
+            }
         }
 
         protected override void summarizeActionResult(IBurdensOfDiseaseActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {
@@ -61,8 +72,8 @@ namespace MCRA.Simulation.Actions.BurdensOfDisease {
             CompositeProgressState progressReport
         ) {
             var localProgress = progressReport.NewProgressState(100);
-            if (data.BodIndicatorValueModels != null && data.BodIndicatorValueModels?.Count > 0) {
-                foreach (var model in data.BodIndicatorValueModels) {
+            if (data.BodIndicatorModels != null && data.BodIndicatorModels?.Count > 0) {
+                foreach (var model in data.BodIndicatorModels) {
                     if (factorialSet.Contains(UncertaintySource.BodIndicatorValues)) {
                         localProgress.Update("Resampling burden of disease indicator values.");
                         var random = uncertaintySourceGenerators[UncertaintySource.BodIndicatorValues];
@@ -72,5 +83,6 @@ namespace MCRA.Simulation.Actions.BurdensOfDisease {
             }
             localProgress.Update(100);
         }
+
     }
 }
