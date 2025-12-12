@@ -1,5 +1,19 @@
 # Change Log
 
+## Version 10.2.10 (2025-12-12)
+
+### Added
+
+- Implement uncertainty in BoD module and EBD calculations (uniform and triangular) (#2339)
+- Add population size uncertainty to populations module (#2340)
+- Implement ERF uncertainty in EBD calculations (#2240,#2348)
+- Dust concentration and dust concentration distributions modules (#2342)
+
+## Changed
+
+- Export frequency and amount model fit summary tables (#2365)
+- Refactor BoD indicator distribution models and fix derived BoDs calculation (#2376)
+
 ## Version 10.2.9 (2025-12-01)
 
 ### Added
