@@ -56,6 +56,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             var requireDietary = ModuleConfig.ExposureSources.Contains(ExposureSource.Diet);
             _actionInputRequirements[ActionType.DietaryExposures].IsRequired = requireDietary;
             _actionInputRequirements[ActionType.DietaryExposures].IsVisible = requireDietary;
+            _actionInputRequirements[ActionType.Foods].IsRequired = requireDietary;
+            _actionInputRequirements[ActionType.Foods].IsVisible = requireDietary;
 
             var requireDust = ModuleConfig.ExposureType == ExposureType.Chronic &&
                 ModuleConfig.ExposureSources.Contains(ExposureSource.Dust);

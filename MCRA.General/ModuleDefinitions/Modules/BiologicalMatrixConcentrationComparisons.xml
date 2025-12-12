@@ -30,6 +30,7 @@
   </LoopEntities>
   <CalculationSettings>
     <CalculationSetting source="Action">ExposureType</CalculationSetting>
+    <CalculationSetting source="HazardCharacterisations">TargetDoseLevelType</CalculationSetting>
     <CalculationSetting>CorrelateTargetConcentrations</CalculationSetting>
   </CalculationSettings>
   <OutputSettings>

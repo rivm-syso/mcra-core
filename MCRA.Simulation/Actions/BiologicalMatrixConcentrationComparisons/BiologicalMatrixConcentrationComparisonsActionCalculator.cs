@@ -1,11 +1,12 @@
-﻿using MCRA.Utils.ExtensionMethods;
-using MCRA.Utils.ProgressReporting;
-using MCRA.General;
+﻿using MCRA.General;
+using MCRA.General.Action.ActionSettingsManagement;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.General.ModuleDefinitions.Settings;
+using MCRA.Utils.ExtensionMethods;
+using MCRA.Utils.ProgressReporting;
 
 namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
 
@@ -17,6 +18,10 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
         }
 
         protected override void verify() {
+        }
+
+        public override IActionSettingsManager GetSettingsManager() {
+            return new BiologicalMatrixConcentrationComparisonsSettingsManager();
         }
 
         protected override ActionSettingsSummary summarizeSettings() {

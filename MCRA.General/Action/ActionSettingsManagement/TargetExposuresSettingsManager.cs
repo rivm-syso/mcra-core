@@ -9,6 +9,11 @@ namespace MCRA.General.Action.ActionSettingsManagement {
             Verify(project);
             var config = project.TargetExposuresSettings;
 
+            // Only change default if this is the main action 
+            if (project.ActionType == ActionType) {
+                config.TargetDoseLevelType = TargetLevelType.Systemic;
+            }
+
             var cumulative = config.MultipleSubstances && config.Cumulative;
 
             var activeSubstancesConfig = project.ActiveSubstancesSettings;
