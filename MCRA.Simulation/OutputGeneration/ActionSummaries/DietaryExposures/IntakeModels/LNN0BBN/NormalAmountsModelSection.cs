@@ -60,7 +60,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 AmountModelFitSummaryRecords.Add(varWithinRecord);
             }
             var DfRecord = new ModelFitResultSummaryRecord {
-                Parameter = "degrees of freemdom",
+                Parameter = "degrees of freedom",
                 Estimate = DegreesOfFreedom
             };
             AmountModelFitSummaryRecords.Add(DfRecord);

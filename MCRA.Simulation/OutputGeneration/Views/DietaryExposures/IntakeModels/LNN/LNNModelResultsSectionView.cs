@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Web;
 using MCRA.General;
 using MCRA.Simulation.OutputGeneration.Helpers;
 using MCRA.Utils.ExtensionMethods;
@@ -10,7 +11,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 sb.AppendWarning("LNN with correlation cannot be fitted because exposure is not incidental. Fit LNN without correlation instead");
             } else {
                 sb.AppendParagraph("LNN uses initial estimates based on the logistic normal frequency and normal amounts model without correlation");
-                sb.AppendNotification(Model.Message.GetDisplayName());
+                sb.Append($"<ul><li class='warning'>{HttpUtility.HtmlEncode(Model.Message.GetDisplayName())}</li></ul>");
                 sb.AppendTable(
                     Model,
                     Model.FrequencyModelFitSummaryRecords,

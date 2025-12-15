@@ -12,6 +12,7 @@ namespace MCRA.Simulation.OutputGeneration {
             VarianceEstimates = lnn0Model.FrequencyModelSummary.DispersionEstimates;
             LikelihoodRatioTestResults = lnn0Model.FrequencyModelSummary.LikelihoodRatioTestResults;
             Message = lnn0Model.FrequencyModelSummary.ErrorMessage;
+            FrequencyModelRecords = getFrequencyRecords();
         }
 
         /// <summary>
@@ -21,24 +22,23 @@ namespace MCRA.Simulation.OutputGeneration {
         public void Summarize(FrequencyModelSummary frequencyModelSummary) {
             DegreesOfFreedom = frequencyModelSummary.DegreesOfFreedom;
             FrequencyModelEstimates = frequencyModelSummary.FrequencyModelEstimates;
+            _2LogLikelihood = frequencyModelSummary._2LogLikelihood;
             VarianceEstimates = frequencyModelSummary.DispersionEstimates;
             LikelihoodRatioTestResults = frequencyModelSummary.LikelihoodRatioTestResults;
             Message = frequencyModelSummary.ErrorMessage;
+            FrequencyModelRecords = getFrequencyRecords();
+        }
 
-            var varianceEstimates = frequencyModelSummary.DispersionEstimates;
-            var frequencyModelEstimates = frequencyModelSummary.FrequencyModelEstimates;
-            var degreesOfFreedom = frequencyModelSummary.DegreesOfFreedom;
-            var _2LogLikelihood = frequencyModelSummary._2LogLikelihood;
-
+        private List<ModelFitResultSummaryRecord> getFrequencyRecords() {
             FrequencyModelRecords = [
                 new ModelFitResultSummaryRecord {
-                    Parameter = varianceEstimates.ParameterName,
-                    Estimate = varianceEstimates.Estimate,
-                    StandardError = varianceEstimates.StandardError,
-                    TValue = varianceEstimates.TValue
-                }
-            ];
-            foreach (var item in frequencyModelEstimates) {
+                    Parameter = VarianceEstimates.ParameterName,
+                    Estimate = VarianceEstimates.Estimate,
+                    StandardError = VarianceEstimates.StandardError,
+                    TValue = VarianceEstimates.TValue
+                }];
+
+            foreach (var item in FrequencyModelEstimates) {
                 var record = new ModelFitResultSummaryRecord {
                     Parameter = item.ParameterName,
                     Estimate = item.Estimate,
@@ -49,7 +49,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
             var dfRecord = new ModelFitResultSummaryRecord {
                 Parameter = "degrees of freedom",
-                Estimate = degreesOfFreedom
+                Estimate = DegreesOfFreedom
             };
             FrequencyModelRecords.Add(dfRecord);
             var logLikRecord = new ModelFitResultSummaryRecord {
@@ -57,6 +57,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 Estimate = _2LogLikelihood
             };
             FrequencyModelRecords.Add(logLikRecord);
+            return FrequencyModelRecords;
         }
     }
 }
