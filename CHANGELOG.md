@@ -1,5 +1,11 @@
 # Change Log
 
+## Version 10.2.11 (2025-12-17)
+
+### Fixed
+
+- LNN0 output is missing (#2378)
+
 ## Version 10.2.10 (2025-12-12)
 
 ### Added
