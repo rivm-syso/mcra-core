@@ -771,7 +771,14 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                         // Merge the sample info with the (main) sample records
                         foreach (var record in sampleInfoRecords) {
                             if (!samplesDictionary.TryGetValue(record.IdSample, out var sample)) {
-                                throw new Exception($"Found reference to non-existing sample '{record.IdSample}' in table {measurementTable}");
+                                throw new Exception($"Found reference to non-existing sample '{record.IdSample}' in " +
+                                    $"table {measurementTable}");
+                            }
+                            if (sample.Compartment != _matrixMappings[matrixCode].biologicalMatrix) {
+                                throw new Exception($"id_sample '{record.IdSample}' in sheet {measurementTable} " +
+                                    $"({_matrixMappings[matrixCode].biologicalMatrix}) has matrix " +
+                                    $"mismatch between id_sample '{record.IdSample}' in sheet SAMPLE " +
+                                    $"({sample.Compartment}).");
                             }
                             sample.Cholesterol = record.Cholesterol;
                             sample.Triglycerides = record.Triglycerides;
