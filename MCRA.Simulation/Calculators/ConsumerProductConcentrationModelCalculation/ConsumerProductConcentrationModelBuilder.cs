@@ -92,27 +92,34 @@ namespace MCRA.Simulation.Calculators.ConsumerProductConcentrationModelCalculati
         }
 
         /// <summary>
-        /// Fit CensoredLognormal model, fallback (currently) is Empirical distribution
+        /// Create concentration model from input data on concentration distributions.
         /// </summary>
-        /// <param name="distribution"></param>
-        /// <returns></returns>
         private ConcentrationModel createConcentrationModel(
             ConsumerProductConcentrationDistribution distribution,
             NonDetectsHandlingMethod nonDetectsHandlingMethod,
             double lorReplacementFactor
         ) {
-            var substanceResidueCollection = new CompoundResidueCollection();
-            var concentrationModel = new CMSummaryStatistics() {
-                NonDetectsHandlingMethod = nonDetectsHandlingMethod,
-                FractionOfLor = lorReplacementFactor,
-                CorrectedWeightedAgriculturalUseFraction = distribution.OccurrencePercentage.HasValue
-                    ? distribution.OccurrencePercentage.Value / 100
-                    : 1D,
-                ConcentrationDistribution = new ConcentrationDistribution() {
-                    Mean = distribution.Mean,
-                    CV = distribution.CvVariability,
-                }
+            ConcentrationModel concentrationModel = distribution.DistributionType switch {
+                ConsumerProductConcentrationDistributionType.Constant => new CMConstant(),
+                ConsumerProductConcentrationDistributionType.LogNormal => new CMSummaryStatistics(),
+                ConsumerProductConcentrationDistributionType.Uniform => new CMSummaryStatistics(),
+                _ => throw new NotImplementedException($"Unsupported concentration model type {distribution.DistributionType} for consumer product distributions."),
             };
+
+            var occurrenceFraction = distribution.OccurrencePercentage.HasValue
+                ? distribution.OccurrencePercentage.Value / 100
+                : 1D;
+            concentrationModel.Compound = distribution.Substance;
+            concentrationModel.NonDetectsHandlingMethod = nonDetectsHandlingMethod;
+            concentrationModel.DesiredModelType = concentrationModel.ModelType;
+            concentrationModel.WeightedAgriculturalUseFraction = occurrenceFraction;
+            concentrationModel.CorrectedWeightedAgriculturalUseFraction = occurrenceFraction;
+            concentrationModel.ConcentrationDistribution = new ConcentrationDistribution() {
+                Mean = distribution.Mean,
+                CV = distribution.CvVariability,
+            };
+            concentrationModel.ConcentrationUnit = distribution.Unit;
+
             concentrationModel.CalculateParameters();
             return concentrationModel;
         }

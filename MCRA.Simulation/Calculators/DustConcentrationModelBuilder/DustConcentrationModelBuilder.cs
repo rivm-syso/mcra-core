@@ -110,25 +110,22 @@ namespace MCRA.Simulation.Calculators.DustConcentrationModelCalculation {
             var occurrenceFraction = distribution.OccurrencePercentage.HasValue
                 ? distribution.OccurrencePercentage.Value / 100
                 : 1D;
-            var concentrationModel = new CMSummaryStatistics() {
-                Compound = distribution.Substance,
-                FractionNonDetects = 0,
-                FractionCensored = 0,
-                FractionNonQuantifications = 0,
-                FractionPositives = occurrenceFraction,
-                NonDetectsHandlingMethod = nonDetectsHandlingMethod,
-                FractionOfLor = lorReplacementFactor,
-                DesiredModelType = ConcentrationModelType.SummaryStatistics,
-                WeightedAgriculturalUseFraction = occurrenceFraction,
-                CorrectedWeightedAgriculturalUseFraction = occurrenceFraction,
-                ConcentrationDistribution = new ConcentrationDistribution() {
-                    Mean = distribution.Mean,
-                    CV = distribution.CvVariability,
-                },
-                ConcentrationUnit = distribution.Unit,
-                Residues = null,
-                FractionTrueZeros = 1 - occurrenceFraction
+            ConcentrationModel concentrationModel = distribution.DistributionType switch {
+                DustConcentrationDistributionType.Constant => new CMConstant(),
+                DustConcentrationDistributionType.LogNormal => new CMSummaryStatistics(),
+                _ => throw new NotImplementedException($"Unsupported concentration model type {distribution.DistributionType} for dust distributions."),
             };
+            concentrationModel.Compound = distribution.Substance;
+            concentrationModel.NonDetectsHandlingMethod = nonDetectsHandlingMethod;
+            concentrationModel.DesiredModelType = concentrationModel.ModelType;
+            concentrationModel.WeightedAgriculturalUseFraction = occurrenceFraction;
+            concentrationModel.CorrectedWeightedAgriculturalUseFraction = occurrenceFraction;
+            concentrationModel.ConcentrationDistribution = new ConcentrationDistribution() {
+                Mean = distribution.Mean,
+                CV = distribution.CvVariability,
+            };
+            concentrationModel.ConcentrationUnit = distribution.Unit;
+
             concentrationModel.CalculateParameters();
             return concentrationModel;
         }

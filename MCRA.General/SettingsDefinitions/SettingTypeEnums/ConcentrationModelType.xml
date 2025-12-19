@@ -70,5 +70,13 @@
         Lognormal model.
       </Description>
     </Unit>
+    <Unit>
+      <Id>Constant</Id>
+      <Name>Constant</Name>
+      <ShortName>Constant</ShortName>
+      <Description>
+        A degenerate propability distribution with a single possible value.
+      </Description>
+    </Unit>
   </Units>
 </UnitDefinition>

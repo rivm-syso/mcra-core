@@ -37,7 +37,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public ConcentrationModelType DesiredModel { get; set; }
 
         [Description("The concentration model type used within the simulation.")]
-        [DisplayName("Fitted Model")]
+        [DisplayName("Model")]
         public ConcentrationModelType Model { get; set; }
 
         [Display(AutoGenerateField = false)]

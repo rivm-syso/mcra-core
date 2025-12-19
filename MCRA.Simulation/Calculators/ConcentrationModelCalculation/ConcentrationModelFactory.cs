@@ -92,9 +92,6 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
                 case ConcentrationModelType.Empirical:
                     model = new CMEmpirical();
                     break;
-                //case ConcentrationModelType.CensoredLogNormalEstimatedLOR:
-                //    model = new CMCensoredLogNormalEstimatedLOR();
-                //    break;
                 case ConcentrationModelType.CensoredLogNormal:
                     model = new CMCensoredLogNormal();
                     break;
@@ -112,6 +109,9 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
                     break;
                 case ConcentrationModelType.SummaryStatistics:
                     model = new CMSummaryStatistics();
+                    break;
+                case ConcentrationModelType.Constant:
+                    model = new CMConstant();
                     break;
             }
             return model;

@@ -67,7 +67,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     .ToList(),
                 "DustConcentrationModelsTable",
                 ViewBag,
-                caption: "Concentration model statistics by substance and dust sample",
+                caption: "Concentration model statistics by substance",
                 header: true,
                 saveCsv: true,
                 hiddenProperties: hiddenProperties
