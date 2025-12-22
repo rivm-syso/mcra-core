@@ -7,7 +7,6 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
     /// A concentration model based on a degenerate or constant ditsribution, with a single possible value.
     /// </summary>
     public sealed class CMConstant : ConcentrationModel {
-
         public override ConcentrationModelType ModelType => ConcentrationModelType.Constant;
 
         /// <summary>

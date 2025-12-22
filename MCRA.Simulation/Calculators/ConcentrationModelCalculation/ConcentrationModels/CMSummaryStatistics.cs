@@ -10,6 +10,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
     /// Model 8: Summary statistics model.
     /// </summary>
     public sealed class CMSummaryStatistics : ConcentrationModel {
+        public override ConcentrationModelType ModelType => ConcentrationModelType.SummaryStatistics;
 
         /// <summary>
         /// Log-normal model parameter mu.
@@ -55,9 +56,6 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         /// <summary>
         /// Draw from full distribution (zero, censored or positive)
         /// </summary>
-        /// <param name="random"></param>
-        /// <param name="nonDetectsHandlingMethod"></param>
-        /// <returns></returns>
         public override double DrawFromDistribution(IRandom random, NonDetectsHandlingMethod nonDetectsHandlingMethod) {
             if (random.NextDouble() < CorrectedOccurenceFraction) {
                 return drawFromLogNormal(random);
@@ -68,9 +66,6 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         /// <summary>
         /// Draw from censored distribution (censored or positive)
         /// </summary>
-        /// <param name="random"></param>
-        /// <param name="nonDetectsHandlingMethod"></param>
-        /// <returns></returns>
         public override double DrawFromDistributionExceptZeroes(IRandom random, NonDetectsHandlingMethod nonDetectsHandlingMethod) {
             return drawFromLogNormal(random);
         }
@@ -78,8 +73,6 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         /// <summary>
         /// Default model for this class
         /// </summary>
-        /// <param name="random"></param>
-        /// <returns></returns>
         private double drawFromLogNormal(IRandom random) {
             var x = NormalDistribution.InvCDF(0, 1, random.NextDouble()) * Sigma + Mu;
             if (double.IsNaN(UtilityFunctions.ExpBound(x))) {
@@ -91,10 +84,6 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         /// <summary>
         /// Replace censored values according to the NonDetectsHandlingMethod
         /// </summary>
-        /// <param name="random"></param>
-        /// <param name="nonDetectsHandlingMethod"></param>
-        /// <param name="fraction"></param>
-        /// <returns></returns>
         public override double DrawAccordingToNonDetectsHandlingMethod(IRandom random, NonDetectsHandlingMethod nonDetectsHandlingMethod, double fraction) {
             throw new NotImplementedException();
         }
@@ -102,8 +91,6 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         /// <summary>
         /// Override: returns the distribution mean
         /// </summary>
-        /// <param name="nonDetectsHandlingMethod"></param>
-        /// <returns></returns>
         public override double GetDistributionMean(NonDetectsHandlingMethod nonDetectsHandlingMethod) {
             if (FractionCensored > 0 && (Residues?.CensoredValues?.Count > 0)) {
                 var weightedAveragePositives = FractionPositives * UtilityFunctions.ExpBound(Mu + .5 * Math.Pow(Sigma, 2));
@@ -125,13 +112,6 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
                 var residue = CorrectedOccurenceFraction * UtilityFunctions.ExpBound(Mu + 0.5 * Math.Pow(Sigma, 2));
                 return residue;
             }
-        }
-
-        /// <summary>
-        /// Override: returns the model type (censored value spike log normal)
-        /// </summary>
-        public override ConcentrationModelType ModelType {
-            get { return ConcentrationModelType.SummaryStatistics; }
         }
 
         /// <summary>

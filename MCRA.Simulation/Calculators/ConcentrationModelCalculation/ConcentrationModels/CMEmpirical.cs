@@ -1,5 +1,5 @@
-﻿using MCRA.Simulation.Objects;
-using MCRA.General;
+﻿using MCRA.General;
+using MCRA.Simulation.Objects;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 
@@ -9,6 +9,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
     /// Model 1: empirical distribution. Values of the spike maybe replaced by LOR.
     /// </summary>
     public sealed class CMEmpirical : ConcentrationModel {
+        public override ConcentrationModelType ModelType => ConcentrationModelType.Empirical;
 
         /// <summary>
         /// Override
@@ -25,9 +26,6 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         /// <summary>
         /// Draw from full distribution (zero, censored or positive)
         /// </summary>
-        /// <param name="random"></param>
-        /// <param name="nonDetectsHandlingMethod"></param>
-        /// <returns></returns>
         public override double DrawFromDistribution(IRandom random, NonDetectsHandlingMethod nonDetectsHandlingMethod) {
             if (Residues.NumberOfResidues == 0 || CorrectedOccurenceFraction == 0) {
                 return 0D;
@@ -46,9 +44,6 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         /// <summary>
         /// Draw from censored distribution (censored or positive)
         /// </summary>
-        /// <param name="random"></param>
-        /// <param name="nonDetectsHandlingMethod"></param>
-        /// <returns></returns>
         public override double DrawFromDistributionExceptZeroes(IRandom random, NonDetectsHandlingMethod nonDetectsHandlingMethod) {
             if (CorrectedOccurenceFraction == 0 || Residues.NumberOfResidues == 0) {
                 return 0D;
@@ -65,10 +60,6 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         /// <summary>
         /// Replace nondetects according to the NonDetectsHandlingMethod
         /// </summary>
-        /// <param name="random"></param>
-        /// <param name="nonDetectsHandlingMethod"></param>
-        /// <param name="fraction"></param>
-        /// <returns></returns>
         public override double DrawAccordingToNonDetectsHandlingMethod(IRandom random, NonDetectsHandlingMethod nonDetectsHandlingMethod, double fraction) {
             if (Residues.CensoredValues.Any()) {
                 var iLor = random.Next(Residues.CensoredValues.Count);
@@ -93,8 +84,6 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         /// <summary>
         /// Override
         /// </summary>
-        /// <param name="nonDetectsHandlingMethod"></param>
-        /// <returns></returns>
         public override double GetDistributionMean(NonDetectsHandlingMethod nonDetectsHandlingMethod) {
             if (Residues.NumberOfResidues == 0) {
                 // Check the residue count, this situation can occur in cumulative assessments
@@ -121,16 +110,8 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         }
 
         /// <summary>
-        /// Override: return the model type of this model (empirical).
-        /// </summary>
-        public override ConcentrationModelType ModelType {
-            get { return ConcentrationModelType.Empirical; }
-        }
-
-        /// <summary>
         /// Override: does not apply for empirical concentration models.
         /// </summary>
-        /// <param name="random"></param>
         public override void DrawParametricUncertainty(IRandom random) {
             // No Parametric Uncertainty for emperical model
             throw new NotImplementedException();
@@ -141,9 +122,6 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         /// <summary>
         /// Returns an imputation value for the censored substance concentration.
         /// </summary>
-        /// <param name="sampleSubstance"></param>
-        /// <param name="random"></param>
-        /// <returns></returns>
         public override double GetImputedCensoredValue(SampleCompound sampleSubstance, IRandom random) {
             return GetDeterministicImputationValue(sampleSubstance, NonDetectsHandlingMethod, FractionOfLor);
         }

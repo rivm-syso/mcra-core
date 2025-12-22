@@ -128,21 +128,16 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         /// <summary>
         /// Returns an imputed value for the specified substance concentration.
         /// </summary>
-        /// <param name="sampleSubstance"></param>
-        /// <param name="random"></param>
-        /// <returns></returns>
         public abstract double GetImputedCensoredValue(SampleCompound sampleSubstance, IRandom random);
 
         /// <summary>
         /// Gives the mean of the model distribution using the specified non-detects handling method.
         /// </summary>
-        /// <returns></returns>
         public abstract double GetDistributionMean(NonDetectsHandlingMethod nonDetectsHandlingMethod);
 
         /// <summary>
         /// Gives the mean of the model distribution using the concentration model's non-detects handling method.
         /// </summary>
-        /// <returns></returns>
         public double GetDistributionMean() {
             return GetDistributionMean(NonDetectsHandlingMethod);
         }

@@ -9,26 +9,15 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
     /// <summary>
     /// Factory class for generating concentration models.
     /// </summary>
-    public sealed class ConcentrationModelFactory {
-        private IConcentrationModelCalculationSettings _settings;
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public ConcentrationModelFactory(IConcentrationModelCalculationSettings settings) {
-            _settings = settings;
-        }
+    /// <remarks>
+    /// Constructor
+    /// </remarks>
+    public sealed class ConcentrationModelFactory(IConcentrationModelCalculationSettings settings) {
+        private IConcentrationModelCalculationSettings _settings = settings;
 
         /// <summary>
         /// Generates a concentration model of the specified type for the specified food and substance.
         /// </summary>
-        /// <param name="food"></param>
-        /// <param name="substance"></param>
-        /// <param name="concentrationModelType"></param>
-        /// <param name="compoundResidueCollection"></param>
-        /// <param name="concentrationDistribution"></param>
-        /// <param name="concentrationUnit"></param>
-        /// <returns></returns>
         public ConcentrationModel CreateModelAndCalculateParameters(
             Food food,
             Compound substance,
@@ -84,8 +73,6 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
         /// <summary>
         /// Creates a new concentration model instance of the specified type.
         /// </summary>
-        /// <param name="modelType">The model-type to instantiate</param>
-        /// <returns></returns>
         private static ConcentrationModel createConcentrationModel(ConcentrationModelType modelType) {
             ConcentrationModel model = null;
             switch (modelType) {
@@ -121,9 +108,6 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
         /// Returns the fallback concentration model type for the given concentration model type and the provided
         /// concentration model settings.
         /// </summary>
-        /// <param name="concentrationModelType"></param>
-        /// <param name="includeMrlFallback"></param>
-        /// <returns></returns>
         public static ConcentrationModelType GetFallbackConcentrationModelType(ConcentrationModelType concentrationModelType, bool includeMrlFallback) {
             if (includeMrlFallback) {
                 return concentrationModelType switch {

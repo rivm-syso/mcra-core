@@ -1,5 +1,5 @@
-﻿using MCRA.Simulation.Objects;
-using MCRA.General;
+﻿using MCRA.General;
+using MCRA.Simulation.Objects;
 using MCRA.Utils;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.R.REngines;
@@ -12,6 +12,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
     /// Model 3: Nondetect spike and Truncated LogNormal distribution. Values of the spike maybe replaced by LOR
     /// </summary>
     public sealed class CMNonDetectSpikeTruncatedLogNormal : ConcentrationModel {
+        public override ConcentrationModelType ModelType => ConcentrationModelType.NonDetectSpikeTruncatedLogNormal;
 
         public double Mu { get; private set; }
 
@@ -36,8 +37,8 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
 
         public override bool CalculateParameters() {
             if (Residues == null
-                || !Residues.CensoredValues.Any()
-                || !Residues.Positives.Any()
+                || Residues.CensoredValues.Count == 0
+                || Residues.Positives.Count == 0
                 || Residues.Positives.Max() == Residues.Positives.Min()
             ) {
                 return false;
@@ -63,9 +64,6 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         /// <summary>
         /// Draw from full distribution (zero, censored or positive).
         /// </summary>
-        /// <param name="random"></param>
-        /// <param name="nonDetectsHandlingMethod"></param>
-        /// <returns></returns>
         public override double DrawFromDistribution(IRandom random, NonDetectsHandlingMethod nonDetectsHandlingMethod) {
             if (CorrectedOccurenceFraction == 0) {
                 return 0D;
@@ -82,9 +80,6 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         /// <summary>
         /// Draw from censored distribution (censored or positive)
         /// </summary>
-        /// <param name="random"></param>
-        /// <param name="nonDetectsHandlingMethod"></param>
-        /// <returns></returns>
         public override double DrawFromDistributionExceptZeroes(IRandom random, NonDetectsHandlingMethod nonDetectsHandlingMethod) {
             if (CorrectedOccurenceFraction == 0) {
                 return 0D;
@@ -100,10 +95,6 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         /// <summary>
         /// Replace nondetects according to the NonDetectsHandlingMethod
         /// </summary>
-        /// <param name="random"></param>
-        /// <param name="nonDetectsHandlingMethod"></param>
-        /// <param name="fraction"></param>
-        /// <returns></returns>
         public override double DrawAccordingToNonDetectsHandlingMethod(IRandom random, NonDetectsHandlingMethod nonDetectsHandlingMethod, double fraction) {
             if (Residues.CensoredValues.Any()) {
                 var iLor = random.Next(Residues.CensoredValues.Count);
@@ -128,8 +119,6 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         /// <summary>
         /// Override: returns the distribution mean
         /// </summary>
-        /// <param name="nonDetectsHandlingMethod"></param>
-        /// <returns></returns>
         public override double GetDistributionMean(NonDetectsHandlingMethod nonDetectsHandlingMethod) {
             var replacementFactor = nonDetectsHandlingMethod != NonDetectsHandlingMethod.ReplaceByZero ? 1 : 0D;
             var pPositive = (Residues.NumberOfResidues > 0) ? FractionPositives : CorrectedOccurenceFraction;
@@ -149,9 +138,6 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         /// <summary>
         /// Draw from truncated lognormal
         /// </summary>
-        /// <param name="random"></param>
-        /// <param name="lor"></param>
-        /// <returns></returns>
         public double DrawFromTruncatedLogNormal(IRandom random, double lor) {
             var p = NormalDistribution.CDF(Mu, Sigma, lor);
             var x = NormalDistribution.InvCDF(0, 1, random.NextDouble(p, 1)) * Sigma + Mu;
@@ -159,13 +145,6 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
                 throw new Exception();
             }
             return UtilityFunctions.ExpBound(x);
-        }
-
-        /// <summary>
-        /// Returns the model type, i.e., NonDetectSpikeTruncatedLogNormal
-        /// </summary>
-        public override ConcentrationModelType ModelType {
-            get { return ConcentrationModelType.NonDetectSpikeTruncatedLogNormal; }
         }
 
         public override bool IsParametric => true;

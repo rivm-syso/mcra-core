@@ -11,6 +11,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
     /// Model 6: mixture model, spike true zeros en censored lognormal, No replacement of censored values.
     /// </summary>
     public sealed class CMZeroSpikeCensoredLogNormal : ConcentrationModel {
+        public override ConcentrationModelType ModelType => ConcentrationModelType.ZeroSpikeCensoredLogNormal;
 
         public double Mu { get; private set; }
 
@@ -34,11 +35,10 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         /// <summary>
         /// Override
         /// </summary>
-        /// <returns></returns>
         public override bool CalculateParameters() {
             if (Residues == null
-                || !Residues.CensoredValues.Any()
-                || !Residues.Positives.Any()
+                || Residues.CensoredValues.Count == 0
+                || Residues.Positives.Count == 0
                 || Residues.Positives.Max() == Residues.Positives.Min()
             ) {
                 return false;
@@ -62,9 +62,6 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         /// <summary>
         /// Draw from full distribution (zero, censored or positive)
         /// </summary>
-        /// <param name="random"></param>
-        /// <param name="nonDetectsHandlingMethod"></param>
-        /// <returns></returns>
         public override double DrawFromDistribution(IRandom random, NonDetectsHandlingMethod nonDetectsHandlingMethod) {
             var p = FractionCensored + FractionPositives;
             if (random.NextDouble() < p) {
@@ -76,9 +73,6 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         /// <summary>
         /// Draw from censored distribution (censored or positive).
         /// </summary>
-        /// <param name="random"></param>
-        /// <param name="nonDetectsHandlingMethod"></param>
-        /// <returns></returns>
         public override double DrawFromDistributionExceptZeroes(IRandom random, NonDetectsHandlingMethod nonDetectsHandlingMethod) {
             return DrawFromDistribution(random, nonDetectsHandlingMethod);
         }
@@ -86,10 +80,6 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         /// <summary>
         /// Replace nondetects according to the censored values handling method.
         /// </summary>
-        /// <param name="random"></param>
-        /// <param name="nonDetectsHandlingMethod"></param>
-        /// <param name="p"></param>
-        /// <returns></returns>
         public override double DrawAccordingToNonDetectsHandlingMethod(IRandom random, NonDetectsHandlingMethod nonDetectsHandlingMethod, double p) {
             return 0D;
         }
@@ -97,17 +87,8 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         /// <summary>
         /// Override: returns the distribution mean
         /// </summary>
-        /// <param name="nonDetectsHandlingMethod"></param>
-        /// <returns></returns>
         public override double GetDistributionMean(NonDetectsHandlingMethod nonDetectsHandlingMethod) {
             return FractionPositives * UtilityFunctions.ExpBound(Mu + 0.5 * Math.Pow(Sigma, 2));
-        }
-
-        /// <summary>
-        /// Override: returns the model type (i.e., ZeroSpikeCensoredLogNormal)
-        /// </summary>
-        public override ConcentrationModelType ModelType {
-            get { return ConcentrationModelType.ZeroSpikeCensoredLogNormal; }
         }
 
         public override bool IsParametric => true;
