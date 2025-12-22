@@ -5,6 +5,7 @@ using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
 using MCRA.General.ModuleDefinitions.Settings;
+using MCRA.General.UnitDefinitions.Defaults;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.OutputGeneration;
@@ -28,25 +29,23 @@ namespace MCRA.Simulation.Actions.SoilConcentrationDistributions {
             return result;
         }
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
-            var soilConcentrationUnit = ConcentrationUnit.ugPerg;
-
             var adjustedSoilConcentrationDistributions = subsetManager.AllSoilConcentrationDistributions
                 .Select(r => {
                     var alignmentFactor = r.Unit
-                        .GetConcentrationAlignmentFactor(soilConcentrationUnit, r.Substance.MolecularMass);
+                        .GetConcentrationAlignmentFactor(SystemUnits.DefaultSoilConcentrationUnit, r.Substance.MolecularMass);
                     var conc = r.Concentration * alignmentFactor;
                     return new SoilConcentrationDistribution {
                         idSample = r.idSample,
                         Substance = r.Substance,
                         Concentration = conc,
-                        Unit = soilConcentrationUnit
+                        Unit = SystemUnits.DefaultSoilConcentrationUnit
                     };
                 })
                 .OrderBy(c => c.idSample)
                 .ToList();
 
             data.SoilConcentrationDistributions = adjustedSoilConcentrationDistributions;
-            data.SoilConcentrationUnit = soilConcentrationUnit;
+            data.SoilConcentrationUnit = SystemUnits.DefaultSoilConcentrationUnit;
         }
         protected override void loadDataUncertain(
            ActionData data,

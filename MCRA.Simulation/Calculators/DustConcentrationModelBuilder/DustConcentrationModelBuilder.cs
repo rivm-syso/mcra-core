@@ -3,7 +3,7 @@ using MCRA.General;
 using MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
 
-namespace MCRA.Simulation.Calculators.DustConcentrationModelCalculation {
+namespace MCRA.Simulation.Calculators.DustConcentrationModelBuilder {
 
     /// <summary>
     /// Builder class for dust concentration models.
@@ -85,36 +85,43 @@ namespace MCRA.Simulation.Calculators.DustConcentrationModelCalculation {
         public IDictionary<Compound, ConcentrationModel> Create(
             ICollection<DustConcentrationDistribution> concentrationDistributions,
             NonDetectsHandlingMethod nonDetectsHandlingMethod,
-            double lorReplacementFactor
+            double lorReplacementFactor,
+            ConcentrationUnit targetConcentrationUnit
         ) {
             var concentrationModels = new Dictionary<Compound, ConcentrationModel>();
             foreach (var distribution in concentrationDistributions) {
                 var concentrationModel = createConcentrationModel(
                     distribution,
                     nonDetectsHandlingMethod,
-                    lorReplacementFactor
+                    lorReplacementFactor,
+                    targetConcentrationUnit
                 );
                 concentrationModels[distribution.Substance] = concentrationModel;
             }
             return concentrationModels;
         }
 
-        /// <summary>
-        /// Fit CensoredLognormal model, fallback (currently) is Empirical distribution
-        /// </summary>
         private ConcentrationModel createConcentrationModel(
             DustConcentrationDistribution distribution,
             NonDetectsHandlingMethod nonDetectsHandlingMethod,
-            double lorReplacementFactor
+            double lorReplacementFactor,
+            ConcentrationUnit targetConcentrationUnit
         ) {
-            var occurrenceFraction = distribution.OccurrencePercentage.HasValue
-                ? distribution.OccurrencePercentage.Value / 100
-                : 1D;
+            var alignmentFactor = distribution.Unit
+                        .GetConcentrationAlignmentFactor(targetConcentrationUnit, distribution.Substance.MolecularMass);
+            var concentrationDistribution = new ConcentrationDistribution() {
+                Mean = distribution.Mean * alignmentFactor,
+                CV = distribution.CvVariability,
+            };
             ConcentrationModel concentrationModel = distribution.DistributionType switch {
                 DustConcentrationDistributionType.Constant => new CMConstant(),
                 DustConcentrationDistributionType.LogNormal => new CMSummaryStatistics(),
                 _ => throw new NotImplementedException($"Unsupported concentration model type {distribution.DistributionType} for dust distributions."),
             };
+
+            var occurrenceFraction = distribution.OccurrencePercentage.HasValue
+                ? distribution.OccurrencePercentage.Value / 100
+                : 1D;
             concentrationModel.Compound = distribution.Substance;
             concentrationModel.NonDetectsHandlingMethod = nonDetectsHandlingMethod;
             concentrationModel.DesiredModelType = concentrationModel.ModelType;
@@ -124,7 +131,7 @@ namespace MCRA.Simulation.Calculators.DustConcentrationModelCalculation {
                 Mean = distribution.Mean,
                 CV = distribution.CvVariability,
             };
-            concentrationModel.ConcentrationUnit = distribution.Unit;
+            concentrationModel.ConcentrationUnit = targetConcentrationUnit;
 
             concentrationModel.CalculateParameters();
             return concentrationModel;

@@ -5,6 +5,7 @@ using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
 using MCRA.General.ModuleDefinitions.Settings;
+using MCRA.General.UnitDefinitions.Defaults;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.OutputGeneration;
@@ -31,18 +32,16 @@ namespace MCRA.Simulation.Actions.ConsumerProductConcentrations {
             return result;
         }
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
-            var consumerProductConcentrationUnit = ConcentrationUnit.ugPerKg;
-
             var adjustedConsumerProductConcentrations = subsetManager.AllConsumerProductConcentrations
                 .Select(r => {
                     var alignmentFactor = r.Unit
-                        .GetConcentrationAlignmentFactor(consumerProductConcentrationUnit, r.Substance.MolecularMass);
+                        .GetConcentrationAlignmentFactor(SystemUnits.DefaultConsumerProductConcentrationUnit, r.Substance.MolecularMass);
                     var conc = r.Concentration * alignmentFactor;
                     return new ConsumerProductConcentration {
                         Product = r.Product,
                         Substance = r.Substance,
                         Concentration = conc,
-                        Unit = consumerProductConcentrationUnit,
+                        Unit = SystemUnits.DefaultConsumerProductConcentrationUnit,
                         SamplingWeight = r.SamplingWeight,
                     };
                 })
@@ -50,7 +49,7 @@ namespace MCRA.Simulation.Actions.ConsumerProductConcentrations {
                 .ToList();
 
             data.AllConsumerProductConcentrations = adjustedConsumerProductConcentrations;
-            data.ConsumerProductConcentrationUnit = consumerProductConcentrationUnit;
+            data.ConsumerProductConcentrationUnit = SystemUnits.DefaultConsumerProductConcentrationUnit;
         }
 
         protected override void loadDataUncertain(

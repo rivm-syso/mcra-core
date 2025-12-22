@@ -1,15 +1,16 @@
-﻿using MCRA.Utils.ProgressReporting;
-using MCRA.Data.Compiled.Objects;
-using MCRA.Simulation.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Management;
 using MCRA.Data.Management.CompiledDataManagers.DataReadingSummary;
 using MCRA.General;
-using MCRA.General.Annotations;
 using MCRA.General.Action.Settings;
+using MCRA.General.Annotations;
+using MCRA.General.ModuleDefinitions.Settings;
+using MCRA.General.UnitDefinitions.Defaults;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.SingleValueConcentrationsCalculation;
+using MCRA.Simulation.Objects;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.General.ModuleDefinitions.Settings;
+using MCRA.Utils.ProgressReporting;
 
 namespace MCRA.Simulation.Actions.SingleValueConcentrations {
     [ActionType(ActionType.SingleValueConcentrations)]
@@ -44,7 +45,7 @@ namespace MCRA.Simulation.Actions.SingleValueConcentrations {
             //Set single value concentration unit
             data.SingleValueConcentrationUnit = data.SingleValueConcentrations.Count == 1
                 ? data.SingleValueConcentrations.First().ConcentrationUnit
-                : ConcentrationUnit.mgPerKg;
+                : SystemUnits.DefaultSingleValueConcentrationUnit;
 
             var builder = new SingleValueConcentrationsBuilder();
             data.MeasuredSubstanceSingleValueConcentrations = builder.Create(

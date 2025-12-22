@@ -5,6 +5,7 @@ using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
 using MCRA.General.ModuleDefinitions.Settings;
+using MCRA.General.UnitDefinitions.Defaults;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Calculators.ConsumerProductConcentrationModelCalculation;
@@ -23,34 +24,15 @@ namespace MCRA.Simulation.Actions.ConsumerProductConcentrationDistributions {
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
-            var consumerProductConcentrationUnit = ConcentrationUnit.ugPerKg;
-
-            var adjustedConsumerProductConcentrationDistributions = subsetManager.AllConsumerProductConcentrationDistributions
-                .Select(r => {
-                    var alignmentFactor = r.Unit
-                        .GetConcentrationAlignmentFactor(consumerProductConcentrationUnit, r.Substance.MolecularMass);
-                    var conc = r.Mean * alignmentFactor;
-                    return new ConsumerProductConcentrationDistribution {
-                        Product = r.Product,
-                        Substance = r.Substance,
-                        Mean = conc,
-                        Unit = consumerProductConcentrationUnit,
-                        DistributionType = r.DistributionType,
-                        CvVariability = r.CvVariability,
-                        OccurrencePercentage = r.OccurrencePercentage,
-                    };
-                })
-                .OrderBy(c => c.Product.Code)
-                .ToList();
             var concentrationModelsBuilder = new ConsumerProductConcentrationModelBuilder();
             var concentrationModels = concentrationModelsBuilder.Create(
-                adjustedConsumerProductConcentrationDistributions,
+                subsetManager.AllConsumerProductConcentrationDistributions,
                 NonDetectsHandlingMethod.ReplaceByZero,
-                0
+                0,
+                SystemUnits.DefaultConsumerProductConcentrationUnit
             );
 
-            data.AllConsumerProductConcentrationDistributions = adjustedConsumerProductConcentrationDistributions;
-            data.ConsumerProductConcentrationUnit = consumerProductConcentrationUnit;
+            data.ConsumerProductConcentrationUnit = SystemUnits.DefaultConsumerProductConcentrationUnit;
             data.ConsumerProductConcentrationModels = concentrationModels;
         }
 

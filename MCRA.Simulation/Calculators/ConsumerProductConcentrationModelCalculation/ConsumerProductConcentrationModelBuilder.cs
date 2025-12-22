@@ -77,14 +77,16 @@ namespace MCRA.Simulation.Calculators.ConsumerProductConcentrationModelCalculati
         public IDictionary<(ConsumerProduct, Compound), ConcentrationModel> Create(
             ICollection<ConsumerProductConcentrationDistribution> concentrationDistributions,
             NonDetectsHandlingMethod nonDetectsHandlingMethod,
-            double lorReplacementFactor
+            double lorReplacementFactor,
+            ConcentrationUnit targetConcentrationUnit
         ) {
             var concentrationModels = new Dictionary<(ConsumerProduct, Compound), ConcentrationModel>();
             foreach (var distribution in concentrationDistributions) {
                 var concentrationModel = createConcentrationModel(
                     distribution,
                     nonDetectsHandlingMethod,
-                    lorReplacementFactor
+                    lorReplacementFactor,
+                    targetConcentrationUnit
                 );
                 concentrationModels[(distribution.Product, distribution.Substance)] = concentrationModel;
             }
@@ -97,8 +99,15 @@ namespace MCRA.Simulation.Calculators.ConsumerProductConcentrationModelCalculati
         private ConcentrationModel createConcentrationModel(
             ConsumerProductConcentrationDistribution distribution,
             NonDetectsHandlingMethod nonDetectsHandlingMethod,
-            double lorReplacementFactor
+            double lorReplacementFactor,
+            ConcentrationUnit targetConcentrationUnit
         ) {
+            var alignmentFactor = distribution.Unit
+                        .GetConcentrationAlignmentFactor(targetConcentrationUnit, distribution.Substance.MolecularMass);
+            var concentrationDistribution = new ConcentrationDistribution() {
+                Mean = distribution.Mean * alignmentFactor,
+                CV = distribution.CvVariability,
+            };
             ConcentrationModel concentrationModel = distribution.DistributionType switch {
                 ConsumerProductConcentrationDistributionType.Constant => new CMConstant(),
                 ConsumerProductConcentrationDistributionType.LogNormal => new CMSummaryStatistics(),
@@ -118,7 +127,7 @@ namespace MCRA.Simulation.Calculators.ConsumerProductConcentrationModelCalculati
                 Mean = distribution.Mean,
                 CV = distribution.CvVariability,
             };
-            concentrationModel.ConcentrationUnit = distribution.Unit;
+            concentrationModel.ConcentrationUnit = targetConcentrationUnit;
 
             concentrationModel.CalculateParameters();
             return concentrationModel;

@@ -2,7 +2,7 @@
 using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.DustExposures;
-using MCRA.Simulation.Calculators.DustConcentrationModelCalculation;
+using MCRA.Simulation.Calculators.DustConcentrationModelBuilder;
 using MCRA.Simulation.Calculators.IndividualDaysGenerator;
 using MCRA.Simulation.Calculators.PopulationGeneration;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;

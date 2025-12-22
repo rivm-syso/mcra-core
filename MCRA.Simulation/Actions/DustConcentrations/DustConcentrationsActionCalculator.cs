@@ -5,6 +5,7 @@ using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
 using MCRA.General.ModuleDefinitions.Settings;
+using MCRA.General.UnitDefinitions.Defaults;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.OutputGeneration;
@@ -30,25 +31,23 @@ namespace MCRA.Simulation.Actions.DustConcentrations {
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
-            var dustConcentrationUnit = ConcentrationUnit.ugPerg;
-
             var adjustedDustConcentrations = subsetManager.AllDustConcentrations
                 .Select(r => {
                     var alignmentFactor = r.Unit
-                        .GetConcentrationAlignmentFactor(dustConcentrationUnit, r.Substance.MolecularMass);
+                        .GetConcentrationAlignmentFactor(SystemUnits.DefaultDustConcentrationUnit, r.Substance.MolecularMass);
                     var conc = r.Concentration * alignmentFactor;
                     return new DustConcentration {
                         idSample = r.idSample,
                         Substance = r.Substance,
                         Concentration = conc,
-                        Unit = dustConcentrationUnit
+                        Unit = SystemUnits.DefaultDustConcentrationUnit
                     };
                 })
                 .OrderBy(c => c.idSample)
                 .ToList();
 
             data.DustConcentrations = adjustedDustConcentrations;
-            data.DustConcentrationUnit = dustConcentrationUnit;
+            data.DustConcentrationUnit = SystemUnits.DefaultDustConcentrationUnit;
         }
 
         protected override void loadDataUncertain(

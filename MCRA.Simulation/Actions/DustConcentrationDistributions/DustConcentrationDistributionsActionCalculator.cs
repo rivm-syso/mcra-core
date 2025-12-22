@@ -1,16 +1,14 @@
-﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Management;
+﻿using MCRA.Data.Management;
 using MCRA.Data.Management.CompiledDataManagers.DataReadingSummary;
 using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
 using MCRA.General.ModuleDefinitions.Settings;
+using MCRA.General.UnitDefinitions.Defaults;
 using MCRA.Simulation.Action;
-using MCRA.Simulation.Action.UncertaintyFactorial;
-using MCRA.Simulation.Calculators.DustConcentrationModelCalculation;
+using MCRA.Simulation.Calculators.DustConcentrationModelBuilder;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;
-using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Actions.DustConcentrationDistributions {
 
@@ -22,36 +20,16 @@ namespace MCRA.Simulation.Actions.DustConcentrationDistributions {
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
-            var dustConcentrationUnit = ConcentrationUnit.ugPerg;
-
-            var adjustedDustConcentrationDistributions = subsetManager.AllDustConcentrationDistributions
-                .Select(r => {
-                    var alignmentFactor = r.Unit
-                        .GetConcentrationAlignmentFactor(dustConcentrationUnit, r.Substance.MolecularMass);
-                    var mean = r.Mean * alignmentFactor;
-                    return new DustConcentrationDistribution {
-                        IdDistribution = r.IdDistribution,
-                        Substance = r.Substance,
-                        Mean = mean,
-                        Unit = dustConcentrationUnit,
-                        DistributionType = r.DistributionType,
-                        CvVariability = r.CvVariability,
-                        OccurrencePercentage = r.OccurrencePercentage,
-                    };
-                })
-                .OrderBy(c => c.IdDistribution)
-                .ToList();
-
             var concentrationModelsBuilder = new DustConcentrationModelBuilder();
             var concentrationModels = concentrationModelsBuilder.Create(
-                adjustedDustConcentrationDistributions,
+                subsetManager.AllDustConcentrationDistributions,
                 NonDetectsHandlingMethod.ReplaceByZero,
-                0
+                0,
+                SystemUnits.DefaultDustConcentrationUnit
             );
 
-            data.DustConcentrationDistributions = adjustedDustConcentrationDistributions;
-            data.DustConcentrationUnit = dustConcentrationUnit;
             data.DustConcentrationModels = concentrationModels;
+            data.DustConcentrationUnit = SystemUnits.DefaultDustConcentrationUnit;
         }
 
         protected override DustConcentrationDistributionsActionResult run(
