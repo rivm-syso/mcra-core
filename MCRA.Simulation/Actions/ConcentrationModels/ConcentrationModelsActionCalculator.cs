@@ -1,5 +1,4 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Simulation.Objects;
 using MCRA.General;
 using MCRA.General.Action.ActionSettingsManagement;
 using MCRA.General.Action.Settings;
@@ -9,11 +8,12 @@ using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation;
 using MCRA.Simulation.Calculators.ConcentrationDistributionCalculation;
-using MCRA.Simulation.Calculators.ConcentrationModelCalculation;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
+using MCRA.Simulation.Calculators.FoodConcentrationModelBuilders;
 using MCRA.Simulation.Calculators.OccurrencePatternsCalculation;
 using MCRA.Simulation.Calculators.SampleCompoundCollections.MissingValueImputation;
 using MCRA.Simulation.Calculators.SampleCompoundCollections.NonDetectsImputation;
+using MCRA.Simulation.Objects;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
@@ -47,7 +47,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
             _actionInputRequirements[ActionType.SubstanceAuthorisations].IsVisible = restrictLorImputationToAuthorisedUses;
             _actionInputRequirements[ActionType.SubstanceAuthorisations].IsRequired = restrictLorImputationToAuthorisedUses;
 
-            var useOccurrenceFrequencies =  ModuleConfig.UseAgriculturalUseTable;
+            var useOccurrenceFrequencies = ModuleConfig.UseAgriculturalUseTable;
             _actionInputRequirements[ActionType.OccurrenceFrequencies].IsVisible = useOccurrenceFrequencies;
             _actionInputRequirements[ActionType.OccurrenceFrequencies].IsRequired = useOccurrenceFrequencies;
 
@@ -120,7 +120,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
             }
 
             // Create concentration models per food/substance
-            var concentrationModelsBuilder = new ConcentrationModelsBuilder(ModuleConfig);
+            var concentrationModelsBuilder = new FoodConcentrationModelsBuilder(ModuleConfig);
             var concentrationModels = concentrationModelsBuilder.Create(
                 data.ModelledFoods,
                 substances,
@@ -165,7 +165,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
                 } else {
                     missingValueImputationCalculator.ReplaceImputeMissingValuesByZero(monteCarloSubstanceSampleCollections, progressReport);
                 }
-                var agriculturalUseSettings = new OccurrencePatternsFromFindingsCalculatorSettings() ;
+                var agriculturalUseSettings = new OccurrencePatternsFromFindingsCalculatorSettings();
                 var occurrencePatternCalculator = new OccurrencePatternsFromFindingsCalculator(agriculturalUseSettings);
                 simulatedOccurrencePatterns = occurrencePatternCalculator.Compute(
                     data.ModelledFoods,
@@ -174,14 +174,14 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
                 );
 
                 // Create cumulative concentration models
-                if (substances.Count > 1 && ModuleConfig.Cumulative ) {
+                if (substances.Count > 1 && ModuleConfig.Cumulative) {
                     var cumulativeCompoundResidueCollectionsBuilder = new CumulativeCompoundResidueCollectionsBuilder();
                     var cumulativeCompoundResidueCollections = cumulativeCompoundResidueCollectionsBuilder.Create(
                         monteCarloSubstanceSampleCollections,
                         data.CumulativeCompound,
                         data.CorrectedRelativePotencyFactors
                     );
-                    var cumulativeConcentrationModelsCalculator = new CumulativeConcentrationModelsBuilder(ModuleConfig);
+                    var cumulativeConcentrationModelsCalculator = new CumulativeFoodConcentrationModelsBuilder(ModuleConfig);
                     cumulativeConcentrationModels = cumulativeConcentrationModelsCalculator.Create(
                         data.ModelledFoods,
                         cumulativeCompoundResidueCollections,
@@ -255,7 +255,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
                 .ToDictionary(r => r.Key, r => r.Value);
 
             // Create concentration models per food/substance
-            var concentrationModelsBuilder = new ConcentrationModelsBuilder(ModuleConfig);
+            var concentrationModelsBuilder = new FoodConcentrationModelsBuilder(ModuleConfig);
             var newCompoundConcentrationModels = concentrationModelsBuilder
                 .CreateUncertain(
                     substanceConcentrationModels,
@@ -314,7 +314,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
                     localProgress.Update("Initializing cumulative concentration models", 28);
                     var cumulativeCompoundResidueCollectionBuilder = new CumulativeCompoundResidueCollectionsBuilder();
                     var cumulativeCompoundResidueCollection = cumulativeCompoundResidueCollectionBuilder.Create(monteCarloSubstanceSampleCollections, data.CumulativeCompound, data.CorrectedRelativePotencyFactors);
-                    var cumulativeConcentrationModelsBuilder = new CumulativeConcentrationModelsBuilder(ModuleConfig);
+                    var cumulativeConcentrationModelsBuilder = new CumulativeFoodConcentrationModelsBuilder(ModuleConfig);
                     if (ModuleConfig.IsParametric) {
                         result.CumulativeConcentrationModels = cumulativeConcentrationModelsBuilder
                             .CreateUncertain(

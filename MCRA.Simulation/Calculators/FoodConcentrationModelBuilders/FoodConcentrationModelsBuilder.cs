@@ -2,25 +2,22 @@
 using MCRA.General;
 using MCRA.General.ModuleDefinitions.Interfaces;
 using MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation;
+using MCRA.Simulation.Calculators.ConcentrationModelCalculation;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
 using MCRA.Simulation.Calculators.OccurrencePatternsCalculation;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.RandomGenerators;
 
-namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
+namespace MCRA.Simulation.Calculators.FoodConcentrationModelBuilders {
 
     /// <summary>
     /// Builder class for constructing concentration models.
     /// </summary>
-    public sealed class ConcentrationModelsBuilder {
-        private readonly IConcentrationModelCalculationSettings _settings;
-
-        public ConcentrationModelsBuilder(
-            IConcentrationModelCalculationSettings settings
-         ) {
-            _settings = settings;
-        }
+    public sealed class FoodConcentrationModelsBuilder(
+        IConcentrationModelCalculationSettings settings
+    ) {
+        private readonly IConcentrationModelCalculationSettings _settings = settings;
 
         /// <summary>
         /// Creates the concentration models for the specified food substance tuples.
@@ -42,13 +39,13 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
                     var compoundResidueCollection = compoundResidueCollections.TryGetValue(key, out var value)
                         ? value
                         : null;
-                    var concentrationDistribution = (concentrationDistributions?.TryGetValue(key, out var distribution) ?? false)
+                    var concentrationDistribution = concentrationDistributions?.TryGetValue(key, out var distribution) ?? false
                         ? distribution
                         : null;
-                    var maximumResidueLimit = (maximumConcentrationLimits?.TryGetValue(key, out var concentrationLimit) ?? false)
+                    var maximumResidueLimit = maximumConcentrationLimits?.TryGetValue(key, out var concentrationLimit) ?? false
                         ? concentrationLimit
                         : null;
-                    var occurrenceFrequency = (occurrenceFractions?.TryGetValue(key, out var fraction) ?? false)
+                    var occurrenceFrequency = occurrenceFractions?.TryGetValue(key, out var fraction) ?? false
                         ? fraction.OccurrenceFrequency
                         : double.NaN;
                     if (_settings.RestrictLorImputationToAuthorisedUses) {
@@ -56,7 +53,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
                         // food/substance combination itself, or the food has a base-food (e.g. because it is a processed
                         // commodity) and an authorisation record exists for the combination of base-food and substance.
                         var authorised = substanceAuthorisations.ContainsKey(key)
-                            || (key.Food.BaseFood != null && substanceAuthorisations.ContainsKey((key.Food.BaseFood, key.Substance)));
+                            || key.Food.BaseFood != null && substanceAuthorisations.ContainsKey((key.Food.BaseFood, key.Substance));
                         if (!authorised) {
                             // Set the occurrence frequency to be equal to the detected number of positives.
                             occurrenceFrequency = compoundResidueCollections.TryGetValue(key, out var collection)
@@ -85,15 +82,6 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
         /// Creates the concentration models for all combinations of the specified
         /// foods and substances.
         /// </summary>
-        /// <param name="foods"></param>
-        /// <param name="substances"></param>
-        /// <param name="compoundResidueCollections"></param>
-        /// <param name="concentrationDistributions"></param>
-        /// <param name="maximumConcentrationLimits"></param>
-        /// <param name="occurrenceFractions"></param>
-        /// <param name="concentrationUnit"></param>
-        /// <param name="progressState"></param>
-        /// <returns></returns>
         public IDictionary<(Food, Compound), ConcentrationModel> Create(
             ICollection<Food> foods,
             ICollection<Compound> substances,
@@ -124,16 +112,6 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
         /// <summary>
         /// Creates the concentration models for an uncertainty run based on the nominal models.
         /// </summary>
-        /// <param name="concentrationModels"></param>
-        /// <param name="compoundResidueCollections"></param>
-        /// <param name="concentrationDistributions"></param>
-        /// <param name="maximumConcentrationLimits"></param>
-        /// <param name="occurrenceFractions"></param>
-        /// <param name="reSampleConcentrations"></param>
-        /// <param name="isParametric"></param>
-        /// <param name="concentrationUnit"></param>
-        /// <param name="randomSeed"></param>
-        /// <returns></returns>
         public IDictionary<(Food, Compound), ConcentrationModel> CreateUncertain(
             IDictionary<(Food Food, Compound Substance), ConcentrationModel> concentrationModels,
             IDictionary<(Food, Compound), CompoundResidueCollection> compoundResidueCollections,
@@ -154,19 +132,20 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
                     var compoundResidueCollection = compoundResidueCollections.TryGetValue(key, out var value)
                         ? value
                         : null;
-                    var concentrationDistribution = (concentrationDistributions?.TryGetValue(key, out var distribution) ?? false)
+                    var concentrationDistribution = concentrationDistributions?.TryGetValue(key, out var distribution) ?? false
                         ? distribution
                         : null;
-                    var maximumResidueLimit = (maximumConcentrationLimits?.TryGetValue(key, out var concentrationLimit) ?? false)
+                    var maximumResidueLimit = maximumConcentrationLimits?.TryGetValue(key, out var concentrationLimit) ?? false
                         ? concentrationLimit
                         : null;
-                    var occurrenceFrequency = (occurrenceFractions?.TryGetValue(key, out var fraction) ?? false)
+                    var occurrenceFrequency = occurrenceFractions?.TryGetValue(key, out var fraction) ?? false
                         ? fraction.OccurrenceFrequency
                         : double.NaN;
 
                     if (_settings.RestrictLorImputationToAuthorisedUses) {
                         var authorised = (substanceAuthorisations?.TryGetValue(key, out var authorisation) ?? false)
-                            || (key.Food.BaseFood != null && (substanceAuthorisations?.TryGetValue((key.Food.BaseFood, key.Substance), out var substAuthorisation) ?? false));
+                            || key.Food.BaseFood != null
+                            && (substanceAuthorisations?.TryGetValue((key.Food.BaseFood, key.Substance), out var substAuthorisation) ?? false);
                         occurrenceFrequency = authorised
                             ? occurrenceFrequency
                             : compoundResidueCollections.TryGetValue(key, out var collection)
@@ -218,15 +197,6 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
         /// <summary>
         /// Generates the concentration model for the specified food and substance.
         /// </summary>
-        /// <param name="modelFactory"></param>
-        /// <param name="food"></param>
-        /// <param name="substance"></param>
-        /// <param name="compoundResidueCollection"></param>
-        /// <param name="concentrationDistribution"></param>
-        /// <param name="maximumConcentrationLimits"></param>
-        /// <param name="occurrenceFrequency"></param>
-        /// <param name="concentrationUnit"></param>
-        /// <returns></returns>
         private ConcentrationModel createModelAndCalculateParameters(
             ConcentrationModelFactory modelFactory,
             Food food,

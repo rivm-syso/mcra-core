@@ -1,11 +1,11 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Action.Settings;
-using MCRA.Simulation.Calculators.ConcentrationModelCalculation;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
+using MCRA.Simulation.Calculators.FoodConcentrationModelBuilders;
 using MCRA.Simulation.Calculators.ResidueGeneration;
-using MCRA.Simulation.Test.Mock.MockCalculatorSettings;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
+using MCRA.Simulation.Test.Mock.MockCalculatorSettings;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.ResidueGeneration {
@@ -64,7 +64,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ResidueGeneration {
                 FractionOfMrl = 0.1,
                 FractionOfLor = 0.1
             };
-            var cumulativeConcentrationModelsCalculator = new CumulativeConcentrationModelsBuilder(settings);
+            var cumulativeConcentrationModelsCalculator = new CumulativeFoodConcentrationModelsBuilder(settings);
             var compoundResidueCollections = FakeCompoundResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections)
                 .Where(c => c.Key.Substance == substances.First());
 
@@ -78,7 +78,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ResidueGeneration {
                 correctedRelativePotencyFactors,
                 cumulativeConcentrationModels,
                 activeSubstanceSampleCollections
-                //NonDetectsHandlingMethod.ReplaceByLOD
+            //NonDetectsHandlingMethod.ReplaceByLOD
             );
             factory.Initialize(correctedRelativePotencyFactors.Keys, cumulativeConcentrationModels.Keys);
             var concentrations = factory.GenerateResidues(modelledFoods.First(), substances, random);

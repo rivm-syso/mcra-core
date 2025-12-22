@@ -3,13 +3,14 @@ using MCRA.General;
 using MCRA.Simulation.Calculators.ActiveSubstanceAllocation;
 using MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation;
+using MCRA.Simulation.Calculators.FoodConcentrationModelBuilders;
 using MCRA.Simulation.Calculators.SampleCompoundCollections;
 using MCRA.Simulation.Calculators.SampleCompoundCollections.MissingValueImputation;
 using MCRA.Simulation.Calculators.SampleCompoundCollections.NonDetectsImputation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Helpers;
-using MCRA.Simulation.Test.Mock.MockCalculatorSettings;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
+using MCRA.Simulation.Test.Mock.MockCalculatorSettings;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculation {
@@ -54,7 +55,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
                 RestrictLorImputationToAuthorisedUses = false
             };
 
-            var concentrationModelsBuilder = new ConcentrationModelsBuilder(settings);
+            var concentrationModelsBuilder = new FoodConcentrationModelsBuilder(settings);
             var concentrationModels = concentrationModelsBuilder.Create(
                 foods,
                 measuredSubstances,
@@ -187,7 +188,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
                     })
                 : new Dictionary<(Food, Compound), SubstanceAuthorisation>();
 
-            var concentrationModelsBuilder = new ConcentrationModelsBuilder(settings);
+            var concentrationModelsBuilder = new FoodConcentrationModelsBuilder(settings);
             var concentrationModels = concentrationModelsBuilder
                 .Create(
                     foodSubstances,

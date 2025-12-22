@@ -1,22 +1,21 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation;
-using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
-using MCRA.Utils.Statistics.RandomGenerators;
 using MCRA.General.ModuleDefinitions.Interfaces;
+using MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation;
+using MCRA.Simulation.Calculators.ConcentrationModelCalculation;
+using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
+using MCRA.Utils.Statistics;
+using MCRA.Utils.Statistics.RandomGenerators;
 
-namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
+namespace MCRA.Simulation.Calculators.FoodConcentrationModelBuilders {
 
     /// <summary>
     /// Builder class for constructing concentration models.
     /// </summary>
-    public sealed class CumulativeConcentrationModelsBuilder {
-        private readonly IConcentrationModelCalculationSettings _settings;
-
-        public CumulativeConcentrationModelsBuilder(IConcentrationModelCalculationSettings settings) {
-            _settings = settings;
-        }
+    public sealed class CumulativeFoodConcentrationModelsBuilder(
+        IConcentrationModelCalculationSettings settings
+    ) {
+        private readonly IConcentrationModelCalculationSettings _settings = settings;
 
         public Dictionary<Food, ConcentrationModel> Create(
             ICollection<Food> foodsAsMeasured,
@@ -56,7 +55,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
                             model.DrawParametricUncertainty(random);
                         } else {
                             // Bootstrap using the "old" concentration model type (i.e., the model fitted in the nominal run)
-                            if (cumulativeCompoundResidueCollections.TryGetValue(food, out CompoundResidueCollection item)) {
+                            if (cumulativeCompoundResidueCollections.TryGetValue(food, out var item)) {
                                 cumulativeCompoundResidueCollections[food] = CompoundResidueCollectionsBuilder.Resample(item, random);
                             }
                             model = CreateCumulativeModelAndCalculateParameters(modelFactory, food, cumulativeCompound, compoundResidueCollection, concentrationUnit);
@@ -75,11 +74,6 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
         /// <summary>
         /// Generates the concentration model for the specified food and substance.
         /// </summary>
-        /// <param name="modelFactory"></param>
-        /// <param name="food"></param>
-        /// <param name="substance"></param>
-        /// <param name="cumulativeCompoundResidueCollection"></param>
-        /// <returns></returns>
         public ConcentrationModel CreateCumulativeModelAndCalculateParameters(
             ConcentrationModelFactory modelFactory,
             Food food,
@@ -98,8 +92,6 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
         /// <summary>
         /// Returns the pessimistic fallback concentration model type that should be used if the given concentration model type does not fit.
         /// </summary>
-        /// <param name="defaultConcentrationModelType"></param>
-        /// <returns></returns>
         private static ConcentrationModelType getCumulativeConcentrationModelType(ConcentrationModelType defaultConcentrationModelType) {
             switch (defaultConcentrationModelType) {
                 case ConcentrationModelType.ZeroSpikeCensoredLogNormal:
