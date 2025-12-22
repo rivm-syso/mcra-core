@@ -1,9 +1,10 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Simulation.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
+using MCRA.Simulation.Calculators.ResidueGeneration;
+using MCRA.Simulation.Objects;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmConcentrationModelCalculation {
 
@@ -16,10 +17,6 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmConcentratio
         /// Creates concentration models for all sampling methodes and substances
         /// in the HBM sample substance collections.
         /// </summary>
-        /// <param name="hbmSampleSubstanceCollections"></param>
-        /// <param name="nonDetectsHandlingMethod"></param>
-        /// <param name="lorReplacementFactor"></param>
-        /// <returns></returns>
         public IDictionary<(HumanMonitoringSamplingMethod, Compound), ConcentrationModel> Create(
             ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
             NonDetectsHandlingMethod nonDetectsHandlingMethod,
@@ -46,8 +43,6 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmConcentratio
         /// <summary>
         /// Fit CensoredLognormal model, fallback (currently) is Empirical distribution
         /// </summary>
-        /// <param name="hbmSampleSubstances"></param>
-        /// <returns></returns>
         private ConcentrationModel createConcentrationModel(
             IEnumerable<KeyValuePair<Compound, SampleCompound>> hbmSampleSubstances,
             NonDetectsHandlingMethod nonDetectsHandlingMethod,
@@ -67,21 +62,21 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmConcentratio
                 })
                 .ToList();
 
-            var substanceResidueCollection = new CompoundResidueCollection() {
+            var residueCollection = new ResidueCollection() {
                 Positives = positiveResidues,
                 CensoredValuesCollection = censoredValues
             };
 
             var concentrationModel = new CMCensoredLogNormal() {
                 NonDetectsHandlingMethod = nonDetectsHandlingMethod,
-                Residues = substanceResidueCollection,
+                Residues = residueCollection,
                 FractionOfLor = lorReplacementFactor
             };
 
             if (!concentrationModel.CalculateParameters()) {
                 var empiricalModel = new CMEmpirical() {
                     NonDetectsHandlingMethod = nonDetectsHandlingMethod,
-                    Residues = substanceResidueCollection,
+                    Residues = residueCollection,
                     FractionOfLor = lorReplacementFactor
                 };
                 empiricalModel.CalculateParameters();

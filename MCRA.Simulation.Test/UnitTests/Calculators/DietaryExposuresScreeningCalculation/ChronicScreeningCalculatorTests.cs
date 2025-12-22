@@ -1,7 +1,8 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.General;
+﻿using MCRA.General;
+using MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation;
 using MCRA.Simulation.Calculators.HighExposureFoodSubstanceCombinations;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.DietaryExposuresScreeningCalculation {
 
@@ -33,7 +34,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.DietaryExposuresScreeningCa
             var lor = 2;
             var sampleSize = 200;
             var concentrationModels = FakeConcentrationsModelsGenerator.Create(foods, substances, ConcentrationModelType.Empirical, mu, sigma, useFraction, lor, sampleSize);
-            var compoundResidueCollections = concentrationModels.Select(c => c.Value.Residues).ToList();
+            var compoundResidueCollections = concentrationModels.Select(c => new CompoundResidueCollection(c.Value.Residues) {
+                Food = c.Key.Item1,
+                Compound = c.Key.Item2
+            }).ToList();
 
             var section = new ChronicScreeningCalculator(95, 95, 0, false);
 

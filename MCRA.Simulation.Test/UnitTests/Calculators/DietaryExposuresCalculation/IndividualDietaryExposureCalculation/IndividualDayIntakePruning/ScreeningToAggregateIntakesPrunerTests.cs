@@ -8,6 +8,7 @@ using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryEx
 using MCRA.Simulation.Calculators.HighExposureFoodSubstanceCombinations;
 using MCRA.Simulation.Calculators.ResidueGeneration;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
+using MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.DietaryExposuresCalculation {
     /// <summary>
@@ -58,7 +59,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.DietaryExposuresCalculation
                 lor: lor,
                 sampleSize: sampleSize
             );
-            var compoundResidueCollections = concentrationModels.Select(c => c.Value.Residues).ToList();
+            var compoundResidueCollections = concentrationModels.Select(c => new CompoundResidueCollection(c.Value.Residues) {
+                 Food = c.Key.Item1,
+                 Compound = c.Key.Item2
+            }).ToList();
 
             var residueGenerator = new SubstanceBasedResidueGenerator(
                 concentrationModels,

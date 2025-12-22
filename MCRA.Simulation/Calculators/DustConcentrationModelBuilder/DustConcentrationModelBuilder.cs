@@ -2,6 +2,7 @@
 using MCRA.General;
 using MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
+using MCRA.Simulation.Calculators.ResidueGeneration;
 
 namespace MCRA.Simulation.Calculators.DustConcentrationModelBuilder {
 
@@ -61,7 +62,7 @@ namespace MCRA.Simulation.Calculators.DustConcentrationModelBuilder {
                 .Where(c => c.Concentration == 0)
                 .Count();
 
-            var substanceResidueCollection = new CompoundResidueCollection() {
+            var residueCollection = new ResidueCollection() {
                 Positives = positiveResidues,
                 CensoredValuesCollection = censoredValues
             };
@@ -69,7 +70,7 @@ namespace MCRA.Simulation.Calculators.DustConcentrationModelBuilder {
             var concentrationModel = new CMEmpirical() {
                 Compound = substance,
                 NonDetectsHandlingMethod = nonDetectsHandlingMethod,
-                Residues = substanceResidueCollection,
+                Residues = residueCollection,
                 FractionOfLor = lorReplacementFactor,
                 CorrectedOccurenceFraction = 1,
                 FractionTrueZeros = (double)concentrations.Count() / zerosCount,

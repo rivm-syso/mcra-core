@@ -2,6 +2,7 @@
 using MCRA.General;
 using MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
+using MCRA.Simulation.Calculators.ResidueGeneration;
 
 namespace MCRA.Simulation.Calculators.ConsumerProductConcentrationModelCalculation {
 
@@ -55,14 +56,14 @@ namespace MCRA.Simulation.Calculators.ConsumerProductConcentrationModelCalculati
                 })
                 .ToList();
 
-            var substanceResidueCollection = new CompoundResidueCollection() {
+            var residueCollection = new ResidueCollection() {
                 Positives = positiveResidues,
                 CensoredValuesCollection = censoredValues
             };
 
             var concentrationModel = new CMEmpirical() {
                 NonDetectsHandlingMethod = nonDetectsHandlingMethod,
-                Residues = substanceResidueCollection,
+                Residues = residueCollection,
                 FractionOfLor = lorReplacementFactor,
                 CorrectedOccurenceFraction = 1
             };

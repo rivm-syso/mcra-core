@@ -1,6 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation;
+using MCRA.Simulation.Calculators.ResidueGeneration;
 using MCRA.Simulation.Objects;
 using MCRA.Utils.Statistics;
 
@@ -45,7 +45,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         /// <summary>
         /// Collection of residues the model is based on.
         /// </summary>
-        public CompoundResidueCollection Residues { get; set; }
+        public ResidueCollection Residues { get; set; }
 
         /// <summary>
         /// The concentration distribution specified for the food compound of this model.
