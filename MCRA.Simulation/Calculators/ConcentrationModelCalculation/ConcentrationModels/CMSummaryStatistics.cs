@@ -26,11 +26,11 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         /// </summary>
         public override bool CalculateParameters() {
             if (ConcentrationDistribution != null && ConcentrationDistribution.CV != null) {
-                FractionPositives = CorrectedWeightedAgriculturalUseFraction;
+                FractionPositives = CorrectedOccurenceFraction;
                 FractionCensored = 0D;
                 FractionNonDetects = 0D;
                 FractionNonQuantifications = 0D;
-                FractionTrueZeros = 1 - CorrectedWeightedAgriculturalUseFraction;
+                FractionTrueZeros = 1 - CorrectedOccurenceFraction;
                 var unitCorrection = ConcentrationDistribution.ConcentrationUnit.GetConcentrationUnitMultiplier(ConcentrationUnit);
                 Sigma = Math.Log(Math.Pow((double)ConcentrationDistribution.CV, 2) + 1);
                 Mu = Math.Log(unitCorrection * ConcentrationDistribution.Mean) - .5 * Math.Pow(Sigma, 2);
@@ -39,11 +39,11 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
                 && !double.IsNaN((double)Residues.StandardDeviation)
             ) {
                 FractionPositives = Residues.FractionPositives;
-                FractionCensored = CorrectedWeightedAgriculturalUseFraction - FractionPositives;
+                FractionCensored = CorrectedOccurenceFraction - FractionPositives;
                 FractionNonDetects = FractionCensored * Residues.FractionNonDetectValues / Residues.FractionCensoredValues;
                 FractionNonQuantifications = FractionCensored * Residues.FractionNonQuantificationValues / Residues.FractionCensoredValues;
 
-                FractionTrueZeros = 1 - CorrectedWeightedAgriculturalUseFraction;
+                FractionTrueZeros = 1 - CorrectedOccurenceFraction;
                 Sigma = Residues.StandardDeviation ?? 0D;
                 Mu = Math.Log(Residues.Positives.Average()) - .5 * Math.Pow(Sigma, 2);
             } else {
@@ -59,7 +59,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         /// <param name="nonDetectsHandlingMethod"></param>
         /// <returns></returns>
         public override double DrawFromDistribution(IRandom random, NonDetectsHandlingMethod nonDetectsHandlingMethod) {
-            if (random.NextDouble() < CorrectedWeightedAgriculturalUseFraction) {
+            if (random.NextDouble() < CorrectedOccurenceFraction) {
                 return drawFromLogNormal(random);
             }
             return 0D;
@@ -122,7 +122,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
                 }
                 return weightedAveragePositives + weightedAverageCensoredValues;
             } else {
-                var residue = CorrectedWeightedAgriculturalUseFraction * UtilityFunctions.ExpBound(Mu + 0.5 * Math.Pow(Sigma, 2));
+                var residue = CorrectedOccurenceFraction * UtilityFunctions.ExpBound(Mu + 0.5 * Math.Pow(Sigma, 2));
                 return residue;
             }
         }

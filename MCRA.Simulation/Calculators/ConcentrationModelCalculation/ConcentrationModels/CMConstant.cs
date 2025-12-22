@@ -19,11 +19,11 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         /// Override: computes the model parameters
         /// </summary>
         public override bool CalculateParameters() {
-            FractionPositives = CorrectedWeightedAgriculturalUseFraction;
+            FractionPositives = CorrectedOccurenceFraction;
             FractionCensored = 0D;
             FractionNonDetects = 0D;
             FractionNonQuantifications = 0D;
-            FractionTrueZeros = 1 - CorrectedWeightedAgriculturalUseFraction;
+            FractionTrueZeros = 1 - CorrectedOccurenceFraction;
             SinglePointConcentration = ConcentrationDistribution?.Mean ?? 0D;
             return true;
         }

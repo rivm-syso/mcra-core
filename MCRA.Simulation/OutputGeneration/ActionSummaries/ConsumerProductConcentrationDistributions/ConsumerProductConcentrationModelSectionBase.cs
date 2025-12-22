@@ -24,13 +24,13 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.ConsumerProductConcen
                 Model = concentrationModel.ModelType,
                 DesiredModel = concentrationModel.DesiredModelType,
                 Unit = concentrationModel.ConcentrationUnit,
-                FractionTrueZeros = 1D - concentrationModel.CorrectedWeightedAgriculturalUseFraction,
+                FractionTrueZeros = 1D - concentrationModel.CorrectedOccurenceFraction,
                 FractionCensored = concentrationModel.FractionCensored,
                 FractionNonQuantifications = concentrationModel.FractionNonQuantifications,
                 FractionNonDetects = concentrationModel.FractionNonDetects,
                 FractionPositives = concentrationModel.FractionPositives,
-                AgriculturalUseFraction = concentrationModel.WeightedAgriculturalUseFraction,
-                CorrectedAgriculturalUseFraction = concentrationModel.CorrectedWeightedAgriculturalUseFraction,
+                AgriculturalUseFraction = concentrationModel.OccurenceFraction,
+                CorrectedAgriculturalUseFraction = concentrationModel.CorrectedOccurenceFraction,
                 FractionOfMrl = concentrationModel.ModelType == ConcentrationModelType.MaximumResidueLimit ? concentrationModel.FractionOfMrl : null
             };
             double? mu = null;

@@ -13,11 +13,11 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         /// Override: computes the model parameters
         /// </summary>
         public override bool CalculateParameters() {
-            FractionPositives = CorrectedWeightedAgriculturalUseFraction;
+            FractionPositives = CorrectedOccurenceFraction;
             FractionCensored = 0D;
             FractionNonDetects = 0D;
             FractionNonQuantifications = 0D;
-            FractionTrueZeros = 1 - CorrectedWeightedAgriculturalUseFraction;
+            FractionTrueZeros = 1 - CorrectedOccurenceFraction;
             return !double.IsNaN(MaximumResidueLimit) && MaximumResidueLimit > 0;
         }
 
@@ -28,7 +28,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         /// <param name="nonDetectsHandlingMethod"></param>
         /// <returns></returns>
         public override double DrawFromDistribution(IRandom random, NonDetectsHandlingMethod nonDetectsHandlingMethod) {
-            if (random.NextDouble() < CorrectedWeightedAgriculturalUseFraction) {
+            if (random.NextDouble() < CorrectedOccurenceFraction) {
                 return FractionOfMrl * MaximumResidueLimit;
             }
             return 0D;
@@ -61,7 +61,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         /// <param name="nonDetectsHandlingMethod"></param>
         /// <returns></returns>
         public override double GetDistributionMean(NonDetectsHandlingMethod nonDetectsHandlingMethod) {
-            return CorrectedWeightedAgriculturalUseFraction * FractionOfMrl * MaximumResidueLimit;
+            return CorrectedOccurenceFraction * FractionOfMrl * MaximumResidueLimit;
         }
 
         public override double GetImputedCensoredValue(SampleCompound sampleSubstance, IRandom random) {

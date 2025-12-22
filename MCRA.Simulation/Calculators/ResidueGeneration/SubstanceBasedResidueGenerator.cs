@@ -70,7 +70,7 @@ namespace MCRA.Simulation.Calculators.ResidueGeneration {
         ) {
             var concentrations = new List<CompoundConcentration>();
             foreach (var compound in substances) {
-                if (_concentrationModels[(food, compound)].CorrectedWeightedAgriculturalUseFraction > 0) {
+                if (_concentrationModels[(food, compound)].CorrectedOccurenceFraction > 0) {
                     var model = _concentrationModels[(food, compound)];
                     var concentration = model.DrawFromDistribution(random, _nonDetectsHandlingMethod);
                     if (concentration > 0) {
@@ -125,8 +125,8 @@ namespace MCRA.Simulation.Calculators.ResidueGeneration {
                         concentration = model.DrawFromDistributionExceptZeroes(random, _nonDetectsHandlingMethod);
                     }
                 }
-                if (model.FractionPositives > model.WeightedAgriculturalUseFraction) {
-                    var p = (model.FractionPositives - model.WeightedAgriculturalUseFraction) / (1 - model.WeightedAgriculturalUseFraction);
+                if (model.FractionPositives > model.OccurenceFraction) {
+                    var p = (model.FractionPositives - model.OccurenceFraction) / (1 - model.OccurenceFraction);
                     if (random.NextDouble() < p) {
                         concentration = model.DrawFromDistributionExceptZeroes(random, _nonDetectsHandlingMethod);
                     }

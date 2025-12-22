@@ -63,13 +63,13 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
                 model.FractionOfMrl = _settings.IsFallbackMrl ? _settings.FractionOfMrl : double.NaN;
 
                 if (compoundResidueCollection.NumberOfResidues > 0) {
-                    model.WeightedAgriculturalUseFraction = !(double.IsNaN(occurrenceFrequency)) ? occurrenceFrequency : 1D - compoundResidueCollection.FractionZeros;
-                    model.CorrectedWeightedAgriculturalUseFraction = model.WeightedAgriculturalUseFraction;
-                    model.CorrectedWeightedAgriculturalUseFraction = Math.Max(model.CorrectedWeightedAgriculturalUseFraction, compoundResidueCollection.FractionPositives);
-                    model.CorrectedWeightedAgriculturalUseFraction = Math.Min(model.CorrectedWeightedAgriculturalUseFraction, 1 - compoundResidueCollection.FractionZeros);
+                    model.OccurenceFraction = !(double.IsNaN(occurrenceFrequency)) ? occurrenceFrequency : 1D - compoundResidueCollection.FractionZeros;
+                    model.CorrectedOccurenceFraction = model.OccurenceFraction;
+                    model.CorrectedOccurenceFraction = Math.Max(model.CorrectedOccurenceFraction, compoundResidueCollection.FractionPositives);
+                    model.CorrectedOccurenceFraction = Math.Min(model.CorrectedOccurenceFraction, 1 - compoundResidueCollection.FractionZeros);
                 } else {
-                    model.WeightedAgriculturalUseFraction = !double.IsNaN(occurrenceFrequency) ? occurrenceFrequency : 1D;
-                    model.CorrectedWeightedAgriculturalUseFraction = model.WeightedAgriculturalUseFraction;
+                    model.OccurenceFraction = !double.IsNaN(occurrenceFrequency) ? occurrenceFrequency : 1D;
+                    model.CorrectedOccurenceFraction = model.OccurenceFraction;
                 }
 
                 parametersCalculated = model.CalculateParameters();

@@ -1,7 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Simulation.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation;
+using MCRA.Simulation.Objects;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels {
@@ -63,14 +63,14 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         public double FractionOfMrl { get; set; } = 1;
 
         /// <summary>
-        /// The agricultural use fraction for this food/substance combination.
+        /// The occurence fraction specifies how often the substance occurs, as a fraction between zero and one.
         /// </summary>
-        public double WeightedAgriculturalUseFraction { get; set; } = 1D;
+        public double OccurenceFraction { get; set; } = 1D;
 
         /// <summary>
-        /// The corrected weighted agricultural use fraction based on the fraction of measured positives.
+        /// See occurence fraction, but now based on the fraction of measured positives.
         /// </summary>
-        public double CorrectedWeightedAgriculturalUseFraction { get; set; } = 1D;
+        public double CorrectedOccurenceFraction { get; set; } = 1D;
 
         /// <summary>
         /// Fraction of the total number of samples that are positives.
@@ -164,11 +164,6 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         /// Gets an imputation value based on fraction times limit (LOR/LOQ/LOD)
         /// or by zero.
         /// </summary>
-        /// <param name="sampleSubstance"></param>
-        /// <param name="nonDetectsHandlingMethod"></param>
-        /// <param name="fractionOfLor"></param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
         public static double GetDeterministicImputationValue(
             SampleCompound sampleSubstance,
             NonDetectsHandlingMethod nonDetectsHandlingMethod,

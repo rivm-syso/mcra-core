@@ -50,8 +50,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
                 FractionOfLor = 1,
                 Residues = residues,
                 MaximumResidueLimit = mrl,
-                WeightedAgriculturalUseFraction = 0D,
-                CorrectedWeightedAgriculturalUseFraction = 0D,
+                OccurenceFraction = 0D,
+                CorrectedOccurenceFraction = 0D,
             };
 
             concentrationModel.CalculateParameters();
@@ -120,8 +120,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
                 FractionOfLor = 1,
                 Residues = residues,
                 MaximumResidueLimit = mrl,
-                WeightedAgriculturalUseFraction = 0.5,
-                CorrectedWeightedAgriculturalUseFraction = 0.5,
+                OccurenceFraction = 0.5,
+                CorrectedOccurenceFraction = 0.5,
             };
 
             concentrationModel.CalculateParameters();
@@ -135,7 +135,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             }
             var observed = generatedResidues.Count(r => r == mrl);
             var pObserved = (double)observed / repetitions;
-            var pExpected = concentrationModel.CorrectedWeightedAgriculturalUseFraction;
+            var pExpected = concentrationModel.CorrectedOccurenceFraction;
             var sigma = Math.Sqrt((pExpected * (1 - pExpected)) / repetitions);
             Assert.IsGreaterThan(pExpected - 1.96 * sigma, pObserved);
             Assert.IsLessThan(pExpected + 1.96 * sigma, pObserved);
@@ -168,8 +168,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
                 FractionOfLor = 1,
                 Residues = residues,
                 MaximumResidueLimit = mrl,
-                WeightedAgriculturalUseFraction = 0,
-                CorrectedWeightedAgriculturalUseFraction = 0,
+                OccurenceFraction = 0,
+                CorrectedOccurenceFraction = 0,
             };
 
             concentrationModel.CalculateParameters();
@@ -205,8 +205,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
                 FractionOfLor = 1,
                 Residues = residues,
                 MaximumResidueLimit = mrl,
-                WeightedAgriculturalUseFraction = 1,
-                CorrectedWeightedAgriculturalUseFraction = 1,
+                OccurenceFraction = 1,
+                CorrectedOccurenceFraction = 1,
             };
 
             concentrationModel.CalculateParameters();
@@ -242,8 +242,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
                 FractionOfLor = 1,
                 Residues = residues,
                 MaximumResidueLimit = mrl,
-                WeightedAgriculturalUseFraction = 0.5,
-                CorrectedWeightedAgriculturalUseFraction = 0.5,
+                OccurenceFraction = 0.5,
+                CorrectedOccurenceFraction = 0.5,
             };
 
             concentrationModel.CalculateParameters();
@@ -320,8 +320,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
                 FractionOfMrl = 0.5,
                 Residues = residues,
                 MaximumResidueLimit = mrl,
-                WeightedAgriculturalUseFraction = 0.5,
-                CorrectedWeightedAgriculturalUseFraction = 0.5,
+                OccurenceFraction = 0.5,
+                CorrectedOccurenceFraction = 0.5,
             };
 
             concentrationModel.CalculateParameters();

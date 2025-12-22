@@ -109,7 +109,7 @@ namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
 
         private static (double, double) getConcentration(Compound substance, ConcentrationModel model) {
             var concentration = model.GetDistributionMean(NonDetectsHandlingMethod.ReplaceByZero);
-            var occurrencePercentage = model.CorrectedWeightedAgriculturalUseFraction;
+            var occurrencePercentage = model.CorrectedOccurenceFraction;
             return (concentration, occurrencePercentage);
         }
     }

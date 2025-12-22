@@ -120,7 +120,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
             var draw = MultiVariateNormalDistribution.Draw(_estimates.ToList(), _vcovChol, random);
             Mu = draw[0];
             Sigma = Math.Sqrt(Math.Exp(draw[1]));
-            CorrectedWeightedAgriculturalUseFraction = UtilityFunctions.ILogit(draw[2]);
+            CorrectedOccurenceFraction = UtilityFunctions.ILogit(draw[2]);
             if (double.IsNaN(Mu)) {
                 Mu = _estimates[0];
             }

@@ -44,8 +44,8 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
             }
             try {
                 FractionPositives = Residues.FractionPositives;
-                FractionCensored = CorrectedWeightedAgriculturalUseFraction - FractionPositives;
-                FractionTrueZeros = 1 - CorrectedWeightedAgriculturalUseFraction;
+                FractionCensored = CorrectedOccurenceFraction - FractionPositives;
+                FractionTrueZeros = 1 - CorrectedOccurenceFraction;
 
                 _lor = Math.Log(Residues.CensoredValues.Max());
                 var logResidues = Residues.Positives.Select(c => Math.Log(c)).ToList();
@@ -67,14 +67,14 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         /// <param name="nonDetectsHandlingMethod"></param>
         /// <returns></returns>
         public override double DrawFromDistribution(IRandom random, NonDetectsHandlingMethod nonDetectsHandlingMethod) {
-            if (CorrectedWeightedAgriculturalUseFraction == 0) {
+            if (CorrectedOccurenceFraction == 0) {
                 return 0D;
             } else {
-                var pPositive = (Residues.NumberOfResidues > 0) ? FractionPositives : CorrectedWeightedAgriculturalUseFraction;
+                var pPositive = (Residues.NumberOfResidues > 0) ? FractionPositives : CorrectedOccurenceFraction;
                 if (random.NextDouble() < pPositive) {
                     return DrawFromTruncatedLogNormal(random, _lor);
                 }
-                var pCensoredNonDetect = (CorrectedWeightedAgriculturalUseFraction - pPositive) / (1 - pPositive);
+                var pCensoredNonDetect = (CorrectedOccurenceFraction - pPositive) / (1 - pPositive);
                 return DrawAccordingToNonDetectsHandlingMethod(random, nonDetectsHandlingMethod, pCensoredNonDetect);
             }
         }
@@ -86,10 +86,10 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         /// <param name="nonDetectsHandlingMethod"></param>
         /// <returns></returns>
         public override double DrawFromDistributionExceptZeroes(IRandom random, NonDetectsHandlingMethod nonDetectsHandlingMethod) {
-            if (CorrectedWeightedAgriculturalUseFraction == 0) {
+            if (CorrectedOccurenceFraction == 0) {
                 return 0D;
             } else {
-                var pPositive = FractionPositives / CorrectedWeightedAgriculturalUseFraction;
+                var pPositive = FractionPositives / CorrectedOccurenceFraction;
                 if (random.NextDouble() < pPositive) {
                     return DrawFromTruncatedLogNormal(random, _lor);
                 }
@@ -132,8 +132,8 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         /// <returns></returns>
         public override double GetDistributionMean(NonDetectsHandlingMethod nonDetectsHandlingMethod) {
             var replacementFactor = nonDetectsHandlingMethod != NonDetectsHandlingMethod.ReplaceByZero ? 1 : 0D;
-            var pPositive = (Residues.NumberOfResidues > 0) ? FractionPositives : CorrectedWeightedAgriculturalUseFraction;
-            var pCensoredNonDetect = (CorrectedWeightedAgriculturalUseFraction - pPositive);
+            var pPositive = (Residues.NumberOfResidues > 0) ? FractionPositives : CorrectedOccurenceFraction;
+            var pCensoredNonDetect = (CorrectedOccurenceFraction - pPositive);
             var weightedAverageNonDetects = 0d;
             if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByLOR) {
                 weightedAverageNonDetects = pCensoredNonDetect * Residues.CensoredValues.AverageOrZero() * FractionOfLor * replacementFactor;

@@ -81,7 +81,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             };
             var concentrationModel = new CMCensoredLogNormal() {
                 Residues = residues,
-                CorrectedWeightedAgriculturalUseFraction = 0.5,
+                CorrectedOccurenceFraction = 0.5,
             };
             Assert.IsFalse(concentrationModel.CalculateParameters());
         }
@@ -112,7 +112,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             );
 
             var concentrationModel = new CMCensoredLogNormal() {
-                CorrectedWeightedAgriculturalUseFraction = 1,
+                CorrectedOccurenceFraction = 1,
                 Residues = residues,
             };
 
@@ -165,13 +165,13 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             // Other
             //==========================================
 
-            var correctedAgriculturalUseFraction = Math.Max(concentrationModel.FractionPositives, concentrationModel.WeightedAgriculturalUseFraction);
+            var correctedAgriculturalUseFraction = Math.Max(concentrationModel.FractionPositives, concentrationModel.OccurenceFraction);
             var distributionMean = correctedAgriculturalUseFraction * Math.Exp(concentrationModel.Mu + 0.5 * Math.Pow(concentrationModel.Sigma, 2));
 
             Assert.AreEqual(distributionMean, concentrationModel.GetDistributionMean(concentrationModel.NonDetectsHandlingMethod));
             Assert.AreEqual(residues.FractionPositives, concentrationModel.FractionPositives, 1e-4);
-            Assert.AreEqual(1 - concentrationModel.CorrectedWeightedAgriculturalUseFraction, concentrationModel.FractionTrueZeros, 1e-4);
-            Assert.AreEqual(concentrationModel.CorrectedWeightedAgriculturalUseFraction - residues.FractionPositives, concentrationModel.FractionCensored, 1e-4);
+            Assert.AreEqual(1 - concentrationModel.CorrectedOccurenceFraction, concentrationModel.FractionTrueZeros, 1e-4);
+            Assert.AreEqual(concentrationModel.CorrectedOccurenceFraction - residues.FractionPositives, concentrationModel.FractionCensored, 1e-4);
         }
 
         /// <summary>
@@ -199,8 +199,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             );
 
             var concentrationModel = new CMCensoredLogNormal() {
-                WeightedAgriculturalUseFraction = 0.75,
-                CorrectedWeightedAgriculturalUseFraction = 0.75,
+                OccurenceFraction = 0.75,
+                CorrectedOccurenceFraction = 0.75,
                 Residues = residues,
             };
 
@@ -251,13 +251,13 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             // Other
             //==========================================
 
-            var correctedAgriculturalUseFraction = Math.Max(concentrationModel.FractionPositives, concentrationModel.WeightedAgriculturalUseFraction);
+            var correctedAgriculturalUseFraction = Math.Max(concentrationModel.FractionPositives, concentrationModel.OccurenceFraction);
             var distributionMean = correctedAgriculturalUseFraction * Math.Exp(concentrationModel.Mu + 0.5 * Math.Pow(concentrationModel.Sigma, 2));
 
             Assert.AreEqual(distributionMean, concentrationModel.GetDistributionMean(concentrationModel.NonDetectsHandlingMethod));
             Assert.AreEqual(residues.FractionPositives, concentrationModel.FractionPositives, 1e-4);
-            Assert.AreEqual(1 - concentrationModel.CorrectedWeightedAgriculturalUseFraction, concentrationModel.FractionTrueZeros, 1e-4);
-            Assert.AreEqual(concentrationModel.CorrectedWeightedAgriculturalUseFraction - residues.FractionPositives, concentrationModel.FractionCensored, 1e-4);
+            Assert.AreEqual(1 - concentrationModel.CorrectedOccurenceFraction, concentrationModel.FractionTrueZeros, 1e-4);
+            Assert.AreEqual(concentrationModel.CorrectedOccurenceFraction - residues.FractionPositives, concentrationModel.FractionCensored, 1e-4);
         }
 
         /// <summary>
@@ -287,7 +287,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
 
             var concentrationModel = new CMCensoredLogNormal() {
                 Residues = residues,
-                CorrectedWeightedAgriculturalUseFraction = useFraction,
+                CorrectedOccurenceFraction = useFraction,
             };
 
             Assert.IsTrue(concentrationModel.CalculateParameters());

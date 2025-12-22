@@ -41,15 +41,15 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
             }
 
             // If all censored values are assumed to be zeros, leaving us with no censored values; FAIL
-            if (CorrectedWeightedAgriculturalUseFraction <= Residues.FractionPositives) {
+            if (CorrectedOccurenceFraction <= Residues.FractionPositives) {
                 return false;
             }
 
             FractionPositives = Residues.FractionPositives;
-            FractionCensored = CorrectedWeightedAgriculturalUseFraction - Residues.FractionPositives;
+            FractionCensored = CorrectedOccurenceFraction - Residues.FractionPositives;
             FractionNonDetects = FractionCensored * Residues.FractionNonDetectValues / Residues.FractionCensoredValues;
             FractionNonQuantifications = FractionCensored * Residues.FractionNonQuantificationValues / Residues.FractionCensoredValues;
-            FractionTrueZeros = 1 - CorrectedWeightedAgriculturalUseFraction;
+            FractionTrueZeros = 1 - CorrectedOccurenceFraction;
 
             try {
                 var qCens = FractionCensored / Residues.FractionCensoredValues;
@@ -104,10 +104,10 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         /// <param name="nonDetectsHandlingMethod"></param>
         /// <returns></returns>
         public override double DrawFromDistribution(IRandom random, NonDetectsHandlingMethod nonDetectsHandlingMethod) {
-            if (CorrectedWeightedAgriculturalUseFraction == 0) {
+            if (CorrectedOccurenceFraction == 0) {
                 return 0D;
             } else {
-                var pPositive = CorrectedWeightedAgriculturalUseFraction;
+                var pPositive = CorrectedOccurenceFraction;
                 if (random.NextDouble() < pPositive) {
                     return UtilityFunctions.ExpBound(NormalDistribution.InvCDF(0, 1, random.NextDouble()) * Sigma + Mu);
                 }
@@ -141,7 +141,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         /// <param name="nonDetectsHandlingMethod"></param>
         /// <returns></returns>
         public override double GetDistributionMean(NonDetectsHandlingMethod nonDetectsHandlingMethod) {
-            var residue = CorrectedWeightedAgriculturalUseFraction * UtilityFunctions.ExpBound(Mu + 0.5 * Math.Pow(Sigma, 2));
+            var residue = CorrectedOccurenceFraction * UtilityFunctions.ExpBound(Mu + 0.5 * Math.Pow(Sigma, 2));
             return residue;
         }
 

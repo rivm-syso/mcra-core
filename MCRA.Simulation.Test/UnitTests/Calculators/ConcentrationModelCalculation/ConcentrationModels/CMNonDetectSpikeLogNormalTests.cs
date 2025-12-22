@@ -27,7 +27,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var concentrationModel = new CMNonDetectSpikeLogNormal() {
                 DesiredModelType = ConcentrationModelType.NonDetectSpikeLogNormal,
                 NonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByLOR,
-                CorrectedWeightedAgriculturalUseFraction = residues.FractionPositives,
+                CorrectedOccurenceFraction = residues.FractionPositives,
                 FractionOfLor = 1,
                 Residues = residues,
             };
@@ -299,7 +299,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
                 NonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByLOR,
                 FractionOfLor = 1,
                 Residues = residues,
-                CorrectedWeightedAgriculturalUseFraction = .5
+                CorrectedOccurenceFraction = .5
             };
 
             concentrationModel.CalculateParameters();
@@ -386,7 +386,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
                 DesiredModelType = ConcentrationModelType.NonDetectSpikeLogNormal,
                 NonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByLOR,
                 FractionOfLor = 1,
-                CorrectedWeightedAgriculturalUseFraction = .75,
+                CorrectedOccurenceFraction = .75,
                 Residues = residues,
             };
 

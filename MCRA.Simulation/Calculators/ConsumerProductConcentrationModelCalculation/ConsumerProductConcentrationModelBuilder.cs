@@ -64,7 +64,7 @@ namespace MCRA.Simulation.Calculators.ConsumerProductConcentrationModelCalculati
                 NonDetectsHandlingMethod = nonDetectsHandlingMethod,
                 Residues = substanceResidueCollection,
                 FractionOfLor = lorReplacementFactor,
-                CorrectedWeightedAgriculturalUseFraction = 1
+                CorrectedOccurenceFraction = 1
             };
             concentrationModel.CalculateParameters();
 
@@ -112,8 +112,8 @@ namespace MCRA.Simulation.Calculators.ConsumerProductConcentrationModelCalculati
             concentrationModel.Compound = distribution.Substance;
             concentrationModel.NonDetectsHandlingMethod = nonDetectsHandlingMethod;
             concentrationModel.DesiredModelType = concentrationModel.ModelType;
-            concentrationModel.WeightedAgriculturalUseFraction = occurrenceFraction;
-            concentrationModel.CorrectedWeightedAgriculturalUseFraction = occurrenceFraction;
+            concentrationModel.OccurenceFraction = occurrenceFraction;
+            concentrationModel.CorrectedOccurenceFraction = occurrenceFraction;
             concentrationModel.ConcentrationDistribution = new ConcentrationDistribution() {
                 Mean = distribution.Mean,
                 CV = distribution.CvVariability,

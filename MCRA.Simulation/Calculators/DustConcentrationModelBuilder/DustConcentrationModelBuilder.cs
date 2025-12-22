@@ -71,7 +71,7 @@ namespace MCRA.Simulation.Calculators.DustConcentrationModelCalculation {
                 NonDetectsHandlingMethod = nonDetectsHandlingMethod,
                 Residues = substanceResidueCollection,
                 FractionOfLor = lorReplacementFactor,
-                CorrectedWeightedAgriculturalUseFraction = 1,
+                CorrectedOccurenceFraction = 1,
                 FractionTrueZeros = (double)concentrations.Count() / zerosCount,
             };
             concentrationModel.CalculateParameters();
@@ -118,8 +118,8 @@ namespace MCRA.Simulation.Calculators.DustConcentrationModelCalculation {
             concentrationModel.Compound = distribution.Substance;
             concentrationModel.NonDetectsHandlingMethod = nonDetectsHandlingMethod;
             concentrationModel.DesiredModelType = concentrationModel.ModelType;
-            concentrationModel.WeightedAgriculturalUseFraction = occurrenceFraction;
-            concentrationModel.CorrectedWeightedAgriculturalUseFraction = occurrenceFraction;
+            concentrationModel.OccurenceFraction = occurrenceFraction;
+            concentrationModel.CorrectedOccurenceFraction = occurrenceFraction;
             concentrationModel.ConcentrationDistribution = new ConcentrationDistribution() {
                 Mean = distribution.Mean,
                 CV = distribution.CvVariability,

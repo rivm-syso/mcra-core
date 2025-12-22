@@ -201,7 +201,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
                 );
 
             var observedFractionPositives = compoundResidueCollections.First().Value.FractionPositives;
-            var computedUseFraction = concentrationModels.First().Value.WeightedAgriculturalUseFraction;
+            var computedUseFraction = concentrationModels.First().Value.OccurenceFraction;
             var expectedUseFraction = authorised || !restrictLorInmputationToAuthorisedUses ? 1 : observedFractionPositives;
             Assert.AreEqual(expectedUseFraction, computedUseFraction);
         }
