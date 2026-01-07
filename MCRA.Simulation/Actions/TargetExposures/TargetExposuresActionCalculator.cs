@@ -53,6 +53,13 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             _actionInputRequirements[ActionType.NonDietaryExposures].IsRequired = requireNonDietary;
             _actionInputRequirements[ActionType.NonDietaryExposures].IsVisible = requireNonDietary;
 
+            var requireConsumerProduct = ModuleConfig.ExposureType == ExposureType.Chronic &&
+                ModuleConfig.ExposureSources.Contains(ExposureSource.ConsumerProducts);
+            _actionInputRequirements[ActionType.ConsumerProductExposures].IsRequired = requireConsumerProduct;
+            _actionInputRequirements[ActionType.ConsumerProductExposures].IsVisible = requireConsumerProduct;
+            _actionInputRequirements[ActionType.ConsumerProducts].IsRequired = requireConsumerProduct;
+            _actionInputRequirements[ActionType.ConsumerProducts].IsVisible = requireConsumerProduct;
+
             var requireDietary = ModuleConfig.ExposureSources.Contains(ExposureSource.Diet);
             _actionInputRequirements[ActionType.DietaryExposures].IsRequired = requireDietary;
             _actionInputRequirements[ActionType.DietaryExposures].IsVisible = requireDietary;
@@ -74,12 +81,10 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             _actionInputRequirements[ActionType.AirExposures].IsRequired = requireAir;
             _actionInputRequirements[ActionType.AirExposures].IsVisible = requireAir;
 
-            var requireConsumerProduct = ModuleConfig.ExposureType == ExposureType.Chronic &&
-                ModuleConfig.ExposureSources.Contains(ExposureSource.ConsumerProducts);
-            _actionInputRequirements[ActionType.ConsumerProductExposures].IsRequired = requireConsumerProduct;
-            _actionInputRequirements[ActionType.ConsumerProductExposures].IsVisible = requireConsumerProduct;
-            _actionInputRequirements[ActionType.ConsumerProducts].IsRequired = requireConsumerProduct;
-            _actionInputRequirements[ActionType.ConsumerProducts].IsVisible = requireConsumerProduct;
+            var requireIndividuals = ModuleConfig.ExposureType == ExposureType.Chronic &&
+                ModuleConfig.IndividualReferenceSet == ReferenceIndividualSet.Individuals;
+            _actionInputRequirements[ActionType.Individuals].IsRequired = requireIndividuals;
+            _actionInputRequirements[ActionType.Individuals].IsVisible = requireIndividuals;
 
             _actionInputRequirements[ActionType.KineticModels].IsRequired = false;
             _actionInputRequirements[ActionType.KineticModels].IsVisible = ModuleConfig.RequireAbsorptionFactors;
@@ -306,31 +311,35 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             ExposureUnitTriple externalExposureUnit;
             ICollection<IIndividualDay> referenceIndividualDays;
             switch (ModuleConfig.IndividualReferenceSet) {
-                case ExposureSource.Diet:
+                case ReferenceIndividualSet.Diet:
                     externalExposureUnit = data.DietaryExposureUnit.ExposureUnit;
                     referenceIndividualDays = [.. data.DietaryIndividualDayIntakes.Cast<IIndividualDay>()];
                     break;
-                case ExposureSource.Air:
+                case ReferenceIndividualSet.Air:
                     externalExposureUnit = data.AirExposureUnit;
                     referenceIndividualDays = [.. data.IndividualAirExposures.Cast<IIndividualDay>()];
                     break;
-                case ExposureSource.Soil:
+                case ReferenceIndividualSet.Soil:
                     externalExposureUnit = data.SoilExposureUnit;
                     referenceIndividualDays = [.. data.IndividualSoilExposures.Cast<IIndividualDay>()];
                     break;
-                case ExposureSource.Dust:
+                case ReferenceIndividualSet.Dust:
                     externalExposureUnit = data.DustExposureUnit;
                     referenceIndividualDays = data.IndividualDustExposures.
                         Select(r => new SimulatedIndividualDay(r.SimulatedIndividual))
                         .Cast<IIndividualDay>()
                         .ToList();
                     break;
-                case ExposureSource.ConsumerProducts:
+                case ReferenceIndividualSet.ConsumerProducts:
                     externalExposureUnit = data.ConsumerProductExposureUnit;
                     referenceIndividualDays = data.ConsumerProductIndividualExposures
                         .Select(r => new SimulatedIndividualDay(r.SimulatedIndividual))
                         .Cast<IIndividualDay>()
                         .ToList();
+                    break;
+                case ReferenceIndividualSet.Individuals:
+                    externalExposureUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
+                    referenceIndividualDays = data.Individuals;
                     break;
                 default:
                     throw new NotImplementedException();
@@ -467,7 +476,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             if (ModuleConfig.ExposureSources.Contains(ExposureSource.ConsumerProducts)) {
                 localProgress.Update("Matching consumer product exposures");
                 ExternalExposureCollection cpExposureCollection = null;
-                if (ModuleConfig.IndividualReferenceSet == ExposureSource.ConsumerProducts) {
+                if (ModuleConfig.IndividualReferenceSet == ReferenceIndividualSet.ConsumerProducts) {
                     cpExposureCollection = new ExternalExposureCollection {
                         SubstanceAmountUnit = targetUnit.SubstanceAmountUnit,
                         ExposureSource = ExposureSource.ConsumerProducts,
@@ -504,7 +513,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             if (ModuleConfig.ExposureSources.Contains(ExposureSource.Diet)) {
                 localProgress.Update("Matching dietary exposures");
                 ExternalExposureCollection dietExposureCollection = null;
-                if (ModuleConfig.IndividualReferenceSet == ExposureSource.Diet) {
+                if (ModuleConfig.IndividualReferenceSet == ReferenceIndividualSet.Diet) {
                     dietExposureCollection = new ExternalExposureCollection {
                         SubstanceAmountUnit = data.DietaryExposureUnit.SubstanceAmountUnit,
                         ExposureSource = ExposureSource.Diet,
@@ -545,7 +554,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 );
 
             // Create kinetic model calculators
-            var kineticModelCalculatorFactory = new KineticConversionCalculatorFactory(
+            var kineticConversionCalculatorFactory = new KineticConversionCalculatorFactory(
                 data.KineticModelInstances,
                 data.KineticConversionFactorModels,
                 data.AbsorptionFactors,
@@ -571,7 +580,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 LifetimeYears = ModuleConfig.LifetimeYears,
                 BodyWeightCorrected = ModuleConfig.BodyWeightCorrected,
             };
-            var kineticModelCalculators = kineticModelCalculatorFactory
+            var kineticModelCalculators = kineticConversionCalculatorFactory
                 .CreateHumanKineticModels(data.ActiveSubstances, pbkSimulationSettings);
 
             localProgress.Update("Computing internal exposures", 20);
@@ -581,7 +590,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             var targetExposuresCalculator = new InternalTargetExposuresCalculator(kineticConversionCalculatorProvider);
 
             var seedKineticModelParameterSampling = RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.BME_DrawKineticModelParameters);
-            var kineticModelParametersRandomGenerator = new McraRandomGenerator(seedKineticModelParameterSampling);
+            var kineticConversionRandomGenerator = new McraRandomGenerator(seedKineticModelParameterSampling);
             if (ModuleConfig.ExposureType == ExposureType.Acute) {
                 // Compute target exposures
                 var aggregateIndividualDayExposures = targetExposuresCalculator
@@ -591,13 +600,13 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         ModuleConfig.ExposureRoutes,
                         externalExposureUnit,
                         [targetUnit],
-                        kineticModelParametersRandomGenerator,
+                        kineticConversionRandomGenerator,
                         progressReport.NewProgressState(80)
                     );
                 result.AggregateIndividualDayExposures = aggregateIndividualDayExposures;
 
                 // Compute kinetic conversion factors
-                kineticModelParametersRandomGenerator.Reset();
+                kineticConversionRandomGenerator.Reset();
                 var kineticConversionFactorCalculator = new KineticConversionFactorsCalculator(kineticConversionCalculatorProvider);
                 var kineticConversionFactors = kineticConversionFactorCalculator
                     .ComputeKineticConversionFactors(
@@ -606,7 +615,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         combinedExternalIndividualDayExposures,
                         externalExposureUnit,
                         targetUnit,
-                        kineticModelParametersRandomGenerator
+                        kineticConversionRandomGenerator
                     );
                 result.KineticConversionFactors = kineticConversionFactors;
 
@@ -634,13 +643,13 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         ModuleConfig.ExposureRoutes,
                         externalExposureUnit,
                         [targetUnit],
-                        kineticModelParametersRandomGenerator,
+                        kineticConversionRandomGenerator,
                         progressReport.NewProgressState(80)
                     );
                 result.AggregateIndividualExposures = aggregateIndividualExposures;
 
                 // Compute kinetic conversion factors
-                kineticModelParametersRandomGenerator.Reset();
+                kineticConversionRandomGenerator.Reset();
                 var kineticConversionFactorCalculator = new KineticConversionFactorsCalculator(kineticConversionCalculatorProvider);
                 var kineticConversionFactors = kineticConversionFactorCalculator
                     .ComputeKineticConversionFactors(
@@ -649,7 +658,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         externalIndividualExposures,
                         externalExposureUnit,
                         targetUnit,
-                        kineticModelParametersRandomGenerator
+                        kineticConversionRandomGenerator
                     );
                 result.KineticConversionFactors = kineticConversionFactors;
             }

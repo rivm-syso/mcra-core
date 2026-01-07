@@ -42,7 +42,6 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
         [DataRow("DietaryExposures")]
         [DataRow("DustExposures")]
         [DataRow("SoilExposures")]
-        [DataRow("OtherNonDietary")]
         public void Patch_10_01_0007_00_IndividualReferenceSet_RenameExposureSourceValues(string oldEnumValue) {
             ModuleSettingsType moduleSettings = [
                 ("TargetExposures",
@@ -57,7 +56,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
 
             var conf = settingsDto.GetModuleConfiguration(ActionType.TargetExposures) as TargetExposuresModuleConfig;
             Assert.IsNotNull(conf);
-            var values = Enum.GetValues<ExposureSource>();
+            var values = Enum.GetValues<ReferenceIndividualSet>();
             Assert.IsTrue(values.Contains(conf.IndividualReferenceSet));
         }
     }

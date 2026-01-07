@@ -43,12 +43,13 @@ namespace MCRA.Simulation.Calculators.IndividualDaysGenerator {
         public static List<IIndividualDay> CreateSimulatedIndividualDays(
             ICollection<SimulatedIndividual> individuals
         ) {
+            var individualDayCount = 0;
             var result = individuals
                 .SelectMany(
                     i => Enumerable.Range(0, i.NumberOfDaysInSurvey),
                     (i, d) => (IIndividualDay)new SimulatedIndividualDay(i) {
                         Day = $"{d}",
-                        SimulatedIndividualDayId = i.Id * d + d,
+                        SimulatedIndividualDayId = individualDayCount++,
                     })
                 .ToList();
             return result;

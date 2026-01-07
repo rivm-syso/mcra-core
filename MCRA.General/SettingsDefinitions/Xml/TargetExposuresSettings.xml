@@ -24,8 +24,8 @@
     <Description>
       Specifies the exposure sources used as reference set for matching individuals.
     </Description>
-    <ValueType>ExposureSource</ValueType>
-    <SystemType>ExposureSource</SystemType>
+    <ValueType>ReferenceIndividualSet</ValueType>
+    <SystemType>ReferenceIndividualSet</SystemType>
   </SettingsItem>
   <SettingsItem>
     <Id>StandardisedNormalisedUrine</Id>

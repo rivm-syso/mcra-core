@@ -36,7 +36,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         public static List<Individual> Create(
             int number,
             int daysInSurvey,
-            IRandom random,
+            IRandom randomSamplingWeight,
             bool useSamplingWeights = false,
             string codeSurvey = null,
             IRandom randomBodyWeight = null
@@ -47,7 +47,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                     Code = i.ToString(),
                     NumberOfDaysInSurvey = daysInSurvey,
                     BodyWeight = 75 + (double)((randomBodyWeight?.NextDouble() - 0.5) * 20 ?? 0),
-                    SamplingWeight = useSamplingWeights ? random.NextDouble() * 5 : 1d,
+                    SamplingWeight = useSamplingWeights ? randomSamplingWeight.NextDouble() * 5 : 1d,
                     CodeFoodSurvey = codeSurvey
                 };
                 individuals.Add(individual);

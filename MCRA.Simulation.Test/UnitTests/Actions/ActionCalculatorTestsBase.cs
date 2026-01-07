@@ -185,8 +185,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 .Except([calculator.ActionType]);
             var missingModulesString = string.Join(", ", missingInputRequirements.Select(r => r.ToString()));
 
-            // TODO: the following assert will reveal a lot of inconsistencies;
-            // uncomment this assertion once these inconsistencies have been addressed
             Assert.AreEqual(0, missingInputRequirements.Count(), $"Calculator uses data of modules {missingModulesString} while this is not specified in the module definition.");
 
             var header = new SummaryToc(new InMemorySectionManager());

@@ -36,9 +36,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             // Reference population and matching
             section.SummarizeSetting(SettingsItemType.IndividualReferenceSet, _configuration.IndividualReferenceSet);
             if (_configuration.ExposureSources.Count > 1) {
-                if (_configuration.ExposureSources.Contains(ExposureSource.OtherNonDiet)
-                    && _configuration.IndividualReferenceSet != ExposureSource.OtherNonDiet
-                ) {
+                if (_configuration.ExposureSources.Contains(ExposureSource.OtherNonDiet)) {
                     section.SummarizeSetting(SettingsItemType.NonDietaryPopulationAlignmentMethod, _configuration.NonDietaryPopulationAlignmentMethod);
                     if (_configuration.NonDietaryPopulationAlignmentMethod == PopulationAlignmentMethod.MatchRandom) {
                         section.SummarizeSetting(SettingsItemType.NonDietaryAgeAlignment, _configuration.NonDietaryAgeAlignment);
@@ -46,7 +44,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     }
                 }
                 if (_configuration.ExposureSources.Contains(ExposureSource.Dust)
-                    && _configuration.IndividualReferenceSet != ExposureSource.Dust
+                    && _configuration.IndividualReferenceSet != ReferenceIndividualSet.Dust
                 ) {
                     section.SummarizeSetting(SettingsItemType.DustPopulationAlignmentMethod, _configuration.DustPopulationAlignmentMethod);
                     if (_configuration.DustPopulationAlignmentMethod == PopulationAlignmentMethod.MatchRandom) {
@@ -61,7 +59,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     }
                 }
                 if (_configuration.ExposureSources.Contains(ExposureSource.Soil)
-                    && _configuration.IndividualReferenceSet != ExposureSource.Soil
+                    && _configuration.IndividualReferenceSet != ReferenceIndividualSet.Soil
                 ) {
                     section.SummarizeSetting(SettingsItemType.SoilPopulationAlignmentMethod, _configuration.SoilPopulationAlignmentMethod);
                     if (_configuration.SoilPopulationAlignmentMethod == PopulationAlignmentMethod.MatchRandom) {
@@ -76,7 +74,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     }
                 }
                 if (_configuration.ExposureSources.Contains(ExposureSource.Air)
-                    && _configuration.IndividualReferenceSet != ExposureSource.Air
+                    && _configuration.IndividualReferenceSet != ReferenceIndividualSet.Air
                 ) {
                     section.SummarizeSetting(SettingsItemType.AirPopulationAlignmentMethod, _configuration.AirPopulationAlignmentMethod);
                     if (_configuration.AirPopulationAlignmentMethod == PopulationAlignmentMethod.MatchRandom) {
@@ -91,7 +89,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     }
                 }
                 if (_configuration.ExposureSources.Contains(ExposureSource.ConsumerProducts)
-                   && _configuration.IndividualReferenceSet != ExposureSource.ConsumerProducts
+                   && _configuration.IndividualReferenceSet != ReferenceIndividualSet.ConsumerProducts
                 ) {
                     section.SummarizeSetting(SettingsItemType.ConsumerProductPopulationAlignmentMethod, _configuration.ConsumerProductPopulationAlignmentMethod);
                     if (_configuration.ConsumerProductPopulationAlignmentMethod == PopulationAlignmentMethod.MatchRandom) {
@@ -106,7 +104,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     }
                 }
                 if (_configuration.ExposureSources.Contains(ExposureSource.Diet)
-                    && _configuration.IndividualReferenceSet != ExposureSource.Diet
+                    && _configuration.IndividualReferenceSet != ReferenceIndividualSet.Diet
                 ) {
                     section.SummarizeSetting(SettingsItemType.DietPopulationAlignmentMethod, _configuration.DietPopulationAlignmentMethod);
                     if (_configuration.DietPopulationAlignmentMethod == PopulationAlignmentMethod.MatchRandom) {

@@ -5,7 +5,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
     public class ExternalUpperExposureDistributionSectionView : SectionView<ExternalUpperExposureDistributionSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
 
-            if (Model.IntakeDistributionBins.Count > 0) {
+            if (Model.IntakeDistributionBins?.Count > 0) {
                 var chartCreator = new ExternalUpperExposureDistributionChartCreator(Model, ViewBag.GetUnit("ExternalExposureUnit"));
                 sb.AppendChart(
                     "ExternalUpperExposureDistributionChart",

@@ -2085,6 +2085,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             var externalIndividualDayExposures = externalExposureCollection.ExternalIndividualDayExposures;
             var relativePotencyFactors = data.CorrectedRelativePotencyFactors
                 ?? data.ActiveSubstances.ToDictionary(r => r, r => 1D);
+            var membershipProbabilities = data.MembershipProbabilities
+                ?? data.ActiveSubstances.ToDictionary(r => r, r => 1D);
 
             var coExposures = externalIndividualDayExposures
                 .AsParallel()
@@ -2101,7 +2103,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 coExposures,
                 externalIndividualDayExposures,
                 relativePotencyFactors,
-                data.MembershipProbabilities,
+                membershipProbabilities,
                 GriddingFunctions.GetPlotPercentages(),
                 _configuration.IsPerPerson,
                 _configuration.UncertaintyLowerBound,
@@ -2115,7 +2117,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 coExposures,
                 externalIndividualDayExposures,
                 relativePotencyFactors,
-                data.MembershipProbabilities,
+                membershipProbabilities,
                 _configuration.VariabilityUpperTailPercentage,
                 _configuration.IsPerPerson,
                 _configuration.UncertaintyLowerBound,
@@ -2130,7 +2132,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             var externalExposures = externalIndividualDayExposures
                 .Select(c => c.GetExposure(
                     relativePotencyFactors,
-                    data.MembershipProbabilities,
+                    membershipProbabilities,
                     _configuration.IsPerPerson)
                 )
                 .ToList();

@@ -32,17 +32,18 @@
     <Entity>Substances</Entity>
   </Entities>
   <CalculationInputs>
+    <Input>ActiveSubstances</Input>
     <Input>DietaryExposures</Input>
-    <Input>NonDietaryExposures</Input>
+    <Input>ConsumerProductExposures</Input>
+    <Input>AirExposures</Input>
     <Input>DustExposures</Input>
     <Input>SoilExposures</Input>
-    <Input>ActiveSubstances</Input>
-    <Input>RelativePotencyFactors</Input>
+    <Input>NonDietaryExposures</Input>
+    <Input>Individuals</Input>
     <Input>KineticModels</Input>
     <Input>KineticConversionFactors</Input>
     <Input>PbkModels</Input>
-    <Input>AirExposures</Input>
-    <Input>ConsumerProductExposures</Input>
+    <Input>RelativePotencyFactors</Input>
   </CalculationInputs>
   <LoopEntities>
     <LoopEntity>Compounds</LoopEntity>

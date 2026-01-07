@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>ReferenceIndividualSet</Id>
+  <Name>Reference individual set</Name>
+  <UndefinedValue>-1</UndefinedValue>
+  <Description>
+    Reference individual set.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>Diet</Id>
+      <Name>Diet</Name>
+      <ShortName>Diet</ShortName>
+      <Description>
+        Individuals from the dietary exposures module.
+      </Description>
+      <Aliases>
+        <Alias>Diet</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>ConsumerProducts</Id>
+      <Name>Consumer products</Name>
+      <ShortName>Consumer products</ShortName>
+      <Description>
+        Individuals from the consumer product exposures module.
+      </Description>
+      <Aliases>
+        <Alias>ConsumerProducts</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Air</Id>
+      <Name>Air</Name>
+      <ShortName>Air</ShortName>
+      <Description>
+        Individuals from the air exposures module.
+      </Description>
+      <Aliases>
+        <Alias>Air</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Dust</Id>
+      <Name>Dust</Name>
+      <ShortName>Dust</ShortName>
+      <Description>
+        Individuals from the dust exposures module.
+      </Description>
+      <Aliases>
+        <Alias>Dust</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Soil</Id>
+      <Name>Soil</Name>
+      <ShortName>Soil</ShortName>
+      <Description>
+        Individuals from the soil exposures module.
+      </Description>
+      <Aliases>
+        <Alias>Soil</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Individuals</Id>
+      <Name>Individuals</Name>
+      <ShortName>Individuals</ShortName>
+      <Description>
+        Individuals collected/generated in the individuals module.
+      </Description>
+      <Aliases>
+        <Alias>Individuals</Alias>
+      </Aliases>
+    </Unit>
+  </Units>
+</UnitDefinition>
