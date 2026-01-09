@@ -21,7 +21,7 @@ using Ver = ThisAssembly.Git.BaseVersion;
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Wageningen University and Research")]
-[assembly: AssemblyCopyright("Copyright © Wageningen University and Research 2025")]
+[assembly: AssemblyCopyright("Copyright © Wageningen University and Research 2026")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
