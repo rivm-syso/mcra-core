@@ -18,5 +18,12 @@ namespace MCRA.Simulation.Calculators.OccupationalScenarioExposureCalculation {
 
         public List<OccupationalScenarioTaskExposure> TaskExposures { get; set; }
 
+        public double GetAverageDailyExposure() {
+            if (Unit.IsSystemicDose() && Unit.TimeUnit == TimeUnit.Days) {
+                return Value;
+            } else {
+                throw new NotImplementedException();
+            }
+        }
     }
 }

@@ -7,7 +7,7 @@
   <TableGroup>OccupationalTaskExposures</TableGroup>
   <IsAdvancedActionType>true</IsAdvancedActionType>
   <Description>
-    Occupational task exposures are....
+    Occupational task exposures are exposures associated with specific job tasks performed by workers.
   </Description>
   <ShortDescription>
     Occupational task exposures.

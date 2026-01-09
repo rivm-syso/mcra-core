@@ -28,7 +28,10 @@ namespace MCRA.Simulation.Calculators.OccupationalTaskModelCalculation {
             TimeUnit = timeUnit;
         }
 
-        public OccupationalExposureUnit(JobTaskExposureUnit jobTaskExposureUnit, JobTaskExposureEstimateType estimateType) {
+        public OccupationalExposureUnit(
+            JobTaskExposureUnit jobTaskExposureUnit,
+            JobTaskExposureEstimateType estimateType
+        ) {
             SubstanceAmountUnit = jobTaskExposureUnit.GetSubstanceAmountUnit();
             Denominator = jobTaskExposureUnit.GetUnitDenominator();
             EstimateType = estimateType;
@@ -58,6 +61,16 @@ namespace MCRA.Simulation.Calculators.OccupationalTaskModelCalculation {
                 result += $" - {EstimateType.GetShortDisplayName()}";
             }
             return result;
+        }
+
+        public bool IsSystemicDose() {
+            // TODO: not really the right way to check this.
+            // Perhaps add separate enum (SystemicDose / DermalExposure / AirConcentration).
+            if (Denominator == JobTaskExposureUnitDenominator.None) {
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 }

@@ -6,6 +6,8 @@
   <ModuleType>CalculatorModule</ModuleType>
   <CanCompute>true</CanCompute>
   <IsAdvancedActionType>true</IsAdvancedActionType>
+  <HasUncertaintyAnalysis>false</HasUncertaintyAnalysis>
+  <HasUncertaintyFactorial>false</HasUncertaintyFactorial>
   <Description>
     Occupational exposures are the amounts of substances to which individuals are exposed
     while performing job tasks. Occupational exposures are long-term/chronic exposures,
@@ -23,6 +25,7 @@
   </Entities>
   <SelectionInputs>
     <Input>ActiveSubstances</Input>
+    <Input>Individuals</Input>
   </SelectionInputs>
   <CalculationSettings>
     <CalculationSetting source="Action">RandomSeed</CalculationSetting>

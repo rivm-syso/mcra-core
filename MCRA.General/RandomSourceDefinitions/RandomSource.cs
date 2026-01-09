@@ -69,7 +69,7 @@
         // Exposures: draw simulated individuals
         SIM_DrawIndividuals = 35,
         // Diet exposures: draw diet exposures
-        DIE_DrawDietExposures= 36,
+        DIE_DrawDietExposures = 36,
         // Consumer product exposures: Consumer product exposure determinants
         CPE_ConsumerProductExposureDeterminants = 37,
         // Consumer product exposures: draw individuals
@@ -80,5 +80,9 @@
         ERF_DrawResponseTypeFunctionDistributions = 40,
         // Occupational exposures: draw occupational exposures
         OCE_DrawOccupationalExposures = 41,
+        // Internal exposures: draw/match occupation exposures
+        IE_DrawOccupationalExposures = 42,
+        // Occupational exposures: draw/match occupation exposures
+        OE_DrawOccupationalExposures = 43
     }
 }

@@ -1,5 +1,4 @@
 ﻿using MCRA.General;
-using MCRA.Simulation.Calculators.OccupationalScenarioExposureCalculation;
 using MCRA.Simulation.Calculators.OccupationalTaskModelCalculation;
 using MCRA.Utils.ExtensionMethods;
 

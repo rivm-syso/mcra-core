@@ -10,7 +10,8 @@ namespace MCRA.Simulation.Calculators.OccupationalScenarioExposureCalculation {
             ICollection<OccupationalTaskExposure> occupationalTaskExposures,
             List<ExposureRoute> routes,
             OccupationalExposureModelType exposureGenerationMethod,
-            double selectPercentage) {
+            double selectPercentage
+        ) {
             var taskModels = new List<IOccupationalTaskExposureModel>();
             var occupationalModelFactory = new OccupationalTaskExposureModelFactory(
                 exposureGenerationMethod,

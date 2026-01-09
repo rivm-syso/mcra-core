@@ -37,6 +37,8 @@
     <Input>DustExposures</Input>
     <Input>SoilExposures</Input>
     <Input>NonDietaryExposures</Input>
+    <Input>OccupationalTaskExposures</Input>
+    <Input>OccupationalExposures</Input>
     <Input>Individuals</Input>
     <Input>KineticModels</Input>
     <Input>KineticConversionFactors</Input>

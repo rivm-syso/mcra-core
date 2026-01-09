@@ -5,6 +5,7 @@ using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.TargetExposures;
 using MCRA.Simulation.Calculators.IntakeModelling;
 using MCRA.Simulation.Calculators.KineticConversionFactorModels;
+using MCRA.Simulation.Objects;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 
@@ -583,6 +584,63 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.NonDietaryPopulationAlignmentMethod = PopulationAlignmentMethod.MatchIndividualID;
             var calculator = new TargetExposuresActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, "TestAcuteInternalAggregateNomPBKSingle");
+
+            var factorialSet = new UncertaintyFactorialSet(UncertaintySource.Individuals);
+            var uncertaintySourceGenerators = new Dictionary<UncertaintySource, IRandom> {
+                [UncertaintySource.Individuals] = random
+            };
+
+            TestRunUpdateSummarizeUncertainty(calculator, data, header, random, factorialSet, uncertaintySourceGenerators, reportFileName: "TestAcuteInternalAggregate");
+        }
+
+        [TestMethod]
+        public void TargetExposuresActionCalculator_TestChronicOccupational() {
+            var seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var substances = FakeSubstancesGenerator.Create(1);
+            var individuals = FakeIndividualsGenerator.Create(
+                200,
+                2,
+                randomSamplingWeight: random,
+                useSamplingWeights: true,
+                randomBodyWeight: random
+            );
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+
+            var routes = new[] { ExposureRoute.Dermal, ExposureRoute.Inhalation };
+
+            var scenarios = FakeOccupationalExposuresGenerator.CreateScenarios([1, 2, 2], random);
+            var occupationalScenarioExposures = FakeOccupationalExposuresGenerator.CreateOccupationalScenarioExposures(
+                scenarios,
+                routes,
+                substances,
+                SubstanceAmountUnit.Micrograms,
+                isSystemic: true,
+                random
+            );
+            var absorptionFactors = FakeAbsorptionFactorsGenerator.Create(
+                routes,
+                substances
+            );
+
+            var data = new ActionData() {
+                ActiveSubstances = substances,
+                Individuals = [.. individualDays.Cast<IIndividualDay>()],
+                OccupationalScenarios = scenarios.ToDictionary(r => r.Code),
+                OccupationalScenarioExposures = occupationalScenarioExposures,
+                AbsorptionFactors = absorptionFactors
+            };
+
+            var project = new ProjectDto();
+            var config = project.TargetExposuresSettings;
+            config.ExposureType = ExposureType.Chronic;
+            config.ExposureRoutes = [.. routes];
+            config.ExposureSources = [ExposureSource.Occupational];
+            config.TargetDoseLevelType = TargetLevelType.Systemic;
+            config.IndividualReferenceSet = ReferenceIndividualSet.Individuals;
+            config.Cumulative = false;
+            var calculator = new TargetExposuresActionCalculator(project);
+            var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, "TestChronicOccupational");
 
             var factorialSet = new UncertaintyFactorialSet(UncertaintySource.Individuals);
             var uncertaintySourceGenerators = new Dictionary<UncertaintySource, IRandom> {

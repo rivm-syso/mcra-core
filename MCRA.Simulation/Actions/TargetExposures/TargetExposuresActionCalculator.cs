@@ -14,6 +14,7 @@ using MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.ConsumerPr
 using MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.DietExposureGenerator;
 using MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.DustExposureGenerators;
 using MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.NonDietaryExposureGenerators;
+using MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.OccupationalExposureGenerators;
 using MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.SoilExposureGenerators;
 using MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculation;
 using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
@@ -76,6 +77,13 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 ModuleConfig.ExposureSources.Contains(ExposureSource.Air);
             _actionInputRequirements[ActionType.AirExposures].IsRequired = requireAir;
             _actionInputRequirements[ActionType.AirExposures].IsVisible = requireAir;
+
+            var requireOccupational = ModuleConfig.ExposureType == ExposureType.Chronic &&
+                ModuleConfig.ExposureSources.Contains(ExposureSource.Occupational);
+            _actionInputRequirements[ActionType.OccupationalTaskExposures].IsRequired = requireOccupational;
+            _actionInputRequirements[ActionType.OccupationalTaskExposures].IsVisible = requireOccupational;
+            _actionInputRequirements[ActionType.OccupationalExposures].IsRequired = requireOccupational;
+            _actionInputRequirements[ActionType.OccupationalExposures].IsVisible = requireOccupational;
 
             var requireIndividuals = ModuleConfig.ExposureType == ExposureType.Chronic &&
                 ModuleConfig.IndividualReferenceSet == ReferenceIndividualSet.Individuals;
@@ -455,7 +463,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     ModuleConfig.AirAgeAlignmentMethod,
                     ModuleConfig.AirAgeBins
                 );
-
                 var seedAirExposuresSampling = RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.AIE_DrawAirExposures);
                 var airExposureCollection = airExposureCalculator
                     .Generate(
@@ -491,7 +498,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         ModuleConfig.ConsumerProductAgeAlignmentMethod,
                         ModuleConfig.ConsumerProductAgeBins
                     );
-
                     var seedCPExposuresSampling = RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.CPE_ConsumerProductExposureDeterminants);
                     cpExposureCollection = cpExposureCalculator
                         .Generate(
@@ -538,6 +544,27 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         );
                 }
                 externalExposureCollections.Add(dietExposureCollection);
+            }
+
+            // Align occupational exposures
+            if (ModuleConfig.ExposureSources.Contains(ExposureSource.Occupational)) {
+                localProgress.Update("Matching occupational exposures");
+                var seedOccupationalExposuresSampling = RandomUtils.CreateSeed(
+                    ModuleConfig.RandomSeed,
+                    (int)RandomSource.IE_DrawOccupationalExposures
+                );
+                var generator = new OccupationalExposureGenerator();
+                var occupationalExposureCollection = generator
+                    .Generate(
+                        referenceIndividualDays,
+                        data.ActiveSubstances,
+                        data.OccupationalScenarios.Values,
+                        data.OccupationalScenarioExposures,
+                        targetUnit.SubstanceAmountUnit,
+                        ModuleConfig.ExposureType,
+                        seedOccupationalExposuresSampling
+                    );
+                externalExposureCollections.Add(occupationalExposureCollection);
             }
 
             // Combine all external exposures

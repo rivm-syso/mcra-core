@@ -1,6 +1,9 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.General.UnitDefinitions.Units;
 using MCRA.Simulation.Calculators.OccupationalExposureCalculation;
+using MCRA.Simulation.Calculators.OccupationalScenarioExposureCalculation;
+using MCRA.Simulation.Calculators.OccupationalTaskModelCalculation;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
@@ -30,6 +33,47 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                         Tasks = scenarioTaskLists[j]
                     };
                     result.Add(scenario);
+                }
+            }
+            return result;
+        }
+
+        public static List<OccupationalScenarioExposure> CreateOccupationalScenarioExposures(
+            ICollection<OccupationalScenario> scenarios,
+            ICollection<ExposureRoute> routes,
+            ICollection<Compound> substances,
+            SubstanceAmountUnit substanceAmountUnit,
+            bool isSystemic,
+            IRandom random
+        ) {
+            if (!isSystemic) {
+                throw new NotImplementedException("Fake occupational scenario exposures generation not implemented for non-systemic.");
+            }
+            var result = new List<OccupationalScenarioExposure>();
+            foreach (var substance in substances) {
+                foreach (var route in routes) {
+                    foreach (var scenario in scenarios) {
+                        var mean = random.NextDouble(1, 5);
+                        var upper = mean + random.NextDouble(1, 5);
+                        var distribution = LogNormalDistribution.FromMeanAndUpper(mean, upper);
+                        var unitDenominator = JobTaskExposureUnitDenominator.None;
+                        var estimateType = JobTaskExposureEstimateType.Undefined;
+                        var timeUnit = TimeUnit.Days;
+                        var record = new OccupationalScenarioExposure() {
+                            Scenario = scenario,
+                            Route = route,
+                            Substance = substance,
+                            TaskExposures = null, // Don't fake task exposures here
+                            Unit = new OccupationalExposureUnit(
+                                substanceAmountUnit,
+                                unitDenominator,
+                                estimateType,
+                                timeUnit
+                            ),
+                            Value = distribution.Draw(random)
+                        };
+                        result.Add(record);
+                    }
                 }
             }
             return result;

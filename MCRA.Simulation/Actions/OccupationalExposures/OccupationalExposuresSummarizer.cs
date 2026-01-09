@@ -6,7 +6,8 @@ using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.Actions.OccupationalExposures {
     public enum OccupationalExposuresSections {
-        OccupationalExposuresSection,
+        OccupationalScenarioExposuresSection,
+        OccupationalIndividualExposuresSection,
         OccupationalTaskExposuresSection,
         OccupationalTaskExposureModelsSection
     }
@@ -31,10 +32,21 @@ namespace MCRA.Simulation.Actions.OccupationalExposures {
             subHeader.Units = collectUnits(result);
 
             var subOrder = 0;
-            if (outputSettings.ShouldSummarize(OccupationalExposuresSections.OccupationalExposuresSection)
-                && (result.OccupationalScenarioTaskExposures?.Count > 0)
+            if (outputSettings.ShouldSummarize(OccupationalExposuresSections.OccupationalScenarioExposuresSection)
+                && (result.OccupationalScenarioExposures?.Count > 0)
             ) {
-                summarizeOccupationalExposures(
+                summarizeOccupationalScenarioExposures(
+                    result,
+                    data,
+                    subHeader,
+                    subOrder++
+                 );
+            }
+
+            if (outputSettings.ShouldSummarize(OccupationalExposuresSections.OccupationalIndividualExposuresSection)
+                && (result.ExternalIndividualExposureCollection != null)
+            ) {
+                summarizeOccupationalIndividualExposures(
                     result,
                     data,
                     subHeader,
@@ -45,7 +57,7 @@ namespace MCRA.Simulation.Actions.OccupationalExposures {
             if (outputSettings.ShouldSummarize(OccupationalExposuresSections.OccupationalTaskExposuresSection)
                 && (result.OccupationalScenarioTaskExposures?.Count > 0)
             ) {
-                summarizeScenarioExposures(
+                summarizeScenarioTaskExposures(
                     result,
                     subHeader,
                     subOrder++
@@ -65,20 +77,48 @@ namespace MCRA.Simulation.Actions.OccupationalExposures {
 
         private List<ActionSummaryUnitRecord> collectUnits(OccupationalExposuresActionResult actionResult) {
             var result = new List<ActionSummaryUnitRecord> {
-                    new("LowerPercentage", $"p{_configuration.VariabilityLowerPercentage}"),
-                    new("UpperPercentage", $"p{_configuration.VariabilityUpperPercentage}"),
-                };
+                new("LowerPercentage", $"p{_configuration.VariabilityLowerPercentage}"),
+                new("UpperPercentage", $"p{_configuration.VariabilityUpperPercentage}"),
+                new("ExposureUnit", actionResult.ExternalSystemicExposureUnit?.GetDisplayName()),
+            };
             return result;
         }
 
-        private void summarizeOccupationalExposures(
+        private void summarizeOccupationalIndividualExposures(
+            OccupationalExposuresActionResult result,
+            ActionData data,
+            SectionHeader header,
+            int order
+        ) {
+            var section = new OccupationalIndividualExposuresPerRouteSection() {
+                SectionLabel = getSectionLabel(OccupationalExposuresSections.OccupationalScenarioExposuresSection),
+                Units = header.Units
+            };
+            var subHeader = header.AddSubSectionHeaderFor(
+                section,
+                "Occupational individual exposures",
+                order
+            );
+            section.Summarize(
+                result.ExternalIndividualExposureCollection,
+                data.ActiveSubstances,
+                _configuration.SelectedExposureRoutes,
+                result.ExternalSystemicExposureUnit,
+                _configuration.VariabilityLowerPercentage,
+                _configuration.VariabilityUpperPercentage
+            );
+
+            subHeader.SaveSummarySection(section);
+        }
+
+        private void summarizeOccupationalScenarioExposures(
             OccupationalExposuresActionResult result,
             ActionData data,
             SectionHeader header,
             int order
         ) {
             var section = new OccupationalScenarioExposuresSection() {
-                SectionLabel = getSectionLabel(OccupationalExposuresSections.OccupationalExposuresSection),
+                SectionLabel = getSectionLabel(OccupationalExposuresSections.OccupationalScenarioExposuresSection),
                 Units = header.Units
             };
             var subHeader = header.AddSubSectionHeaderFor(
@@ -97,7 +137,7 @@ namespace MCRA.Simulation.Actions.OccupationalExposures {
             subHeader.SaveSummarySection(section);
         }
 
-        private void summarizeScenarioExposures(
+        private void summarizeScenarioTaskExposures(
             OccupationalExposuresActionResult result,
             SectionHeader header,
             int order

@@ -2,8 +2,11 @@
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
 using MCRA.General.ModuleDefinitions.Settings;
+using MCRA.General.UnitDefinitions.Units;
 using MCRA.Simulation.Action;
+using MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.OccupationalExposureGenerators;
 using MCRA.Simulation.Calculators.OccupationalScenarioExposureCalculation;
+using MCRA.Simulation.Calculators.OccupationalTaskModelCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics.RandomGenerators;
@@ -15,6 +18,11 @@ namespace MCRA.Simulation.Actions.OccupationalExposures {
         private OccupationalExposuresModuleConfig ModuleConfig => (OccupationalExposuresModuleConfig)_moduleSettings;
 
         protected override void verify() {
+            var requireIndividuals = ModuleConfig.ExposureType == ExposureType.Chronic
+                && ModuleConfig.ComputeExternalOccupationalDoses
+                && ModuleConfig.OccupationalExposuresCalculationMethod == OccupationalExposuresCalculationMethod.IndividualSet;
+            _actionInputRequirements[ActionType.Individuals].IsRequired = requireIndividuals;
+            _actionInputRequirements[ActionType.Individuals].IsVisible = requireIndividuals;
         }
 
         protected override ActionSettingsSummary summarizeSettings() {
@@ -84,6 +92,34 @@ namespace MCRA.Simulation.Actions.OccupationalExposures {
                         systemic,
                         seed
                     );
+
+                if (ModuleConfig.ComputeExternalOccupationalDoses
+                    && ModuleConfig.OccupationalExposuresCalculationMethod == OccupationalExposuresCalculationMethod.IndividualSet
+                ) {
+                    var referenceIndividualDays = data.Individuals;
+                    var generator = new OccupationalExposureGenerator();
+                    var seedOccupationalExposuresSampling = RandomUtils.CreateSeed(
+                        ModuleConfig.RandomSeed,
+                        (int)RandomSource.OE_DrawOccupationalExposures
+                    );
+                    var individualExposuresCollection = generator
+                        .Generate(
+                            referenceIndividualDays,
+                            data.ActiveSubstances,
+                            data.OccupationalScenarios.Values,
+                            result.OccupationalScenarioExposures,
+                            targetUnit.SubstanceAmountUnit,
+                            ModuleConfig.ExposureType,
+                            seedOccupationalExposuresSampling
+                        );
+                    result.ExternalSystemicExposureUnit = new OccupationalExposureUnit(
+                        targetUnit.SubstanceAmountUnit,
+                        JobTaskExposureUnitDenominator.None,
+                        JobTaskExposureEstimateType.Undefined,
+                        TimeUnit.Days
+                    );
+                    result.ExternalIndividualExposureCollection = individualExposuresCollection;
+                }
             } else {
                 throw new Exception("Calculation of occupational exposures from measured concentrations not implemented yet.");
             }
