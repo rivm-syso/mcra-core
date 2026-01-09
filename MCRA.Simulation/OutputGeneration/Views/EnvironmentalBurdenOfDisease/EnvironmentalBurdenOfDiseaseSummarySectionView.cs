@@ -13,6 +13,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (isUncertainty) {
                 hiddenProperties.Add("TotalAttributableBod");
                 hiddenProperties.Add("StandardisedTotalAttributableBod");
+                hiddenProperties.Add("TotalPopulationAttributableFraction");
             } else {
                 hiddenProperties.Add("MedianTotalAttributableBod");
                 hiddenProperties.Add("LowerTotalAttributableBod");
@@ -20,6 +21,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add("MedianStandardisedTotalAttributableBod");
                 hiddenProperties.Add("LowerStandardisedTotalAttributableBod");
                 hiddenProperties.Add("UpperStandardisedTotalAttributableBod");
+                hiddenProperties.Add("MedianTotalPopulationAttributableFraction");
+                hiddenProperties.Add("LowerTotalPopulationAttributableFraction");
+                hiddenProperties.Add("UpperTotalPopulationAttributableFraction");
             }
             if (Model.Records.All(r => string.IsNullOrEmpty(r.SourceIndicators))) {
                 hiddenProperties.Add("SourceIndicators");
