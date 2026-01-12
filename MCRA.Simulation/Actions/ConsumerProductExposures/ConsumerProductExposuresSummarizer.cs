@@ -31,7 +31,7 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
             var section = new ConsumerProductExposuresSection() {
                 SectionLabel = ActionType.ToString()
             };
-            section.Summarize(actionResult.ConsumerProductIndividualIntakes);
+            section.Summarize(actionResult.ConsumerProductIndividualIntakes, data.ActiveSubstances);
             var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
             subHeader.Units = collectUnits(data);
             subHeader.SaveSummarySection(section);
@@ -106,12 +106,15 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
                 order
             );
             section.Summarize(
-                data.ActiveSubstances,
                 result.ConsumerProductIndividualIntakes,
+                _configuration.SelectedExposureRoutes,
+                data.ActiveSubstances,
+                data.CorrectedRelativePotencyFactors,
+                data.MembershipProbabilities,
                 _configuration.VariabilityLowerPercentage,
                 _configuration.VariabilityUpperPercentage,
-                result.ConsumerProductExposureUnit,
-                _configuration.SelectedExposureRoutes
+                _configuration.IsPerPerson,
+                data.ConsumerProductExposureUnit
             );
             subHeader.SaveSummarySection(section);
         }
@@ -134,18 +137,15 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
                 order
             );
             section.SummarizeChronic(
-                data.AllConsumerProducts,
                 data.ConsumerProductIndividualExposures,
+                _configuration.SelectedExposureRoutes,
                 data.ActiveSubstances,
                 data.CorrectedRelativePotencyFactors,
                 data.MembershipProbabilities,
-                _configuration.SelectedExposureRoutes,
-                ExposureType.Chronic,
                 _configuration.VariabilityLowerPercentage,
                 _configuration.VariabilityUpperPercentage,
-                _configuration.UncertaintyLowerBound,
-                _configuration.UncertaintyUpperBound,
-                _configuration.IsPerPerson
+                _configuration.IsPerPerson,
+                data.ConsumerProductExposureUnit
             );
             subHeader.SaveSummarySection(section);
         }

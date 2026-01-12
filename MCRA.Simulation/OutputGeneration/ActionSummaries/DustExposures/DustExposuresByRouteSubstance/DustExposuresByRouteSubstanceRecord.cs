@@ -2,6 +2,7 @@
 
 namespace MCRA.Simulation.OutputGeneration {
 
-    public sealed class ConsumerProductExposuresByRouteSubstanceRecord : ExternalExposuresByRouteSubstanceRecord {
+    public sealed class DustExposuresByRouteSubstanceRecord : ExternalExposuresByRouteSubstanceRecord {
+
     }
 }

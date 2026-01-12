@@ -1,17 +1,17 @@
-﻿using MCRA.Utils.ExtensionMethods;
-using MCRA.General;
+﻿using MCRA.General;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
-using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Calculators.DustExposureCalculation;
+using MCRA.Simulation.OutputGeneration;
+using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.Actions.DustExposures {
     public enum DustExposuresSections {
-        DustExposuresByRouteSection
+        DustExposuresByRouteSubstanceSection,
+        DustExposuresByRouteSection,
     }
     public sealed class DustExposuresSummarizer(DustExposuresModuleConfig config)
-        : ActionModuleResultsSummarizer<DustExposuresModuleConfig, DustExposuresActionResult>(config)
-    {
+        : ActionModuleResultsSummarizer<DustExposuresModuleConfig, DustExposuresActionResult>(config) {
         public override ActionType ActionType => ActionType.DustExposures;
 
         public override void Summarize(
@@ -30,18 +30,32 @@ namespace MCRA.Simulation.Actions.DustExposures {
             var section = new DustExposuresSection() {
                 SectionLabel = ActionType.ToString()
             };
-            section.Summarize(data.IndividualDustExposures);
+            section.Summarize(data.IndividualDustExposures, data.ActiveSubstances);
             var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
             subHeader.Units = collectUnits(data);
             subHeader.SaveSummarySection(section);
 
-            // Exposures by exposure route contributions, summary and boxplot
-            summarizeDustExposuresByRoute(
-                actionResult,
-                data,
-                subHeader,
-                order++
-            );
+            // Exposures by route and substance: contributions, summary and boxplot
+            if (outputSettings.ShouldSummarize(DustExposuresSections.DustExposuresByRouteSubstanceSection)) {
+                summarizeDustExposuresByRouteSubstance(
+                    actionResult,
+                    data,
+                    subHeader,
+                    order++
+                );
+            }
+
+            // Exposures by route: contributions, summary and boxplot
+            if (data.ActiveSubstances.Count > 0
+                && outputSettings.ShouldSummarize(DustExposuresSections.DustExposuresByRouteSection)
+            ) {
+                summarizeDustExposuresByRoute(
+                    actionResult,
+                    data,
+                    subHeader,
+                    order++
+                );
+            }
         }
 
         public void SummarizeUncertain(
@@ -49,13 +63,7 @@ namespace MCRA.Simulation.Actions.DustExposures {
             ActionData data,
             SectionHeader header
         ) {
-            var subHeader = header.GetSubSectionHeader<DustExposuresSection>();
-            if (subHeader != null) {
-                summarizeDustExposureUncertainty(
-                    data.IndividualDustExposures,
-                    header
-                );
-            }
+            // No uncertain summaries implemented yet
         }
 
         private List<ActionSummaryUnitRecord> collectUnits(ActionData data) {
@@ -69,27 +77,42 @@ namespace MCRA.Simulation.Actions.DustExposures {
             return result;
         }
 
-        private void summarizeDustExposureUncertainty(
-            ICollection<DustIndividualExposure> individualDustExposures,
-            SectionHeader header
-        ) {
-            var subHeader = header.GetSubSectionHeader<DustExposuresSection>();
-            if (subHeader != null) {
-                var section = subHeader.GetSummarySection() as DustExposuresSection;
-                section.SummarizeUncertainty(
-                    individualDustExposures,
-                   _configuration.UncertaintyLowerBound,
-                   _configuration.UncertaintyUpperBound
-                );
-                subHeader.SaveSummarySection(section);
-            }
-        }
-
         /// <summary>
         /// Dust exposures by route and substance (boxplot and summary table).
         /// </summary>
-        private void summarizeDustExposuresByRoute(
+        private void summarizeDustExposuresByRouteSubstance(
             DustExposuresActionResult actionResult,
+            ActionData data,
+            SectionHeader header,
+            int order
+        ) {
+            var section = new DustExposuresByRouteSubstanceSection() {
+                SectionLabel = getSectionLabel(DustExposuresSections.DustExposuresByRouteSubstanceSection)
+            };
+            var subHeader = header.AddSubSectionHeaderFor(
+                section,
+                "Exposures by route and substance",
+                order
+            );
+            section.Summarize(
+                actionResult.IndividualDustExposures,
+                _configuration.SelectedExposureRoutes,
+                data.ActiveSubstances,
+                data.CorrectedRelativePotencyFactors,
+                data.MembershipProbabilities,
+                _configuration.VariabilityLowerPercentage,
+                _configuration.VariabilityUpperPercentage,
+                _configuration.IsPerPerson,
+                data.DustExposureUnit
+            );
+            subHeader.SaveSummarySection(section);
+        }
+
+        /// <summary>
+        /// Dust exposures by route (boxplot and summary table).
+        /// </summary>
+        private void summarizeDustExposuresByRoute(
+            DustExposuresActionResult result,
             ActionData data,
             SectionHeader header,
             int order
@@ -99,16 +122,19 @@ namespace MCRA.Simulation.Actions.DustExposures {
             };
             var subHeader = header.AddSubSectionHeaderFor(
                 section,
-                "Exposures by route and substance",
+                "Exposures by route",
                 order
             );
-            section.Summarize(
+            section.SummarizeChronic(
+                data.IndividualDustExposures,
+                _configuration.SelectedExposureRoutes,
                 data.ActiveSubstances,
-                actionResult.IndividualDustExposures,
+                data.CorrectedRelativePotencyFactors,
+                data.MembershipProbabilities,
                 _configuration.VariabilityLowerPercentage,
                 _configuration.VariabilityUpperPercentage,
-                actionResult.DustExposureUnit,
-                _configuration.SelectedExposureRoutes
+                _configuration.IsPerPerson,
+                data.DustExposureUnit
             );
             subHeader.SaveSummarySection(section);
         }

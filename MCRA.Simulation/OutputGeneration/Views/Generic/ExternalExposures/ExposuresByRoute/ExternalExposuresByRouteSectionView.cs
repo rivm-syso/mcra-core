@@ -1,17 +1,25 @@
 ﻿using System.Text;
+using MCRA.Simulation.OutputGeneration.Generic.ExternalExposures.ExposuresByRoute;
 using MCRA.Simulation.OutputGeneration.Helpers;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
-    public class ConsumerProductExposuresByRouteSectionView : SectionView<ConsumerProductExposuresByRouteSection> {
+    public class ExternalExposuresByRouteSectionView<Tsection> : SectionView<Tsection>
+        where Tsection : ExternalExposuresByRouteSection {
         public override void RenderSectionHtml(StringBuilder sb) {
+
+            var typeName = typeof(Tsection).Name;
+            const string suffix = "Section";
+            if (typeName.EndsWith(suffix, StringComparison.Ordinal)) {
+                typeName = typeName[..^suffix.Length];
+            }
 
             var hiddenProperties = new List<string>();
 
-            if (Model.Records.All(c => c.NumberOfSubstances <= 1)) {
+            if (Model.ExposureRecords.All(c => c.NumberOfSubstances <= 1)) {
                 hiddenProperties.Add("NumberOfSubstances");
             }
 
-            var isUncertainty = Model.Records.FirstOrDefault()?.Contributions.Any() ?? false;
+            var isUncertainty = Model.ExposureRecords.FirstOrDefault()?.Contributions.Any() ?? false;
             if (!isUncertainty) {
                 hiddenProperties.Add("LowerContributionPercentage");
                 hiddenProperties.Add("UpperContributionPercentage");
@@ -22,14 +30,12 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
 
             //Render HTML
-            if (Model.Records.Any(r => r.Total > 0)) {
-                sb.AppendDescriptionParagraph($"Total {Model.Records.Count} routes.");
-
-
-                if (Model.Records.Count > 1) {
-                    var chartCreator = new ConsumerProductExposuresByRoutePieChartCreator(Model, isUncertainty);
+            if (Model.ExposureRecords.Any(r => r.MeanAll > 0)) {
+                sb.AppendDescriptionParagraph($"Total {Model.ExposureRecords.Count} routes.");
+                if (Model.ExposureRecords.Count > 1) {
+                    var chartCreator = new ExternalExposuresByRoutePieChartCreator(Model, isUncertainty);
                     sb.AppendChart(
-                        "ConsumerProductExposureByRouteChart",
+                        $"{typeName}Chart",
                         chartCreator,
                         ChartFileType.Svg,
                         Model,
@@ -41,8 +47,8 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
                 sb.AppendTable(
                     Model,
-                    Model.Records,
-                    "ConsumerProductExposureByRouteTable",
+                    Model.ExposureRecords,
+                    $"{typeName}Table",
                     ViewBag,
                     caption: "Exposure statistics by route (total distribution).",
                     saveCsv: true,

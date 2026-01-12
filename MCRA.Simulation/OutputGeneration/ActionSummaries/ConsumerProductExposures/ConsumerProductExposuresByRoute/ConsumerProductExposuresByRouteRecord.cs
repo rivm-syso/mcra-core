@@ -1,6 +1,7 @@
 ﻿using MCRA.Simulation.OutputGeneration.Generic.ExternalExposures.ExposuresByRoute;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class DustExposuresByRouteRecord : ExternalExposuresByRouteRecord {
+
+    public sealed class ConsumerProductExposuresByRouteRecord : ExternalExposuresByRouteRecord {
     }
 }
