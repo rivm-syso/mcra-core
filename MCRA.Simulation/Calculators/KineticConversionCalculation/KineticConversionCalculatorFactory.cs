@@ -46,6 +46,7 @@ namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
             PbkSimulationSettings simulationSettings
         ) {
             // First, check if there is a PBK model instance available
+            // Note molecular weight is not needed for PBK model (and also linear dose aggregation model)
             var instances = _kineticModelInstances?
                 .Where(r => r.IsHumanModel && r.Substances.Contains(substance))
                 .ToList();
@@ -53,9 +54,7 @@ namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
                 if (instances.Count > 1) {
                     throw new Exception($"Multiple kinetic model instances found for {substance.Name}({substance.Code}).");
                 }
-                if (double.IsNaN(substance.MolecularMass)) {
-                    throw new Exception($"Molecular mass is missing for {substance.Name}({substance.Code}), required for PBK modelling.");
-                }
+
                 var modelInstance = instances.First();
                 if (modelInstance.InputSubstance == substance) {
                     return new PbkKineticConversionCalculator(
