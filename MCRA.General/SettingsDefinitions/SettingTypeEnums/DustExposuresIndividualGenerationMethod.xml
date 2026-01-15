@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <UnitDefinition>
   <Id>DustExposuresIndividualGenerationMethod</Id>
-  <Name>Individual generation method</Name>
+  <Name>Individual reference set</Name>
   <Description>
-    Accepted methods for generation of individuals for dust exposure.
+    Methods for obtaining individuals for calculating dust exposures.
   </Description>
   <Units>
     <Unit>
       <Id>Simulate</Id>
-      <Name>Simulate individuals</Name>
-      <ShortName>Simulate</ShortName>
+      <Name>Use from individuals module</Name>
+      <ShortName>Use individuals</ShortName>
       <Description>
-        Simulate individuals based on population data.
+        Use individuals from individuals module.
       </Description>
     </Unit>
     <Unit>
       <Id>UseDietaryExposures</Id>
-      <Name>Use dietary exposures</Name>
+      <Name>Use individuals from dietary exposures module</Name>
       <ShortName>UseDietaryExposures</ShortName>
       <Description>
-        Use individuals from dietary exposures.
+        Use individuals from dietary exposures module.
       </Description>
     </Unit>
   </Units>
