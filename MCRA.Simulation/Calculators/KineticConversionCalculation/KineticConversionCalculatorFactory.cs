@@ -17,13 +17,15 @@ namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
             TargetLevelType targetLevelType,
             InternalModelType internalModelType
         ) {
-            _internalModelType = internalModelType;
             if (targetLevelType == TargetLevelType.Systemic) {
+                // For systemic target level, always use conversion factor models based on absorption factors
+                _internalModelType = InternalModelType.ConversionFactorModel;
                 var simpleKineticConversionFactors = absorptionFactors
                     .Select((c, ix) => KineticConversionFactor.FromDefaultAbsorptionFactor(c.ExposureRoute, c.Substance, c.AbsorptionFactor))
                     .ToList();
                 _kineticConversionFactorModels = [.. simpleKineticConversionFactors.Select(c => KineticConversionFactorCalculatorFactory.Create(c, false))];
             } else {
+                _internalModelType = internalModelType;
                 if (internalModelType == InternalModelType.ConversionFactorModel
                     || internalModelType == InternalModelType.PBKModel
                 ) {
