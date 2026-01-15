@@ -53,18 +53,14 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             _actionInputRequirements[ActionType.NonDietaryExposures].IsRequired = requireNonDietary;
             _actionInputRequirements[ActionType.NonDietaryExposures].IsVisible = requireNonDietary;
 
-            var requireConsumerProduct = ModuleConfig.ExposureType == ExposureType.Chronic &&
-                ModuleConfig.ExposureSources.Contains(ExposureSource.ConsumerProducts);
+            var requireConsumerProduct = ModuleConfig.ExposureType == ExposureType.Chronic
+                && ModuleConfig.ExposureSources.Contains(ExposureSource.ConsumerProducts);
             _actionInputRequirements[ActionType.ConsumerProductExposures].IsRequired = requireConsumerProduct;
             _actionInputRequirements[ActionType.ConsumerProductExposures].IsVisible = requireConsumerProduct;
-            _actionInputRequirements[ActionType.ConsumerProducts].IsRequired = requireConsumerProduct;
-            _actionInputRequirements[ActionType.ConsumerProducts].IsVisible = requireConsumerProduct;
 
             var requireDietary = ModuleConfig.ExposureSources.Contains(ExposureSource.Diet);
             _actionInputRequirements[ActionType.DietaryExposures].IsRequired = requireDietary;
             _actionInputRequirements[ActionType.DietaryExposures].IsVisible = requireDietary;
-            _actionInputRequirements[ActionType.Foods].IsRequired = requireDietary;
-            _actionInputRequirements[ActionType.Foods].IsVisible = requireDietary;
 
             var requireDust = ModuleConfig.ExposureType == ExposureType.Chronic &&
                 ModuleConfig.ExposureSources.Contains(ExposureSource.Dust);

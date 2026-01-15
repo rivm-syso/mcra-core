@@ -27,8 +27,6 @@
   <HasUncertaintyFactorial>true</HasUncertaintyFactorial>
   <Entities>
     <Entity>Populations</Entity>
-    <Entity>Foods</Entity>
-    <Entity>ConsumerProducts</Entity>
     <Entity>Substances</Entity>
   </Entities>
   <CalculationInputs>
