@@ -20,7 +20,7 @@
       ingredient food codes in turn.
     </Description>
     <ValueType>Boolean</ValueType>
-    <DefaultValue>true</DefaultValue>
+    <DefaultValue>false</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>TotalDietStudy</Id>
@@ -30,7 +30,7 @@
   </SettingsItem>
   <SettingsItem>
     <Id>UseMonitoringDataForTDS</Id>
-    <Name>Use monitoring data</Name>
+    <Name>Use TDS monitoring data</Name>
     <Description>Specifies whether monitoring data are used in addition to total diet study data.</Description>
     <ValueType>Boolean</ValueType>
   </SettingsItem>
@@ -92,7 +92,7 @@
   </SettingsItem>
   <SettingsItem>
     <Id>SubstanceIndependent</Id>
-    <Name>Conversion is substance independent</Name>
+    <Name>Substance independent conversion</Name>
     <Description>Conversion of foods is independent of the substance.</Description>
     <ValueType>Boolean</ValueType>
   </SettingsItem>
