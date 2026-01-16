@@ -1,5 +1,20 @@
 # Change Log
 
+## Version 10.2.12 (2026-01-16)
+
+### Added
+
+- Add new modules occupational exposures (#2299)
+- EBD, include total PAF to summary table (including uncertainty bounds, when applicable) (#2305)
+- Add option to compute internal exposures with individuals from individuals module (#2385)
+
+### Fixed
+
+- HBM codebook validation of measurement sampleid that has matrix mismatch with the sample defined in the sample table (#2338)
+- Target level selection disabled at internal exposures for biological matrix comparisons (#2351)
+- Internal exposures PBK modeling: error for missing molecular weight returned even when the PBK model doesnt need this as input (#2366)
+- Distribution type constant does not work for dust and consumer product concentration models (#2371)
+
 ## Version 10.2.11 (2025-12-17)
 
 ### Fixed
