@@ -1,8 +1,8 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation;
+using MCRA.Simulation.Calculators.ConcentrationModelCalculation;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
-using MCRA.Simulation.Calculators.ResidueGeneration;
 
 namespace MCRA.Simulation.Calculators.DustConcentrationModelBuilder {
 

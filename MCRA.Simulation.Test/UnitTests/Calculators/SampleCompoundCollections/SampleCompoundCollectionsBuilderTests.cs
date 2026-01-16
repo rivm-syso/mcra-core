@@ -286,7 +286,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleCompoundCollections {
                 ConcentrationUnit.mgPerKg,
                 null
             );
-            var compoundResidueCollectionsBuilder = new CompoundResidueCollectionsBuilder();
+            var compoundResidueCollectionsBuilder = new FoodSubstanceResidueCollectionsBuilder();
             var compoundResidueCollections = compoundResidueCollectionsBuilder.Create(
                 subsetManager.AllCompounds,
                 sampleCompoundCollections.Values,
@@ -446,7 +446,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleCompoundCollections {
                 ConcentrationUnit.mgPerKg,
                 null
             );
-            var compoundResidueCollectionsBuilder = new CompoundResidueCollectionsBuilder();
+            var compoundResidueCollectionsBuilder = new FoodSubstanceResidueCollectionsBuilder();
             var compoundResidueCollections = compoundResidueCollectionsBuilder.Create(
                 subsetManager.AllCompounds, sampleCompoundCollections.Values, agriculturalUseInfo, null);
 
@@ -493,7 +493,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleCompoundCollections {
 
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var compoundResidueCollectionsResample = CompoundResidueCollectionsBuilder.Resample (
+            var compoundResidueCollectionsResample = FoodSubstanceResidueCollectionsBuilder.Resample (
                 compoundResidueCollections, random, null);
 
             var resampleCompoundResidueCollectionAppleCompoundA = compoundResidueCollectionsResample[(foodApple, compoundA)];

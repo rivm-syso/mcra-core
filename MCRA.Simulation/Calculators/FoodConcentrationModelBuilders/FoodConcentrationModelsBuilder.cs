@@ -2,7 +2,6 @@
 using MCRA.General;
 using MCRA.General.ModuleDefinitions.Interfaces;
 using MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation;
-using MCRA.Simulation.Calculators.ConcentrationModelCalculation;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
 using MCRA.Simulation.Calculators.OccurrencePatternsCalculation;
 using MCRA.Utils.ProgressReporting;
@@ -24,7 +23,7 @@ namespace MCRA.Simulation.Calculators.FoodConcentrationModelBuilders {
         /// </summary>
         public IDictionary<(Food, Compound), ConcentrationModel> Create(
             ICollection<(Food Food, Compound Substance)> foodCompounds,
-            IDictionary<(Food, Compound), CompoundResidueCollection> compoundResidueCollections,
+            IDictionary<(Food, Compound), FoodSubstanceResidueCollection> compoundResidueCollections,
             IDictionary<(Food, Compound), ConcentrationDistribution> concentrationDistributions,
             IDictionary<(Food, Compound), ConcentrationLimit> maximumConcentrationLimits,
             IDictionary<(Food, Compound), OccurrenceFraction> occurrenceFractions,
@@ -32,7 +31,7 @@ namespace MCRA.Simulation.Calculators.FoodConcentrationModelBuilders {
             ConcentrationUnit concentrationUnit,
             CompositeProgressState progressState = null
         ) {
-            var modelFactory = new ConcentrationModelFactory(_settings);
+            var modelFactory = new FoodConcentrationModelFactory(_settings);
             var result = foodCompounds
                 .Select(r => {
                     var key = (r.Food, r.Substance);
@@ -85,7 +84,7 @@ namespace MCRA.Simulation.Calculators.FoodConcentrationModelBuilders {
         public IDictionary<(Food, Compound), ConcentrationModel> Create(
             ICollection<Food> foods,
             ICollection<Compound> substances,
-            IDictionary<(Food, Compound), CompoundResidueCollection> compoundResidueCollections,
+            IDictionary<(Food, Compound), FoodSubstanceResidueCollection> compoundResidueCollections,
             IDictionary<(Food, Compound), ConcentrationDistribution> concentrationDistributions,
             IDictionary<(Food, Compound), ConcentrationLimit> maximumConcentrationLimits,
             IDictionary<(Food, Compound), OccurrenceFraction> occurrenceFractions,
@@ -114,7 +113,7 @@ namespace MCRA.Simulation.Calculators.FoodConcentrationModelBuilders {
         /// </summary>
         public IDictionary<(Food, Compound), ConcentrationModel> CreateUncertain(
             IDictionary<(Food Food, Compound Substance), ConcentrationModel> concentrationModels,
-            IDictionary<(Food, Compound), CompoundResidueCollection> compoundResidueCollections,
+            IDictionary<(Food, Compound), FoodSubstanceResidueCollection> compoundResidueCollections,
             IDictionary<(Food, Compound), ConcentrationDistribution> concentrationDistributions,
             IDictionary<(Food, Compound), ConcentrationLimit> maximumConcentrationLimits,
             IDictionary<(Food, Compound), OccurrenceFraction> occurrenceFractions,
@@ -124,7 +123,7 @@ namespace MCRA.Simulation.Calculators.FoodConcentrationModelBuilders {
             ConcentrationUnit concentrationUnit,
             int? randomSeed
         ) {
-            var modelFactory = new ConcentrationModelFactory(_settings);
+            var modelFactory = new FoodConcentrationModelFactory(_settings);
             var result = new Dictionary<(Food, Compound), ConcentrationModel>();
             var models = concentrationModels
                 .Select(model => {
@@ -198,10 +197,10 @@ namespace MCRA.Simulation.Calculators.FoodConcentrationModelBuilders {
         /// Generates the concentration model for the specified food and substance.
         /// </summary>
         private ConcentrationModel createModelAndCalculateParameters(
-            ConcentrationModelFactory modelFactory,
+            FoodConcentrationModelFactory modelFactory,
             Food food,
             Compound substance,
-            CompoundResidueCollection compoundResidueCollection,
+            FoodSubstanceResidueCollection compoundResidueCollection,
             ConcentrationDistribution concentrationDistribution,
             ConcentrationLimit maximumConcentrationLimits,
             double occurrenceFrequency,

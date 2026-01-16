@@ -2,24 +2,24 @@
 using MCRA.Simulation.Objects;
 
 namespace MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation {
-    public class CumulativeCompoundResidueCollectionsBuilder {
+    public class CumulativeFoodSubstanceResidueCollectionsBuilder {
 
         /// <summary>
         /// Initialize the cumulative potency collection for the sample-based approach
         /// </summary>
-        public Dictionary<Food, CompoundResidueCollection> Create(
+        public Dictionary<Food, FoodSubstanceResidueCollection> Create(
             ICollection<SampleCompoundCollection> sampleCompoundCollections,
             Compound cumulativeCompound,
             IDictionary<Compound, double> correctedRpfs
         ) {
-            var cumulativeCompoundCollections = new List<CompoundResidueCollection>();
+            var cumulativeCompoundCollections = new List<FoodSubstanceResidueCollection>();
             foreach (var sampleCompoundCollection in sampleCompoundCollections) {
                 var cumulativeResidues = sampleCompoundCollection.SampleCompoundRecords
                     .Select(c => c.ImputedCumulativePotency(correctedRpfs))
                     .ToList();
                 var positives = cumulativeResidues.Where(r => r > 0).ToList();
                 var zeros = cumulativeResidues.Where(r => r == 0).ToList();
-                var collection = new CompoundResidueCollection() {
+                var collection = new FoodSubstanceResidueCollection() {
                     Compound = cumulativeCompound,
                     Food = sampleCompoundCollection.Food,
                     CensoredValuesCollection = [],
@@ -28,7 +28,7 @@ namespace MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation {
                 };
                 cumulativeCompoundCollections.Add(collection);
             }
-            var result = new Dictionary<Food, CompoundResidueCollection>();
+            var result = new Dictionary<Food, FoodSubstanceResidueCollection>();
             foreach (var record in cumulativeCompoundCollections) {
                 result.Add(record.Food, record);
             }

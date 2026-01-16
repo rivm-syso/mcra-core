@@ -8,7 +8,7 @@ using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.RandomGenerators;
 
 namespace MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation {
-    public class CompoundResidueCollectionsBuilder {
+    public class FoodSubstanceResidueCollectionsBuilder {
 
         /// <summary>
         /// Creates substance residue collections for the provided substances and
@@ -19,7 +19,7 @@ namespace MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation {
         /// <param name="occurrencePatternsByFoodSubstance"></param>
         /// <param name="substanceAuthorisations"></param>
         /// <returns></returns>
-        public IDictionary<(Food, Compound), CompoundResidueCollection> Create(
+        public IDictionary<(Food, Compound), FoodSubstanceResidueCollection> Create(
             ICollection<Compound> compounds,
             ICollection<SampleCompoundCollection> sampleCompoundCollection,
             IDictionary<(Food, Compound), OccurrenceFraction> occurrencePatternsByFoodSubstance,
@@ -36,14 +36,14 @@ namespace MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation {
                     })
                 )
                 .ToList();
-            var result = new Dictionary<(Food, Compound), CompoundResidueCollection>();
+            var result = new Dictionary<(Food, Compound), FoodSubstanceResidueCollection>();
             foreach (var record in newCompoundResidueCollections) {
                 result.Add((record.Food, record.Compound), record);
             }
             return result;
         }
 
-        private static CompoundResidueCollection createFromSampleCompoundRecords(
+        private static FoodSubstanceResidueCollection createFromSampleCompoundRecords(
             Food food,
             Compound compound,
             ICollection<SampleCompoundRecord> sampleCompoundRecords
@@ -70,7 +70,7 @@ namespace MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation {
 
             positives.Sort();
 
-            return new CompoundResidueCollection() {
+            return new FoodSubstanceResidueCollection() {
                 Compound = compound,
                 Food = food,
                 Positives = positives,
@@ -85,8 +85,8 @@ namespace MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation {
         /// <param name="compoundResidueCollections"></param>
         /// <param name="random"></param>
         /// <returns></returns>
-        public static IDictionary<(Food, Compound), CompoundResidueCollection> Resample(
-            IDictionary<(Food, Compound), CompoundResidueCollection> compoundResidueCollections,
+        public static IDictionary<(Food, Compound), FoodSubstanceResidueCollection> Resample(
+            IDictionary<(Food, Compound), FoodSubstanceResidueCollection> compoundResidueCollections,
             IRandom random,
             CompositeProgressState progressState = null
         ) {
@@ -101,7 +101,7 @@ namespace MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation {
                     return Resample(compoundResidueCollection, randomGenerator);
                 });
 
-            var result = new Dictionary<(Food, Compound), CompoundResidueCollection>();
+            var result = new Dictionary<(Food, Compound), FoodSubstanceResidueCollection>();
             foreach (var record in newRecords) {
                 result.Add((record.Food, record.Compound), record);
             }
@@ -115,7 +115,7 @@ namespace MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation {
         /// </summary>
         /// <param name="random"></param>
         /// <returns></returns>
-        public static CompoundResidueCollection Resample(CompoundResidueCollection compoundResidueCollection, IRandom random) {
+        public static FoodSubstanceResidueCollection Resample(FoodSubstanceResidueCollection compoundResidueCollection, IRandom random) {
             var allSamplesTmp = new List<(double Concentration, ResType ResType)>();
             allSamplesTmp.AddRange(compoundResidueCollection.Positives.Select(c => (Concentration: c, ResType: ResType.VAL)).ToList());
 
@@ -144,7 +144,7 @@ namespace MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation {
                     ResType = l.ResType,
                 }).ToList();
 
-            var newCollection = new CompoundResidueCollection() {
+            var newCollection = new FoodSubstanceResidueCollection() {
                 Compound = compoundResidueCollection.Compound,
                 Food = compoundResidueCollection.Food,
                 Positives = allSamplesTmp.Where(s => s.Concentration > 0 && s.ResType == ResType.VAL).Select(c => c.Concentration).ToList(),

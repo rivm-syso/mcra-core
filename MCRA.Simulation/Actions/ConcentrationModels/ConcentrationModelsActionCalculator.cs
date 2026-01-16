@@ -91,7 +91,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
                 : data.ModelledSubstances;
 
             // Create compound residue collections from sample compound collections
-            var compoundResidueCollectionsBuilder = new CompoundResidueCollectionsBuilder(
+            var compoundResidueCollectionsBuilder = new FoodSubstanceResidueCollectionsBuilder(
             );
             var compoundResidueCollections = compoundResidueCollectionsBuilder
                 .Create(
@@ -175,7 +175,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
 
                 // Create cumulative concentration models
                 if (substances.Count > 1 && ModuleConfig.Cumulative) {
-                    var cumulativeCompoundResidueCollectionsBuilder = new CumulativeCompoundResidueCollectionsBuilder();
+                    var cumulativeCompoundResidueCollectionsBuilder = new CumulativeFoodSubstanceResidueCollectionsBuilder();
                     var cumulativeCompoundResidueCollections = cumulativeCompoundResidueCollectionsBuilder.Create(
                         monteCarloSubstanceSampleCollections,
                         data.CumulativeCompound,
@@ -231,7 +231,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
             ) {
                 if (ModuleConfig.IsSampleBased) {
                     // Recreate from bootstrapped sample compound collections
-                    var compoundResidueCollectionsBuilder = new CompoundResidueCollectionsBuilder(
+                    var compoundResidueCollectionsBuilder = new FoodSubstanceResidueCollectionsBuilder(
                     );
                     substanceResidueCollections = compoundResidueCollectionsBuilder
                         .Create(
@@ -241,7 +241,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
                             data.SubstanceAuthorisations
                         );
                 } else if (!ModuleConfig.IsSampleBased) {
-                    substanceResidueCollections = CompoundResidueCollectionsBuilder
+                    substanceResidueCollections = FoodSubstanceResidueCollectionsBuilder
                         .Resample(
                             data.CompoundResidueCollections,
                             uncertaintySourceGenerators[UncertaintySource.ConcentrationModelling]
@@ -312,7 +312,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
 
                 if (ModuleConfig.Cumulative && substances.Count > 1) {
                     localProgress.Update("Initializing cumulative concentration models", 28);
-                    var cumulativeCompoundResidueCollectionBuilder = new CumulativeCompoundResidueCollectionsBuilder();
+                    var cumulativeCompoundResidueCollectionBuilder = new CumulativeFoodSubstanceResidueCollectionsBuilder();
                     var cumulativeCompoundResidueCollection = cumulativeCompoundResidueCollectionBuilder.Create(monteCarloSubstanceSampleCollections, data.CumulativeCompound, data.CorrectedRelativePotencyFactors);
                     var cumulativeConcentrationModelsBuilder = new CumulativeFoodConcentrationModelsBuilder(ModuleConfig);
                     if (ModuleConfig.IsParametric) {

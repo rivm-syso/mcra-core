@@ -36,7 +36,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.DietaryExposuresScreeningCa
             var lor = 2;
             var sampleSize = 200;
             var concentrationModels = FakeConcentrationsModelsGenerator.Create(foods.Skip(4).ToList(), substances, ConcentrationModelType.Empirical, mu, sigma, useFraction, lor, sampleSize);
-            var compoundResidueCollections = concentrationModels.Select(c => new CompoundResidueCollection(c.Value.Residues) {
+            var compoundResidueCollections = concentrationModels.Select(c => new FoodSubstanceResidueCollection(c.Value.Residues) {
                 Food = c.Key.Item1,
                 Compound = c.Key.Item2
             }).ToList();

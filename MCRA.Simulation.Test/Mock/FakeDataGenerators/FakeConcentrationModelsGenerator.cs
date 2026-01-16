@@ -1,11 +1,11 @@
-﻿using MCRA.Utils.ExtensionMethods;
-using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation;
-using MCRA.Simulation.Calculators.ConcentrationModelCalculation;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
+using MCRA.Simulation.Calculators.FoodConcentrationModelBuilders;
 using MCRA.Simulation.Test.Mock.MockCalculatorSettings;
+using MCRA.Utils.ExtensionMethods;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
 
@@ -50,7 +50,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                 foreach (var substance in substances) {
                     var concentrations = createConcentrations(mu, sigma, useFraction, sampleSize, random);
                     var compoundResidueCollection = createConcentrations(food, substance, concentrations, lor);
-                    var factory = new ConcentrationModelFactory(settings);
+                    var factory = new FoodConcentrationModelFactory(settings);
                     var model = factory.CreateModelAndCalculateParameters(food, substance, modelType, compoundResidueCollection, null, null, useFraction, ConcentrationUnit.mgPerKg);
                     concentrationModels[(food, substance)] = model;
                 }
@@ -65,7 +65,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         /// <param name="modelType"></param>
         /// <returns></returns>
         public static IDictionary<(Food, Compound), ConcentrationModel> Create(
-            IDictionary<(Food, Compound), CompoundResidueCollection> compoundResidueCollections,
+            IDictionary<(Food, Compound), FoodSubstanceResidueCollection> compoundResidueCollections,
             ConcentrationModelType modelType
         ) {
             var settings = new MockConcentrationModelCalculationSettings() {
@@ -76,7 +76,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             foreach (var compoundResidueCollection in compoundResidueCollections.Values) {
                 var food = compoundResidueCollection.Food;
                 var substance = compoundResidueCollection.Compound;
-                var factory = new ConcentrationModelFactory(settings);
+                var factory = new FoodConcentrationModelFactory(settings);
                 var occurrenceFraction = Math.Min(
                     1D - compoundResidueCollection.FractionZeros,
                     compoundResidueCollection.FractionPositives + .5 * compoundResidueCollection.FractionCensoredValues
@@ -121,10 +121,10 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         /// <param name="lor"></param>
         ///
         /// <returns></returns>
-        private static CompoundResidueCollection createConcentrations(Food food, Compound compound, List<double> concentrations, double lor) {
+        private static FoodSubstanceResidueCollection createConcentrations(Food food, Compound compound, List<double> concentrations, double lor) {
             var positivesCount = concentrations.Count(r => r > 0);
             var zerosCount = concentrations.Count(r => r == 0);
-            return new CompoundResidueCollection() {
+            return new FoodSubstanceResidueCollection() {
                 Food = food,
                 Compound = compound,
                 Positives = concentrations.Where(r => r >= lor).ToList(),

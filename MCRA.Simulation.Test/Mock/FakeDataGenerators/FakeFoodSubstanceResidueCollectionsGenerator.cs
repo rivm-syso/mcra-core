@@ -10,25 +10,25 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
     /// <summary>
     /// Class for generating mock substance residue collections
     /// </summary>
-    public static class FakeCompoundResidueCollectionsGenerator {
+    public static class FakeFoodSubstanceResidueCollectionsGenerator {
         /// <summary>
         /// Creates  substance residues collections
         /// </summary>
         /// <param name="substances"></param>
         /// <param name="sampleCompoundCollections"></param>
         /// <returns></returns>
-        public static IDictionary<(Food Food, Compound Substance), CompoundResidueCollection> Create(
+        public static IDictionary<(Food Food, Compound Substance), FoodSubstanceResidueCollection> Create(
             ICollection<Compound> substances,
             IDictionary<Food, SampleCompoundCollection> sampleCompoundCollections
         ) {
-            var compoundResidueCollectionsBuilder = new CompoundResidueCollectionsBuilder();
+            var compoundResidueCollectionsBuilder = new FoodSubstanceResidueCollectionsBuilder();
             return compoundResidueCollectionsBuilder.Create(substances, sampleCompoundCollections.Values, null, null);
         }
 
         /// <summary>
         /// Creates concentration models.
         /// </summary>
-        public static IDictionary<(Food, Compound), CompoundResidueCollection> Create(
+        public static IDictionary<(Food, Compound), FoodSubstanceResidueCollection> Create(
             ICollection<Food> foods,
             ICollection<Compound> substances,
             double mean = double.NaN,
@@ -43,11 +43,11 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             var random = new McraRandomGenerator(seed);
             var logNormalDistribution = LogNormalDistribution.FromMeanAndUpper(mean, upper);
 
-            var result = new Dictionary<(Food, Compound), CompoundResidueCollection>();
+            var result = new Dictionary<(Food, Compound), FoodSubstanceResidueCollection>();
             foreach (var food in foods) {
                 var foodSampleSize = sampleSize > 0 ? sampleSize : random.Next(1, 100);
                 foreach (var substance in substances) {
-                    CompoundResidueCollection record = CreateSingle(
+                    FoodSubstanceResidueCollection record = CreateSingle(
                         food,
                         substance,
                         logNormalDistribution.Mu,
@@ -68,7 +68,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         /// <summary>
         /// Creates a single compound residue collection.
         /// </summary>
-        public static CompoundResidueCollection CreateSingle(
+        public static FoodSubstanceResidueCollection CreateSingle(
             Food food,
             Compound substance,
             double mu,
@@ -115,7 +115,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                 }
             }
 
-            var record = new CompoundResidueCollection() {
+            var record = new FoodSubstanceResidueCollection() {
                 Food = food,
                 Compound = substance,
                 Positives = positives,

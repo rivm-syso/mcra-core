@@ -17,7 +17,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
         [TestMethod]
         [TestCategory("Concentration Modeling Tests")]
         public void CMEmpiricalTest1() {
-            var residues = new CompoundResidueCollection() {
+            var residues = new FoodSubstanceResidueCollection() {
                 Positives = [],
                 CensoredValuesCollection = [],
             };
@@ -51,7 +51,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
         public void CMEmpiricalTest2a() {
             var lor = 0.1;
 
-            var residues = new CompoundResidueCollection() {
+            var residues = new FoodSubstanceResidueCollection() {
                 Positives = [],
                 CensoredValuesCollection = [new CensoredValue() { LOD = lor, LOQ = lor }]
             };
@@ -91,7 +91,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
         public void CMEmpiricalTest2b(NonDetectsHandlingMethod nonDetectsHandlingMethod) {
             var lod = 0.1;
 
-            var residues = new CompoundResidueCollection() {
+            var residues = new FoodSubstanceResidueCollection() {
                 Positives = [],
                 CensoredValuesCollection = [new CensoredValue() { LOD = lod, LOQ = lod, ResType = ResType.LOD }]
             };
@@ -131,7 +131,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var lod = 0.1;
             var loq = 0.2;
 
-            var residues = new CompoundResidueCollection() {
+            var residues = new FoodSubstanceResidueCollection() {
                 Positives = [],
                 CensoredValuesCollection = [new CensoredValue() { LOD = lod, LOQ = loq, ResType = ResType.LOQ }]
             };
@@ -167,7 +167,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
         public void CMEmpiricalTest3a() {
             var lor = 0.1;
 
-            var residues = new CompoundResidueCollection() {
+            var residues = new FoodSubstanceResidueCollection() {
                 Positives = [],
                 CensoredValuesCollection = [new CensoredValue() { LOD = lor, LOQ = lor }]
             };
@@ -202,7 +202,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
         public void CMEmpiricalTest3b(NonDetectsHandlingMethod nonDetectsHandlingMethod) {
             var lod = 0.1;
 
-            var residues = new CompoundResidueCollection() {
+            var residues = new FoodSubstanceResidueCollection() {
                 Positives = [],
                 CensoredValuesCollection = [new CensoredValue() { LOD = lod, ResType = ResType.LOD }]
             };
@@ -236,7 +236,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var lod = 0.1;
             var loq = 0.2;
 
-            var residues = new CompoundResidueCollection() {
+            var residues = new FoodSubstanceResidueCollection() {
                 Positives = [],
                 CensoredValuesCollection = [new CensoredValue() { LOD = lod, LOQ = loq, ResType = ResType.LOQ }]
             };
@@ -272,7 +272,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
         public void CMEmpiricalTest4() {
             var lor = 0.1;
 
-            var residues = new CompoundResidueCollection() {
+            var residues = new FoodSubstanceResidueCollection() {
                 Positives = [],
                 CensoredValuesCollection = [new CensoredValue() { LOD = lor, LOQ = lor }]
             };
@@ -322,7 +322,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var lor = 0.1;
             var pos = 0.2;
 
-            var residues = new CompoundResidueCollection() {
+            var residues = new FoodSubstanceResidueCollection() {
                 Positives = [pos],
                 CensoredValuesCollection = [new CensoredValue() { LOD = lor, LOQ = lor }]
             };
@@ -404,7 +404,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var pos = 0.2;
             var positives = new List<double>() { pos };
 
-            var residues = new CompoundResidueCollection() {
+            var residues = new FoodSubstanceResidueCollection() {
                 Positives = positives,
                 CensoredValuesCollection = [new CensoredValue() { LOD = lor, LOQ = lor }]
             };
@@ -466,7 +466,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var pos = 0.2;
             var positives = new List<double>() { pos };
 
-            var residues = new CompoundResidueCollection() {
+            var residues = new FoodSubstanceResidueCollection() {
                 Positives = positives,
                 CensoredValuesCollection = [new CensoredValue() { LOD = lor, LOQ = lor }]
             };
@@ -557,7 +557,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var nonDetects = new List<double> { 1, 1, 1, 1, 1, 1, 1, 1, 1 };
             var nonDetectsCollection = nonDetects.Select(c => new CensoredValue() { LOD = c, LOQ = c }).ToList();
 
-            var residues = new CompoundResidueCollection() {
+            var residues = new FoodSubstanceResidueCollection() {
                 Positives = positives,
                 CensoredValuesCollection = nonDetectsCollection
             };
@@ -594,7 +594,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var nonDetects = new List<double> { 1, 1, 1, 1, 1, 1, 1, 1, 1 };
             var nonDetectsCollection = nonDetects.Select(c => new CensoredValue() { LOD = c, LOQ = c, ResType = ResType.LOD }).ToList();
 
-            var residues = new CompoundResidueCollection() {
+            var residues = new FoodSubstanceResidueCollection() {
                 Positives = positives,
                 CensoredValuesCollection = nonDetectsCollection
             };
@@ -632,7 +632,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var nonDetects = new List<double> { 1, 1, 1, 1, 1, 1, 1, 1, 1 };
             var nonDetectsCollection = nonDetects.Select((c, ix) => new CensoredValue() { LOD = c, LOQ = 2 * c, ResType = ix % 2 == 0 ? ResType.LOD : ResType.LOQ }).ToList();
 
-            var residues = new CompoundResidueCollection() {
+            var residues = new FoodSubstanceResidueCollection() {
                 Positives = positives,
                 CensoredValuesCollection = nonDetectsCollection
             };

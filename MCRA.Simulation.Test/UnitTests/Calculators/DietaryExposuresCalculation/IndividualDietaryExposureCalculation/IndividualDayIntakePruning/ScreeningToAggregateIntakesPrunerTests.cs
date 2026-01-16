@@ -59,7 +59,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.DietaryExposuresCalculation
                 lor: lor,
                 sampleSize: sampleSize
             );
-            var compoundResidueCollections = concentrationModels.Select(c => new CompoundResidueCollection(c.Value.Residues) {
+            var compoundResidueCollections = concentrationModels.Select(c => new FoodSubstanceResidueCollection(c.Value.Residues) {
                  Food = c.Key.Item1,
                  Compound = c.Key.Item2
             }).ToList();

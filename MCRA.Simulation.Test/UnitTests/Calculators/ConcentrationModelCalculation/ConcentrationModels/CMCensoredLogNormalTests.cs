@@ -19,7 +19,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
         [TestMethod]
         [TestCategory("Concentration Modeling Tests")]
         public void CMCensoredLogNormal_Test1() {
-            var residues = new CompoundResidueCollection() {
+            var residues = new FoodSubstanceResidueCollection() {
                 Positives = [],
                 CensoredValuesCollection = [],
             };
@@ -37,7 +37,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
         [TestCategory("Concentration Modeling Tests")]
         public void CMCensoredLogNormal_Test2() {
             var lor = 0.1;
-            var residues = new CompoundResidueCollection() {
+            var residues = new FoodSubstanceResidueCollection() {
                 Positives = [],
                 CensoredValuesCollection = [new CensoredValue() { LOD = lor, LOQ = lor }]
             };
@@ -56,7 +56,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
         [TestCategory("Concentration Modeling Tests")]
         public void CMCensoredLogNormal_Test3() {
             var lor = 0.1;
-            var residues = new CompoundResidueCollection() {
+            var residues = new FoodSubstanceResidueCollection() {
                 Positives = [],
                 CensoredValuesCollection = [new CensoredValue() { LOD = lor, LOQ = lor }]
             };
@@ -75,7 +75,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
         [TestCategory("Concentration Modeling Tests")]
         public void CMCensoredLogNormal_Test4() {
             var lor = 0.1;
-            var residues = new CompoundResidueCollection() {
+            var residues = new FoodSubstanceResidueCollection() {
                 Positives = [0.1, 0.2, 0.3],
                 CensoredValuesCollection = [new CensoredValue() { LOD = lor, LOQ = lor }]
             };
@@ -98,7 +98,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
 
             var mu = .25;
             var sigma = 1;
-            var residues = FakeCompoundResidueCollectionsGenerator
+            var residues = FakeFoodSubstanceResidueCollectionsGenerator
                 .CreateSingle(
                     food: null,
                     substance: null,
@@ -185,7 +185,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
 
             var mu = .25;
             var sigma = 1;
-            var residues = FakeCompoundResidueCollectionsGenerator
+            var residues = FakeFoodSubstanceResidueCollectionsGenerator
                 .CreateSingle(
                     food: null,
                     substance: null,
@@ -273,7 +273,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var rnd = new McraRandomGenerator(1);
             var values = LogNormalDistribution.Samples(rnd, 0, 1, (int)(useFraction * 10000));
             values.AddRange(Enumerable.Repeat(0D, (int)((1 - useFraction) * n)));
-            var residues = new CompoundResidueCollection() {
+            var residues = new FoodSubstanceResidueCollection() {
                 Positives = values.Where(r => r > loq).ToList(),
                 CensoredValuesCollection = values
                     .Where(r => r <= loq)

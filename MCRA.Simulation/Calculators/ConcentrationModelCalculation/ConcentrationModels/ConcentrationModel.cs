@@ -1,6 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.Simulation.Calculators.ResidueGeneration;
 using MCRA.Simulation.Objects;
 using MCRA.Utils.Statistics;
 

@@ -195,12 +195,12 @@ namespace MCRA.Simulation {
             set => GetOrCreateModuleOutputData<ConcentrationModelsOutputData>(ActionType.ConcentrationModels).CumulativeConcentrationModels = value;
         }
 
-        public IDictionary<(Food Food, Compound Substance), CompoundResidueCollection> CompoundResidueCollections {
+        public IDictionary<(Food Food, Compound Substance), FoodSubstanceResidueCollection> CompoundResidueCollections {
             get => GetOrCreateModuleOutputData<ConcentrationModelsOutputData>(ActionType.ConcentrationModels).CompoundResidueCollections;
             set => GetOrCreateModuleOutputData<ConcentrationModelsOutputData>(ActionType.ConcentrationModels).CompoundResidueCollections = value;
         }
 
-        public Dictionary<Food, CompoundResidueCollection> CumulativeCompoundResidueCollections {
+        public Dictionary<Food, FoodSubstanceResidueCollection> CumulativeCompoundResidueCollections {
             get => GetOrCreateModuleOutputData<ConcentrationModelsOutputData>(ActionType.ConcentrationModels).CumulativeCompoundResidueCollections;
             set => GetOrCreateModuleOutputData<ConcentrationModelsOutputData>(ActionType.ConcentrationModels).CumulativeCompoundResidueCollections = value;
         }

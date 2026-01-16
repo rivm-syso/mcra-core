@@ -8,7 +8,7 @@ using MCRA.Simulation.Calculators.OccurrencePatternsCalculation;
 
 namespace MCRA.Simulation.Actions.ConcentrationModels {
     public sealed class ConcentrationModelsActionResult : IActionResult {
-        public IDictionary<(Food Food, Compound Substance), CompoundResidueCollection> CompoundResidueCollections { get; set; }
+        public IDictionary<(Food Food, Compound Substance), FoodSubstanceResidueCollection> CompoundResidueCollections { get; set; }
         public IDictionary<(Food Food, Compound Substance), ConcentrationModel> ConcentrationModels { get; set; }
         public IDictionary<Food, ConcentrationModel> CumulativeConcentrationModels { get; set; }
         public ICollection<MarginalOccurrencePattern> SimulatedOccurrencePatterns { get; set; }

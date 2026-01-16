@@ -2,7 +2,6 @@
 using MCRA.General;
 using MCRA.General.ModuleDefinitions.Interfaces;
 using MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation;
-using MCRA.Simulation.Calculators.ConcentrationModelCalculation;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.RandomGenerators;
@@ -19,12 +18,12 @@ namespace MCRA.Simulation.Calculators.FoodConcentrationModelBuilders {
 
         public Dictionary<Food, ConcentrationModel> Create(
             ICollection<Food> foodsAsMeasured,
-            IDictionary<Food, CompoundResidueCollection> cumulativeCompoundResidueCollections,
+            IDictionary<Food, FoodSubstanceResidueCollection> cumulativeCompoundResidueCollections,
             Compound cumulativeCompound,
             ConcentrationUnit concentrationUnit
         ) {
             var result = new Dictionary<Food, ConcentrationModel>();
-            var modelFactory = new ConcentrationModelFactory(_settings);
+            var modelFactory = new FoodConcentrationModelFactory(_settings);
             foreach (var food in foodsAsMeasured) {
                 var compoundResidueCollection = cumulativeCompoundResidueCollections.ContainsKey(food) ?
                     cumulativeCompoundResidueCollections[food] : null;
@@ -36,7 +35,7 @@ namespace MCRA.Simulation.Calculators.FoodConcentrationModelBuilders {
 
         public Dictionary<Food, ConcentrationModel> CreateUncertain(
             ICollection<Food> foodsAsMeasured,
-            IDictionary<Food, CompoundResidueCollection> cumulativeCompoundResidueCollections,
+            IDictionary<Food, FoodSubstanceResidueCollection> cumulativeCompoundResidueCollections,
             Compound cumulativeCompound,
             bool reSampleConcentrations,
             bool isParametric,
@@ -46,7 +45,7 @@ namespace MCRA.Simulation.Calculators.FoodConcentrationModelBuilders {
             if (reSampleConcentrations) {
                 if (isParametric) {
                     var result = new Dictionary<Food, ConcentrationModel>();
-                    var modelFactory = new ConcentrationModelFactory(_settings);
+                    var modelFactory = new FoodConcentrationModelFactory(_settings);
                     foreach (var food in foodsAsMeasured) {
                         var random = new McraRandomGenerator(RandomUtils.CreateSeed(seed.Value, food.Code));
                         var compoundResidueCollection = cumulativeCompoundResidueCollections.ContainsKey(food) ? cumulativeCompoundResidueCollections[food] : null;
@@ -56,7 +55,7 @@ namespace MCRA.Simulation.Calculators.FoodConcentrationModelBuilders {
                         } else {
                             // Bootstrap using the "old" concentration model type (i.e., the model fitted in the nominal run)
                             if (cumulativeCompoundResidueCollections.TryGetValue(food, out var item)) {
-                                cumulativeCompoundResidueCollections[food] = CompoundResidueCollectionsBuilder.Resample(item, random);
+                                cumulativeCompoundResidueCollections[food] = FoodSubstanceResidueCollectionsBuilder.Resample(item, random);
                             }
                             model = CreateCumulativeModelAndCalculateParameters(modelFactory, food, cumulativeCompound, compoundResidueCollection, concentrationUnit);
                         }
@@ -75,10 +74,10 @@ namespace MCRA.Simulation.Calculators.FoodConcentrationModelBuilders {
         /// Generates the concentration model for the specified food and substance.
         /// </summary>
         public ConcentrationModel CreateCumulativeModelAndCalculateParameters(
-            ConcentrationModelFactory modelFactory,
+            FoodConcentrationModelFactory modelFactory,
             Food food,
             Compound substance,
-            CompoundResidueCollection cumulativeCompoundResidueCollection,
+            FoodSubstanceResidueCollection cumulativeCompoundResidueCollection,
             ConcentrationUnit concentrationUnit
         ) {
             var desiredModelType = _settings.ConcentrationModelTypesPerFoodCompound

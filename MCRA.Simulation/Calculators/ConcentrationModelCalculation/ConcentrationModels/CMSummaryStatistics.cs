@@ -43,7 +43,6 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
                 FractionCensored = CorrectedOccurenceFraction - FractionPositives;
                 FractionNonDetects = FractionCensored * Residues.FractionNonDetectValues / Residues.FractionCensoredValues;
                 FractionNonQuantifications = FractionCensored * Residues.FractionNonQuantificationValues / Residues.FractionCensoredValues;
-
                 FractionTrueZeros = 1 - CorrectedOccurenceFraction;
                 Sigma = Residues.StandardDeviation ?? 0D;
                 Mu = Math.Log(Residues.Positives.Average()) - .5 * Math.Pow(Sigma, 2);

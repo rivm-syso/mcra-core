@@ -4,7 +4,7 @@ using MCRA.General.ModuleDefinitions.Interfaces;
 using MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
 
-namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
+namespace MCRA.Simulation.Calculators.FoodConcentrationModelBuilders {
 
     /// <summary>
     /// Factory class for generating concentration models.
@@ -12,8 +12,8 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
     /// <remarks>
     /// Constructor
     /// </remarks>
-    public sealed class ConcentrationModelFactory(IConcentrationModelCalculationSettings settings) {
-        private IConcentrationModelCalculationSettings _settings = settings;
+    public sealed class FoodConcentrationModelFactory(IConcentrationModelCalculationSettings settings) {
+        private readonly IConcentrationModelCalculationSettings _settings = settings;
 
         /// <summary>
         /// Generates a concentration model of the specified type for the specified food and substance.
@@ -22,14 +22,14 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
             Food food,
             Compound substance,
             ConcentrationModelType concentrationModelType,
-            CompoundResidueCollection compoundResidueCollection,
+            FoodSubstanceResidueCollection compoundResidueCollection,
             ConcentrationDistribution concentrationDistribution,
             ConcentrationLimit maximumResidueLimit,
             double occurrenceFrequency,
             ConcentrationUnit concentrationUnit
         ) {
             if (compoundResidueCollection == null) {
-                compoundResidueCollection = new CompoundResidueCollection { Food = food, Compound = substance, };
+                compoundResidueCollection = new FoodSubstanceResidueCollection { Food = food, Compound = substance, };
             }
 
             var parametersCalculated = false;

@@ -285,10 +285,10 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         /// <param name="lor"></param>
         /// <param name="random"></param>
         /// <returns></returns>
-        private static CompoundResidueCollection createConcentrations(Food food, Compound compound, List<double> concentrations, double lor, IRandom random) {
+        private static FoodSubstanceResidueCollection createConcentrations(Food food, Compound compound, List<double> concentrations, double lor, IRandom random) {
             var positivesCount = concentrations.Count(r => r > 0);
             var zerosCount = concentrations.Count(r => r == 0);
-            return new CompoundResidueCollection() {
+            return new FoodSubstanceResidueCollection() {
                 Food = food,
                 Compound = compound,
                 Positives = concentrations.Where(r => r >= lor).ToList(),

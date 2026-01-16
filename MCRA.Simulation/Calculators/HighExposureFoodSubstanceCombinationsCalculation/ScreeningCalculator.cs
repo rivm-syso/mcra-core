@@ -83,7 +83,7 @@ namespace MCRA.Simulation.Calculators.HighExposureFoodSubstanceCombinations {
             IEnumerable<FoodConversionResult> conversionResults,
             IEnumerable<IndividualDay> simulatedIndividualDays,
             IEnumerable<FoodConsumption> foodConsumptions,
-            IEnumerable<CompoundResidueCollection> compoundResidueCollections,
+            IEnumerable<FoodSubstanceResidueCollection> compoundResidueCollections,
             IDictionary<Compound, double> correctedRelativePotencyFactors,
             CompositeProgressState progressReport
         );

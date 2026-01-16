@@ -20,7 +20,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposureCalculation.DietaryExposure
         public List<DietaryIndividualDayIntake> Impute(
             ExposureType exposureType,
             Dictionary<Compound, List<ExposureRecord>> exposurePerCompound,
-            IDictionary<(Food, Compound), CompoundResidueCollection> compoundResidueCollections,
+            IDictionary<(Food, Compound), FoodSubstanceResidueCollection> compoundResidueCollections,
             ICollection<Compound> activeSubstances,
             ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes,
             IRandom random
@@ -81,7 +81,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposureCalculation.DietaryExposure
         public List<DietaryIndividualDayIntake> ImputeUncertaintyRun(
             ExposureType exposureType,
             Dictionary<Compound, List<ExposureRecord>> ExposurePerCompoundRecords,
-            IDictionary<(Food, Compound), CompoundResidueCollection> compoundResidueCollections,
+            IDictionary<(Food, Compound), FoodSubstanceResidueCollection> compoundResidueCollections,
             ICollection<Compound> activeSubstances,
             ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes,
             IRandom variabilityRandomGenerator,

@@ -65,7 +65,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ResidueGeneration {
                 FractionOfLor = 0.1
             };
             var cumulativeConcentrationModelsCalculator = new CumulativeFoodConcentrationModelsBuilder(settings);
-            var compoundResidueCollections = FakeCompoundResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections)
+            var compoundResidueCollections = FakeFoodSubstanceResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections)
                 .Where(c => c.Key.Substance == substances.First());
 
             var cumulativeConcentrationModels = cumulativeConcentrationModelsCalculator.Create(

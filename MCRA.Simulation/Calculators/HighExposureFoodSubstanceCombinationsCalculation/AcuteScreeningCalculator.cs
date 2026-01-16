@@ -30,7 +30,7 @@ namespace MCRA.Simulation.Calculators.HighExposureFoodSubstanceCombinations {
             IEnumerable<FoodConversionResult> conversionResults,
             IEnumerable<IndividualDay> individualDays,
             IEnumerable<FoodConsumption> foodConsumptions,
-            IEnumerable<CompoundResidueCollection> compoundResidueCollections,
+            IEnumerable<FoodSubstanceResidueCollection> compoundResidueCollections,
             IDictionary<Compound, double> correctedRelativePotencyFactors,
             CompositeProgressState progressState
         ) {
@@ -103,7 +103,7 @@ namespace MCRA.Simulation.Calculators.HighExposureFoodSubstanceCombinations {
             ScreeningResultRecord screeningResult,
             IEnumerable<FoodConsumption> consumptions,
             int totalIndividualDays,
-            CompoundResidueCollection compoundResidueCollection,
+            FoodSubstanceResidueCollection compoundResidueCollection,
             double rpf
         ) {
             var result = consumptions

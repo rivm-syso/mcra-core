@@ -1,7 +1,8 @@
-﻿using MCRA.General;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 using MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation;
 
-namespace MCRA.Simulation.Calculators.ResidueGeneration {
+namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
 
     /// <summary>
     /// Holds residue data with information on positives, censored, and other characteristics.
@@ -19,6 +20,11 @@ namespace MCRA.Simulation.Calculators.ResidueGeneration {
             Positives = [];
             CensoredValuesCollection = [];
         }
+
+        /// <summary>
+        /// The substance
+        /// </summary>
+        public Compound Compound { get; set; }
 
         /// <summary>
         /// The list of positive measurements.

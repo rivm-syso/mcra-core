@@ -55,7 +55,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 substances,
                 concentrationModels
             );
-            var compoundResidueCollections = FakeCompoundResidueCollectionsGenerator
+            var compoundResidueCollections = FakeFoodSubstanceResidueCollectionsGenerator
                 .Create(substances, monteCarloSubstanceSampleCollections);
 
             var data = new ActionData() {
@@ -193,7 +193,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 substances,
                 concentrationModels
             );
-            var compoundResidueCollections = FakeCompoundResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections);
+            var compoundResidueCollections = FakeFoodSubstanceResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections);
 
             var data = new ActionData() {
                 AllFoods = foods,
@@ -263,7 +263,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 substances,
                 concentrationModels
             );
-            var compoundResidueCollections = FakeCompoundResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections);
+            var compoundResidueCollections = FakeFoodSubstanceResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections);
             var processingTypes = FakeProcessingTypesGenerator.Create(modelledFoods.Count);
             var ix = 0;
             foreach (var food in modelledFoods) {
@@ -349,7 +349,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                     substances,
                     concentrationModels
                 );
-            var compoundResidueCollections = FakeCompoundResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections);
+            var compoundResidueCollections = FakeFoodSubstanceResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections);
             var processingTypes = FakeProcessingTypesGenerator.Create(3);
             var processingFactorModels = FakeProcessingFactorsGenerator
                 .CreateProcessingFactorModelCollection(
@@ -437,7 +437,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 substances,
                 concentrationModels
             );
-            var compoundResidueCollections = FakeCompoundResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections);
+            var compoundResidueCollections = FakeFoodSubstanceResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections);
 
             var data = new ActionData() {
                 AllFoods = foods,
@@ -514,7 +514,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 substances,
                 concentrationModels
             );
-            var compoundResidueCollections = FakeCompoundResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections);
+            var compoundResidueCollections = FakeFoodSubstanceResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections);
 
             var data = new ActionData() {
                 AllFoods = foods,
@@ -588,7 +588,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 substances,
                 concentrationModels
             );
-            var compoundResidueCollections = FakeCompoundResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections);
+            var compoundResidueCollections = FakeFoodSubstanceResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections);
 
             var data = new ActionData() {
                 AllFoods = foods,
@@ -665,7 +665,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 substances,
                 concentrationModels
             );
-            var compoundResidueCollections = FakeCompoundResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections);
+            var compoundResidueCollections = FakeFoodSubstanceResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections);
 
             var data = new ActionData() {
                 AllFoods = foods,
@@ -762,7 +762,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 substances,
                 concentrationModels
             );
-            var compoundResidueCollections = FakeCompoundResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections);
+            var compoundResidueCollections = FakeFoodSubstanceResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections);
 
             var data = new ActionData() {
                 AllFoods = foods,
@@ -836,7 +836,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 substances,
                 concentrationModels
             );
-            var compoundResidueCollections = FakeCompoundResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections);
+            var compoundResidueCollections = FakeFoodSubstanceResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections);
 
             var data = new ActionData() {
                 AllFoods = foods,
@@ -922,7 +922,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 substances,
                 concentrationModels
             );
-            var compoundResidueCollections = FakeCompoundResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections);
+            var compoundResidueCollections = FakeFoodSubstanceResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections);
 
             var data = new ActionData() {
                 AllFoods = foods,
@@ -1007,7 +1007,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 substances,
                 concentrationModels
             );
-            var compoundResidueCollections = FakeCompoundResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections);
+            var compoundResidueCollections = FakeFoodSubstanceResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections);
 
             var data = new ActionData() {
                 AllFoods = foodsAsEaten,
@@ -1085,7 +1085,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 substances,
                 concentrationModels
             );
-            var compoundResidueCollections = FakeCompoundResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections);
+            var compoundResidueCollections = FakeFoodSubstanceResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections);
 
             var data = new ActionData() {
                 AllFoods = foodsAsEaten,

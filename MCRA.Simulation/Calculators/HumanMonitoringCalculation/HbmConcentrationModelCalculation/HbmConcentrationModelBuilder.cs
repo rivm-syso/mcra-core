@@ -1,9 +1,9 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation;
+using MCRA.Simulation.Calculators.ConcentrationModelCalculation;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
-using MCRA.Simulation.Calculators.ResidueGeneration;
 using MCRA.Simulation.Objects;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmConcentrationModelCalculation {
