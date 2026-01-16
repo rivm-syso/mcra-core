@@ -8,11 +8,11 @@ using OxyPlot.Series;
 namespace MCRA.Simulation.OutputGeneration {
     public abstract class CompoundExposureDistributionChartCreatorBase : ReportHistogramChartCreatorBase {
 
-        public PlotModel Create(CompoundExposureDistributionRecord record, string title, string unit, double maximum, double minimum, bool showTitle) {
+        public PlotModel Create(SubstanceExposureDistributionRecord record, string title, string unit, double maximum, double minimum, bool showTitle) {
             return Create(record, title, unit, maximum, minimum, double.NaN, showTitle);
         }
 
-        public PlotModel Create(CompoundExposureDistributionRecord record, string title, string unit, bool showTitle) {
+        public PlotModel Create(SubstanceExposureDistributionRecord record, string title, string unit, bool showTitle) {
             return Create(record, title, unit, double.NaN, double.NaN, double.NaN, showTitle);
         }
 
@@ -28,7 +28,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="showTitle"></param>
         /// <returns></returns>
         public PlotModel Create(
-            CompoundExposureDistributionRecord record,
+            SubstanceExposureDistributionRecord record,
             string title,
             string unit,
             double maximum,

@@ -1,10 +1,9 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.DietaryExposureCalculation.DietaryExposureImputationCalculation;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Mock.FakeDataGenerators;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MCRA.Simulation.Test.Helpers;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
 
@@ -12,7 +11,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
     /// OutputGeneration, Generic, CompoundExposureDistributions
     /// </summary>
     [TestClass]
-    public class CompoundPotencyVersusExposureChartCreatorTests {
+    public class SubstancePotencyVersusExposureChartCreatorTests {
 
         /// <summary>
         /// CompoundPotencyVersusExposureChart_TestUncertainty
@@ -40,11 +39,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
                 exposurePerCompoundRecords[substance] = exposureRecords;
             }
 
-            var section = new CompoundExposureDistributionsSection();
-
+            var section = new SubstanceExposureDistributionsSection();
             section.Summarize(exposurePerCompoundRecords, rpfs, memberships, false);
 
-            var chart = new CompoundPotencyVersusExposureChartCreator(section, "mg/kg");
+            var chart = new SubstancePotencyVersusExposureChartCreator(section, "mg/kg");
             chart.CreateToSvg(TestUtilities.ConcatWithOutputPath("CompoundPotencyVersusExposureChartCreator_Test.svg"));
         }
     }

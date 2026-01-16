@@ -4,7 +4,6 @@ using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Helpers;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
 
@@ -39,11 +38,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
                 }
                 exposurePerCompoundRecords[substance] = exposureRecords;
             }
-            var section = new CompoundExposureDistributionsSection();
+            var section = new SubstanceExposureDistributionsSection();
+            section.SummarizeExposureDistributionPerSubstance(exposurePerCompoundRecords, rpfs, memberships, false);
 
-            section.SummarizeExposureDistributionPerCompound(exposurePerCompoundRecords, rpfs, memberships, false);
-
-            var chart = new UnrescaledExposureDistributionPerCompoundChartCreator(section.CompoundExposureDistributionRecords.First(), 500, 300, "mg/kg");
+            var chart = new UnrescaledExposureDistributionPerCompoundChartCreator(section.SubstanceExposureDistributionRecords.First(), 500, 300, "mg/kg");
             chart.CreateToSvg(TestUtilities.ConcatWithOutputPath("UnrescaledExposureDistributionPerCompoundChartCreator.svg"));
         }
     }

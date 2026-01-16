@@ -5,18 +5,20 @@ using OxyPlot.Legends;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class CompoundPotencyVersusExposureChartCreator : ReportLineChartCreatorBase {
+    public sealed class SubstancePotencyVersusExposureChartCreator : ReportLineChartCreatorBase {
 
-        private string _intakeUnit;
-        private CompoundExposureDistributionsSection _section;
+        private readonly string _intakeUnit;
+        private readonly SubstanceExposureDistributionsSection _section;
 
-        public CompoundPotencyVersusExposureChartCreator(CompoundExposureDistributionsSection section, string intakeUnit) {
+        public SubstancePotencyVersusExposureChartCreator(SubstanceExposureDistributionsSection section, string intakeUnit) {
             Width = 750;
             Height = 450;
             _section = section;
             _intakeUnit = intakeUnit;
         }
-        public override string Title => "RPFs vs mean exposures";
+
+        public override string Title => "RPFs versus mean substance exposures.";
+
         public override string ChartId {
             get {
                 var pictureId = "9c9d2339-a864-4e43-8e5a-227f68250d62";
@@ -25,10 +27,10 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         public override PlotModel Create() {
-            return create(_section.CompoundExposureDistributionRecords, _intakeUnit);
+            return create(_section.SubstanceExposureDistributionRecords, _intakeUnit);
         }
 
-        private PlotModel create(List<CompoundExposureDistributionRecord> records, string intakeUnit) {
+        private PlotModel create(List<SubstanceExposureDistributionRecord> records, string intakeUnit) {
             var plotModel = createDefaultPlotModel(string.Empty);
 
             var positiveExposureRecords = records.Where(r => !double.IsNaN(r.Mu)).ToList();

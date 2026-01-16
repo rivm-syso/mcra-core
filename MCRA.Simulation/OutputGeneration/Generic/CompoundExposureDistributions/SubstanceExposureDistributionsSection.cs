@@ -6,10 +6,11 @@ using MCRA.Simulation.Calculators.DietaryExposureCalculation.DietaryExposureImpu
 using System.Collections.Concurrent;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class CompoundExposureDistributionsSection : SummarySection {
+    public sealed class SubstanceExposureDistributionsSection : SummarySection {
 
-        public CompoundExposureDistributionRecord CombinedCompoundExposureDistributionRecord { get; set; }
-        public List<CompoundExposureDistributionRecord> CompoundExposureDistributionRecords { get; set; }
+        public SubstanceExposureDistributionRecord CombinedSubstanceExposureDistributionRecord { get; set; }
+
+        public List<SubstanceExposureDistributionRecord> SubstanceExposureDistributionRecords { get; set; }
 
         public double Upper { get; set; }
         public double Lower { get; set; }
@@ -18,12 +19,12 @@ namespace MCRA.Simulation.OutputGeneration {
         public bool HomogeneityOfVariances { get; set; }
 
         public void Summarize(
-                Dictionary<Compound, List<ExposureRecord>> exposurePerCompoundRecords,
-                IDictionary<Compound, double> relativePotencyFactors,
-                IDictionary<Compound, double> membershipProbabilities,
-                bool isPerPerson
-            ) {
-            SummarizeExposureDistributionPerCompound(
+            Dictionary<Compound, List<ExposureRecord>> exposurePerCompoundRecords,
+            IDictionary<Compound, double> relativePotencyFactors,
+            IDictionary<Compound, double> membershipProbabilities,
+            bool isPerPerson
+        ) {
+            SummarizeExposureDistributionPerSubstance(
                 exposurePerCompoundRecords,
                 relativePotencyFactors,
                 membershipProbabilities,
@@ -39,7 +40,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="relativePotencyFactors"></param>
         /// <param name="membershipProbabilities"></param>
         /// <param name="isPerPerson"></param>
-        public void SummarizeExposureDistributionPerCompound(
+        public void SummarizeExposureDistributionPerSubstance(
             Dictionary<Compound, List<ExposureRecord>> exposurePerCompoundRecords,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
@@ -52,7 +53,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
             var parallelOptions = new ParallelOptions { MaxDegreeOfParallelism = 1000 }; //, CancellationToken = cancelToken };
             var exposureArray = exposurePerCompoundRecords.ToArray();
-            var exposureDistributionPerCompoundRecords = new CompoundExposureDistributionRecord[exposureArray.Length];
+            var exposureDistributionPerCompoundRecords = new SubstanceExposureDistributionRecord[exposureArray.Length];
 
             Parallel.For(0, exposureArray.Length, parallelOptions, idx => {
                 var c = exposureArray[idx];
@@ -72,9 +73,9 @@ namespace MCRA.Simulation.OutputGeneration {
                 }
                 logIntakesBag.Add(logIntakes);
                 weightsBag.Add(sampleWeights);
-                exposureDistributionPerCompoundRecords[idx] = new CompoundExposureDistributionRecord() {
-                    CompoundCode = c.Key.Code,
-                    CompoundName = c.Key.Name,
+                exposureDistributionPerCompoundRecords[idx] = new SubstanceExposureDistributionRecord() {
+                    SubstanceCode = c.Key.Code,
+                    SubstanceName = c.Key.Name,
                     Percentage = 100 - result.Sum(w => w.SamplingWeight) / c.Value.Sum(w => w.SamplingWeight) * 100d,
                     N = logIntakes.Count,
                     Mu = mu,
@@ -84,9 +85,9 @@ namespace MCRA.Simulation.OutputGeneration {
                     AssessmentGroupMembership = membershipProbabilities?[c.Key] ?? double.NaN
                 };
             });
-            CompoundExposureDistributionRecords = exposureDistributionPerCompoundRecords
-                .OrderBy(r => r.CompoundName, StringComparer.OrdinalIgnoreCase)
-                .OrderBy(r => r.CompoundCode, StringComparer.OrdinalIgnoreCase)
+            SubstanceExposureDistributionRecords = exposureDistributionPerCompoundRecords
+                .OrderBy(r => r.SubstanceName, StringComparer.OrdinalIgnoreCase)
+                .OrderBy(r => r.SubstanceCode, StringComparer.OrdinalIgnoreCase)
                 .ToList();
 
             allLogIntakes = logIntakesBag.SelectMany(b => b).ToList();
@@ -95,18 +96,18 @@ namespace MCRA.Simulation.OutputGeneration {
             var allPercentiles = allLogIntakes.PercentilesWithSamplingWeights(allSamplingWeights, [50, 99]);
             var allNumberOfBins = Math.Sqrt(allLogIntakes.Count) < 100 ? BMath.Ceiling(Math.Sqrt(allLogIntakes.Count)) : 100;
             if (exposureDistributionPerCompoundRecords.Any()) {
-                CombinedCompoundExposureDistributionRecord = new CompoundExposureDistributionRecord() {
-                    CompoundName = "All substances",
-                    CompoundCode = "All substances",
+                CombinedSubstanceExposureDistributionRecord = new SubstanceExposureDistributionRecord() {
+                    SubstanceName = "All substances",
+                    SubstanceCode = "All substances",
                     Percentage = exposureDistributionPerCompoundRecords.Average(c => c.Percentage),
                     N = exposureDistributionPerCompoundRecords.Sum(c => c.N),
                     RelativePotencyFactor = double.NaN,
                     AssessmentGroupMembership = double.NaN
                 };
                 if (allLogIntakes.Count > 2) {
-                    CombinedCompoundExposureDistributionRecord.Mu = allLogIntakes.Average(allSamplingWeights);
-                    CombinedCompoundExposureDistributionRecord.Sigma = Math.Sqrt(allLogIntakes.Variance(allSamplingWeights));
-                    CombinedCompoundExposureDistributionRecord.HistogramBins = allLogIntakes.MakeHistogramBins(allSamplingWeights, allNumberOfBins, allLogIntakes.Min(), allLogIntakes.Max());
+                    CombinedSubstanceExposureDistributionRecord.Mu = allLogIntakes.Average(allSamplingWeights);
+                    CombinedSubstanceExposureDistributionRecord.Sigma = Math.Sqrt(allLogIntakes.Variance(allSamplingWeights));
+                    CombinedSubstanceExposureDistributionRecord.HistogramBins = allLogIntakes.MakeHistogramBins(allSamplingWeights, allNumberOfBins, allLogIntakes.Min(), allLogIntakes.Max());
                 }
             }
         }
@@ -115,7 +116,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// Calculate statistics for exposure distributions
         /// </summary>
         private void calculateStatistics() {
-            var result = CompoundExposureDistributionRecords
+            var result = SubstanceExposureDistributionRecords
                 .Where(c => c.HistogramBins != null)
                 .ToList();
 

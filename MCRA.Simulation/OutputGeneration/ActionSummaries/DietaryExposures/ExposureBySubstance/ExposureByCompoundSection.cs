@@ -82,7 +82,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 subHeader.SaveSummarySection(section);
             }
             if (exposurePerCompoundRecords != null) {
-                var section = new CompoundExposureDistributionsSection();
+                var section = new SubstanceExposureDistributionsSection();
                 subHeader = header.AddSubSectionHeaderFor(section, "Exposure distributions", order++);
                 section.Summarize(
                     exposurePerCompoundRecords,

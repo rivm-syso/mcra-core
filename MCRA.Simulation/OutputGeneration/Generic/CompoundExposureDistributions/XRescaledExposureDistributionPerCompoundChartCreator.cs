@@ -3,12 +3,12 @@ using OxyPlot;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class XRescaledExposureDistributionPerCompoundChartCreator : CompoundExposureDistributionChartCreatorBase {
-        private CompoundExposureDistributionRecord _record;
+        private SubstanceExposureDistributionRecord _record;
         private string _intakeUnit;
         private double _maximum;
         private double _minimum;
 
-        public XRescaledExposureDistributionPerCompoundChartCreator(CompoundExposureDistributionRecord record, int width, int height, double maximum, double minimum, string intakeUnit) {
+        public XRescaledExposureDistributionPerCompoundChartCreator(SubstanceExposureDistributionRecord record, int width, int height, double maximum, double minimum, string intakeUnit) {
             Width = width;
             Height = height;
             _record = record;
@@ -25,7 +25,7 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         public override PlotModel Create() {
-            var title = $"{_record.CompoundName} {100 - _record.Percentage:F1}% > 0";
+            var title = $"{_record.SubstanceName} {100 - _record.Percentage:F1}% > 0";
             return Create(_record, title, _intakeUnit, _maximum, _minimum, true);
         }
     }

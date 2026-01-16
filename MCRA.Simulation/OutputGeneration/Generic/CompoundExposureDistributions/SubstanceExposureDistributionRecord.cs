@@ -7,7 +7,7 @@ namespace MCRA.Simulation.OutputGeneration {
     /// <summary>
     /// Helper class for substances, relative contribution to the upper exposure distribution.
     /// </summary>
-    public sealed class CompoundExposureDistributionRecord {
+    public sealed class SubstanceExposureDistributionRecord {
         private Guid _id = Guid.NewGuid();
 
         [Display(AutoGenerateField = false)]
@@ -17,10 +17,10 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         [DisplayName("Substance name")]
-        public string CompoundName { get; set; }
+        public string SubstanceName { get; set; }
 
         [DisplayName("Substance code")]
-        public string CompoundCode { get; set; }
+        public string SubstanceCode { get; set; }
 
         [Description("Number of days for acute or number of individuals for chronic with exposure > 0.")]
         [DisplayName("{IndividualDayUnit} with exposure")]

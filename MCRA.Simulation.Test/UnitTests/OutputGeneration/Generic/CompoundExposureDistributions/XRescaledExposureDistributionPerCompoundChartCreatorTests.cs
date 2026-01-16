@@ -37,11 +37,11 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
                 }
                 exposurePerCompoundRecords[substance] = exposureRecords;
             }
-            var section = new CompoundExposureDistributionsSection();
+            var section = new SubstanceExposureDistributionsSection();
 
-            section.SummarizeExposureDistributionPerCompound(exposurePerCompoundRecords, rpfs, memberships, false);
+            section.SummarizeExposureDistributionPerSubstance(exposurePerCompoundRecords, rpfs, memberships, false);
 
-            var chart = new XRescaledExposureDistributionPerCompoundChartCreator(section.CompoundExposureDistributionRecords.First(), 500, 300, double.NaN, double.NaN,  "mg/kg");
+            var chart = new XRescaledExposureDistributionPerCompoundChartCreator(section.SubstanceExposureDistributionRecords.First(), 500, 300, double.NaN, double.NaN,  "mg/kg");
             chart.CreateToSvg(TestUtilities.ConcatWithOutputPath("XRescaledExposureDistributionPerCompoundChartCreator.svg"));
         }
     }

@@ -3,13 +3,13 @@ using OxyPlot;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class XYRescaledExposureDistributionPerCompoundChartCreator : CompoundExposureDistributionChartCreatorBase {
-        private CompoundExposureDistributionRecord _record;
+        private SubstanceExposureDistributionRecord _record;
         private string _intakeUnit;
         private double _maximum;
         private double _minimum;
         private double _maximumFrequency;
 
-        public XYRescaledExposureDistributionPerCompoundChartCreator(CompoundExposureDistributionRecord record, int width, int height, double maximum, double minimum, double maximumFrequency, string intakeUnit) {
+        public XYRescaledExposureDistributionPerCompoundChartCreator(SubstanceExposureDistributionRecord record, int width, int height, double maximum, double minimum, double maximumFrequency, string intakeUnit) {
             Width = width;
             Height = height;
             _record = record;
@@ -20,7 +20,7 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
 
-        public override string Title => $"{_record.CompoundName} {100 - _record.Percentage:F1}% > 0";
+        public override string Title => $"{_record.SubstanceName} {100 - _record.Percentage:F1}% > 0";
         public override string ChartId {
             get {
                 var pictureId = "209af570-aa13-455d-b15f-82e4fc5cabd0";
