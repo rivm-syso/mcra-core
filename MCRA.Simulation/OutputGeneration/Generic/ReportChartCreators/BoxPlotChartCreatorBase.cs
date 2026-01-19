@@ -14,6 +14,8 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public OxyColor StrokeColor { get; set; } = OxyColors.Blue;
 
+        public static double[] BoxPlotPercentages { get;  } = [5, 10, 25, 50, 75, 90, 95];
+
         public abstract string ChartId { get; }
 
         public virtual string Title { get; }

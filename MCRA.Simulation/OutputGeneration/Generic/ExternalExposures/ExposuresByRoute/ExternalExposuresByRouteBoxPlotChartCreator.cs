@@ -3,25 +3,22 @@ using MCRA.General;
 using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
 
-namespace MCRA.Simulation.OutputGeneration.Generic.ExternalExposures.ExposuresByRouteSubstance {
-    public class ExternalExposuresByRouteSubstanceBoxPlotChartCreator : BoxPlotChartCreatorBase {
+namespace MCRA.Simulation.OutputGeneration.Generic.ExternalExposures.ExposuresByRoute {
+    public class ExternalExposuresByRouteBoxPlotChartCreator : BoxPlotChartCreatorBase {
 
-        private readonly List<ExternalExposuresByRouteSubstancePercentilesRecord> _records;
-        private readonly ExposureRoute _exposureRoute;
-        private readonly ExternalExposuresByRouteSubstanceSection _section;
+        private readonly List<ExternalExposuresByRoutePercentilesRecord> _records;
+        private readonly ExternalExposuresByRouteSection _section;
         private readonly ExposureUnitTriple _exposureUnit;
 
         public override string Title => $"Lower whiskers: p5, p10; box: p25, p50, p75; upper whiskers: p90 and p95.";
 
-        public ExternalExposuresByRouteSubstanceBoxPlotChartCreator(
-            ExternalExposuresByRouteSubstanceSection section,
-            List<ExternalExposuresByRouteSubstancePercentilesRecord> records,
-            ExposureRoute route,
+        public ExternalExposuresByRouteBoxPlotChartCreator(
+            ExternalExposuresByRouteSection section,
+            List<ExternalExposuresByRoutePercentilesRecord> records,
             ExposureUnitTriple exposureUnit
         ) {
             _section = section;
             _records = records;
-            _exposureRoute = route;
             _exposureUnit = exposureUnit;
             Width = 500;
             Height = 80 + Math.Max(_records.Count * _cellSize, 80);
@@ -30,7 +27,7 @@ namespace MCRA.Simulation.OutputGeneration.Generic.ExternalExposures.ExposuresBy
         public override string ChartId {
             get {
                 return StringExtensions.CreateFingerprint(_section.SectionId + _section.PictureId
-                    + _exposureRoute.GetHashCode());
+                    + "75b38c01-170d-46a4-ad69-6627e589f77c");
             }
         }
 

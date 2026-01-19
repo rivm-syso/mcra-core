@@ -15,39 +15,34 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             var hiddenProperties = new List<string>();
 
-            if (Model.ExposureRecords.All(c => c.NumberOfSubstances <= 1)) {
+            if (Model.TableRecords.All(c => c.NumberOfSubstances <= 1)) {
                 hiddenProperties.Add("NumberOfSubstances");
             }
 
-            var isUncertainty = Model.ExposureRecords.FirstOrDefault()?.Contributions.Any() ?? false;
-            if (!isUncertainty) {
-                hiddenProperties.Add("LowerContributionPercentage");
-                hiddenProperties.Add("UpperContributionPercentage");
-                hiddenProperties.Add("MeanContribution");
-            } else {
-                hiddenProperties.Add("ContributionPercentage");
-            }
-
-
             //Render HTML
-            if (Model.ExposureRecords.Any(r => r.MeanAll > 0)) {
-                sb.AppendDescriptionParagraph($"Total {Model.ExposureRecords.Count} routes.");
-                if (Model.ExposureRecords.Count > 1) {
-                    var chartCreator = new ExternalExposuresByRoutePieChartCreator(Model, isUncertainty);
-                    sb.AppendChart(
-                        $"{typeName}Chart",
-                        chartCreator,
-                        ChartFileType.Svg,
-                        Model,
-                        ViewBag,
-                        chartCreator.Title,
-                        true
-                    );
-                }
+            if (Model.TableRecords.Any(r => r.MeanAll > 0)) {
+                var chartCreator = new ExternalExposuresByRouteBoxPlotChartCreator(
+                    Model,
+                    Model.BoxPlotRecords,
+                    Model.ExposureUnit
+                );
+                var warning = Model.BoxPlotRecords.Any(c => c.P95 == 0)
+                       ? "The asterisk indicates substances with positive measurements above an upper whisker of zero."
+                       : string.Empty;
+                var figCaption = $"Exposures by route. " + chartCreator.Title + $" {warning}";
+                sb.AppendChart(
+                    $"{typeName}Chart",
+                    chartCreator,
+                    ChartFileType.Svg,
+                    Model,
+                    ViewBag,
+                    figCaption,
+                    true
+                );
 
                 sb.AppendTable(
                     Model,
-                    Model.ExposureRecords,
+                    Model.TableRecords,
                     $"{typeName}Table",
                     ViewBag,
                     caption: "Exposure statistics by route (total distribution).",

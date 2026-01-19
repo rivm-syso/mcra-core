@@ -8,10 +8,9 @@ using MCRA.Utils.Statistics;
 namespace MCRA.Simulation.OutputGeneration.Generic.ExternalExposures.ExposuresByRouteSubstance {
     public class ExternalExposuresByRouteSubstanceSection : SummarySection {
         public override bool SaveTemporaryData => true;
-        private static readonly double[] _percentages = [5, 10, 25, 50, 75, 90, 95];
-        public List<ExternalExposuresByRouteSubstanceRecord> ExposuresRecords { get; set; } = [];
-        public SerializableDictionary<ExposureRoute, List<ExternalExposuresPercentilesRecord>> ExposuresBoxPlotRecords { get; set; } = [];
-        public bool ShowOutliers { get; set; } = false;
+        public List<ExternalExposuresByRouteSubstanceRecord> TableRecords { get; set; } = [];
+        public SerializableDictionary<ExposureRoute, List<ExternalExposuresByRouteSubstancePercentilesRecord>> BoxPlotRecords { get; set; } = [];
+        public ExposureUnitTriple ExposureUnit { get; set; }
         public virtual string PictureId { get; } = "6b9d4690-2754-4aab-984f-f2ace1f3836e";
 
         public void Summarize<T>(
@@ -25,69 +24,59 @@ namespace MCRA.Simulation.OutputGeneration.Generic.ExternalExposures.ExposuresBy
             bool isPerPerson,
             ExposureUnitTriple exposureUnit
         ) where T : IExternalIndividualExposure {
-            var percentages = new double[] { lowerPercentage, 50, upperPercentage };
             relativePotencyFactors = relativePotencyFactors ?? substances.ToDictionary(r => r, r => 1D);
             membershipProbabilities = membershipProbabilities ?? substances.ToDictionary(r => r, r => 1D);
+            ExposureUnit = exposureUnit;
 
-            var weightedExposureAllRouteSubstances = 0d;
-            foreach (var route in routes) {
-                weightedExposureAllRouteSubstances += substances.Sum(substance => externalIndividualExposures
-                    .Sum(c => c.GetExposure(route, substance, isPerPerson: false)
-                       * c.SimulatedIndividual.SamplingWeight * relativePotencyFactors[substance] * membershipProbabilities[substance]));
-            }
-
+            var cancelToken = ProgressState?.CancellationToken ?? new();
             var externalExposuresByRouteRecords = new List<ExternalExposuresByRouteSubstanceRecord>();
             foreach (var route in routes) {
                 foreach (var substance in substances) {
-                    var record = getSummaryRecord(
-                        percentages,
+                    cancelToken.ThrowIfCancellationRequested();
+                    var records = getRecords(
                         route,
                         externalIndividualExposures,
                         substance,
-                        relativePotencyFactors ?? substances.ToDictionary(r => r, r => 1D),
-                        membershipProbabilities ?? substances.ToDictionary(r => r, r => 1D),
+                        relativePotencyFactors,
+                        membershipProbabilities,
                         isPerPerson,
-                        exposureUnit,
-                        weightedExposureAllRouteSubstances
+                        exposureUnit
                     );
-                    if (record != null) {
-                        externalExposuresByRouteRecords.Add(record);
+
+                    if (records != default) {
+                        TableRecords.Add(records.tableRecord);
+                        BoxPlotRecords.AddOrAppend(route, records.boxplotRecord);
                     }
+
                 }
             }
-            ExposuresRecords = [.. externalExposuresByRouteRecords
+            TableRecords = [.. TableRecords
                 .OrderBy(r => r.ExposureRoute)
                 .ThenBy(r => r.SubstanceName)];
-
-            foreach (var exposureRoute in routes) {
-                var exposureRoutesPercentilesRecords =
-                    getBoxPlotRecords(
-                        exposureRoute,
-                        externalIndividualExposures,
-                        substances,
-                        exposureUnit,
-                        isPerPerson
-                    );
-                if (exposureRoutesPercentilesRecords.Count > 0) {
-                    ExposuresBoxPlotRecords[exposureRoute] = exposureRoutesPercentilesRecords;
-                }
-            }
+            BoxPlotRecords = 
+                new SerializableDictionary<ExposureRoute, List<ExternalExposuresByRouteSubstancePercentilesRecord>>(
+                    BoxPlotRecords.Keys
+                        .OrderBy(r => r.GetShortDisplayName())
+                        .ToDictionary(
+                            k => k,
+                            k => BoxPlotRecords[k]
+                                .OrderBy(r => r.SubstanceName)
+                                .ToList()
+                ));
         }
 
-        private static ExternalExposuresByRouteSubstanceRecord getSummaryRecord<T>(
-            double[] percentages,
+        private static (ExternalExposuresByRouteSubstanceRecord tableRecord, ExternalExposuresByRouteSubstancePercentilesRecord boxplotRecord) getRecords<T>(
             ExposureRoute route,
             ICollection<T> externalIndividualExposures,
             Compound substance,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             bool isPerPerson,
-            ExposureUnitTriple exposureUnit,
-            double weightedExposureAllRouteSubstances
+            ExposureUnitTriple exposureUnit
         ) where T : IExternalIndividualExposure {
             var rpf = relativePotencyFactors[substance];
             var membership = membershipProbabilities[substance];
-            var individualExposures = externalIndividualExposures
+            var allExposures = externalIndividualExposures
                 .Select(
                     r => (
                         Exposure: r.GetExposure(route, substance, isPerPerson) * rpf * membership,
@@ -95,14 +84,14 @@ namespace MCRA.Simulation.OutputGeneration.Generic.ExternalExposures.ExposuresBy
                 ))
                 .ToList();
 
-            var positives = individualExposures
+            var positives = allExposures
                 .Where(e => e.Exposure > 0)
                 .ToList();
             if (positives.Count == 0) {
-                return null;
+                return default;
             }
 
-            var weightsAll = individualExposures
+            var weightsAll = allExposures
                .Select(r => r.SimulatedIndividual.SamplingWeight)
                .ToList();
             var weightsPositives = positives
@@ -110,102 +99,61 @@ namespace MCRA.Simulation.OutputGeneration.Generic.ExternalExposures.ExposuresBy
                 .Select(r => r.SimulatedIndividual.SamplingWeight)
                 .ToList();
 
+            var percentilesAll = allExposures
+                .Select(r => r.Exposure)
+                .PercentilesWithSamplingWeights(
+                    weightsAll,
+                    BoxPlotChartCreatorBase.BoxPlotPercentages
+                );
             var percentilesPositives = positives
                 .Select(r => r.Exposure)
                 .PercentilesWithSamplingWeights(
                     weightsPositives,
-                    percentages
-                );
-            var percentilesAll = individualExposures
-                .Select(r => r.Exposure)
-                .PercentilesWithSamplingWeights(
-                    weightsAll,
-                    percentages
+                    BoxPlotChartCreatorBase.BoxPlotPercentages
                 );
 
-            var sumAll = individualExposures.Sum(c => c.Exposure * c.SimulatedIndividual.SamplingWeight);
+            var sumAll = allExposures.Sum(c => c.Exposure * c.SimulatedIndividual.SamplingWeight);
             var sumPositives = positives.Sum(c => c.Exposure * c.SimulatedIndividual.SamplingWeight);
 
-            var record = new ExternalExposuresByRouteSubstanceRecord {
+            var tableRecord = new ExternalExposuresByRouteSubstanceRecord {
                 ExposureRoute = route.GetDisplayName(),
                 SubstanceName = substance.Name,
                 SubstanceCode = substance.Code,
-                Contribution = sumPositives / weightedExposureAllRouteSubstances,
                 IndividualsWithPositiveExposure = positives.Count,
                 MeanAll = sumAll / weightsAll.Sum(),
                 MeanPositives = sumPositives / weightsPositives.Sum(),
-                PercentagePositives = positives.Count * 100d / individualExposures.Count,
-                LowerPercentilePositives = percentilesPositives[0],
-                MedianPositives = percentilesPositives[1],
-                UpperPercentilePositives = percentilesPositives[2],
-                LowerPercentileAll = percentilesAll[0],
-                MedianAll = percentilesAll[1],
-                UpperPercentileAll = percentilesAll[2],
+                PercentagePositives = positives.Count * 100d / allExposures.Count,
+                LowerPercentilePositives = percentilesPositives[2],
+                MedianPositives = percentilesPositives[3],
+                UpperPercentilePositives = percentilesPositives[4],
+                LowerPercentileAll = percentilesAll[2],
+                MedianAll = percentilesAll[3],
+                UpperPercentileAll = percentilesAll[4],
                 MedianAllUncertaintyValues = [],
                 Unit = exposureUnit.GetShortDisplayName()
             };
-            return record;
-        }
 
-        private static List<ExternalExposuresPercentilesRecord> getBoxPlotRecords<T>(
-            ExposureRoute exposureRoute,
-            ICollection<T> externalIndividualExposures,
-            ICollection<Compound> substances,
-            ExposureUnitTriple exposureUnit,
-            bool isPerPerson
-        ) where T : IExternalIndividualExposure {
-            var result = new List<ExternalExposuresPercentilesRecord>();
-
-            foreach (var substance in substances) {
-                var exposures = externalIndividualExposures
-                    .Select(
-                        r => (
-                            Exposure: r.GetExposure(
-                                exposureRoute,
-                                substance,
-                                isPerPerson
-                            ),
-                            r.SimulatedIndividual.SamplingWeight
-                    ));
-
-                var allExposures = exposures
-                    .Select(r => r.Exposure)
+            var p95Idx = BoxPlotChartCreatorBase.BoxPlotPercentages.Length - 1;
+            var outliers = allExposures
+                    .Where(c => c.Exposure > percentilesAll[4] + 3 * (percentilesAll[4] - percentilesAll[2])
+                        || c.Exposure < percentilesAll[2] - 3 * (percentilesAll[4] - percentilesAll[2]))
+                    .Select(c => c.Exposure)
                     .ToList();
-
-                var weightsAll = exposures
-                    .Select(r => r.SamplingWeight)
-                    .ToList();
-
-                var percentiles = allExposures
-                    .PercentilesWithSamplingWeights(weightsAll, _percentages)
-                    .ToList();
-                var positives = allExposures.Where(r => r > 0).ToList();
-                var p95Idx = _percentages.Length - 1;
-                var substanceName = percentiles[p95Idx] > 0 ? substance.Name : $"{substance.Name} *";
-                var outliers = allExposures
-                    .Where(c => c > percentiles[4] + 3 * (percentiles[4] - percentiles[2])
-                        || c < percentiles[2] - 3 * (percentiles[4] - percentiles[2]))
-                    .Select(c => c)
-                    .ToList();
-
-                var record = new ExternalExposuresPercentilesRecord() {
-                    ExposureRoute = exposureRoute.ToString(),
-                    MinPositives = positives.Count != 0 ? positives.Min() : double.NaN,
-                    MaxPositives = positives.Count != 0 ? positives.Max() : double.NaN,
-                    SubstanceCode = substance.Code,
-                    SubstanceName = substanceName,
-                    Percentiles = [.. percentiles],
-                    NumberOfPositives = positives.Count,
-                    Percentage = positives.Count * 100d / allExposures.Count,
-                    Unit = exposureUnit.GetShortDisplayName(),
-                    Outliers = outliers,
-                    NumberOfOutLiers = outliers.Count,
-                };
-                if (positives.Count != 0) {
-                    result.Add(record);
-                }
-            }
-            return result;
+            var substanceName = percentilesAll[p95Idx] > 0 ? substance.Name : $"{substance.Name} *";
+            var boxplotRecordecord = new ExternalExposuresByRouteSubstancePercentilesRecord() {
+                ExposureRoute = route.GetShortDisplayName(),
+                MinPositives = positives.Count != 0 ? positives.Min(p => p.Exposure) : double.NaN,
+                MaxPositives = positives.Count != 0 ? positives.Max(p => p.Exposure) : double.NaN,
+                SubstanceCode = substance.Code,
+                SubstanceName = substanceName,
+                Percentiles = [.. percentilesAll],
+                NumberOfPositives = positives.Count,
+                Percentage = positives.Count * 100d / allExposures.Count,
+                Unit = exposureUnit.GetShortDisplayName(),
+                Outliers = outliers,
+                NumberOfOutLiers = outliers.Count,
+            };
+            return (tableRecord, boxplotRecordecord);
         }
     }
 }

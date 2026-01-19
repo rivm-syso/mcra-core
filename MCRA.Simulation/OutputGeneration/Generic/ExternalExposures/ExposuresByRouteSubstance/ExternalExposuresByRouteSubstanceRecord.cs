@@ -23,14 +23,6 @@ namespace MCRA.Simulation.OutputGeneration.Generic.ExternalExposures.ExposuresBy
         public string SubstanceCode { get; set; }
 
         [Display(AutoGenerateField = false)]
-        public double Contribution { get; set; }
-
-        [Description("Relative contribution of a route-substance to the total exposure.")]
-        [DisplayName("Contribution (%)")]
-        [DisplayFormat(DataFormatString = "{0:F1}")]
-        public double ContributionPercentage { get { return Contribution * 100; } }
-
-        [Display(AutoGenerateField = false)]
         [Description("The exposure unit of the concentration values.")]
         [DisplayName("Unit")]
         public string Unit { get; set; }

@@ -1,5 +1,4 @@
-﻿using MCRA.Utils.Statistics;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace MCRA.Simulation.OutputGeneration.Generic.ExternalExposures.ExposuresByRoute {
@@ -12,39 +11,13 @@ namespace MCRA.Simulation.OutputGeneration.Generic.ExternalExposures.ExposuresBy
         [Display(AutoGenerateField = false)]
         public double UncertaintyUpperBound { get; set; }
 
-        [DisplayName("Route")]
+        [DisplayName("Exposure route")]
         public string ExposureRoute { get; set; }
-
-        [Display(AutoGenerateField = false)]
-        public double Contribution { get; set; }
-
-        [Description("Relative contribution of a route to the total exposure.")]
-        [DisplayName("Contribution (%)")]
-        [DisplayFormat(DataFormatString = "{0:F1}")]
-        public double ContributionPercentage { get { return Contribution * 100; } }
-
-        [Description("Mean relative contribution of a route to exposure.")]
-        [DisplayName("Contribution (%) mean")]
-        [DisplayFormat(DataFormatString = "{0:F1}")]
-        public double MeanContribution { get { return Contributions.Any() ? Contributions.Average() : double.NaN; } }
-
-        [Display(AutoGenerateField = false)]
-        public List<double> Contributions { get; set; }
 
         [Display(AutoGenerateField = false)]
         [Description("The exposure unit of the concentration values.")]
         [DisplayName("Unit")]
         public string Unit { get; set; }
-
-        [Description("Lower uncertainty bound relative contribution of a route to exposure.")]
-        [DisplayName("Contribution (%) lower bound (LowerBound)")]
-        [DisplayFormat(DataFormatString = "{0:F1}")]
-        public double LowerContributionPercentage { get { return Contributions.Percentile(UncertaintyLowerBound); } }
-
-        [Description("Upper uncertainty bound relative contribution of a route to exposure.")]
-        [DisplayName("Contribution (%) upper bound (UpperBound)")]
-        [DisplayFormat(DataFormatString = "{0:F1}")]
-        public double UpperContributionPercentage { get { return Contributions.Percentile(UncertaintyUpperBound); } }
 
         [Description("Number of individuals with exposure greater than zero.")]
         [DisplayName("Individuals with exposure > 0")]
@@ -75,7 +48,7 @@ namespace MCRA.Simulation.OutputGeneration.Generic.ExternalExposures.ExposuresBy
         public double FractionPositive { get; set; }
 
         [Description("Percentage of individuals with exposure greater than zero (if applicable weighted with sampling weights).")]
-        [DisplayName("Percentage individuals with exposure")]
+        [DisplayName("Percentage individuals with exposure > 0")]
         [DisplayFormat(DataFormatString = "{0:F1}")]
         public double PercentagePositives { get { return FractionPositive * 100; } }
 
@@ -99,8 +72,8 @@ namespace MCRA.Simulation.OutputGeneration.Generic.ExternalExposures.ExposuresBy
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double Percentile75 { get; set; }
 
-        [Description("Number of substances.")]
-        [DisplayName("Number of substances included")]
+        [Description("Number of substances included in the statistics for this route.")]
+        [DisplayName("Number of substances")]
         [DisplayFormat(DataFormatString = "{0:N0}")]
         public int? NumberOfSubstances { get; set; }
     }

@@ -15,10 +15,10 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 typeName = typeName[..^suffix.Length];
             }
 
-            var positivesRecords = Model.ExposuresRecords
+            var positivesRecords = Model.TableRecords
                 .Where(r => r.MeanPositives > 0)
                 .ToList();
-            var missingRouteData = Model.ExposuresRecords
+            var missingRouteData = Model.TableRecords
                 .GroupBy(r => r.ExposureRoute)
                 .Where(records => records.All(r => r.ExposureRoute == null))
                 .ToList();
@@ -30,28 +30,26 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             if (positivesRecords.Count != 0) {
                 var panelBuilder = new HtmlTabPanelBuilder();
-                foreach (var boxPlotRecord in Model.ExposuresBoxPlotRecords) {
+                foreach (var boxPlotRecord in Model.BoxPlotRecords) {
                     var targetCode = boxPlotRecord.Key.GetTypeCode();
                     var targetName = boxPlotRecord.Key.GetDisplayName();
-                    var unit = boxPlotRecord.Value.FirstOrDefault().Unit;
 
                     var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
                         name: $"{typeName}Percentiles{targetCode}",
                         section: Model,
-                        items: boxPlotRecord.Value,
+                        items: boxPlotRecord.Value.ToList(),
                         viewBag: ViewBag
                     );
 
                     var chartCreator = new ExternalExposuresByRouteSubstanceBoxPlotChartCreator(
                         Model,
-                        Model.ExposuresBoxPlotRecords[boxPlotRecord.Key],
+                        Model.BoxPlotRecords[boxPlotRecord.Key],
                         boxPlotRecord.Key,
-                        unit,
-                        Model.ShowOutliers
+                        Model.ExposureUnit
                     );
 
                     var numberOfRecords = boxPlotRecord.Value.Count;
-                    var warning = Model.ExposuresBoxPlotRecords[boxPlotRecord.Key].Any(c => c.P95 == 0)
+                    var warning = Model.BoxPlotRecords[boxPlotRecord.Key].Any(c => c.P95 == 0)
                         ? "The asterisk indicates substances with positive measurements above an upper whisker of zero."
                         : string.Empty;
                     var figCaption = $"{targetName} exposures by substance. " + chartCreator.Title + $" {warning}";
@@ -75,7 +73,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
                 var hiddenProperties = new List<string>();
 
-                if (Model.ExposuresRecords.All(r => double.IsNaN(r.MedianAllLowerBoundPercentile))) {
+                if (Model.TableRecords.All(r => double.IsNaN(r.MedianAllLowerBoundPercentile))) {
                     hiddenProperties.Add("MedianAllMedianPercentile");
                     hiddenProperties.Add("MedianAllLowerBoundPercentile");
                     hiddenProperties.Add("MedianAllUpperBoundPercentile");
@@ -88,7 +86,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     positivesRecords,
                     $"{typeName}Table",
                     ViewBag,
-                    caption: $"Exposures by route and substance.",
+                    caption: $"Exposures statistics by route and substance.",
                     saveCsv: true,
                     header: true,
                     hiddenProperties: hiddenProperties
