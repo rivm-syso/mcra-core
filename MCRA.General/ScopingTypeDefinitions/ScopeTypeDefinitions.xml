@@ -2223,7 +2223,7 @@
     <Name>Occupational tasks</Name>
     <RawTableId>OccupationalTasks</RawTableId>
     <Description>-</Description>
-    <TableGroup>OccupationalTaskExposures</TableGroup>
+    <TableGroup>OccupationalScenarios</TableGroup>
     <IsStrongEntity>true</IsStrongEntity>
   </ScopingTypeDefinition>
   <ScopingTypeDefinition>
@@ -2231,7 +2231,7 @@
     <Name>Occupational scenarios</Name>
     <RawTableId>OccupationalScenarios</RawTableId>
     <Description>-</Description>
-    <TableGroup>OccupationalTaskExposures</TableGroup>
+    <TableGroup>OccupationalScenarios</TableGroup>
     <IsStrongEntity>true</IsStrongEntity>
   </ScopingTypeDefinition>
   <ScopingTypeDefinition>
@@ -2239,7 +2239,7 @@
     <Name>Occupational scenario tasks</Name>
     <RawTableId>OccupationalScenarioTasks</RawTableId>
     <Description>-</Description>
-    <TableGroup>OccupationalTaskExposures</TableGroup>
+    <TableGroup>OccupationalScenarios</TableGroup>
     <IsStrongEntity>false</IsStrongEntity>
     <ParentScopeReferences>
       <ParentScopeReference>

@@ -48,5 +48,6 @@
   </UncertaintySettings>
   <CalculationInputs>
     <Input>OccupationalTaskExposures</Input>
+    <Input>OccupationalScenarios</Input>
   </CalculationInputs>
 </Module>

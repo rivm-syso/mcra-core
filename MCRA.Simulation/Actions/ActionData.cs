@@ -54,6 +54,7 @@ using MCRA.Simulation.Actions.MolecularDockingModels;
 using MCRA.Simulation.Actions.NonDietaryExposures;
 using MCRA.Simulation.Actions.NonDietaryExposureSources;
 using MCRA.Simulation.Actions.OccupationalExposures;
+using MCRA.Simulation.Actions.OccupationalScenarios;
 using MCRA.Simulation.Actions.OccupationalTaskExposures;
 using MCRA.Simulation.Actions.OccurrenceFrequencies;
 using MCRA.Simulation.Actions.OccurrencePatterns;
@@ -1106,15 +1107,16 @@ namespace MCRA.Simulation {
 
         //Occupational scenarios
         public IDictionary<string, OccupationalScenario> OccupationalScenarios {
-            get => GetOrCreateModuleOutputData<OccupationalTaskExposuresOutputData>(ActionType.OccupationalTaskExposures).OccupationalScenarios;
-            set => GetOrCreateModuleOutputData<OccupationalTaskExposuresOutputData>(ActionType.OccupationalTaskExposures).OccupationalScenarios = value;
+            get => GetOrCreateModuleOutputData<OccupationalScenariosOutputData>(ActionType.OccupationalScenarios).OccupationalScenarios;
+            set => GetOrCreateModuleOutputData<OccupationalScenariosOutputData>(ActionType.OccupationalScenarios).OccupationalScenarios = value;
         }
 
         public IDictionary<string, OccupationalTask> OccupationalTasks {
-            get => GetOrCreateModuleOutputData<OccupationalTaskExposuresOutputData>(ActionType.OccupationalTaskExposures).OccupationalTasks;
-            set => GetOrCreateModuleOutputData<OccupationalTaskExposuresOutputData>(ActionType.OccupationalTaskExposures).OccupationalTasks = value;
+            get => GetOrCreateModuleOutputData<OccupationalScenariosOutputData>(ActionType.OccupationalScenarios).OccupationalTasks;
+            set => GetOrCreateModuleOutputData<OccupationalScenariosOutputData>(ActionType.OccupationalScenarios).OccupationalTasks = value;
         }
 
+        //Occupational task exposures
         public ICollection<OccupationalTaskExposure> OccupationalTaskExposures {
             get => GetOrCreateModuleOutputData<OccupationalTaskExposuresOutputData>(ActionType.OccupationalTaskExposures).OccupationalTaskExposures;
             set => GetOrCreateModuleOutputData<OccupationalTaskExposuresOutputData>(ActionType.OccupationalTaskExposures).OccupationalTaskExposures = value;

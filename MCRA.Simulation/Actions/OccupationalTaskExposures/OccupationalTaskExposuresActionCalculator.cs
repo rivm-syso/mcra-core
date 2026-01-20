@@ -16,14 +16,10 @@ namespace MCRA.Simulation.Actions.OccupationalTaskExposures {
         }
 
         protected override void verify() {
-            _actionDataLinkRequirements[ScopingType.OccupationalScenarioTasks][ScopingType.OccupationalScenarios].AlertTypeMissingData = AlertType.Notification;
-            _actionDataLinkRequirements[ScopingType.OccupationalScenarioTasks][ScopingType.OccupationalTasks].AlertTypeMissingData = AlertType.Notification;            
             _actionDataLinkRequirements[ScopingType.OccupationalTaskExposures][ScopingType.OccupationalTasks].AlertTypeMissingData = AlertType.Notification;
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
-            data.OccupationalScenarios = subsetManager.AllOccupationalScenarios;
-            data.OccupationalTasks = subsetManager.AllOccupationalTasks;
             data.OccupationalTaskExposures = subsetManager.AllOccupationalTaskExposures;
         }
 

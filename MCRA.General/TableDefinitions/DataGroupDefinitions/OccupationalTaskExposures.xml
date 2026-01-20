@@ -4,18 +4,9 @@
   <Name>Occupational task exposures</Name>
   <SourceTableGroup>OccupationalTaskExposures</SourceTableGroup>
   <Description>
-    Occupational scenarios.
+    Occupational task exposures.
   </Description>
   <DataGroupTables>
-    <DataGroupTable>
-      <Id>OccupationalScenarios</Id>
-    </DataGroupTable>
-    <DataGroupTable>
-      <Id>OccupationalTasks</Id>
-    </DataGroupTable>
-    <DataGroupTable>
-      <Id>OccupationalScenarioTasks</Id>
-    </DataGroupTable>
     <DataGroupTable>
       <Id>OccupationalTaskExposures</Id>
     </DataGroupTable>

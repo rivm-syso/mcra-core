@@ -141,8 +141,9 @@ namespace MCRA.General {
         Individuals = 64,
         [Display(Name = "Dust concentration distributions", Order = 67)]
         DustConcentrationDistributions = 65,
-
         [Display(Name = "Occupational task exposures", Order = 68)]
         OccupationalTaskExposures = 66,
+        [Display(Name = "Occupational scenarios", Order = 69)]
+        OccupationalScenarios= 67,
     }
 }

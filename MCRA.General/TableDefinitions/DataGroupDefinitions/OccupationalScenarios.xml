@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>OccupationalScenarios</Id>
+  <Name>Occupational scenarios</Name>
+  <SourceTableGroup>OccupationalScenarios</SourceTableGroup>
+  <Description>
+    Occupational scenarios.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>OccupationalScenarios</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>OccupationalTasks</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>OccupationalScenarioTasks</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

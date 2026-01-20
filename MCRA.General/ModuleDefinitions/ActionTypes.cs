@@ -218,5 +218,7 @@ namespace MCRA.General {
         OccupationalTaskExposures = 83,
         [Display(Name = "Occupational exposures")]
         OccupationalExposures = 84,
+        [Display(Name = "Occupational scenarios")]
+        OccupationalScenarios = 85,
     }
 }

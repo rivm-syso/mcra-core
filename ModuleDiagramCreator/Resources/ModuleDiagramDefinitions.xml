@@ -68,6 +68,7 @@
 
     <GraphDefinition ActionType="OccupationalTaskExposures" X="14" Y="48" Linebreaks="1"/>
     <GraphDefinition ActionType="OccupationalExposures" X="16" Y="48" Linebreaks="1"/>
+    <GraphDefinition ActionType="OccupationalScenarios" X="18" Y="48" Linebreaks="1"/>
 
     <GraphDefinition ActionType="Individuals" X="30" Y="48" Linebreaks="0"/>
     <GraphDefinition ActionType="SingleValueRisks" X="110" Y="53" Linebreaks="0"/>

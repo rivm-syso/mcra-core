@@ -94,6 +94,7 @@
       <xi:include href="Modules/HbmSingleValueExposures.xml" />
       <xi:include href="Modules/OccupationalTaskExposures.xml" />
       <xi:include href="Modules/OccupationalExposures.xml" />
+      <xi:include href="Modules/OccupationalScenarios.xml" />
     </Modules>
   </ModuleGroupDefinition>
   <ModuleGroupDefinition>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>OccupationalScenarios</Id>
+  <Name>Occupational scenarios</Name>
+  <ModuleType>DataModule</ModuleType>
+  <ActionType>OccupationalScenarios</ActionType>
+  <TableGroup>OccupationalScenarios</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Occupational scenarios are scenarios, tasks and scenario tasks associated with specific job tasks performed by workers.
+  </Description>
+  <ShortDescription>
+    Occupational scenarios.
+  </ShortDescription>
+  <DataDescription>
+    Occupational scenarios can be entered using the internal, relational data format.
+  </DataDescription>
+</Module>
