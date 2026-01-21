@@ -6,26 +6,30 @@ using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration.Generic.ExternalExposures.ExposuresByRoute {
     public class ExternalExposuresByRouteSection : SummarySection {
+
         public override bool SaveTemporaryData => true;
         public List<ExternalExposuresByRouteRecord> TableRecords { get; set; } = [];
         public List<ExternalExposuresByRoutePercentilesRecord> BoxPlotRecords { get; set; } = [];
         public ExposureUnitTriple ExposureUnit { get; set; }
         public virtual string PictureId { get; } = "45142be4-4274-4869-8200-f8cde245c275";
-        
 
-        public void SummarizeChronic<T>(
+        public void Summarize<T>(
             ICollection<T> externalIndividualExposures,
             ICollection<ExposureRoute> routes,
             ICollection<Compound> substances,
-            IDictionary<Compound, double> relativePotencyFactors,
-            IDictionary<Compound, double> membershipProbabilities,
+            IDictionary<Compound, double> rpf,
+            IDictionary<Compound, double> membership,
             double lowerPercentage,
             double upperPercentage,
+            double uncertaintyLowerBound,
+            double uncertaintyUpperBound,
+            List<double> percentages,
             bool isPerPerson,
-            ExposureUnitTriple exposureUnit
+            ExposureUnitTriple exposureUnit,
+            SectionHeader header = null
          ) where T : IExternalIndividualExposure {
-            relativePotencyFactors = relativePotencyFactors ?? substances.ToDictionary(r => r, r => 1D);
-            membershipProbabilities = membershipProbabilities ?? substances.ToDictionary(r => r, r => 1D);
+            rpf = rpf ?? substances.ToDictionary(r => r, r => 1D);
+            membership = membership ?? substances.ToDictionary(r => r, r => 1D);
             ExposureUnit = exposureUnit;
 
             var cancelToken = ProgressState?.CancellationToken ?? new();
@@ -37,8 +41,8 @@ namespace MCRA.Simulation.OutputGeneration.Generic.ExternalExposures.ExposuresBy
                     route,
                     externalIndividualExposures,
                     substances,
-                    relativePotencyFactors,
-                    membershipProbabilities,
+                    rpf,
+                    membership,
                     isPerPerson,
                     exposureUnit
                 );
@@ -53,17 +57,35 @@ namespace MCRA.Simulation.OutputGeneration.Generic.ExternalExposures.ExposuresBy
                 .OrderBy(r => r.ExposureRoute)];
             BoxPlotRecords = [.. BoxPlotRecords
                 .OrderBy(r => r.ExposureRoute)];
+
+            // Generates and summarizes exposure percentiles for the specified individuals, routes, and substances,
+            // incorporating uncertainty bounds, relative potency factors, and membership probabilities.
+            var section = new ExposurePercentilesByRouteSection() { ProgressState = ProgressState };
+            var subHeader = header?.AddSubSectionHeaderFor(section, "Percentiles", 0);
+            section.SummarizeByRoute(
+                externalIndividualExposures,
+                routes,
+                substances,
+                rpf,
+                membership,
+                percentages,
+                uncertaintyLowerBound,
+                uncertaintyUpperBound,
+                isPerPerson,
+                exposureUnit
+            );
+            subHeader?.SaveSummarySection(section);
         }
 
         private static (ExternalExposuresByRouteRecord tableRecord, ExternalExposuresByRoutePercentilesRecord boxPlotRecord) getRecords<T>(
-           ExposureRoute route,
-           ICollection<T> externalIndividualExposures,
-           ICollection<Compound> substances,
-           IDictionary<Compound, double> relativePotencyFactors,
-           IDictionary<Compound, double> membershipProbabilities,
-           bool isPerPerson,
-           ExposureUnitTriple exposureUnit
-       ) where T : IExternalIndividualExposure {
+            ExposureRoute route,
+            ICollection<T> externalIndividualExposures,
+            ICollection<Compound> substances,
+            IDictionary<Compound, double> relativePotencyFactors,
+            IDictionary<Compound, double> membershipProbabilities,
+            bool isPerPerson,
+            ExposureUnitTriple exposureUnit
+        ) where T : IExternalIndividualExposure {
             var allExposures = substances
                 .SelectMany(substance => {
                     var rpf = relativePotencyFactors[substance];

@@ -17,15 +17,19 @@ namespace MCRA.Simulation.OutputGeneration.Generic.ExternalExposures.ExposuresBy
             ICollection<T> externalIndividualExposures,
             ICollection<ExposureRoute> routes,
             ICollection<Compound> substances,
-            IDictionary<Compound, double> relativePotencyFactors,
-            IDictionary<Compound, double> membershipProbabilities,
+            IDictionary<Compound, double> rpf,
+            IDictionary<Compound, double> membership,
             double lowerPercentage,
             double upperPercentage,
+            double uncertaintyLowerBound,
+            double uncertaintyUpperBound,
+            List<double> percentages,
             bool isPerPerson,
-            ExposureUnitTriple exposureUnit
+            ExposureUnitTriple exposureUnit,
+            SectionHeader header = null
         ) where T : IExternalIndividualExposure {
-            relativePotencyFactors = relativePotencyFactors ?? substances.ToDictionary(r => r, r => 1D);
-            membershipProbabilities = membershipProbabilities ?? substances.ToDictionary(r => r, r => 1D);
+            rpf = rpf ?? substances.ToDictionary(r => r, r => 1D);
+            membership = membership ?? substances.ToDictionary(r => r, r => 1D);
             ExposureUnit = exposureUnit;
 
             var cancelToken = ProgressState?.CancellationToken ?? new();
@@ -37,8 +41,8 @@ namespace MCRA.Simulation.OutputGeneration.Generic.ExternalExposures.ExposuresBy
                         route,
                         externalIndividualExposures,
                         substance,
-                        relativePotencyFactors,
-                        membershipProbabilities,
+                        rpf,
+                        membership,
                         isPerPerson,
                         exposureUnit
                     );
@@ -63,6 +67,24 @@ namespace MCRA.Simulation.OutputGeneration.Generic.ExternalExposures.ExposuresBy
                                 .OrderBy(r => r.SubstanceName)
                                 .ToList()
                 ));
+
+            // Generates and summarizes exposure percentiles for the specified individuals, routes, and substances,
+            // incorporating uncertainty bounds, relative potency factors, and membership probabilities.
+            var section = new ExposurePercentilesByRouteSubstanceSection() { ProgressState = ProgressState };
+            var subHeader = header.AddSubSectionHeaderFor(section, "Percentiles", 0);
+            section.SummarizeByRouteSubstance(
+                externalIndividualExposures,
+                routes,
+                substances,
+                rpf,
+                membership,
+                percentages,
+                uncertaintyLowerBound,
+                uncertaintyUpperBound,
+                isPerPerson,
+                exposureUnit
+            );
+            subHeader.SaveSummarySection(section);
         }
 
         private static (ExternalExposuresByRouteSubstanceRecord tableRecord, ExternalExposuresByRouteSubstancePercentilesRecord boxplotRecord) getRecords<T>(

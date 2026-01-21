@@ -1,14 +1,13 @@
 ﻿using MCRA.General;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
-using MCRA.Simulation.Calculators.DustExposureCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.Actions.DustExposures {
     public enum DustExposuresSections {
         DustExposuresByRouteSubstanceSection,
-        DustExposuresByRouteSection,
+        DustExposuresByRouteSection
     }
     public sealed class DustExposuresSummarizer(DustExposuresModuleConfig config)
         : ActionModuleResultsSummarizer<DustExposuresModuleConfig, DustExposuresActionResult>(config) {
@@ -63,7 +62,47 @@ namespace MCRA.Simulation.Actions.DustExposures {
             ActionData data,
             SectionHeader header
         ) {
-            // No uncertain summaries implemented yet
+            if (data.IndividualDustExposures != null) {
+                {
+                    var subHeader = header.GetSubSectionHeader<ExposurePercentilesByRouteSection>();
+                    if (subHeader != null) {
+                        var section = subHeader.GetSummarySection() as ExposurePercentilesByRouteSection;
+                        section.SummarizeByRouteUncertainty(
+                            actionResult.IndividualDustExposures,
+                            _configuration.SelectedExposureRoutes,
+                            data.ActiveSubstances,
+                            data.CorrectedRelativePotencyFactors,
+                            data.MembershipProbabilities,
+                            _configuration.UncertaintyLowerBound,
+                            _configuration.UncertaintyUpperBound,
+                            _configuration.SelectedPercentiles,
+                            _configuration.IsPerPerson,
+                            data.DustExposureUnit
+                        );
+                        subHeader.SaveSummarySection(section);
+                    }
+                }
+
+                {
+                    var subHeader = header.GetSubSectionHeader<ExposurePercentilesByRouteSubstanceSection>();
+                    if (subHeader != null) {
+                        var section = subHeader.GetSummarySection() as ExposurePercentilesByRouteSubstanceSection;
+                        section.SummarizeByRouteSubstanceUncertainty(
+                            actionResult.IndividualDustExposures,
+                            _configuration.SelectedExposureRoutes,
+                            data.ActiveSubstances,
+                            data.CorrectedRelativePotencyFactors,
+                            data.MembershipProbabilities,
+                            _configuration.UncertaintyLowerBound,
+                            _configuration.UncertaintyUpperBound,
+                            _configuration.SelectedPercentiles,
+                            _configuration.IsPerPerson,
+                            data.DustExposureUnit
+                        );
+                        subHeader.SaveSummarySection(section);
+                    }
+                }
+            }
         }
 
         private List<ActionSummaryUnitRecord> collectUnits(ActionData data) {
@@ -102,8 +141,12 @@ namespace MCRA.Simulation.Actions.DustExposures {
                 data.MembershipProbabilities,
                 _configuration.VariabilityLowerPercentage,
                 _configuration.VariabilityUpperPercentage,
+                _configuration.UncertaintyLowerBound,
+                _configuration.UncertaintyUpperBound,
+                _configuration.SelectedPercentiles,
                 _configuration.IsPerPerson,
-                data.DustExposureUnit
+                data.DustExposureUnit,
+                subHeader
             );
             subHeader.SaveSummarySection(section);
         }
@@ -125,7 +168,7 @@ namespace MCRA.Simulation.Actions.DustExposures {
                 "Exposures by route",
                 order
             );
-            section.SummarizeChronic(
+            section.Summarize(
                 data.IndividualDustExposures,
                 _configuration.SelectedExposureRoutes,
                 data.ActiveSubstances,
@@ -133,8 +176,12 @@ namespace MCRA.Simulation.Actions.DustExposures {
                 data.MembershipProbabilities,
                 _configuration.VariabilityLowerPercentage,
                 _configuration.VariabilityUpperPercentage,
+                _configuration.UncertaintyLowerBound,
+                _configuration.UncertaintyUpperBound,
+                _configuration.SelectedPercentiles,
                 _configuration.IsPerPerson,
-                data.DustExposureUnit
+                data.DustExposureUnit,
+                subHeader
             );
             subHeader.SaveSummarySection(section);
         }
