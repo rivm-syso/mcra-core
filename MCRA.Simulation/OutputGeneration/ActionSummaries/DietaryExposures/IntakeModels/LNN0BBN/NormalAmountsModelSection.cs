@@ -3,8 +3,8 @@
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class NormalAmountsModelSection : UncorrelatedModelResultsSection {
         public double Power { get; set; }
-        public double VarianceBetween { get; set; }
-        public double VarianceWithin { get; set; }
+        public ParameterEstimates VarianceBetween { get; set; }
+        public ParameterEstimates VarianceWithin { get; set; }
         public List<ParameterEstimates> AmountsModelEstimates { get; set; }
 
         public List<ModelFitResultSummaryRecord> AmountModelFitSummaryRecords;
@@ -37,25 +37,24 @@ namespace MCRA.Simulation.OutputGeneration {
                     Parameter = item.ParameterName,
                     Estimate = item.Estimate,
                     StandardError = item.StandardError,
-                    TValue = item.TValue
                 };
                 AmountModelFitSummaryRecords.Add(record);
             }
             if (isAcuteCovariateModelling) {
                 var varBetweenRecord = new ModelFitResultSummaryRecord {
                     Parameter = "distribution variance",
-                    Estimate = VarianceBetween
+                    Estimate = VarianceBetween.Estimate
                 };
                 AmountModelFitSummaryRecords.Add(varBetweenRecord);
             } else {
                 var varBetweenRecord = new ModelFitResultSummaryRecord {
                     Parameter = "variance between individuals",
-                    Estimate = VarianceBetween
+                    Estimate = VarianceBetween.Estimate
                 };
                 AmountModelFitSummaryRecords.Add(varBetweenRecord);
                 var varWithinRecord = new ModelFitResultSummaryRecord {
                     Parameter = "variance within individuals",
-                    Estimate = VarianceWithin
+                    Estimate = VarianceWithin.Estimate
                 };
                 AmountModelFitSummaryRecords.Add(varWithinRecord);
             }

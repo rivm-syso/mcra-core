@@ -27,13 +27,14 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
                 ),
                 new IntakeModelCalculationSettings(
                     covariateModelType: CovariateModelType.Cofactor
-                )
+                ),
+                null
             );
             model.CalculateParameters(individualDayIntakes);
 
             var summaryAmounts = model.FrequencyAmountModelSummary;
-            Assert.IsGreaterThan(0.3, summaryAmounts.VarianceBetween);
-            Assert.IsGreaterThan(0.05, summaryAmounts.VarianceWithin);
+            Assert.IsGreaterThan(0.3, summaryAmounts.VarianceBetween.Estimate);
+            Assert.IsGreaterThan(0.05, summaryAmounts.VarianceWithin.Estimate);
             Assert.IsFalse(double.IsNaN(summaryAmounts._2LogLikelihood));
         }
 
@@ -64,8 +65,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
 
             var lnnModel = model;
             var summaryAmounts = lnnModel.FrequencyAmountModelSummary;
-            Assert.IsGreaterThan(0.3, summaryAmounts.VarianceBetween);
-            Assert.IsGreaterThan(0.05, summaryAmounts.VarianceWithin);
+            Assert.IsGreaterThan(0.3, summaryAmounts.VarianceBetween.Estimate);
+            Assert.IsGreaterThan(0.05, summaryAmounts.VarianceWithin.Estimate);
             Assert.IsFalse(double.IsNaN(summaryAmounts._2LogLikelihood));
         }
     }

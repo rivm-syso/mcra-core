@@ -4,11 +4,6 @@
     /// </summary>
     public class DerivativeOneD {
 
-        public DerivativeOneD() {
-            StepSizeDefault = 0.05;
-            MaxCycles = 10;
-        }
-
         /// <summary>
         /// Number of function evaluations
         /// </summary>
@@ -18,16 +13,18 @@
         /// Stepsize (as a multiplication factor) used in Method DerivateStepSize; default value is 0.05.
         /// </summary>
         /// <seealso cref="StepSizeDefault"/>
-        public double StepSizeDefault { get; set; }
+        public double StepSizeDefault { get; set; }= 0.05;
 
         /// <summary>
         /// The absolute maximum number of extrapolations.
         /// </summary>
         protected const int MaxMaxCycles = 10;
+
         /// <summary>
-        /// Maximum number of extrapolations in Ridders method for calculating derivatives. Default and maximum value is 10; non-positive values are set to the maximum.
+        /// Maximum number of extrapolations in Ridders method for calculating derivatives. 
+        /// Default 2 and maximum value is 10; non-positive values are set to the maximum.
         /// </summary>
-        public int MaxCycles { get; set; }
+        public int MaxCycles = 10;
 
         /// <summary>
         /// One-dimensional function.

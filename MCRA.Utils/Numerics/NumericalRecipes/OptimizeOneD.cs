@@ -34,11 +34,6 @@
         public int Cycles { get; private set; }
 
         /// <summary>
-        /// Elapsed optimization time.
-        /// </summary>
-        public TimeSpan ElapsedTime { get; private set; }
-
-        /// <summary>
         /// Whether the minimization routine has convergence in MaxCycles
         /// </summary>
         public bool Convergence { get; private set; }
@@ -75,10 +70,8 @@
             bx = ax + step;
             BracketMinimum(ref ax, ref bx, out var cx, out var fa, out var fb, out var fc, function);
             int bracketEval = Evaluations;
-            TimeSpan bracketTime = ElapsedTime;
             fmin = Minimize(ax, bx, cx, function, out xmin);
             Evaluations += bracketEval;
-            ElapsedTime += bracketTime;
             return fmin;
         }
 
@@ -102,10 +95,8 @@
             bx = initial + step;
             BracketMinimum(ref initial, ref bx, out var cx, out var fa, out var fb, out var fc, function);
             int bracketEval = Evaluations;
-            TimeSpan bracketTime = ElapsedTime;
             fmin = MinimizeUsingDerivative(initial, bx, cx, function, dfunction, out xmin);
             Evaluations += bracketEval;
-            ElapsedTime += bracketTime;
             return fmin;
         }
 
@@ -202,7 +193,6 @@
                     }
                 }
             }
-            ElapsedTime = sw.Elapsed;
             xmin = x;
             return fx;
         }
@@ -333,7 +323,6 @@
                     }
                 }
             }
-            ElapsedTime = sw.Elapsed;
             xmin = x;
             return fx;
         }
@@ -416,7 +405,6 @@
                 shift(ref ax, ref bx, ref cx, u);
                 shift(ref fa, ref fb, ref fc, fu);
             }
-            ElapsedTime = sw.Elapsed;
         }
 
         /// <summary>

@@ -1,4 +1,5 @@
-﻿using MCRA.General;
+﻿using MCRA.Utils.Statistics;
+using MCRA.General;
 
 namespace MCRA.Simulation.Calculators.IntakeModelling.IntakeTransformers {
     public class IntakeTransformerFactory {
@@ -17,7 +18,8 @@ namespace MCRA.Simulation.Calculators.IntakeModelling.IntakeTransformers {
                         return new LogTransformer();
                     }
                     return new PowerTransformer() {
-                        Power = power
+                        Power = power,
+                        GaussHermitePoints = SpecialFunctions.GaussHermiteTwoD(10, -1d),
                     };
                 default:
                     throw new Exception($"Failed to create GH transformer: unknown transform type {transformType}.");

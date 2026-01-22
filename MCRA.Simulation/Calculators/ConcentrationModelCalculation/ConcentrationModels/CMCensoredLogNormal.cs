@@ -30,7 +30,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         /// <summary>
         /// Choleski decomposition of Variance-Covariance matrix for parameters (Mu, Log(Sigma*Sigma)); for Parametric Uncertainty
         /// </summary>
-        private double[,] VcovChol { get; set; }
+        private double[,] _vcovChol { get; set; }
 
         /// <summary>
         /// Calculates the model parameters
@@ -142,7 +142,8 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         /// Employs Large-Sample Multivariate Normality with Variance-Covariance matrix of the MLEs of (Mu, Log(Sigma*Sigma)).
         /// </summary>
         public override void DrawParametricUncertainty(IRandom random) {
-            var draw = MultiVariateNormalDistribution.Draw(_estimates.ToList(), VcovChol, random);
+            var distribution = new MultiVariateNormalDistribution(_estimates.ToList(), _vcovChol);
+            var draw = distribution.Draw(random);
             Mu = draw[0];
             Sigma = Math.Sqrt(Math.Exp(draw[1]));
             if (double.IsNaN(Mu)) {
@@ -300,8 +301,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
             Vcov.SetElement(1, 0, -d12);
             Vcov.SetElement(1, 1, -d22);
             Vcov = Vcov.Inverse();
-            VcovChol = new double[2, 2];
-            VcovChol = Vcov.chol().GetL().ArrayCopy2;
+            _vcovChol = Vcov.ArrayCopy2;
         }
 
         /// <summary>

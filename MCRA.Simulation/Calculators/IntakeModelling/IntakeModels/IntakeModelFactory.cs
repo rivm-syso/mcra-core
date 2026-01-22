@@ -162,7 +162,8 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                     ) {
                         TransformType = transformType,
                         NumberOfMonteCarloIterations = _numberOfMonteCarloIterations,
-                        VarianceRatio = _varianceRatio.Value
+                        VarianceRatio = _varianceRatio.Value,
+                        FixedDispersion = _dispersion.Value,
                     };
                 case IntakeModelType.LNN0:
                     return new LNN0Model(
@@ -176,8 +177,9 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         FixedDispersion = _dispersion.Value,
                         VarianceRatio = _varianceRatio.Value
                     };
+                default:
+                    throw new NotImplementedException();
             }
-            return null;
         }
     }
 }

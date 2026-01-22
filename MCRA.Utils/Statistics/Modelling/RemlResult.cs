@@ -46,22 +46,5 @@
         /// Fitted contains fixed effects and random (blup) effects.
         /// </summary>
         public List<double> FittedValues { get; set; }
-
-        /// <summary>
-        /// Calculate fitted values or predictions. Note that design matrix does not contain the constant.
-        /// </summary>
-        /// <param name="x">Design matrix</param>
-        /// <returns>Fitted values or predictions</returns>
-        public List<double> CalculatePredictions(double[,] x) {
-            var result = new List<double>();
-            for (int i = 0; i < x.GetLength(0); i++) {
-                double tmp = Estimates[0];
-                for (int j = 0; j < Estimates.Count - 1; j++) {
-                    tmp += x[i, j] * Estimates[j + 1];
-                }
-                result.Add(tmp);
-            }
-            return result;
-        }
     }
 }

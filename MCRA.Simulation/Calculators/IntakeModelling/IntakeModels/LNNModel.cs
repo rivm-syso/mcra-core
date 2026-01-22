@@ -1,71 +1,48 @@
-﻿using MCRA.Utils;
-using MCRA.Utils.NumericalRecipes;
+﻿using MCRA.General;
+using MCRA.General.ModuleDefinitions.Interfaces;
+using MCRA.Simulation.Calculators.IntakeModelling.IndividualAmountCalculation;
+using MCRA.Utils;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
-using MCRA.General;
-using MCRA.Simulation.Calculators.IntakeModelling.IndividualAmountCalculation;
-using MCRA.Simulation.Calculators.IntakeModelling.IntakeTransformers;
 using MCRA.Utils.Statistics.RandomGenerators;
-using MCRA.General.ModuleDefinitions.Interfaces;
 
 namespace MCRA.Simulation.Calculators.IntakeModelling {
 
     /// <summary>
     /// Logistic normal normal model including correlation (known as NCI model) for chronic exposure assessment
     /// </summary>
-    public class LNNModel : IntakeModel, IUncorrelatedIntakeModel {
+    /// <param name="frequencyModelSettings"></param>
+    /// <param name="amountModelSettings"></param>
+    /// <param name="predictionLevels"></param>
+    /// <param name="varianceRatio"></param>
+    /// <param name="fixedDispersion"></param>
+    public class LNNModel(
+        IIntakeModelCalculationSettings frequencyModelSettings,
+        IIntakeModelCalculationSettings amountModelSettings,
+        List<double> predictionLevels,
+        double varianceRatio = 1,
+        double fixedDispersion = 0.0001
+    ) : IntakeModel, IUncorrelatedIntakeModel {
+
+        private List<ModelledIndividualAmount> _conditionalAmountsPredictions;
+        private List<ModelledIndividualAmount> _specifiedAmountsPredictions;
+        private List<IndividualFrequency> _conditionalFrequencyPredictions;
+        private List<IndividualFrequency> _specifiedFrequencyPredictions;
+        private LNN0Model _lnn0Model;
+        private LNNParameters _estimates;
+        private double[,] _vcov;
 
         public TransformType TransformType { get; set; }
-
-        public IIntakeModelCalculationSettings AmountModelSettings { get; set; }
-
-        public IIntakeModelCalculationSettings FrequencyModelSettings { get; set; }
-
+        public IIntakeModelCalculationSettings AmountModelSettings { get; set; } = amountModelSettings;
+        public IIntakeModelCalculationSettings FrequencyModelSettings { get; set; } = frequencyModelSettings;
         public int NumberOfMonteCarloIterations { get; set; }
-
         public FrequencyModelSummary FrequencyInitials { get; set; }
         public NormalAmountsModelSummary AmountInitials { get; set; }
         public FrequencyAmountModelSummary FrequencyAmountModelSummary { get; set; }
-
         public LNN0Model Lnn0Model { get; set; }
         public IntakeModelType FallBackModel { get; set; }
-
-        private IntakeTransformer intakeTransformer { get; set; }
-        private LNN0Model lnn0Model;
-
-        public List<double> PredictionLevels { get; set; }
-        public double VarianceRatio { get; set; }
-
-        private List<ModelledIndividualAmount> conditionalAmountsPredictions;
-        private List<ModelledIndividualAmount> specifiedAmountsPredictions;
-        private List<IndividualFrequency> conditionalFrequencyPredictions;
-        private List<IndividualFrequency> specifiedFrequencyPredictions;
-
-        private List<ParameterEstimates> frequencyModelEstimates;
-        private List<ParameterEstimates> amountModelEstimates;
-        private ParameterEstimates dispersionEstimates;
-        private ParameterEstimates correlationEstimates;
-        private LNNModelCalculator lnnModel;
-        private double[,] chol;
-        private double power;
-
-        /// <summary>
-        /// Creates a new <see cref="UncorrelatedIntakeModel{TFrequencyModel, TAmountsModel}"/> instance.
-        /// </summary>
-        /// <param name="frequencyModelSettings"></param>
-        /// <param name="amountModelSettings"></param>
-        /// <param name="predictionLevels"></param>
-        public LNNModel(
-            IIntakeModelCalculationSettings frequencyModelSettings,
-            IIntakeModelCalculationSettings amountModelSettings,
-            List<double> predictionLevels = null,
-            double varianceRatio = 1
-        ) {
-            FrequencyModelSettings = frequencyModelSettings;
-            AmountModelSettings = amountModelSettings;
-            PredictionLevels = predictionLevels;
-            VarianceRatio = varianceRatio;
-        }
+        public double VarianceRatio { get; set; } = varianceRatio;
+        public double FixedDispersion { get; set; } = fixedDispersion;
 
         /// <summary>
         /// The exposure model type.
@@ -80,7 +57,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             ICollection<SimpleIndividualDayIntake> individualDayIntakes
         ) {
             var covariateGroupCalculator = new CovariateGroupCalculator(
-                PredictionLevels,
+                predictionLevels,
                 FrequencyModelSettings.CovariateModelType,
                 AmountModelSettings.CovariateModelType
             );
@@ -91,15 +68,16 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             SpecifiedPredictionCovariateGroups = covariateGroupCalculator
                 .ComputeSpecifiedPredictionsCovariateGroups(individualDayIntakes);
 
-            lnn0Model = GetLnn0Model();
-            lnn0Model.CalculateParameters(individualDayIntakes);
+            _lnn0Model = GetLnn0Model();
+            //Fit logistic normal model and amounts model
+            _lnn0Model.CalculateParameters(individualDayIntakes);
 
-            FrequencyInitials = lnn0Model.FrequencyModelSummary;
-            AmountInitials = (NormalAmountsModelSummary)lnn0Model.AmountsModelSummary;
+            FrequencyInitials = _lnn0Model.FrequencyModelSummary;
+            AmountInitials = (NormalAmountsModelSummary)_lnn0Model.AmountsModelSummary;
 
+            var power = double.NaN;
             if (!double.IsNaN(FrequencyInitials._2LogLikelihood)) {
                 FallBackModel = IntakeModelType.LNN;
-
                 switch (TransformType) {
                     case TransformType.NoTransform:
                         power = 1;
@@ -112,30 +90,81 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         break;
                 }
 
-                fitLNNModel(
+                (_estimates, var stdErrors, var logLik, var errorMessage) = computeLNNModel(
                     individualDayIntakes,
-                    PredictionLevels
+                    power
                 );
 
-                createVarianceCovarianceMatrix();
+                designsLNNModel(
+                    individualDayIntakes,
+                    _estimates
+                );
+
+                var dispersion = new ParameterEstimates() {
+                    ParameterName = "FrequencyModelDispersion",
+                    Estimate = _estimates.Parameters.Dispersion,
+                    StandardError = stdErrors.Parameters.Dispersion,
+                };
+                var correlation = new ParameterEstimates() {
+                    ParameterName = "Correlation",
+                    Estimate = _estimates.Parameters.Correlation,
+                    StandardError = stdErrors.Parameters.Correlation,
+                };
+
+                var varianceBetween = new ParameterEstimates() {
+                    ParameterName = "Variance between individuals",
+                    Estimate = _estimates.Parameters.VarianceBetween,
+                    StandardError = stdErrors.Parameters.VarianceBetween,
+                };
+                var varianceWithin = new ParameterEstimates() {
+                    ParameterName = "Variance within individuals",
+                    Estimate = _estimates.Parameters.VarianceWithin,
+                    StandardError = stdErrors.Parameters.VarianceWithin,
+                };
+
+                // Set parameters of intakeFrequency to NCI parameters
+                var parameterNames = FrequencyInitials.FrequencyModelEstimates.Select(c => c.ParameterName).ToList();
+                var frequencyModelEstimates = new List<ParameterEstimates>();
+                for (int i = 0; i < _estimates.FreqEstimates.Count; i++) {
+                    frequencyModelEstimates.Add(new ParameterEstimates() {
+                        ParameterName = parameterNames[i],
+                        Estimate = _estimates.FreqEstimates[i],
+                        StandardError = stdErrors.FreqEstimates[i]
+                    });
+                }
+                var amountModelEstimates = new List<ParameterEstimates>();
+                parameterNames = [.. AmountInitials.AmountModelEstimates.Select(c => c.ParameterName)];
+                for (int i = 0; i < _estimates.AmountEstimates.Count; i++) {
+                    amountModelEstimates.Add(new ParameterEstimates() {
+                        ParameterName = parameterNames[i],
+                        Estimate = _estimates.AmountEstimates[i],
+                        StandardError = stdErrors.AmountEstimates[i]
+                    });
+                }
+
+                _vcov = computeVcovMatrix(
+                    dispersion.Estimate,
+                    varianceBetween.Estimate,
+                    correlation.Estimate
+                );
 
                 FrequencyAmountModelSummary = new FrequencyAmountModelSummary() {
-                    CorrelationEstimates = correlationEstimates,
-                    VarianceBetween = lnnModel.Estimates.VarianceBetween,
-                    VarianceWithin = lnnModel.Estimates.VarianceWithin,
-                    DispersionEstimates = dispersionEstimates,
+                    CorrelationEstimates = correlation,
+                    VarianceBetween = varianceBetween,
+                    VarianceWithin = varianceWithin,
+                    DispersionEstimates = dispersion,
                     FrequencyModelEstimates = frequencyModelEstimates,
                     AmountModelEstimates = amountModelEstimates,
-                    IntakeTransformer = intakeTransformer,
-                    DegreesOfFreedom = 0,
-                    _2LogLikelihood = lnnModel.LogLik,
+                    DegreesOfFreedomFrequencies = FrequencyInitials.DegreesOfFreedom,
+                    DegreesOfFreedomAmounts = AmountInitials.DegreesOfFreedom,
+                    _2LogLikelihood = logLik,
                     Power = power,
-                    ErrorMessage = lnnModel.ErrorMessage,
+                    ErrorMessage = errorMessage,
                 };
             } else {
                 // LNN with correlation cannot be fitted because exposure is not incidental.
                 // Fit BNN or LNN without correlation instead
-                Lnn0Model = lnn0Model;
+                Lnn0Model = _lnn0Model;
                 FallBackModel = IntakeModelType.LNN0;
             }
         }
@@ -145,15 +174,13 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             CompositeProgressState progressState = null
         ) {
             if (FallBackModel == IntakeModelType.LNN0) {
-                return lnn0Model.GetConditionalIntakes(seed, progressState)
+                return [.. _lnn0Model.GetConditionalIntakes(seed, progressState)
                     .OrderBy(c => c.CovariatesCollection.OverallCofactor, StringComparer.OrdinalIgnoreCase)
-                    .ThenBy(c => c.CovariatesCollection.OverallCovariable)
-                    .ToList();
+                    .ThenBy(c => c.CovariatesCollection.OverallCovariable)];
             }
-
+            var parameters = _estimates.Parameters;
             var cancelToken = progressState?.CancellationToken ?? new();
             var predictionCovariateGroups = SpecifiedPredictionCovariateGroups;
-            var ghTransformer = IntakeTransformerFactory.Create(TransformType, () => lnnModel.Estimates.Power);
             var results = predictionCovariateGroups
                 .AsParallel()
                 .WithCancellation(cancelToken)
@@ -163,10 +190,12 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                     var amountMean = GetSpecifiedAmountPrediction(covariateGroup, out CovariateGroup acg);
                     var usualIntakes = new List<double>();
                     var mean = new List<double> { freqMean, amountMean };
-                    var randomSequence = MultiVariateNormalDistribution.Draw(mean, chol, NumberOfMonteCarloIterations, random);
-                    for (int i = 0; i < randomSequence.GetLength(0); i++) {
-                        var f = UtilityFunctions.ILogit(randomSequence[i, 0]);
-                        var a = ghTransformer.BiasCorrectedInverseTransform(randomSequence[i, 1], lnnModel.Estimates.VarianceWithin);
+
+                    var distribution = new MultiVariateNormalDistribution(mean, _vcov);
+                    var randomSequence = distribution.Samples(random, NumberOfMonteCarloIterations);
+                    for (int i = 0; i < randomSequence.Count; i++) {
+                        var f = UtilityFunctions.ILogit(randomSequence[i][0]);
+                        var a = AmountInitials.IntakeTransformer.BiasCorrectedInverseTransform(randomSequence[i][1], parameters.VarianceWithin);
                         usualIntakes.Add(a * f);
                     }
                     return new ConditionalUsualIntake() {
@@ -182,19 +211,15 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                 })
                 .ToList();
             if (results.Select(c => c.CovariatesCollection.AmountCofactor).First() != string.Empty) {
-                return results.OrderBy(c => c.CovariatesCollection.AmountCofactor, StringComparer.OrdinalIgnoreCase)
+                return [.. results.OrderBy(c => c.CovariatesCollection.AmountCofactor, StringComparer.OrdinalIgnoreCase)
                         .ThenBy(c => c.CovariatesCollection.AmountCovariable)
-                        .ThenBy(c => c.CovariatesCollection.FrequencyCovariable)
-                        .ToList();
+                        .ThenBy(c => c.CovariatesCollection.FrequencyCovariable)];
             } else if (results.Select(c => c.CovariatesCollection.FrequencyCofactor).First() != string.Empty) {
-                return results.OrderBy(c => c.CovariatesCollection.FrequencyCofactor, StringComparer.OrdinalIgnoreCase)
+                return [.. results.OrderBy(c => c.CovariatesCollection.FrequencyCofactor, StringComparer.OrdinalIgnoreCase)
                         .ThenBy(c => c.CovariatesCollection.FrequencyCovariable)
-                        .ThenBy(c => c.CovariatesCollection.AmountCovariable)
-                        .ToList();
+                        .ThenBy(c => c.CovariatesCollection.AmountCovariable)];
             } else {
-                return results.OrderBy(c => c.CovariatesCollection.FrequencyCovariable)
-                         .ThenBy(c => c.CovariatesCollection.AmountCovariable)
-                         .ToList();
+                return [.. results.OrderBy(c => c.CovariatesCollection.FrequencyCovariable).ThenBy(c => c.CovariatesCollection.AmountCovariable)];
             }
         }
 
@@ -203,13 +228,12 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             CompositeProgressState progressState = null
         ) {
             if (FallBackModel == IntakeModelType.LNN0) {
-                return lnn0Model.GetMarginalIntakes(seed);
+                return _lnn0Model.GetMarginalIntakes(seed);
             }
+            var parameters = _estimates.Parameters;
             var covariateGroups = DataBasedCovariateGroups;
             var n = NumberOfMonteCarloIterations / covariateGroups.Sum(c => c.NumberOfIndividuals);
             var numberOfIterationsPerIndividual = n > 0 ? n : 1;
-            var ghTransformer = IntakeTransformerFactory.Create(TransformType, () => lnnModel.Estimates.Power);
-
             var cancelToken = progressState?.CancellationToken ?? new();
             return covariateGroups
                 .AsParallel()
@@ -220,10 +244,12 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                     var amountMean = GetConditionalAmountPrediction(covariateGroup, out CovariateGroup acg);
                     var usualIntakes = new List<double>();
                     var mean = new List<double> { freqMean, amountMean };
-                    var randomSequence = MultiVariateNormalDistribution.Draw(mean, chol, covariateGroup.NumberOfIndividuals * numberOfIterationsPerIndividual, random);
-                    for (int i = 0; i < randomSequence.GetLength(0); i++) {
-                        var f = UtilityFunctions.ILogit(randomSequence[i, 0]);
-                        var a = ghTransformer.BiasCorrectedInverseTransform(randomSequence[i, 1], lnnModel.Estimates.VarianceWithin);
+
+                    var distribution = new MultiVariateNormalDistribution(mean, _vcov);
+                    var randomSequence = distribution.Samples(random, covariateGroup.NumberOfIndividuals * numberOfIterationsPerIndividual);
+                    for (int i = 0; i < randomSequence.Count; i++) {
+                        var f = UtilityFunctions.ILogit(randomSequence[i][0]);
+                        var a = AmountInitials.IntakeTransformer.BiasCorrectedInverseTransform(randomSequence[i][1], parameters.VarianceWithin);
                         usualIntakes.Add(a * f);
                     }
                     return new ModelBasedIntakeResult() {
@@ -236,7 +262,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
 
         public override List<ModelAssistedIntake> GetIndividualIntakes(int seed) {
             if (FallBackModel == IntakeModelType.LNN0) {
-                return lnn0Model.GetIndividualIntakes(seed);
+                return _lnn0Model.GetIndividualIntakes(seed);
             }
             return null;
         }
@@ -245,23 +271,27 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             return new LNN0Model(
                 FrequencyModelSettings,
                 AmountModelSettings,
-                PredictionLevels
+                predictionLevels
             ) {
                 TransformType = TransformType,
                 FrequencyModelSettings = FrequencyModelSettings,
                 AmountModelSettings = AmountModelSettings,
                 NumberOfMonteCarloIterations = NumberOfMonteCarloIterations,
-                VarianceRatio = VarianceRatio
+                VarianceRatio = VarianceRatio,
+                FixedDispersion = FixedDispersion
             };
         }
 
-        private List<IndividualFrequency> GetFrequencyPredictionLevels(FrequencyDataResult dm) {
+        private List<IndividualFrequency> GetFrequencyPredictionLevels(
+            FrequencyDataResult dm,
+            List<double> frequencies
+        ) {
             var results = new List<IndividualFrequency>();
             for (int i = 0; i < dm.X.GetLength(0); i++) {
                 var prediction = 0D;
                 var j = 0;
-                foreach (var item in frequencyModelEstimates) {
-                    prediction += dm.X[i, j] * item.Estimate;
+                foreach (var freq in frequencies) {
+                    prediction += dm.X[i, j] * freq;
                     j++;
                 }
                 results.Add(new IndividualFrequency(dm.SimulatedIndividuals?[i]) {
@@ -281,10 +311,12 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
         /// </summary>
         /// <param name="dm"></param>
         /// <returns></returns>
-        private List<ModelledIndividualAmount> GetAmountsPredictionLevels(AmountDataResult dm) {
+        private List<ModelledIndividualAmount> GetAmountsPredictionLevels(
+            AmountDataResult dm,
+            List<double> estimates
+        ) {
             var results = new List<ModelledIndividualAmount>();
             for (int i = 0; i < dm.GroupCounts.Count; i++) {
-                var estimates = amountModelEstimates.Select(c => c.Estimate).ToList();
                 var prediction = estimates[0];
                 for (int j = 1; j < estimates.Count; j++) {
                     prediction += dm.X[i, j - 1] * estimates[j];
@@ -303,7 +335,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             CovariateGroup targetCovariateGroup,
             out CovariateGroup actualCovariateGroup
         ) {
-            var frequencyPrediction = conditionalFrequencyPredictions
+            var frequencyPrediction = _conditionalFrequencyPredictions
                    .Where(f => {
                        double? covar = double.IsNaN(f.Covariable) ? null : f.Covariable;
                        double? targetCovar = double.IsNaN(targetCovariateGroup.Covariable) ? null : targetCovariateGroup.Covariable;
@@ -332,7 +364,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             CovariateGroup targetCovariateGroup,
             out CovariateGroup actualCovariateGroup
         ) {
-            var amountPrediction = conditionalAmountsPredictions
+            var amountPrediction = _conditionalAmountsPredictions
                 .Where(f => {
                     double? covar = double.IsNaN(f.Covariable) ? null : f.Covariable;
                     double? targetCovar = double.IsNaN(targetCovariateGroup.Covariable) ? null : targetCovariateGroup.Covariable;
@@ -359,7 +391,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             CovariateGroup targetCovariateGroup,
             out CovariateGroup actualCovariateGroup
         ) {
-            var frequencyPrediction = specifiedFrequencyPredictions
+            var frequencyPrediction = _specifiedFrequencyPredictions
                    .Where(f => {
                        double? covar = double.IsNaN(f.Covariable) ? null : f.Covariable;
                        double? targetCovar = double.IsNaN(targetCovariateGroup.Covariable) ? null : targetCovariateGroup.Covariable;
@@ -385,7 +417,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             CovariateGroup targetCovariateGroup,
             out CovariateGroup actualCovariateGroup
         ) {
-            var amountPrediction = specifiedAmountsPredictions
+            var amountPrediction = _specifiedAmountsPredictions
                 .Where(f => {
                     double? covar = double.IsNaN(f.Covariable) ? null : f.Covariable;
                     double? targetCovar = double.IsNaN(targetCovariateGroup.Covariable) ? null : targetCovariateGroup.Covariable;
@@ -411,57 +443,29 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
         /// <summary>
         /// Build variance covariance matrix
         /// </summary>
-        private void createVarianceCovarianceMatrix() {
+        private static double[,] computeVcovMatrix(
+            double dispersion,
+            double varianceBetween,
+            double correlation
+        ) {
             var vcov = new double[2, 2];
-            vcov[0, 0] = lnnModel.Estimates.FrequencyModelDispersion;
-            vcov[1, 1] = lnnModel.Estimates.VarianceBetween;
-            vcov[1, 0] = vcov[0, 1] = lnnModel.Estimates.Correlation * Math.Sqrt(vcov[0, 0] * vcov[1, 1]);
-            chol = MatrixNR.Cholesky(vcov);
+            vcov[0, 0] = dispersion;
+            vcov[1, 1] = varianceBetween;
+            vcov[1, 0] = vcov[0, 1] = correlation * Math.Sqrt(vcov[0, 0] * vcov[1, 1]);
+            return vcov;
         }
 
         /// <summary>
-        /// Fit LNN model
+        /// Fit LNN model with correlation
         /// </summary>
         /// <param name="individualDayIntakes"></param>
-        /// <param name="predictionLevels"></param>
-        private void fitLNNModel(
+        /// <param name="power"></param>
+        /// <returns></returns>
+        private (LNNParameters estimates, LNNParameters stdErrors, double logLik, ErrorMessages msg) computeLNNModel(
             ICollection<SimpleIndividualDayIntake> individualDayIntakes,
-            List<double> predictionLevels
+            double power
         ) {
-            individualDayIntakes = individualDayIntakes
-                .OrderBy(c => c.SimulatedIndividual.Id)
-                .ToList();
-
-            var imStatsOneDay = false;
-
-            var lnnParameters = new LNNParameters() {
-                EstimatePower = false,
-                EstimateFrequency = true,
-                EstimateDispersion = true,
-                EstimateAmount = true,
-                EstimateVarianceBetween = true,
-                EstimateVarianceWithin = true,
-                EstimateCorrelation = true,
-                Power = power,
-                FrequencyModelDispersion = FrequencyInitials.DispersionEstimates.Estimate,
-                VarianceBetween = AmountInitials.VarianceBetween,
-                VarianceWithin = AmountInitials.VarianceWithin,
-                Correlation = 0D,
-                FreqEstimates = FrequencyInitials.FrequencyModelEstimates.Select(c => c.Estimate).ToList(),
-                AmountEstimates = AmountInitials.AmountModelEstimates.Select(c => c.Estimate).ToList(),
-                TransformType = TransformType,
-            };
-
-            lnnParameters.Transform();
-
-            // Set fixed dispersion parameters in case only one Day
-            if (imStatsOneDay) {
-                lnnParameters = new LNNParameters() {
-                    EstimateDispersion = false,
-                    EstimateVarianceBetween = false,
-                    EstimateVarianceWithin = false,
-                };
-            }
+            individualDayIntakes = [.. individualDayIntakes.OrderBy(c => c.SimulatedIndividual.Id)];
 
             var dfPolynomialFrequency = 0;
             if (FrequencyInitials.LikelihoodRatioTestResults != null) {
@@ -482,10 +486,81 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                 dfPolynomialAmount
             );
 
-            //Hier gaat toch echt iets niet goed, alles moet uit frequencyDataResult en amountDataResult komen en niet alleen een gedeelte (bv dailyIntakes weer niet)
+            var amounts = individualDayIntakes.Select(r => r.Amount).ToList();
+            var weights = individualDayIntakes.Select(r => r.SimulatedIndividual.SamplingWeight).ToList();
+            var individualIntakeFrequencies = SimpleIndividualDayIntakesCalculator
+                .ComputeIndividualAmounts(individualDayIntakes)
+                .Select(c => c.NumberOfDays)
+                .ToList();
+
+            var initialParameterEstimate = new LNNParameters(
+                FrequencyInitials,
+                AmountInitials,
+                power
+            );
+
+            var calculator = new LNNModelCalculator();
+            var result = calculator.ComputeFit(
+                amounts,
+                weights,
+                individualIntakeFrequencies,
+                frequencyDataResult.X,
+                amountDataResult.X,
+                AmountInitials.IntakeTransformer,
+                initialParameterEstimate
+            );
+
+            return (result.Parameters, result.StandardErrors, -result.LogLik, result.ErrorMessages);
+        }
+
+        /// <summary>
+        /// Predictions LNN model with correlation
+        /// </summary>
+        /// <param name="individualDayIntakes"></param>
+        /// <param name="estimates"></param>
+        private void designsLNNModel(
+            ICollection<SimpleIndividualDayIntake> individualDayIntakes,
+            LNNParameters estimates
+        ) {
+            //Frequencies
+            var dfPolynomialFrequency = 0;
+            if (FrequencyInitials.LikelihoodRatioTestResults != null) {
+                dfPolynomialFrequency = FrequencyInitials.LikelihoodRatioTestResults.SelectedOrder;
+            }
+
+            var frequencyDataResult = individualDayIntakes.GetDMFrequencyLNN(
+                FrequencyModelSettings.CovariateModelType,
+                dfPolynomialFrequency
+            );
+
             var conditionalFrequencyDataResult = individualDayIntakes.GetDMConditionalPredictionsLNN(
                 FrequencyModelSettings.CovariateModelType,
                 frequencyDataResult
+            );
+
+            _conditionalFrequencyPredictions = GetFrequencyPredictionLevels(
+                conditionalFrequencyDataResult,
+                estimates.FreqEstimates
+            );
+
+            _specifiedFrequencyPredictions = GetFrequencyPredictionLevels(
+                individualDayIntakes.GetDMSpecifiedPredictionsLNN(
+                    FrequencyModelSettings.CovariateModelType,
+                    frequencyDataResult,
+                    predictionLevels
+                ),
+                estimates.FreqEstimates
+            );
+
+            //Amounts
+            var dfPolynomialAmount = 0;
+            if (AmountInitials.LikelihoodRatioTestResults != null) {
+                dfPolynomialAmount = AmountInitials.LikelihoodRatioTestResults.SelectedOrder;
+            }
+
+            var amountDataResult = individualDayIntakes.GetDMAmountLNN(
+                AmountModelSettings.CovariateModelType,
+                dfPolynomialAmount
             );
 
             var conditionalAmountDataResult = individualDayIntakes.GetDMConditionalPredictionsLNN(
@@ -493,84 +568,19 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                 amountDataResult
             );
 
-            var individualIntakeFrequencies = SimpleIndividualDayIntakesCalculator
-                .ComputeIndividualAmounts(individualDayIntakes);
-
-            lnnModel = new LNNModelCalculator() {
-                DailyIntakes = individualDayIntakes.Select(r => r.Amount).ToList(),
-                Weights = individualDayIntakes.Select(r => r.SimulatedIndividual.SamplingWeight).ToList(),
-                DailyIntakesTransformed = individualDayIntakes
-                    .Select(r => AmountInitials.IntakeTransformer.Transform(r.Amount))
-                    .ToList(),
-                FreqDesign = frequencyDataResult.X,
-                AmountDesign = amountDataResult.X,
-                LNNParameters = lnnParameters,
-                IndividualDays = individualIntakeFrequencies.Select(c => c.NumberOfDays).ToList(),
-                FreqLp = new double[individualDayIntakes.Count],
-                AmountLp = new double[individualDayIntakes.Count],
-                GaussHermitePoints = 10,
-                GaussHermitePrune = -1.0,
-                MaxEvaluations = 200,
-                Tolerance = 1e-5,
-                SeMaxCycle = 2,
-                SeReturn = "none",
-                ScaleAmountInAlgorithm = false,
-                FreqPredictX = conditionalFrequencyDataResult.X,
-                AmountPredictX = conditionalAmountDataResult.X,
-            };
-
-            lnnModel.Initialize();
-            lnnModel.Fit();
-
-            // Set parameters of intakeFrequency to NCI parameters
-            frequencyModelEstimates = [];
-            var parameterNames = FrequencyInitials.FrequencyModelEstimates.Select(c => c.ParameterName).ToList();
-            for (int i = 0; i < lnnModel.Estimates.FreqEstimates.Count; i++) {
-                frequencyModelEstimates.Add(new ParameterEstimates() {
-                    ParameterName = parameterNames[i],
-                    Estimate = lnnModel.Estimates.FreqEstimates[i],
-                    //StandardError = lnnModel.Se.FreqEstimates[i]
-                });
-            }
-            dispersionEstimates = new ParameterEstimates() {
-                ParameterName = "FrequencyModelDispersion",
-                Estimate = lnnModel.Estimates.FrequencyModelDispersion,
-                //StandardError = lnnModel.Se.FrequencyModelDispersion,
-            };
-
-            amountModelEstimates = [];
-            parameterNames = AmountInitials.AmountModelEstimates.Select(c => c.ParameterName).ToList();
-            for (int i = 0; i < lnnModel.Estimates.AmountEstimates.Count; i++) {
-                amountModelEstimates.Add(new ParameterEstimates() {
-                    ParameterName = parameterNames[i],
-                    Estimate = lnnModel.Estimates.AmountEstimates[i],
-                    //StandardError = lnnModel.Se.AmountEstimates[i]
-                });
-            }
-
-            correlationEstimates = new ParameterEstimates() {
-                ParameterName = "Correlation",
-                Estimate = lnnModel.Estimates.Correlation,
-                //StandardError = lnnModel.Se.Correlation,
-            };
-
-            conditionalFrequencyPredictions = GetFrequencyPredictionLevels(conditionalFrequencyDataResult);
-            conditionalAmountsPredictions = GetAmountsPredictionLevels(conditionalAmountDataResult);
-
-            var specifiedFrequencyDataResult = individualDayIntakes.GetDMSpecifiedPredictionsLNN(
-                FrequencyModelSettings.CovariateModelType,
-                frequencyDataResult,
-                predictionLevels
+            _conditionalAmountsPredictions = GetAmountsPredictionLevels(
+                conditionalAmountDataResult,
+                estimates.AmountEstimates
             );
 
-            var specifiedAmountDataResult = individualDayIntakes.GetDMSpecifiedPredictionsLNN(
-                AmountModelSettings.CovariateModelType,
-                amountDataResult,
-                predictionLevels
+            _specifiedAmountsPredictions = GetAmountsPredictionLevels(
+                individualDayIntakes.GetDMSpecifiedPredictionsLNN(
+                    AmountModelSettings.CovariateModelType,
+                    amountDataResult,
+                    predictionLevels
+                ),
+                estimates.AmountEstimates
             );
-
-            specifiedFrequencyPredictions = GetFrequencyPredictionLevels(specifiedFrequencyDataResult);
-            specifiedAmountsPredictions = GetAmountsPredictionLevels(specifiedAmountDataResult);
         }
     }
 }

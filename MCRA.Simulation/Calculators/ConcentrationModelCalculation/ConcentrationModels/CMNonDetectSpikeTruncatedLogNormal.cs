@@ -162,7 +162,8 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
             FractionPositives = 1 - betaDistribution.Draw(random);
             //replaced by Troschuetz distribution
             //FractionPositives = 1 - RMath.rbeta(alfa + NonDetectsCount, beta + ResidueCount - NonDetectsCount);
-            var draw = MultiVariateNormalDistribution.Draw(_estimates.ToList(), _vcovChol, random);
+            var distribution = new MultiVariateNormalDistribution(_estimates.ToList(), _vcovChol);
+            var draw = distribution.Draw(random);
             Mu = draw[0];
             Sigma = Math.Sqrt(Math.Exp(draw[1]));
 
@@ -220,8 +221,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
             Vcov.SetElement(1, 1, -d22);
             Vcov = Vcov.Inverse();
             // Choleski decomposition for random draws
-            _vcovChol = new double[2, 2];
-            _vcovChol = Vcov.chol().GetL().ArrayCopy2;
+            _vcovChol = Vcov.ArrayCopy2;
         }
 
         /// <summary>

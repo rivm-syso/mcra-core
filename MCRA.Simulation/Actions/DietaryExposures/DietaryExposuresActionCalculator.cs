@@ -260,7 +260,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                     ModuleConfig.GetISUFModelCalculationSettings(),
                     ModuleConfig.NumberOfMonteCarloIterations,
                     ModuleConfig.IntakeModelPredictionIntervals,
-                    ModuleConfig.IntakeExtraPredictionLevels.ToArray(),
+                    [.. ModuleConfig.IntakeExtraPredictionLevels],
                     ModuleConfig.FrequencyModelDispersion,
                     ModuleConfig.AmountModelVarianceRatio);
 

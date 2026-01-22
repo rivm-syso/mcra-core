@@ -98,7 +98,8 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         /// Employs Large-Sample Multivariate Normality with Variance-Covariance matrix of the MLEs of  (mu, Log(sigma*sigma), Logit(p))
         /// </summary>
         public override void DrawParametricUncertainty(IRandom random) {
-            var draw = MultiVariateNormalDistribution.Draw(_estimates.ToList(), _vcovChol, random);
+            var distribution = new MultiVariateNormalDistribution(_estimates.ToList(), _vcovChol);
+            var draw = distribution.Draw(random);
             Mu = draw[0];
             Sigma = Math.Sqrt(Math.Exp(draw[1]));
             CorrectedOccurenceFraction = UtilityFunctions.ILogit(draw[2]);
@@ -267,8 +268,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
             _vcov.SetElement(2, 1, -d23);
             _vcov.SetElement(2, 2, -d33);
             _vcov = _vcov.Inverse();
-            _vcovChol = new double[3, 3];
-            _vcovChol = _vcov.chol().GetL().ArrayCopy2;
+            _vcovChol = _vcov.ArrayCopy2;
         }
 
         public override double GetImputedCensoredValue(SampleCompound sampleSubstance, IRandom random) {

@@ -6,8 +6,8 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
     /// components, estimates and exposure transformer.
     /// </summary>
     public sealed class NormalAmountsModelSummary : AmountsModelSummary {
-        public double VarianceBetween { get; set; }
-        public double VarianceWithin { get; set; }
+        public ParameterEstimates VarianceBetween { get; set; }
+        public ParameterEstimates VarianceWithin { get; set; }
         public double VarianceDistribution { get; set; }
         public double DegreesOfFreedom { get; set; }
         public double _2LogLikelihood { get; set; }

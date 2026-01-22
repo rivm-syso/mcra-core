@@ -35,7 +35,6 @@ namespace MCRA.Simulation.OutputGeneration {
                     Parameter = VarianceEstimates.ParameterName,
                     Estimate = VarianceEstimates.Estimate,
                     StandardError = VarianceEstimates.StandardError,
-                    TValue = VarianceEstimates.TValue
                 }];
 
             foreach (var item in FrequencyModelEstimates) {
@@ -43,7 +42,6 @@ namespace MCRA.Simulation.OutputGeneration {
                     Parameter = item.ParameterName,
                     Estimate = item.Estimate,
                     StandardError = item.StandardError,
-                    TValue = item.TValue
                 };
                 FrequencyModelRecords.Add(record);
             }

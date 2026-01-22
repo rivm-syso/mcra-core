@@ -24,9 +24,10 @@
         /// </summary>
         protected const int MaxMaxCycles = 10;
         /// <summary>
-        /// Maximum number of extrapolations in Ridders method for calculating derivatives. Default and maximum value is 10; non-positive values are set to the maximum.
+        /// Maximum number of extrapolations in Ridders method for calculating derivatives. 
+        /// Default and maximum value is 10; non-positive values are set to the maximum.
         /// </summary>
-        public int MaxCycles { get; set; }
+        public int MaxCycles { get; set; } = 2;
 
         /// <summary>
         /// Multi-dimensional function.
@@ -47,8 +48,8 @@
         /// <returns>StepSizeDefault times the argument x[], with a minimum value of StepSizeDefault.</returns>
         /// <seealso cref="StepSizeDefault"/>
         public double[] StepSize(double[] x) {
-            int ndim = x.GetLength(0);
-            double[] step = new double[ndim];
+            var ndim = x.GetLength(0);
+            var step = new double[ndim];
             for (int ii = 0; ii < ndim; ii++) {
                 step[ii] = Math.Abs(StepSizeDefault * x[ii]);
                 if (step[ii] < StepSizeDefault) {
@@ -69,9 +70,7 @@
         /// <remarks>Numerical Recipes routine DFRIDR ported from C++ to C#.</remarks>
         public double[] Gradient(Function function, double[] x, double[] step, out double error) {
             Evaluations = 0;
-            int NTAB;
-            if (MaxCycles <= 0) { NTAB = MaxMaxCycles; }
-            else { NTAB = Math.Min(MaxCycles, MaxMaxCycles); }
+            var NTAB = MaxCycles <= 0 ? MaxMaxCycles : Math.Min(MaxCycles, MaxMaxCycles);
             double[,] a = new double[NTAB, NTAB];
 
             const double CON = 1.4, CON2 = CON * CON;
@@ -84,8 +83,12 @@
             error = double.NegativeInfinity;
             // Loop over dimensions
             for (int idim = 0; idim < ndim; idim++) {
-                if (step[idim] == 0.0) { throw new Exception("step[" + idim.ToString() + "] must be nonzero in Gradient."); }
-                for (i = 0; i < ndim; i++) { xmin[i] = x[i]; xplus[i] = x[i]; }
+                if (step[idim] == 0.0) {
+                    throw new Exception("step[" + idim.ToString() + "] must be nonzero in Gradient.");
+                }
+                for (i = 0; i < ndim; i++) {
+                    xmin[i] = x[i]; xplus[i] = x[i];
+                }
                 hh = step[idim];
                 xmin[idim] = x[idim] - hh;
                 xplus[idim] = x[idim] + hh;
@@ -126,17 +129,20 @@
         /// </summary>
         /// <param name="function">Multi-dimensional function for which the Hessian is required.</param>
         /// <param name="x">Values for which the Hessian must be approximated.</param>
-        /// <param name="fx">Function value at x; if set to NaN the function value is calculated (and returned).</param>
         /// <param name="step">Initial stepsize; should be set to an increment in x over which the function changes considerably.</param>
         /// <param name="error">Returns an estimate of the error in the derivative.</param>
         /// <returns>The Hessian at point x.</returns>
         /// <remarks>Numerical Recipes routine DFRIDR ported from C++ to C#.</remarks>
-        public double[,] Hessian(Function function, double[] x, ref double fx, double[] step, out double error) {
+        public double[,] Hessian(
+            Function function,
+            double[] x,
+            double[] step,
+            out double error
+        ) {
             Evaluations = 0;
 
             int NTAB;
-            if (MaxCycles <= 0) { NTAB = MaxMaxCycles; }
-            else { NTAB = Math.Min(MaxCycles, MaxMaxCycles); }
+            if (MaxCycles <= 0) { NTAB = MaxMaxCycles; } else { NTAB = Math.Min(MaxCycles, MaxMaxCycles); }
             double[,] a = new double[NTAB, NTAB];
 
             const double CON = 1.4, CON2 = CON * CON;
@@ -149,14 +155,17 @@
             double[,] deriv = new double[ndim, ndim];
             double[] hsave = new double[ndim];
             error = double.NegativeInfinity;
-            // Loop over dimensions and approximate diagonal elements
-            if (double.IsNaN(fx)) {
-                Evaluations += 1;
-                fx = function(x, Data);
-            }
+
+            Evaluations += 1;
+            var fx = function(x, Data);
+
             for (int idim = 0; idim < ndim; idim++) {
-                if (step[idim] == 0.0) { throw new Exception("step[" + idim.ToString() + "] must be nonzero in Hessian."); }
-                for (i = 0; i < ndim; i++) { xtmp[i] = x[i]; }
+                if (step[idim] == 0.0) {
+                    throw new Exception($"step[{idim}] must be nonzero in Hessian.");
+                }
+                for (i = 0; i < ndim; i++) {
+                    xtmp[i] = x[i];
+                }
                 hhi = step[idim];
                 Evaluations += 2;
                 xtmp[idim] = x[idim] - hhi;

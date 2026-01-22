@@ -17,7 +17,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
         public void UsualIntakeDistributionSection_Test5() {
             var lnnModel = new LNNModel(
                 new IntakeModelCalculationSettings(),
-                new IntakeModelCalculationSettings()
+                new IntakeModelCalculationSettings(),
+                null
             ) {
                 FrequencyInitials = new FrequencyModelSummary() {
                     DispersionEstimates = new ParameterEstimates(),
@@ -25,13 +26,17 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
                 },
                 AmountInitials = new NormalAmountsModelSummary() {
                     AmountModelEstimates = [],
+                    VarianceBetween = new ParameterEstimates() { ParameterName = "NA"},
+                    VarianceWithin = new ParameterEstimates() { ParameterName = "NA"},
                 },
                 FallBackModel = IntakeModelType.LNN,
                 FrequencyAmountModelSummary = new FrequencyAmountModelSummary() {
                     AmountModelEstimates = [],
                     FrequencyModelEstimates = [],
                     DispersionEstimates = new ParameterEstimates(),
-                    CorrelationEstimates = new ParameterEstimates() { ParameterName = "NA"}
+                    CorrelationEstimates = new ParameterEstimates() { ParameterName = "NA"},
+                    VarianceBetween = new ParameterEstimates() { ParameterName = "NA" },
+                    VarianceWithin = new ParameterEstimates() { ParameterName = "NA" },
                 },
             };
             var section = new ChronicIntakeInitialEstimatesSection();

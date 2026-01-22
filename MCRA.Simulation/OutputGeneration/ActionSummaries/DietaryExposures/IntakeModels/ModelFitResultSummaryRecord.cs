@@ -20,6 +20,8 @@ namespace MCRA.Simulation.OutputGeneration {
         [Description("t-value.")]
         [DisplayName("t-value")]
         [DisplayFormat(DataFormatString = "{0:F2}")]
-        public double? TValue { get; set; }
+        public double? TValue {
+            get { return Estimate / StandardError; }
+        }
     }
 }

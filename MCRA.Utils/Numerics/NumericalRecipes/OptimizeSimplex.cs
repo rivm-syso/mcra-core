@@ -8,22 +8,14 @@
     public class OptimizeSimplex {
 
         /// <summary>
-        /// Initialize with default values MaxEvaluations=5000 and Tolerance=1.0e-6.
+        /// Maximum number of function evaluations in simplex routine.
         /// </summary>
-        public OptimizeSimplex() {
-            MaxEvaluations = 5000;
-            Tolerance = 1.0e-6;
-        }
-
-        /// <summary>
-        /// Maximum number of function evaluations in Simplex Routine; default 5000;
-        /// </summary>
-        public int MaxEvaluations { get; set; }
+        public int MaxEvaluations { get; set; } = 200;
 
         /// <summary>
         /// Convergence criterion in minimization routines; default 1.0e-6.
         /// </summary>
-        public double Tolerance { get; set; }
+        public double Tolerance { get; set; } = 1e-6;
 
         /// <summary>
         /// Number of function evaluations.
@@ -36,27 +28,12 @@
         public bool Convergence { get; private set; }
 
         /// <summary>
-        /// Multi-dimensional function.
-        /// </summary>
-        /// <param name="arg">Arguments of function.</param>
-        /// <param name="data">Data to be passed to the function.</param>
-        /// <returns>Function value.</returns>
-        public delegate double Function(double[] arg, object data);
-
-        /// <summary>
-        /// Data to be passed to the Function delegate
-        /// </summary>
-        public object Data { get; set; }
-
-        /// <summary>
         /// Finds the minimum of a multidimensional function using the Simplex method.
         /// </summary>
         /// <param name="initial">Initial estimate for the minimum.</param>
-        /// <param name="minimum">Returns the minimum found by the Simplex routine.</param>
         /// <param name="function">Multi-dimensional function with double array arguments which returns a function value.</param>
         /// <param name="scale">Scale used in setting up the initial Simplex.</param>
-        /// <param name="repeat">Number of times the Simplex routine must be restarted from the minimum found.</param>
-        /// <returns>The minimum function value.</returns>
+        /// <returns>Value-tuple of x-min and y-min.</returns>
         /// <remarks>The initial Simplex consists of (ndim+1) points. The first point is initial and the other ndim points are formed
         /// by adding unit vectors multiplied by scale to initial. More control over the initial Simplex is given by the
         /// underlying routine <seealso cref="SimplexNR"/>. The maximum number of function evaluations can be specified by the
@@ -64,14 +41,18 @@
         /// Tolerance <seealso cref="Tolerance"/>.
         /// by propertie MaxN
         /// </remarks>
-        public double Minimize(double[] initial, out double[] minimum, Function function, double scale, int repeat) {
+        public (double[] xMin, double yMin) Minimize(
+            double[] initial,
+            Func<double[], double> function,
+            double scale
+        ) {
             int ii, jj;
             int ndim = initial.GetLength(0);
             int ndim1 = ndim + 1;
             var simplex = new double[ndim1, ndim];
             var functionvalue = new double[ndim1];
-            var fminimum =0D;
-            minimum = new double[ndim];
+            var fminimum = 0D;
+            var xMin = new double[ndim];
 
             // Create initial Simplex and get function values at the Simplex points
             for (ii = 0; ii < ndim1; ii++) {
@@ -81,9 +62,9 @@
                         simplex[ii, jj] += scale;
                     }
 
-                    minimum[jj] = simplex[ii, jj];
+                    xMin[jj] = simplex[ii, jj];
                 }
-                functionvalue[ii] = function(minimum, Data);
+                functionvalue[ii] = function(xMin);
             }
 
             // Call Simplex routine
@@ -91,26 +72,26 @@
             Evaluations += ndim1;      // Loop above
             // Mean of simplex points
             for (jj = 0; jj < ndim; jj++) {
-                minimum[jj] = 0.0;
+                xMin[jj] = 0.0;
                 for (ii = 0; ii < ndim1; ii++) {
-                    minimum[jj] += simplex[ii, jj];
+                    xMin[jj] += simplex[ii, jj];
                 }
-                minimum[jj] /= ndim1;
+                xMin[jj] /= ndim1;
             }
             Evaluations += 1;
-            fminimum = function(minimum, Data);
+            fminimum = function(xMin);
 
             // Return the point with the minimal function value
-            var minValue = fminimum;
+            var yMin = fminimum;
             for (ii = 0; ii < ndim1; ii++) {
-                if (functionvalue[ii] < minValue) {
-                    minValue = functionvalue[ii];
+                if (functionvalue[ii] < yMin) {
+                    yMin = functionvalue[ii];
                     for (jj = 0; jj < ndim; jj++) {
-                        minimum[jj] = simplex[ii, jj];
+                        xMin[jj] = simplex[ii, jj];
                     }
                 }
             }
-            return minValue;
+            return (xMin, yMin);
         }
 
         /// <summary>
@@ -130,7 +111,7 @@
         /// to the number of function evaluations.</remarks>
         /// <remarks>Numerical Recipes routine AMOEBA ported from C++ to C#.</remarks>
         /// <seealso cref="OptimizeSimplex"/>
-        public void Minimize(ref double[,] p, ref double[] y, Function function) {
+        public void Minimize(ref double[,] p, ref double[] y, Func<double[], double> function) {
             // Proceed
             const double TINY = 1.0e-10;
             int i, ihi, ilo, inhi, j;
@@ -184,7 +165,7 @@
                                     p[i, j] = psum[j] = 0.5 * (p[i, j] + p[ilo, j]);
                                 }
 
-                                y[i] = function(psum, Data);
+                                y[i] = function(psum);
                             }
                         }
                         Evaluations += ndim;
@@ -211,7 +192,7 @@
             }
         }
 
-        private double SimplexTry(ref double[,] p, ref double[] y, ref double[] psum, Function function, int ihi, double fac) {   // Service routine for the Simplex method.
+        private double SimplexTry(ref double[,] p, ref double[] y, ref double[] psum, Func<double[], double> function, int ihi, double fac) {   // Service routine for the Simplex method.
             // Numerical Recipes routine AMOTRY ported from C++ to C#.
             int j, ndim = p.GetLength(1);
             double fac1, fac2, ytry;
@@ -222,7 +203,7 @@
                 ptry[j] = psum[j] * fac1 - p[ihi, j] * fac2;
             }
 
-            ytry = function(ptry, Data);
+            ytry = function(ptry);
             if (ytry < y[ihi]) {
                 y[ihi] = ytry;
                 for (j = 0; j < ndim; j++) {

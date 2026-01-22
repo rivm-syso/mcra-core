@@ -9,6 +9,5 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
         public double _2LogLikelihood { get; set; }
         public LikelihoodRatioTestResults LikelihoodRatioTestResults { get; set; }
         public ErrorMessages ErrorMessage { get; set; } = ErrorMessages.NoConvergence;
-        public List<ModelFitResultSummaryRecord> FrequencyModelRecords { get; set; }
     }
 }

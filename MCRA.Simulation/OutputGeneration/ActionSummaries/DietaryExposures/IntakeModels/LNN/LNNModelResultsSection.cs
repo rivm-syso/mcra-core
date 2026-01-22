@@ -24,7 +24,7 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             var varianceEstimates = frequencyAmountModelSummary.DispersionEstimates;
             var frequencyModelEstimates = frequencyAmountModelSummary.FrequencyModelEstimates;
-            var degreesOfFreedom = frequencyAmountModelSummary.DegreesOfFreedom;
+            var degreesOfFreedom = frequencyAmountModelSummary.DegreesOfFreedomFrequencies;
             var _2LogLikelihood = frequencyAmountModelSummary._2LogLikelihood;
 
             var frequencyModelFitSummaryRecords = new List<ModelFitResultSummaryRecord>() {
@@ -32,7 +32,6 @@ namespace MCRA.Simulation.OutputGeneration {
                     Parameter = varianceEstimates.ParameterName,
                     Estimate = varianceEstimates.Estimate,
                     StandardError = varianceEstimates.StandardError,
-                    TValue = varianceEstimates.TValue
                 }
             };
             foreach (var item in frequencyModelEstimates) {
@@ -40,7 +39,6 @@ namespace MCRA.Simulation.OutputGeneration {
                     Parameter = item.ParameterName,
                     Estimate = item.Estimate,
                     StandardError = item.StandardError,
-                    TValue = item.TValue
                 };
                 frequencyModelFitSummaryRecords.Add(record);
             }
@@ -48,6 +46,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 Parameter = "degrees of freedom",
                 Estimate = degreesOfFreedom
             };
+
             frequencyModelFitSummaryRecords.Add(dfRecord);
 
             var logLikRecord = new ModelFitResultSummaryRecord {
@@ -67,7 +66,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var varianceWithin = frequencyAmountModelSummary.VarianceWithin;
             var amountsModelEstimates = frequencyAmountModelSummary.AmountModelEstimates;
             var correlationEstimates = frequencyAmountModelSummary.CorrelationEstimates;
-
+            var degreesOfFreedom = frequencyAmountModelSummary.DegreesOfFreedomAmounts;
             var amountModelFitSummaryRecords = new List<ModelFitResultSummaryRecord>() {
                 new() {
                     Parameter = "transformation power",
@@ -79,30 +78,37 @@ namespace MCRA.Simulation.OutputGeneration {
                     Parameter = item.ParameterName,
                     Estimate = item.Estimate,
                     StandardError = item.StandardError,
-                    TValue = item.TValue
                 };
                 amountModelFitSummaryRecords.Add(record);
             }
             var varBetweenRecord = new ModelFitResultSummaryRecord {
-                Parameter = "variance between individuals",
-                Estimate = varianceBetween
+                Parameter = varianceBetween.ParameterName.ToLower(),
+                Estimate = varianceBetween.Estimate,
+                StandardError = varianceBetween.StandardError,
             };
             amountModelFitSummaryRecords.Add(varBetweenRecord);
             var varWithinRecord = new ModelFitResultSummaryRecord {
-                Parameter = "variance within individuals",
-                Estimate = varianceWithin
+                Parameter = varianceWithin.ParameterName.ToLower(),
+                Estimate = varianceWithin.Estimate,
+                StandardError = varianceWithin.StandardError,
             };
             amountModelFitSummaryRecords.Add(varWithinRecord);
             var correlationRecord = new ModelFitResultSummaryRecord {
                 Parameter = correlationEstimates.ParameterName.ToLower(),
                 Estimate = correlationEstimates.Estimate,
-                StandardError = correlationEstimates.StandardError
+                StandardError = correlationEstimates.StandardError,
             };
             amountModelFitSummaryRecords.Add(correlationRecord);
             var logLikRecord = new ModelFitResultSummaryRecord {
                 Parameter = "-2*loglikelihood",
                 Estimate = _2LogLikelihood
             };
+            var dfRecord = new ModelFitResultSummaryRecord {
+                Parameter = "degrees of freedom",
+                Estimate = degreesOfFreedom
+            };
+            amountModelFitSummaryRecords.Add(dfRecord);
+
             amountModelFitSummaryRecords.Add(logLikRecord);
             return amountModelFitSummaryRecords;
         }

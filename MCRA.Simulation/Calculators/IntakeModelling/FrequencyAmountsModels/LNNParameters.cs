@@ -1,11 +1,20 @@
 ﻿using MCRA.Utils;
-using MCRA.General;
 
 namespace MCRA.Simulation.Calculators.IntakeModelling {
     /// <summary>
     /// Parameters and transformed parameters of the LNN model.
     /// </summary>
     public class LNNParameters {
+
+        /// <summary>
+        /// Parameters LNN
+        /// </summary>
+        public LNNParameterEstimate Parameters { get; set; } = new();
+
+        /// <summary>
+        /// Transformed base parameters LNN. The set of parameters that is always needed.
+        /// </summary>
+        public LNNParameterEstimate ParametersT { get; set; } = new();
 
         /// <summary>
         /// Regression Coefficients for the Frequency model (including the constant).
@@ -17,136 +26,33 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
         /// </summary>
         public List<double> AmountEstimates { get; set; }
 
-        /// <summary>
-        /// Power transformation parameter (0 is for the Log transform).
-        /// </summary>
-        public double Power { get; set; }
+        public LNNParameters() { }
 
-        /// <summary>
-        /// Between individuals variance for frequency model
-        /// </summary>
-        public double FrequencyModelDispersion { get; set; }
-
-        /// <summary>
-        /// Between individuals variance for amount model
-        /// </summary>
-        public double VarianceBetween { get; set; }
-
-        /// <summary>
-        /// Between days within individuals variance for amount model
-        /// </summary>
-        public double VarianceWithin { get; set; }
-
-        /// <summary>
-        /// Correlation between individual effects of frequency and amounts
-        /// </summary>
-        public double Correlation { get; set; }
-
-        /// <summary>
-        /// Log Transformed Power transformation parameter (0 is for the Log transform).
-        /// </summary>
-        public double PowerT { get; set; }
-
-        /// <summary>
-        /// Log Transformed Between individuals variance for frequency model
-        /// </summary>
-        public double DispersionT { get; set; }
-
-        /// <summary>
-        /// Log Transformed Between individuals variance for amount model
-        /// </summary>
-        public double VarianceBetweenT { get; set; }
-
-        /// <summary>
-        /// Log Transformed Between days within individuals variance for amount model
-        /// </summary>
-        public double VarianceWithinT { get; set; }
-
-        /// <summary>
-        /// Special Transformed Correlation between individual effects of frequency and amounts
-        /// </summary>
-        public double CorrelationT { get; set; }
-
-        /// <summary>
-        /// Whether to estimate the Regression coefficients for the Frequency Model
-        /// </summary>
-        public bool EstimateFrequency { get; set; }
-
-        /// <summary>
-        /// Whether to estimate the Regression coefficients for the Amount Model
-        /// </summary>
-        public bool EstimateAmount { get; set; }
-
-        /// <summary>
-        /// Whether to estimate the Power transformation parameter
-        /// </summary>
-        public bool EstimatePower { get; set; }
-
-        /// <summary>
-        /// Whether to estimate the Between individuals variance for frequency model
-        /// </summary>
-        public bool EstimateDispersion { get; set; }
-
-        /// <summary>
-        /// Whether to estimate the Between individuals variance for amount model
-        /// </summary>
-        public bool EstimateVarianceBetween { get; set; }
-
-        /// <summary>
-        /// Whether to estimate the Between days within individuals variance for amount model
-        /// </summary>
-        public bool EstimateVarianceWithin { get; set; }
-
-        /// <summary>
-        /// Whether to estimate the Correlation between individual effects of frequency and amounts
-        /// </summary>
-        public bool EstimateCorrelation { get; set; }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public TransformType TransformType { get; set; }
-
-        /// <summary>
-        /// Transforms parameters.
-        /// </summary>
-        public void Transform() {
-            DispersionT = EstimateDispersion ? UtilityFunctions.LogBound(FrequencyModelDispersion) : DispersionT;
-            VarianceBetweenT = EstimateVarianceBetween ? UtilityFunctions.LogBound(VarianceBetween) : VarianceBetweenT;
-            VarianceWithinT = EstimateVarianceWithin ? UtilityFunctions.LogBound(VarianceWithin) : VarianceWithinT;
-            CorrelationT = EstimateCorrelation ? UtilityFunctions.LogBound((1.0 + Correlation) / (1.0 - Correlation)) : CorrelationT;
-            PowerT = EstimatePower ? UtilityFunctions.LogBound(Power) : PowerT;
+        public LNNParameters(
+            FrequencyModelSummary frequencyModelSummary,
+            NormalAmountsModelSummary normalAmountsModelSummary,
+            double power
+        ) {
+            FreqEstimates = [.. frequencyModelSummary.FrequencyModelEstimates.Select(c => c.Estimate)];
+            AmountEstimates = [.. normalAmountsModelSummary.AmountModelEstimates.Select(c => c.Estimate)];
+            Parameters.Power = power;
+            Parameters.Dispersion = frequencyModelSummary.DispersionEstimates.Estimate;
+            Parameters.VarianceBetween = normalAmountsModelSummary.VarianceBetween.Estimate;
+            Parameters.VarianceWithin = normalAmountsModelSummary.VarianceWithin.Estimate;
+            ParametersT.Dispersion = UtilityFunctions.LogBound(Parameters.Dispersion);
+            ParametersT.VarianceBetween = UtilityFunctions.LogBound(Parameters.VarianceBetween);
+            ParametersT.VarianceWithin = UtilityFunctions.LogBound(Parameters.VarianceWithin);
+            ParametersT.Correlation = UtilityFunctions.LogBound((1.0 + Parameters.Correlation) / (1.0 - Parameters.Correlation));
         }
 
         /// <summary>
-        /// Back-transforms parameters.
+        /// Back-transformed parameters.
         /// </summary>
         public void InverseTransform() {
-            FrequencyModelDispersion = EstimateDispersion ? UtilityFunctions.ExpBound(DispersionT) : FrequencyModelDispersion;
-            VarianceBetween = EstimateVarianceBetween ? UtilityFunctions.ExpBound(VarianceBetweenT) : VarianceBetween;
-            VarianceWithin = EstimateVarianceWithin ? UtilityFunctions.ExpBound(VarianceWithinT) : VarianceWithin;
-            Correlation = EstimateCorrelation ? (2.0 / (1.0 + UtilityFunctions.ExpBound(-CorrelationT)) - 1.0) : Correlation;
-            Power = EstimatePower ? UtilityFunctions.ExpBound(PowerT) : Power;
-        }
-
-        /// <summary>
-        /// Creates a  copy.
-        /// </summary>
-        /// <returns>A copy of LNNparameters.</returns>
-        public LNNParameters Clone() {
-            LNNParameters clone = (LNNParameters)this.MemberwiseClone();
-            clone.FreqEstimates = this.FreqEstimates;
-            clone.AmountEstimates = this.AmountEstimates;
-
-            //clone.FreqEstimates = new double[this.FreqEstimates.Length];
-            //for (int i = 0; i < this.FreqEstimates.Length; i++) {
-            //    clone.FreqEstimates[i] = this.FreqEstimates[i];
-            //}
-            //clone.AmountEstimates = new double[this.AmountEstimates.Length];
-            //for (int i = 0; i < this.AmountEstimates.Length; i++) {
-            //    clone.AmountEstimates[i] = this.AmountEstimates[i];
-            //}
-            return clone;
+            Parameters.Dispersion = UtilityFunctions.ExpBound(ParametersT.Dispersion);
+            Parameters.VarianceBetween = UtilityFunctions.ExpBound(ParametersT.VarianceBetween);
+            Parameters.VarianceWithin = UtilityFunctions.ExpBound(ParametersT.VarianceWithin);
+            Parameters.Correlation = 2.0 / (1.0 + UtilityFunctions.ExpBound(-ParametersT.Correlation)) - 1.0;
         }
     }
 }

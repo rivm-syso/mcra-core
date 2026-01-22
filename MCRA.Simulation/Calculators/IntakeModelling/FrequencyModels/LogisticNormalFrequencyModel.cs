@@ -111,7 +111,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                 DispersionEstimates = new ParameterEstimates() {
                     ParameterName = "dispersion",
                     Estimate = _modelResult.FrequencyModelDispersion,
-                    //StandardError = conversionresult.DispersionSe,
+                    StandardError = _modelResult.DispersionSe,
                 },
                 FrequencyModelEstimates = frequencyModelEstimates,
                 _2LogLikelihood = _modelResult._2LogLikelihood,
@@ -159,47 +159,42 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
         /// <param name="fdr"></param>
         /// <returns>Results from a model fit</returns>
         private ModelResult FitLogisticNormalModel(FrequencyDataResult fdr, bool isOneDay) {
-            var weight = fdr.Weights.ToList();
-            var x = fdr.X;
-            var n = weight.Count;
-            var np = x.GetLength(1);
+            var weights = fdr.Weights.ToList();
+            var responses = fdr.X;
+            var np = responses.GetLength(1);
 
             // Copy response and binomial totals to integer arrays.
-            var individual = new List<int>();
-            var ybin = fdr.Ybin.Select(c => Convert.ToInt32(c)).ToList();
-            var nbin = fdr.Nbin.Select(c => Convert.ToInt32(c)).ToList();
+            var ybin = fdr.Ybin.Select(Convert.ToInt32).ToList();
+            var nbin = fdr.Nbin.Select(Convert.ToInt32).ToList();
 
-            for (int i = 0; i < n; i++) {
-                individual.Add(i);
-            }
-
-            var lnm = new LogisticCalculator();
+            double? dispersionFix = null;
             if (isOneDay) {
-                if (FixedDispersion <= 0.0001) {
-                    throw new Exception("Phi should be larger than 0.0001<br>");
-                } else if (Double.IsNaN(FixedDispersion)) {
-                    throw new Exception("Phi is undefined, specify value larger than 0.0001<br>");
+                if (FixedDispersion < 0.0001) {
+                    throw new Exception("Phi should be larger than 0.0001");
+                } else if (double.IsNaN(FixedDispersion)) {
+                    throw new Exception("Phi is undefined, specify value larger than 0.0001");
                 }
-                lnm.DispersionFix = FixedDispersion;
+                dispersionFix = FixedDispersion;
             }
 
-            lnm.Fit(ybin, nbin, x, individual, weight);
-            var _2LogLikelihood = lnm._2LogLik;
-            var regressionCoefficients = lnm.Estimates;
-            var standardErrors = lnm.Se.ToList();
-            var dispersion = lnm.FrequencyModelDispersion;
-            var dispersionSe = lnm.DispersionSe;
-            var lp = lnm.LinearPredictor;
-            var degreesOfFreedom = weight.Sum() - regressionCoefficients.Count;
+            var calculator = new LogisticModelCalculator();
+            var result = calculator.Compute(
+                ybin,
+                nbin,
+                responses,
+                weights,
+                true,
+                dispersionFix
+            );
 
             return new ModelResult() {
-                DegreesOfFreedom = Convert.ToInt32(degreesOfFreedom),
+                DegreesOfFreedom = Convert.ToInt32(result.DegreesOfFreedom),
                 DfPolynomial = fdr.DfPolynomial,
-                _2LogLikelihood = _2LogLikelihood,
-                FrequencyModelDispersion = dispersion,
-                DispersionSe = dispersionSe,
-                Estimates = regressionCoefficients,
-                StandardErrors = standardErrors,
+                _2LogLikelihood = result.LogLikelihood * 2.0,
+                FrequencyModelDispersion = result.Dispersion,
+                DispersionSe = result.DispersionStandardError,
+                Estimates = result.Estimates,
+                StandardErrors = [.. result.StandardErrors],
             };
         }
 

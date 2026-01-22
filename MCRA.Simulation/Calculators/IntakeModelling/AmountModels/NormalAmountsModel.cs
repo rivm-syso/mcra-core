@@ -122,11 +122,21 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                     StandardError = _remlResult.Se[i],
                 });
             }
+            var varianceBetween = new ParameterEstimates() {
+                ParameterName = "Variance between",
+                Estimate = _remlResult.VarianceBetween,
+                StandardError = double.NaN,
+            }; 
+            var varianceWithin = new ParameterEstimates() {
+                ParameterName = "Variance within",
+                Estimate = _remlResult.VarianceWithin,
+                StandardError = double.NaN,
+            };
 
             return new NormalAmountsModelSummary() {
                 AmountModelEstimates = amountModelEstimates,
-                VarianceBetween = _remlResult.VarianceBetween,
-                VarianceWithin = _remlResult.VarianceWithin,
+                VarianceBetween = varianceBetween,
+                VarianceWithin = varianceWithin,
                 VarianceDistribution = _remlResult.VarianceDistribution,
                 _2LogLikelihood = _modelResult._2LogLikelihood,
                 DegreesOfFreedom = _modelResult.DegreesOfFreedom,
