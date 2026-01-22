@@ -70,7 +70,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.Generic.ExternalExposu
                 97.5,
                 [50, 75, 90, 95],
                 isPerPerson: false,
-                unit
+                exposureUnit: unit
             );
             AssertIsValidView(section);
 
@@ -79,15 +79,15 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.Generic.ExternalExposu
                 exposuresForOne,
                 routes,
                 substancesOne,
-                rpf: null,
-                membership: null,
-                  25,
-                75,
-                2.5,
-                97.5,
-                [50, 75, 90, 95],
+                rpfs: null,
+                memberships: null,
+                  lowerPercentage: 25,
+                upperPercentage: 75,
+                uncertaintyLowerBound: 2.5,
+                uncertaintyUpperBound: 97.5,
+                percentages: [50, 75, 90, 95],
                 isPerPerson: false,
-                unit
+                exposureUnit: unit
             );
             AssertIsValidView(section);
 
@@ -96,15 +96,15 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.Generic.ExternalExposu
                 emptyExposures,
                 routes,
                 substancesThree,
-                rpf: null,
-                membership: null,
-                 25,
-                75,
-                2.5,
-                97.5,
-                [50, 75, 90, 95],
+                rpfs: null,
+                memberships: null,
+                 lowerPercentage: 25,
+                upperPercentage: 75,
+                uncertaintyLowerBound: 2.5,
+                uncertaintyUpperBound: 97.5,
+                percentages: [50, 75, 90, 95],
                 isPerPerson: false,
-                unit
+                exposureUnit: unit
             );
             AssertIsValidView(section);
 
@@ -122,7 +122,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.Generic.ExternalExposu
                 97.5,
                 [50, 75, 90, 95],
                 isPerPerson: false,
-                unit
+                exposureUnit: unit
             );
             AssertIsValidView(section);
         }

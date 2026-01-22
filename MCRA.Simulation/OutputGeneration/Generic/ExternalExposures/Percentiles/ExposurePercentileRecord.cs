@@ -1,11 +1,12 @@
-﻿using MCRA.Utils.Statistics;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
     public class ExposurePercentileRecord {
         [Display(AutoGenerateField = false)]
         public double XValue { get; set; }
+
         [Display(AutoGenerateField = false)]
         public double UncertaintyLowerLimit { get; set; } = 2.5;
 
@@ -47,10 +48,10 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Uncertainty lower bound (LowerBound)")]
         [DisplayFormat(DataFormatString = "{0:G4}")]
         public double LowerBound {
-                get {
-                    return Values.Percentile(UncertaintyLowerLimit);
-                }
+            get {
+                return Values.Percentile(UncertaintyLowerLimit);
             }
+        }
 
         [Description("Upper bound (UpperBound) of the uncertainty distribution of the exposure at the specified percentage.")]
         [DisplayName("Uncertainty upper bound (UpperBound)")]

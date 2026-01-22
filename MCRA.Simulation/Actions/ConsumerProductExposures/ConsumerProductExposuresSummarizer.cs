@@ -31,7 +31,7 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
             var section = new ConsumerProductExposuresSection() {
                 SectionLabel = ActionType.ToString()
             };
-            section.Summarize(actionResult.ConsumerProductIndividualIntakes, data.ActiveSubstances);
+            section.Summarize(actionResult.ConsumerProductIndividualExposures, data.ActiveSubstances);
             var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
             subHeader.Units = collectUnits(data);
             subHeader.SaveSummarySection(section);
@@ -47,7 +47,7 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
             }
 
             // Exposures by route: contributions, summary and boxplot
-            if (data.ActiveSubstances.Count >  0
+            if (data.ActiveSubstances.Count > 0
                 && outputSettings.ShouldSummarize(ConsumerProductExposuresSections.ConsumerProductExposuresByRouteSection)
             ) {
                 summarizeConsumerProductExposuresByRoute(
@@ -70,11 +70,47 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
         }
 
         public void SummarizeUncertain(
-            ConsumerProductExposuresActionResult actionResult,
-            ActionData data,
-            SectionHeader header
-        ) {
-            // TODO
+                ConsumerProductExposuresActionResult actionResult,
+                ActionData data,
+                SectionHeader header
+            ) {
+            if (actionResult.ConsumerProductIndividualExposures != null) {
+                {
+                    var subHeader = header.GetSubSectionHeader<ExposurePercentilesByRouteSection>();
+                    if (subHeader != null) {
+                        var section = subHeader.GetSummarySection() as ExposurePercentilesByRouteSection;
+                        section.SummarizeByRouteUncertainty(
+                            actionResult.ConsumerProductIndividualExposures,
+                            _configuration.SelectedExposureRoutes,
+                            data.ActiveSubstances,
+                            data.CorrectedRelativePotencyFactors,
+                            data.MembershipProbabilities,
+                            _configuration.SelectedPercentiles,
+                            _configuration.IsPerPerson,
+                            data.ConsumerProductExposureUnit
+                        );
+                        subHeader.SaveSummarySection(section);
+                    }
+                }
+
+                {
+                    var subHeader = header.GetSubSectionHeader<ExposurePercentilesByRouteSubstanceSection>();
+                    if (subHeader != null) {
+                        var section = subHeader.GetSummarySection() as ExposurePercentilesByRouteSubstanceSection;
+                        section.SummarizeByRouteSubstanceUncertainty(
+                            actionResult.ConsumerProductIndividualExposures,
+                            _configuration.SelectedExposureRoutes,
+                            data.ActiveSubstances,
+                            data.CorrectedRelativePotencyFactors,
+                            data.MembershipProbabilities,
+                            _configuration.SelectedPercentiles,
+                            _configuration.IsPerPerson,
+                            data.ConsumerProductExposureUnit
+                        );
+                        subHeader.SaveSummarySection(section);
+                    }
+                }
+            }
         }
 
         private List<ActionSummaryUnitRecord> collectUnits(ActionData data) {
@@ -106,17 +142,27 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
                 order
             );
             section.Summarize(
-                result.ConsumerProductIndividualIntakes,
+                result.ConsumerProductIndividualExposures,
                 _configuration.SelectedExposureRoutes,
                 data.ActiveSubstances,
                 data.CorrectedRelativePotencyFactors,
                 data.MembershipProbabilities,
                 _configuration.VariabilityLowerPercentage,
                 _configuration.VariabilityUpperPercentage,
+                _configuration.UncertaintyLowerBound,
+                _configuration.UncertaintyUpperBound,
+                _configuration.SelectedPercentiles,
                 _configuration.IsPerPerson,
                 data.ConsumerProductExposureUnit
             );
             subHeader.SaveSummarySection(section);
+
+            summarizeConsumerProductExposurePercentileByRouteSubstance(
+                result,
+                data,
+                subHeader,
+                order
+            );
         }
 
         /// <summary>
@@ -136,18 +182,27 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
                 "Exposures by route",
                 order
             );
-            section.SummarizeChronic(
-                data.ConsumerProductIndividualExposures,
+            section.Summarize(
+                result.ConsumerProductIndividualExposures,
                 _configuration.SelectedExposureRoutes,
                 data.ActiveSubstances,
                 data.CorrectedRelativePotencyFactors,
                 data.MembershipProbabilities,
                 _configuration.VariabilityLowerPercentage,
                 _configuration.VariabilityUpperPercentage,
+                _configuration.UncertaintyLowerBound,
+                _configuration.UncertaintyUpperBound,
+                _configuration.SelectedPercentiles,
                 _configuration.IsPerPerson,
-                data.ConsumerProductExposureUnit
-            );
+                data.ConsumerProductExposureUnit);
             subHeader.SaveSummarySection(section);
+
+            summarizeConsumerProductExposurePercentileByRoute(
+                result,
+                data,
+                subHeader,
+                order
+            );
         }
 
         private void summarizeConsumerProducts(
@@ -155,7 +210,7 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
             ActionData data,
             SectionHeader header,
             int order
-        )  {
+        ) {
             var section = new ConsumerProductExposuresTotalDistributionSection() {
                 SectionLabel = getSectionLabel(ConsumerProductExposuresSections.ConsumerProductsSection)
             };
@@ -166,7 +221,7 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
             );
             section.Summarize(
                 data.AllConsumerProducts,
-                data.ConsumerProductIndividualExposures,
+                actionResult.ConsumerProductIndividualExposures,
                 data.CorrectedRelativePotencyFactors,
                 data.MembershipProbabilities,
                 data.ActiveSubstances,
@@ -179,6 +234,56 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
                 _configuration.IsPerPerson
             );
             subHeader.SaveSummarySection(section);
+        }
+
+        private void summarizeConsumerProductExposurePercentileByRoute(
+            ConsumerProductExposuresActionResult result,
+            ActionData data,
+            SectionHeader header,
+            int order
+        ) {
+            // Generates and summarizes exposure percentiles for the specified individuals, routes, and substances,
+            // incorporating uncertainty bounds, relative potency factors, and membership probabilities.
+            var section = new ExposurePercentilesByRouteSection();
+            var subHeader = header?.AddSubSectionHeaderFor(section, "Percentiles", 0);
+            section.SummarizeByRoute(
+                result.ConsumerProductIndividualExposures,
+                _configuration.SelectedExposureRoutes,
+                data.ActiveSubstances,
+                data.CorrectedRelativePotencyFactors,
+                data.MembershipProbabilities,
+                _configuration.SelectedPercentiles,
+                _configuration.UncertaintyLowerBound,
+                _configuration.UncertaintyUpperBound,
+                _configuration.IsPerPerson,
+                data.DustExposureUnit
+            );
+            subHeader?.SaveSummarySection(section);
+        }
+
+        private void summarizeConsumerProductExposurePercentileByRouteSubstance(
+            ConsumerProductExposuresActionResult result,
+            ActionData data,
+            SectionHeader header,
+            int order
+            ) {
+            // Generates and summarizes exposure percentiles for the specified individuals, routes, and substances,
+            // incorporating uncertainty bounds, relative potency factors, and membership probabilities.
+            var section = new ExposurePercentilesByRouteSubstanceSection();
+            var subHeader = header?.AddSubSectionHeaderFor(section, "Percentiles", order);
+            section.SummarizeByRouteSubstance(
+                result.ConsumerProductIndividualExposures,
+                _configuration.SelectedExposureRoutes,
+                data.ActiveSubstances,
+                data.CorrectedRelativePotencyFactors,
+                data.MembershipProbabilities,
+                _configuration.SelectedPercentiles,
+                _configuration.UncertaintyLowerBound,
+                _configuration.UncertaintyUpperBound,
+                _configuration.IsPerPerson,
+                data.DustExposureUnit
+            );
+            subHeader?.SaveSummarySection(section);
         }
     }
 }

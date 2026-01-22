@@ -98,14 +98,14 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
                 : ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
 
             result.ConsumerProductExposureUnit = targetUnit;
-            result.ConsumerProductIndividualIntakes = consumerProductIndividualDayIntakes;
+            result.ConsumerProductIndividualExposures = consumerProductIndividualDayIntakes;
             localProgress.Update(100);
             return result;
         }
 
         protected override void updateSimulationData(ActionData data, ConsumerProductExposuresActionResult result) {
             data.ConsumerProductExposureUnit = result.ConsumerProductExposureUnit;
-            data.ConsumerProductIndividualExposures = result.ConsumerProductIndividualIntakes;
+            data.ConsumerProductIndividualExposures = result.ConsumerProductIndividualExposures;
         }
 
         protected override void summarizeActionResult(ConsumerProductExposuresActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {

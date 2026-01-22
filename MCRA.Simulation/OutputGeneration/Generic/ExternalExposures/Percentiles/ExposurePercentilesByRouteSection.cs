@@ -6,7 +6,6 @@ using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class ExposurePercentilesByRouteSection : SummarySection {
-
         public override bool SaveTemporaryData => true;
         public List<ExposurePercentileRecord> Records { get; set; }
 
@@ -14,14 +13,16 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<T> externalIndividualExposures,
             ICollection<ExposureRoute> routes,
             ICollection<Compound> substances,
-            IDictionary<Compound, double> rpf,
-            IDictionary<Compound, double> membership,
+            IDictionary<Compound, double> rpfs,
+            IDictionary<Compound, double> memberships,
             List<double> percentages,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
             bool isPerPerson,
             ExposureUnitTriple exposureUnit
         ) where T : IExternalIndividualExposure {
+            rpfs = rpfs ?? substances.ToDictionary(r => r, r => 1D);
+            memberships = memberships ?? substances.ToDictionary(r => r, r => 1D);
             var records = new List<ExposurePercentileRecord>();
             var cancelToken = ProgressState?.CancellationToken ?? new();
             foreach (var route in routes) {
@@ -30,8 +31,8 @@ namespace MCRA.Simulation.OutputGeneration {
                     route,
                     externalIndividualExposures,
                     substances,
-                    rpf,
-                    membership,
+                    rpfs,
+                    memberships,
                     uncertaintyLowerBound,
                     uncertaintyUpperBound,
                     percentages,
@@ -46,25 +47,23 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<T> externalIndividualExposures,
             ICollection<ExposureRoute> routes,
             ICollection<Compound> substances,
-            IDictionary<Compound, double> rpf,
-            IDictionary<Compound, double> membership,
-            double uncertaintyLowerBound,
-            double uncertaintyUpperBound,
+            IDictionary<Compound, double> rpfs,
+            IDictionary<Compound, double> memberships,
             List<double> percentages,
             bool isPerPerson,
             ExposureUnitTriple exposureUnit
         ) where T : IExternalIndividualExposure {
             var cancelToken = ProgressState?.CancellationToken ?? new();
-            rpf = rpf ?? substances.ToDictionary(r => r, r => 1D);
-            membership = membership ?? substances.ToDictionary(r => r, r => 1D);
+            rpfs = rpfs ?? substances.ToDictionary(r => r, r => 1D);
+            memberships = memberships ?? substances.ToDictionary(r => r, r => 1D);
             foreach (var route in routes) {
                 cancelToken.ThrowIfCancellationRequested();
                 var percentiles = getPercentiles(
                     route,
                     externalIndividualExposures,
                     substances,
-                    rpf,
-                    membership,
+                    rpfs,
+                    memberships,
                     percentages,
                     isPerPerson
                 );
@@ -83,8 +82,8 @@ namespace MCRA.Simulation.OutputGeneration {
             ExposureRoute route,
             ICollection<T> externalIndividualExposures,
             ICollection<Compound> substances,
-            IDictionary<Compound, double> rpf,
-            IDictionary<Compound, double> membership,
+            IDictionary<Compound, double> rpfs,
+            IDictionary<Compound, double> memberships,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
             List<double> percentages,
@@ -94,8 +93,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 route,
                 externalIndividualExposures,
                 substances,
-                rpf,
-                membership,
+                rpfs,
+                memberships,
                 percentages,
                 isPerPerson
             );
@@ -118,15 +117,15 @@ namespace MCRA.Simulation.OutputGeneration {
             ExposureRoute route,
             ICollection<T> externalIndividualExposures,
             ICollection<Compound> substances,
-            IDictionary<Compound, double> rpf,
-            IDictionary<Compound, double> membership,
+            IDictionary<Compound, double> rpfs,
+            IDictionary<Compound, double> memberships,
             List<double> percentages,
             bool isPerPerson
         ) where T : IExternalIndividualExposure {
             var exposures = substances
                 .SelectMany(substance => {
                     return externalIndividualExposures.Select(e => new {
-                        Exposure = e.GetExposure(route, substance, isPerPerson) * rpf[substance] * membership[substance],
+                        Exposure = e.GetExposure(route, substance, isPerPerson) * rpfs[substance] * memberships[substance],
                         e.SimulatedIndividual,
                     });
                 })

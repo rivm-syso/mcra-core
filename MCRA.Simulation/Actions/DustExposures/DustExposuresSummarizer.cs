@@ -73,8 +73,6 @@ namespace MCRA.Simulation.Actions.DustExposures {
                             data.ActiveSubstances,
                             data.CorrectedRelativePotencyFactors,
                             data.MembershipProbabilities,
-                            _configuration.UncertaintyLowerBound,
-                            _configuration.UncertaintyUpperBound,
                             _configuration.SelectedPercentiles,
                             _configuration.IsPerPerson,
                             data.DustExposureUnit
@@ -93,8 +91,6 @@ namespace MCRA.Simulation.Actions.DustExposures {
                             data.ActiveSubstances,
                             data.CorrectedRelativePotencyFactors,
                             data.MembershipProbabilities,
-                            _configuration.UncertaintyLowerBound,
-                            _configuration.UncertaintyUpperBound,
                             _configuration.SelectedPercentiles,
                             _configuration.IsPerPerson,
                             data.DustExposureUnit
@@ -145,10 +141,16 @@ namespace MCRA.Simulation.Actions.DustExposures {
                 _configuration.UncertaintyUpperBound,
                 _configuration.SelectedPercentiles,
                 _configuration.IsPerPerson,
-                data.DustExposureUnit,
-                subHeader
+                data.DustExposureUnit
             );
             subHeader.SaveSummarySection(section);
+
+            summarizeDustExposurePercentileByRouteSubstance(
+                actionResult,
+                data,
+                subHeader,
+                order
+            );
         }
 
         /// <summary>
@@ -180,10 +182,65 @@ namespace MCRA.Simulation.Actions.DustExposures {
                 _configuration.UncertaintyUpperBound,
                 _configuration.SelectedPercentiles,
                 _configuration.IsPerPerson,
-                data.DustExposureUnit,
-                subHeader
-            );
+                data.DustExposureUnit);
             subHeader.SaveSummarySection(section);
+
+            summarizeDustExposurePercentileByRoute(
+                result,
+                data,
+                subHeader,
+                order
+            );
+        }
+
+        private void summarizeDustExposurePercentileByRoute(
+            DustExposuresActionResult result,
+            ActionData data,
+            SectionHeader header,
+            int order
+        ) {
+            // Generates and summarizes exposure percentiles for the specified individuals, routes, and substances,
+            // incorporating uncertainty bounds, relative potency factors, and membership probabilities.
+            var section = new ExposurePercentilesByRouteSection();
+            var subHeader = header?.AddSubSectionHeaderFor(section, "Percentiles", 0);
+            section.SummarizeByRoute(
+                result.IndividualDustExposures,
+                _configuration.SelectedExposureRoutes,
+                data.ActiveSubstances,
+                data.CorrectedRelativePotencyFactors,
+                data.MembershipProbabilities,
+                _configuration.SelectedPercentiles,
+                _configuration.UncertaintyLowerBound,
+                _configuration.UncertaintyUpperBound,
+                _configuration.IsPerPerson,
+                data.DustExposureUnit
+            );
+            subHeader?.SaveSummarySection(section);
+        }
+
+        private void summarizeDustExposurePercentileByRouteSubstance(
+            DustExposuresActionResult result,
+            ActionData data,
+            SectionHeader header,
+            int order
+            ) {
+            // Generates and summarizes exposure percentiles for the specified individuals, routes, and substances,
+            // incorporating uncertainty bounds, relative potency factors, and membership probabilities.
+            var section = new ExposurePercentilesByRouteSubstanceSection();
+            var subHeader = header?.AddSubSectionHeaderFor(section, "Percentiles", order);
+            section.SummarizeByRouteSubstance(
+                result.IndividualDustExposures,
+                _configuration.SelectedExposureRoutes,
+                data.ActiveSubstances,
+                data.CorrectedRelativePotencyFactors,
+                data.MembershipProbabilities,
+                _configuration.SelectedPercentiles,
+                _configuration.UncertaintyLowerBound,
+                _configuration.UncertaintyUpperBound,
+                _configuration.IsPerPerson,
+                data.DustExposureUnit
+            );
+            subHeader?.SaveSummarySection(section);
         }
     }
 }

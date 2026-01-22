@@ -17,19 +17,18 @@ namespace MCRA.Simulation.OutputGeneration.Generic.ExternalExposures.ExposuresBy
             ICollection<T> externalIndividualExposures,
             ICollection<ExposureRoute> routes,
             ICollection<Compound> substances,
-            IDictionary<Compound, double> rpf,
-            IDictionary<Compound, double> membership,
+            IDictionary<Compound, double> rpfs,
+            IDictionary<Compound, double> memberships,
             double lowerPercentage,
             double upperPercentage,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
             List<double> percentages,
             bool isPerPerson,
-            ExposureUnitTriple exposureUnit,
-            SectionHeader header = null
+            ExposureUnitTriple exposureUnit
         ) where T : IExternalIndividualExposure {
-            rpf = rpf ?? substances.ToDictionary(r => r, r => 1D);
-            membership = membership ?? substances.ToDictionary(r => r, r => 1D);
+            rpfs = rpfs ?? substances.ToDictionary(r => r, r => 1D);
+            memberships = memberships ?? substances.ToDictionary(r => r, r => 1D);
             ExposureUnit = exposureUnit;
 
             var cancelToken = ProgressState?.CancellationToken ?? new();
@@ -41,8 +40,8 @@ namespace MCRA.Simulation.OutputGeneration.Generic.ExternalExposures.ExposuresBy
                         route,
                         externalIndividualExposures,
                         substance,
-                        rpf,
-                        membership,
+                        rpfs,
+                        memberships,
                         isPerPerson,
                         exposureUnit
                     );
@@ -57,7 +56,7 @@ namespace MCRA.Simulation.OutputGeneration.Generic.ExternalExposures.ExposuresBy
             TableRecords = [.. TableRecords
                 .OrderBy(r => r.ExposureRoute)
                 .ThenBy(r => r.SubstanceName)];
-            BoxPlotRecords = 
+            BoxPlotRecords =
                 new SerializableDictionary<ExposureRoute, List<ExternalExposuresByRouteSubstancePercentilesRecord>>(
                     BoxPlotRecords.Keys
                         .OrderBy(r => r.GetShortDisplayName())
@@ -67,37 +66,19 @@ namespace MCRA.Simulation.OutputGeneration.Generic.ExternalExposures.ExposuresBy
                                 .OrderBy(r => r.SubstanceName)
                                 .ToList()
                 ));
-
-            // Generates and summarizes exposure percentiles for the specified individuals, routes, and substances,
-            // incorporating uncertainty bounds, relative potency factors, and membership probabilities.
-            var section = new ExposurePercentilesByRouteSubstanceSection() { ProgressState = ProgressState };
-            var subHeader = header.AddSubSectionHeaderFor(section, "Percentiles", 0);
-            section.SummarizeByRouteSubstance(
-                externalIndividualExposures,
-                routes,
-                substances,
-                rpf,
-                membership,
-                percentages,
-                uncertaintyLowerBound,
-                uncertaintyUpperBound,
-                isPerPerson,
-                exposureUnit
-            );
-            subHeader.SaveSummarySection(section);
         }
 
         private static (ExternalExposuresByRouteSubstanceRecord tableRecord, ExternalExposuresByRouteSubstancePercentilesRecord boxplotRecord) getRecords<T>(
             ExposureRoute route,
             ICollection<T> externalIndividualExposures,
             Compound substance,
-            IDictionary<Compound, double> relativePotencyFactors,
-            IDictionary<Compound, double> membershipProbabilities,
+            IDictionary<Compound, double> rpfs,
+            IDictionary<Compound, double> memberships,
             bool isPerPerson,
             ExposureUnitTriple exposureUnit
         ) where T : IExternalIndividualExposure {
-            var rpf = relativePotencyFactors[substance];
-            var membership = membershipProbabilities[substance];
+            var rpf = rpfs[substance];
+            var membership = memberships[substance];
             var allExposures = externalIndividualExposures
                 .Select(
                     r => (
