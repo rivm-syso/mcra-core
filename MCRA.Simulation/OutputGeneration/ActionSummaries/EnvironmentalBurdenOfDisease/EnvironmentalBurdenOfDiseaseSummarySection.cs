@@ -44,7 +44,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var totalAttributableBod = ebdResultRecord.EnvironmentalBurdenOfDiseaseResultBinRecords
                 .Sum(bin => bin.AttributableBod);
             var totalPopulationAttributableFraction = ebdResultRecord.EnvironmentalBurdenOfDiseaseResultBinRecords
-                .Sum(bin => bin.AttributableBod * bin.ExposurePercentileBin.Percentage) / 100;
+                .Sum(bin => bin.AttributableFraction * bin.ExposurePercentileBin.Percentage) / 100;
             var population = ebdResultRecord.Population;
             return new EnvironmentalBurdenOfDiseaseSummaryRecord {
                 PopulationSize = population?.Size > 0 ? population.Size : double.NaN,

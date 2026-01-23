@@ -83,7 +83,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         [Description("Total population attributable fraction (%) (PAF).")]
         [DisplayName("Total population attributable fraction (%)")]
-        [DisplayFormat(DataFormatString = "{0:G3}")]
+        [DisplayFormat(DataFormatString = "{0:P1}")]
         public double TotalPopulationAttributableFraction { get; set; }
 
         [Display(AutoGenerateField = false)]
@@ -91,17 +91,17 @@ namespace MCRA.Simulation.OutputGeneration {
 
         [Description("Median total population attributable fraction (%) (PAF).")]
         [DisplayName("Total population attributable fraction (%) median")]
-        [DisplayFormat(DataFormatString = "{0:G3}")]
+        [DisplayFormat(DataFormatString = "{0:P1}")]
         public double MedianTotalPopulationAttributableFraction { get { return TotalPopulationAttributableFractions.Percentile(50); } }
 
         [Description("Lower uncertainty bound total population attributable fraction (%) (PAF).")]
         [DisplayName("Population attributable fraction (%) lower bound (LowerBound)")]
-        [DisplayFormat(DataFormatString = "{0:G3}")]
+        [DisplayFormat(DataFormatString = "{0:P1}")]
         public double LowerTotalPopulationAttributableFraction { get { return TotalPopulationAttributableFractions.Percentile(UncertaintyLowerBound); } }
 
         [Description("Upper uncertainty bound total population attributable fraction (%) (PAF).")]
         [DisplayName("Population attributable fraction (%) upper bound (UpperBound)")]
-        [DisplayFormat(DataFormatString = "{0:G3}")]
+        [DisplayFormat(DataFormatString = "{0:P1}")]
         public double UpperTotalPopulationAttributableFraction { get { return TotalPopulationAttributableFractions.Percentile(UncertaintyUpperBound); } }
 
         [Description("Standardised total attributable burden of disease {EbdStandardisedPopulationSize}.")]
