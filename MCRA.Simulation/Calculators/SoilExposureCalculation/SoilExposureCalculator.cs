@@ -14,7 +14,7 @@ namespace MCRA.Simulation.Calculators.SoilExposureCalculation {
         /// <summary>
         /// Computes soil exposures for the provided collection of individuals.
         /// </summary>
-        public static List<SoilIndividualDayExposure> ComputeSoilExposure(
+        public static List<SoilIndividualExposure> ComputeSoilExposure(
             ICollection<IIndividualDay> individualDays,
             ICollection<Compound> substances,
             ICollection<SoilConcentrationDistribution> soilConcentrationDistributions,
@@ -50,7 +50,7 @@ namespace MCRA.Simulation.Calculators.SoilExposureCalculation {
                 .GroupBy(r => r.Substance)
                 .ToDictionary(r => r.Key, r => r.Select(c => c.Concentration * concentrationAlignmentFactor));
 
-            var result = new List<SoilIndividualDayExposure>();
+            var result = new List<SoilIndividualExposure>();
             foreach (var individualDay in individualDays) {
                 var age = individualDay.SimulatedIndividual.Age;
                 var sex = individualDay.SimulatedIndividual.Gender;
@@ -72,11 +72,8 @@ namespace MCRA.Simulation.Calculators.SoilExposureCalculation {
                 );
                 exposuresPerPath[new(ExposureSource.Soil, ExposureRoute.Oral)] = soilExposurePerSubstance;
 
-                var soilIndividualDayExposure = new SoilIndividualDayExposure(exposuresPerPath) {
-                    SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId,
-                    SimulatedIndividual = individualDay.SimulatedIndividual
-                };
-                result.Add(soilIndividualDayExposure);
+                var soilIndividualExposure = new SoilIndividualExposure(individualDay.SimulatedIndividual, exposuresPerPath);
+                result.Add(soilIndividualExposure);
             }
             return result;
         }

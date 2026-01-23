@@ -327,7 +327,9 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     break;
                 case ReferenceIndividualSet.Soil:
                     externalExposureUnit = data.SoilExposureUnit;
-                    referenceIndividualDays = [.. data.IndividualSoilExposures.Cast<IIndividualDay>()];
+                    referenceIndividualDays = [.. data.IndividualSoilExposures
+                        .Select(r => new SimulatedIndividualDay(r.SimulatedIndividual))
+                        .Cast<IIndividualDay>()];
                     break;
                 case ReferenceIndividualSet.Dust:
                     externalExposureUnit = data.DustExposureUnit;

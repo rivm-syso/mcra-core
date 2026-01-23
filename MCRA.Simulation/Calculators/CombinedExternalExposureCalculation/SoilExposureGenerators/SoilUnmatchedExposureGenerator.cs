@@ -13,12 +13,12 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.SoilEx
         /// </summary>
         protected override List<IExternalIndividualDayExposure> generate(
             ICollection<IIndividualDay> individualDays,
-            ICollection<SoilIndividualDayExposure> soilIndividualDayExposures,
+            ICollection<SoilIndividualExposure> soilIndividualExposures,
             ICollection<Compound> substances,
             IRandom generator
         ) {
-            var ix = generator.Next(0, soilIndividualDayExposures.Count);
-            var selected = soilIndividualDayExposures.ElementAt(ix);
+            var ix = generator.Next(0, soilIndividualExposures.Count);
+            var selected = soilIndividualExposures.ElementAt(ix);
             var results = new List<IExternalIndividualDayExposure>();
             foreach (var individualDay in individualDays) {
                 var result = createExternalIndividualDayExposure(individualDay, selected);

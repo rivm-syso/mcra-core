@@ -42,7 +42,7 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.SoilEx
 
         protected override List<IExternalIndividualDayExposure> generate(
             ICollection<IIndividualDay> individualDays,
-            ICollection<SoilIndividualDayExposure> individualDayExposures,
+            ICollection<SoilIndividualExposure> individualDayExposures,
             ICollection<Compound> substances,
             IRandom generator
         ) {
@@ -88,8 +88,8 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.SoilEx
         /// <summary>
         /// Check for sex level and select the right individual day exposures, if not found return null.
         /// </summary>
-        private static ICollection<SoilIndividualDayExposure> getExposuresForSexLevel(
-            ICollection<SoilIndividualDayExposure> individualDayExposures,
+        private static ICollection<SoilIndividualExposure> getExposuresForSexLevel(
+            ICollection<SoilIndividualExposure> individualDayExposures,
             SimulatedIndividual simulatedIndividual
         ) {
             individualDayExposures = [.. individualDayExposures.Where(c => c.SimulatedIndividual.Gender == simulatedIndividual.Gender)];
@@ -99,8 +99,8 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.SoilEx
         /// <summary>
         ///  Check for age range and select the right individual day exposures.
         /// </summary>
-        private static ICollection<SoilIndividualDayExposure> getExposuresForAgeRange(
-            ICollection<SoilIndividualDayExposure> individualDayExposures,
+        private static ICollection<SoilIndividualExposure> getExposuresForAgeRange(
+            ICollection<SoilIndividualExposure> individualDayExposures,
             SimulatedIndividual simulatedIndividual,
             List<(double left, double right)> intervals
         ) {

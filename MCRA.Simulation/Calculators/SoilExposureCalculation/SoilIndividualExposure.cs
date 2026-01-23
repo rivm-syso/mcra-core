@@ -3,9 +3,10 @@ using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Objects;
 
 namespace MCRA.Simulation.Calculators.SoilExposureCalculation {
-    public sealed class SoilIndividualDayExposure(
+    public sealed class SoilIndividualExposure(
+        SimulatedIndividual individual,
         Dictionary<ExposurePath, List<IIntakePerCompound>> exposuresPerPathSubstance
-    ) : ExternalIndividualDayExposure(exposuresPerPathSubstance) {
+    ) : ExternalIndividualExposure(individual, exposuresPerPathSubstance) {
     }
 }
 

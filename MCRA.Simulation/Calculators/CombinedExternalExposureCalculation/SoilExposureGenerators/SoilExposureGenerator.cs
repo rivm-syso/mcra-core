@@ -16,45 +16,44 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.SoilEx
         public ExternalExposureCollection Generate(
             ICollection<IIndividualDay> individualDays,
             ICollection<Compound> substances,
-            ICollection<SoilIndividualDayExposure> soilIndividualDayExposures,
+            ICollection<SoilIndividualExposure> soilIndividualExposures,
             SubstanceAmountUnit substanceAmountUnit,
             int seed
         ) {
-            var soilIndividualExposures = individualDays
+            var soilExposures = individualDays
                 .AsParallel()
                 .GroupBy(r => r.SimulatedIndividual.Id)
                 .SelectMany(individualExposures => generate(
                     [.. individualExposures],
-                    soilIndividualDayExposures,
+                    soilIndividualExposures,
                     substances,
                     new McraRandomGenerator(RandomUtils.CreateSeed(seed, individualExposures.Key))
                 ))
                 .ToList();
 
-            // Check if success
-            if (soilIndividualExposures.Count == 0) {
+            if (soilExposures.Count == 0) {
                 throw new Exception("Failed to match any soil exposure.");
             }
             var soilExposureCollection = new ExternalExposureCollection {
                 SubstanceAmountUnit = substanceAmountUnit,
                 ExposureSource = ExposureSource.Soil,
-                ExternalIndividualDayExposures = soilIndividualExposures
+                ExternalIndividualDayExposures = soilExposures
             };
             return soilExposureCollection;
         }
 
         protected abstract List<IExternalIndividualDayExposure> generate(
             ICollection<IIndividualDay> individualDays,
-            ICollection<SoilIndividualDayExposure> soilIndividualDayExposures,
+            ICollection<SoilIndividualExposure> soilIndividualExposures,
             ICollection<Compound> substances,
             IRandom randomIndividual
         );
 
         protected ExternalIndividualDayExposure createExternalIndividualDayExposure(
             IIndividualDay individualDay,
-            SoilIndividualDayExposure soilIndividualDayExposure
+            SoilIndividualExposure soilIndividualExposure
         ) {
-            return new ExternalIndividualDayExposure(soilIndividualDayExposure.ExposuresPerPath) {
+            return new ExternalIndividualDayExposure(soilIndividualExposure.ExposuresPerPath) {
                 SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId,
                 SimulatedIndividual = individualDay.SimulatedIndividual,
                 Day = individualDay.Day,

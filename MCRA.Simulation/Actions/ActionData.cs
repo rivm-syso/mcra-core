@@ -920,7 +920,7 @@ namespace MCRA.Simulation {
         }
 
         // SoilExposures
-        public ICollection<SoilIndividualDayExposure> IndividualSoilExposures {
+        public ICollection<SoilIndividualExposure> IndividualSoilExposures {
             get => GetOrCreateModuleOutputData<SoilExposuresOutputData>(ActionType.SoilExposures).IndividualSoilExposures;
             set => GetOrCreateModuleOutputData<SoilExposuresOutputData>(ActionType.SoilExposures).IndividualSoilExposures = value;
         }
