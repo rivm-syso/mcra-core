@@ -32,6 +32,7 @@
     <CalculationSetting>SelectedExposureRoutes</CalculationSetting>
   </CalculationSettings>
   <OutputSettings>
+    <OutputSetting source="Action">SelectedPercentiles</OutputSetting>
     <OutputSetting source="Action">VariabilityLowerPercentage</OutputSetting>
     <OutputSetting source="Action">VariabilityUpperPercentage</OutputSetting>
     <OutputSetting source="DietaryExposures">IsPerPerson</OutputSetting>

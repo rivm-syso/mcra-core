@@ -16,42 +16,42 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.AirExp
         public ExternalExposureCollection Generate(
             ICollection<IIndividualDay> individualDays,
             ICollection<Compound> substances,
-            ICollection<AirIndividualDayExposure> airIndividualDayExposures,
+            ICollection<AirIndividualExposure> airIndividualExposures,
             SubstanceAmountUnit substanceAmountUnit,
             int seed
         ) {
-            var airIndividualExposures = individualDays
+            var airExposures = individualDays
                 .AsParallel()
                 .GroupBy(r => r.SimulatedIndividual.Id)
                 .SelectMany(individualExposures => generate(
                     [.. individualExposures],
-                    airIndividualDayExposures,
+                    airIndividualExposures,
                     substances,
                     new McraRandomGenerator(RandomUtils.CreateSeed(seed, individualExposures.Key))))
                 .ToList();
 
             // Check if success
-            if (airIndividualExposures.Count == 0) {
+            if (airExposures.Count == 0) {
                 throw new Exception("Failed to match any air exposure.");
             }
             var airExposureCollection = new ExternalExposureCollection {
                 SubstanceAmountUnit = substanceAmountUnit,
                 ExposureSource = ExposureSource.Air,
-                ExternalIndividualDayExposures = airIndividualExposures
+                ExternalIndividualDayExposures = airExposures
             };
             return airExposureCollection;
         }
 
         protected abstract List<IExternalIndividualDayExposure> generate(
             ICollection<IIndividualDay> individualDays,
-            ICollection<AirIndividualDayExposure> airIndividualDayExposures,
+            ICollection<AirIndividualExposure> airIndividualExposures,
             ICollection<Compound> substances,
             IRandom randomIndividual
         );
 
         protected static ExternalIndividualDayExposure createExternalIndividualDayExposure(
             IIndividualDay individualDay,
-            AirIndividualDayExposure individualDayExposure
+            AirIndividualExposure individualDayExposure
         ) {
             return new ExternalIndividualDayExposure(individualDayExposure.ExposuresPerPath) {
                 SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId,

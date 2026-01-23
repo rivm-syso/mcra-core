@@ -321,7 +321,9 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     break;
                 case ReferenceIndividualSet.Air:
                     externalExposureUnit = data.AirExposureUnit;
-                    referenceIndividualDays = [.. data.IndividualAirExposures.Cast<IIndividualDay>()];
+                    referenceIndividualDays = [.. data.IndividualAirExposures
+                        .Select(r => new SimulatedIndividualDay(r.SimulatedIndividual))
+                        .Cast<IIndividualDay>()];
                     break;
                 case ReferenceIndividualSet.Soil:
                     externalExposureUnit = data.SoilExposureUnit;
@@ -329,17 +331,15 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     break;
                 case ReferenceIndividualSet.Dust:
                     externalExposureUnit = data.DustExposureUnit;
-                    referenceIndividualDays = data.IndividualDustExposures.
+                    referenceIndividualDays = [.. data.IndividualDustExposures.
                         Select(r => new SimulatedIndividualDay(r.SimulatedIndividual))
-                        .Cast<IIndividualDay>()
-                        .ToList();
+                        .Cast<IIndividualDay>()];
                     break;
                 case ReferenceIndividualSet.ConsumerProducts:
                     externalExposureUnit = data.ConsumerProductExposureUnit;
-                    referenceIndividualDays = data.ConsumerProductIndividualExposures
+                    referenceIndividualDays = [.. data.ConsumerProductIndividualExposures
                         .Select(r => new SimulatedIndividualDay(r.SimulatedIndividual))
-                        .Cast<IIndividualDay>()
-                        .ToList();
+                        .Cast<IIndividualDay>()];
                     break;
                 case ReferenceIndividualSet.Individuals:
                     externalExposureUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);

@@ -13,12 +13,12 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.AirExp
         /// </summary>
         protected override List<IExternalIndividualDayExposure> generate(
             ICollection<IIndividualDay> individualDays,
-            ICollection<AirIndividualDayExposure> airIndividualDayExposures,
+            ICollection<AirIndividualExposure> airIndividualExposures,
             ICollection<Compound> substances,
             IRandom generator
         ) {
-            var ix = generator.Next(0, airIndividualDayExposures.Count);
-            var selected = airIndividualDayExposures.ElementAt(ix);
+            var ix = generator.Next(0, airIndividualExposures.Count);
+            var selected = airIndividualExposures.ElementAt(ix);
             var results = new List<IExternalIndividualDayExposure>();
             foreach (var individualDay in individualDays) {
                 var result = createExternalIndividualDayExposure(individualDay, selected);

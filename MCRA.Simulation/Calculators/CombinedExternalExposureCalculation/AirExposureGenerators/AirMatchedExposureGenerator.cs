@@ -9,11 +9,11 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.AirExp
 
         protected override List<IExternalIndividualDayExposure> generate(
             ICollection<IIndividualDay> individualDays,
-            ICollection<AirIndividualDayExposure> airIndividualDayExposures,
+            ICollection<AirIndividualExposure> airIndividualExposures,
             ICollection<Compound> substances,
             IRandom randomIndividual
         ) {
-            var selected = airIndividualDayExposures
+            var selected = airIndividualExposures
                 .FirstOrDefault(r => r.SimulatedIndividual.Id == individualDays.First().SimulatedIndividual.Id);
             if (selected == null) {
                 var msg = $"Failed to find matching air exposure for individual [{individualDays.First().SimulatedIndividual.Code}].";

@@ -12,7 +12,7 @@ namespace MCRA.Simulation.Calculators.AirExposureCalculation {
         /// <summary>
         /// Computes air exposures for the provided collection of individuals.
         /// </summary>
-        public static List<AirIndividualDayExposure> ComputeAirExposure(
+        public static List<AirIndividualExposure> ComputeAirExposure(
             ICollection<IIndividualDay> individualDays,
             ICollection<Compound> substances,
             List<ExposureRoute> routes,
@@ -52,7 +52,7 @@ namespace MCRA.Simulation.Calculators.AirExposureCalculation {
                 .GroupBy(r => r.Substance)
                 .ToDictionary(r => r.Key, r => r.Select(c => c.Concentration * concentrationAlignmentFactor));
 
-            var result = new List<AirIndividualDayExposure>();
+            var result = new List<AirIndividualExposure>();
             foreach (var individualDay in individualDays) {
                 var age = individualDay.SimulatedIndividual.Age;
                 var sex = individualDay.SimulatedIndividual.Gender;
@@ -78,11 +78,8 @@ namespace MCRA.Simulation.Calculators.AirExposureCalculation {
                     exposuresPerPath[new(ExposureSource.Air, ExposureRoute.Inhalation)] = airExposurePerSubstance;
                 }
 
-                var airIndividualDayExposure = new AirIndividualDayExposure(exposuresPerPath) {
-                    SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId,
-                    SimulatedIndividual = individualDay.SimulatedIndividual,
-                };
-                result.Add(airIndividualDayExposure);
+                var airIndividualExposure = new AirIndividualExposure(individualDay.SimulatedIndividual, exposuresPerPath);
+                result.Add(airIndividualExposure);
             }
             return result;
         }

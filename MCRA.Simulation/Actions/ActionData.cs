@@ -379,7 +379,7 @@ namespace MCRA.Simulation {
         }
 
         // AirExposures
-        public ICollection<AirIndividualDayExposure> IndividualAirExposures {
+        public ICollection<AirIndividualExposure> IndividualAirExposures {
             get => GetOrCreateModuleOutputData<AirExposuresOutputData>(ActionType.AirExposures).IndividualAirExposures;
             set => GetOrCreateModuleOutputData<AirExposuresOutputData>(ActionType.AirExposures).IndividualAirExposures = value;
         }

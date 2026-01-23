@@ -9,11 +9,11 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.Consum
 
         protected override List<IExternalIndividualDayExposure> generate(
             ICollection<IIndividualDay> individualDays,
-            ICollection<ConsumerProductIndividualExposure> airIndividualDayExposures,
+            ICollection<ConsumerProductIndividualExposure> cpIndividualDayExposures,
             ICollection<Compound> substances,
             IRandom randomIndividual
         ) {
-            var selected = airIndividualDayExposures
+            var selected = cpIndividualDayExposures
                 .FirstOrDefault(r => r.SimulatedIndividual.Id == individualDays.First().SimulatedIndividual.Id);
             if (selected == null) {
                 var msg = $"Failed to find matching consumer product exposure for individual [{individualDays.First().SimulatedIndividual.Code}].";
