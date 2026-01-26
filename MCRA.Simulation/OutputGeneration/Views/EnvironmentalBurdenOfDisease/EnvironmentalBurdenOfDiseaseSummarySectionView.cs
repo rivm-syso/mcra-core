@@ -7,42 +7,42 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             var hiddenProperties = new List<string>();
             if (Model.Records.All(c => double.IsInfinity(c.StandardisedTotalAttributableBod))) {
-                hiddenProperties.Add("StandardisedTotalAttributableBod");
+                hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.StandardisedTotalAttributableBod));
             }
             var isUncertainty = Model.Records.FirstOrDefault()?.TotalAttributableBods.Any() ?? false;
             if (isUncertainty) {
-                hiddenProperties.Add("TotalAttributableBod");
-                hiddenProperties.Add("StandardisedTotalAttributableBod");
-                hiddenProperties.Add("TotalPopulationAttributableFraction");
+                hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.TotalAttributableBod));
+                hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.StandardisedTotalAttributableBod));
+                hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.TotalPopulationAttributableFraction));
             } else {
-                hiddenProperties.Add("MedianTotalAttributableBod");
-                hiddenProperties.Add("LowerTotalAttributableBod");
-                hiddenProperties.Add("UpperTotalAttributableBod");
-                hiddenProperties.Add("MedianStandardisedTotalAttributableBod");
-                hiddenProperties.Add("LowerStandardisedTotalAttributableBod");
-                hiddenProperties.Add("UpperStandardisedTotalAttributableBod");
-                hiddenProperties.Add("MedianTotalPopulationAttributableFraction");
-                hiddenProperties.Add("LowerTotalPopulationAttributableFraction");
-                hiddenProperties.Add("UpperTotalPopulationAttributableFraction");
+                hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.MedianTotalAttributableBod));
+                hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.LowerTotalAttributableBod));
+                hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.UpperTotalAttributableBod));
+                hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.MedianStandardisedTotalAttributableBod));
+                hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.LowerStandardisedTotalAttributableBod));
+                hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.UpperStandardisedTotalAttributableBod));
+                hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.MedianTotalPopulationAttributableFraction));
+                hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.LowerTotalPopulationAttributableFraction));
+                hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.UpperTotalPopulationAttributableFraction));
             }
             if (Model.Records.All(r => string.IsNullOrEmpty(r.SourceIndicators))) {
-                hiddenProperties.Add("SourceIndicators");
+                hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.SourceIndicators));
             }
             var recordsGrouped = Model.Records
                 .GroupBy(r => (r.PopulationCode, r.SubstanceCode, r.EffectCode, r.BodIndicator));
             if (recordsGrouped.All(r => r.Count() <= 1)) {
                 // Don't display ERF code/name unless multiple ERFs are used for same population,
                 // substance, effect, and BoD indicator. 
-                hiddenProperties.Add("ErfCode");
-                hiddenProperties.Add("ErfName");
+                hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.ErfCode));
+                hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.ErfName));
             }
 
             var missingPopulationSize = Model.Records.All(c => double.IsNaN(c.PopulationSize));
             if (missingPopulationSize) {
-                hiddenProperties.Add("StandardisedTotalAttributableBod");
-                hiddenProperties.Add("MedianStandardisedTotalAttributableBod");
-                hiddenProperties.Add("LowerStandardisedTotalAttributableBod");
-                hiddenProperties.Add("UpperStandardisedTotalAttributableBod");
+                hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.StandardisedTotalAttributableBod));
+                hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.MedianStandardisedTotalAttributableBod));
+                hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.LowerStandardisedTotalAttributableBod));
+                hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.UpperStandardisedTotalAttributableBod));
             }
 
             var caption = Model.IsCumulative
