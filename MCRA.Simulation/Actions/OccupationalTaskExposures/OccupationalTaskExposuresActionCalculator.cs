@@ -16,6 +16,7 @@ namespace MCRA.Simulation.Actions.OccupationalTaskExposures {
         }
 
         protected override void verify() {
+            _actionDataLinkRequirements[ScopingType.OccupationalTaskExposures][ScopingType.Compounds].AlertTypeMissingData = AlertType.Notification;
             _actionDataLinkRequirements[ScopingType.OccupationalTaskExposures][ScopingType.OccupationalTasks].AlertTypeMissingData = AlertType.Notification;
         }
 

@@ -80,8 +80,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
             var requireOccupational = ModuleConfig.ExposureType == ExposureType.Chronic &&
                 ModuleConfig.ExposureSources.Contains(ExposureSource.Occupational);
-            _actionInputRequirements[ActionType.OccupationalTaskExposures].IsRequired = requireOccupational;
-            _actionInputRequirements[ActionType.OccupationalTaskExposures].IsVisible = requireOccupational;
+            _actionInputRequirements[ActionType.OccupationalScenarios].IsRequired = requireOccupational;
+            _actionInputRequirements[ActionType.OccupationalScenarios].IsVisible = requireOccupational;
             _actionInputRequirements[ActionType.OccupationalExposures].IsRequired = requireOccupational;
             _actionInputRequirements[ActionType.OccupationalExposures].IsVisible = requireOccupational;
 
