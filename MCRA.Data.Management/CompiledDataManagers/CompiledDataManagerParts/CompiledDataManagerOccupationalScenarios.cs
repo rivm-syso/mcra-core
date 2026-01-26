@@ -49,12 +49,16 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                         foreach (var rawDataSourceId in rawDataSourceIds) {
                             using (var r = rdm.OpenDataReader<RawOccupationalScenarios>(rawDataSourceId, out int[] fieldMap)) {
                                 while (r?.Read() ?? false) {
-                                    var occupationalScenario = new OccupationalScenario {
-                                        Code = r.GetString(RawOccupationalScenarios.Id, fieldMap),
-                                        Name = r.GetStringOrNull(RawOccupationalScenarios.Name, fieldMap),
-                                        Description = r.GetStringOrNull(RawOccupationalScenarios.Description, fieldMap)
-                                    };
-                                    allOccupationalscenarios.Add(occupationalScenario.Code, occupationalScenario);
+                                    var code = r.GetString(RawOccupationalScenarios.Id, fieldMap);
+                                    var selected = CheckLinkSelected(ScopingType.OccupationalScenarios, code);
+                                    if (selected) {
+                                        var occupationalScenario = new OccupationalScenario {
+                                            Code = code,
+                                            Name = r.GetStringOrNull(RawOccupationalScenarios.Name, fieldMap),
+                                            Description = r.GetStringOrNull(RawOccupationalScenarios.Description, fieldMap)
+                                        };
+                                        allOccupationalscenarios.Add(occupationalScenario.Code, occupationalScenario);
+                                    }
                                 }
                             }
                         }

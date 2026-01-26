@@ -2233,6 +2233,7 @@
     <Description>-</Description>
     <TableGroup>OccupationalScenarios</TableGroup>
     <IsStrongEntity>true</IsStrongEntity>
+    <AllowUserSelection>true</AllowUserSelection>
   </ScopingTypeDefinition>
   <ScopingTypeDefinition>
     <Id>OccupationalScenarioTasks</Id>
