@@ -1,5 +1,23 @@
 # Change Log
 
+## Version 10.2.13 (2026-01-27)
+
+### Added
+
+- Implement generic summary for user-specified percentiles in module Dust+Consumer Product exposures (#2400)
+- Create summary for air exposures, implement exposure by route and by route-substance (#2406)
+- Enable user selection of occupational scenarios
+
+### Changed
+
+- Change default value of allow food conversion using food translations from true to false (#2360)
+- Remove contributions and add boxplot for by route section in generic outputs for external exposure models (#2379b)
+- Split OccupationalTaskExposures module into OccupationalScenarios and OccupationalTaskExposures (#2389)
+
+### Fixed
+
+- Correction of PAF calculation
+
 ## Version 10.2.12 (2026-01-16)
 
 ### Added
