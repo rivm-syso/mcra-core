@@ -10,8 +10,6 @@ default:
 
 workflow:
   rules:
-    - if: $CI_COMMIT_BRANCH == "main"
-    - if: $CI_COMMIT_BRANCH == "dev"
     - if: $CI_PIPELINE_SOURCE == "schedule"
 
 variables:
