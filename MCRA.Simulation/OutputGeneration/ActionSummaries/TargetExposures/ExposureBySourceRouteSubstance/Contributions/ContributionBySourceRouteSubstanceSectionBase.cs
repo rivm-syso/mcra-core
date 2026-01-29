@@ -23,14 +23,14 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             var result = new List<ContributionBySourceRouteSubstanceRecord>();
 
-            var exposurePathSubstanceCollection = CalculateExposures(
+            var exposureCollection = CalculateExposures(
                 externalIndividualExposures,
                 substances,
                 kineticConversionFactors,
                 isPerPerson
             );
 
-            foreach (var (ExposurePath, Substance, Exposures) in exposurePathSubstanceCollection) {
+            foreach (var (ExposurePath, Substance, Exposures) in exposureCollection) {
                 if (Exposures.Any(c => c.Exposure > 0)) {
                     var record = getContributionBySourceRouteSubstanceRecord(
                         ExposurePath,
@@ -80,7 +80,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 NumberOfDays = weights.Count,
                 Contributions = [],
                 UncertaintyLowerBound = uncertaintyLowerBound,
-                UncertaintyUpperBound = uncertaintyUpperBound
+                UncertaintyUpperBound = uncertaintyUpperBound,
+                RelativePotencyFactor = rpf ?? double.NaN
             };
             return record;
         }
@@ -95,14 +96,14 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             var result = new List<ContributionBySourceRouteSubstanceRecord>();
 
-            var exposurePathSubstanceCollection = CalculateExposures(
+            var exposureCollection = CalculateExposures(
                 externalIndividualExposures,
                 substances,
                 kineticConversionFactors,
                 isPerPerson
             );
 
-            foreach (var (ExposurePath, Substance, Exposures) in exposurePathSubstanceCollection) {
+            foreach (var (ExposurePath, Substance, Exposures) in exposureCollection) {
                 if (Exposures.Any(c => c.Exposure > 0)) {
                     var record = new ContributionBySourceRouteSubstanceRecord {
                         ExposureSource = ExposurePath.Source.GetShortDisplayName(),

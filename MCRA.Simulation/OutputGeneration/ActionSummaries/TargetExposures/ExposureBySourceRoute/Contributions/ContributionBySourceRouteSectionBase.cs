@@ -22,7 +22,7 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             var result = new List<ContributionBySourceRouteRecord>();
 
-            var exposurePathCollection = CalculateExposures(
+            var exposureCollection = CalculateExposures(
                 externalIndividualExposures,
                 relativePotencyFactors,
                 membershipProbabilities,
@@ -30,7 +30,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 isPerPerson
             );
 
-            foreach (var item in exposurePathCollection) {
+            foreach (var item in exposureCollection) {
                 if (item.Exposures.Any(c => c.Exposure > 0)) {
                     var record = getContributionBySourceRouteRecord(
                         item.ExposurePath,
@@ -85,7 +85,7 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             var result = new List<ContributionBySourceRouteRecord>();
 
-            var exposurePathCollection = CalculateExposures(
+            var exposureCollection = CalculateExposures(
                 externalIndividualExposures,
                 relativePotencyFactors,
                 membershipProbabilities,
@@ -93,12 +93,12 @@ namespace MCRA.Simulation.OutputGeneration {
                 isPerPerson
             );
 
-            foreach (var collection in exposurePathCollection) {
-                if (collection.Exposures.Any(c => c.Exposure > 0)) {
+            foreach (var (ExposurePath, Exposures) in exposureCollection) {
+                if (Exposures.Any(c => c.Exposure > 0)) {
                     var record = new ContributionBySourceRouteRecord {
-                        ExposureSource = collection.ExposurePath.Source.GetShortDisplayName(),
-                        ExposureRoute = collection.ExposurePath.Route.GetShortDisplayName(),
-                        Contribution = collection.Exposures.Sum(c => c.Exposure * c.SimulatedIndividual.SamplingWeight),
+                        ExposureSource = ExposurePath.Source.GetShortDisplayName(),
+                        ExposureRoute = ExposurePath.Route.GetShortDisplayName(),
+                        Contribution = Exposures.Sum(c => c.Exposure * c.SimulatedIndividual.SamplingWeight),
                     };
                     result.Add(record);
                 }

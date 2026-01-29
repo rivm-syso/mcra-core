@@ -1,57 +1,61 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class ContributionByRouteSubstanceTotalSection : ContributionByRouteSubstanceSectionBase {
 
         public void Summarize(
-            ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
-            ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
+            ICollection<IExternalIndividualExposure> externalIndividualExposures,
             ICollection<Compound> substances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
-            ExposureUnitTriple externalExposureUnit
+            bool isPerPerson
         ) {
-            var aggregateExposures = aggregateIndividualExposures != null
-                ? aggregateIndividualExposures
-                : aggregateIndividualDayExposures.Cast<AggregateIndividualExposure>().ToList();
 
-            Records = getContributionRecords(
-                aggregateExposures,
+            relativePotencyFactors = substances.Count > 1
+                ? relativePotencyFactors : substances.ToDictionary(r => r, r => 1D);
+            membershipProbabilities = substances.Count > 1
+                ? membershipProbabilities : substances.ToDictionary(r => r, r => 1D);
+
+            Records = SummarizeContributions(
+                externalIndividualExposures,
                 substances,
                 relativePotencyFactors,
                 membershipProbabilities,
                 kineticConversionFactors,
-                externalExposureUnit,
                 uncertaintyLowerBound,
-                uncertaintyUpperBound
+                uncertaintyUpperBound,
+                isPerPerson
             );
         }
 
         public void SummarizeUncertainty(
-            ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
-            ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
+            ICollection<IExternalIndividualExposure> externalIndividualExposures,
+            ICollection<Compound> substances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
-            ICollection<Compound> substances,
-            ExposureUnitTriple externalExposureUnit
+            bool isPerPerson
         ) {
-            var aggregateExposures = aggregateIndividualExposures != null
-                ? aggregateIndividualExposures
-                : aggregateIndividualDayExposures.Cast<AggregateIndividualExposure>().ToList();
-            var records = SummarizeUncertainty(
-                aggregateExposures,
-                substances,
-                relativePotencyFactors,
-                kineticConversionFactors,
-                externalExposureUnit
+            relativePotencyFactors = substances.Count > 1
+                ? relativePotencyFactors : substances.ToDictionary(r => r, r => 1D);
+            membershipProbabilities = substances.Count > 1
+                ? membershipProbabilities : substances.ToDictionary(r => r, r => 1D);
+
+            var records = summarizeUncertainty(
+                 externalIndividualExposures,
+                 substances,
+                 relativePotencyFactors,
+                 membershipProbabilities,
+                 kineticConversionFactors,
+                 isPerPerson
              );
-            updateContributions(records);
+            UpdateContributions(records);
         }
     }
 }

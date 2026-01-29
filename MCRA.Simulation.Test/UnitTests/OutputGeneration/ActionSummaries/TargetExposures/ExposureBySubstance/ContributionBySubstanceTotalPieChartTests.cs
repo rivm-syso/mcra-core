@@ -19,10 +19,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
         public void ContributionBySubstanceTotalPieChartCreator_TestChronic() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var allRoutes = new[] { ExposureRoute.Dermal, ExposureRoute.Oral, ExposureRoute.Inhalation };
+            var routes = new[] { ExposureRoute.Dermal, ExposureRoute.Oral, ExposureRoute.Inhalation };
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
             for (int numIndividuals = 1; numIndividuals < 100; numIndividuals++) {
-                var routes = allRoutes.Where(r => random.NextDouble() > .5).ToList();
                 var paths = FakeExposurePathGenerator.Create([.. routes]);
                 var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(numIndividuals, 2, false, random);
                 var substances = FakeSubstancesGenerator.Create(random.Next(1, 4));
@@ -35,33 +34,21 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     targetUnit
                 );
                 var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
-                var aggregateIndividualExposures = FakeAggregateIndividualExposuresGenerator
-                    .Create(
-                        individualDays,
-                        substances,
-                        paths,
-                        kineticModelCalculators,
-                        externalExposuresUnit,
-                        targetUnit,
-                        random
-                    );
+                var individualExposures = FakeExternalExposureGenerator.CreateExternalIndividualExposures(individualDays, substances, paths, seed);
+
 
                 var section = new ContributionBySubstanceTotalSection();
                 section.Summarize(
-                    aggregateIndividualExposures,
-                    null,
+                    individualExposures,
                     substances,
                     rpfs,
                     memberships,
                     kineticConversionFactors,
                     2.5,
                     97.5,
-                    externalExposuresUnit,
-                    targetUnit
+                    false
                 );
-                if (aggregateIndividualExposures.Any(r => r.IsPositiveTargetExposure(targetUnit.Target))) {
-                    Assert.AreEqual(100D, section.Records.Sum(c => c.ContributionPercentage), .001);
-                }
+        
                 Assert.HasCount(substances.Count, section.Records);
                 var chart = new ContributionBySubstanceTotalPieChartCreator(section, false);
                 RenderChart(chart, $"TestCreate1{numIndividuals}");

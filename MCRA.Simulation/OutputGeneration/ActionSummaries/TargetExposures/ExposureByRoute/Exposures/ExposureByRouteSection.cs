@@ -1,8 +1,9 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Simulation.Objects;
 using MCRA.General;
+using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.Constants;
+using MCRA.Simulation.Objects;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 using static MCRA.General.TargetUnit;
@@ -21,32 +22,27 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<ExposureByRoutePercentileRecord> BoxPlotRecords { get; set; }
         public TargetUnit TargetUnit { get; set; }
         public void Summarize(
-            ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
-            ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
-            ICollection<Compound> activeSubstances,
+            ICollection<IExternalIndividualExposure> externalIndividualExposures,
+            ICollection<Compound> substances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             IDictionary<(ExposureRoute route, Compound substance), double> kineticConversionFactors,
             double lowerPercentage,
             double upperPercentage,
             TargetUnit targetUnit,
-            ExposureUnitTriple externalExposureUnit,
+            bool isPerPerson,
             bool skipPrivacySensitiveOutputs
         ) {
             var percentages = new double[] { lowerPercentage, 50, upperPercentage };
             var routes = kineticConversionFactors.Select(c => c.Key.route).Distinct().ToList();
 
-            relativePotencyFactors = activeSubstances.Count > 1
-                ? relativePotencyFactors : activeSubstances.ToDictionary(r => r, r => 1D);
-            membershipProbabilities = activeSubstances.Count > 1
-                ? membershipProbabilities : activeSubstances.ToDictionary(r => r, r => 1D);
-
-            var aggregateExposures = aggregateIndividualExposures != null
-                ? aggregateIndividualExposures
-                : aggregateIndividualDayExposures.Cast<AggregateIndividualExposure>().ToList();
+            relativePotencyFactors = substances.Count > 1
+                ? relativePotencyFactors : substances.ToDictionary(r => r, r => 1D);
+            membershipProbabilities = substances.Count > 1
+                ? membershipProbabilities : substances.ToDictionary(r => r, r => 1D);
 
             if (skipPrivacySensitiveOutputs) {
-                var maxUpperPercentile = SimulationConstants.MaxUpperPercentage(aggregateExposures.Count);
+                var maxUpperPercentile = SimulationConstants.MaxUpperPercentage(externalIndividualExposures.Count);
                 if (_upperWhisker > maxUpperPercentile) {
                     RestrictedUpperPercentile = maxUpperPercentile;
                 }
@@ -54,21 +50,21 @@ namespace MCRA.Simulation.OutputGeneration {
             ShowOutliers = !skipPrivacySensitiveOutputs;
             TargetUnit = targetUnit;
 
-            var exposureRouteCollection = CalculateExposures(
-                aggregateExposures,
+            var exposureCollection = CalculateExposures(
+                externalIndividualExposures,
                 relativePotencyFactors,
                 membershipProbabilities,
                 kineticConversionFactors,
-                externalExposureUnit
+                isPerPerson
             );
 
             Records = summarizeExposureRecords(
-                exposureRouteCollection,
+                exposureCollection,
                 percentages
             );
 
             BoxPlotRecords = summarizeBoxPlotsByRoute(
-                exposureRouteCollection,
+                exposureCollection,
                 targetUnit
             );
         }

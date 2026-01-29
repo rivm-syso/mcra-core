@@ -1,6 +1,4 @@
 ﻿using MCRA.General;
-using MCRA.Simulation.Calculators.KineticConversionCalculation;
-using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
@@ -10,12 +8,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
     /// OutputGeneration, ActionSummaries, TargetExposures, ExposureByRoute, Route
     /// </summary>
     [TestClass]
-    public class TotalDistributionAggregateRouteSectionTests : ChartCreatorTestBase {
+    public class TotalDistributionExternalRouteSectionTests : ChartCreatorTestBase {
         /// <summary>
         /// Summarize aggregate exposure routes chronic, create chart, test TotalDistributionAggregateRouteSection view
         /// </summary>
         [TestMethod]
-        public void TotalDistributionAggregateRouteSection_TestChronic() {
+        public void TotalDistributionExternalRouteSection_TestChronic() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var substances = FakeSubstancesGenerator.Create(4);
@@ -31,21 +29,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 kineticConversionFactors,
                 targetUnit
             );
-            var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
-            var aggregateIndividualExposures = FakeAggregateIndividualExposuresGenerator.Create(
-                individualDays,
-                substances,
-                paths,
-                kineticModelCalculators,
-                externalExposuresUnit,
-                targetUnit,
-                random
-            );
-
+            var individualExposures = FakeExternalExposureGenerator.CreateExternalIndividualExposures(individualDays, substances, paths, seed);
             var section = new ExposureByRouteSection();
             section.Summarize(
-                aggregateIndividualExposures,
-                null,
+                individualExposures,
                 substances,
                 rpfs,
                 memberships,
@@ -53,7 +40,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 25,
                 75,
                 targetUnit,
-                externalExposuresUnit,
+                false,
                 false
             );
             AssertIsValidView(section);
@@ -63,11 +50,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
         /// Summarize aggregate exposure routes acute, create chart, test TotalDistributionAggregateRouteSection view
         /// </summary>
         [TestMethod]
-        public void TotalDistributionAggregateRouteSection_TestAcute() {
+        public void TotalDistributionExternalRouteSection_TestAcute() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var substances = FakeSubstancesGenerator.Create(4);
             var routes = new[] { ExposureRoute.Dermal, ExposureRoute.Oral };
+            var paths = FakeExposurePathGenerator.Create(routes);
             var rpfs = substances.ToDictionary(r => r, r => 1d);
             var memberships = substances.ToDictionary(r => r, r => 1d);
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(10, 2, true, random);
@@ -78,23 +66,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 kineticConversionFactors,
                 targetUnit
             );
-            var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
-            var kineticConversionCalculatorProvider = new KineticConversionCalculatorProvider(kineticModelCalculators);
-            var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(kineticConversionCalculatorProvider);
-            var aggregateIndividualDayExposures = FakeAggregateIndividualDayExposuresGenerator.Create(
-                individualDays,
-                substances,
-                routes,
-                kineticModelCalculators,
-                externalExposuresUnit,
-                targetUnit,
-                random
-            );
-
+            var individualExposures = FakeExternalExposureGenerator.CreateExternalIndividualExposures(individualDays, substances, paths, seed);
             var section = new ExposureByRouteSection();
             section.Summarize(
-                null,
-                aggregateIndividualDayExposures,
+                individualExposures,
                 substances,
                 rpfs,
                 memberships,
@@ -102,7 +77,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 25,
                 75,
                 targetUnit,
-                externalExposuresUnit,
+                false, 
                 false
             );
             AssertIsValidView(section);

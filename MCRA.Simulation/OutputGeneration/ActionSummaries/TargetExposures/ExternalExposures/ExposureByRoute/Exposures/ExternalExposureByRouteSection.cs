@@ -48,7 +48,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ShowOutliers = !skipPrivacySensitiveOutputs;
             ExposureUnit = externalExposureUnit;
 
-            var exposureRouteCollection = CalculateExposures(
+            var exposureCollection = CalculateExposures(
                 externalIndividualExposures,
                 relativePotencyFactors,
                 membershipProbabilities,
@@ -56,12 +56,12 @@ namespace MCRA.Simulation.OutputGeneration {
             );
 
             Records = summarizeExposureRecords(
-                exposureRouteCollection,
+                exposureCollection,
                 percentages
             );
 
             BoxPlotRecords = summarizeBoxPlotsRecords(
-                exposureRouteCollection,
+                exposureCollection,
                 externalExposureUnit
             );
         }

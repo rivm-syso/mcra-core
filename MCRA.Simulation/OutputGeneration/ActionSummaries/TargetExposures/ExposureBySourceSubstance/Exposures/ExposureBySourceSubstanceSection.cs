@@ -5,6 +5,7 @@ using MCRA.Simulation.Constants;
 using MCRA.Simulation.Objects;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
+using static MCRA.General.TargetUnit;
 
 namespace MCRA.Simulation.OutputGeneration {
 
@@ -22,21 +23,20 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public void Summarize(
             ICollection<IExternalIndividualExposure> externalIndividualExposures,
-            ICollection<Compound> activeSubstances,
+            ICollection<Compound> substances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
             double lowerPercentage,
             double upperPercentage,
             TargetUnit targetUnit,
-            ExposureUnitTriple externalExposureUnit,
             bool isPerPerson,
             bool skipPrivacySensitiveOutputs
         ) {
-            relativePotencyFactors = activeSubstances.Count > 1
-                ? relativePotencyFactors : activeSubstances.ToDictionary(r => r, r => 1D);
-            membershipProbabilities = activeSubstances.Count > 1
-                ? membershipProbabilities : activeSubstances.ToDictionary(r => r, r => 1D);
+            relativePotencyFactors = substances.Count > 1
+                ? relativePotencyFactors : substances.ToDictionary(r => r, r => 1D);
+            membershipProbabilities = substances.Count > 1
+                ? membershipProbabilities : substances.ToDictionary(r => r, r => 1D);
 
             var percentages = new double[] { lowerPercentage, 50, upperPercentage };
             if (skipPrivacySensitiveOutputs) {
@@ -48,23 +48,23 @@ namespace MCRA.Simulation.OutputGeneration {
             ShowOutliers = !skipPrivacySensitiveOutputs;
             TargetUnit = targetUnit;
 
-            var exposureSourceSubstanceCollection = CalculateExposures(
+            var exposureCollection = CalculateExposures(
                 externalIndividualExposures,
-                activeSubstances,
+                substances,
                 kineticConversionFactors,
                 isPerPerson
             );
 
             Records = summarizeExposureRecords(
-                exposureSourceSubstanceCollection,
+                exposureCollection,
                 relativePotencyFactors,
                 membershipProbabilities,
                 percentages
             );
 
             BoxPlotRecords = summarizeBoxPlotsRecords(
-                exposureSourceSubstanceCollection,
-                externalExposureUnit
+                exposureCollection,
+                targetUnit
             );
         }
 
@@ -93,7 +93,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         private List<ExposureBySourceSubstancePercentileRecord> summarizeBoxPlotsRecords(
             List<(ExposureSource ExposureSource, Compound Substance, List<(SimulatedIndividual SimulatedIndividual, double Exposure)> Exposures)> exposureSourceCollection,
-            ExposureUnitTriple externalExposureUnit
+            TargetUnit targetUnit
         ) {
             var records = new List<ExposureBySourceSubstancePercentileRecord>();
 
@@ -103,8 +103,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         item.ExposureSource,
                         item.Substance,
                         item.Exposures,
-
-                        externalExposureUnit
+                        targetUnit
                     );
                     records.Add(boxPlotRecord);
                 }
@@ -156,7 +155,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ExposureSource source,
             Compound substance,
             List<(SimulatedIndividual SimulatedIndividual, double Exposure)> exposures,
-            ExposureUnitTriple unit
+            TargetUnit targetUnit
         ) {
             var weights = exposures
                 .Select(c => c.SimulatedIndividual.SamplingWeight)
@@ -184,7 +183,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 Percentiles = percentiles,
                 NumberOfPositives = positives.Count,
                 Percentage = positives.Count * 100d / exposures.Count,
-                Unit = unit.GetShortDisplayName(),
+                Unit = targetUnit.GetShortDisplayName(DisplayOption.AppendExpressionType),
                 Outliers = outliers,
                 NumberOfOutLiers = outliers.Count,
             };

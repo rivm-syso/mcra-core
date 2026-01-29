@@ -15,7 +15,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public void Summarize(
             ICollection<IExternalIndividualExposure> externalIndividualExposures,
-            ICollection<Compound> activeSubstances,
+            ICollection<Compound> substances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
@@ -25,15 +25,15 @@ namespace MCRA.Simulation.OutputGeneration {
             ExposureUnitTriple externalExposureUnit,
             bool isPerPerson
         ) {
-            relativePotencyFactors = activeSubstances.Count > 1
-                ? relativePotencyFactors : activeSubstances.ToDictionary(r => r, r => 1D);
-            membershipProbabilities = activeSubstances.Count > 1
-                ? membershipProbabilities : activeSubstances.ToDictionary(r => r, r => 1D);
+            relativePotencyFactors = substances.Count > 1
+                ? relativePotencyFactors : substances.ToDictionary(r => r, r => 1D);
+            membershipProbabilities = substances.Count > 1
+                ? membershipProbabilities : substances.ToDictionary(r => r, r => 1D);
             UpperPercentage = 100 - percentageForUpperTail;
 
             var totalExposures = getSumExposures(
                 externalIndividualExposures,
-                activeSubstances,
+                substances,
                 relativePotencyFactors,
                 membershipProbabilities,
                 kineticConversionFactors,
@@ -63,7 +63,7 @@ namespace MCRA.Simulation.OutputGeneration {
             externalIndividualExposures = externalIndividualExposures.Where(c => individualIds.Contains(c.SimulatedIndividual)).ToList();
             Records = summarizeContributions(
                 externalIndividualExposures,
-                activeSubstances,
+                substances,
                 relativePotencyFactors,
                 membershipProbabilities,
                 kineticConversionFactors,
@@ -76,7 +76,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public void SummarizeUncertainty(
             ICollection<IExternalIndividualExposure> externalIndividualExposures,
-            ICollection<Compound> activeSubstances,
+            ICollection<Compound> substances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
@@ -84,14 +84,14 @@ namespace MCRA.Simulation.OutputGeneration {
             ExposureUnitTriple externalExposureUnit,
             bool isPerPerson
         ) {
-            relativePotencyFactors = activeSubstances.Count > 1
-                ? relativePotencyFactors : activeSubstances.ToDictionary(r => r, r => 1D);
-            membershipProbabilities = activeSubstances.Count > 1
-                ? membershipProbabilities : activeSubstances.ToDictionary(r => r, r => 1D);
+            relativePotencyFactors = substances.Count > 1
+                ? relativePotencyFactors : substances.ToDictionary(r => r, r => 1D);
+            membershipProbabilities = substances.Count > 1
+                ? membershipProbabilities : substances.ToDictionary(r => r, r => 1D);
 
             var totalExposures = getSumExposures(
                 externalIndividualExposures,
-                activeSubstances,
+                substances,
                 relativePotencyFactors,
                 membershipProbabilities,
                 kineticConversionFactors,
@@ -116,7 +116,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
             var records = SummarizeUncertainty(
                 externalIndividualExposures,
-                activeSubstances,
+                substances,
                 relativePotencyFactors,
                 membershipProbabilities,
                 kineticConversionFactors,
@@ -133,13 +133,13 @@ namespace MCRA.Simulation.OutputGeneration {
             IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
             bool isPerPerson
         ) {
-            var exposurePathSubstanceCollection = CalculateExposures(
+            var exposureCollection = CalculateExposures(
                 externalIndividualExposures,
                 substances,
                 kineticConversionFactors,
                 isPerPerson
             );
-            var totalExposuresxxx = exposurePathSubstanceCollection
+            var totalExposuresxxx = exposureCollection
                 .SelectMany(c => c.Exposures)
                 .GroupBy(c => c.SimulatedIndividual)
                 .Select(c => (
@@ -148,7 +148,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 )).ToList();
 
 
-            var totalExposures = exposurePathSubstanceCollection
+            var totalExposures = exposureCollection
                 .SelectMany(c => c.Exposures, (c, r) => (
                     SimulatedIndividual: r.SimulatedIndividual,
                     Exposures: r.Exposure

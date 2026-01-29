@@ -15,20 +15,19 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public void Summarize(
             ICollection<IExternalIndividualExposure> externalIndividualExposures,
-            ICollection<Compound> activeSubstances,
+            ICollection<Compound> substances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
             double percentageForUpperTail,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
-            ExposureUnitTriple externalExposureUnit,
             bool isPerPerson
         ) {
-            relativePotencyFactors = activeSubstances.Count > 1
-                ? relativePotencyFactors : activeSubstances.ToDictionary(r => r, r => 1D);
-            membershipProbabilities = activeSubstances.Count > 1
-                ? membershipProbabilities : activeSubstances.ToDictionary(r => r, r => 1D);
+            relativePotencyFactors = substances.Count > 1
+                ? relativePotencyFactors : substances.ToDictionary(r => r, r => 1D);
+            membershipProbabilities = substances.Count > 1
+                ? membershipProbabilities : substances.ToDictionary(r => r, r => 1D);
             UpperPercentage = 100 - percentageForUpperTail;
 
             var totalExposures = getSumExposures(
@@ -65,28 +64,25 @@ namespace MCRA.Simulation.OutputGeneration {
                 relativePotencyFactors,
                 membershipProbabilities,
                 kineticConversionFactors,
-                externalExposureUnit,
                 uncertaintyLowerBound,
                 uncertaintyUpperBound,
                 isPerPerson
             );
         }
 
-
         public void SummarizeUncertainty(
             ICollection<IExternalIndividualExposure> externalIndividualExposures,
-            ICollection<Compound> activeSubstances,
+            ICollection<Compound> substances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
             double percentageForUpperTail,
-            ExposureUnitTriple externalExposureUnit,
             bool isPerPerson
         ) {
-            relativePotencyFactors = activeSubstances.Count > 1
-                ? relativePotencyFactors : activeSubstances.ToDictionary(r => r, r => 1D);
-            membershipProbabilities = activeSubstances.Count > 1
-                ? membershipProbabilities : activeSubstances.ToDictionary(r => r, r => 1D);
+            relativePotencyFactors = substances.Count > 1
+                ? relativePotencyFactors : substances.ToDictionary(r => r, r => 1D);
+            membershipProbabilities = substances.Count > 1
+                ? membershipProbabilities : substances.ToDictionary(r => r, r => 1D);
 
 
             var totalExposures = getSumExposures(
@@ -116,7 +112,6 @@ namespace MCRA.Simulation.OutputGeneration {
                   relativePotencyFactors,
                   membershipProbabilities,
                   kineticConversionFactors,
-                  externalExposureUnit,
                   isPerPerson
               );
             UpdateContributions(records);
@@ -129,14 +124,14 @@ namespace MCRA.Simulation.OutputGeneration {
             IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
             bool isPerPerson
         ) {
-            var exposurePathCollection = CalculateExposures(
+            var exposureCollection = CalculateExposures(
                 externalIndividualExposures,
                 relativePotencyFactors,
                 membershipProbabilities,
                 kineticConversionFactors,
                 isPerPerson
             );
-            var totalExposures = exposurePathCollection
+            var totalExposures = exposureCollection
                 .SelectMany(c => c.Exposures)
                 .GroupBy(c => c.SimulatedIndividual)
                 .Select(c => (

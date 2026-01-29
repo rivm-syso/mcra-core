@@ -121,13 +121,13 @@ namespace MCRA.Simulation.OutputGeneration {
             IDictionary<Compound, double> membershipProbabilities,
             bool isPerPerson
         ) {
-            var exposurePathCollection = CalculateExposures(
+            var exposureCollection = CalculateExposures(
                 externalIndividualExposures,
                 relativePotencyFactors,
                 membershipProbabilities,
                 isPerPerson
             );
-            var totalExposures = exposurePathCollection
+            var totalExposures = exposureCollection
                 .SelectMany(c => c.Exposures)
                 .GroupBy(c => c.SimulatedIndividual)
                 .Select(c => (

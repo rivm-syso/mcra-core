@@ -8,7 +8,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public void Summarize(
             ICollection<IExternalIndividualExposure> externalIndividualExposures,
-            ICollection<Compound> activeSubstances,
+            ICollection<Compound> substances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
@@ -17,17 +17,16 @@ namespace MCRA.Simulation.OutputGeneration {
             ExposureUnitTriple externalExposureUnit,
             bool isPerPerson
         ) {
-            relativePotencyFactors = activeSubstances.Count > 1
-                ? relativePotencyFactors : activeSubstances.ToDictionary(r => r, r => 1D);
-            membershipProbabilities = activeSubstances.Count > 1
-                ? membershipProbabilities : activeSubstances.ToDictionary(r => r, r => 1D);
+            relativePotencyFactors = substances.Count > 1
+                ? relativePotencyFactors : substances.ToDictionary(r => r, r => 1D);
+            membershipProbabilities = substances.Count > 1
+                ? membershipProbabilities : substances.ToDictionary(r => r, r => 1D);
 
             Records = SummarizeContributions(
                 externalIndividualExposures,
                 relativePotencyFactors,
                 membershipProbabilities,
                 kineticConversionFactors,
-                externalExposureUnit,
                 uncertaintyLowerBound,
                 uncertaintyUpperBound,
                 isPerPerson
@@ -36,24 +35,22 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public void SummarizeUncertainty(
             ICollection<IExternalIndividualExposure> externalIndividualExposures,
-            ICollection<Compound> activeSubstances,
+            ICollection<Compound> substances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
-            ExposureUnitTriple externalExposureUnit,
             bool isPerPerson
         ) {
-            relativePotencyFactors = activeSubstances.Count > 1
-                ? relativePotencyFactors : activeSubstances.ToDictionary(r => r, r => 1D);
-            membershipProbabilities = activeSubstances.Count > 1
-                ? membershipProbabilities : activeSubstances.ToDictionary(r => r, r => 1D);
+            relativePotencyFactors = substances.Count > 1
+                ? relativePotencyFactors : substances.ToDictionary(r => r, r => 1D);
+            membershipProbabilities = substances.Count > 1
+                ? membershipProbabilities : substances.ToDictionary(r => r, r => 1D);
 
             var records = SummarizeUncertainty(
                  externalIndividualExposures,
                  relativePotencyFactors,
                  membershipProbabilities,
                  kineticConversionFactors,
-                 externalExposureUnit,
                  isPerPerson
              );
             UpdateContributions(records);

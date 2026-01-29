@@ -7,6 +7,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             var hiddenProperties = new List<string>();
             hiddenProperties.Add("SubstanceCode");
             hiddenProperties.Add("SubstanceName");
+            hiddenProperties.Add("Source");
             sb.AppendDescriptionParagraph($"Number of records: {Model.Records?.Count ?? 0}");
             if (Model.Records.All(c => String.IsNullOrEmpty(c.Route))) {
                 hiddenProperties.Add("Route");

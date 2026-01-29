@@ -1,7 +1,8 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
-using MCRA.Simulation.Calculators.UpperIntakesCalculation;
+using MCRA.Simulation.Calculators.ExternalExposureCalculation;
+using MCRA.Simulation.Objects;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
 
@@ -13,98 +14,141 @@ namespace MCRA.Simulation.OutputGeneration {
         public int NumberOfIntakes { get; set; }
 
         public void Summarize(
-            ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
-            ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
-            ICollection<Compound> activeSubstances,
+            ICollection<IExternalIndividualExposure> externalIndividualExposures,
+            ICollection<Compound> substances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
             double percentageForUpperTail,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
-            TargetUnit targetUnit,
-            ExposureUnitTriple externalExposureUnit
+            bool isPerPerson
         ) {
+            relativePotencyFactors = substances.Count > 1
+                ? relativePotencyFactors : substances.ToDictionary(r => r, r => 1D);
+            membershipProbabilities = substances.Count > 1
+                ? membershipProbabilities : substances.ToDictionary(r => r, r => 1D);
             UpperPercentage = 100 - percentageForUpperTail;
-            var upperIntakeCalculator = new UpperAggregateIntakeCalculator();
-            var aggregateExposures = aggregateIndividualExposures != null
-                ? aggregateIndividualExposures
-                : aggregateIndividualDayExposures.Cast<AggregateIndividualExposure>().ToList();
 
-            var upperIntakes = upperIntakeCalculator
-                .GetUpperTargetIndividualExposures(
-                    aggregateExposures,
-                    relativePotencyFactors,
-                    membershipProbabilities,
-                    kineticConversionFactors,
-                    percentageForUpperTail,
-                    externalExposureUnit,
-                    targetUnit
-                );
-            Records = getContributionRecords(
-                upperIntakes,
+            var totalExposures = getSumExposures(
+                externalIndividualExposures,
+                substances,
+                relativePotencyFactors,
+                membershipProbabilities,
+                kineticConversionFactors,
+                isPerPerson
+            );
+
+            var weights = totalExposures.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
+            var intakeValue = totalExposures.Select(c => c.Exposure)
+                .PercentilesWithSamplingWeights(weights, percentageForUpperTail);
+            var upperExposures = totalExposures
+                .Where(c => c.Exposure >= intakeValue)
+                .Select(c => (
+                    c.Exposure,
+                    c.SimulatedIndividual
+                    )
+                ).ToList();
+            var individualIds = upperExposures.Select(c => c.SimulatedIndividual).ToHashSet();
+            var exposures = upperExposures.Select(c => c.Exposure).ToList();
+            NumberOfIntakes = upperExposures.Count;
+            CalculatedUpperPercentage = upperExposures.Sum(c => c.SimulatedIndividual.SamplingWeight) / totalExposures.Sum(c => c.SimulatedIndividual.SamplingWeight) * 100;
+            if (NumberOfIntakes > 0) {
+                LowPercentileValue = exposures.Min();
+                HighPercentileValue = exposures.Max();
+            }
+
+            externalIndividualExposures = externalIndividualExposures.Where(c => individualIds.Contains(c.SimulatedIndividual)).ToList();
+
+            Records = SummarizeContributions(
+                externalIndividualExposures,
+                substances,
+                relativePotencyFactors,
+                membershipProbabilities,
+                kineticConversionFactors,
+                uncertaintyLowerBound,
+                uncertaintyUpperBound,
+                isPerPerson
+            );
+        }
+
+
+        public void SummarizeUncertainty(
+            ICollection<IExternalIndividualExposure> externalIndividualExposures,
+            ICollection<Compound> activeSubstances,
+            IDictionary<Compound, double> relativePotencyFactors,
+            IDictionary<Compound, double> membershipProbabilities,
+            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
+            double percentageForUpperTail,
+            bool isPerPerson
+        ) {
+            relativePotencyFactors = activeSubstances.Count > 1
+                ? relativePotencyFactors : activeSubstances.ToDictionary(r => r, r => 1D);
+            membershipProbabilities = activeSubstances.Count > 1
+                ? membershipProbabilities : activeSubstances.ToDictionary(r => r, r => 1D);
+
+            var totalExposures = getSumExposures(
+                externalIndividualExposures,
                 activeSubstances,
                 relativePotencyFactors,
                 membershipProbabilities,
                 kineticConversionFactors,
-                externalExposureUnit,
-                uncertaintyLowerBound,
-                uncertaintyUpperBound
+                isPerPerson
             );
-            NumberOfIntakes = upperIntakes.Count;
-            if (upperIntakes.Any()) {
-                var upperTargetExposures = upperIntakes
-                    .Select(c => c.GetTotalExternalExposure(
-                        relativePotencyFactors,
-                        membershipProbabilities,
-                        kineticConversionFactors,
-                        externalExposureUnit.IsPerUnit
-                    ))
-                    .ToList();
-                LowPercentileValue = upperTargetExposures.Min();
-                HighPercentileValue = upperTargetExposures.Max();
-            }
-            CalculatedUpperPercentage = upperIntakes
-                .Sum(c => c.SimulatedIndividual.SamplingWeight)
-                    / aggregateExposures
-                        .Sum(c => c.SimulatedIndividual.SamplingWeight) * 100;
+
+            var weights = totalExposures.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
+            var intakeValue = totalExposures.Select(c => c.Exposure)
+                .PercentilesWithSamplingWeights(weights, percentageForUpperTail);
+
+            var upperExposures = totalExposures
+               .Where(c => c.Exposure >= intakeValue)
+               .Select(c => (
+                   c.Exposure,
+                   c.SimulatedIndividual
+                   )
+               ).ToList();
+            var individualIds = upperExposures.Select(c => c.SimulatedIndividual).ToHashSet();
+            externalIndividualExposures = externalIndividualExposures.Where(c => individualIds.Contains(c.SimulatedIndividual)).ToList();
+
+            var records = summarizeUncertainty(
+                  externalIndividualExposures,
+                  activeSubstances,
+                  relativePotencyFactors,
+                  membershipProbabilities,
+                  kineticConversionFactors,
+                  isPerPerson
+              );
+            UpdateContributions(records);
         }
 
-        public void SummarizeUncertainty(
-            ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
-            ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
+        private static List<(SimulatedIndividual SimulatedIndividual, double Exposure)> getSumExposures(
+            ICollection<IExternalIndividualExposure> externalIndividualExposures,
+            ICollection<Compound> substances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
-            ICollection<Compound> substances,
-            ExposureUnitTriple externalExposureUnit,
-            TargetUnit targetUnit,
-            double percentageForUpperTail
+            bool isPerPerson
         ) {
-            if (substances.Count == 1 || relativePotencyFactors != null) {
-                var aggregateExposures = aggregateIndividualExposures != null
-                    ? aggregateIndividualExposures
-                    : aggregateIndividualDayExposures.Cast<AggregateIndividualExposure>().ToList();
-                var upperIntakeCalculator = new UpperAggregateIntakeCalculator();
-                var upperIntakes = upperIntakeCalculator
-                    .GetUpperTargetIndividualExposures(
-                        aggregateExposures,
-                        relativePotencyFactors,
-                        membershipProbabilities,
-                        kineticConversionFactors,
-                        percentageForUpperTail,
-                        externalExposureUnit,
-                        targetUnit
-                    );
-                var records = SummarizeUncertainty(
-                    upperIntakes,
-                    substances,
-                    relativePotencyFactors,
-                    kineticConversionFactors,
-                    externalExposureUnit
-                );
-                updateContributions(records);
-            }
+            var exposureCollection = CalculateExposures(
+                externalIndividualExposures,
+                substances,
+                kineticConversionFactors,
+                isPerPerson
+            );
+
+            var totalExposures = exposureCollection
+                .SelectMany(c => c.Exposures, (c, r) => (
+                    SimulatedIndividual: r.SimulatedIndividual,
+                    Exposures: r.Exposure
+                        * (relativePotencyFactors?[c.Substance] ?? double.NaN)
+                        * (membershipProbabilities?[c.Substance] ?? double.NaN)
+                    ))
+                .GroupBy(c => c.SimulatedIndividual)
+                .Select(c => (
+                    SimulatedIndividual: c.Key,
+                    Exposure: c.Sum(r => r.Exposures)
+                )).ToList();
+            return totalExposures;
         }
     }
 }

@@ -15,13 +15,12 @@ namespace MCRA.Simulation.OutputGeneration {
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
-            ExposureUnitTriple externalExposureUnit,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
             bool isPerPerson
         ) {
             var result = new List<ContributionBySourceRecord>();
-            var exposureSourceCollection = CalculateExposures(
+            var exposureCollection = CalculateExposures(
                     externalIndividualExposures,
                     relativePotencyFactors,
                     membershipProbabilities,
@@ -29,7 +28,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     isPerPerson
                 );
 
-            foreach (var (Source, Exposures) in exposureSourceCollection) {
+            foreach (var (Source, Exposures) in exposureCollection) {
                 if (Exposures.Any(c => c.Exposure > 0)) {
                     var record = getContributionBySourceRecord(
                         Source,
@@ -78,11 +77,10 @@ namespace MCRA.Simulation.OutputGeneration {
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
-            ExposureUnitTriple externalExposureUnit,
             bool isPerPerson
         ) {
             var result = new List<ContributionBySourceRecord>();
-            var exposureSourceCollection = CalculateExposures(
+            var exposureCollection = CalculateExposures(
                 externalIndividualExposures,
                 relativePotencyFactors,
                 membershipProbabilities,
@@ -90,7 +88,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 isPerPerson
             );
 
-            foreach (var (Source, Exposures) in exposureSourceCollection) {
+            foreach (var (Source, Exposures) in exposureCollection) {
                 if (Exposures.Any(c => c.Exposure > 0)) {
                     var record = new ContributionBySourceRecord {
                         ExposureSource = Source.GetDisplayName(),

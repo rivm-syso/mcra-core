@@ -107,11 +107,11 @@ namespace MCRA.Simulation.OutputGeneration {
             externalIndividualExposures = externalIndividualExposures.Where(c => individualIds.Contains(c.SimulatedIndividual)).ToList();
 
             var records = SummarizeUncertainty(
-                  externalIndividualExposures,
-                  relativePotencyFactors,
-                  membershipProbabilities,
-                  isPerPerson
-              );
+                externalIndividualExposures,
+                relativePotencyFactors,
+                membershipProbabilities,
+                isPerPerson
+            );
             UpdateContributions(records);
         }
 
@@ -121,13 +121,13 @@ namespace MCRA.Simulation.OutputGeneration {
             IDictionary<Compound, double> membershipProbabilities,
             bool isPerPerson
         ) {
-            var exposureRouteCollection = CalculateExposures(
+            var exposureCollection = CalculateExposures(
                 externalIndividualExposures,
                 relativePotencyFactors,
                 membershipProbabilities,
                 isPerPerson
             );
-            var totalExposures = exposureRouteCollection
+            var totalExposures = exposureCollection
                 .SelectMany(c => c.Exposures)
                 .GroupBy(c => c.SimulatedIndividual)
                 .Select(c => (

@@ -21,14 +21,14 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             var result = new List<ExternalContributionBySourceRecord>();
 
-            var exposureSourceCollection = CalculateExposures(
-                    externalIndividualExposures,
-                    relativePotencyFactors,
-                    membershipProbabilities,
-                    isPerPerson
-                );
+            var exposureCollection = CalculateExposures(
+                externalIndividualExposures,
+                relativePotencyFactors,
+                membershipProbabilities,
+                isPerPerson
+            );
 
-            foreach (var (Source, Exposures) in exposureSourceCollection) {
+            foreach (var (Source, Exposures) in exposureCollection) {
                 if (Exposures.Any(c => c.Exposure > 0)) {
                     var record = getContributionBySourceRecord(
                         Source,
@@ -52,14 +52,14 @@ namespace MCRA.Simulation.OutputGeneration {
             bool isPerPerson
         ) {
             var result = new List<ExternalContributionBySourceRecord>();
-            var exposureSourceCollection = CalculateExposures(
+            var exposureCollection = CalculateExposures(
                 externalIndividualExposures,
                 relativePotencyFactors,
                 membershipProbabilities,
                 isPerPerson
             );
 
-            foreach (var (Source, Exposures) in exposureSourceCollection) {
+            foreach (var (Source, Exposures) in exposureCollection) {
                 if (Exposures.Any(c => c.Exposure > 0)) {
                     var record = new ExternalContributionBySourceRecord {
                         ExposureSource = Source.GetDisplayName(),

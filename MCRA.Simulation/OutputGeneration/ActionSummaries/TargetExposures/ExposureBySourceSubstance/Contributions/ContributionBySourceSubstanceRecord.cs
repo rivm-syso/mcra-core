@@ -63,5 +63,10 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Percentage {IndividualDayUnit} with exposure")]
         [DisplayFormat(DataFormatString = "{0:F1}")]
         public double Percentage { get; set; }
+
+        [Description("Relative potency factor. RPFs are not applied except for the exposure contribution.")]
+        [DisplayName("RPF")]
+        [DisplayFormat(DataFormatString = "{0:G2}")]
+        public double RelativePotencyFactor { get; set; }
     }
 }

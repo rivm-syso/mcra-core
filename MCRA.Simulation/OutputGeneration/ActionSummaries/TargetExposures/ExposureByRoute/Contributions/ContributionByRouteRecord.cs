@@ -4,9 +4,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MCRA.Simulation.OutputGeneration {
 
-    /// <summary>
-    ///
-    /// </summary>
     public sealed class ContributionByRouteRecord {
 
         [Display(AutoGenerateField = false)]

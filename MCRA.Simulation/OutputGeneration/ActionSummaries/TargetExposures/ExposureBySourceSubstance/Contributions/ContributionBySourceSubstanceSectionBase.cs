@@ -16,20 +16,19 @@ namespace MCRA.Simulation.OutputGeneration {
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
-            ExposureUnitTriple externalExposureUnit,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
             bool isPerPerson
         ) {
             var result = new List<ContributionBySourceSubstanceRecord>();
-            var exposureSourceSubstanceCollection = CalculateExposures(
+            var exposureCollection = CalculateExposures(
                     externalIndividualExposures,
                     substances,
                     kineticConversionFactors,
                     isPerPerson
                 );
 
-            foreach (var (Source, Substance, Exposures) in exposureSourceSubstanceCollection) {
+            foreach (var (Source, Substance, Exposures) in exposureCollection) {
                 if (Exposures.Any(c => c.Exposure > 0)) {
                     var record = getContributionBySourceSubstanceRecord(
                         Source,
@@ -78,12 +77,13 @@ namespace MCRA.Simulation.OutputGeneration {
                 NumberOfDays = weights.Count,
                 Contributions = [],
                 UncertaintyLowerBound = uncertaintyLowerBound,
-                UncertaintyUpperBound = uncertaintyUpperBound
+                UncertaintyUpperBound = uncertaintyUpperBound,
+                RelativePotencyFactor = rpf ?? double.NaN
             };
             return record;
         }
 
-        protected List<ContributionBySourceSubstanceRecord> SummarizeUncertainty(
+        protected List<ContributionBySourceSubstanceRecord> summarizeUncertainty(
             ICollection<IExternalIndividualExposure> externalIndividualExposures,
             ICollection<Compound> substances,
             IDictionary<Compound, double> relativePotencyFactors,
@@ -92,14 +92,14 @@ namespace MCRA.Simulation.OutputGeneration {
             bool isPerPerson
         ) {
             var result = new List<ContributionBySourceSubstanceRecord>();
-            var exposureSourceSubstanceCollection = CalculateExposures(
+            var exposureCollection = CalculateExposures(
                 externalIndividualExposures,
                 substances,
                 kineticConversionFactors,
                 isPerPerson
             );
 
-            foreach (var (Source, Substance, Exposures) in exposureSourceSubstanceCollection) {
+            foreach (var (Source, Substance, Exposures) in exposureCollection) {
                 if (Exposures.Any(c => c.Exposure > 0)) {
                     var record = new ContributionBySourceSubstanceRecord {
                         ExposureSource = Source.GetDisplayName(),

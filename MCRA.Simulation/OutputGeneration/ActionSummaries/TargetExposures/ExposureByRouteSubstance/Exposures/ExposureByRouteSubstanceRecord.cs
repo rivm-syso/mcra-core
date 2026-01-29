@@ -23,7 +23,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [Description("Percentage of individual days (acute) or individuals (chronic) with exposure.")]
         [DisplayName("Percentage {IndividualDayUnit} with exposure > 0")]
         [DisplayFormat(DataFormatString = "{0:F1}")]
-        public double PercentagePositives { get; set; }
+        public double Percentage { get; set; }
 
         [Description("Mean exposure for a substance and route on all individual days (acute) or individuals (chronic).")]
         [DisplayName("Mean exposure all {IndividualDayUnit} (IntakeUnit)")]
@@ -48,22 +48,22 @@ namespace MCRA.Simulation.OutputGeneration {
         [Description("Average exposure value, for exposures > 0 (expressed per substance [not in equivalents of reference substance]).")]
         [DisplayName("Mean {IndividualDayUnit} exposure > 0 (IntakeUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double MeanPositives { get; set; }
+        public double Mean { get; set; }
 
         [Description("p50 percentile, for exposures > 0 (expressed per substance [not in equivalents of reference substance]).")]
         [DisplayName("Median {IndividualDayUnit} exposure > 0 (IntakeUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double MedianPositives { get; set; }
+        public double Median { get; set; }
 
         [Description("Percentile point, for exposures > 0 of exposure values (expressed per substance [not in equivalents of reference substance])  (default 25%, see Output settings).")]
         [DisplayName("{LowerPercentage} {IndividualDayUnit} exposure > 0 (IntakeUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double Percentile25Positives { get; set; }
+        public double Percentile25 { get; set; }
 
         [Description("Percentile point, for exposures > 0 of exposure values (expressed per substance [not in equivalents of reference substance]) (default 75%, see Output settings).")]
         [DisplayName("{UpperPercentage} {IndividualDayUnit} exposure > 0 (IntakeUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double Percentile75Positives { get; set; }
+        public double Percentile75 { get; set; }
 
         [Description("Relative potency factor. RPFs are not applied.")]
         [DisplayName("RPF")]

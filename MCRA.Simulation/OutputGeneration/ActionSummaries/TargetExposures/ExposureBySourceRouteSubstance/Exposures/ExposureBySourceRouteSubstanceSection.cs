@@ -5,6 +5,7 @@ using MCRA.Simulation.Constants;
 using MCRA.Simulation.Objects;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
+using static MCRA.General.TargetUnit;
 
 namespace MCRA.Simulation.OutputGeneration {
 
@@ -22,21 +23,20 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public void Summarize(
             ICollection<IExternalIndividualExposure> externalIndividualExposures,
-            ICollection<Compound> activeSubstances,
+            ICollection<Compound> substances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
             double lowerPercentage,
             double upperPercentage,
             TargetUnit targetUnit,
-            ExposureUnitTriple externalExposureUnit,
             bool isPerPerson,
             bool skipPrivacySensitiveOutputs
         ) {
-            relativePotencyFactors = activeSubstances.Count > 1
-                ? relativePotencyFactors : activeSubstances.ToDictionary(r => r, r => 1D);
-            membershipProbabilities = activeSubstances.Count > 1
-                ? membershipProbabilities : activeSubstances.ToDictionary(r => r, r => 1D);
+            relativePotencyFactors = substances.Count > 1
+                ? relativePotencyFactors : substances.ToDictionary(r => r, r => 1D);
+            membershipProbabilities = substances.Count > 1
+                ? membershipProbabilities : substances.ToDictionary(r => r, r => 1D);
 
             var percentages = new double[] { lowerPercentage, 50, upperPercentage };
             if (skipPrivacySensitiveOutputs) {
@@ -48,26 +48,30 @@ namespace MCRA.Simulation.OutputGeneration {
             ShowOutliers = !skipPrivacySensitiveOutputs;
             TargetUnit = targetUnit;
 
-            var exposurePathSubstanceCollection = CalculateExposures(
+            var exposureCollection = CalculateExposures(
                 externalIndividualExposures,
-                activeSubstances,
+                substances,
                 kineticConversionFactors,
                 isPerPerson
             );
 
             Records = summarizeExposureRecords(
-                exposurePathSubstanceCollection,
+                exposureCollection,
+                relativePotencyFactors,
+                membershipProbabilities,
                 percentages
             );
 
             BoxPlotRecords = summarizeBoxPlotsRecords(
-                exposurePathSubstanceCollection,
-                externalExposureUnit
+                exposureCollection,
+                targetUnit
             );
         }
 
         public List<ExposureBySourceRouteSubstanceRecord> summarizeExposureRecords(
             List<(ExposurePath ExposurePath, Compound Substance, List<(SimulatedIndividual SimulatedIndividual, double Exposure)> Exposures)> exposurePathCollection,
+            IDictionary<Compound, double> relativePotencyFactors,
+            IDictionary<Compound, double> membershipProbabilities,
             double[] percentages
         ) {
             var results = new List<ExposureBySourceRouteSubstanceRecord>();
@@ -77,6 +81,8 @@ namespace MCRA.Simulation.OutputGeneration {
                         item.ExposurePath,
                         item.Substance,
                         item.Exposures,
+                        relativePotencyFactors?[item.Substance] ?? null,
+                        membershipProbabilities?[item.Substance] ?? null,
                         percentages
                     );
                     results.Add(record);
@@ -87,7 +93,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         private List<ExposureBySourceRouteSubstancePercentileRecord> summarizeBoxPlotsRecords(
             List<(ExposurePath ExposurePath, Compound Substance, List<(SimulatedIndividual SimulatedIndividual, double Exposure)> Exposures)> exposurePathCollection,
-            ExposureUnitTriple externalExposureUnit
+            TargetUnit targetUnit
         ) {
             var result = new List<ExposureBySourceRouteSubstancePercentileRecord>();
 
@@ -97,18 +103,19 @@ namespace MCRA.Simulation.OutputGeneration {
                         item.ExposurePath,
                         item.Substance,
                         item.Exposures,
-                        externalExposureUnit
+                        targetUnit
                     );
                     result.Add(boxPlotRecord);
                 }
             }
             return result;
         }
-
         private ExposureBySourceRouteSubstanceRecord getExposureSourceRouteSubstanceRecord(
             ExposurePath path,
             Compound substance,
             List<(SimulatedIndividual SimulatedIndividual, double Exposure)> exposures,
+            double? rpf,
+            double? membership,
             double[] percentages
         ) {
             var weights = exposures.Where(c => c.Exposure > 0)
@@ -138,6 +145,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 Percentile25All = percentilesAll[0],
                 MedianAll = percentilesAll[1],
                 Percentile75All = percentilesAll[2],
+                RelativePotencyFactor = rpf ?? double.NaN,
+                AssessmentGroupMembership = membership ?? double.NaN,
                 NumberOfDays = weights.Count,
             };
             return record;
@@ -147,7 +156,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ExposurePath path,
             Compound substance, 
             List<(SimulatedIndividual SimulatedIndividual, double Exposure)> exposures,
-            ExposureUnitTriple unit
+            TargetUnit targetUnit
         ) {
             var weights = exposures
                 .Select(c => c.SimulatedIndividual.SamplingWeight)
@@ -176,7 +185,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 Percentiles = percentiles,
                 NumberOfPositives = positives.Count,
                 Percentage = positives.Count * 100d / exposures.Count,
-                Unit = unit.GetShortDisplayName(),
+                Unit = targetUnit.GetShortDisplayName(DisplayOption.AppendExpressionType),
                 Outliers = outliers,
                 NumberOfOutLiers = outliers.Count,
             };

@@ -1,4 +1,5 @@
 ﻿using MCRA.General;
+using MCRA.General.OpexProductDefinitions.Dto;
 using MCRA.Simulation.Calculators.KineticConversionCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
 using MCRA.Simulation.OutputGeneration;
@@ -32,22 +33,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 kineticConversionFactors,
                 targetUnit
             );
-            var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
-            var aggregateIndividualExposures = FakeAggregateIndividualExposuresGenerator
-                .Create(
-                    individualDays,
-                    substances,
-                    paths,
-                    kineticModelCalculators,
-                    externalExposuresUnit,
-                    targetUnit,
-                    random
-                );
-
+            var individualExposures = FakeExternalExposureGenerator.CreateExternalIndividualExposures(individualDays, substances, paths, seed);
             var section = new ContributionByRouteSubstanceUpperSection();
             section.Summarize(
-                aggregateIndividualExposures,
-                null,
+                individualExposures,
                 substances,
                 rpfs,
                 memberships,
@@ -55,8 +44,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 95,
                 2.5,
                 97.5,
-                targetUnit,
-                externalExposuresUnit
+                false
             );
             var sum = section.Records.Sum(c => c.ContributionPercentage);
             Assert.AreEqual(98D, sum, 3D);
@@ -73,44 +61,34 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
         public void UpperDistributionRouteCompound_TestAcute() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var routes = FakeSubstancesGenerator.Create(4);
-            var exposureRoutes = new[] { ExposureRoute.Dermal, ExposureRoute.Oral };
-            var rpfs = routes.ToDictionary(r => r, r => 1d);
-            var memberships = routes.ToDictionary(r => r, r => 1d);
+            var substances = FakeSubstancesGenerator.Create(4);
+            var routes = new[] { ExposureRoute.Dermal, ExposureRoute.Oral };
+            var paths = FakeExposurePathGenerator.Create(routes);
+            var rpfs = substances.ToDictionary(r => r, r => 1d);
+            var memberships = substances.ToDictionary(r => r, r => 1d);
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(10, 2, true, random);
-            var kineticConversionFactors = FakeKineticModelsGenerator.CreateAbsorptionFactors(routes, exposureRoutes, .1);
+            var kineticConversionFactors = FakeKineticModelsGenerator.CreateAbsorptionFactors(substances, routes, .1);
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
             var kineticModelCalculators = FakeKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(
-                routes,
+                substances,
                 kineticConversionFactors,
                 targetUnit
             );
             var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
             var kineticConversionCalculatorProvider = new KineticConversionCalculatorProvider(kineticModelCalculators);
-            var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(kineticConversionCalculatorProvider);
-            var aggregateIndividualDayExposures = FakeAggregateIndividualDayExposuresGenerator.Create(
-                individualDays,
-                routes,
-                exposureRoutes,
-                kineticModelCalculators,
-                externalExposuresUnit,
-                targetUnit,
-                random
-            );
+            var individualExposures = FakeExternalExposureGenerator.CreateExternalIndividualExposures(individualDays, substances, paths, seed);
 
             var section = new ContributionByRouteSubstanceUpperSection();
             section.Summarize(
-                null,
-                aggregateIndividualDayExposures,
-                routes,
+                individualExposures,
+                substances,
                 rpfs,
                 memberships,
                 kineticConversionFactors,
                 95,
                 2.5,
                 97.5,
-                targetUnit,
-                externalExposuresUnit
+                false
             );
             var sum = section.Records.Sum(c => c.ContributionPercentage);
             Assert.AreEqual(98D, sum, 3D);

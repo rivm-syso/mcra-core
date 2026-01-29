@@ -2,18 +2,12 @@
 using MCRA.Simulation.OutputGeneration.Helpers;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
-    public class ExposurePercentilesByRouteSubstanceSectionView : SectionView<ExposurePercentilesByRouteSubstanceSection> {
+    public class ExposureByRouteSubstancePercentilesSectionView : SectionView<ExposureByRouteSubstancePercentilesSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
+            var hiddenProperties = new List<string> {
+                "Source"
+            };
             sb.AppendDescriptionParagraph($"Number of records: {Model.Records?.Count ?? 0}");
-            var hiddenProperties = new List<string>();
-            hiddenProperties.Add("Source");
-            if (Model.Records.All(c => String.IsNullOrEmpty(c.Route))) {
-                hiddenProperties.Add("Route");
-            }
-            if (Model.Records.All(c => String.IsNullOrEmpty(c.SubstanceCode))) {
-                hiddenProperties.Add("SubstanceCode");
-                hiddenProperties.Add("SubstanceName");
-            }
             if (Model.Records.All(c => c.Values.Count == 0)) {
                 hiddenProperties.Add("Median");
                 hiddenProperties.Add("LowerBound");
@@ -24,7 +18,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 sb.AppendTable(
                     Model,
                     Model.Records,
-                    "PercentileByRouteSubstanceTable",
+                    "ByRouteSubstancePercentilesTable",
                     ViewBag,
                     header: true,
                     caption: "Percentiles",

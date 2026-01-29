@@ -8,18 +8,18 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
                 name: $"BoxPlotByRouteSubstanceData",
                 section: Model,
-                items: Model.ExposureBoxPlotRecords,
+                items: Model.BoxPlotRecords,
                 viewBag: ViewBag
             );
 
             var chartCreator = new ExposureByRouteSubstanceBoxPlotCreator(
-                Model.ExposureBoxPlotRecords,
+                Model.BoxPlotRecords,
                 Model.SectionId,
                 Model.TargetUnit,
                 Model.ShowOutliers
             );
-            var numberOfRecords = Model.ExposureBoxPlotRecords.Count;
-            var warning = Model.ExposureBoxPlotRecords.Any(c => c.P95 == 0) ? "The asterisk indicates substances with positive measurements above an upper whisker of zero." : string.Empty;
+            var numberOfRecords = Model.BoxPlotRecords.Count;
+            var warning = Model.BoxPlotRecords.Any(c => c.P95 == 0) ? "The asterisk indicates substances with positive measurements above an upper whisker of zero." : string.Empty;
             var figCaption = $"Exposures by substance. " + chartCreator.Title + $" {warning}";
             sb.AppendChart(
                 name: $"ExposureByRouteSubstanceBoxPlot",
@@ -33,11 +33,11 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             );
 
             var hiddenProperties = new List<string>();
-            if (Model.ExposureRecords.All(r => double.IsNaN(r.RelativePotencyFactor))) {
+            if (Model.Records.All(r => double.IsNaN(r.RelativePotencyFactor))) {
                 hiddenProperties.Add("RelativePotencyFactor");
                 hiddenProperties.Add("AssessmentGroupMembership");
             }
-            var records = Model.ExposureRecords.Where(r => r.MeanAll > 0).ToList();
+            var records = Model.Records.Where(r => r.MeanAll > 0).ToList();
             sb.AppendTable(
                 Model,
                 records,

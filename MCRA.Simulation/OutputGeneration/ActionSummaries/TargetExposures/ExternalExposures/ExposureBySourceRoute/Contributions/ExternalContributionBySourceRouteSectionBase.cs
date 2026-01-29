@@ -20,14 +20,14 @@ namespace MCRA.Simulation.OutputGeneration {
             bool isPerPerson
         ) {
             var result = new List<ExternalContributionBySourceRouteRecord>();
-            var exposurePathCollection = CalculateExposures(
+            var exposureCollection = CalculateExposures(
                 externalIndividualExposures,
                 relativePotencyFactors,
                 membershipProbabilities,
                 isPerPerson
             );
 
-            foreach (var item in exposurePathCollection) {
+            foreach (var item in exposureCollection) {
                 if (item.Exposures.Any(c => c.Exposure > 0)) {
                     var record = getContributionBySourceRouteRecord(
                         item.ExposurePath,
@@ -79,14 +79,14 @@ namespace MCRA.Simulation.OutputGeneration {
             bool isPerPerson
         ) {
             var result = new List<ExternalContributionBySourceRouteRecord>();
-            var exposurePathCollection = CalculateExposures(
+            var exposureCollection = CalculateExposures(
                 externalIndividualExposures,
                 relativePotencyFactors,
                 membershipProbabilities,
                 isPerPerson
             );
 
-            foreach (var collection in exposurePathCollection) {
+            foreach (var collection in exposureCollection) {
                 if (collection.Exposures.Any(c => c.Exposure > 0)) {
                     var record = new ExternalContributionBySourceRouteRecord {
                         ExposureSource = collection.ExposurePath.Source.GetShortDisplayName(),
