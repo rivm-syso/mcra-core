@@ -14,7 +14,6 @@ namespace MCRA.Simulation.OutputGeneration {
             IDictionary<Compound, double> membershipProbabilities,
             IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
             double percentageForUpperTail,
-            ExposureUnitTriple externalExposureUnit,
             TargetUnit targetUnit
         ) {
             var upperPercentage = percentageForUpperTail;
@@ -27,9 +26,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     aggregateExposures,
                     relativePotencyFactors,
                     membershipProbabilities,
-                    kineticConversionFactors,
                     upperPercentage,
-                    externalExposureUnit,
                     targetUnit
                 );
             Summarize(upperIntakes, substances, targetUnit);

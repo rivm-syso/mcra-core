@@ -20,18 +20,22 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var random = new McraRandomGenerator(seed);
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(100, 2, false, random);
             var substances = FakeSubstancesGenerator.Create(random.Next(1, 4));
-            var routes = new[] { ExposureRoute.Dermal, ExposureRoute.Oral };
-            var paths = FakeExposurePathGenerator.Create(routes);
             var rpfs = substances.ToDictionary(r => r, r => 1d);
             var memberships = substances.ToDictionary(r => r, r => 1d);
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
             var kineticConversionFactors = FakeKineticModelsGenerator.CreateAbsorptionFactors(substances, .1);
             var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
-            var individualExposures = FakeExternalExposureGenerator.CreateExternalIndividualExposures(individualDays, substances, paths, seed);
+            var aggregateIndividualExposures = FakeAggregateIndividualExposuresGenerator.Create(
+                individualDays,
+                substances,
+                targetUnit,
+                random
+            );
 
             var section = new ExposureBySubstanceSection();
             section.Summarize(
-                individualExposures,
+                aggregateIndividualExposures,
+                null,
                 rpfs,
                 memberships,
                 kineticConversionFactors,
@@ -42,7 +46,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 false,
                 false
             );
-            Assert.HasCount(substances.Count, section.Records);
+            Assert.HasCount(substances.Count, section.ExposureRecords);
         }
 
         /// <summary>
@@ -55,17 +59,22 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(100, 2, false, random);
             var substances = FakeSubstancesGenerator.Create(random.Next(1, 4));
             var rpfs = substances.ToDictionary(r => r, r => 1d);
-            var routes = new[] { ExposureRoute.Dermal, ExposureRoute.Oral };
-            var paths = FakeExposurePathGenerator.Create(routes);
             var memberships = substances.ToDictionary(r => r, r => 1d);
             var kineticConversionFactors = FakeKineticModelsGenerator.CreateAbsorptionFactors(substances, .1);
             var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
-            var individualExposures = FakeExternalExposureGenerator.CreateExternalIndividualExposures(individualDays, substances, paths, seed);
+            var aggregateIndividualDayExposures = FakeAggregateIndividualDayExposuresGenerator
+                .Create(
+                    individualDays,
+                    substances,
+                    targetUnit,
+                    random
+                );
 
             var section = new ExposureBySubstanceSection();
             section.Summarize(
-                individualExposures,
+                null,
+                aggregateIndividualDayExposures,
                 rpfs,
                 memberships,
                 kineticConversionFactors,
@@ -76,7 +85,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 false,
                 false
             );
-            Assert.HasCount(substances.Count, section.Records);
+            Assert.HasCount(substances.Count, section.ExposureRecords);
         }
     }
 }

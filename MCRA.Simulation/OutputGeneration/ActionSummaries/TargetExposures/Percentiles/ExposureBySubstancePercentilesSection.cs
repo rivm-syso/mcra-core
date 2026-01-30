@@ -1,17 +1,17 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
 
-    public sealed class ExposureBySubstancePercentilesSection : ExposureBySubstanceSectionBase {
+    public sealed class ExposureBySubstancePercentilesSection : SummarySection {
         public override bool SaveTemporaryData => true;
         public List<TargetExposurePercentileRecord> Records { get; set; } = [];
         public void Summarize(
-            ICollection<IExternalIndividualExposure> externalIndividualExposures,
+            ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
+            ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
             ICollection<Compound> substances,
             IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
             double uncertaintyLowerBound,
@@ -19,15 +19,22 @@ namespace MCRA.Simulation.OutputGeneration {
             bool isPerPerson,
             List<double> percentages
         ) {
+            var aggregateExposures = aggregateIndividualExposures != null
+               ? aggregateIndividualExposures
+               : aggregateIndividualDayExposures.Cast<AggregateIndividualExposure>().ToList();
 
-            var exposureCollection = CalculateExposures(
-                externalIndividualExposures,
-                substances,
-                kineticConversionFactors,
-                isPerPerson
-            );
+            foreach (var substance in substances) {
+                var exposures = aggregateExposures
+                    .Select(c => (
+                        SimulatedIndividual: c.SimulatedIndividual,
+                        Exposure: c.GetTotalExternalExposureForSubstance(
+                            substance,
+                            kineticConversionFactors,
+                            isPerPerson
+                        )
+                    ))
+                    .ToList();
 
-            foreach (var (substance, exposures) in exposureCollection) {
                 if (exposures.Any(c => c.Exposure > 0)) {
                     var weights = exposures
                         .Select(c => c.SimulatedIndividual.SamplingWeight)
@@ -55,20 +62,28 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         public void SummarizeUncertainty(
-            ICollection<IExternalIndividualExposure> externalIndividualExposures,
+            ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
+            ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
             ICollection<Compound> substances,
             IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
             List<double> percentages,
             bool isPerPerson
         ) {
-            var exposureCollection = CalculateExposures(
-                externalIndividualExposures,
-                substances,
-                kineticConversionFactors,
-                isPerPerson
-            );
+            var aggregateExposures = aggregateIndividualExposures != null
+                ? aggregateIndividualExposures
+                : aggregateIndividualDayExposures.Cast<AggregateIndividualExposure>().ToList();
 
-            foreach (var (substance, exposures) in exposureCollection) {
+            foreach (var substance in substances) {
+                var exposures = aggregateExposures
+                    .Select(c => (
+                        SimulatedIndividual: c.SimulatedIndividual,
+                        Exposure: c.GetTotalExternalExposureForSubstance(
+                            substance,
+                            kineticConversionFactors,
+                            isPerPerson
+                        )
+                    ))
+                    .ToList();
                 if (exposures.Any(c => c.Exposure > 0)) {
                     var weights = exposures
                         .Select(c => c.SimulatedIndividual.SamplingWeight)

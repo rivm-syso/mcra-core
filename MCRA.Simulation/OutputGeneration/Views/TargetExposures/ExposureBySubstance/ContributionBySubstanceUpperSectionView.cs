@@ -35,7 +35,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     Model.Records,
                     "ExternalExposureBySubstanceUpperTable",
                     ViewBag,
-                    caption: $"Contributions by Ssubstance for the upper distribution (estimated {Model.CalculatedUpperPercentage:F1}%).",
+                    caption: $"Contributions by substance for the upper distribution (estimated {Model.CalculatedUpperPercentage:F1}%).",
                     saveCsv: true,
                     hiddenProperties: hiddenProperties
                 );

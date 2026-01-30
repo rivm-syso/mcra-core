@@ -5,7 +5,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
     public class ExposureBySubstanceSectionView : SectionView<ExposureBySubstanceSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             var chartCreator = new ExposureBySubstanceBoxPlotChartCreator(
-                Model.BoxPlotRecords,
+                Model.ExposureBoxPlotRecords,
                 Model.TargetUnit,
                 Model.ShowOutliers
             );
@@ -13,7 +13,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
                 name: $"BoxPlotBySubstanceData",
                 section: Model,
-                items: Model.BoxPlotRecords,
+                items: Model.ExposureBoxPlotRecords,
                 viewBag: ViewBag
             );
             sb.AppendChart(
@@ -30,7 +30,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             sb.AppendTable(
                 Model,
-                Model.Records,
+                Model.ExposureRecords,
                 "ExposureBySubstanceTable",
                 ViewBag,
                 caption: "Exposure statistics by substance (total distribution).",

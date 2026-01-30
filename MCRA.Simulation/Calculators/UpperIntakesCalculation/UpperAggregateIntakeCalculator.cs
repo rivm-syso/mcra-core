@@ -17,9 +17,7 @@ namespace MCRA.Simulation.Calculators.UpperIntakesCalculation {
             ICollection<T> targetExposures,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
             double percentageForUpperTail,
-            ExposureUnitTriple externalExposureUnit,
             TargetUnit targetUnit
         ) where T : AggregateIndividualExposure {
             var aggregateExposures = targetExposures

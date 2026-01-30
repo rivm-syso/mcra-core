@@ -17,9 +17,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
         public void ContributionBySubstanceUpperPieChart_TestChronic() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var routes = new[] { ExposureRoute.Dermal, ExposureRoute.Oral, ExposureRoute.Inhalation };
+            var allRoutes = new[] { ExposureRoute.Dermal, ExposureRoute.Oral, ExposureRoute.Inhalation };
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
             for (int numIndividuals = 1; numIndividuals < 100; numIndividuals++) {
+                var routes = allRoutes.Where(r => random.NextDouble() > .5).ToList();
                 var paths = FakeExposurePathGenerator.Create([.. routes]);
                 var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(numIndividuals, 2, false, random);
                 var substances = FakeSubstancesGenerator.Create(random.Next(1, 4));
@@ -32,11 +33,20 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     targetUnit
                 );
                 var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
-                var individualExposures = FakeExternalExposureGenerator.CreateExternalIndividualExposures(individualDays, substances, paths, seed);
+                var aggregateIndividualExposures = FakeAggregateIndividualExposuresGenerator.Create(
+                    individualDays,
+                    substances,
+                    paths,
+                    kineticModelCalculators,
+                    externalExposuresUnit,
+                    targetUnit,
+                    random
+                );
 
                 var section = new ContributionBySubstanceUpperSection();
                 section.Summarize(
-                    individualExposures,
+                    aggregateIndividualExposures,
+                    null,
                     substances,
                     rpfs,
                     memberships,
@@ -44,9 +54,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     97.5,
                     2.5,
                     97.5,
+                    targetUnit,
                     false
                 );
-                
+                if (aggregateIndividualExposures.Any(r => r.IsPositiveTargetExposure(targetUnit.Target)) && section.NumberOfIntakes > 0) {
+                    Assert.AreEqual(100D, section.Records.Sum(c => c.ContributionPercentage), .001);
+                }
                 Assert.HasCount(substances.Count, section.Records);
 
                 var chart = new ContributionBySubstanceUpperPieChartCreator(section, false);
