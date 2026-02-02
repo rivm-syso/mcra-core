@@ -36,7 +36,7 @@ namespace MCRA.Simulation.Actions.DustConcentrations {
                     var alignmentFactor = r.Unit
                         .GetConcentrationAlignmentFactor(SystemUnits.DefaultDustConcentrationUnit, r.Substance.MolecularMass);
                     var conc = r.Concentration * alignmentFactor;
-                    return new DustConcentration {
+                    return new SubstanceConcentration {
                         idSample = r.idSample,
                         Substance = r.Substance,
                         Concentration = conc,
@@ -64,7 +64,7 @@ namespace MCRA.Simulation.Actions.DustConcentrations {
                     data.DustConcentrations = [.. data.DustConcentrations
                         .GroupBy(c => c.Substance)
                         .SelectMany(c => c.Resample(uncertaintySourceGenerators[UncertaintySource.DustConcentrations])
-                            .Select(r => new DustConcentration() {
+                            .Select(r => new SubstanceConcentration() {
                                 Substance = r.Substance,
                                 Concentration = r.Concentration,
                                 idSample = r.idSample,

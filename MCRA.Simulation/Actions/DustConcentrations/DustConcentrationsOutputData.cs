@@ -5,7 +5,7 @@ using MCRA.Simulation.Action;
 
 namespace MCRA.Simulation.Actions.DustConcentrations {
     public class DustConcentrationsOutputData : IModuleOutputData {
-        public IList<DustConcentration> DustConcentrations { get; set; }
+        public IList<SubstanceConcentration> DustConcentrations { get; set; }
         public ConcentrationUnit DustConcentrationUnit { get; set; }
         public IModuleOutputData Copy() {
             return new DustConcentrationsOutputData() {

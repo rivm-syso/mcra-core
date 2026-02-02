@@ -38,13 +38,13 @@
     <OutputSetting source="DietaryExposures">IsPerPerson</OutputSetting>
   </OutputSettings>
   <UncertaintySettings>
-    <UncertaintySetting source ="SoilConcentrationDistributions">ResampleSoilConcentrations</UncertaintySetting>
+    <UncertaintySetting source ="SoilConcentrations">ResampleSoilConcentrations</UncertaintySetting>
     <UncertaintySetting source="Action">UncertaintyLowerBound</UncertaintySetting>
     <UncertaintySetting source="Action">UncertaintyUpperBound</UncertaintySetting>
   </UncertaintySettings>
   <CalculationInputs>
     <Input>DietaryExposures</Input>
-    <Input>SoilConcentrationDistributions</Input>
+    <Input>SoilConcentrations</Input>
     <Input>SoilExposureDeterminants</Input>
     <Input>Individuals</Input>
   </CalculationInputs>

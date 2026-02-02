@@ -2,13 +2,13 @@
 using System.Text;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
-    public class SoilConcentrationDistributionsSummarySectionView : SectionView<SoilConcentrationDistributionsSummarySection> {
+    public class SoilConcentrationsSummarySectionView : SectionView<SoilConcentrationsSummarySection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             if (Model.Records.Any()) {
                 // Description
                 var totalRecords = Model.Records.Count;
                 var numberOfSubstances = Model.Records.Select(r => r.SubstanceName).Distinct().Count();
-                sb.AppendDescriptionParagraph($"Total {totalRecords} concentration distributions for {numberOfSubstances} substances.");
+                sb.AppendDescriptionParagraph($"Total {totalRecords} concentrations for {numberOfSubstances} substances.");
 
                 // Download table
                 var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
@@ -36,14 +36,14 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 sb.AppendTable(
                     Model,
                     Model.Records,
-                    "SoilConcentrationDistributionsDataTable",
+                    "SoilConcentrationsDataTable",
                     ViewBag,
                     caption: "Soil concentrations.",
                     saveCsv: true,
                     hiddenProperties: hiddenProperties
                 );
             } else {
-                sb.AppendDescriptionParagraph("No soil concentration distributions available for the selected substances.");
+                sb.AppendDescriptionParagraph("No soil concentrations available for the selected substances.");
             }
         }
     }

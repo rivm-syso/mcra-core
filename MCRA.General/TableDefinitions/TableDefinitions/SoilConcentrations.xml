@@ -1,18 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TableDefinition>
-  <Id>SoilConcentrationDistributions</Id>
-  <Name>Soil concentration distributions</Name>
+  <Id>SoilConcentrations</Id>
+  <Name>Soil concentrations</Name>
   <Description>
     Substance concentrations in soil.
   </Description>
   <Aliases>
-    <string>SoilConcentrationDistributions</string>
-    <string>ConcentrationDistributionsSoil</string>
+    <string>SoilConcentrations</string>
+    <string>ConcentrationsSoil</string>
   </Aliases>
   <HiddenAliases>
-    <string>RawSoilConcentrationDistributions</string>
+    <string>RawSoilConcentrations</string>
   </HiddenAliases>
-  <TargetDataTable>RawSoilConcentrationDistributions</TargetDataTable>
+  <TargetDataTable>RawSoilConcentrations</TargetDataTable>
   <ColumnDefinitions>
     <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
       <Id>idSample</Id>

@@ -9,38 +9,38 @@ namespace MCRA.Data.Management.CompiledDataManagers {
         /// <summary>
         /// All maximum residue limits.
         /// </summary>
-        public IList<SoilConcentrationDistribution> GetAllSoilConcentrationDistributions() {
-            if (_data.AllSoilConcentrationDistributions == null) {
-                LoadScope(SourceTableGroup.SoilConcentrationDistributions);
-                var allSoilConcentrationDistributions = new List<SoilConcentrationDistribution>();
-                var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.SoilConcentrationDistributions);
+        public IList<SubstanceConcentration> GetAllSoilConcentrations() {
+            if (_data.AllSoilConcentrations == null) {
+                LoadScope(SourceTableGroup.SoilConcentrations);
+                var allSoilConcentrations = new List<SubstanceConcentration>();
+                var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.SoilConcentrations);
                 if (rawDataSourceIds?.Count > 0) {
                     GetAllCompounds();
                     using (var rdm = _rawDataProvider.CreateRawDataManager()) {
                         foreach (var rawDataSourceId in rawDataSourceIds) {
-                            using (var r = rdm.OpenDataReader<RawSoilConcentrationDistributions>(rawDataSourceId, out int[] fieldMap)) {
+                            using (var r = rdm.OpenDataReader<RawSoilConcentrations>(rawDataSourceId, out int[] fieldMap)) {
                                 while (r?.Read() ?? false) {
-                                    var idSubstance = r.GetString(RawSoilConcentrationDistributions.IdSubstance, fieldMap);
+                                    var idSubstance = r.GetString(RawSoilConcentrations.IdSubstance, fieldMap);
                                     var valid = CheckLinkSelected(ScopingType.Compounds, idSubstance);
                                     if (valid) {
-                                        var unitString = r.GetStringOrNull(RawSoilConcentrationDistributions.ConcentrationUnit, fieldMap);
+                                        var unitString = r.GetStringOrNull(RawSoilConcentrations.ConcentrationUnit, fieldMap);
                                         var unit = ConcentrationUnitConverter.FromString(unitString, ConcentrationUnit.ugPerg);
-                                        var soilConcentrationDistribution = new SoilConcentrationDistribution {
-                                            idSample = r.GetStringOrNull(RawSoilConcentrationDistributions.IdSample, fieldMap),
+                                        var soilConcentration = new SubstanceConcentration {
+                                            idSample = r.GetStringOrNull(RawSoilConcentrations.IdSample, fieldMap),
                                             Substance = _data.GetOrAddSubstance(idSubstance),
-                                            Concentration = r.GetDouble(RawSoilConcentrationDistributions.Concentration, fieldMap),
+                                            Concentration = r.GetDouble(RawSoilConcentrations.Concentration, fieldMap),
                                             Unit = unit
                                         };
-                                        allSoilConcentrationDistributions.Add(soilConcentrationDistribution);
+                                        allSoilConcentrations.Add(soilConcentration);
                                     }
                                 }
                             }
                         }
                     }
                 }
-                _data.AllSoilConcentrationDistributions = allSoilConcentrationDistributions;
+                _data.AllSoilConcentrations = allSoilConcentrations;
             }
-            return _data.AllSoilConcentrationDistributions;
+            return _data.AllSoilConcentrations;
         }
     }
 }

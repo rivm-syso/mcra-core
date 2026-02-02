@@ -563,7 +563,7 @@ namespace MCRA.Data.Management {
 
         public IList<AirVentilatoryFlowRate> AllAirVentilatoryFlowRates => _dataManager.GetAllAirVentilatoryFlowRates();
 
-        public IList<DustConcentration> AllDustConcentrations => _dataManager.GetAllDustConcentrations();
+        public IList<SubstanceConcentration> AllDustConcentrations => _dataManager.GetAllDustConcentrations();
 
         public IList<DustConcentrationDistribution> AllDustConcentrationDistributions => _dataManager.GetAllDustConcentrationDistributions();
 
@@ -579,7 +579,7 @@ namespace MCRA.Data.Management {
 
         public IDictionary<string, PbkModelDefinition> AllPbkModelDefinitions => _dataManager.GetAllPbkModelDefinitions(_tempDataFolder?.FullName);
 
-        public IList<SoilConcentrationDistribution> AllSoilConcentrationDistributions => _dataManager.GetAllSoilConcentrationDistributions();
+        public IList<SubstanceConcentration> AllSoilConcentrations => _dataManager.GetAllSoilConcentrations();
 
         public IList<SoilIngestion> AllSoilIngestions => _dataManager.GetAllSoilIngestions();
 

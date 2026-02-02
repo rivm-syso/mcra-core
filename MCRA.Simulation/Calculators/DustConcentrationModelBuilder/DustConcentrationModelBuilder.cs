@@ -15,7 +15,7 @@ namespace MCRA.Simulation.Calculators.DustConcentrationModelBuilder {
         /// Creates concentration models for dust concentrations.
         /// </summary>
         public IDictionary<Compound, ConcentrationModel> Create(
-            ICollection<DustConcentration> dustConcentrations,
+            ICollection<SubstanceConcentration> dustConcentrations,
             NonDetectsHandlingMethod nonDetectsHandlingMethod,
             double lorReplacementFactor
         ) {
@@ -40,7 +40,7 @@ namespace MCRA.Simulation.Calculators.DustConcentrationModelBuilder {
         /// </summary>
         private ConcentrationModel createConcentrationModel(
             Compound substance,
-            IEnumerable<DustConcentration> concentrations,
+            IEnumerable<SubstanceConcentration> concentrations,
             NonDetectsHandlingMethod nonDetectsHandlingMethod,
             double lorReplacementFactor
         ) {

@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Module>
-  <Id>SoilConcentrationDistributions</Id>
-  <Name>Soil concentration distributions</Name>
+  <Id>SoilConcentrations</Id>
+  <Name>Soil concentrations</Name>
   <ModuleType>DataModule</ModuleType>
-  <ActionType>SoilConcentrationDistributions</ActionType>
-  <TableGroup>SoilConcentrationDistributions</TableGroup>
+  <ActionType>SoilConcentrations</ActionType>
+  <TableGroup>SoilConcentrations</TableGroup>
   <IsAdvancedActionType>true</IsAdvancedActionType>
   <Description>
-    Soil concentration distributions data are analytical measurements of chemical substances occurring in soil samples.
+    Soil concentrations data are analytical measurements of chemical substances occurring in soil samples.
     In their simplest form, concentration data can just be used as provided by datasets.
   </Description>
   <ShortDescription>
-    Soil concentration distributions data are data on analytical measurements of chemical substances occurring in soil samples.
+    Soil concentrations data are data on analytical measurements of chemical substances occurring in soil samples.
   </ShortDescription>
   <DataDescription>
-    Soil concentration distributions data can be entered using the internal, relational data format.
+    Soil concentrations data can be entered using the internal, relational data format.
   </DataDescription>
   <Entities>
     <Entity>Substances</Entity>

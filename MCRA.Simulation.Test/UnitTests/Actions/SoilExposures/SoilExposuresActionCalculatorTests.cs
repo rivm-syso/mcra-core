@@ -48,7 +48,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions.SoilExposures {
 
             selectedPopulation.PopulationIndividualPropertyValues = populationIndividualPropertyValues;
 
-            var soilConcentrations = FakeSoilConcentrationDistributionsGenerator.Create(substances, seed);
+            var soilConcentrations = FakeSoilConcentrationsGenerator.Create(substances, seed);
 
             var project = new ProjectDto();
             var config = project.SoilExposuresSettings;
@@ -70,7 +70,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions.SoilExposures {
                 AllCompounds = substances,
                 ActiveSubstances = substances,
                 SelectedPopulation = selectedPopulation,
-                SoilConcentrationDistributions = soilConcentrations,
+                SoilConcentrations = soilConcentrations,
                 SoilIngestions = soilIngestions,
                 SoilConcentrationUnit = soilConcentrations.FirstOrDefault().Unit,
                 SoilIngestionUnit = soilIngestions.FirstOrDefault().ExposureUnit,
@@ -108,7 +108,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions.SoilExposures {
             var foodsAsMeasured = FakeFoodsGenerator.Create(3);
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var dietaryIndividualDayIntakes = FakeDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);
-            var soilConcentrations = FakeSoilConcentrationDistributionsGenerator.Create(substances, seed);
+            var soilConcentrations = FakeSoilConcentrationsGenerator.Create(substances, seed);
 
             var project = new ProjectDto();
             var config = project.SoilExposuresSettings;
@@ -120,7 +120,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions.SoilExposures {
                 AllCompounds = substances,
                 ActiveSubstances = substances,
                 DietaryIndividualDayIntakes = dietaryIndividualDayIntakes,
-                SoilConcentrationDistributions = soilConcentrations,
+                SoilConcentrations = soilConcentrations,
                 SoilIngestions = soilIngestions,
                 SoilConcentrationUnit = soilConcentrations.FirstOrDefault().Unit,
                 SoilIngestionUnit = soilIngestions.FirstOrDefault().ExposureUnit

@@ -1,7 +1,7 @@
 ﻿using MCRA.General;
 
 namespace MCRA.Data.Compiled.Objects {
-    public sealed class DustConcentration {
+    public sealed class SubstanceConcentration {
         public string idSample { get; set; }
         public Compound Substance { get; set; }
         public double Concentration { get; set; }

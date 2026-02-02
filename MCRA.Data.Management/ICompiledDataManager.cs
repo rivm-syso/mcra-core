@@ -79,7 +79,7 @@ namespace MCRA.Data.Management {
         IList<OutdoorAirConcentration> GetAllOutdoorAirConcentrations();
         IList<AirIndoorFraction> GetAllAirIndoorFractions();
         IList<AirVentilatoryFlowRate> GetAllAirVentilatoryFlowRates();
-        IList<DustConcentration> GetAllDustConcentrations();
+        IList<SubstanceConcentration> GetAllDustConcentrations();
         IList<DustConcentrationDistribution> GetAllDustConcentrationDistributions();
         IList<DustIngestion> GetAllDustIngestions();
         IList<DustBodyExposureFraction> GetAllDustBodyExposureFractions();
@@ -87,7 +87,7 @@ namespace MCRA.Data.Management {
         IList<DustAvailabilityFraction> GetAllDustAvailabilityFractions();
         IList<ExposureResponseFunction> GetAllExposureResponseFunctions();
         IDictionary<string, PbkModelDefinition> GetAllPbkModelDefinitions(string dataFilePath = null);
-        IList<SoilConcentrationDistribution> GetAllSoilConcentrationDistributions();
+        IList<SubstanceConcentration> GetAllSoilConcentrations();
         IList<SoilIngestion> GetAllSoilIngestions();
         IList<BurdenOfDisease> GetAllBurdensOfDisease();
         IList<BodIndicatorConversion> GetAllBodIndicatorConversions();

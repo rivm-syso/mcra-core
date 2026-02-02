@@ -4,27 +4,27 @@ using MCRA.Utils.Statistics;
 namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
 
     /// <summary>
-    /// Class for generating fake soil concentration distributions.
+    /// Class for generating fake soil concentrations.
     /// </summary>
-    public static class FakeSoilConcentrationDistributionsGenerator {
+    public static class FakeSoilConcentrationsGenerator {
 
         /// <summary>
-        /// Generates fake soil concentration distributions for the specified substances.
+        /// Generates fake soil concentrations for the specified substances.
         /// </summary>
-        public static List<SoilConcentrationDistribution> Create(
+        public static List<SubstanceConcentration> Create(
             List<Compound> substances,
             int seed = 1
         ) {
             var random = new McraRandomGenerator(seed);
-            var concentrationDistributions = new List<SoilConcentrationDistribution>();
+            var concentrations = new List<SubstanceConcentration>();
             foreach (var substance in substances) {
                 var conc = random.NextDouble();
-                concentrationDistributions.Add(new SoilConcentrationDistribution() {
+                concentrations.Add(new SubstanceConcentration() {
                     Substance = substance,
                     Concentration = conc
                 });
             }
-            return concentrationDistributions;
+            return concentrations;
         }
     }
 }

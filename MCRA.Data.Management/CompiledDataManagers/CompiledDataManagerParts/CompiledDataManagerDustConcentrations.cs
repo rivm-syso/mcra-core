@@ -8,10 +8,10 @@ namespace MCRA.Data.Management.CompiledDataManagers {
         /// <summary>
         /// Read all dust concentrations within scope.
         /// </summary>
-        public IList<DustConcentration> GetAllDustConcentrations() {
+        public IList<SubstanceConcentration> GetAllDustConcentrations() {
             if (_data.AllDustConcentrations == null) {
                 LoadScope(SourceTableGroup.DustConcentrations);
-                var allDustConcentrations = new List<DustConcentration>();
+                var allDustConcentrations = new List<SubstanceConcentration>();
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.DustConcentrations);
                 if (rawDataSourceIds?.Count > 0) {
                     GetAllCompounds();
@@ -24,7 +24,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                     if (valid) {
                                         var unitString = r.GetStringOrNull(RawDustConcentrations.ConcentrationUnit, fieldMap);
                                         var unit = ConcentrationUnitConverter.FromString(unitString, ConcentrationUnit.ugPerg);
-                                        var dustConcentrations = new DustConcentration {
+                                        var dustConcentrations = new SubstanceConcentration {
                                             idSample = r.GetStringOrNull(RawDustConcentrations.IdSample, fieldMap),
                                             Substance = _data.GetOrAddSubstance(idSubstance),
                                             Concentration = r.GetDouble(RawDustConcentrations.Concentration, fieldMap),

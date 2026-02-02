@@ -174,7 +174,7 @@ namespace MCRA.Simulation.Action {
                 }
 
                 if (activeUncertaintySettings.Contains(SettingsItemType.ResampleSoilConcentrations)) {
-                    section.SummarizeSetting(SettingsItemType.ResampleSoilConcentrations, project.SoilConcentrationDistributionsSettings.ResampleSoilConcentrations);
+                    section.SummarizeSetting(SettingsItemType.ResampleSoilConcentrations, project.SoilConcentrationsSettings.ResampleSoilConcentrations);
                 }
 
                 if (activeUncertaintySettings.Contains(SettingsItemType.ResampleIndividuals)) {

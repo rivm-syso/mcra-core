@@ -7,7 +7,7 @@ namespace MCRA.Simulation.OutputGeneration {
     public sealed class DustConcentrationsSummarySection : SubstanceConcentrationsSummarySection {
 
         public void Summarize(
-            ICollection<DustConcentration> dustConcentrations,
+            ICollection<SubstanceConcentration> dustConcentrations,
             ConcentrationUnit concentrationUnit,
             double lowerPercentage,
             double upperPercentage
@@ -22,7 +22,7 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         private List<SubstanceConcentrationsSummaryRecord> summarizeConcentrations(
-            ICollection<DustConcentration> dustConcentrations,
+            ICollection<SubstanceConcentration> dustConcentrations,
             double lowerPercentage,
             double upperPercentage
         ) {
@@ -58,7 +58,7 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         private List<SubstanceConcentrationsPercentilesRecord> summarizeBoxPlotRecord(
-            ICollection<DustConcentration> dustConcentrations
+            ICollection<SubstanceConcentration> dustConcentrations
         ) {
             var percentages = new double[] { 5, 10, 25, 50, 75, 90, 95 };
             var percentilesRecords = new List<SubstanceConcentrationsPercentilesRecord>();

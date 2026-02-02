@@ -126,7 +126,7 @@
         DustAdherenceAmounts = 129,
         DustAvailabilityFractions = 130,
         ExposureResponseFunctions = 131,
-        SoilConcentrationDistributions = 132,
+        SoilConcentrations = 132,
         SoilIngestions = 133,
         BurdensOfDisease = 134,
         IndoorAirConcentrations = 135,

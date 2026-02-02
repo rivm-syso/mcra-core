@@ -1855,11 +1855,11 @@
     </ParentScopeReferences>
   </ScopingTypeDefinition>
   <ScopingTypeDefinition>
-    <Id>SoilConcentrationDistributions</Id>
-    <Name>Soil concentration distributions</Name>
-    <RawTableId>SoilConcentrationDistributions</RawTableId>
+    <Id>SoilConcentrations</Id>
+    <Name>Soil concentrations</Name>
+    <RawTableId>SoilConcentrations</RawTableId>
     <Description>-</Description>
-    <TableGroup>SoilConcentrationDistributions</TableGroup>
+    <TableGroup>SoilConcentrations</TableGroup>
     <ParentScopeReferences>
       <ParentScopeReference>
         <IdField>idSubstance</IdField>

@@ -3,9 +3,9 @@ using MCRA.Utils.ProgressReporting;
 using MCRA.General;
 
 namespace MCRA.Data.Raw.Copying.BulkCopiers {
-    public sealed class SoilConcentrationDistributionsBulkCopier : RawDataSourceBulkCopierBase {
+    public sealed class SoilConcentrationsBulkCopier : RawDataSourceBulkCopierBase {
 
-        public SoilConcentrationDistributionsBulkCopier(
+        public SoilConcentrationsBulkCopier(
             IDataSourceWriter dataSourceWriter,
             HashSet<SourceTableGroup> parsedTableGroups,
             HashSet<RawDataSourceTableID> parsedDataTables)
@@ -17,10 +17,10 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
         }
 
         public override void TryCopy(IDataSourceReader dataSourceReader, ProgressState progressState) {
-            progressState.Update("Processing SoilConcentrationDistributions");
-            var hasSoilConcentrationDistributions = tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.SoilConcentrationDistributions);
-            if (hasSoilConcentrationDistributions) {
-                registerTableGroup(SourceTableGroup.SoilConcentrationDistributions);
+            progressState.Update("Processing Soil concentrations");
+            var hasSoilConcentrations = tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.SoilConcentrations);
+            if (hasSoilConcentrations) {
+                registerTableGroup(SourceTableGroup.SoilConcentrations);
             }
             progressState.Update(100);
         }

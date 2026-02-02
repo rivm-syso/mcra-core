@@ -88,7 +88,7 @@ namespace MCRA.Data.Compiled {
         public IList<OutdoorAirConcentration> AllOutdoorAirConcentrations { get; set; }
         public IList<AirIndoorFraction> AllAirIndoorFractions { get; set; }
         public IList<AirVentilatoryFlowRate> AllAirVentilatoryFlowRates { get; set; }
-        public IList<DustConcentration> AllDustConcentrations { get; set; }
+        public IList<SubstanceConcentration> AllDustConcentrations { get; set; }
         public IList<DustConcentrationDistribution> AllDustConcentrationDistributions { get; set; }
         public IList<DustIngestion> AllDustIngestions { get; set; }
         public IList<DustBodyExposureFraction> AllDustBodyExposureFractions { get; set; }
@@ -96,7 +96,7 @@ namespace MCRA.Data.Compiled {
         public IList<DustAvailabilityFraction> AllDustAvailabilityFractions { get; set; }
         public IList<ExposureResponseFunction> AllExposureResponseFunctions { get; set; }
         public IDictionary<string, PbkModelDefinition> AllPbkModelDefinitions { get; set; }
-        public IList<SoilConcentrationDistribution> AllSoilConcentrationDistributions { get; set; }
+        public IList<SubstanceConcentration> AllSoilConcentrations { get; set; }
         public IList<SoilIngestion> AllSoilIngestions { get; set; }
         public IList<BurdenOfDisease> AllBurdensOfDisease { get; set; }
         public IList<BodIndicatorConversion> AllBodIndicatorConversions { get; set; }

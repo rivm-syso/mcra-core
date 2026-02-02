@@ -4,28 +4,28 @@ using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
 
-namespace MCRA.Simulation.Actions.SoilConcentrationDistributions {
-    public enum SoilConcentrationDistributionsSections {
+namespace MCRA.Simulation.Actions.SoilConcentrations {
+    public enum SoilConcentrationsSections {
         //No sub-sections
     }
-    public class SoilConcentrationDistributionsSummarizer : ActionResultsSummarizerBase<ISoilConcentrationDistributionsActionResult> {
+    public class SoilConcentrationsSummarizer : ActionResultsSummarizerBase<ISoilConcentrationsActionResult> {
 
-        public override ActionType ActionType => ActionType.SoilConcentrationDistributions;
+        public override ActionType ActionType => ActionType.SoilConcentrations;
 
-        public override void Summarize(ActionModuleConfig sectionConfig, ISoilConcentrationDistributionsActionResult actionResult, ActionData data, SectionHeader header, int order) {
-            var outputSettings = new ModuleOutputSectionsManager<SoilConcentrationDistributionsSections>(sectionConfig, ActionType);
+        public override void Summarize(ActionModuleConfig sectionConfig, ISoilConcentrationsActionResult actionResult, ActionData data, SectionHeader header, int order) {
+            var outputSettings = new ModuleOutputSectionsManager<SoilConcentrationsSections>(sectionConfig, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }
 
-            var section = new SoilConcentrationDistributionsSummarySection() {
+            var section = new SoilConcentrationsSummarySection() {
                 SectionLabel = ActionType.ToString()
             };
             var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
             subHeader.Units = collectUnits(data, sectionConfig);
 
             section.Summarize(
-                data.SoilConcentrationDistributions,
+                data.SoilConcentrations,
                 data.SoilConcentrationUnit,
                 sectionConfig.VariabilityLowerPercentage,
                 sectionConfig.VariabilityUpperPercentage

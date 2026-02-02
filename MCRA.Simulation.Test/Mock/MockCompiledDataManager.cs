@@ -293,7 +293,7 @@ namespace MCRA.Simulation.Test.Mock {
             return _data.AllSingleValueNonDietaryExposureEstimates;
         }
 
-        public IList<DustConcentration> GetAllDustConcentrations() {
+        public IList<SubstanceConcentration> GetAllDustConcentrations() {
             return _data.AllDustConcentrations;
         }
 
@@ -323,8 +323,8 @@ namespace MCRA.Simulation.Test.Mock {
         IDictionary<string, PbkModelDefinition> ICompiledDataManager.GetAllPbkModelDefinitions(string dataFilePath) {
             return _data.AllPbkModelDefinitions;
         }
-        public IList<SoilConcentrationDistribution> GetAllSoilConcentrationDistributions() {
-            return _data.AllSoilConcentrationDistributions;
+        public IList<SubstanceConcentration> GetAllSoilConcentrations() {
+            return _data.AllSoilConcentrations;
         }
 
         public IList<SoilIngestion> GetAllSoilIngestions() {

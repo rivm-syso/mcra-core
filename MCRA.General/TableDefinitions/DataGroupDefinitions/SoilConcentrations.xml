@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>SoilConcentrations</Id>
+  <Name>Soil concentrations</Name>
+  <SourceTableGroup>SoilConcentrations</SourceTableGroup>
+  <Description>
+    Substance concentrations in soil.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>SoilConcentrations</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

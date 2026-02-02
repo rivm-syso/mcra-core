@@ -113,8 +113,8 @@ namespace MCRA.General {
         ExposureResponseFunctions = 50,
         [Display(Name = "PBK model definitions", Order = 53)]
         PbkModelDefinitions = 51,
-        [Display(Name = "Soil concentration distributions", Order = 54)]
-        SoilConcentrationDistributions = 52,
+        [Display(Name = "Soil concentrations", Order = 54)]
+        SoilConcentrations = 52,
         [Display(Name = "Soil exposure determinants", Order = 55)]
         SoilExposureDeterminants = 53,
         [Display(Name = "Burden of disease", Order = 56)]
