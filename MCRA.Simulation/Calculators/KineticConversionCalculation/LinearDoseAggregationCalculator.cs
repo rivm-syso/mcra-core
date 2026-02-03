@@ -16,7 +16,7 @@ namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
 
         public KineticConversionModelType ModelType => KineticConversionModelType.ConversionFactorModel;
 
-        private Compound _substance;
+        private readonly Compound _substance;
 
         private readonly List<Compound> _outputSubstances;
 
@@ -27,12 +27,14 @@ namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
             ICollection<IKineticConversionFactorModel> kineticConversionFactorModels
         ) {
             _kineticConversionFactorModels = kineticConversionFactorModels
-                .Where(r => r.MatchesFromSubstance(substance))
-                .GroupBy(r => (r.ConversionRule.ExposureRoute, r.ConversionRule.TargetTo))
-                .ToDictionary(r => r.Key, g => g.OrderByDescending(r => r.IsSubstanceFromSpecific()).First());
+                .Where(r => r.SubstanceFrom == substance)
+                .GroupBy(r => (r.TargetFrom.ExposureRoute, r.TargetTo))
+                .ToDictionary(
+                    r => r.Key,
+                    g => g.OrderByDescending(r => r.SubstanceFrom != null ? 1 : 0).First()
+                );
             _outputSubstances = _kineticConversionFactorModels.Values
-                .Select(r => r.ConversionRule.SubstanceTo != SimulationConstants.NullSubstance
-                    ? r.ConversionRule.SubstanceTo : substance)
+                .Select(r => r.SubstanceTo ?? substance)
                 .ToList();
             _substance = substance;
         }
@@ -147,11 +149,10 @@ namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
                 || _kineticConversionFactorModels.TryGetValue((route, ExposureTarget.DefaultInternalExposureTarget), out model)
             ) {
                 var inputAlignmentFactor = model
-                    .ConversionRule
-                    .DoseUnitFrom
+                    .UnitFrom
                     .GetAlignmentFactor(internalTargetUnit.ExposureUnit, _substance.MolecularMass, double.NaN);
                 var outputAlignmentFactor = exposureUnit
-                    .GetAlignmentFactor(model.ConversionRule.DoseUnitTo, _substance.MolecularMass, individual.BodyWeight);
+                    .GetAlignmentFactor(model.UnitTo, _substance.MolecularMass, individual.BodyWeight);
                 var targetDose = dose
                     * model.GetConversionFactor(individual.Age, individual.Gender)
                     * inputAlignmentFactor
@@ -184,12 +185,11 @@ namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
                 || _kineticConversionFactorModels.TryGetValue((externalExposureRoute, ExposureTarget.DefaultInternalExposureTarget), out model)
             ) {
                 var inputAlignmentFactor = model
-                    .ConversionRule
-                    .DoseUnitFrom
+                    .UnitFrom
                     .GetAlignmentFactor(externalExposureUnit, _substance.MolecularMass, double.NaN);
                 var outputAlignmentFactor = internalDoseUnit
                     .ExposureUnit
-                    .GetAlignmentFactor(model.ConversionRule.DoseUnitTo, _substance.MolecularMass, individual.BodyWeight);
+                    .GetAlignmentFactor(model.UnitTo, _substance.MolecularMass, individual.BodyWeight);
                 var result = internalDose
                     * inputAlignmentFactor
                     * outputAlignmentFactor
@@ -297,7 +297,7 @@ namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
         ) {
             return externalIndividualExposures
                 .Select(c => {
-                    var (doseUnitAlignment, targetUnitAlignment) = getConversionAlignmentFactor(exposureUnit, targetUnit, model.ConversionRule, c.SimulatedIndividual);
+                    var (doseUnitAlignment, targetUnitAlignment) = getConversionAlignmentFactor(exposureUnit, targetUnit, model, c.SimulatedIndividual);
                     return doseUnitAlignment * targetUnitAlignment * model.GetConversionFactor(c.SimulatedIndividual.Age, c.SimulatedIndividual.Gender);
                 })
                 .Average();
@@ -319,7 +319,7 @@ namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
         ) {
             return externalIndividualDayExposures
                 .Select(c => {
-                    var (doseUnitAlignment, targetUnitAlignment) = getConversionAlignmentFactor(exposureUnit, targetUnit, model.ConversionRule, c.SimulatedIndividual);
+                    var (doseUnitAlignment, targetUnitAlignment) = getConversionAlignmentFactor(exposureUnit, targetUnit, model, c.SimulatedIndividual);
                     return doseUnitAlignment * targetUnitAlignment * model.GetConversionFactor(c.SimulatedIndividual.Age, c.SimulatedIndividual.Gender);
                 })
                 .Average();
@@ -362,9 +362,9 @@ namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
             SimulatedIndividual individual,
             double routeExposure
         ) {
-            var conversionRule = _kineticConversionFactorModels[(route, target.Target)].ConversionRule;
+            var conversionFactor = _kineticConversionFactorModels[(route, target.Target)];
             var factor = _kineticConversionFactorModels[(route, target.Target)].GetConversionFactor(individual.Age, individual.Gender);
-            var (doseUnitAlignment, targetUnitAlignment) = getConversionAlignmentFactor(exposureUnit, target, conversionRule, individual);
+            var (doseUnitAlignment, targetUnitAlignment) = getConversionAlignmentFactor(exposureUnit, target, conversionFactor, individual);
             var result = factor
                 * doseUnitAlignment
                 * targetUnitAlignment
@@ -381,16 +381,18 @@ namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
         private (double doseUnitAlignment, double targetUnitAlignment) getConversionAlignmentFactor(
            ExposureUnitTriple exposureUnit,
            TargetUnit targetUnit,
-           KineticConversionFactor conversionRule,
+           IKineticConversionFactorModel conversionFactor,
            SimulatedIndividual individual
         ) {
+            var doseUnitFrom = conversionFactor.UnitFrom;
+            var doseUnitTo = conversionFactor.UnitTo;
             var doseUnitAlignment = exposureUnit
                 .GetAlignmentFactor(
-                    conversionRule.DoseUnitFrom,
+                    doseUnitFrom,
                     _substance.MolecularMass,
                     individual.BodyWeight
                 );
-            var targetUnitAlignment = conversionRule.DoseUnitTo
+            var targetUnitAlignment = doseUnitTo
                 .GetAlignmentFactor(
                     targetUnit.ExposureUnit,
                     _substance.MolecularMass,

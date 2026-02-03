@@ -25,7 +25,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticConversionCalculatio
             var routes = new[] { ExposureRoute.Dermal, ExposureRoute.Oral };
             var paths = FakeExposurePathGenerator.Create(routes);
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
-            var kineticConversionFactors = FakeKineticModelsGenerator.CreateKineticConversionFactors(substances, routes, targetUnit);
+            var kineticConversionFactors = FakeKineticConversionFactorModelsGenerator.CreateKineticConversionFactors(substances, routes, targetUnit);
             var conversionModels = kineticConversionFactors?
                 .Select(c => KineticConversionFactorCalculatorFactory
                     .Create(c, false)

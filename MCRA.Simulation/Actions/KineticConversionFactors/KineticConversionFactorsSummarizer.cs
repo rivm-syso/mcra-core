@@ -1,6 +1,9 @@
 ﻿using MCRA.General;
 using MCRA.General.ModuleDefinitions.Settings;
+using MCRA.General.OpexProductDefinitions.Dto;
 using MCRA.Simulation.Action;
+using MCRA.Simulation.Calculators.KineticConversionFactorModels;
+using MCRA.Simulation.Calculators.KineticConversionFactorModels.KineticConversionFactorModelCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
 
@@ -11,19 +14,19 @@ namespace MCRA.Simulation.Actions.KineticConversionFactors {
         KineticConversionFactorModelsSection,
     }
 
-    public sealed class KineticConversionFactorsSummarizer : ActionModuleResultsSummarizer<KineticConversionFactorsModuleConfig, IKineticConversionFactorsActionResult> {
+    public sealed class KineticConversionFactorsSummarizer : ActionModuleResultsSummarizer<KineticConversionFactorsModuleConfig, KineticConversionFactorsActionResult> {
 
         public KineticConversionFactorsSummarizer(KineticConversionFactorsModuleConfig config) : base(config) {
         }
 
         public override void Summarize(
-            ActionModuleConfig sectionConfig,
-            IKineticConversionFactorsActionResult actionResult,
+            ActionModuleConfig actionConfig,
+            KineticConversionFactorsActionResult actionResult,
             ActionData data,
             SectionHeader header,
             int order
         ) {
-            var outputSettings = new ModuleOutputSectionsManager<KineticConversionFactorsSections>(sectionConfig, ActionType);
+            var outputSettings = new ModuleOutputSectionsManager<KineticConversionFactorsSections>(actionConfig, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }
@@ -33,7 +36,7 @@ namespace MCRA.Simulation.Actions.KineticConversionFactors {
             var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
 
             if (outputSettings.ShouldSummarize(KineticConversionFactorsSections.KineticConversionFactorModelsSection)) {
-                summarizeKineticConversionFactorModels(
+                summarizeKineticConversionFactors(
                     data,
                     subHeader,
                     order++
@@ -41,37 +44,23 @@ namespace MCRA.Simulation.Actions.KineticConversionFactors {
             }
 
             if (outputSettings.ShouldSummarize(KineticConversionFactorsSections.KineticConversionFactorsSection)) {
-                summarizeKineticConversionFactors(
+                summarizeKineticConversionFactorModels(
                     data,
                     subHeader,
                     order++
                 );
             }
+
+            summarizeDerivedKineticConversionFactorModels(data, order++, subHeader);
         }
 
         public void SummarizeUncertain(
-            ActionModuleConfig sectionConfig,
-            IKineticConversionFactorsActionResult actionResult,
+            ActionModuleConfig actionConfig,
+            KineticConversionFactorsActionResult actionResult,
             ActionData data,
             SectionHeader header
         ) {
             summarizeKineticConversionFactorsUncertain(data, header);
-        }
-
-        /// <summary>
-        /// Summarize conversion factor models.
-        /// </summary>
-        private void summarizeKineticConversionFactorModels(
-            ActionData data,
-            SectionHeader header,
-            int order
-        ) {
-            var section = new KineticConversionFactorModelsSummarySection() {
-                SectionLabel = getSectionLabel(KineticConversionFactorsSections.KineticConversionFactorsSection)
-            };
-            var subHeader = header.AddSubSectionHeaderFor(section, "Kinetic conversion factor models", order);
-            section.Summarize(data.KineticConversionFactorModels);
-            subHeader.SaveSummarySection(section);
         }
 
         /// <summary>
@@ -82,12 +71,51 @@ namespace MCRA.Simulation.Actions.KineticConversionFactors {
             SectionHeader header,
             int order
         ) {
-            var section = new KineticConversionFactorsSummarySection() {
-                SectionLabel = getSectionLabel(KineticConversionFactorsSections.KineticConversionFactorsSection)
+            var section = new KineticConversionFactorModelsSummarySection() {
+                SectionLabel = getSectionLabel(KineticConversionFactorsSections.KineticConversionFactorModelsSection)
             };
-            var subHeader = header.AddSubSectionHeaderFor(section, "Kinetic conversion factors", order);
+            var subHeader = header.AddSubSectionHeaderFor(section, "Kinetic conversion factor models", order);
             section.Summarize(data.KineticConversionFactorModels);
             subHeader.SaveSummarySection(section);
+        }
+
+        /// <summary>
+        /// Summarize conversion factor models.
+        /// </summary>
+        private void summarizeKineticConversionFactorModels(
+            ActionData data,
+            SectionHeader header,
+            int order
+        ) {
+            var conversionFactors = data.KineticConversionFactorModels
+                .Where(r => r is IKineticConversionFactorDataModel)
+                .Select(r => (r as IKineticConversionFactorDataModel).ConversionRule)
+                .ToList();
+            if (conversionFactors.Count > 0) {
+                var section = new KineticConversionFactorsDataSummarySection() {
+                    SectionLabel = getSectionLabel(KineticConversionFactorsSections.KineticConversionFactorsSection)
+                };
+                var subHeader = header.AddSubSectionHeaderFor(section, "Kinetic conversion factors data", order);
+                section.Summarize(conversionFactors);
+                subHeader.SaveSummarySection(section);
+            }
+        }
+
+        private static void summarizeDerivedKineticConversionFactorModels(
+            ActionData data,
+            int order,
+            SectionHeader header
+        ) {
+            var empiricalKineticConversionFactorModels = data.KineticConversionFactorModels
+                .Where(r => r is KineticConversionFactorEmpiricalModel)
+                .Cast<KineticConversionFactorEmpiricalModel>()
+                .ToList();
+            if (empiricalKineticConversionFactorModels?.Count > 0) {
+                var section = new DerivedKineticConversionFactorModelsSummarySection();
+                var subHeader = header.AddSubSectionHeaderFor(section, "Derived kinetic conversion factor models", order);
+                section.Summarize(empiricalKineticConversionFactorModels);
+                subHeader.SaveSummarySection(section);
+            }
         }
 
         /// <summary>
@@ -97,9 +125,9 @@ namespace MCRA.Simulation.Actions.KineticConversionFactors {
             ActionData data,
             SectionHeader header
         ) {
-            var subHeader = header.GetSubSectionHeader<KineticConversionFactorsSummarySection>();
+            var subHeader = header.GetSubSectionHeader<KineticConversionFactorModelsSummarySection>();
             if (subHeader != null) {
-                var section = subHeader.GetSummarySection() as KineticConversionFactorsSummarySection;
+                var section = subHeader.GetSummarySection() as KineticConversionFactorModelsSummarySection;
                 section.SummarizeUncertain(data.KineticConversionFactorModels);
                 subHeader.SaveSummarySection(section);
             }

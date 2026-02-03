@@ -149,13 +149,13 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                 var valueTo = recordTo.GetSubstanceExposure(substance);
                 var conversionFactor = kineticConversionFactorModels
                     .FirstOrDefault(
-                           k => k.ConversionRule.SubstanceFrom == substance
-                        && k.ConversionRule.SubstanceTo == substance
-                        && k.ConversionRule.TargetFrom == targetExposureFrom
-                        && k.ConversionRule.TargetTo == targetExposureTo
+                           k => k.SubstanceFrom == substance
+                        && k.SubstanceTo == substance
+                        && k.TargetFrom == targetExposureFrom
+                        && k.TargetTo == targetExposureTo
                     );
 
-                var conversionFactorExpected = conversionFactor.ConversionRule.ConversionFactor;
+                var conversionFactorExpected = conversionFactor.GetConversionFactor(null, GenderType.Undefined);
                 var conversionFactorMeasured = valueTo / valueFrom;
 
                 Assert.AreEqual(conversionFactorExpected, conversionFactorMeasured, 0.001);

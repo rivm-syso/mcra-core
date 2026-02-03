@@ -25,6 +25,8 @@
                 PbkModelCompartmentType.Other,
                 PbkModelCompartmentType.AlveolarAir,
                 PbkModelCompartmentType.Gut,
+                PbkModelCompartmentType.ExposedSkin,
+                PbkModelCompartmentType.UnexposedSkin,
                 PbkModelCompartmentType.RestOfBody
             };
             var enumValues = Enum

@@ -42,7 +42,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var rpfs = substances.ToDictionary(r => r, r => 1d);
             var memberships = substances.ToDictionary(r => r, r => 1d);
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
-            var kineticConversionFactors = FakeKineticModelsGenerator.CreateAbsorptionFactors(substances, .1);
+            var kineticConversionFactors = FakeAbsorptionFactorsGenerator.CreateAbsorptionFactors(substances, .1);
             var kineticModelCalculators = FakeKineticModelsGenerator
                 .CreateAbsorptionFactorKineticModelCalculators(substances, kineticConversionFactors, targetUnit);
             var kineticConversionCalculatorProvider = new KineticConversionCalculatorProvider(kineticModelCalculators);
@@ -76,7 +76,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var rpfs = substances.ToDictionary(r => r, r => 1d);
             var memberships = substances.ToDictionary(r => r, r => 1d);
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
-            var kineticConversionFactors = FakeKineticModelsGenerator
+            var kineticConversionFactors = FakeAbsorptionFactorsGenerator
                 .CreateAbsorptionFactors(substances, routes, 1);
             var kineticModelCalculators = FakeKineticModelsGenerator
                 .CreateAbsorptionFactorKineticModelCalculators(substances, kineticConversionFactors, targetUnit);

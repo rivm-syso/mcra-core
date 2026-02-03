@@ -32,7 +32,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var dietaryIndividualDayIntakes = FakeDietaryIndividualDayIntakeGenerator.Create(individualDays, foods, substances, 0.5, false, random, false);
             var routes = new[] { ExposureRoute.Oral };
-            var kineticConversionFactors = FakeKineticModelsGenerator.CreateKineticConversionFactors(
+            var kineticConversionFactors = FakeKineticConversionFactorModelsGenerator.CreateKineticConversionFactors(
                 substances,
                 routes,
                 TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerKg, BiologicalMatrix.Liver)
@@ -90,7 +90,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var dietaryExposureUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
             var routes = new[] { ExposureRoute.Dermal, ExposureRoute.Oral, ExposureRoute.Inhalation };
             var referenceCompound = substances.First();
-            var kineticConversionFactors = FakeKineticModelsGenerator.CreateKineticConversionFactors(
+            var kineticConversionFactors = FakeKineticConversionFactorModelsGenerator.CreateKineticConversionFactors(
                 substances,
                 routes,
                 TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerKg, BiologicalMatrix.Liver)
@@ -156,7 +156,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var nonDietaryExposureRoutes = new[] { ExposureRoute.Dermal, ExposureRoute.Oral, ExposureRoute.Inhalation };
             var routes = new HashSet<ExposureRoute>() { ExposureRoute.Dermal, ExposureRoute.Oral, ExposureRoute.Inhalation };
             var nonDietaryExposures = FakeNonDietaryExposureSetsGenerator.Create(individuals, substances, routes, random, ExternalExposureUnit.ugPerKgBWPerDay);
-            var kineticConversionFactors = FakeKineticModelsGenerator.CreateKineticConversionFactors(
+            var kineticConversionFactors = FakeKineticConversionFactorModelsGenerator.CreateKineticConversionFactors(
                 substances,
                 exposureRoutes,
                 TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerKg, BiologicalMatrix.Liver)
@@ -231,7 +231,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var routes = new[] { ExposureRoute.Dermal, ExposureRoute.Oral, ExposureRoute.Inhalation };
             var nonDietaryExposureRoutes = new HashSet<ExposureRoute>() { ExposureRoute.Dermal, ExposureRoute.Oral, ExposureRoute.Inhalation };
             var nonDietaryExposures = FakeNonDietaryExposureSetsGenerator.Create(individuals, substances, nonDietaryExposureRoutes, random, ExternalExposureUnit.ugPerKgBWPerDay);
-            var kineticConversionFactors = FakeKineticModelsGenerator.CreateKineticConversionFactors(
+            var kineticConversionFactors = FakeKineticConversionFactorModelsGenerator.CreateKineticConversionFactors(
                 substances,
                 routes,
                 TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerKg, BiologicalMatrix.Liver)
@@ -308,7 +308,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var nonDietaryExposures = FakeNonDietaryExposureSetsGenerator.Create(individuals, substances, nonDietaryExposureRoutes, random, ExternalExposureUnit.ugPerKgBWPerDay);
 
             var exposureRoutes = new[] { ExposureRoute.Dermal, ExposureRoute.Oral, ExposureRoute.Inhalation };
-            var kineticConversionFactors = FakeKineticModelsGenerator.CreateKineticConversionFactors(
+            var kineticConversionFactors = FakeKineticConversionFactorModelsGenerator.CreateKineticConversionFactors(
                 substances,
                 exposureRoutes,
                 TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerKg, BiologicalMatrix.Liver)
@@ -385,7 +385,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var routes = new HashSet<ExposureRoute>() { ExposureRoute.Dermal, ExposureRoute.Oral, ExposureRoute.Inhalation };
             var nonDietaryExposures = FakeNonDietaryExposureSetsGenerator.Create(individuals, substances, routes, random, ExternalExposureUnit.ugPerKgBWPerDay);
 
-            var kineticConversionFactors = FakeKineticModelsGenerator.CreateKineticConversionFactors(
+            var kineticConversionFactors = FakeKineticConversionFactorModelsGenerator.CreateKineticConversionFactors(
                 substances,
                 exposureRoutes,
                 TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerKg, BiologicalMatrix.Liver)
@@ -462,7 +462,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var routes = new HashSet<ExposureRoute>() { ExposureRoute.Dermal, ExposureRoute.Oral, ExposureRoute.Inhalation };
             var nonDietaryExposures = FakeNonDietaryExposureSetsGenerator.Create(individuals, substances, routes, random, ExternalExposureUnit.ugPerKgBWPerDay);
             var biologicalMatrix = BiologicalMatrix.Liver;
-            var kineticConversionFactors = FakeKineticModelsGenerator.CreateKineticConversionFactors(
+            var kineticConversionFactors = FakeKineticConversionFactorModelsGenerator.CreateKineticConversionFactors(
                 substances,
                 exposureRoutes,
                 dietaryExposureUnit
@@ -541,7 +541,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var routes = new HashSet<ExposureRoute>() { ExposureRoute.Dermal, ExposureRoute.Oral, ExposureRoute.Inhalation };
             var nonDietaryExposures = FakeNonDietaryExposureSetsGenerator.Create(individuals, substances, routes, random, ExternalExposureUnit.ugPerKgBWPerDay);
             var biologicalMatrix = BiologicalMatrix.Liver;
-            var kineticConversionFactors = FakeKineticModelsGenerator.CreateKineticConversionFactors(
+            var kineticConversionFactors = FakeKineticConversionFactorModelsGenerator.CreateKineticConversionFactors(
                 substances,
                 exposureRoutes,
                 dietaryExposureUnit

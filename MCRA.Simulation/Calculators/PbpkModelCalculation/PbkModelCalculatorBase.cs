@@ -132,7 +132,10 @@ namespace MCRA.Simulation.Calculators.PbpkModelCalculation {
             // Set BW
             var bodyWeightParameter = KineticModelDefinition
                 .GetParameterDefinitionByType(PbkModelParameterType.BodyWeight);
-            if (bodyWeightParameter != null && !bodyWeightParameter.IsInternalParameter) {
+            if (!double.IsNaN(individual.BodyWeight) 
+                && bodyWeightParameter != null 
+                && !bodyWeightParameter.IsInternalParameter
+            ) {
                 // TODO: current code assumes bodyweights in same unit as kinetic model parameter
                 var bodyWeight = individual.BodyWeight;
                 parametrisation[bodyWeightParameter.Id] = bodyWeight;

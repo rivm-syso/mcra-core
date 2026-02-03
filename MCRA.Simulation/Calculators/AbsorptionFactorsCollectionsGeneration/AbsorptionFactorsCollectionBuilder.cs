@@ -22,15 +22,28 @@ namespace MCRA.Simulation.Calculators.KineticConversionCalculation.AbsorptionFac
             ICollection<SimpleAbsorptionFactor> substanceAbsorptionFactors = null
         ) {
             var kineticAbsorptionFactors = new List<SimpleAbsorptionFactor>() {
-                new () { ExposurePathType = ExposurePathType.Oral, Substance = SimulationConstants.NullSubstance, AbsorptionFactor = _settings.DefaultFactorDietary },
-                new () { ExposurePathType = ExposurePathType.Dermal, Substance = SimulationConstants.NullSubstance, AbsorptionFactor = _settings.DefaultFactorDermalNonDietary },
-                new () { ExposurePathType = ExposurePathType.Inhalation, Substance = SimulationConstants.NullSubstance, AbsorptionFactor = _settings.DefaultFactorInhalationNonDietary }
+                new () {
+                    ExposurePathType = ExposurePathType.Oral,
+                    AbsorptionFactor = _settings.DefaultFactorDietary 
+                },
+                new () { 
+                    ExposurePathType = ExposurePathType.Dermal,
+                    AbsorptionFactor = _settings.DefaultFactorDermalNonDietary
+                },
+                new () { 
+                    ExposurePathType = ExposurePathType.Inhalation,
+                    AbsorptionFactor = _settings.DefaultFactorInhalationNonDietary
+                }
             };
 
             if (substances != null) {
                 if (substanceAbsorptionFactors != null) {
                     foreach (var item in substanceAbsorptionFactors) {
-                        kineticAbsorptionFactors.Add(new () { ExposurePathType = item.ExposurePathType, Substance = item.Substance, AbsorptionFactor = item.AbsorptionFactor });
+                        kineticAbsorptionFactors.Add(new () { 
+                            ExposurePathType = item.ExposurePathType, 
+                            Substance = item.Substance, 
+                            AbsorptionFactor = item.AbsorptionFactor 
+                        });
                     }
                 }
             }

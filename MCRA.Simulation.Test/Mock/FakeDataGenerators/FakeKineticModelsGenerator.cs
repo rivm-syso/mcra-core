@@ -11,81 +11,6 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
     public static class FakeKineticModelsGenerator {
 
         /// <summary>
-        /// Creates a dictionary with absorption factors for each combination of route and substance
-        /// </summary>
-        public static IDictionary<(ExposureRoute, Compound), double> CreateAbsorptionFactors(
-            ICollection<Compound> substances,
-            double value
-        ) {
-            var kineticConversionFactors = new Dictionary<(ExposureRoute, Compound), double>();
-            foreach (var substance in substances) {
-                kineticConversionFactors[(ExposureRoute.Dermal, substance)] = value;
-                kineticConversionFactors[(ExposureRoute.Oral, substance)] = value;
-                kineticConversionFactors[(ExposureRoute.Inhalation, substance)] = value;
-            }
-            return kineticConversionFactors;
-        }
-
-        /// <summary>
-        /// Creates a dictionary with absorption factors for each combination of route and substance
-        /// </summary>
-        public static IDictionary<(ExposureRoute, Compound), double> CreateAbsorptionFactors(
-            ICollection<Compound> substances,
-            ICollection<ExposureRoute> routes,
-            double value
-        ) {
-            var kineticConversionFactors = new Dictionary<(ExposureRoute, Compound), double>();
-            foreach (var substance in substances) {
-                foreach (var route in routes) {
-                    kineticConversionFactors[(route, substance)] = value;
-                }
-            }
-            return kineticConversionFactors;
-        }
-
-        /// <summary>
-        /// Creates a dictionary with absorption factors for each combination of route and substance
-        /// </summary>
-        public static ICollection<KineticConversionFactor> CreateKineticConversionFactors(
-            ICollection<Compound> substances,
-            ICollection<ExposureRoute> routes,
-            TargetUnit target
-        ) {
-            var kineticConversionFactors = new List<KineticConversionFactor>();
-            foreach (var substance in substances) {
-                foreach (var route in routes) {
-                    kineticConversionFactors.Add(new KineticConversionFactor() {
-                        SubstanceFrom = substance,
-                        SubstanceTo = substance,
-                        ExposureRouteFrom = route,
-                        DoseUnitFrom = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
-                        ConversionFactor = .5,
-                        BiologicalMatrixTo = target.BiologicalMatrix,
-                        ExpressionTypeTo = target.ExpressionType,
-                        DoseUnitTo = target.ExposureUnit,
-                    });
-                }
-            }
-            return kineticConversionFactors;
-        }
-
-        public static List<IKineticConversionFactorModel> CreateKineticConversionFactorModels(
-            List<Compound> substances,
-            List<ExposureRoute> routes,
-            TargetUnit target
-        ) {
-            var kineticConversionFactors = CreateKineticConversionFactors(
-                substances,
-                routes,
-                target
-            );
-            var kineticConversionFactorModels = kineticConversionFactors
-                .Select(c => KineticConversionFactorCalculatorFactory.Create(c, false))
-                .ToList();
-            return kineticConversionFactorModels;
-        }
-
-        /// <summary>
         /// Creates a dictionary with kinetic model calculators for each substance
         /// </summary>
         public static IDictionary<Compound, IKineticConversionCalculator> CreateAbsorptionFactorKineticModelCalculators(
@@ -129,6 +54,36 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                 .Select(c => KineticConversionFactorCalculatorFactory.Create(c, false))
                 .ToList();
             return new LinearDoseAggregationCalculator(substance, conversionModels);
+        }
+
+        /// <summary>
+        /// Creates a fake PBK model instance from an SBML file.
+        /// </summary>
+        public static KineticModelInstance CreateSbmlPbkModelInstance(
+            Compound substance,
+            string filename,
+            List<(string Id, double Value)> parameters = null
+        ) {
+            var modelDefinition = KineticModelDefinition.FromSbmlFile(filename);
+            var instance = new KineticModelInstance() {
+                IdModelDefinition = modelDefinition.Id,
+                KineticModelDefinition = modelDefinition,
+                KineticModelSubstances = [
+                     new KineticModelSubstance() {
+                         Substance = substance
+                     }
+                ],
+                KineticModelInstanceParameters = new Dictionary<string, KineticModelInstanceParameter>(),
+                IdTestSystem = "Human",
+            };
+            if (parameters != null) {
+                foreach (var parameter in parameters) {
+                    instance.KineticModelInstanceParameters[parameter.Id] = new KineticModelInstanceParameter() { 
+                        Value = parameter.Value 
+                    };
+                }
+            }
+            return instance;
         }
 
         /// <summary>

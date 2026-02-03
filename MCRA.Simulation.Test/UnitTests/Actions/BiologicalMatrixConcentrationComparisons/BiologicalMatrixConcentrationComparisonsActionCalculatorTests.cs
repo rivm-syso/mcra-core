@@ -35,7 +35,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var hbmIndividualDayCumulativeConcentrations = FakeHbmCumulativeIndividualDayConcentrationsGenerator
                 .Create(individualDays, random);
 
-            var kineticConversionFactors = FakeKineticModelsGenerator.CreateAbsorptionFactors(substances, 1);
+            var kineticConversionFactors = FakeAbsorptionFactorsGenerator.CreateAbsorptionFactors(substances, 1);
             var kineticModelCalculators = FakeKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(
                 substances,
                 kineticConversionFactors,

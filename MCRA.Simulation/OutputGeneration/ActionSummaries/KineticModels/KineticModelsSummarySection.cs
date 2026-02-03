@@ -35,8 +35,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 var isSpecified = absorptionFactors?
                     .Any(c =>  c.Substance != null) ?? false;
                 var record = new AbsorptionFactorRecord() {
-                    CompoundCode = item.Substance.Code,
-                    CompoundName = item.Substance.Name,
+                    CompoundCode = item.Substance?.Code,
+                    CompoundName = item.Substance?.Name,
                     Route = item.ExposureRoute.ToString(),
                     AbsorptionFactor = item.AbsorptionFactor,
                     IsDefault = "default",

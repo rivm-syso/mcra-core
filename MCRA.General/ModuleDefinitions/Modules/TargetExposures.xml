@@ -75,6 +75,7 @@
     <CalculationSetting source="PbkModels">ExposureEventsGenerationMethod</CalculationSetting>
     <CalculationSetting source="PbkModels">NumberOfDays</CalculationSetting>
     <CalculationSetting source="PbkModels">NonStationaryPeriod</CalculationSetting>
+    <CalculationSetting source="PbkModels">NonStationaryPeriodInYears</CalculationSetting>
     <CalculationSetting source="PbkModels">UseParameterVariability</CalculationSetting>
     <CalculationSetting source="PbkModels">NumberOfDosesPerDayNonDietaryDermal</CalculationSetting>
     <CalculationSetting source="PbkModels">NumberOfDosesPerDayNonDietaryInhalation</CalculationSetting>
@@ -116,7 +117,6 @@
     <CalculationSetting>ConsumerProductAgeAlignment</CalculationSetting>
     <CalculationSetting>ConsumerProductAgeAlignmentMethod</CalculationSetting>
     <CalculationSetting>ConsumerProductAgeBins</CalculationSetting>
-    <CalculationSetting source="PbkModels">NonStationaryPeriodInYears</CalculationSetting>
   </CalculationSettings>
   <UncertaintySettings>
     <UncertaintySetting source="KineticConversionFactors">ResampleKineticConversionFactors</UncertaintySetting>

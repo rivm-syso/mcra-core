@@ -55,12 +55,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             Assert.IsTrue(data.AbsorptionFactors.Any());
 
-            var factorialSet = new UncertaintyFactorialSet() {
-                //UncertaintySources = new List<UncertaintySource>() { UncertaintySource.KineticModelParameters }
-            };
-            var uncertaintySourceGenerators = new Dictionary<UncertaintySource, IRandom> {
-                //[UncertaintySource.KineticModelParameters] = random
-            };
+            var factorialSet = new UncertaintyFactorialSet();
+            var uncertaintySourceGenerators = new Dictionary<UncertaintySource, IRandom>();
             TestLoadAndSummarizeUncertainty(calculator, data, header, random, factorialSet, uncertaintySourceGenerators);
         }
 
@@ -74,20 +70,13 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var random = new McraRandomGenerator(seed);
 
             var substances = FakeSubstancesGenerator.Create(1);
-            var referenceCompound = substances.First();
-            var kineticModelinstance = FakeKineticModelsGenerator.CreatePbkModelInstance(referenceCompound);
-            var kineticModelInstances = new List<KineticModelInstance>() { kineticModelinstance };
-
-            var compiledData = new CompiledData() {
-                AllKineticModelInstances = kineticModelInstances.ToList(),
-            };
+            var compiledData = new CompiledData();
 
             var project = new ProjectDto();
             var config = project.KineticModelsSettings;
             config.ExposureRoutes = [ExposureRoute.Oral, ExposureRoute.Dermal, ExposureRoute.Inhalation];
             var data = new ActionData() {
-                ActiveSubstances = substances,
-                ReferenceSubstance = referenceCompound,
+                ActiveSubstances = substances
             };
 
             var dataManager = new MockCompiledDataManager(compiledData);

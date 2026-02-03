@@ -1,7 +1,6 @@
 ﻿using MCRA.General;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Objects;
-using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.PbpkModelCalculation.ReverseDoseCalculation {

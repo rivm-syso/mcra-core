@@ -24,7 +24,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
             var substance = substances.First();
             var routes = new List<ExposureRoute>() { ExposureRoute.Oral };
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
-            var kineticConversionFactors = FakeKineticModelsGenerator.CreateKineticConversionFactors(substances, routes, targetUnit);
+            var kineticConversionFactors = FakeKineticConversionFactorModelsGenerator.CreateKineticConversionFactors(substances, routes, targetUnit);
 
             var kineticConversionFactorModels = kineticConversionFactors?
                 .Select(c => KineticConversionFactorCalculatorFactory

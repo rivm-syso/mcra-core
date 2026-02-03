@@ -1,9 +1,19 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.Simulation.Constants;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.KineticConversionFactorModels {
+
+    public interface IKineticConversionFactorModelParametrisation {
+        double? Age { get; set; }
+        GenderType Gender { get; set; }
+        double Factor { get; set; }
+    }
+
+    public interface IKineticConversionFactorDataModel : IKineticConversionFactorModel {
+        List<IKineticConversionFactorModelParametrisation> GetParametrisations();
+        public KineticConversionFactor ConversionRule { get; }
+    }
 
     public class KineticConversionFactorModelParametrisation : IKineticConversionFactorModelParametrisation {
         public double? Age { get; set; }
@@ -11,7 +21,7 @@ namespace MCRA.Simulation.Calculators.KineticConversionFactorModels {
         public double Factor { get; set; }
     }
 
-    public abstract class KineticConversionFactorModelBase<T> : IKineticConversionFactorModel
+    public abstract class KineticConversionFactorModelBase<T> : IKineticConversionFactorDataModel
         where T : KineticConversionFactorModelParametrisation {
 
         public bool UseSubgroups { get; set; }
@@ -19,6 +29,18 @@ namespace MCRA.Simulation.Calculators.KineticConversionFactorModels {
         protected List<T> ModelParametrisations { get; set; } = [];
 
         public KineticConversionFactor ConversionRule { get; protected set; }
+
+        public Compound SubstanceTo => ConversionRule.SubstanceTo;
+
+        public Compound SubstanceFrom => ConversionRule.SubstanceFrom;
+
+        public ExposureUnitTriple UnitTo => ConversionRule.DoseUnitTo;
+
+        public ExposureUnitTriple UnitFrom => ConversionRule.DoseUnitFrom;
+
+        public ExposureTarget TargetFrom => ConversionRule.TargetFrom;
+
+        public ExposureTarget TargetTo => ConversionRule.TargetTo;
 
         public KineticConversionFactorModelBase(
             KineticConversionFactor conversion,
@@ -80,25 +102,6 @@ namespace MCRA.Simulation.Calculators.KineticConversionFactorModels {
         }
 
         /// <summary>
-        /// Returns whether the kinetic conversion factor is applicable for the
-        /// specified substance.
-        /// </summary>
-        public bool MatchesFromSubstance(Compound substance) {
-            var result = ConversionRule.SubstanceFrom == substance
-                || ConversionRule.SubstanceFrom == null
-                || ConversionRule.SubstanceFrom == SimulationConstants.NullSubstance;
-            return result;
-        }
-
-        /// <summary>
-        /// Returns whether the conversion rule is specific for the from substance.
-        /// </summary>
-        public bool IsSubstanceFromSpecific() {
-            return ConversionRule.SubstanceFrom != null
-                && ConversionRule.SubstanceFrom != SimulationConstants.NullSubstance;
-        }
-
-        /// <summary>
         /// Returns the model parameterisations (and the currently drawn factors).
         /// </summary>
         /// <returns></returns>
@@ -113,11 +116,6 @@ namespace MCRA.Simulation.Calculators.KineticConversionFactorModels {
         /// Get the parametrisation for the specified sub-group based on the provided
         /// factor and upper.
         /// </summary>
-        /// <param name="age"></param>
-        /// <param name="gender"></param>
-        /// <param name="factor"></param>
-        /// <param name="upper"></param>
-        /// <returns></returns>
         protected abstract T getSubgroupParametrisation(
             double? age,
             GenderType gender,
@@ -127,6 +125,21 @@ namespace MCRA.Simulation.Calculators.KineticConversionFactorModels {
 
         protected virtual void checkSubGroupUncertaintyValue(KineticConversionFactorSG sg) {
             // No checks
+        }
+
+        public bool HasCovariate(KineticConversionFactorCovariateType covariateType) {
+            if (!UseSubgroups) {
+                return false;
+            } else {
+                switch (covariateType) {
+                    case KineticConversionFactorCovariateType.Age:
+                        return ConversionRule.KCFSubgroups.Any(c => c.AgeLower != null);
+                    case KineticConversionFactorCovariateType.Sex:
+                        return ConversionRule.KCFSubgroups.Any(c => c.Gender != GenderType.Undefined);
+                    default:
+                        return false;
+                }
+            }
         }
     }
 }

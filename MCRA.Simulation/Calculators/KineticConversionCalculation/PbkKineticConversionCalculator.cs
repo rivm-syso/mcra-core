@@ -41,7 +41,7 @@ namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
         }
 
         /// <summary>
-        /// Computes peak target (internal) substance amounts.
+        /// Computes peak target (internal) substance concentrations.
         /// </summary>
         public List<AggregateIndividualDayExposure> CalculateIndividualDayTargetExposures(
             ICollection<IExternalIndividualDayExposure> individualDayExposures,
@@ -69,9 +69,10 @@ namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
             var result = new List<AggregateIndividualDayExposure>();
             for (int i = 0; i < individualDayExposures.Count; i++) {
                 var externalIndividualExposure = individualDayExposures.ElementAt(i);
-                var targetIndividualExposure = createIndividualSubstanceTargetExposures(
+                var targetIndividualExposure = ComputeSubstanceTargetExposures(
                     targetExposures[i],
-                    ExposureType.Acute
+                    ExposureType.Acute,
+                    _simulationSettings.NonStationaryPeriod
                 );
                 var internalIndividualExposure = new AggregateIndividualDayExposure() {
                     SimulatedIndividual = externalIndividualExposure.SimulatedIndividual,
@@ -86,7 +87,7 @@ namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
         }
 
         /// <summary>
-        /// Override: computes long term target (internal) substance amounts.
+        /// Computes long term target (internal) substance concentrations.
         /// </summary>
         public List<AggregateIndividualExposure> CalculateIndividualTargetExposures(
             ICollection<IExternalIndividualExposure> individualExposures,
@@ -114,9 +115,10 @@ namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
             var result = new List<AggregateIndividualExposure>();
             for (int i = 0; i < individualExposures.Count; i++) {
                 var externalIndividualExposure = individualExposures.ElementAt(i);
-                var targetIndividualExposure = createIndividualSubstanceTargetExposures(
+                var targetIndividualExposure = ComputeSubstanceTargetExposures(
                     targetExposures[i],
-                    ExposureType.Chronic
+                    ExposureType.Chronic,
+                    _simulationSettings.NonStationaryPeriod
                 );
                 var internalIndividualExposure = new AggregateIndividualExposure() {
                     SimulatedIndividual = externalIndividualExposure.SimulatedIndividual,
@@ -128,17 +130,18 @@ namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
             return result;
         }
 
-        private Dictionary<ExposureTarget, Dictionary<Compound, ISubstanceTargetExposure>> createIndividualSubstanceTargetExposures(
+        public static Dictionary<ExposureTarget, Dictionary<Compound, ISubstanceTargetExposure>> ComputeSubstanceTargetExposures(
             PbkSimulationOutput simulationOutput,
-            ExposureType exposureType
+            ExposureType exposureType,
+            int nonStationaryPeriod
         ) {
             var result = simulationOutput.SubstanceTargetLevelTimeSeries
                 .Select(r => {
                     var steadyStateTargetExposure = r.ComputeSteadyStateTargetExposure(
-                        _simulationSettings.NonStationaryPeriod
+                        nonStationaryPeriod
                     );
                     var peakTargetExposure = r.ComputePeakTargetExposure(
-                        _simulationSettings.NonStationaryPeriod
+                        nonStationaryPeriod
                     );
                     return new SubstanceTargetExposurePattern() {
                         TimeSeries = r,
@@ -186,9 +189,10 @@ namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
                 generator,
                 new ProgressState()
             );
-            var targetIndividualExposure = createIndividualSubstanceTargetExposures(
+            var targetIndividualExposure = ComputeSubstanceTargetExposures(
                 targetExposures.First(),
-                exposureType
+                exposureType,
+                _simulationSettings.NonStationaryPeriod
             );
             return targetIndividualExposure[targetUnit.Target].Values.First();
         }

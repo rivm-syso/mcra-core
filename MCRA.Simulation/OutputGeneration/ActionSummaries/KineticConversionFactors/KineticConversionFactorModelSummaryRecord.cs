@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class KineticConversionFactorModelSummaryRecord {
+    public class KineticConversionFactorModelSummaryRecord {
 
         [Description("Substance name from.")]
         [DisplayName("Substance name from")]
@@ -20,9 +21,9 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Biological matrix from")]
         public string BiologicalMatrixFrom { get; set; }
 
-        [Description("Dose unit from.")]
-        [DisplayName("Dose unit from")]
-        public string DoseUnitFrom { get; set; }
+        [Description("Unit from.")]
+        [DisplayName("Unit from")]
+        public string UnitFrom { get; set; }
 
         [Description("The expression type or adjustment method of the dose unit (from). This field specifies how the dose unit (source) is adjusted, e.g. for blood lipids for fat soluble biomarkers ('mg/g lipids') or the dilution level of the urine ('mg/g creatinine').")]
         [DisplayName("Expression type from")]
@@ -44,9 +45,9 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Biological matrix to")]
         public string BiologicalMatrixTo { get; set; }
 
-        [Description("Dose unit to.")]
-        [DisplayName("Dose unit to")]
-        public string DoseUnitTo { get; set; }
+        [Description("Unit to.")]
+        [DisplayName("Unit to")]
+        public string UnitTo { get; set; }
 
         [Description("The expression type or adjustment method of the dose unit (to). This field specifies how the dose unit (target) is adjusted, e.g. for blood lipids for fat soluble biomarkers ('mg/g lipids') or the dilution level of the urine ('mg/g creatinine').")]
         [DisplayName("Expression type target")]
@@ -55,27 +56,93 @@ namespace MCRA.Simulation.OutputGeneration {
         [Description("Conversion factor.")]
         [DisplayName("Conversion factor")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double ConversionFactor { get; set; }
+        public double NominalFactor { get; set; }
 
-        [Description("Distribution type (uniform or lognormal.")]
-        [DisplayName("Distribution type")]
-        public string DistributionType { get; set; }
+        [Display(AutoGenerateField = false)]
+        public List<double> UncertaintyValues { get; set; }
 
-        [Description("Uncertainty upper.")]
-        [DisplayName("Uncertainty upper")]
-        [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double UncertaintyUpper { get; set; }
+        [Description("Conversion factor uncertainty median bound (p50).")]
+        [DisplayName("Unc median")]
+        [DisplayFormat(DataFormatString = "{0:G4}")]
+        public double UncertaintyMedian {
+            get {
+                if (UncertaintyValues?.Count > 0) {
+                    return UncertaintyValues.Percentile(50);
+                }
+                return double.NaN;
+            }
+        }
+
+        [Description("Conversion factor uncertainty lower bound (p2.5).")]
+        [DisplayName("Unc lower (p2.5)")]
+        [DisplayFormat(DataFormatString = "{0:G4}")]
+        public double UncertaintyLowerBoundPercentile {
+            get {
+                if (UncertaintyValues?.Count > 0) {
+                    return UncertaintyValues.Percentile(2.5);
+                }
+                return double.NaN;
+            }
+        }
+
+        [Description("Conversion factor uncertainty upper bound (p97.5).")]
+        [DisplayName("Unc upper (p97.5)")]
+        [DisplayFormat(DataFormatString = "{0:G4}")]
+        public double UncertaintyUpperBoundPercentile {
+            get {
+                if (UncertaintyValues?.Count > 0) {
+                    return UncertaintyValues.Percentile(97.5);
+                }
+                return double.NaN;
+            }
+        }
 
         [Description("Age subgroup information available.")]
         [DisplayName("Age subgroups")]
-        public bool IsAgeLower { get; set; }
+        public bool HasCovariateAge { get; set; }
 
-        [Description("Gender subgroup information available.")]
-        [DisplayName("Gender subgroups")]
-        public bool IsGender { get; set; }
+        [Description("Sex subgroup information available.")]
+        [DisplayName("Sex subgroups")]
+        public bool HasCovariateSex { get; set; }
 
-        [Description("Both age and gender subgroup information available.")]
-        [DisplayName("Both present")]
-        public bool Both { get; set; }
+        public string GetKey() {
+            var keys = new string[] {
+                SubstanceCodeFrom,
+                ExposureRouteFrom,
+                BiologicalMatrixFrom,
+                UnitFrom,
+                ExpressionTypeFrom,
+                SubstanceCodeTo,
+                ExposureRouteTo,
+                BiologicalMatrixTo,
+                UnitTo,
+                ExpressionTypeTo
+            };
+            return string.Join('_', keys.Where(r => !string.IsNullOrEmpty(r)));
+        }
+
+        public bool IsExternalTargetFrom() {
+            return !string.IsNullOrEmpty(ExposureRouteFrom);
+        }
+
+        public bool IsExternalTargetTo() {
+            return !string.IsNullOrEmpty(ExposureRouteTo);
+        }
+
+        public string GetTargetNameTo() {
+            if (!string.IsNullOrEmpty(ExposureRouteTo)) {
+                return ExposureRouteTo;
+            } else {
+                return BiologicalMatrixTo;
+            }
+        }
+
+        public string GetTargetNameFrom() {
+            if (!string.IsNullOrEmpty(ExposureRouteFrom)) {
+                return ExposureRouteFrom;
+            } else {
+                return BiologicalMatrixFrom;
+            }
+        }
     }
 }

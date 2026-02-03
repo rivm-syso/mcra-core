@@ -45,9 +45,9 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
             _reverseDoseDefaultExposureRoute = ExposureRoute.Oral;
             _kineticConversionModels = kineticConversionFactors?
                 .ToLookup(c => (
-                    c.ConversionRule.SubstanceFrom,
-                    c.ConversionRule.TargetFrom,
-                    c.ConversionRule.TargetTo
+                    c.SubstanceFrom,
+                    c.TargetFrom,
+                    c.TargetTo
                 ));
             var kmcFactory = new KineticConversionCalculatorFactory(kineticModelInstances);
             _kineticModelCalculators = kineticModelInstances?
@@ -100,7 +100,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
                             compartmentWeight
                         ),
                         IsAggregateOfMultipleSamplingMethods = sourceExposure.IsAggregateOfMultipleSamplingMethods,
-                        Substance = c.ConversionRule.SubstanceTo
+                        Substance = c.SubstanceTo
                     })
                     .ToList();
                 result.AddRange(resultRecords);
@@ -170,8 +170,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
        ) {
             // Alignment factor for source-unit of concentration with from-unit of conversion record
             var sourceUnitAlignmentFactor = sourceExposureUnit.ExposureUnit.GetAlignmentFactor(
-                record.ConversionRule.DoseUnitFrom,
-                record.ConversionRule.SubstanceFrom.MolecularMass,
+                record.UnitFrom,
+                record.SubstanceFrom.MolecularMass,
                 double.NaN
             );
 
@@ -181,9 +181,9 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
             var conversionFactor = record.GetConversionFactor(age, genderType);
 
             // Alignment factor for to-unit of the conversion record with the target unit
-            var targetUnitAlignmentFactor = record.ConversionRule.DoseUnitTo.GetAlignmentFactor(
+            var targetUnitAlignmentFactor = record.UnitTo.GetAlignmentFactor(
                 targetUnit.ExposureUnit,
-                record.ConversionRule.SubstanceTo.MolecularMass,
+                record.SubstanceTo.MolecularMass,
                 compartmentWeight
             );
 

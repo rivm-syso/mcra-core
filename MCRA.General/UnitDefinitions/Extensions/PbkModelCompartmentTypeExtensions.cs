@@ -21,7 +21,8 @@
                 PbkModelCompartmentType.ArterialBlood => route == ExposureRoute.Inhalation ? 2 : -1,
                 PbkModelCompartmentType.ArterialPlasma => route == ExposureRoute.Inhalation ? 1 : -1,
                 PbkModelCompartmentType.Gut => route == ExposureRoute.Oral ? 2 : -1,
-                PbkModelCompartmentType.StratumCorneumExposedSkin => route == ExposureRoute.Dermal ? 2 : -1,
+                PbkModelCompartmentType.StratumCorneumExposedSkin => route == ExposureRoute.Dermal ? 3 : -1,
+                PbkModelCompartmentType.ExposedSkin => route == ExposureRoute.Dermal ? 2 : -1,
                 PbkModelCompartmentType.Skin => route == ExposureRoute.Dermal ? 1 : -1,
                 _ => -1,
             };
@@ -36,6 +37,7 @@
                     => ExposureRoute.Inhalation,
                 PbkModelCompartmentType.Gut => ExposureRoute.Oral,
                 PbkModelCompartmentType.Skin
+                    or PbkModelCompartmentType.ExposedSkin
                     or PbkModelCompartmentType.StratumCorneumExposedSkin
                     => ExposureRoute.Dermal,
                 _ => ExposureRoute.Undefined,

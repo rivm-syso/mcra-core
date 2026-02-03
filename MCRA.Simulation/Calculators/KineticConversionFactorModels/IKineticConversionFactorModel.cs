@@ -4,28 +4,32 @@ using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.KineticConversionFactorModels {
 
-    public interface IKineticConversionFactorModelParametrisation {
-        double? Age { get; set; }
-        GenderType Gender { get; set; }
-        double Factor { get; set; }
+    public enum KineticConversionFactorCovariateType {
+        Age,
+        Sex
     }
 
     public interface IKineticConversionFactorModel {
 
-        bool UseSubgroups { get; set; }
+        Compound SubstanceTo { get; }
 
-        KineticConversionFactor ConversionRule { get; }
+        Compound SubstanceFrom { get; }
 
-        List<IKineticConversionFactorModelParametrisation> GetParametrisations();
+        ExposureUnitTriple UnitTo { get; }
+
+        ExposureUnitTriple UnitFrom { get; }
+
+        ExposureTarget TargetFrom { get; }
+
+        ExposureTarget TargetTo { get; }
 
         void CalculateParameters();
 
         void ResampleModelParameters(IRandom random);
 
-        double GetConversionFactor(double? age, GenderType gender);
+        double GetConversionFactor(double? age = null, GenderType gender = GenderType.Undefined);
 
-        bool MatchesFromSubstance(Compound substance);
+        bool HasCovariate(KineticConversionFactorCovariateType covariateType);
 
-        bool IsSubstanceFromSpecific();
     }
 }

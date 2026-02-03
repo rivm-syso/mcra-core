@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsItems>
+  <!-- Kinetic conversion factors settings  -->
+  <SettingsItem>
+    <Id>KCFSubgroupDependent</Id>
+    <Name>Use kinetic conversion factors subgroup</Name>
+    <Description>
+      Kinetic conversion factors are dependent on subgroups (e.g. based on age or gender, see dataformats KineticConversionfactorsSGs).
+    </Description>
+    <ValueType>Boolean</ValueType>
+    <DefaultValue>true</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>InternalMatrices</Id>
+    <Name>Target biological matrix</Name>
+    <Description>The internal target/matrices for which kinetic conversion factors are to be computed.</Description>
+    <ValueType>BiologicalMatrix</ValueType>
+    <SystemType>BiologicalMatrix</SystemType>
+    <IsList>true</IsList>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ResampleKineticConversionFactors</Id>
+    <Name>Resample kinetic conversion factors</Name>
+    <Description>Specifies whether kinetic conversion factors are resampled.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>NumberOfPbkModelSimulations</Id>
+    <Name>PBK model simulations</Name>
+    <Description>
+      Number of PBK model simulations used to derive kinetic conversion factors from PBK model simulations.
+    </Description>
+    <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <DefaultValue>50</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ExposureRangeMinimum</Id>
+    <Name>Exposure range minimum</Name>
+    <Description>
+      Minimum of the external exposure range for PBK model simulations used to derive kinetic conversion factors from PBK model simulations.
+    </Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>1e-1</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ExposureRangeMaximum</Id>
+    <Name>Exposure range maximum</Name>
+    <Description>
+      Maximum of the external exposure range for PBK model simulations used to derive kinetic conversion factors from PBK model simulations.
+    </Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>1e2</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ComputeBetweenInternalTargetConversionFactors</Id>
+    <Name>Compute between internal target conversion factors</Name>
+    <Description>Compute kinetic conversion factors to extrapolate exposures/concentrations between internal targets/matrices.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+</SettingsItems>

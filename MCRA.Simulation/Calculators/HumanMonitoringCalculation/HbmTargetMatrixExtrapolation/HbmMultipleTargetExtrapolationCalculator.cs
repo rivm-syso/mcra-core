@@ -17,7 +17,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
            CompositeProgressState progressState
         ) {
             var targetsTo = kineticConversionFactorModels
-                .Select(m => m.ConversionRule.TargetTo)
+                .Select(m => m.TargetTo)
                 .Distinct()
                 .ToList();
 
@@ -38,8 +38,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
                         .CreateDefaultHbmIndividualDayCollection(simulatedIndividualDays, targetTo);
 
                 var conversionModelsFrom = kineticConversionFactorModels
-                    .Where(m => m.ConversionRule.TargetTo == collectionTo.Target)
-                    .Select(m => m.ConversionRule.TargetFrom)
+                    .Where(m => m.TargetTo == collectionTo.Target)
+                    .Select(m => m.TargetFrom)
                     .ToList();
                 var collectionsFrom = hbmIndividualDayCollections
                     .Where(c => conversionModelsFrom.Contains(c.Target))

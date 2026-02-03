@@ -55,7 +55,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             IRandom random
         ) {
             var routes = new[] { ExposureRoute.Dermal, ExposureRoute.Oral, ExposureRoute.Inhalation };
-            var kineticConversionFactors = FakeKineticModelsGenerator.CreateAbsorptionFactors(substances, 1);
+            var kineticConversionFactors = FakeAbsorptionFactorsGenerator.CreateAbsorptionFactors(substances, 1);
             var kineticModelCalculators = FakeKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(
                 substances,
                 kineticConversionFactors,

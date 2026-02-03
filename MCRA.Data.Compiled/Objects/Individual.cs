@@ -17,8 +17,6 @@ namespace MCRA.Data.Compiled.Objects {
 
         public double SamplingWeight { get; set; } = 1D;
 
-        public double BodyWeight { get; set; }
-
         public int NumberOfDaysInSurvey { get; set; }
 
         public double Covariable { get; set; }
@@ -27,6 +25,16 @@ namespace MCRA.Data.Compiled.Objects {
 
         //TODO rename to survey
         public string CodeFoodSurvey { get; set; }
+
+        public double? Age { get; private set; }
+
+        public GenderType Gender { get; private set; }
+
+        public double BodyWeight { get; set; } = double.NaN;
+
+        public double? BodySurfaceArea { get; private set; }
+
+        public double? Height { get; private set; }
 
         public IEnumerable<IndividualPropertyValue> IndividualPropertyValues => _individualPropertyValues;
 
@@ -68,12 +76,5 @@ namespace MCRA.Data.Compiled.Objects {
         public IndividualPropertyValue GetPropertyValue(IndividualProperty property) =>
             _individualPropertyValues.FirstOrDefault(v => v.IndividualProperty.MatchesIndividualProperty(property));
 
-        public double? Age { get; private set; }
-
-        public double? Height { get; private set; }
-
-        public GenderType Gender { get; private set; }
-
-        public double? BodySurfaceArea { get; private set; }
     }
 }

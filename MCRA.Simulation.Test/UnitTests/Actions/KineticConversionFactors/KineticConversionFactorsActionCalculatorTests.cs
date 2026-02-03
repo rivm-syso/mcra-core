@@ -1,5 +1,4 @@
 ﻿using MCRA.Data.Compiled;
-using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Management;
 using MCRA.General;
 using MCRA.General.Action.Settings;
@@ -10,8 +9,9 @@ using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
+
     /// <summary>
-    /// Runs the KineticConversionFactors action
+    /// KineticConversionFactorsActionCalculator tests.
     /// </summary>
     [TestClass]
     public class KineticConversionFactorsActionCalculatorTests : ActionCalculatorTestsBase {
@@ -21,25 +21,27 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// action result, load data uncertain method
         /// </summary>
         [TestMethod]
-        public void KineticConversionFactorActionCalculator_TestLoadKineticModelInstance() {
-            var seed = 1;
-            var random = new McraRandomGenerator(seed);
+        public void KineticConversionFactorActionCalculator_TestLoad() {
+            var random = new McraRandomGenerator(1);
 
             var substances = FakeSubstancesGenerator.Create(1);
-            var referenceCompound = substances.First();
-            var kineticModelinstance = FakeKineticModelsGenerator.CreatePbkModelInstance(referenceCompound);
-            var kineticModelInstances = new List<KineticModelInstance>() { kineticModelinstance };
-
+            var routes = new List<ExposureRoute>() { ExposureRoute.Oral, ExposureRoute.Dermal, ExposureRoute.Inhalation };
+            var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerKg, BiologicalMatrix.Liver);
+            var kineticConversionFactors = FakeKineticConversionFactorModelsGenerator
+                .CreateKineticConversionFactors(
+                    substances,
+                    routes,
+                    targetUnit
+                );
             var compiledData = new CompiledData() {
-                AllKineticModelInstances = [.. kineticModelInstances],
+                AllKineticConversionFactors = kineticConversionFactors
             };
 
             var project = new ProjectDto();
             var config = project.KineticModelsSettings;
-            config.ExposureRoutes = [ExposureRoute.Oral, ExposureRoute.Dermal, ExposureRoute.Inhalation];
+            config.ExposureRoutes = routes;
             var data = new ActionData() {
-                ActiveSubstances = substances,
-                ReferenceSubstance = referenceCompound,
+                ActiveSubstances = substances
             };
 
             var dataManager = new MockCompiledDataManager(compiledData);
@@ -55,6 +57,48 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 [UncertaintySource.KineticConversionFactors] = random
             };
             TestLoadAndSummarizeUncertainty(calculator, data, header, random, factorialSet, uncertaintySourceGenerators);
+        }
+
+        /// <summary>
+        /// Runs compute KCF from PBK models action.
+        /// </summary>
+        [TestMethod]
+        public void KineticConversionFactorActionCalculator_TestCompute() {
+            var random = new McraRandomGenerator(1);
+            var filename = "Resources/PbkModels/EuroMixGenericPbk.sbml";
+            var substances = FakeSubstancesGenerator.Create(1);
+            var pbkModelInstances = substances
+                .Select(r => FakeKineticModelsGenerator.CreateSbmlPbkModelInstance(r, filename, [("BM", 70D)]))
+                .ToList();
+
+            var project = new ProjectDto();
+            var config = project.KineticConversionFactorsSettings;
+            config.IsCompute = true;
+            config.ExposureRoutes = [ExposureRoute.Oral, ExposureRoute.Inhalation];
+            config.InternalMatrices = [BiologicalMatrix.VenousBlood, BiologicalMatrix.Liver];
+            config.NumberOfPbkModelSimulations = 10;
+            config.ExposureRangeMinimum = 1e-1;
+            config.ExposureRangeMaximum = 1e2;
+            config.NumberOfDays = 20;
+            config.PbkSimulationMethod = PbkSimulationMethod.Standard;
+            config.ExposureEventsGenerationMethod = ExposureEventsGenerationMethod.DailyAverageEvents;
+            config.ComputeBetweenInternalTargetConversionFactors = true;
+
+            var data = new ActionData() {
+                ActiveSubstances = substances,
+                KineticModelInstances = pbkModelInstances
+            };
+
+            var calculator = new KineticConversionFactorsActionCalculator(project);
+            var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, "TestCompute");
+
+            var factorialSet = new UncertaintyFactorialSet() {
+                UncertaintySources = [UncertaintySource.KineticConversionFactors]
+            };
+            var uncertaintySourceGenerators = new Dictionary<UncertaintySource, IRandom> {
+                [UncertaintySource.KineticConversionFactors] = random
+            };
+            TestRunUpdateSummarizeUncertainty(calculator, data, header, random, factorialSet, uncertaintySourceGenerators, reportFileName: "TestAcuteInternalAggregate");
         }
     }
 }

@@ -2,7 +2,8 @@
 <Module>
   <Id>KineticConversionFactors</Id>
   <Name>Kinetic conversion factors</Name>
-  <ModuleType>DataModule</ModuleType>
+  <ModuleType>CalculatorModule</ModuleType>
+  <CanCompute>true</CanCompute>
   <ActionType>KineticConversionFactors</ActionType>
   <TableGroup>KineticConversionFactors</TableGroup>
   <AllowDefaultData>true</AllowDefaultData>
@@ -17,10 +18,27 @@
     Specify kinetic conversion factors as data.
   </DataDescription>
   <CalculationSettings>
+    <CalculationSetting source="Action">ExposureType</CalculationSetting>
     <CalculationSetting source="Substances">MultipleSubstances</CalculationSetting>
     <CalculationSetting source="HazardCharacterisations">ExposureRoutes</CalculationSetting>
     <CalculationSetting source="ActiveSubstances">FilterByAvailableHazardCharacterisation</CalculationSetting>
     <CalculationSetting>KCFSubgroupDependent</CalculationSetting>
+    <CalculationSetting>InternalMatrices</CalculationSetting>
+    <CalculationSetting>NumberOfPbkModelSimulations</CalculationSetting>
+    <CalculationSetting>ExposureRangeMinimum</CalculationSetting>
+    <CalculationSetting>ExposureRangeMaximum</CalculationSetting>
+    <CalculationSetting>ComputeBetweenInternalTargetConversionFactors</CalculationSetting>
+    <CalculationSetting source="PbkModels">NumberOfDays</CalculationSetting>
+    <CalculationSetting source="PbkModels">ExposureEventsGenerationMethod</CalculationSetting>
+    <CalculationSetting source="PbkModels">NonStationaryPeriod</CalculationSetting>
+    <CalculationSetting source="PbkModels">NonStationaryPeriodInYears</CalculationSetting>
+    <CalculationSetting source="PbkModels">UseParameterVariability</CalculationSetting>
+    <CalculationSetting source="PbkModels">PbkSimulationMethod</CalculationSetting>
+    <CalculationSetting source="PbkModels">LifetimeYears</CalculationSetting>
+    <CalculationSetting source="PbkModels">BodyWeightCorrected</CalculationSetting>
+    <CalculationSetting source="PbkModelSimulations">PbkOutputResolutionTimeUnit</CalculationSetting>
+    <CalculationSetting source="PbkModelSimulations">PbkOutputResolutionStepSize</CalculationSetting>
+    <CalculationSetting source="Action">RandomSeed</CalculationSetting>
   </CalculationSettings>
   <UncertaintySettings>
     <UncertaintySetting>ResampleKineticConversionFactors</UncertaintySetting>
@@ -31,6 +49,9 @@
   <SelectionInputs>
     <Input>ActiveSubstances</Input>
   </SelectionInputs>
+  <CalculationInputs>
+    <Input>PbkModels</Input>
+  </CalculationInputs>
   <Entities>
     <Entity>Substances</Entity>
   </Entities>

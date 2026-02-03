@@ -132,9 +132,25 @@
       </URIs>
     </Unit>
     <Unit>
+      <Id>ExposedSkin</Id>
+      <Name>exposed skin compartment</Name>
+      <ParentId>Skin</ParentId>
+      <URIs>
+        <URI>http://purl.obolibrary.org/obo/PBPKO_00625</URI>
+      </URIs>
+    </Unit>
+    <Unit>
+      <Id>UnexposedSkin</Id>
+      <Name>unexposed exposed skin compartment</Name>
+      <ParentId>Skin</ParentId>
+      <URIs>
+        <URI>http://purl.obolibrary.org/obo/PBPKO_00626</URI>
+      </URIs>
+    </Unit>
+    <Unit>
       <Id>StratumCorneumExposedSkin</Id>
       <Name>stratum corneum exposed skin compartment</Name>
-      <ParentId>Skin</ParentId>
+      <ParentId>ExposedSkin</ParentId>
       <URIs>
         <URI>http://purl.obolibrary.org/obo/PBPKO_00458</URI>
       </URIs>
@@ -142,7 +158,7 @@
     <Unit>
       <Id>StratumCorneumUnexposedSkin</Id>
       <Name>stratum corneum unexposed skin compartment</Name>
-      <ParentId>Skin</ParentId>
+      <ParentId>UnexposedSkin</ParentId>
       <URIs>
         <URI>http://purl.obolibrary.org/obo/PBPKO_00457</URI>
       </URIs>
@@ -178,7 +194,7 @@
     <Unit>
       <Id>ViableEpidermisExposedSkin</Id>
       <Name>viable epidermis exposed skin compartment</Name>
-      <ParentId>Skin</ParentId>
+      <ParentId>ExposedSkin</ParentId>
       <URIs>
         <URI>http://purl.obolibrary.org/obo/PBPKO_00456</URI>
       </URIs>
@@ -186,7 +202,7 @@
     <Unit>
       <Id>ViableEpidermisUnexposedSkin</Id>
       <Name>viable epidermis unexposed skin compartment</Name>
-      <ParentId>Skin</ParentId>
+      <ParentId>UnexposedSkin</ParentId>
       <URIs>
         <URI>http://purl.obolibrary.org/obo/PBPKO_00455</URI>
       </URIs>

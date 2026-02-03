@@ -2,6 +2,7 @@
 using MCRA.General;
 using MCRA.Simulation.Calculators.KineticConversionFactorModels;
 using MCRA.Simulation.Calculators.PbpkModelCalculation;
+using MCRA.Simulation.Constants;
 
 namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
     public sealed class KineticConversionCalculatorFactory {
@@ -72,7 +73,7 @@ namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
 
             // No PBK model found, create kinetic conversion factor model calculator
             var conversionFactorModels = _kineticConversionFactorModels?
-                .Where(r => r.MatchesFromSubstance(substance))
+                .Where(r => r.SubstanceFrom == substance || r.SubstanceFrom == null)
                 .ToList() ?? [];
             return new LinearDoseAggregationCalculator(
                 substance,

@@ -69,7 +69,7 @@
         // Exposures: draw simulated individuals
         SIM_DrawIndividuals = 35,
         // Diet exposures: draw diet exposures
-        DIE_DrawDietExposures = 36,
+        DIE_DrawDietExposures= 36,
         // Consumer product exposures: Consumer product exposure determinants
         CPE_ConsumerProductExposureDeterminants = 37,
         // Consumer product exposures: draw individuals
@@ -83,6 +83,8 @@
         // Internal exposures: draw/match occupation exposures
         IE_DrawOccupationalExposures = 42,
         // Occupational exposures: draw/match occupation exposures
-        OE_DrawOccupationalExposures = 43
+        OE_DrawOccupationalExposures = 43,
+        // Kinetic conversion factors: PBK model simulation
+        KCF_PbkModelSimulation = 44,
     }
 }

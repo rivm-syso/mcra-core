@@ -50,7 +50,7 @@
     <CalculationSetting>MissingValueImputationMethod</CalculationSetting>
     <CalculationSetting>ApplyKineticConversions</CalculationSetting>
     <CalculationSetting>HbmConvertToSingleTargetMatrix</CalculationSetting>
-    <CalculationSetting source ="HazardCharacterisations">TargetDoseLevelType</CalculationSetting>
+    <CalculationSetting source="HazardCharacterisations">TargetDoseLevelType</CalculationSetting>
     <CalculationSetting>MissingValueCutOff</CalculationSetting>
     <CalculationSetting>StandardiseBlood</CalculationSetting>
     <CalculationSetting>StandardiseBloodMethod</CalculationSetting>
