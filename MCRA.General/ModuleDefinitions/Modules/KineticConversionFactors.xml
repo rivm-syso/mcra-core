@@ -17,6 +17,9 @@
   <DataDescription>
     Specify kinetic conversion factors as data.
   </DataDescription>
+  <CalculationDescription>
+    By specifying compartments and routes, PBK models can be used to estimate kinetic conversion factors and compute internal concentrations based on external exposures
+  </CalculationDescription>
   <CalculationSettings>
     <CalculationSetting source="Action">ExposureType</CalculationSetting>
     <CalculationSetting source="Substances">MultipleSubstances</CalculationSetting>
