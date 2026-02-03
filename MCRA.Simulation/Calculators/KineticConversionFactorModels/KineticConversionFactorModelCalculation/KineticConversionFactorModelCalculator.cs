@@ -2,9 +2,9 @@
 using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
-using MCRA.Simulation.Calculators.KineticConversionCalculation;
 using MCRA.Simulation.Calculators.KineticConversionFactorModels.KineticConversionFactorModelCalculation;
 using MCRA.Simulation.Calculators.PbpkModelCalculation;
+using MCRA.Simulation.Calculators.PbpkModelCalculation.TargetExposureFromTimeSeriesCalculation;
 using MCRA.Simulation.Objects;
 using MCRA.Utils;
 using MCRA.Utils.ProgressReporting;
@@ -33,6 +33,10 @@ namespace MCRA.Simulation.Calculators.KineticConversionFactorModels {
             var exposures = GriddingFunctions.LogSpace(exposureMin, exposureMax, numSimulations).ToList();
             var pbkModelLookup = pbkModelInstances
                 .ToDictionary(r => r.InputSubstance);
+
+            var timeSeriesExposureCharacterisationCalculator = TimeSeriesExposureCharacterisationCalculatorFactory
+                .Create(exposureType, simulationSettings.NonStationaryPeriod);
+
             foreach (var substance in activeSubstance) {
                 if (!pbkModelLookup.TryGetValue(substance, out var pbkModelInstance)) {
                     throw new Exception($"No PBK model for substnace {substance.Name} ({substance.Code}).");
@@ -45,7 +49,7 @@ namespace MCRA.Simulation.Calculators.KineticConversionFactorModels {
                         simulationSettings,
                         externalExposureUnit,
                         targetUnits,
-                        exposureType,
+                        timeSeriesExposureCharacterisationCalculator,
                         route,
                         exposures,
                         i == 0 && computeInternalTargetConversionFactors,
@@ -64,7 +68,7 @@ namespace MCRA.Simulation.Calculators.KineticConversionFactorModels {
             PbkSimulationSettings simulationSettings,
             ExposureUnitTriple externalExposureUnit,
             ICollection<TargetUnit> targetUnits,
-            ExposureType exposureType,
+            ITimeSeriesExposureCharacterisationCalculator timeSeriesExposureCharacterisationCalculator,
             ExposureRoute route,
             List<double> doses,
             bool computeInternalTargetConversionFactors,
@@ -75,6 +79,84 @@ namespace MCRA.Simulation.Calculators.KineticConversionFactorModels {
             var pbkModelCalculator = PbkModelCalculatorFactory
                 .Create(pbkModelInstance, simulationSettings);
 
+            // Create external individual exposures
+            var externalTargetUnit = new TargetUnit(new ExposureTarget(route), externalExposureUnit);
+            var externalIndividualExposures = createExternalIndividualExposures(substance, route, doses);
+
+            // Run PBK model simulations
+            var simulationResults = pbkModelCalculator.Calculate(
+                externalIndividualExposures,
+                externalExposureUnit,
+                [route],
+                targetUnits,
+                generator,
+                progressState
+            );
+
+            // Compute external->internal KCFs
+            var simulationTargetExposures = simulationResults
+                .Select(timeSeriesExposureCharacterisationCalculator.ComputeSubstanceTargetExposures)
+                .ToList();
+            foreach (var targetUnit in targetUnits) {
+                var targetExposures = simulationTargetExposures
+                    .Select(r => r[targetUnit.Target])
+                    .ToList();
+                foreach (var toSubstance in pbkModelCalculator.OutputSubstances) {
+                    var toTargetExposures = targetExposures
+                        .Select(r => r.TryGetValue(toSubstance, out var val) ? val : null)
+                        .Select(r => r?.Exposure ?? 0)
+                        .ToList();
+                    var record = createConversionModel(
+                        substance,
+                        toSubstance,
+                        externalTargetUnit,
+                        doses,
+                        targetUnit,
+                        toTargetExposures
+                    );
+                    result.Add(record);
+                }
+            }
+
+            // Compute internal<->internal KCFs
+            if (computeInternalTargetConversionFactors) {
+                foreach (var fromTargetUnit in targetUnits) {
+                    foreach (var toTargetUnit in targetUnits) {
+                        if (fromTargetUnit != toTargetUnit) {
+                            var fromTargetExposures = simulationTargetExposures
+                                .Select(r => r[fromTargetUnit.Target])
+                                .Select(r => r.TryGetValue(substance, out var val) ? val : null)
+                                .Select(r => r?.Exposure ?? 0)
+                                .ToList();
+                            foreach (var toSubstance in pbkModelCalculator.OutputSubstances) {
+                                var toTargetExposures = simulationTargetExposures
+                                    .Select(r => r[toTargetUnit.Target])
+                                    .Select(r => r.TryGetValue(toSubstance, out var val) ? val : null)
+                                    .Select(r => r?.Exposure ?? 0)
+                                    .ToList();
+                                var record = createConversionModel(
+                                    substance,
+                                    toSubstance,
+                                    fromTargetUnit,
+                                    fromTargetExposures,
+                                    toTargetUnit,
+                                    toTargetExposures
+                                );
+                                result.Add(record);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        private static List<(SimulatedIndividual, List<IExternalIndividualDayExposure>)> createExternalIndividualExposures(
+            Compound substance,
+            ExposureRoute route,
+            List<double> doses
+        ) {
             var simulatedIndividualExposures = new List<IExternalIndividualExposure>();
             var ix = 0;
             foreach (var dose in doses) {
@@ -98,70 +180,10 @@ namespace MCRA.Simulation.Calculators.KineticConversionFactorModels {
                 simulatedIndividualExposures.Add(individualExposure);
             }
 
-            var pbkKineticConversionCalculator = new PbkKineticConversionCalculator(pbkModelCalculator);
-            var simulationResults = pbkKineticConversionCalculator
-                .CalculateIndividualTargetExposures(
-                    simulatedIndividualExposures,
-                    [route],
-                    externalExposureUnit,
-                    targetUnits,
-                    progressState,
-                    generator
-                );
-
-            var externalTargetUnit = new TargetUnit(new ExposureTarget(route), externalExposureUnit);
-            foreach (var targetUnit in targetUnits) {
-                var targetExposures = simulationResults
-                    .Select(r => r.InternalTargetExposures[targetUnit.Target])
-                    .ToList();
-                foreach (var toSubstance in pbkModelCalculator.OutputSubstances) {
-                    var toTargetExposures = targetExposures
-                        .Select(r => r.TryGetValue(toSubstance, out var val) ? val : null)
-                        .Select(r => r?.Exposure ?? 0)
-                        .ToList();
-                    var record = createConversionModel(
-                        substance,
-                        toSubstance,
-                        externalTargetUnit,
-                        doses,
-                        targetUnit,
-                        toTargetExposures
-                    );
-                    result.Add(record);
-                }
-            }
-
-            if (computeInternalTargetConversionFactors) {
-                foreach (var fromTargetUnit in targetUnits) {
-                    foreach (var toTargetUnit in targetUnits) {
-                        if (fromTargetUnit != toTargetUnit) {
-                            var fromTargetExposures = simulationResults
-                                .Select(r => r.InternalTargetExposures[fromTargetUnit.Target])
-                                .Select(r => r.TryGetValue(substance, out var val) ? val : null)
-                                .Select(r => r?.Exposure ?? 0)
-                                .ToList();
-                            foreach (var toSubstance in pbkModelCalculator.OutputSubstances) {
-                                var toTargetExposures = simulationResults
-                                    .Select(r => r.InternalTargetExposures[toTargetUnit.Target])
-                                    .Select(r => r.TryGetValue(toSubstance, out var val) ? val : null)
-                                    .Select(r => r?.Exposure ?? 0)
-                                    .ToList();
-                                var record = createConversionModel(
-                                    substance,
-                                    toSubstance,
-                                    fromTargetUnit,
-                                    fromTargetExposures,
-                                    toTargetUnit,
-                                    toTargetExposures
-                                );
-                                result.Add(record);
-                            }
-                        }
-                    }
-                }
-            }
-
-            return result;
+            var externalIndividualExposures = simulatedIndividualExposures
+                .Select(r => (r.SimulatedIndividual, r.ExternalIndividualDayExposures))
+                .ToList();
+            return externalIndividualExposures;
         }
 
         private static KineticConversionFactorEmpiricalModel createConversionModel(

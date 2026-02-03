@@ -107,7 +107,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.SbmlMod
                     externalExposureUnit,
                     routes,
                     [targetUnit],
-                    ExposureType.Acute,
                     random,
                     new ProgressState()
                 )

@@ -26,7 +26,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation {
             ExposureUnitTriple exposureUnit,
             ICollection<ExposureRoute> routes,
             ICollection<TargetUnit> targetUnits,
-            ExposureType exposureType,
             IRandom generator) {
             throw new NotImplementedException();
         }

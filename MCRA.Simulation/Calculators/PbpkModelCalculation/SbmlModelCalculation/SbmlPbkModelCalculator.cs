@@ -19,7 +19,6 @@ namespace MCRA.Simulation.Calculators.PbpkModelCalculation.SbmlModelCalculation 
             ExposureUnitTriple exposureUnit,
             ICollection<ExposureRoute> routes,
             ICollection<TargetUnit> targetUnits,
-            ExposureType exposureType,
             IRandom generator
         ) {
             // Get time resolution

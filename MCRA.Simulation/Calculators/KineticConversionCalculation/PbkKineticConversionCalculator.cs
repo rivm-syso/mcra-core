@@ -3,6 +3,7 @@ using MCRA.General;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Calculators.PbpkModelCalculation;
 using MCRA.Simulation.Calculators.PbpkModelCalculation.ReverseDoseCalculation;
+using MCRA.Simulation.Calculators.PbpkModelCalculation.TargetExposureFromTimeSeriesCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.KineticConversionFactorCalculation;
@@ -61,19 +62,18 @@ namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
                     exposureUnit,
                     routes,
                     targetUnits,
-                    ExposureType.Acute,
                     generator,
                     progressState
                 );
 
+            var timeSeriesExposureCharacterisationCalculator = TimeSeriesExposureCharacterisationCalculatorFactory
+                .Create(ExposureType.Acute, _simulationSettings.NonStationaryPeriod);
+
             var result = new List<AggregateIndividualDayExposure>();
             for (int i = 0; i < individualDayExposures.Count; i++) {
                 var externalIndividualExposure = individualDayExposures.ElementAt(i);
-                var targetIndividualExposure = ComputeSubstanceTargetExposures(
-                    targetExposures[i],
-                    ExposureType.Acute,
-                    _simulationSettings.NonStationaryPeriod
-                );
+                var targetIndividualExposure = timeSeriesExposureCharacterisationCalculator
+                    .ComputeSubstanceTargetExposures(targetExposures[i]);
                 var internalIndividualExposure = new AggregateIndividualDayExposure() {
                     SimulatedIndividual = externalIndividualExposure.SimulatedIndividual,
                     SimulatedIndividualDayId = externalIndividualExposure.SimulatedIndividualDayId,
@@ -107,19 +107,18 @@ namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
                 exposureUnit,
                 routes,
                 targetUnits,
-                ExposureType.Chronic,
                 generator,
                 progressState
             );
 
+            var timeSeriesExposureCharacterisationCalculator = TimeSeriesExposureCharacterisationCalculatorFactory
+                .Create(ExposureType.Chronic, _simulationSettings.NonStationaryPeriod);
+
             var result = new List<AggregateIndividualExposure>();
             for (int i = 0; i < individualExposures.Count; i++) {
                 var externalIndividualExposure = individualExposures.ElementAt(i);
-                var targetIndividualExposure = ComputeSubstanceTargetExposures(
-                    targetExposures[i],
-                    ExposureType.Chronic,
-                    _simulationSettings.NonStationaryPeriod
-                );
+                var targetIndividualExposure = timeSeriesExposureCharacterisationCalculator
+                    .ComputeSubstanceTargetExposures(targetExposures[i]);
                 var internalIndividualExposure = new AggregateIndividualExposure() {
                     SimulatedIndividual = externalIndividualExposure.SimulatedIndividual,
                     ExternalIndividualDayExposures = externalIndividualExposure.ExternalIndividualDayExposures,
@@ -127,40 +126,6 @@ namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
                 };
                 result.Add(internalIndividualExposure);
             }
-            return result;
-        }
-
-        public static Dictionary<ExposureTarget, Dictionary<Compound, ISubstanceTargetExposure>> ComputeSubstanceTargetExposures(
-            PbkSimulationOutput simulationOutput,
-            ExposureType exposureType,
-            int nonStationaryPeriod
-        ) {
-            var result = simulationOutput.SubstanceTargetLevelTimeSeries
-                .Select(r => {
-                    var steadyStateTargetExposure = r.ComputeSteadyStateTargetExposure(
-                        nonStationaryPeriod
-                    );
-                    var peakTargetExposure = r.ComputePeakTargetExposure(
-                        nonStationaryPeriod
-                    );
-                    return new SubstanceTargetExposurePattern() {
-                        TimeSeries = r,
-                        SteadyStateTargetExposure = steadyStateTargetExposure,
-                        PeakTargetExposure = peakTargetExposure,
-                        Exposure = exposureType == ExposureType.Acute
-                            ? peakTargetExposure
-                            : steadyStateTargetExposure
-                    };
-                })
-                .GroupBy(r => r.Target)
-                .ToDictionary(
-                    g => g.Key,
-                    g => g
-                        .ToDictionary(
-                            r => r.Substance,
-                            r => r as ISubstanceTargetExposure
-                        )
-                );
             return result;
         }
 
@@ -185,15 +150,14 @@ namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
                 exposureUnit,
                 [route],
                 [targetUnit],
-                exposureType,
                 generator,
                 new ProgressState()
             );
-            var targetIndividualExposure = ComputeSubstanceTargetExposures(
-                targetExposures.First(),
-                exposureType,
-                _simulationSettings.NonStationaryPeriod
-            );
+            var timeSeriesExposureCharacterisationCalculator = TimeSeriesExposureCharacterisationCalculatorFactory
+                .Create(exposureType, _simulationSettings.NonStationaryPeriod);
+
+            var targetIndividualExposure = timeSeriesExposureCharacterisationCalculator
+                .ComputeSubstanceTargetExposures(targetExposures.First());
             return targetIndividualExposure[targetUnit.Target].Values.First();
         }
 

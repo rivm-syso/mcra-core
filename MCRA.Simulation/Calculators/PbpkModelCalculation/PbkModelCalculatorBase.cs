@@ -65,7 +65,6 @@ namespace MCRA.Simulation.Calculators.PbpkModelCalculation {
             ExposureUnitTriple externalExposureUnit,
             ICollection<ExposureRoute> routes,
             ICollection<TargetUnit> targetUnits,
-            ExposureType exposureType,
             IRandom generator,
             ProgressState progressState
         ) {
@@ -82,7 +81,6 @@ namespace MCRA.Simulation.Calculators.PbpkModelCalculation {
                 externalExposureUnit,
                 routes,
                 targetUnits,
-                exposureType,
                 generator
             );
 
@@ -98,7 +96,6 @@ namespace MCRA.Simulation.Calculators.PbpkModelCalculation {
             ExposureUnitTriple exposureUnit,
             ICollection<ExposureRoute> routes,
             ICollection<TargetUnit> targetUnits,
-            ExposureType exposureType,
             IRandom generator
         );
 

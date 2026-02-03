@@ -101,8 +101,6 @@ namespace MCRA.Simulation.OutputGeneration {
                             Time = r.Time
                         })
                         .ToList() ?? [];
-                    record.PeakTargetExposure = pattern.PeakTargetExposure;
-                    record.SteadyStateTargetExposure = pattern.SteadyStateTargetExposure;
                     record.Unit = targetUnit.GetShortDisplayName();
                     record.BiologicalMatrix = targetUnit.BiologicalMatrix != BiologicalMatrix.Undefined
                         ? targetUnit.BiologicalMatrix.GetDisplayName() : null;

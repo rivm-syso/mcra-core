@@ -63,7 +63,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// Runs compute KCF from PBK models action.
         /// </summary>
         [TestMethod]
-        public void KineticConversionFactorActionCalculator_TestCompute() {
+        [DataRow(ExposureType.Acute)]
+        [DataRow(ExposureType.Chronic)]
+        public void KineticConversionFactorActionCalculator_TestCompute(ExposureType exposureType) {
             var random = new McraRandomGenerator(1);
             var filename = "Resources/PbkModels/EuroMixGenericPbk.sbml";
             var substances = FakeSubstancesGenerator.Create(1);
@@ -74,6 +76,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var project = new ProjectDto();
             var config = project.KineticConversionFactorsSettings;
             config.IsCompute = true;
+            config.ExposureType = exposureType;
             config.ExposureRoutes = [ExposureRoute.Oral, ExposureRoute.Inhalation];
             config.InternalMatrices = [BiologicalMatrix.VenousBlood, BiologicalMatrix.Liver];
             config.NumberOfPbkModelSimulations = 10;
@@ -89,8 +92,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 KineticModelInstances = pbkModelInstances
             };
 
+            var reportFileName = $"TestCompute_{exposureType}";
             var calculator = new KineticConversionFactorsActionCalculator(project);
-            var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, "TestCompute");
+            var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, reportFileName);
 
             var factorialSet = new UncertaintyFactorialSet() {
                 UncertaintySources = [UncertaintySource.KineticConversionFactors]
@@ -98,7 +102,15 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var uncertaintySourceGenerators = new Dictionary<UncertaintySource, IRandom> {
                 [UncertaintySource.KineticConversionFactors] = random
             };
-            TestRunUpdateSummarizeUncertainty(calculator, data, header, random, factorialSet, uncertaintySourceGenerators, reportFileName: "TestAcuteInternalAggregate");
+            TestRunUpdateSummarizeUncertainty(
+                calculator,
+                data,
+                header,
+                random,
+                factorialSet,
+                uncertaintySourceGenerators,
+                reportFileName: reportFileName
+            );
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using MCRA.General;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
+using MCRA.Simulation.Calculators.PbpkModelCalculation.TargetExposureFromTimeSeriesCalculation;
 using MCRA.Simulation.Objects;
 using MCRA.Utils.Statistics;
 
@@ -30,6 +31,8 @@ namespace MCRA.Simulation.Calculators.PbpkModelCalculation.ReverseDoseCalculatio
             ExposureType exposureType,
             IRandom generator
         ) {
+            var targetExposureFromTimeSeriesCalculator = TimeSeriesExposureCharacterisationCalculatorFactory
+                .Create(exposureType, pbkModelCalculator.SimulationSettings.NonStationaryPeriod);
             double f(double x) {
                 var externalExposure = ExternalIndividualDayExposure
                     .FromSingleDose(
@@ -41,23 +44,16 @@ namespace MCRA.Simulation.Calculators.PbpkModelCalculation.ReverseDoseCalculatio
                     );
                 var simulationOutput = pbkModelCalculator.Calculate(
                     new List<(SimulatedIndividual, List<IExternalIndividualDayExposure>)> {
-                        (externalExposure.SimulatedIndividual, 
-                        [ externalExposure ]
+                        (externalExposure.SimulatedIndividual,
+                        [externalExposure]
                     )},
                     externalExposureUnit,
                     [externalExposureRoute],
                     [internalDoseUnit],
-                    exposureType,
                     generator
                 );
                 var targetTimeSeries = simulationOutput[0].SubstanceTargetLevelTimeSeries.First();
-                var targetDose = exposureType == ExposureType.Acute
-                    ? targetTimeSeries.ComputePeakTargetExposure(
-                        pbkModelCalculator.SimulationSettings.NonStationaryPeriod
-                    )
-                    : targetTimeSeries.ComputePeakTargetExposure(
-                        pbkModelCalculator.SimulationSettings.NonStationaryPeriod
-                    );
+                var targetDose = targetExposureFromTimeSeriesCalculator.Compute(targetTimeSeries.Exposures);
                 var fObj = targetDose - dose;
                 return fObj;
             }
@@ -71,9 +67,9 @@ namespace MCRA.Simulation.Calculators.PbpkModelCalculation.ReverseDoseCalculatio
             if (xopt > 0) {
                 var lr = 0.9;
                 var kf = (fopt + dose) / xopt;
-                _conversionFactorApproximation = lr * _conversionFactorApproximation + (1-lr) * kf;
+                _conversionFactorApproximation = lr * _conversionFactorApproximation + (1 - lr) * kf;
             }
-             return xopt;
+            return xopt;
         }
 
         private static (double xopt, double fopt) optimise(

@@ -72,18 +72,6 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double RelativeCompartmentWeight { get; set; }
 
-        [Display(AutoGenerateField = false)]
-        [Description("Steady state internal exposure.")]
-        [DisplayName("Steady state internal exposure")]
-        [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double SteadyStateTargetExposure { get; set; }
-
-        [Description("Peak internal exposure.")]
-        [DisplayName("Peak internal exposure")]
-        [Display(AutoGenerateField = false)]
-        [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double PeakTargetExposure { get; set; }
-
         [Description("The absolute maximum of the of the internal exposures time course.")]
         [DisplayName("The absolute maximum of the of the internal exposures time course")]
         [Display(AutoGenerateField = false)]

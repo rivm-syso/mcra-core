@@ -5,6 +5,7 @@ using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Calculators.KineticConversionCalculation;
 using MCRA.Simulation.Calculators.PbpkModelCalculation;
 using MCRA.Simulation.Calculators.PbpkModelCalculation.DesolvePbkModelCalculators.ChlorpyrifosPbkModelCalculation;
+using MCRA.Simulation.Calculators.PbpkModelCalculation.TargetExposureFromTimeSeriesCalculation;
 using MCRA.Simulation.Objects;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Logger;
@@ -171,9 +172,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.Desolve
                 .Select(r => r.GetSubstanceTargetExposure(targetUnit.Target, substances.Single(r => r.Code == codeFocalSubstance)))
                 .Cast<SubstanceTargetExposurePattern>()
                 .Single();
-
-            var exposure = substanceTargetExposurePattern.SteadyStateTargetExposure;
-            Assert.AreEqual(expectedSteadyState, exposure, 2e-3);
+            var observedSteadyState = TimeSeriesSteadyStateExposureCalculator.Compute(
+                substanceTargetExposurePattern.TimeSeries.Exposures,
+                simulationSettings.NonStationaryPeriod
+            );
+            Assert.AreEqual(expectedSteadyState, observedSteadyState, 2e-3);
         }
 
         private static List<IExternalIndividualExposure> createFakeExternalIndividualExposures(

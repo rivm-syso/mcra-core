@@ -10,8 +10,8 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
 
         /// <summary>
         /// The substance exposure (without any RPF/membership correction).
-        /// Depending on the target exposure unit this may be an absolute amount
-        /// or a concentration.
+        /// Depending on the target exposure unit this may be an absolute
+        /// amount or a concentration.
         /// </summary>
         double Exposure { get; }
 
