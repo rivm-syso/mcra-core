@@ -31,7 +31,7 @@ namespace MCRA.Simulation.Actions.DustConcentrations {
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
-            var adjustedDustConcentrations = subsetManager.AllDustConcentrations
+            var alignedConcentrations = subsetManager.AllDustConcentrations
                 .Select(r => {
                     var alignmentFactor = r.Unit
                         .GetConcentrationAlignmentFactor(SystemUnits.DefaultDustConcentrationUnit, r.Substance.MolecularMass);
@@ -46,7 +46,7 @@ namespace MCRA.Simulation.Actions.DustConcentrations {
                 .OrderBy(c => c.idSample)
                 .ToList();
 
-            data.DustConcentrations = adjustedDustConcentrations;
+            data.DustConcentrations = alignedConcentrations;
             data.DustConcentrationUnit = SystemUnits.DefaultDustConcentrationUnit;
         }
 
@@ -76,11 +76,30 @@ namespace MCRA.Simulation.Actions.DustConcentrations {
             localProgress.Update(100);
         }
 
-        protected override void summarizeActionResult(IDustConcentrationsActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {
+        protected override void summarizeActionResult(
+            IDustConcentrationsActionResult actionResult,
+            ActionData data,
+            SectionHeader header,
+            int order,
+            CompositeProgressState progressReport
+        ) {
             var localProgress = progressReport.NewProgressState(100);
             localProgress.Update("Summarizing dust concentrations", 0);
-            var summarizer = new DustConcentrationsSummarizer();
+            var summarizer = new DustConcentrationsSummarizer(ModuleConfig);
             summarizer.Summarize(_actionSettings, actionResult, data, header, order);
+            localProgress.Update(100);
+        }
+
+        protected override void summarizeActionResultUncertain(
+            UncertaintyFactorialSet factorialSet,
+            IDustConcentrationsActionResult actionResult,
+            ActionData data,
+            SectionHeader header,
+            CompositeProgressState progressReport
+        ) {
+            var localProgress = progressReport.NewProgressState(100);
+            var summarizer = new DustConcentrationsSummarizer(ModuleConfig);
+            summarizer.SummarizeUncertain(data, actionResult, header);
             localProgress.Update(100);
         }
     }

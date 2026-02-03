@@ -11,15 +11,15 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         /// <summary>
         /// Generates fake air concentration distributions for the specified substances.
         /// </summary>
-        public static List<IndoorAirConcentration> CreateIndoor(
+        public static List<AirConcentration> CreateIndoor(
             List<Compound> substances,
             int seed = 1
         ) {
             var random = new McraRandomGenerator(seed);
-            var airConcentrations = new List<IndoorAirConcentration>();
+            var airConcentrations = new List<AirConcentration>();
             foreach (var substance in substances) {
                 var conc = random.NextDouble();
-                airConcentrations.Add(new IndoorAirConcentration() {
+                airConcentrations.Add(new AirConcentration() {
                     Substance = substance,
                     Concentration = conc
                 });
@@ -30,15 +30,15 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         // <summary>
         /// Generates fake air concentration distributions for the specified substances.
         /// </summary>
-        public static List<OutdoorAirConcentration> CreateOutdoor(
+        public static List<AirConcentration> CreateOutdoor(
             List<Compound> substances,
             int seed = 1
         ) {
             var random = new McraRandomGenerator(seed);
-            var airConcentrations = new List<OutdoorAirConcentration>();
+            var airConcentrations = new List<AirConcentration>();
             foreach (var substance in substances) {
                 var conc = random.NextDouble();
-                airConcentrations.Add(new OutdoorAirConcentration() {
+                airConcentrations.Add(new AirConcentration() {
                     Substance = substance,
                     Concentration = conc
                 });

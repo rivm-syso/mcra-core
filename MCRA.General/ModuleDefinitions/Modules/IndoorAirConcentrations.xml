@@ -19,6 +19,9 @@
   <Entities>
     <Entity>Substances</Entity>
   </Entities>
+  <OutputSettings>
+    <OutputSetting source="Action">SelectedPercentiles</OutputSetting>
+  </OutputSettings>
   <UncertaintySettings>
     <UncertaintySetting>ResampleAirConcentrations</UncertaintySetting>
   </UncertaintySettings>

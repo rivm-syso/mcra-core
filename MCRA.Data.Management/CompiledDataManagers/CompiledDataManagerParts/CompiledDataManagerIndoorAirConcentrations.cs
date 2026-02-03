@@ -8,10 +8,10 @@ namespace MCRA.Data.Management.CompiledDataManagers {
 
         /// <summary>All indoor air concentrations.
         /// </summary>
-        public IList<IndoorAirConcentration> GetAllIndoorAirConcentrations() {
+        public IList<AirConcentration> GetAllIndoorAirConcentrations() {
             if (_data.AllIndoorAirConcentrations == null) {
                 LoadScope(SourceTableGroup.IndoorAirConcentrations);
-                var allIndoorAirConcentrations = new List<IndoorAirConcentration>();
+                var allIndoorAirConcentrations = new List<AirConcentration>();
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.IndoorAirConcentrations);
                 if (rawDataSourceIds?.Count > 0) {
                     GetAllCompounds();
@@ -22,7 +22,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                     var idSubstance = r.GetString(RawIndoorAirConcentrations.IdSubstance, fieldMap);
                                     var valid = CheckLinkSelected(ScopingType.Compounds, idSubstance);
                                     if (valid) {
-                                        var indoorAirConcentration = new IndoorAirConcentration {
+                                        var indoorAirConcentration = new AirConcentration {
                                             idSample = r.GetStringOrNull(RawIndoorAirConcentrations.IdSample, fieldMap),
                                             Substance = _data.GetOrAddSubstance(idSubstance),
                                             Location = r.GetStringOrNull(RawIndoorAirConcentrations.Location, fieldMap),

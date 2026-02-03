@@ -29,7 +29,7 @@ namespace MCRA.Simulation.Actions.SoilConcentrations {
             return result;
         }
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
-            var adjustedSoilConcentrations = subsetManager.AllSoilConcentrations
+            var alignedConcentrations = subsetManager.AllSoilConcentrations
                 .Select(r => {
                     var alignmentFactor = r.Unit
                         .GetConcentrationAlignmentFactor(SystemUnits.DefaultSoilConcentrationUnit, r.Substance.MolecularMass);
@@ -44,7 +44,7 @@ namespace MCRA.Simulation.Actions.SoilConcentrations {
                 .OrderBy(c => c.idSample)
                 .ToList();
 
-            data.SoilConcentrations = adjustedSoilConcentrations;
+            data.SoilConcentrations = alignedConcentrations;
             data.SoilConcentrationUnit = SystemUnits.DefaultSoilConcentrationUnit;
         }
         protected override void loadDataUncertain(
@@ -72,11 +72,30 @@ namespace MCRA.Simulation.Actions.SoilConcentrations {
             }
             localProgress.Update(100);
         }
-        protected override void summarizeActionResult(ISoilConcentrationsActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {
+        protected override void summarizeActionResult(
+            ISoilConcentrationsActionResult actionResult,
+            ActionData data,
+            SectionHeader header,
+            int order,
+            CompositeProgressState progressReport
+        ) {
             var localProgress = progressReport.NewProgressState(100);
             localProgress.Update("Summarizing soil concentrations", 0);
-            var summarizer = new SoilConcentrationsSummarizer();
+            var summarizer = new SoilConcentrationsSummarizer(ModuleConfig);
             summarizer.Summarize(_actionSettings, actionResult, data, header, order);
+            localProgress.Update(100);
+        }
+
+        protected override void summarizeActionResultUncertain(
+            UncertaintyFactorialSet factorialSet,
+            ISoilConcentrationsActionResult actionResult,
+            ActionData data,
+            SectionHeader header,
+            CompositeProgressState progressReport
+        ) {
+            var localProgress = progressReport.NewProgressState(100);
+            var summarizer = new SoilConcentrationsSummarizer(ModuleConfig);
+            summarizer.SummarizeUncertain(data, actionResult, header);
             localProgress.Update(100);
         }
     }

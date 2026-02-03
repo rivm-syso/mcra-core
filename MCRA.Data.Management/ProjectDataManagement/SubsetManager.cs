@@ -555,9 +555,9 @@ namespace MCRA.Data.Management {
 
         public IList<ExposureEstimate> AllSingleValueNonDietaryExposures => _dataManager.GetAllSingleValueNonDietaryExposures();
 
-        public IList<IndoorAirConcentration> AllIndoorAirConcentrations => _dataManager.GetAllIndoorAirConcentrations();
+        public IList<AirConcentration> AllIndoorAirConcentrations => _dataManager.GetAllIndoorAirConcentrations();
 
-        public IList<OutdoorAirConcentration> AllOutdoorAirConcentrations => _dataManager.GetAllOutdoorAirConcentrations();
+        public IList<AirConcentration> AllOutdoorAirConcentrations => _dataManager.GetAllOutdoorAirConcentrations();
 
         public IList<AirIndoorFraction> AllAirIndoorFractions => _dataManager.GetAllAirIndoorFractions();
 

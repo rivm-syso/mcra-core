@@ -5,7 +5,7 @@ using MCRA.Simulation.Action;
 
 namespace MCRA.Simulation.Actions.OutdoorAirConcentrations {
     public class OutdoorAirConcentrationsOutputData : IModuleOutputData {
-        public IList<OutdoorAirConcentration> AirConcentrations { get; set; }
+        public IList<AirConcentration> AirConcentrations { get; set; }
         public AirConcentrationUnit AirConcentrationUnit { get; set; }
         public IModuleOutputData Copy() {
             return new OutdoorAirConcentrationsOutputData() {

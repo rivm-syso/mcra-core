@@ -5,6 +5,7 @@ using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
 using MCRA.General.ModuleDefinitions.Settings;
+using MCRA.General.UnitDefinitions.Defaults;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.OutputGeneration;
@@ -16,7 +17,6 @@ namespace MCRA.Simulation.Actions.IndoorAirConcentrations {
 
     [ActionType(ActionType.IndoorAirConcentrations)]
     public class IndoorAirConcentrationsActionCalculator(ProjectDto project) : ActionCalculatorBase<IIndoorAirConcentrationsActionResult>(project) {
-
         private IndoorAirConcentrationsModuleConfig ModuleConfig => (IndoorAirConcentrationsModuleConfig)_moduleSettings;
         protected override void verify() {
             _actionDataLinkRequirements[ScopingType.IndoorAirConcentrations][ScopingType.Compounds].AlertTypeMissingData = AlertType.Notification;
@@ -30,25 +30,24 @@ namespace MCRA.Simulation.Actions.IndoorAirConcentrations {
             return result;
         }
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
-            var airConcentrationUnit = AirConcentrationUnit.ugPerm3;
-
-            var adjustedIndoorAirConcentrations = subsetManager.AllIndoorAirConcentrations
+            var alignedConcentrations = subsetManager.AllIndoorAirConcentrations
                 .Select(r => {
-                    var alignmentFactor = 1d;
+                    var alignmentFactor = r.Unit
+                        .GetConcentrationAlignmentFactor(SystemUnits.DefaultAirConcentrationUnit, r.Substance.MolecularMass);
                     var conc = r.Concentration * alignmentFactor;
-                    return new IndoorAirConcentration {
+                    return new AirConcentration {
                         idSample = r.idSample,
                         Substance = r.Substance,
                         Location = r.Location,
                         Concentration = conc,
-                        Unit = airConcentrationUnit
+                        Unit = SystemUnits.DefaultAirConcentrationUnit
                     };
                 })
                 .OrderBy(c => c.idSample)
                 .ToList();
 
-            data.IndoorAirConcentrations = adjustedIndoorAirConcentrations;
-            data.IndoorAirConcentrationUnit = airConcentrationUnit;
+            data.IndoorAirConcentrations = alignedConcentrations;
+            data.IndoorAirConcentrationUnit = SystemUnits.DefaultAirConcentrationUnit;
         }
 
         protected override void loadDataUncertain(
@@ -65,7 +64,7 @@ namespace MCRA.Simulation.Actions.IndoorAirConcentrations {
                     data.IndoorAirConcentrations = [.. data.IndoorAirConcentrations
                         .GroupBy(c => c.Substance)
                         .SelectMany(c => c.Resample(uncertaintySourceGenerators[UncertaintySource.AirConcentrations])
-                            .Select(r => new IndoorAirConcentration() {
+                            .Select(r => new AirConcentration() {
                                 Substance = r.Substance,
                                 Location = r.Location,
                                 Concentration = r.Concentration,
@@ -78,11 +77,29 @@ namespace MCRA.Simulation.Actions.IndoorAirConcentrations {
             localProgress.Update(100);
         }
 
-        protected override void summarizeActionResult(IIndoorAirConcentrationsActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {
+        protected override void summarizeActionResult(
+            IIndoorAirConcentrationsActionResult actionResult,
+            ActionData data,
+            SectionHeader header,
+            int order,
+            CompositeProgressState progressReport
+        ) {
             var localProgress = progressReport.NewProgressState(100);
             localProgress.Update("Summarizing indoor air concentrations", 0);
-            var summarizer = new IndoorAirConcentrationsSummarizer();
+            var summarizer = new IndoorAirConcentrationsSummarizer(ModuleConfig);
             summarizer.Summarize(_actionSettings, actionResult, data, header, order);
+            localProgress.Update(100);
+        }
+        protected override void summarizeActionResultUncertain(
+            UncertaintyFactorialSet factorialSet,
+            IIndoorAirConcentrationsActionResult actionResult,
+            ActionData data,
+            SectionHeader header,
+            CompositeProgressState progressReport
+        ) {
+            var localProgress = progressReport.NewProgressState(100);
+            var summarizer = new IndoorAirConcentrationsSummarizer(ModuleConfig);
+            summarizer.SummarizeUncertain(data, actionResult, header);
             localProgress.Update(100);
         }
     }

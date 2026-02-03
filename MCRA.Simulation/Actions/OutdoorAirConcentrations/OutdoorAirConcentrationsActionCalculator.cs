@@ -5,6 +5,7 @@ using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
 using MCRA.General.ModuleDefinitions.Settings;
+using MCRA.General.UnitDefinitions.Defaults;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.OutputGeneration;
@@ -29,27 +30,24 @@ namespace MCRA.Simulation.Actions.OutdoorAirConcentrations {
             return result;
         }
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
-            var airConcentrationUnit = AirConcentrationUnit.ugPerm3;
-
             var adjustedOutdoorAirConcentrations = subsetManager.AllOutdoorAirConcentrations
                 .Select(r => {
-                    //var alignmentFactor = r.AirConcentrationUnit
-                    //    .GetConcentrationAlignmentFactor(airConcentrationUnit, r.Substance.MolecularMass);
-                    var alignmentFactor = 1d;
+                    var alignmentFactor = r.Unit
+                        .GetConcentrationAlignmentFactor(SystemUnits.DefaultAirConcentrationUnit, r.Substance.MolecularMass);
                     var conc = r.Concentration * alignmentFactor;
-                    return new OutdoorAirConcentration {
+                    return new AirConcentration {
                         idSample = r.idSample,
                         Substance = r.Substance,
                         Location = r.Location,
                         Concentration = conc,
-                        Unit = airConcentrationUnit
+                        Unit = SystemUnits.DefaultAirConcentrationUnit
                     };
                 })
                 .OrderBy(c => c.idSample)
                 .ToList();
 
             data.OutdoorAirConcentrations = adjustedOutdoorAirConcentrations;
-            data.IndoorAirConcentrationUnit = airConcentrationUnit;
+            data.IndoorAirConcentrationUnit = SystemUnits.DefaultAirConcentrationUnit;
         }
         protected override void loadDataUncertain(
             ActionData data,
@@ -65,7 +63,7 @@ namespace MCRA.Simulation.Actions.OutdoorAirConcentrations {
                     data.OutdoorAirConcentrations = [.. data.OutdoorAirConcentrations
                         .GroupBy(c => c.Substance)
                         .SelectMany(c => c.Resample(uncertaintySourceGenerators[UncertaintySource.AirConcentrations])
-                            .Select(r => new OutdoorAirConcentration() {
+                            .Select(r => new AirConcentration() {
                                 Substance = r.Substance,
                                 Location = r.Location,
                                 Concentration = r.Concentration,
@@ -77,11 +75,30 @@ namespace MCRA.Simulation.Actions.OutdoorAirConcentrations {
             }
             localProgress.Update(100);
         }
-        protected override void summarizeActionResult(IOutdoorAirConcentrationsActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {
+        protected override void summarizeActionResult(
+            IOutdoorAirConcentrationsActionResult actionResult,
+            ActionData data,
+            SectionHeader header,
+            int order,
+            CompositeProgressState progressReport
+        ) {
             var localProgress = progressReport.NewProgressState(100);
             localProgress.Update("Summarizing outdoor air concentrations", 0);
-            var summarizer = new OutdoorAirConcentrationsSummarizer();
+            var summarizer = new OutdoorAirConcentrationsSummarizer(ModuleConfig);
             summarizer.Summarize(_actionSettings, actionResult, data, header, order);
+            localProgress.Update(100);
+        }
+
+        protected override void summarizeActionResultUncertain(
+            UncertaintyFactorialSet factorialSet,
+            IOutdoorAirConcentrationsActionResult actionResult,
+            ActionData data,
+            SectionHeader header,
+            CompositeProgressState progressReport
+        ) {
+            var localProgress = progressReport.NewProgressState(100);
+            var summarizer = new OutdoorAirConcentrationsSummarizer(ModuleConfig);
+            summarizer.SummarizeUncertain(data, actionResult, header);
             localProgress.Update(100);
         }
     }

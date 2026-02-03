@@ -7,7 +7,7 @@ namespace MCRA.Simulation.OutputGeneration {
     public sealed class IndoorAirConcentrationsSummarySection : SubstanceConcentrationsSummarySection {
 
         public void Summarize(
-            ICollection<IndoorAirConcentration> indoorAirConcentrations,
+            ICollection<AirConcentration> indoorAirConcentrations,
             AirConcentrationUnit concentrationUnit,
             double lowerPercentage,
             double upperPercentage
@@ -24,7 +24,7 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         private List<SubstanceConcentrationsSummaryRecord> summarizeConcentrations(
-            ICollection<IndoorAirConcentration> indoorAirConcentrations,
+            ICollection<AirConcentration> indoorAirConcentrations,
             double lowerPercentage,
             double upperPercentage
         ) {
@@ -60,7 +60,7 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         private List<SubstanceConcentrationsPercentilesRecord> summarizeBoxPlotRecord(
-            ICollection<IndoorAirConcentration> indoorAirConcentrations
+            ICollection<AirConcentration> indoorAirConcentrations
         ) {
             var percentages = new double[] { 5, 10, 25, 50, 75, 90, 95 };
             var percentilesRecords = new List<SubstanceConcentrationsPercentilesRecord>();

@@ -9,5 +9,7 @@
         public static readonly ConcentrationUnit DefaultDustConcentrationUnit = ConcentrationUnit.ugPerg;
         public static readonly ConcentrationUnit DefaultSingleValueConcentrationUnit = ConcentrationUnit.mgPerKg;
         public static readonly ConcentrationUnit DefaultSoilConcentrationUnit = ConcentrationUnit.ugPerg;
+
+        public static readonly AirConcentrationUnit DefaultAirConcentrationUnit = AirConcentrationUnit.ugPerm3;
     }
 }
