@@ -2,22 +2,28 @@
 using System.Text;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
-    public class ConcentrationModelsGraphSectionView : SectionView<ConcentrationModelsGraphSection> {
+    public class ConcentrationModelsGraphSectionView<Tsection> : SectionView<Tsection>
+        where Tsection : ConcentrationModelsBase {
+
         //special case of concentration model image which occurs most redundantly in
         //this graph section view. This image needs only to be created once and cached once
         //in practice this gives a huge performance improvement
         private static string _noPositives100PctCensoredImage = null;
 
         public override void RenderSectionHtml(StringBuilder sb) {
-            var foodsAsMeasured = Model.ConcentrationModelRecords.Select(c => c.FoodName).Distinct().OrderBy(f => f, StringComparer.OrdinalIgnoreCase).ToList();
-            var substances = Model.ConcentrationModelRecords.Select(c => c.SubstanceName).Distinct().OrderBy(c => c, StringComparer.OrdinalIgnoreCase).ToList();
+            var samples = new List<string> { $"{Model.Source}" } ;
+            var substances = Model.Records
+                .Select(c => c.SubstanceName)
+                .Distinct()
+                .OrderBy(c => c, StringComparer.OrdinalIgnoreCase)
+                .ToList();
+
             string highLight = string.Empty;
             int take = 6;
             int loopCount = (int)Math.Ceiling(1.0 * substances.Count / take);
 
             //Render HTML
-            var description = "Concentration model graphs by food and substance."
-                + "Note that this section only shows the models for the food-substance combinations with measurements.";
+            var description = "Concentration model graphs by substance.";
             sb.AppendDescriptionParagraph(description);
             for (int i = 0; i < loopCount; i++) {
                 sb.Append($@"<table><thead><tr><th></th>");
@@ -27,13 +33,13 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 }
                 sb.Append("</tr></thead><tbody>");
 
-                foreach (var food in foodsAsMeasured) {
-                    sb.Append($"<tr><td>{food.ToHtml()}</td>");
+                foreach (var sample in samples) {
+                    sb.Append($"<tr><td>{sample.ToHtml()}</td>");
                     foreach (var substance in substances.Skip(i * take).Take(take)) {
                         highLight = substance.StartsWith("_") ? "class='highlight'" : string.Empty;
                         sb.Append($"<td {highLight}>");
-                        var concModelRecord = Model.ConcentrationModelRecords
-                            .FirstOrDefault(c => c.FoodName == food && c.SubstanceName == substance);
+                        var concModelRecord = Model.Records
+                            .FirstOrDefault(c => c.SubstanceName == substance);
                         if (concModelRecord != null && concModelRecord.HasMeasurements) {
                             //special case: (create and) use cached image
                             if (concModelRecord.IsEmpiricalWithNoPositives100PctCensored) {

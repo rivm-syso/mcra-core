@@ -44,7 +44,7 @@
   </UncertaintySettings>
   <CalculationInputs>
     <Input>DietaryExposures</Input>
-    <Input>SoilConcentrations</Input>
+    <Input>SoilConcentrationDistributions</Input>
     <Input>SoilExposureDeterminants</Input>
     <Input>Individuals</Input>
   </CalculationInputs>

@@ -53,7 +53,7 @@ namespace MCRA.Simulation.Actions.DustConcentrationDistributions {
             var section = new DustConcentrationModelsTableSection() {
                 SectionLabel = getSectionLabel(DustConcentrationDistributionsSections.DustConcentrationModelsSection)
             };
-            section.Summarize(concentrationModels);
+            section.SummarizeTableRecords(concentrationModels);
             var subHeader = header.AddSubSectionHeaderFor(
                 section,
                 "Dust concentration models per substance",
@@ -70,7 +70,7 @@ namespace MCRA.Simulation.Actions.DustConcentrationDistributions {
             var section = new DustConcentrationModelsGraphSection {
                 SectionLabel = getSectionLabel(DustConcentrationDistributionsSections.DustConcentrationModelGraphsSection)
             };
-            section.Summarize(concentrationModels);
+            section.SummarizeGraphRecords(concentrationModels, ExposureSource.Dust.GetShortDisplayName());
             var subHeader = header.AddSubSectionHeaderFor(
                 section,
                 "Dust concentration model graphs",
@@ -83,7 +83,7 @@ namespace MCRA.Simulation.Actions.DustConcentrationDistributions {
             var result = new List<ActionSummaryUnitRecord> {
                 new("LowerPercentage", $"p{sectionConfig.VariabilityLowerPercentage}"),
                 new("UpperPercentage", $"p{sectionConfig.VariabilityUpperPercentage}"),
-                new("ConcentrationUnit", data.DustConcentrationUnit.GetShortDisplayName()),
+                new("ConcentrationUnit", data.DustConcentrationDistributionUnit.GetShortDisplayName()),
             };
             return result;
         }

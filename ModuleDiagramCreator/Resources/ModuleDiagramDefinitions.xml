@@ -51,6 +51,7 @@
     <GraphDefinition ActionType="DustExposures" X="44" Y="48" Linebreaks="1"/>
 
     <GraphDefinition ActionType="SoilConcentrations" X="34" Y="48" Linebreaks="1"/>
+    <GraphDefinition ActionType="SoilConcentrationDistributions" X="36" Y="48" Linebreaks="1"/>
     <GraphDefinition ActionType="SoilExposureDeterminants" X="36" Y="48" Linebreaks="1"/>
     <GraphDefinition ActionType="SoilExposures" X="38" Y="48" Linebreaks="1"/>
 

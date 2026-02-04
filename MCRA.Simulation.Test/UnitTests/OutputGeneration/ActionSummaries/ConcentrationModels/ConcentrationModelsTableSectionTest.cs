@@ -15,8 +15,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
             var section = new ConcentrationModelsTableSection();
             section.ConcentrationModelRecords = [
                 new ConcentrationModelRecord() {
-                    CompoundCode = "A",
-                    CompoundName = "A"
+                    SubstanceCode = "A",
+                    SubstanceName = "A"
                 }
             ];
             AssertIsValidView(section);

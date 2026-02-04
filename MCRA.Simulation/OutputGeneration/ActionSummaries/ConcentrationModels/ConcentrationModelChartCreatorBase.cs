@@ -15,16 +15,21 @@ namespace MCRA.Simulation.OutputGeneration {
         protected ConcentrationModelRecord _record;
         protected bool _showTitle;
 
-        public ConcentrationModelChartCreatorBase(ConcentrationModelRecord concentrationModelRecord, int height, int width, bool showTitle) {
+        public ConcentrationModelChartCreatorBase(
+            ConcentrationModelRecord record,
+            int height,
+            int width,
+            bool showTitle
+        ) {
             Height = height;
             Width = width;
-            _record = concentrationModelRecord;
+            _record = record;
             _showTitle = showTitle;
         }
 
         public override abstract string ChartId { get; }
 
-        protected PlotModel createCensoredValuesBarSeries(ConcentrationModelRecord concentrationModelRecord) {
+        protected PlotModel createCensoredValuesBarSeries(ConcentrationModelRecord record) {
             var horizontalMargin = (Width - 100) / 2D;
             var model = new PlotModel {
                 Title = "No positives",
@@ -52,10 +57,10 @@ namespace MCRA.Simulation.OutputGeneration {
             var barWidth = 0.8;
             var horizontalAxisMinValue = -0.5;
             var horizontalAxisMaxValue = 1.5;
-            var valueTrueZero = concentrationModelRecord.FractionTrueZeros * 100;   // = height of bar
+            var valueTrueZero = record.FractionTrueZeros * 100;   // = height of bar
             var areaTrueZero = valueTrueZero * barWidth;
 
-            var valueCensored = concentrationModelRecord.FractionCensored * 100;   // = height of bar
+            var valueCensored = record.FractionCensored * 100;   // = height of bar
             var areaCensored = valueCensored * barWidth;
 
             histogramSeriesTrueZero.Items.Add(new HistogramItem(-0.4, -0.4 + barWidth, areaTrueZero, 3, OxyColors.LimeGreen));
@@ -89,15 +94,20 @@ namespace MCRA.Simulation.OutputGeneration {
         /// Exposures are natural logarithm transformed, mu and sigma are calculated on the natural logarithm scale
         /// The plot is on the log10 scale
         /// </summary>
-        /// <param name="concentrationModelRecord"></param>
+        /// <param name="record"></param>
         /// <param name="showTitle"></param>
         /// <returns></returns>
-        protected PlotModel create(ConcentrationModelRecord concentrationModelRecord, bool showTitle, bool showCensoredValueBins, bool showCensoredValueBars) {
+        protected PlotModel create(
+            ConcentrationModelRecord record,
+            bool showTitle,
+            bool showCensoredValueBins,
+            bool showCensoredValueBars
+        ) {
             var plotModel = new PlotModel();
             plotModel.PlotMargins = new OxyThickness(showCensoredValueBars ? 60 : 20, 0, 0, 20);
 
             if (showTitle) {
-                plotModel.Title = concentrationModelRecord.Model.GetDisplayAttribute().ShortName;
+                plotModel.Title = record.Model.GetDisplayAttribute().ShortName;
                 plotModel.ClipTitle = false;
                 plotModel.TitleFontSize = 11;
                 plotModel.TitleFontWeight = 200;
@@ -129,18 +139,18 @@ namespace MCRA.Simulation.OutputGeneration {
             var alignmentPoints = new List<double>();
 
             List<HistogramBin> histogramBins = null;
-            if (concentrationModelRecord.LogPositiveResiduesBins != null
-                && concentrationModelRecord.LogPositiveResiduesBins.Any()) {
+            if (record.LogPositiveResiduesBins != null
+                && record.LogPositiveResiduesBins.Any()) {
 
-                var logHistogramBins = concentrationModelRecord.LogPositiveResiduesBins
+                var logHistogramBins = record.LogPositiveResiduesBins
                     .Where(r => !double.IsNaN(r.XMidPointValue) && !double.IsInfinity(r.XMidPointValue))
                     .ToList();
 
-                histogramBins = logHistogramBins.Select(r => new HistogramBin() {
+                histogramBins = [.. logHistogramBins.Select(r => new HistogramBin() {
                     Frequency = r.Frequency,
                     XMinValue = Math.Exp(r.XMinValue),
                     XMaxValue = Math.Exp(r.XMaxValue),
-                }).ToList();
+                })];
 
                 var histogramSeries = createDefaultHistogramSeries(histogramBins);
                 plotModel.Series.Add(histogramSeries);
@@ -152,23 +162,23 @@ namespace MCRA.Simulation.OutputGeneration {
             }
 
             // Create the censored value area
-            if (showCensoredValueBins && concentrationModelRecord.LORs.Any()) {
-                var maxLor = (histogramBins != null && histogramBins.Any()) ? histogramBins.First().XMinValue : concentrationModelRecord.LORs.Max();
+            if (showCensoredValueBins && record.LORs.Any()) {
+                var maxLor = (histogramBins != null && histogramBins.Any()) ? histogramBins.First().XMinValue : record.LORs.Max();
                 var logLOR = Math.Log10(maxLor);
-                var fractionCensoredValues = concentrationModelRecord.FractionCensored + concentrationModelRecord.FractionTrueZeros;
-                var censoredNonDetectsCount = concentrationModelRecord.FractionCensored * concentrationModelRecord.CensoredValuesCount / fractionCensoredValues;
+                var fractionCensoredValues = record.FractionCensored + record.FractionTrueZeros;
+                var censoredNonDetectsCount = record.FractionCensored * record.CensoredValuesCount / fractionCensoredValues;
 
                 var censoredBins = 1d;
                 var maxFrequency = histogramBins.Max(b => b.Frequency);
                 var binWidth = histogramBins.First().Width;
-                while ((concentrationModelRecord.CensoredValuesCount / censoredBins) > 10 * maxFrequency
+                while ((record.CensoredValuesCount / censoredBins) > 10 * maxFrequency
                     || (maxLor - censoredBins * binWidth) > binWidth) {
                     censoredBins += 1.0;
                 }
-                var censoredValueBinHeight = concentrationModelRecord.CensoredValuesCount / censoredBins;
+                var censoredValueBinHeight = record.CensoredValuesCount / censoredBins;
 
-                var fractionCensored = concentrationModelRecord.FractionCensored / fractionCensoredValues;
-                var fractionTrueZero = concentrationModelRecord.FractionTrueZeros / fractionCensoredValues;
+                var fractionCensored = record.FractionCensored / fractionCensoredValues;
+                var fractionTrueZero = record.FractionTrueZeros / fractionCensoredValues;
                 var pCensoredValueMin = Math.Pow(10, logLOR - censoredBins * binWidth);
                 var pZeroUpper = Math.Pow(10, logLOR - (1 - fractionTrueZero) * censoredBins * binWidth);
                 var pCensoredLower = Math.Pow(10, logLOR - fractionCensored * censoredBins * binWidth); ;
@@ -195,9 +205,9 @@ namespace MCRA.Simulation.OutputGeneration {
                 maximumX = Math.Max(maximumX, maxLor);
             }
 
-            if (concentrationModelRecord.Model == ConcentrationModelType.MaximumResidueLimit) {
-                var mrl = concentrationModelRecord.MaximumResidueLimit.Value;
-                var factor = concentrationModelRecord.FractionOfMrl ?? 1d;
+            if (record.Model == ConcentrationModelType.MaximumResidueLimit) {
+                var mrl = record.MaximumResidueLimit.Value;
+                var factor = record.FractionOfMrl ?? 1d;
 
                 minimumX = Math.Min(minimumX, .9 * factor * mrl);
                 maximumX = Math.Max(maximumX, 1.1 * mrl);
@@ -227,17 +237,17 @@ namespace MCRA.Simulation.OutputGeneration {
             }
 
             // Plot the fit
-            if (concentrationModelRecord.Model != ConcentrationModelType.Empirical
-                && concentrationModelRecord.Model != ConcentrationModelType.MaximumResidueLimit
-                && concentrationModelRecord.Mu.HasValue && !double.IsNaN(concentrationModelRecord.Mu.Value)
-                && concentrationModelRecord.Sigma.HasValue && !double.IsNaN(concentrationModelRecord.Sigma.Value)
-                && concentrationModelRecord.Sigma.Value > 0
+            if (record.Model != ConcentrationModelType.Empirical
+                && record.Model != ConcentrationModelType.MaximumResidueLimit
+                && record.Mu.HasValue && !double.IsNaN(record.Mu.Value)
+                && record.Sigma.HasValue && !double.IsNaN(record.Sigma.Value)
+                && record.Sigma.Value > 0
             ) {
 
                 var logMaximum = Math.Log(maximumX);
                 var logMinimum = Math.Log(minimumX);
-                var mu = concentrationModelRecord.Mu.Value;
-                var sigma = concentrationModelRecord.Sigma.Value;
+                var mu = record.Mu.Value;
+                var sigma = record.Sigma.Value;
 
                 if (double.IsNaN(maximumX) || logMaximum < mu + 2 * sigma) {
                     maximumX = Math.Exp(mu + 2 * sigma);
@@ -264,11 +274,11 @@ namespace MCRA.Simulation.OutputGeneration {
                 };
                 plotModel.Axes.Add(normalDensityAxis);
 
-                if (concentrationModelRecord.Model == ConcentrationModelType.CensoredLogNormal
-                    || concentrationModelRecord.Model == ConcentrationModelType.ZeroSpikeCensoredLogNormal) {
+                if (record.Model == ConcentrationModelType.CensoredLogNormal
+                    || record.Model == ConcentrationModelType.ZeroSpikeCensoredLogNormal) {
                     // Check to see if the fraction of true zeros is NaN (might happen fo cumulative models)
-                    var fts = !double.IsNaN(concentrationModelRecord.FractionTrueZeros) ? concentrationModelRecord.FractionTrueZeros : 0;
-                    totalArea = (1 - fts) * totalArea / concentrationModelRecord.FractionPositives;
+                    var fts = !double.IsNaN(record.FractionTrueZeros) ? record.FractionTrueZeros : 0;
+                    totalArea = (1 - fts) * totalArea / record.FractionPositives;
                 }
 
                 var normalDensity = GriddingFunctions.Arange(logMinimum, logMaximum, 500)
@@ -283,8 +293,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 maximumY = Math.Max(maximumY, normalDensity.Select(c => c.y).Max() * 1.1);
             }
 
-            if (showCensoredValueBars && concentrationModelRecord.CensoredValuesCount + concentrationModelRecord.FractionTrueZeros > 0) {
-                plotModel = createCensoredValueBarsAxis(plotModel, concentrationModelRecord.FractionCensored, concentrationModelRecord.FractionTrueZeros);
+            if (showCensoredValueBars && record.CensoredValuesCount + record.FractionTrueZeros > 0) {
+                plotModel = createCensoredValueBarsAxis(plotModel, record.FractionCensored, record.FractionTrueZeros);
             }
 
             logarithmicAxis.Minimum = minimumX;
@@ -296,7 +306,11 @@ namespace MCRA.Simulation.OutputGeneration {
             return plotModel;
         }
 
-        protected PlotModel createCensoredValueBarsAxis(PlotModel plotModel, double fractionCensored, double fractionTrueZero) {
+        protected PlotModel createCensoredValueBarsAxis(
+            PlotModel plotModel,
+            double fractionCensored,
+            double fractionTrueZero
+        ) {
             var censBar = new NonDetectBarsAxis() {
                 Fraction = !double.IsNaN(fractionCensored) ? fractionCensored : 0D,
                 Label = "Cens",

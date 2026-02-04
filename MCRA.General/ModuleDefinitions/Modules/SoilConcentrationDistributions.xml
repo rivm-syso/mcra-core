@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>SoilConcentrationDistributions</Id>
+  <Name>Soil concentration distributions</Name>
+  <ModuleType>CalculatorModule</ModuleType>
+  <CanCompute>true</CanCompute>
+  <ActionType>SoilConcentrationDistributions</ActionType>
+  <TableGroup>SoilConcentrationDistributions</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Soil concentration distributions are specified by a mean, cv and distribution type (lognormal).
+    Specify the occurrence percentage as the percentage of samples that has positive concentrations.
+  </Description>
+  <ShortDescription>
+    Soil concentration distributions data are data on analytical measurements of chemical substances occurring in soil samples.
+  </ShortDescription>
+  <CalculationDescription>
+    Soil concentration distributions are computed from soil concentrations data.
+  </CalculationDescription>
+  <DataDescription>
+    Soil concentration distributions data can be entered using the internal, relational data format.
+  </DataDescription>
+  <Entities>
+    <Entity>Substances</Entity>
+  </Entities>
+  <CalculationInputs>
+    <Input>SoilConcentrations</Input>
+  </CalculationInputs>
+</Module>

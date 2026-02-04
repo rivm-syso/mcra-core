@@ -78,14 +78,14 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
                     record.Summarize(r.Key.Food, r.Key.Substance, r.Value, false, false);
                     return record;
                 })
-                .OrderBy(r => r.CompoundName, StringComparer.OrdinalIgnoreCase)
-                .ThenBy(r => r.CompoundCode, StringComparer.OrdinalIgnoreCase)
+                .OrderBy(r => r.SubstanceName, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(r => r.SubstanceCode, StringComparer.OrdinalIgnoreCase)
                 .ThenBy(r => r.FoodName, StringComparer.OrdinalIgnoreCase)
                 .ThenBy(r => r.FoodCode, StringComparer.OrdinalIgnoreCase)
                 .ToList();
-            if (concentrationModelRecords?.Any(c => !c.CompoundName.StartsWith("_")) ?? false) {
+            if (concentrationModelRecords?.Any(c => !c.SubstanceName.StartsWith("_")) ?? false) {
                 var subSection = new ConcentrationModelsTableSection {
-                    ConcentrationModelRecords = concentrationModelRecords.Where(c => !c.CompoundName.StartsWith("_")).ToList(),
+                    ConcentrationModelRecords = concentrationModelRecords.Where(c => !c.SubstanceName.StartsWith("_")).ToList(),
                     SectionLabel = getSectionLabel(ConcentrationModelsSections.ConcentrationModelsTableSection)
                 };
                 var subSubHeader = subHeader.AddSubSectionHeaderFor(
@@ -140,7 +140,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
                     record.Summarize(r.Key.Food, r.Key.Substance, r.Value, false);
                     return record;
                 })
-                .OrderBy(r => r.CompoundName, StringComparer.OrdinalIgnoreCase)
+                .OrderBy(r => r.SubstanceName, StringComparer.OrdinalIgnoreCase)
                 .ThenBy(r => r.FoodName, StringComparer.OrdinalIgnoreCase)
                 .ToList();
             var cumulativeConcentrationModels = actionResult.CumulativeConcentrationModels;

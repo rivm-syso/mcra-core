@@ -6,9 +6,11 @@ using MCRA.General.Annotations;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.General.UnitDefinitions.Defaults;
 using MCRA.Simulation.Action;
-using MCRA.Simulation.Calculators.DustConcentrationModelBuilder;
+using MCRA.Simulation.Action.UncertaintyFactorial;
+using MCRA.Simulation.Calculators.ConcentrationModelBuilder;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Actions.DustConcentrationDistributions {
 
@@ -29,7 +31,7 @@ namespace MCRA.Simulation.Actions.DustConcentrationDistributions {
             );
 
             data.DustConcentrationModels = concentrationModels;
-            data.DustConcentrationUnit = SystemUnits.DefaultDustConcentrationUnit;
+            data.DustConcentrationDistributionUnit = SystemUnits.DefaultDustConcentrationUnit;
         }
 
         protected override DustConcentrationDistributionsActionResult run(
@@ -66,6 +68,26 @@ namespace MCRA.Simulation.Actions.DustConcentrationDistributions {
             var summarizer = new DustConcentrationDistributionsSummarizer();
             summarizer.Summarize(_actionSettings, actionResult, data, header, order);
             localProgress.Update(100);
+        }
+
+        protected override DustConcentrationDistributionsActionResult runUncertain(
+          ActionData data,
+          UncertaintyFactorialSet factorialSet,
+          Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators,
+          CompositeProgressState progressReport
+        ) {
+            var localProgress = progressReport.NewProgressState(100);
+            var concentrationModelsBuilder = new DustConcentrationModelBuilder();
+            var concentrationModels = concentrationModelsBuilder.Create(
+                data.DustConcentrations,
+                NonDetectsHandlingMethod.ReplaceByZero,
+                0
+            );
+            var result = new DustConcentrationDistributionsActionResult() {
+                DustConcentrationModels = concentrationModels,
+            };
+            localProgress.Update(100);
+            return result;
         }
     }
 }

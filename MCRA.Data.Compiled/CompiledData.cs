@@ -97,6 +97,7 @@ namespace MCRA.Data.Compiled {
         public IList<ExposureResponseFunction> AllExposureResponseFunctions { get; set; }
         public IDictionary<string, PbkModelDefinition> AllPbkModelDefinitions { get; set; }
         public IList<SubstanceConcentration> AllSoilConcentrations { get; set; }
+        public IList<SoilConcentrationDistribution> AllSoilConcentrationDistributions { get; set; }
         public IList<SoilIngestion> AllSoilIngestions { get; set; }
         public IList<BurdenOfDisease> AllBurdensOfDisease { get; set; }
         public IList<BodIndicatorConversion> AllBodIndicatorConversions { get; set; }

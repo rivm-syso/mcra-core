@@ -1,26 +1,26 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Interfaces;
+using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
 
-namespace MCRA.Simulation.Calculators.DustConcentrationModelBuilder {
+namespace MCRA.Simulation.Calculators.ConcentrationModelBuilder {
 
     /// <summary>
     /// Builder class for dust concentration models.
     /// </summary>
-    public class DustConcentrationModelBuilder {
-
-        /// <summary>
-        /// Creates concentration models for dust concentrations.
+    public abstract class ConcentrationModelBuilderBase {
+        /// <summary> 
+        /// Creates concentration models for concentrations.
         /// </summary>
-        public IDictionary<Compound, ConcentrationModel> Create(
-            ICollection<SubstanceConcentration> dustConcentrations,
+        public IDictionary<Compound, ConcentrationModel> Create<T>(
+            ICollection<T> concentrations,
             NonDetectsHandlingMethod nonDetectsHandlingMethod,
             double lorReplacementFactor
-        ) {
+        ) where T : ISubstanceConcentration {
             var concentrationModels = new Dictionary<Compound, ConcentrationModel>();
-            var groups = dustConcentrations
+            var groups = concentrations
                 .GroupBy(c => c.Substance)
                 .ToList();
             foreach (var group in groups) {
@@ -38,12 +38,12 @@ namespace MCRA.Simulation.Calculators.DustConcentrationModelBuilder {
         /// <summary>
         /// Fit Empirical distribution
         /// </summary>
-        private ConcentrationModel createConcentrationModel(
+        private static ConcentrationModel createConcentrationModel<T> (
             Compound substance,
-            IEnumerable<SubstanceConcentration> concentrations,
+            IEnumerable<T> concentrations,
             NonDetectsHandlingMethod nonDetectsHandlingMethod,
             double lorReplacementFactor
-        ) {
+        ) where T: ISubstanceConcentration{
             var positiveResidues = concentrations
                 .Where(c => c.Concentration > 0)
                 .Select(c => c.Concentration)
@@ -81,14 +81,14 @@ namespace MCRA.Simulation.Calculators.DustConcentrationModelBuilder {
         }
 
         /// <summary>
-        /// Creates concentration models for dust concentrations.
+        /// Creates concentration models for concentrations.
         /// </summary>
-        public IDictionary<Compound, ConcentrationModel> Create(
-            ICollection<DustConcentrationDistribution> concentrationDistributions,
+        public IDictionary<Compound, ConcentrationModel> Create<T>(
+            ICollection<T> concentrationDistributions,
             NonDetectsHandlingMethod nonDetectsHandlingMethod,
             double lorReplacementFactor,
             ConcentrationUnit targetConcentrationUnit
-        ) {
+        ) where T : IConcentrationDistribution {
             var concentrationModels = new Dictionary<Compound, ConcentrationModel>();
             foreach (var distribution in concentrationDistributions) {
                 var concentrationModel = createConcentrationModel(
@@ -102,23 +102,18 @@ namespace MCRA.Simulation.Calculators.DustConcentrationModelBuilder {
             return concentrationModels;
         }
 
-        private ConcentrationModel createConcentrationModel(
-            DustConcentrationDistribution distribution,
+        private ConcentrationModel createConcentrationModel<T>(
+            T distribution,
             NonDetectsHandlingMethod nonDetectsHandlingMethod,
             double lorReplacementFactor,
             ConcentrationUnit targetConcentrationUnit
-        ) {
-            var alignmentFactor = distribution.Unit
-                        .GetConcentrationAlignmentFactor(targetConcentrationUnit, distribution.Substance.MolecularMass);
+        ) where T : IConcentrationDistribution {
+            var alignmentFactor = getAlignmentFactor(targetConcentrationUnit, distribution);
             var concentrationDistribution = new ConcentrationDistribution() {
                 Mean = distribution.Mean * alignmentFactor,
                 CV = distribution.CvVariability,
             };
-            ConcentrationModel concentrationModel = distribution.DistributionType switch {
-                DustConcentrationDistributionType.Constant => new CMConstant(),
-                DustConcentrationDistributionType.LogNormal => new CMSummaryStatistics(),
-                _ => throw new NotImplementedException($"Unsupported concentration model type {distribution.DistributionType} for dust distributions."),
-            };
+            var concentrationModel = getModel(distribution);
 
             var occurrenceFraction = distribution.OccurrencePercentage.HasValue
                 ? distribution.OccurrencePercentage.Value / 100
@@ -128,14 +123,17 @@ namespace MCRA.Simulation.Calculators.DustConcentrationModelBuilder {
             concentrationModel.DesiredModelType = concentrationModel.ModelType;
             concentrationModel.OccurenceFraction = occurrenceFraction;
             concentrationModel.CorrectedOccurenceFraction = occurrenceFraction;
-            concentrationModel.ConcentrationDistribution = new ConcentrationDistribution() {
-                Mean = distribution.Mean,
-                CV = distribution.CvVariability,
-            };
+            concentrationModel.ConcentrationDistribution = concentrationDistribution;
             concentrationModel.ConcentrationUnit = targetConcentrationUnit;
 
             concentrationModel.CalculateParameters();
             return concentrationModel;
+        }
+
+        protected abstract ConcentrationModel getModel<T>(T distribution);
+
+        protected virtual double getAlignmentFactor<T>(ConcentrationUnit targetConcentrationUnit, T distribution) {
+            return 1;
         }
     }
 }

@@ -5,16 +5,44 @@ using MCRA.Utils;
 using MCRA.Utils.Statistics.Histograms;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public class DustConcentrationModelSectionBase : SummarySection {
+    public class ConcentrationModelsBase : SummarySection {
+        public override bool SaveTemporaryData => true;
 
-        public List<DustConcentrationModelRecord> Records { get; set; }
+        public string Source { get; set; }
 
-        protected static DustConcentrationModelRecord createModelSummaryRecord(
+        public List<ConcentrationModelRecord> Records { get; set; }
+
+        public void SummarizeTableRecords(
+            IDictionary<Compound, ConcentrationModel> concentrationModels
+        ) {
+            Records = [.. concentrationModels
+                .Select(r => createModelSummaryRecord(r.Key, r.Value, false))
+                .OrderBy(r => r.SubstanceName)
+                .ThenBy(r => r.Id)];
+        }
+
+        public void SummarizeGraphRecords(
+            IDictionary<Compound, ConcentrationModel> concentrationModels,
+            string source = null
+        ) {
+            Source = source;
+            Records = concentrationModels
+                .Where(c => c.Value.ModelType != ConcentrationModelType.Empirical || c.Value.Residues.NumberOfResidues > 0)
+                .AsParallel()
+                .Select(r => {
+                    var record = createModelSummaryRecord(r.Key, r.Value);
+                    return record;
+                })
+                .OrderBy(r => r.SubstanceName, StringComparer.OrdinalIgnoreCase)
+                .ToList();
+        }
+
+        protected static ConcentrationModelRecord createModelSummaryRecord(
             Compound substance,
             ConcentrationModel concentrationModel,
             bool createHistogramBins = true
         ) {
-            var record = new DustConcentrationModelRecord {
+            var record = new ConcentrationModelRecord {
                 SubstanceCode = substance.Code,
                 SubstanceName = substance.Name,
                 Model = concentrationModel.ModelType,

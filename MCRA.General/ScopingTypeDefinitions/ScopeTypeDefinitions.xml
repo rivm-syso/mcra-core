@@ -1854,6 +1854,21 @@
       </ParentScopeReference>
     </ParentScopeReferences>
   </ScopingTypeDefinition>
+
+  <ScopingTypeDefinition>
+    <Id>SoilConcentrationDistributions</Id>
+    <Name>Soil concentration distributions</Name>
+    <RawTableId>SoilConcentrationDistributions</RawTableId>
+    <Description>-</Description>
+    <TableGroup>SoilConcentrationDistributions</TableGroup>
+    <ParentScopeReferences>
+      <ParentScopeReference>
+        <IdField>idSubstance</IdField>
+        <ReferencedScope>Compounds</ReferencedScope>
+      </ParentScopeReference>
+    </ParentScopeReferences>
+  </ScopingTypeDefinition>
+
   <ScopingTypeDefinition>
     <Id>SoilConcentrations</Id>
     <Name>Soil concentrations</Name>

@@ -88,6 +88,7 @@ namespace MCRA.Data.Management {
         IList<ExposureResponseFunction> GetAllExposureResponseFunctions();
         IDictionary<string, PbkModelDefinition> GetAllPbkModelDefinitions(string dataFilePath = null);
         IList<SubstanceConcentration> GetAllSoilConcentrations();
+        IList<SoilConcentrationDistribution> GetAllSoilConcentrationDistributions();
         IList<SoilIngestion> GetAllSoilIngestions();
         IList<BurdenOfDisease> GetAllBurdensOfDisease();
         IList<BodIndicatorConversion> GetAllBodIndicatorConversions();

@@ -99,7 +99,6 @@ namespace MCRA.Simulation.Actions.SoilExposures {
 
             var substances = data.ActiveSubstances ?? data.AllCompounds;
 
-            var soilConcentrations = data.SoilConcentrations;
             var soilIngestions = data.SoilIngestions
                 .OrderBy(r => r.AgeLower)
                 .ToList();
@@ -115,9 +114,9 @@ namespace MCRA.Simulation.Actions.SoilExposures {
                 .ComputeSoilExposure(
                     individualDays,
                     substances,
-                    soilConcentrations,
+                    data.SoilConcentrationModels,
                     soilIngestions,
-                    data.SoilConcentrationUnit,
+                    data.SoilConcentrationDistributionUnit,
                     data.SoilIngestionUnit,
                     targetUnit,
                     soilExposuresDeterminantsRandomGenerator

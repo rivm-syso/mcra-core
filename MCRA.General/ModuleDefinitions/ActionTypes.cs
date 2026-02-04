@@ -220,5 +220,7 @@ namespace MCRA.General {
         OccupationalExposures = 84,
         [Display(Name = "Occupational scenarios")]
         OccupationalScenarios = 85,
+        [Display(Name = "Soil concentration distributions")]
+        SoilConcentrationDistributions = 86,
     }
 }

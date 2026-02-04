@@ -2,6 +2,7 @@
 using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.SoilExposures;
+using MCRA.Simulation.Calculators.ConcentrationModelBuilder;
 using MCRA.Simulation.Calculators.IndividualDaysGenerator;
 using MCRA.Simulation.Calculators.PopulationGeneration;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
@@ -45,10 +46,14 @@ namespace MCRA.Simulation.Test.UnitTests.Actions.SoilExposures {
                     )
             };
             populationIndividualPropertyValues["BSA"] = propertyValueBsa;
-
             selectedPopulation.PopulationIndividualPropertyValues = populationIndividualPropertyValues;
-
             var soilConcentrations = FakeSoilConcentrationsGenerator.Create(substances, seed);
+            var soilConcentrationModelBuilder = new SoilConcentrationModelBuilder();
+            var concentrationModels = soilConcentrationModelBuilder.Create(
+                soilConcentrations,
+                NonDetectsHandlingMethod.ReplaceByZero,
+                0
+            );
 
             var project = new ProjectDto();
             var config = project.SoilExposuresSettings;
@@ -70,9 +75,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions.SoilExposures {
                 AllCompounds = substances,
                 ActiveSubstances = substances,
                 SelectedPopulation = selectedPopulation,
-                SoilConcentrations = soilConcentrations,
                 SoilIngestions = soilIngestions,
-                SoilConcentrationUnit = soilConcentrations.FirstOrDefault().Unit,
+                SoilConcentrationModels = concentrationModels,
+                SoilConcentrationDistributionUnit = soilConcentrations.FirstOrDefault().Unit,
                 SoilIngestionUnit = soilIngestions.FirstOrDefault().ExposureUnit,
                 Individuals = IndividualDaysGenerator.CreateSimulatedIndividualDays(individuals),
             };
@@ -109,7 +114,12 @@ namespace MCRA.Simulation.Test.UnitTests.Actions.SoilExposures {
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var dietaryIndividualDayIntakes = FakeDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);
             var soilConcentrations = FakeSoilConcentrationsGenerator.Create(substances, seed);
-
+            var soilConcentrationModelBuilder = new SoilConcentrationModelBuilder(); 
+            var concentrationModels = soilConcentrationModelBuilder.Create(
+                soilConcentrations,
+                NonDetectsHandlingMethod.ReplaceByZero,
+                0
+            );
             var project = new ProjectDto();
             var config = project.SoilExposuresSettings;
             config.SoilExposuresIndividualGenerationMethod = SoilExposuresIndividualGenerationMethod.UseDietaryExposures;
@@ -120,9 +130,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions.SoilExposures {
                 AllCompounds = substances,
                 ActiveSubstances = substances,
                 DietaryIndividualDayIntakes = dietaryIndividualDayIntakes,
-                SoilConcentrations = soilConcentrations,
+                SoilConcentrationModels = concentrationModels,
                 SoilIngestions = soilIngestions,
-                SoilConcentrationUnit = soilConcentrations.FirstOrDefault().Unit,
+                SoilConcentrationDistributionUnit = soilConcentrations.FirstOrDefault().Unit,
                 SoilIngestionUnit = soilIngestions.FirstOrDefault().ExposureUnit
             };
 

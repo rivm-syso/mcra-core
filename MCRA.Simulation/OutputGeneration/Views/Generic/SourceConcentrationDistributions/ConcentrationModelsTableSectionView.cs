@@ -1,12 +1,22 @@
-﻿using MCRA.Simulation.OutputGeneration.Helpers;
-using System.Text;
+﻿using System.Text;
+using MCRA.Simulation.OutputGeneration.Helpers;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
-    public class ConcentrationModelsTableSectionView : SectionView<ConcentrationModelsTableSection> {
+    public class ConcentrationModelsTableSectionView<Tsection> : SectionView<Tsection>
+        where Tsection : ConcentrationModelsBase {
         public override void RenderSectionHtml(StringBuilder sb) {
-            var hiddenProperties = new List<string>();
+            var typeName = typeof(Tsection).Name;
+            const string suffix = "Section";
+            if (typeName.EndsWith(suffix, StringComparison.Ordinal)) {
+                typeName = typeName[..^suffix.Length];
+            }
 
-            var records = Model.ConcentrationModelRecords;
+            var hiddenProperties = new List<string> {
+                "FoodName",
+                "FoodCode"
+            };
+
+            var records = Model.Records;
             if (records.All(r => r.AgriculturalUseFraction == 1)) {
                 hiddenProperties.Add("AgriculturalUseFraction");
                 hiddenProperties.Add("CorrectedAgriculturalUseFraction");
@@ -33,7 +43,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (records.All(r => double.IsNaN(r.FractionCensored))) {
                 hiddenProperties.Add("FractionCensored");
             }
-            if (!records.Any(r => !double.IsNaN(r.FractionNonDetects) && r.FractionNonDetects> 0)) {
+            if (!records.Any(r => !double.IsNaN(r.FractionNonDetects) && r.FractionNonDetects > 0)) {
                 hiddenProperties.Add("FractionNonDetects");
             }
             if (!records.Any(r => !double.IsNaN(r.FractionNonQuantifications) && r.FractionNonQuantifications > 0)) {
@@ -48,24 +58,26 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (records.All(r => double.IsNaN(r.MeanConcentrationUpperBoundPercentile))) {
                 hiddenProperties.Add("MeanConcentrationUpperBoundPercentile");
             }
+            if (records.All(r => r.TotalMeasurementsCount == 0)) {
+                hiddenProperties.Add("TotalMeasurementsCount");
+            }
+
 
             //Render HTML
             sb.Append($@"<table><tr>
                     <td>Number of records</td>
-                    <td>{Model.ConcentrationModelRecords.Count}</td>
+                    <td>{Model.Records.Count}</td>
                 </tr></table>");
 
             sb.AppendTable(
                 Model,
-                Model.ConcentrationModelRecords
+                Model.Records
                     .OrderBy(r => r.SubstanceName, StringComparer.OrdinalIgnoreCase)
                     .ThenBy(r => r.SubstanceCode, StringComparer.OrdinalIgnoreCase)
-                    .ThenBy(r => r.FoodName, StringComparer.OrdinalIgnoreCase)
-                    .ThenBy(r => r.FoodCode, StringComparer.OrdinalIgnoreCase)
                     .ToList(),
-                "ConcentrationModelsTable",
+                $"{typeName}Table",
                 ViewBag,
-                caption: "Concentration model statistics by substance and food",
+                caption: "Concentration model statistics by substance",
                 header: true,
                 saveCsv: true,
                 hiddenProperties: hiddenProperties

@@ -9,7 +9,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<ConcentrationModelRecord> ConcentrationModelRecords { get; set; }
 
         public void SummarizeUncertain(IDictionary<(Food Food, Compound Substance), ConcentrationModel> concentrationModels) {
-            var modelsLookup = ConcentrationModelRecords.ToDictionary(r => (r.FoodCode, r.CompoundCode));
+            var modelsLookup = ConcentrationModelRecords.ToDictionary(r => (r.FoodCode, r.SubstanceCode));
             foreach (var record in concentrationModels) {
                 if(modelsLookup.TryGetValue((record.Key.Food.Code, record.Key.Substance.Code), out var model)) {
                     model.MeanConcentrationUncertaintyValues ??= [];

@@ -31,10 +31,10 @@ namespace MCRA.Simulation.OutputGeneration {
         public string IdCompound { get; set; }
 
         [DisplayName("Substance name")]
-        public string CompoundName { get; set; }
+        public string SubstanceName { get; set; }
 
         [DisplayName("Substance code")]
-        public string CompoundCode { get; set; }
+        public string SubstanceCode { get; set; }
 
         [Display(AutoGenerateField = false)]
         public string IdFood { get; set; }
@@ -50,7 +50,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public ConcentrationModelType DesiredModel { get; set; }
 
         [Description("The concentration model type used within the simulation.")]
-        [DisplayName("Fitted Model")]
+        [DisplayName("Model")]
         public ConcentrationModelType Model { get; set; }
 
         [Display(AutoGenerateField = false)]
@@ -162,7 +162,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public string Warning {
             get {
-                if (FractionPositives > (AgriculturalUseFraction + 1e-5) && !CompoundName.StartsWith("_")) {
+                if (FractionPositives > (AgriculturalUseFraction + 1e-5) && !SubstanceName.StartsWith("_")) {
                     return "More positives than expected based on specified potential presence.";
                 }
                 return null;
@@ -198,8 +198,8 @@ namespace MCRA.Simulation.OutputGeneration {
             bool createHistogramBins = true
         ) {
             IdCompound = compound.Code;
-            CompoundCode = compound.Code;
-            CompoundName = compound.Name;
+            SubstanceCode = compound.Code;
+            SubstanceName = compound.Name;
             IdFood = food.Code;
             FoodCode = food.Code;
             FoodName = food.Name;

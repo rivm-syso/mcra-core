@@ -174,8 +174,8 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
             // TODO: create random generator per substance
             var dustExposurePerSubstance = new List<IIntakePerCompound>();
             foreach (var substance in substances) {
-                if (concentrationModels.TryGetValue(substance, out var dustConcentrationModel)) {
-                    var individualDustConcentration = dustConcentrationModel
+                if (concentrationModels.TryGetValue(substance, out var concentrationModel)) {
+                    var individualDustConcentration = concentrationModel
                         .DrawFromDistribution(dustConcentrationsRandomGenerator, NonDetectsHandlingMethod.ReplaceByZero);
                     var exposure = new ExposurePerSubstance {
                         Compound = substance,

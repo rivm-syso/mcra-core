@@ -121,7 +121,7 @@ namespace MCRA.Simulation.Actions.DustExposures {
                     data.DustAdherenceAmounts,
                     data.DustAvailabilityFractions,
                     data.DustBodyExposureFractions,
-                    data.DustConcentrationUnit,
+                    data.DustConcentrationDistributionUnit,
                     data.DustIngestionUnit,
                     ModuleConfig.DustTimeExposed,
                     targetUnit,

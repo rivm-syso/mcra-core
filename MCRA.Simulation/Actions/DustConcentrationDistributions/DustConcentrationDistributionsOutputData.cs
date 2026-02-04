@@ -8,12 +8,12 @@ namespace MCRA.Simulation.Actions.DustConcentrationDistributions {
     public class DustConcentrationDistributionsOutputData : IModuleOutputData {
         public IList<DustConcentrationDistribution> DustConcentrationDistributions { get; set; }
         public IDictionary<Compound, ConcentrationModel> DustConcentrationModels { get; set; }
-        public ConcentrationUnit DustConcentrationUnit { get; set; }
+        public ConcentrationUnit DustConcentrationDistributionUnit { get; set; }
         public IModuleOutputData Copy() {
             return new DustConcentrationDistributionsOutputData() {
                 DustConcentrationDistributions = DustConcentrationDistributions,
-                DustConcentrationUnit = DustConcentrationUnit,
-                DustConcentrationModels = DustConcentrationModels
+                DustConcentrationModels = DustConcentrationModels,
+                DustConcentrationDistributionUnit = DustConcentrationDistributionUnit
             };
         }
     }

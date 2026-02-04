@@ -326,7 +326,9 @@ namespace MCRA.Simulation.Test.Mock {
         public IList<SubstanceConcentration> GetAllSoilConcentrations() {
             return _data.AllSoilConcentrations;
         }
-
+        public IList<SoilConcentrationDistribution> GetAllSoilConcentrationDistributions() {
+            return _data.AllSoilConcentrationDistributions;
+        }
         public IList<SoilIngestion> GetAllSoilIngestions() {
             return _data.AllSoilIngestions;
         }

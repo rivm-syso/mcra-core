@@ -73,6 +73,7 @@ using MCRA.Simulation.Actions.SingleValueConsumptions;
 using MCRA.Simulation.Actions.SingleValueDietaryExposures;
 using MCRA.Simulation.Actions.SingleValueNonDietaryExposures;
 using MCRA.Simulation.Actions.SingleValueRisks;
+using MCRA.Simulation.Actions.SoilConcentrationDistributions;
 using MCRA.Simulation.Actions.SoilConcentrations;
 using MCRA.Simulation.Actions.SoilExposureDeterminants;
 using MCRA.Simulation.Actions.SoilExposures;
@@ -411,15 +412,14 @@ namespace MCRA.Simulation {
             set => GetOrCreateModuleOutputData<DustConcentrationsOutputData>(ActionType.DustConcentrations).DustConcentrations = value;
         }
 
-        // DustConcentrationDistributions
-        public IList<DustConcentrationDistribution> DustConcentrationDistributions {
-            get => GetOrCreateModuleOutputData<DustConcentrationDistributionsOutputData>(ActionType.DustConcentrationDistributions).DustConcentrationDistributions;
-            set => GetOrCreateModuleOutputData<DustConcentrationDistributionsOutputData>(ActionType.DustConcentrationDistributions).DustConcentrationDistributions = value;
+        public ConcentrationUnit DustConcentrationDistributionUnit {
+            get => GetOrCreateModuleOutputData<DustConcentrationDistributionsOutputData>(ActionType.DustConcentrationDistributions).DustConcentrationDistributionUnit;
+            set => GetOrCreateModuleOutputData<DustConcentrationDistributionsOutputData>(ActionType.DustConcentrationDistributions).DustConcentrationDistributionUnit = value;
         }
 
         public ConcentrationUnit DustConcentrationUnit {
-            get => GetOrCreateModuleOutputData<DustConcentrationDistributionsOutputData>(ActionType.DustConcentrationDistributions).DustConcentrationUnit;
-            set => GetOrCreateModuleOutputData<DustConcentrationDistributionsOutputData>(ActionType.DustConcentrationDistributions).DustConcentrationUnit = value;
+            get => GetOrCreateModuleOutputData<DustConcentrationsOutputData>(ActionType.DustConcentrations).DustConcentrationUnit;
+            set => GetOrCreateModuleOutputData<DustConcentrationsOutputData>(ActionType.DustConcentrations).DustConcentrationUnit = value;
         }
 
         public IDictionary<Compound, ConcentrationModel> DustConcentrationModels {
@@ -919,6 +919,11 @@ namespace MCRA.Simulation {
             set => GetOrCreateModuleOutputData<SoilConcentrationsOutputData>(ActionType.SoilConcentrations).SoilConcentrationUnit = value;
         }
 
+        public ConcentrationUnit SoilConcentrationDistributionUnit {
+            get => GetOrCreateModuleOutputData<SoilConcentrationDistributionsOutputData>(ActionType.SoilConcentrationDistributions).SoilConcentrationDistributionUnit;
+            set => GetOrCreateModuleOutputData<SoilConcentrationDistributionsOutputData>(ActionType.SoilConcentrationDistributions).SoilConcentrationDistributionUnit = value;
+        }
+
         // SoilExposures
         public ICollection<SoilIndividualExposure> IndividualSoilExposures {
             get => GetOrCreateModuleOutputData<SoilExposuresOutputData>(ActionType.SoilExposures).IndividualSoilExposures;
@@ -932,6 +937,11 @@ namespace MCRA.Simulation {
             set {
                 GetOrCreateModuleOutputData<SoilExposuresOutputData>(ActionType.SoilExposures).SoilExposureUnit = value;
             }
+        }
+
+        public IDictionary<Compound, ConcentrationModel> SoilConcentrationModels {
+            get => GetOrCreateModuleOutputData<SoilConcentrationDistributionsOutputData>(ActionType.SoilConcentrationDistributions).SoilConcentrationModels;
+            set => GetOrCreateModuleOutputData<SoilConcentrationDistributionsOutputData>(ActionType.SoilConcentrationDistributions).SoilConcentrationModels = value;
         }
 
         // SoilExposureDeterminants

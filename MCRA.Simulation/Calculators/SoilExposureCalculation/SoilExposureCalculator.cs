@@ -1,5 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
 using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Objects;
 using MCRA.Simulation.Objects.IndividualExposures;
@@ -17,7 +18,7 @@ namespace MCRA.Simulation.Calculators.SoilExposureCalculation {
         public static List<SoilIndividualExposure> ComputeSoilExposure(
             ICollection<IIndividualDay> individualDays,
             ICollection<Compound> substances,
-            ICollection<SubstanceConcentration> soilConcentrations,
+            IDictionary<Compound, ConcentrationModel> concentrationModels,
             ICollection<SoilIngestion> soilIngestions,
             ConcentrationUnit soilConcentrationUnit,
             ExternalExposureUnit soilIngestionUnit,
@@ -34,21 +35,18 @@ namespace MCRA.Simulation.Calculators.SoilExposureCalculation {
                 throw new Exception("Missing values for gender in individuals.");
             }
 
-            var soilIngestionsRandomGenerator = new McraRandomGenerator(soilExposureDeterminantsRandomGenerator.Next());
-            var soilConcentrationsRandomGenerator = new McraRandomGenerator(soilExposureDeterminantsRandomGenerator.Next());
+            var ingestionsRandomGenerator = new McraRandomGenerator(soilExposureDeterminantsRandomGenerator.Next());
+            var concentrationsRandomGenerator = new McraRandomGenerator(soilExposureDeterminantsRandomGenerator.Next());
 
             // Note: we use grams for expressing soil amounts;
             // - we align concentrations so that they are expressed per gram soil;
             // - we align soil ingestions so that these are expressed as gram soil per day;
             // - we align dermal contact so that it is expressed as gram soil per surface area per day.
-            var soilConcentrationAmountFactor = soilConcentrationUnit.GetSubstanceAmountUnit()
+            var concentrationAmountFactor = soilConcentrationUnit.GetSubstanceAmountUnit()
                 .GetMultiplicationFactor(targetUnit.SubstanceAmountUnit);
-            var soilConcentrationMassFactor = soilConcentrationUnit.GetConcentrationMassUnit()
+            var concentrationMassFactor = soilConcentrationUnit.GetConcentrationMassUnit()
                 .GetMultiplicationFactor(ConcentrationMassUnit.Grams);
-            var concentrationAlignmentFactor = soilConcentrationAmountFactor * soilConcentrationMassFactor;
-            var alignedSoilConcentrations = soilConcentrations
-                .GroupBy(r => r.Substance)
-                .ToDictionary(r => r.Key, r => r.Select(c => c.Concentration * concentrationAlignmentFactor));
+            var concentrationAlignmentFactor = concentrationAmountFactor * concentrationMassFactor;
 
             var result = new List<SoilIndividualExposure>();
             foreach (var individualDay in individualDays) {
@@ -62,13 +60,13 @@ namespace MCRA.Simulation.Calculators.SoilExposureCalculation {
                     age,
                     sex,
                     soilIngestionUnit,
-                    soilIngestionsRandomGenerator
+                    ingestionsRandomGenerator
                 );
                 var soilExposurePerSubstance = computeInhalationExposures(
                     substances,
                     individualSoilIngestion,
-                    alignedSoilConcentrations,
-                    soilConcentrationsRandomGenerator
+                    concentrationModels,
+                    concentrationsRandomGenerator
                 );
                 exposuresPerPath[new(ExposureSource.Soil, ExposureRoute.Oral)] = soilExposurePerSubstance;
 
@@ -81,15 +79,15 @@ namespace MCRA.Simulation.Calculators.SoilExposureCalculation {
         private static List<IIntakePerCompound> computeInhalationExposures(
             ICollection<Compound> substances,
             double individualSoilIngestion,
-            Dictionary<Compound, IEnumerable<double>> adjustedSoilConcentrations,
+            IDictionary<Compound, ConcentrationModel> concentrationModels,
             IRandom soilConcentrationsRandomGenerator
         ) {
             // TODO: create random generator per substance
             var soilExposurePerSubstance = new List<IIntakePerCompound>();
             foreach (var substance in substances) {
-                if (adjustedSoilConcentrations.TryGetValue(substance, out var soilConcentrations)) {
-                    var individualSoilConcentration = soilConcentrations
-                        .DrawRandom(soilConcentrationsRandomGenerator);
+                if (concentrationModels.TryGetValue(substance, out var concentrationModel)) {
+                    var individualSoilConcentration = concentrationModel
+                        .DrawFromDistribution(soilConcentrationsRandomGenerator, NonDetectsHandlingMethod.ReplaceByZero);
                     var exposure = new ExposurePerSubstance {
                         Compound = substance,
                         Amount = individualSoilIngestion * individualSoilConcentration
@@ -102,29 +100,29 @@ namespace MCRA.Simulation.Calculators.SoilExposureCalculation {
         }
 
         private static double calculateSoilIngestion(
-            ICollection<SoilIngestion> soilIngestions,
+            ICollection<SoilIngestion> ingestions,
             double? age,
             GenderType? sex,
-            ExternalExposureUnit soilIngestionUnit,
+            ExternalExposureUnit ingestionUnit,
             IRandom random
         ) {
-            var soilIngestionAlignmentFactor = soilIngestionUnit
+            var alignmentFactor = ingestionUnit
                 .GetSubstanceAmountUnit()
                 .GetMultiplicationFactor(SubstanceAmountUnit.Grams);
 
-            var soilIngestion = soilIngestions
+            var ingestion = ingestions
                 .Where(r => age >= r.AgeLower || r.AgeLower == null)
                 .Where(r => r.Sex == sex || r.Sex == GenderType.Undefined)
                 .Last();
 
             var distribution = SoilIngestionProbabilityDistributionFactory
-                .createProbabilityDistribution(soilIngestion);
+                .createProbabilityDistribution(ingestion);
 
-            var individualSoilIngestion = soilIngestion.DistributionType == SoilIngestionDistributionType.Constant
-                ? soilIngestion.Value
+            var individualSoilIngestion = ingestion.DistributionType == SoilIngestionDistributionType.Constant
+                ? ingestion.Value
                 : distribution.Draw(random);
 
-            return soilIngestionAlignmentFactor * individualSoilIngestion;
+            return alignmentFactor * individualSoilIngestion;
         }
     }
 }
