@@ -1,19 +1,18 @@
-﻿using MCRA.Data.Compiled.Objects;
-using MCRA.General;
-using MCRA.Simulation.OutputGeneration.Generic;
+﻿using MCRA.Data.Compiled.Interfaces;
+using MCRA.Data.Compiled.Objects;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
     public class ConcentrationPercentilesSection : SummarySection {
         public override bool SaveTemporaryData => true;
         public List<ConcentrationPercentileRecord> Records { get; set; } = [];
-        public void Summarize(
-            ICollection<SimpleSubstanceConcentration> concentrations,
+        public void Summarize<T>(
+            ICollection<T> concentrations,
             ICollection<Compound> substances,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
             List<double> percentages
-        ) {
+        ) where T : ISubstanceConcentration {
             foreach (var substance in substances) {
                 if (concentrations.Where(c => c.Substance.Code == substance.Code).Any(c => c.Concentration > 0)) {
                     var percentiles = concentrations
@@ -39,11 +38,11 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        public void SummarizeUncertainty(
-            ICollection<SimpleSubstanceConcentration> concentrations,
+        public void SummarizeUncertainty<T>(
+            ICollection<T> concentrations,
             ICollection<Compound> substances,
             List<double> percentages
-        ) {
+        ) where T : ISubstanceConcentration {
             foreach (var substance in substances) {
                 if (concentrations.Where(c => c.Substance.Code == substance.Code).Any(c => c.Concentration > 0)) {
                     var percentiles = concentrations

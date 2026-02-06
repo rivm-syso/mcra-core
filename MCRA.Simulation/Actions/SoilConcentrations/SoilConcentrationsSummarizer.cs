@@ -2,7 +2,6 @@
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.OutputGeneration.Generic;
 using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.Actions.SoilConcentrations {
@@ -15,7 +14,13 @@ namespace MCRA.Simulation.Actions.SoilConcentrations {
 
         public override ActionType ActionType => ActionType.SoilConcentrations;
 
-        public override void Summarize(ActionModuleConfig sectionConfig, ISoilConcentrationsActionResult actionResult, ActionData data, SectionHeader header, int order) {
+        public override void Summarize(
+            ActionModuleConfig sectionConfig, 
+            ISoilConcentrationsActionResult actionResult, 
+            ActionData data, 
+            SectionHeader header, 
+            int order
+        ) {
             var outputSettings = new ModuleOutputSectionsManager<SoilConcentrationsSections>(sectionConfig, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
@@ -29,7 +34,7 @@ namespace MCRA.Simulation.Actions.SoilConcentrations {
             if (outputSettings.ShouldSummarize(SoilConcentrationsSections.ConcentrationsSection)) {
                 section.Summarize(
                 data.SoilConcentrations,
-                data.SoilConcentrationUnit,
+                data.SoilConcentrationUnit.GetShortDisplayName(),
                 sectionConfig.VariabilityLowerPercentage,
                 sectionConfig.VariabilityUpperPercentage
             );
@@ -61,7 +66,7 @@ namespace MCRA.Simulation.Actions.SoilConcentrations {
             };
             var subHeader = header.AddSubSectionHeaderFor(section, "Percentiles", order++);
             section.Summarize(
-                [.. data.SoilConcentrations.Select(SimpleSubstanceConcentration.Clone)],
+                data.SoilConcentrations,
                 data.ActiveSubstances,
                 sectionConfig.UncertaintyLowerBound,
                 sectionConfig.UncertaintyUpperBound,
@@ -80,7 +85,7 @@ namespace MCRA.Simulation.Actions.SoilConcentrations {
             if (subHeader != null) {
                 var section = subHeader.GetSummarySection() as SoilConcentrationPercentilesSection;
                 section.SummarizeUncertainty(
-                    [.. data.SoilConcentrations.Select(SimpleSubstanceConcentration.Clone)],
+                    data.SoilConcentrations,
                     data.ActiveSubstances,
                     _configuration.SelectedPercentiles
                 );

@@ -23,7 +23,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public override PlotModel Create() {
             return create(
                 _section.PercentileRecords.Cast<BoxPlotChartRecord>().ToList(),
-                $"Concentration ({_section.ConcentrationUnit})",
+                $"Concentration ({_section.UnitDisplayName})",
                 true,
                 true
             );

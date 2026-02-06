@@ -1,8 +1,8 @@
-﻿using MCRA.General;
+﻿using MCRA.Data.Compiled.Interfaces;
+using MCRA.General;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.OutputGeneration.Generic;
 using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.Actions.DustConcentrations {
@@ -29,7 +29,7 @@ namespace MCRA.Simulation.Actions.DustConcentrations {
             if (outputSettings.ShouldSummarize(DustConcentrationsSections.ConcentrationsSection)) {
                     section.Summarize(
                     data.DustConcentrations,
-                    data.DustConcentrationUnit,
+                    data.DustConcentrationUnit.GetShortDisplayName(),
                     sectionConfig.VariabilityLowerPercentage,
                     sectionConfig.VariabilityUpperPercentage
                 );
@@ -59,7 +59,7 @@ namespace MCRA.Simulation.Actions.DustConcentrations {
             };
             var subHeader = header.AddSubSectionHeaderFor(section, "Percentiles", order++);
             section.Summarize(
-                [.. data.DustConcentrations.Select(SimpleSubstanceConcentration.Clone)],
+                data.DustConcentrations,
                 data.ActiveSubstances,
                 sectionConfig.UncertaintyLowerBound,
                 sectionConfig.UncertaintyUpperBound,
@@ -78,7 +78,7 @@ namespace MCRA.Simulation.Actions.DustConcentrations {
             if (subHeader != null) {
                 var section = subHeader.GetSummarySection() as DustConcentrationPercentilesSection;
                 section.SummarizeUncertainty(
-                    [.. data.DustConcentrations.Select(SimpleSubstanceConcentration.Clone)],
+                    data.DustConcentrations,
                     data.ActiveSubstances,
                     _configuration.SelectedPercentiles
                 );

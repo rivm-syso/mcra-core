@@ -1,20 +1,20 @@
-﻿using System.Linq;
-using MCRA.Data.Compiled.Objects;
-using MCRA.Simulation.OutputGeneration.Generic;
-using MCRA.Utils.ExtensionMethods;
+﻿using MCRA.Data.Compiled.Interfaces;
+using MCRA.General;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
     public class SubstanceConcentrationsSummarySection : SummarySection {
-        public string ConcentrationUnit { get; set; }
+        public string UnitDisplayName { get; private set; }
         public List<SubstanceConcentrationsSummaryRecord> Records { get; set; }
         public List<SubstanceConcentrationsPercentilesRecord> PercentileRecords { get; set; }
 
-        protected static List<SubstanceConcentrationsSummaryRecord> summarizeConcentrations(
-            ICollection<SimpleSubstanceConcentration> concentrations,
+        public void Summarize<T>(
+            ICollection<T> concentrations,
+            string unitDisplayName,
             double lowerPercentage,
             double upperPercentage
-        ) {
+        ) where T : ISubstanceConcentration {
+            UnitDisplayName = unitDisplayName;
             var percentages = new double[] { lowerPercentage, 50, upperPercentage };
             var records = new List<SubstanceConcentrationsSummaryRecord>();
             var substances = concentrations.Select(c => c.Substance).ToHashSet();
@@ -31,7 +31,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     : [.. percentages.Select(r => double.NaN)];
 
                 var record = new SubstanceConcentrationsSummaryRecord() {
-                    Unit = samples.First().UnitString,
+                    Unit = samples.First().UnitTypeString,
                     SubstanceCode = substance.Code,
                     SubstanceName = substance.Name,
                     SamplesTotal = samples.Count,
@@ -43,12 +43,14 @@ namespace MCRA.Simulation.OutputGeneration {
                 };
                 records.Add(record);
             }
-            return records;
+            Records = records;
+            PercentileRecords = summarizeBoxPlotRecords(concentrations);
+
         }
-        protected static List<SubstanceConcentrationsPercentilesRecord> summarizeBoxPlotRecords(
-            ICollection<SimpleSubstanceConcentration> concentrations
-        ) {
-            var percentages = new double[] { 5, 10, 25, 50, 75, 90, 95 };
+        private List<SubstanceConcentrationsPercentilesRecord> summarizeBoxPlotRecords<T> (
+            ICollection<T> concentrations
+        ) where T : ISubstanceConcentration {
+            var percentages = BoxPlotChartCreatorBase.BoxPlotPercentages;
             var percentilesRecords = new List<SubstanceConcentrationsPercentilesRecord>();
             var substances = concentrations.Select(c => c.Substance).ToHashSet();
             foreach (var substance in substances) {
@@ -67,7 +69,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         .Select(c => c).ToList();
 
                 var record = new SubstanceConcentrationsPercentilesRecord() {
-                    Unit = samples.First().UnitString,
+                    Unit = UnitDisplayName,
                     MinPositives = positives.Any() ? positives.Min() : 0,
                     MaxPositives = positives.Any() ? positives.Max() : 0,
                     SubstanceCode = substance.Code,

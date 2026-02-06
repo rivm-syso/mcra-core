@@ -2,7 +2,6 @@
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.OutputGeneration.Generic;
 using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.Actions.OutdoorAirConcentrations {
@@ -15,7 +14,13 @@ namespace MCRA.Simulation.Actions.OutdoorAirConcentrations {
 
         public override ActionType ActionType => ActionType.OutdoorAirConcentrations;
 
-        public override void Summarize(ActionModuleConfig sectionConfig, IOutdoorAirConcentrationsActionResult actionResult, ActionData data, SectionHeader header, int order) {
+        public override void Summarize(
+            ActionModuleConfig sectionConfig, 
+            IOutdoorAirConcentrationsActionResult actionResult, 
+            ActionData data, 
+            SectionHeader header, 
+            int order
+        ) {
             var outputSettings = new ModuleOutputSectionsManager<OutdoorAirConcentrationsSections>(sectionConfig, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
@@ -29,7 +34,7 @@ namespace MCRA.Simulation.Actions.OutdoorAirConcentrations {
             if (outputSettings.ShouldSummarize(OutdoorAirConcentrationsSections.ConcentrationsSection)) {
                 section.Summarize(
                     data.OutdoorAirConcentrations,
-                    data.OutdoorAirConcentrationsUnit,
+                    data.OutdoorAirConcentrationsUnit.GetShortDisplayName(),
                     sectionConfig.VariabilityLowerPercentage,
                     sectionConfig.VariabilityUpperPercentage
                 );
@@ -59,7 +64,7 @@ namespace MCRA.Simulation.Actions.OutdoorAirConcentrations {
             };
             var subHeader = header.AddSubSectionHeaderFor(section, "Percentiles", order++);
             section.Summarize(
-                [.. data.OutdoorAirConcentrations.Select(SimpleSubstanceConcentration.Clone)],
+                data.OutdoorAirConcentrations,
                 data.ActiveSubstances,
                 sectionConfig.UncertaintyLowerBound,
                 sectionConfig.UncertaintyUpperBound,
@@ -78,7 +83,7 @@ namespace MCRA.Simulation.Actions.OutdoorAirConcentrations {
             if (subHeader != null) {
                 var section = subHeader.GetSummarySection() as OutdoorAirConcentrationPercentilesSection;
                 section.SummarizeUncertainty(
-                    [.. data.OutdoorAirConcentrations.Select(SimpleSubstanceConcentration.Clone)],
+                    data.OutdoorAirConcentrations,
                     data.ActiveSubstances,
                     _configuration.SelectedPercentiles
                 );

@@ -2,7 +2,6 @@
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.OutputGeneration.Generic;
 using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.Actions.IndoorAirConcentrations {
@@ -29,7 +28,7 @@ namespace MCRA.Simulation.Actions.IndoorAirConcentrations {
             if (outputSettings.ShouldSummarize(IndoorAirConcentrationsSections.ConcentrationsSection)) {
                 section.Summarize(
                     data.IndoorAirConcentrations,
-                    data.IndoorAirConcentrationUnit,
+                    data.IndoorAirConcentrationUnit.GetShortDisplayName(),
                     sectionConfig.VariabilityLowerPercentage,
                     sectionConfig.VariabilityUpperPercentage
                 );
@@ -60,7 +59,7 @@ namespace MCRA.Simulation.Actions.IndoorAirConcentrations {
             };
             var subHeader = header.AddSubSectionHeaderFor(section, "Percentiles", order++);
             section.Summarize(
-                [.. data.IndoorAirConcentrations.Select(SimpleSubstanceConcentration.Clone)],
+                data.IndoorAirConcentrations,
                 data.ActiveSubstances,
                 sectionConfig.UncertaintyLowerBound,
                 sectionConfig.UncertaintyUpperBound,
@@ -77,7 +76,7 @@ namespace MCRA.Simulation.Actions.IndoorAirConcentrations {
             if (subHeader != null) {
                 var section = subHeader.GetSummarySection() as IndoorAirConcentrationPercentilesSection;
                 section.SummarizeUncertainty(
-                    [.. data.IndoorAirConcentrations.Select(SimpleSubstanceConcentration.Clone)],
+                    data.IndoorAirConcentrations,
                     data.ActiveSubstances,
                     _configuration.SelectedPercentiles
                 );
