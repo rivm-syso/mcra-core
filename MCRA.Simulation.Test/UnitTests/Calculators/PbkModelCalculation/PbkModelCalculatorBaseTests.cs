@@ -1,9 +1,8 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
-using MCRA.Simulation.Calculators.PbpkModelCalculation;
+using MCRA.Simulation.Calculators.PbkModelCalculation;
 using MCRA.Simulation.Objects;
-using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation {
@@ -14,7 +13,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation {
         public PbkModelCalculatorBaseTests()
             : base(
                   new KineticModelInstance() {
-                      KineticModelDefinition = new KineticModelDefinition()
+                      KineticModelDefinition = new EmbeddedPbkModelSpecification()
                   },
                   new PbkSimulationSettings()
             )
@@ -46,8 +45,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation {
             int stepSize,
             double expected
         ) {
-            KineticModelDefinition.EvaluationFrequency = 1;
-            KineticModelDefinition.Resolution = modelTimeResolution;
+            KineticModelInstance.KineticModelDefinition = new EmbeddedPbkModelSpecification() {
+                EvaluationFrequency = 1,
+                Resolution = modelTimeResolution
+            };
             SimulationSettings.OutputResolutionTimeUnit = outputTimeUnit;
             SimulationSettings.OutputResolutionStepSize = stepSize;
             Assert.AreEqual(expected, getSimulationStepsPerDay());

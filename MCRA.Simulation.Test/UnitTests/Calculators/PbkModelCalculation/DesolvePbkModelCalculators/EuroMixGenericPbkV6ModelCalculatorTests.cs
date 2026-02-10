@@ -1,7 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.Simulation.Calculators.PbpkModelCalculation;
-using MCRA.Simulation.Calculators.PbpkModelCalculation.DesolvePbkModelCalculators.CosmosKineticModelCalculation;
+using MCRA.Simulation.Calculators.PbkModelCalculation;
+using MCRA.Simulation.Calculators.PbkModelCalculation.DesolvePbkModelCalculators.CosmosKineticModelCalculation;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.DesolvePbkModelCalculators {
 
@@ -244,12 +244,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.Desolve
                     Value = 1,
                 }
             };
-            var modelDefinition = MCRAKineticModelDefinitions.Definitions[idModelDefinition];
+            var modelDefinition = McraEmbeddedPbkModelDefinitions.Definitions[idModelDefinition];
             var kineticModel = new KineticModelInstance() {
                 IdModelInstance = idModelInstance,
                 IdModelDefinition = idModelDefinition,
-                KineticModelSubstances = [
-                    new KineticModelSubstance() {
+                ModelSubstances = [
+                    new PbkModelSubstance() {
                         Substance = substance
                     }
                 ],

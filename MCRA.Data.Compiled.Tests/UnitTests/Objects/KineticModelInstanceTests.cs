@@ -230,7 +230,7 @@ namespace MCRA.Data.Compiled.Test {
         private List<string> checkPBKmodels(List<KineticModelInstance> selectedInstances) {
             var warningsList = new List<string>();
             var parents = selectedInstances
-                .SelectMany(c => c.KineticModelSubstances
+                .SelectMany(c => c.ModelSubstances
                     .Where(r => r.SubstanceDefinition.IsInput)
                     .Select(r => r.Substance)
                 )
@@ -250,13 +250,13 @@ namespace MCRA.Data.Compiled.Test {
             }
 
             var metabolitesSet = selectedInstances
-                .Where(c => c.KineticModelSubstances != null)
-                .SelectMany(c => c.KineticModelSubstances
+                .Where(c => c.ModelSubstances != null)
+                .SelectMany(c => c.ModelSubstances
                 .Select(s => s.Substance))
                 .ToList();
-            metabolitesSet.AddRange(selectedInstances
-                .Where(c => c.KineticModelSubstances == null)
-                .SelectMany(c => c.Substances).ToList());
+            metabolitesSet.AddRange([.. selectedInstances
+                .Where(c => c.ModelSubstances == null)
+                .SelectMany(c => c.Substances)]);
 
             var metabolites = metabolitesSet
                 .GroupBy(c => c)
@@ -267,7 +267,7 @@ namespace MCRA.Data.Compiled.Test {
                 if (metabolite.Value > 1) {
                     var instancesCodes = new List<string>();
                     foreach (var item in selectedInstances) {
-                        if (item.KineticModelSubstances != null && item.KineticModelSubstances.Select(c => c.Substance).Contains(metabolite.Key)) {
+                        if (item.ModelSubstances != null && item.ModelSubstances.Select(c => c.Substance).Contains(metabolite.Key)) {
                             instancesCodes.Add(item.IdModelInstance);
                         }
                         if (item.Substances.Contains(metabolite.Key)) {
@@ -282,8 +282,8 @@ namespace MCRA.Data.Compiled.Test {
                 foreach (var instance1 in selectedInstances) {
                     foreach (var instance2 in selectedInstances) {
                         if (instance1 != instance2) {
-                            var outputSubstances = instance1.KineticModelSubstances != null
-                                ? instance1.KineticModelSubstances.Select(c => c.Substance).ToList()
+                            var outputSubstances = instance1.ModelSubstances != null
+                                ? instance1.ModelSubstances.Select(c => c.Substance).ToList()
                                 : instance1.Substances;
                             var inputSubstances = instance2.Substances;
                             var union = outputSubstances.Intersect(inputSubstances).ToList();
@@ -304,10 +304,10 @@ namespace MCRA.Data.Compiled.Test {
             Compound[] substances,
             bool[] isInput
         ) {
-            var kineticModelSubstances = kmSubstanceIds
-                .Select((r, ix) => new KineticModelSubstance() {
+            var modelSubstances = kmSubstanceIds
+                .Select((r, ix) => new PbkModelSubstance() {
                     Substance = substances[ix],
-                    SubstanceDefinition = new KineticModelSubstanceDefinition() {
+                    SubstanceDefinition = new PbkModelSubstanceSpecification() {
                         Id = r,
                         Name = r,
                         Description = r,
@@ -317,8 +317,8 @@ namespace MCRA.Data.Compiled.Test {
                 .ToList();
             var result = new KineticModelInstance() {
                 IdModelInstance = idModelInstance,
-                KineticModelSubstances = kineticModelSubstances,
-                KineticModelDefinition = new KineticModelDefinition() {
+                ModelSubstances = modelSubstances,
+                KineticModelDefinition = new EmbeddedPbkModelSpecification() {
                     Name = $"DEF_{idModelInstance}"
                 }
             };

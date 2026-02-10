@@ -46,7 +46,7 @@
 
 <KineticModelDefinitions>
 <#
-	xmlFilesFolder = Host.ResolvePath(@"../KineticModelDefinitions/KineticModels");
+	xmlFilesFolder = Host.ResolvePath(@"../PbkModelDefinitions/EmbeddedPbkModelSpecifications");
 	xmlFiles = Directory.GetFiles(xmlFilesFolder, "*.xml");
 	using(var sw = new StringWriter()) {
 		foreach(var xmlFile in xmlFiles) {

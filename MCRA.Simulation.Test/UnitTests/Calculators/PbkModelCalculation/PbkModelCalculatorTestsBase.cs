@@ -1,7 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.KineticConversionCalculation;
-using MCRA.Simulation.Calculators.PbpkModelCalculation;
+using MCRA.Simulation.Calculators.PbkModelCalculation;
 using MCRA.Simulation.Test.Helpers;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.ProgressReporting;

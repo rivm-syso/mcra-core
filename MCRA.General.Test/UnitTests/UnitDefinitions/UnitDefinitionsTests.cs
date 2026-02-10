@@ -64,7 +64,7 @@ namespace MCRA.General.Test.UnitTests.UnitDefinitions {
             // TODO: this tabu list should not exist.
             // These are all inconsistencies that should be resolved.
             var tabuList = new HashSet<string>() {
-                "KineticModelType"
+                "PbkModelType"
             };
 
             foreach (var tableDefinition in instances.TableDefinitions.Values) {

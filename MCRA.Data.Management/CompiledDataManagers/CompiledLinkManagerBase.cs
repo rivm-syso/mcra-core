@@ -81,10 +81,10 @@ namespace MCRA.Data.Management.CompiledDataManagers {
 
                         if (scopingType == ScopingType.KineticModelDefinitions) {
                             var readingReport = _reportBuilder.GetDataReadingReport(scopingType);
-                            var codes = MCRAKineticModelDefinitions.Definitions
+                            var codes = McraEmbeddedPbkModelDefinitions.Definitions
                                 .Select(r => r.Value.Id)
                                 .ToHashSet(StringComparer.OrdinalIgnoreCase);
-                            codes.UnionWith(MCRAKineticModelDefinitions.Definitions
+                            codes.UnionWith(McraEmbeddedPbkModelDefinitions.Definitions
                                 .Where(r => r.Value.Aliases != null)
                                 .SelectMany(r => r.Value.Aliases));
                             var selectedCodes = readingReport.ReadingSummary?.CodesInSelection ?? [];

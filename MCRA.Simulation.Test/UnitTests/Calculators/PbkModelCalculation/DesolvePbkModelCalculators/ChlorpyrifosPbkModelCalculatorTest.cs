@@ -3,9 +3,9 @@ using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Calculators.KineticConversionCalculation;
-using MCRA.Simulation.Calculators.PbpkModelCalculation;
-using MCRA.Simulation.Calculators.PbpkModelCalculation.DesolvePbkModelCalculators.ChlorpyrifosPbkModelCalculation;
-using MCRA.Simulation.Calculators.PbpkModelCalculation.TargetExposureFromTimeSeriesCalculation;
+using MCRA.Simulation.Calculators.PbkModelCalculation;
+using MCRA.Simulation.Calculators.PbkModelCalculation.DesolvePbkModelCalculators.ChlorpyrifosPbkModelCalculation;
+using MCRA.Simulation.Calculators.PbkModelCalculation.TargetExposureFromTimeSeriesCalculation;
 using MCRA.Simulation.Objects;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Logger;
@@ -220,7 +220,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.Desolve
             List<Compound> substances
         ) {
             var idModelDefinition = "PBK_Chlorpyrifos_V1";
-            var modelDefinition = MCRAKineticModelDefinitions.Definitions[idModelDefinition];
+            var modelDefinition = McraEmbeddedPbkModelDefinitions.Definitions[idModelDefinition];
             var kineticModelParametersOld = new List<KineticModelInstanceParameter> {
                 new() {
                     IdModelInstance = idModelInstance,
@@ -579,10 +579,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.Desolve
                 IdModelInstance = idModelInstance,
                 KineticModelInstanceParameters = kineticModelParameters.ToDictionary(r => r.Parameter),
                 KineticModelDefinition = modelDefinition,
-                KineticModelSubstances = substances
-                    .Select((s, ix) => new KineticModelSubstance() {
+                ModelSubstances = substances
+                    .Select((s, ix) => new PbkModelSubstance() {
                         Substance = s,
-                        SubstanceDefinition = modelDefinition.KineticModelSubstances[ix]
+                        SubstanceDefinition = modelDefinition.ModelSubstances[ix]
                     })
                     .ToList(),
                 IdModelDefinition = idModelDefinition,

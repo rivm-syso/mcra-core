@@ -10,7 +10,6 @@ namespace MCRA.Data.Compiled.Objects {
         }
         public string Description { get; set; }
         public string FileName { get; set; }
-        public string FilePath { get; set; }
-        public KineticModelDefinition KineticModelDefinition { get; set; }
+        public IPbkModelSpecification KineticModelDefinition { get; set; }
     }
 }

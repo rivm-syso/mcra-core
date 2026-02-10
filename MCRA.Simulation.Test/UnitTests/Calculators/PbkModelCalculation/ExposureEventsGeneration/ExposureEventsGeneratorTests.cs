@@ -1,8 +1,8 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
-using MCRA.Simulation.Calculators.PbpkModelCalculation;
-using MCRA.Simulation.Calculators.PbpkModelCalculation.ExposureEventsGeneration;
+using MCRA.Simulation.Calculators.PbkModelCalculation;
+using MCRA.Simulation.Calculators.PbkModelCalculation.ExposureEventsGeneration;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 

@@ -1,5 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.General.KineticModelDefinitions;
 
 namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
 
@@ -14,8 +15,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                 Name = $"{name}",
                 FileName = $"{name}.sbml",
                 Description = $"{name}",
-                KineticModelDefinition = KineticModelDefinition.FromSbmlFile($"Resources/PbkModels/{name}.sbml"),
-                FilePath = $"Resources/PbkModels/{name}.sbml"
+                KineticModelDefinition = SbmlPbkModelSpecificationBuilder.CreateFromSbmlFile($"Resources/PbkModels/{name}.sbml")
             };
             return model;
         }

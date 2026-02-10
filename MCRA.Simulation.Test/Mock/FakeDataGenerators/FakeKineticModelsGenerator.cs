@@ -1,7 +1,8 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.Simulation.Calculators.KineticConversionFactorModels;
+using MCRA.General.KineticModelDefinitions;
 using MCRA.Simulation.Calculators.KineticConversionCalculation;
+using MCRA.Simulation.Calculators.KineticConversionFactorModels;
 
 namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
 
@@ -24,7 +25,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                     r => r,
                     r => CreateAbsorptionFactorKineticModelCalculator(
                         r,
-                        kineticConversionFactors
+                        [.. kineticConversionFactors
                             .Where(a => a.Key.Substance == r)
                             .Select(c => new KineticConversionFactor() {
                                 SubstanceFrom = r,
@@ -35,8 +36,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                                 BiologicalMatrixTo = target.BiologicalMatrix,
                                 ExpressionTypeTo = target.ExpressionType,
                                 DoseUnitTo = target.ExposureUnit
-                            })
-                            .ToList()
+                            })]
                         )
                     );
             return result;
@@ -64,12 +64,12 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             string filename,
             List<(string Id, double Value)> parameters = null
         ) {
-            var modelDefinition = KineticModelDefinition.FromSbmlFile(filename);
+            var modelDefinition = SbmlPbkModelSpecificationBuilder.CreateFromSbmlFile(filename);
             var instance = new KineticModelInstance() {
                 IdModelDefinition = modelDefinition.Id,
                 KineticModelDefinition = modelDefinition,
-                KineticModelSubstances = [
-                     new KineticModelSubstance() {
+                ModelSubstances = [
+                     new PbkModelSubstance() {
                          Substance = substance
                      }
                 ],
@@ -281,12 +281,12 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                     Value = 1,
                 }
             };
-            var modelDefinition = MCRAKineticModelDefinitions.Definitions[idModelDefinition];
+            var modelDefinition = McraEmbeddedPbkModelDefinitions.Definitions[idModelDefinition];
             var kineticModel = new KineticModelInstance() {
                 IdModelInstance = idModelInstance,
                 IdModelDefinition = idModelDefinition,
-                KineticModelSubstances = [
-                    new KineticModelSubstance() {
+                ModelSubstances = [
+                    new PbkModelSubstance() {
                         Substance = substance
                     }
                 ],

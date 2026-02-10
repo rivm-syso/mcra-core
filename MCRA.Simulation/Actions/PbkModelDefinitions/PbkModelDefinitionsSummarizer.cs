@@ -34,7 +34,7 @@ namespace MCRA.Simulation.Actions.PbkModelDefinitions {
         ) {
             var order = 1;
             var sbmlPbkModelDefinitions = data.AllPbkModelDefinitions
-                .Where(r => r.KineticModelDefinition.Format == KineticModelType.SBML)
+                .Where(r => r.KineticModelDefinition.Format == PbkModelType.SBML)
                 .OrderBy(r => r.KineticModelDefinition.Name)
                 .ToList();
             summarizeSbmlModelsOverview(header, sbmlPbkModelDefinitions, order++);

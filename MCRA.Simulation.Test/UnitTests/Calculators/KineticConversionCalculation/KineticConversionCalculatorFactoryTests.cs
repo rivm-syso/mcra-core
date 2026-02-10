@@ -11,8 +11,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticConversionCalculatio
         /// </summary>
         [TestMethod]
         public void KineticModelCalculatorFactory_TestDeSolveImplementationsAvailable() {
-            var modelDefinitions = MCRAKineticModelDefinitions.Definitions.Values
-                .Where(r => r.Format != KineticModelType.SBML)
+            var modelDefinitions = McraEmbeddedPbkModelDefinitions.Definitions.Values
+                .Where(r => r.Format != PbkModelType.SBML)
                 .ToList();
 
             foreach (var definition in modelDefinitions) {

@@ -1,5 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.General.KineticModelDefinitions.SbmlPbkUtils;
 using MCRA.General.Sbml;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Sbml.Objects;
@@ -15,7 +16,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public void Summarize(PbkModelDefinition modelDefinition) {
             var records = new List<PbkModelDefinitionSpeciesSummaryRecord>();
-            var sbmlModel = modelDefinition.KineticModelDefinition.SbmlModel;
+            var sbmlModel = (modelDefinition.KineticModelDefinition as SbmlPbkModelSpecification)?.SbmlModel;
             if (sbmlModel != null) {
                 foreach (var species in sbmlModel.Species.Values) {
                     var hasCompartment = sbmlModel.Compartments.TryGetValue(species.Compartment, out var compartment);
@@ -38,7 +39,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     records.Add(record);
                 }
             } else {
-                foreach (var output in modelDefinition.KineticModelDefinition.Outputs) {
+                foreach (var output in modelDefinition.KineticModelDefinition.GetOutputs()) {
                     var record = new PbkModelDefinitionSpeciesSummaryRecord() {
                         CompartmentCode = output.Id,
                         CompartmentName = output.Description,

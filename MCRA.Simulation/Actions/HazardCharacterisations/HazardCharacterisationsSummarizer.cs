@@ -3,7 +3,7 @@ using MCRA.General;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
-using MCRA.Simulation.Calculators.PbpkModelCalculation;
+using MCRA.Simulation.Calculators.PbkModelCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
 

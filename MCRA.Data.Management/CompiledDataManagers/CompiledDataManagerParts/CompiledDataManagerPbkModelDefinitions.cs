@@ -1,6 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Extensions;
+using MCRA.General.KineticModelDefinitions;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
 
 namespace MCRA.Data.Management.CompiledDataManagers {
@@ -41,7 +42,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             sbmlFilePath = newSbmlFilePath;
                                         }
 
-                                        var kineticModelDefinition = KineticModelDefinition.FromSbmlFile(sbmlFilePath);
+                                        var kineticModelDefinition = SbmlPbkModelSpecificationBuilder.CreateFromSbmlFile(sbmlFilePath);
                                         pmd.KineticModelDefinition = kineticModelDefinition;
 
                                         allPbkModelDefinitions.Add(idModelDefinition, pmd);
@@ -53,7 +54,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 }
 
                 // Add hard-coded PBK model definitions
-                foreach (var definition in MCRAKineticModelDefinitions.Definitions.Values) {
+                foreach (var definition in McraEmbeddedPbkModelDefinitions.Definitions.Values) {
                     var codes = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { definition.Id };
                     codes.UnionWith(definition.Aliases);
                     foreach (var code in codes) {

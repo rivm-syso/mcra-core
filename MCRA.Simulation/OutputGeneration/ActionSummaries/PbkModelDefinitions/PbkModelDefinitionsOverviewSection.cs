@@ -10,17 +10,18 @@ namespace MCRA.Simulation.OutputGeneration {
         public void Summarize(ICollection<PbkModelDefinition> pbkModelDefinitions) {
             foreach (var definition in pbkModelDefinitions) {
                 var def = definition.KineticModelDefinition;
-                if (def.Format == KineticModelType.SBML) {
+                if (def.Format == PbkModelType.SBML) {
                     // We only include SBML PBK models in this table and skip the hard-coded DeSolve models
-                    var oral = def.Forcings
+                    var inputs = def.GetInputDefinitions();
+                    var oral = inputs
                         .Where(r => r.Route == ExposureRoute.Oral)
                         .Select(r => r.Id)
                         .FirstOrDefault();
-                    var dermal = def.Forcings
+                    var dermal = inputs
                         .Where(r => r.Route == ExposureRoute.Dermal)
                         .Select(r => r.Id)
                         .FirstOrDefault();
-                    var inhalation = def.Forcings
+                    var inhalation = inputs
                         .Where(r => r.Route == ExposureRoute.Inhalation)
                         .Select(r => r.Id)
                         .FirstOrDefault();

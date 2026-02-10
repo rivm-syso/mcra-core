@@ -21,7 +21,7 @@ using MCRA.Simulation.Calculators.HumanMonitoringCalculation.MissingValueImputat
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.NonDetectsImputationCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCombinationCalculation;
 using MCRA.Simulation.Calculators.IndividualDaysGenerator;
-using MCRA.Simulation.Calculators.PbpkModelCalculation;
+using MCRA.Simulation.Calculators.PbkModelCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.ProgressReporting;

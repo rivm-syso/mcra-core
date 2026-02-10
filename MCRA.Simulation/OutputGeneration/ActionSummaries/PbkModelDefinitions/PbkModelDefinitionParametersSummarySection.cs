@@ -9,7 +9,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public void Summarize(PbkModelDefinition modelDefinition) {
             var records = new List<PbkModelDefinitionParameterSummaryRecord>();
-            foreach (var parameter in modelDefinition.KineticModelDefinition.Parameters) {
+            foreach (var parameter in modelDefinition.KineticModelDefinition.GetParameters()) {
                 // Substance dependent parameter splitting out over multiple substances
                 var record = new PbkModelDefinitionParameterSummaryRecord() {
                     ParameterCode = parameter.Id,

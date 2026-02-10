@@ -1,9 +1,9 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
-using MCRA.Simulation.Calculators.PbpkModelCalculation;
-using MCRA.Simulation.Calculators.PbpkModelCalculation.ReverseDoseCalculation;
-using MCRA.Simulation.Calculators.PbpkModelCalculation.TargetExposureFromTimeSeriesCalculation;
+using MCRA.Simulation.Calculators.PbkModelCalculation;
+using MCRA.Simulation.Calculators.PbkModelCalculation.ReverseDoseCalculation;
+using MCRA.Simulation.Calculators.PbkModelCalculation.TargetExposureFromTimeSeriesCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.KineticConversionFactorCalculation;

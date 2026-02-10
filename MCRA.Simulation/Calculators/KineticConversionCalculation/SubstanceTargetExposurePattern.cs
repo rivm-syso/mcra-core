@@ -2,7 +2,7 @@
 using MCRA.General;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 
-namespace MCRA.Simulation.Calculators.PbpkModelCalculation {
+namespace MCRA.Simulation.Calculators.PbkModelCalculation {
     public sealed class SubstanceTargetExposurePattern : ISubstanceTargetExposure {
 
         /// <summary>

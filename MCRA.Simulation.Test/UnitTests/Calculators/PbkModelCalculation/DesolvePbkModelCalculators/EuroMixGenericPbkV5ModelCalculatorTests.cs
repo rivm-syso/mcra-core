@@ -1,7 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.Simulation.Calculators.PbpkModelCalculation;
-using MCRA.Simulation.Calculators.PbpkModelCalculation.DesolvePbkModelCalculators.CosmosKineticModelCalculation;
+using MCRA.Simulation.Calculators.PbkModelCalculation;
+using MCRA.Simulation.Calculators.PbkModelCalculation.DesolvePbkModelCalculators.CosmosKineticModelCalculation;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.DesolvePbkModelCalculators {
 
@@ -245,8 +245,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.Desolve
             var kineticModel = new KineticModelInstance() {
                 IdModelInstance = idModelInstance,
                 KineticModelInstanceParameters = kineticModelParameters.ToDictionary(r => r.Parameter),
-                KineticModelDefinition = MCRAKineticModelDefinitions.Definitions[idModelDefinition],
-                KineticModelSubstances = [new() { Substance = substance }],
+                KineticModelDefinition = McraEmbeddedPbkModelDefinitions.Definitions[idModelDefinition],
+                ModelSubstances = [new() { Substance = substance }],
                 IdModelDefinition = idModelDefinition,
                 IdTestSystem = "Human",
             };

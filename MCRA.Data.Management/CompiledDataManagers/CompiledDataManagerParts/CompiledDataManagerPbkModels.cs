@@ -40,46 +40,44 @@ namespace MCRA.Data.Management.CompiledDataManagers {
 
                                     if (valid && (_data.AllPbkModelDefinitions?.TryGetValue(idModelDefinition, out var pbkModelDefinition) ?? false)) {
                                         var modelDefinition = pbkModelDefinition.KineticModelDefinition;
-                                        var modelSubstances = (modelDefinition?.KineticModelSubstances?.Count > 0)
-                                            ? modelDefinition.KineticModelSubstances.Count : 1;
+                                        var modelSubstances = (modelDefinition?.GetModelSubstances()?.Count > 0)
+                                            ? modelDefinition.GetModelSubstances().Count : 1;
                                         var substances = substanceCodes.Select(code => _data.GetOrAddSubstance(code));
                                         if (substanceCodes.Length != modelSubstances) {
                                             // Number of substances specified in instance does not match the number
                                             // of substances of the definition. This is only allowed when the number
                                             // of substances matches the number of input substances.
-                                            var modelInputSubstances = (modelDefinition.KineticModelSubstances?.Count > 0)
-                                                ? modelDefinition.KineticModelSubstances.Count(r => r.IsInput)
+                                            var modelInputSubstances = (modelDefinition.GetModelSubstances()?.Count > 0)
+                                                ? modelDefinition.GetModelSubstances().Count(r => r.IsInput)
                                                 : 1;
                                             if (substanceCodes.Length != modelInputSubstances) {
                                                 var msg = $"Error in model instance {idModelInstance}: " +
                                                     $"{substanceCodes.Length} substances were provided where the " +
                                                     $"referenced kinetic model {idModelDefinition} expects " +
-                                                    $"{modelDefinition.KineticModelSubstances.Count} substances.";
+                                                    $"{modelDefinition.GetModelSubstances().Count} substances.";
                                                 throw new Exception(msg);
                                             }
                                         }
-                                        List<KineticModelSubstance> kineticModelSubstances = null;
-                                        if (modelDefinition?.KineticModelSubstances?.Count > 0) {
-                                            kineticModelSubstances = modelDefinition.KineticModelSubstances
+                                        List<PbkModelSubstance> kineticModelSubstances = null;
+                                        if (modelDefinition?.GetModelSubstances()?.Count > 0) {
+                                            kineticModelSubstances = [.. modelDefinition.GetModelSubstances()
                                                 .Zip(substanceCodes)
-                                                .Select(r => new KineticModelSubstance {
+                                                .Select(r => new PbkModelSubstance {
                                                     Substance = _data.GetOrAddSubstance(r.Second),
                                                     SubstanceDefinition = r.First
-                                                })
-                                                .ToList();
+                                                })];
                                         } else {
-                                            kineticModelSubstances = substances
-                                                .Select(r => new KineticModelSubstance() {
+                                            kineticModelSubstances = [.. substances
+                                                .Select(r => new PbkModelSubstance() {
                                                     Substance = r,
                                                     SubstanceDefinition = null
-                                                })
-                                                .ToList();
+                                                })];
                                         }
                                         var instance = new KineticModelInstance {
                                             IdModelInstance = idModelInstance,
                                             IdModelDefinition = pbkModelDefinition.IdModelDefinition,
                                             IdTestSystem = r.GetString(RawKineticModelInstances.IdTestSystem, fieldMap),
-                                            KineticModelSubstances = kineticModelSubstances,
+                                            ModelSubstances = kineticModelSubstances,
                                             Reference = r.GetStringOrNull(RawKineticModelInstances.Reference, fieldMap),
                                             Name = r.GetStringOrNull(RawKineticModelInstances.Name, fieldMap),
                                             Description = r.GetStringOrNull(RawKineticModelInstances.Description, fieldMap),
@@ -119,7 +117,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                         }
                     }
                 }
-                _data.AllKineticModelInstances = allPbkModelInstances.Values.ToList();
+                _data.AllKineticModelInstances = [.. allPbkModelInstances.Values];
             }
             return _data.AllKineticModelInstances;
         }

@@ -1,8 +1,8 @@
 ﻿using MCRA.General;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Calculators.KineticConversionCalculation;
-using MCRA.Simulation.Calculators.PbpkModelCalculation;
-using MCRA.Simulation.Calculators.PbpkModelCalculation.DesolvePbkModelCalculators;
+using MCRA.Simulation.Calculators.PbkModelCalculation;
+using MCRA.Simulation.Calculators.PbkModelCalculation.DesolvePbkModelCalculators;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Logger;
 using MCRA.Utils.R.REngines;

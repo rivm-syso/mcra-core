@@ -1,8 +1,9 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.General.KineticModelDefinitions;
 using MCRA.Simulation.Calculators.KineticConversionCalculation;
-using MCRA.Simulation.Calculators.PbpkModelCalculation;
-using MCRA.Simulation.Calculators.PbpkModelCalculation.ReverseDoseCalculation;
+using MCRA.Simulation.Calculators.PbkModelCalculation;
+using MCRA.Simulation.Calculators.PbkModelCalculation.ReverseDoseCalculation;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 
@@ -15,11 +16,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.Reverse
         /// PBK model: calculates reverse dose based on PBK model.
         /// </summary>
         [TestMethod]
-        [DataRow(ExposureType.Chronic, KineticModelType.SBML)]
-        [DataRow(ExposureType.Acute, KineticModelType.SBML)]
-        [DataRow(ExposureType.Chronic, KineticModelType.DeSolve)]
-        [DataRow(ExposureType.Acute, KineticModelType.DeSolve)]
-        public void PbkModelCalculator_TestReverse(ExposureType exposureType, KineticModelType modelType) {
+        [DataRow(ExposureType.Chronic, PbkModelType.SBML)]
+        [DataRow(ExposureType.Acute, PbkModelType.SBML)]
+        [DataRow(ExposureType.Chronic, PbkModelType.DeSolve)]
+        [DataRow(ExposureType.Acute, PbkModelType.DeSolve)]
+        public void PbkModelCalculator_TestReverse(ExposureType exposureType, PbkModelType modelType) {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var substances = FakeSubstancesGenerator.Create(1);
@@ -36,8 +37,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.Reverse
                 PrecisionReverseDoseCalculation = 0.05
             };
             var instance = modelType switch {
-                KineticModelType.SBML => createFakeSbmlPbkModelCalculator(substance, simulationSettings),
-                KineticModelType.DeSolve => createFakeDesolveModelInstance(substance),
+                PbkModelType.SBML => createFakeSbmlPbkModelCalculator(substance, simulationSettings),
+                PbkModelType.DeSolve => createFakeDesolveModelInstance(substance),
                 _ => throw new NotImplementedException($"Model type {modelType} not implemented"),
             };
             var calculator = PbkModelCalculatorFactory.Create(instance, simulationSettings);
@@ -75,12 +76,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.Reverse
             PbkSimulationSettings simulationSettings
         ) {
             var filename = "Resources/PbkModels/EuroMixGenericPbk.sbml";
-            var modelDefinition = KineticModelDefinition
-                .FromSbmlFile(filename);
+            var modelDefinition = SbmlPbkModelSpecificationBuilder
+                .CreateFromSbmlFile(filename);
             var instance = new KineticModelInstance() {
                 KineticModelDefinition = modelDefinition,
-                KineticModelSubstances = [
-                     new KineticModelSubstance() {
+                ModelSubstances = [
+                     new PbkModelSubstance() {
                          Substance = substance
                      }
                 ],
@@ -285,12 +286,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.Reverse
                     Value = 1,
                 }
             };
-            var modelDefinition = MCRAKineticModelDefinitions.Definitions[idModelDefinition];
+            var modelDefinition = McraEmbeddedPbkModelDefinitions.Definitions[idModelDefinition];
             var kineticModel = new KineticModelInstance() {
                 IdModelInstance = idModelInstance,
                 IdModelDefinition = idModelDefinition,
-                KineticModelSubstances = [
-                    new KineticModelSubstance() {
+                ModelSubstances = [
+                    new PbkModelSubstance() {
                         Substance = substance
                     }
                 ],

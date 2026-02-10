@@ -6,7 +6,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
     public class DataLinkingPbkModelsTests : LinkTestsBase {
 
         private static string GetOtherModelAliases(params string[] codes) {
-            var aliases = MCRAKineticModelDefinitions.Definitions
+            var aliases = McraEmbeddedPbkModelDefinitions.Definitions
                 .SelectMany(r => r.Value.Aliases)
                 .ToHashSet(StringComparer.OrdinalIgnoreCase)
                 .Except(codes, StringComparer.OrdinalIgnoreCase)

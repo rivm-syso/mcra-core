@@ -28,7 +28,7 @@
         <string>Code</string>
       </Aliases>
     </ColumnDefinition>
-    <ColumnDefinition Required="true" FieldType="KineticModelType">
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric">
       <Id>idModelDefinition</Id>
       <Description>Identifier of the PBK model definition of which this is an instance/parametrisation.</Description>
       <Aliases>

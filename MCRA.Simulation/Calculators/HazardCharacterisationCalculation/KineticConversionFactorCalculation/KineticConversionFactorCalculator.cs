@@ -3,7 +3,7 @@ using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.KineticConversionCalculation;
 using MCRA.Simulation.Objects;
-using MCRA.Simulation.Calculators.PbpkModelCalculation;
+using MCRA.Simulation.Calculators.PbkModelCalculation;
 
 namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticConversionFactorCalculation {
     public sealed class KineticConversionFactorCalculator : IKineticConversionFactorCalculator {

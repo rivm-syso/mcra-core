@@ -33,6 +33,7 @@
     <None Remove="Action\Serialization\Transforms\Patch-10.01.0002-04.xslt" />
     <None Remove="Action\Serialization\Transforms\Patch-10.01.0002-05.xslt" />
     <None Remove="ModuleDefinitions\ModuleDefinitions.Generated.xml" />
+    <None Remove="PbkModelDefinitions\EmbeddedPbkModelSpecifications.Generated.xml" />
     <None Remove="ScopingTypeDefinitions\ScopeTypeDefinitions.xml" />
     <None Remove="SettingsDefinitions\SettingsDefinitions.Generated.xml" />
     <None Remove="SettingsDefinitions\TableDefinitions.Generated.xml" />
@@ -83,15 +84,15 @@
       <AutoGen>True</AutoGen>
     </Content>
     <EmbeddedResource Include="Action\Serialization\Transforms\Patch-10.00.0004.xslt" />
-    <EmbeddedResource Include="KineticModelDefinitions\KineticModelDefinitions.Generated.xml">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>KineticModelDefinitions.tt</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="ModuleDefinitions\ModuleDefinitions.Generated.xml">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>ModuleDefinitions.tt</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PbkModelDefinitions\EmbeddedPbkModelSpecifications.Generated.xml">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EmbeddedPbkModelSpecifications.tt</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ScopingTypeDefinitions\ScopeTypeDefinitions.xml" />
     <EmbeddedResource Include="SettingsDefinitions\SettingsDefinitions.Generated.xml">
@@ -170,14 +171,9 @@
       <LastGenOutput>ActionSettingsTemplateEnums.Generated.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
-    <None Update="KineticModelDefinitions\KineticModelDefinitions.Generated.xml">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>KineticModelDefinitions.tt</DependentUpon>
-    </None>
-    <None Update="KineticModelDefinitions\KineticModelDefinitions.tt">
+    <None Update="PbkModelDefinitions\EmbeddedPbkModelSpecifications.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>KineticModelDefinitions.Generated.xml</LastGenOutput>
+      <LastGenOutput>EmbeddedPbkModelSpecifications.Generated.xml</LastGenOutput>
     </None>
     <None Update="ModuleDefinitions\ModuleDefinitions.tt">
       <LastGenOutput>ModuleDefinitions.Generated.xml</LastGenOutput>

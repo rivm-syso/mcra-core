@@ -1,8 +1,9 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.General.KineticModelDefinitions;
 using MCRA.Simulation.Calculators.KineticConversionCalculation;
-using MCRA.Simulation.Calculators.PbpkModelCalculation;
-using MCRA.Simulation.Calculators.PbpkModelCalculation.SbmlModelCalculation;
+using MCRA.Simulation.Calculators.PbkModelCalculation;
+using MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
@@ -15,8 +16,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.SbmlMod
     [TestClass]
     public class SbmlPbkModelCalculatorTest : PbkModelCalculatorTestsBase {
 
-        protected virtual KineticModelDefinition GetModelDefinition() {
-            return KineticModelDefinition.FromSbmlFile(
+        protected virtual IPbkModelSpecification GetModelDefinition() {
+            return SbmlPbkModelSpecificationBuilder.CreateFromSbmlFile(
                 "Resources/PbkModels/EuroMixGenericPbk.sbml"
             );
         }
@@ -54,7 +55,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.SbmlMod
             var expected = new[] { "QGut", "QSkin_sc_e", "QAir" };
             CollectionAssert.AreEquivalent(
                 expected,
-                modelDefinition.Forcings.Select(r => r.Id).ToArray()
+                modelDefinition.GetInputDefinitions().Select(r => r.Id).ToArray()
             );
             var bwParam = modelDefinition.GetParameterDefinitionByType(PbkModelParameterType.BodyWeight);
             Assert.AreEqual("BM", bwParam.Id);
@@ -328,8 +329,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.SbmlMod
 
             var instance = new KineticModelInstance() {
                 KineticModelDefinition = modelDefinition,
-                KineticModelSubstances = [
-                     new KineticModelSubstance() {
+                ModelSubstances = [
+                     new PbkModelSubstance() {
                          Substance = substance
                      }
                 ],

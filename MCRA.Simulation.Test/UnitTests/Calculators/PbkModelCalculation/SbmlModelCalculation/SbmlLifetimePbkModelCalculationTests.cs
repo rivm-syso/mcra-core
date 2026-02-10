@@ -1,7 +1,8 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.Simulation.Calculators.PbpkModelCalculation;
-using MCRA.Simulation.Calculators.PbpkModelCalculation.SbmlModelCalculation;
+using MCRA.General.KineticModelDefinitions;
+using MCRA.Simulation.Calculators.PbkModelCalculation;
+using MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
@@ -14,8 +15,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.SbmlMod
     [TestClass]
     public class SbmlLifetimePbkModelCalculationTests {
 
-        protected virtual KineticModelDefinition GetModelDefinition() {
-            return KineticModelDefinition.FromSbmlFile(
+        protected virtual IPbkModelSpecification GetModelDefinition() {
+            return SbmlPbkModelSpecificationBuilder.CreateFromSbmlFile(
                 "Resources/PbkModels/simple_lifetime.sbml"
             );
         }
@@ -45,7 +46,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.SbmlMod
             var expected = new[] { "AGut" };
             CollectionAssert.AreEquivalent(
                 expected,
-                modelDefinition.Forcings.Select(r => r.Id).ToArray()
+                modelDefinition.GetInputDefinitions().Select(r => r.Id).ToArray()
             );
 
             var bwParam = modelDefinition.GetParameterDefinitionByType(PbkModelParameterType.BodyWeight);
@@ -130,8 +131,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.SbmlMod
             var modelDefinition = GetModelDefinition();
             var instance = new KineticModelInstance() {
                 KineticModelDefinition = modelDefinition,
-                KineticModelSubstances = [
-                     new KineticModelSubstance() {
+                ModelSubstances = [
+                     new PbkModelSubstance() {
                          Substance = substance
                      }
                 ],

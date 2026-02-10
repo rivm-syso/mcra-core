@@ -16,7 +16,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 var unmatchedParameters = instance.KineticModelInstanceParameters
                     .Select(r => r.Key)
                     .ToHashSet(StringComparer.OrdinalIgnoreCase)
-                    .Except(instance.KineticModelDefinition.Parameters.Select(r => r.Id));
+                    .Except(instance.KineticModelDefinition.GetParameters().Select(r => r.Id));
                 foreach (var parameter in unmatchedParameters) {
                     var record = new PbkModelParameterSummaryRecord() {
                         ModelInstanceCode = instance.IdModelInstance,
@@ -26,7 +26,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     };
                     records.Add(record);
                 }
-                foreach (var parameter in instance.KineticModelDefinition.Parameters) {
+                foreach (var parameter in instance.KineticModelDefinition.GetParameters()) {
                     if (parameter.IsInternalParameter) {
                         // Skip internal parameters
                         continue;

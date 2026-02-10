@@ -15,7 +15,7 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             var humanModels = kineticModelInstances.Where(r => r.IsHumanModel).ToList();
             foreach (var model in humanModels) {
-                var inputSubstances = model.KineticModelSubstances?
+                var inputSubstances = model.ModelSubstances?
                     .Where(r => r.SubstanceDefinition?.IsInput ?? false)
                     .Select(r => r.Substance)
                     .ToList() ?? model.Substances;

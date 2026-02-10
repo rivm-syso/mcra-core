@@ -23,22 +23,22 @@ namespace MCRA.Data.Compiled.Objects {
 
         public string Description { get; set; }
 
-        public List<Compound> Substances => KineticModelSubstances?
-                    .Select(r => r.Substance)
-                    .ToList();
+        public List<Compound> Substances => ModelSubstances?
+            .Select(r => r.Substance)
+            .ToList();
 
-        public List<KineticModelSubstance> KineticModelSubstances { get; set; }
+        public List<PbkModelSubstance> ModelSubstances { get; set; }
 
-        public Compound InputSubstance => KineticModelSubstances?
-                    .Where(r => r.SubstanceDefinition?.IsInput ?? true)
-                    .Select(r => r.Substance)
-                    .Single() ?? Substances.Single();
+        public Compound InputSubstance => ModelSubstances?
+            .Where(r => r.SubstanceDefinition?.IsInput ?? true)
+            .Select(r => r.Substance)
+            .Single() ?? Substances.Single();
 
         public IDictionary<string, KineticModelInstanceParameter> KineticModelInstanceParameters { get; set; }
 
         public PbkModelDefinition PbkModelDefinition { get; set; }
 
-        public KineticModelDefinition KineticModelDefinition { get; set; }
+        public IPbkModelSpecification KineticModelDefinition { get; set; }
 
         public bool IsHumanModel => IdTestSystem != null && IdTestSystem.Equals("Human", StringComparison.InvariantCultureIgnoreCase);
 
@@ -50,16 +50,16 @@ namespace MCRA.Data.Compiled.Objects {
                 KineticModelDefinition = this.KineticModelDefinition,
                 Reference = this.Reference,
                 KineticModelInstanceParameters = this.KineticModelInstanceParameters,
-                KineticModelSubstances = this.KineticModelSubstances,
+                ModelSubstances = this.ModelSubstances,
                 PbkModelDefinition = this.PbkModelDefinition,
             };
             return instance;
         }
 
-        public KineticModelType KineticModelType => KineticModelDefinition.Format;
+        public PbkModelType ModelType => KineticModelDefinition.Format;
 
         public bool HasMetabolites() {
-            return KineticModelSubstances
+            return ModelSubstances
                 .Any(r => r.SubstanceDefinition != null && !r.SubstanceDefinition.IsInput);
         }
     }
