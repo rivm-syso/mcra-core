@@ -12,7 +12,7 @@ namespace MCRA.Simulation.OutputGeneration {
         ) : base(records, standardisationMethod, sectionId) {
         }
 
-        public override string Title => $"EBD per {_standardisationMethod.GetDisplayName()} &amp; cumulative percentage.";
+        public override string Title => $"EBD {_standardisationMethod.GetDisplayName()} &amp; cumulative percentage.";
 
         public override string ChartId {
             get {
@@ -36,7 +36,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 ))],
             labels: [.. _records.Select(c => c.ExposureBin)],
             unit: _unit,
-            leftYAxisTitle: $"Attributable Burden ({_bodIndicator} per {_standardisationMethod.GetShortDisplayName()})",
+            leftYAxisTitle: $"Attributable Burden ({_bodIndicator} {_standardisationMethod.GetShortDisplayName()})",
             uncertainty: _records.SelectMany(c => c.AttributableBods).Any()
         );
     }
