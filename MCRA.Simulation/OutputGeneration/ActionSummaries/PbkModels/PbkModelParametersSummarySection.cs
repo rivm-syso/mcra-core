@@ -31,37 +31,19 @@ namespace MCRA.Simulation.OutputGeneration {
                         // Skip internal parameters
                         continue;
                     }
-                    if (parameter.SubstanceParameterValues?.Count > 0) {
-                        foreach (var substanceParameter in parameter.SubstanceParameterValues) {
-                            // Substance dependent parameter splitting out over multiple substances
-                            var hasValue = instance.KineticModelInstanceParameters
-                                .TryGetValue(parameter.Id, out var parameterValue);
-                            var record = new PbkModelParameterSummaryRecord() {
-                                ModelInstanceCode = instance.IdModelInstance,
-                                ModelInstanceName = instance.Name,
-                                ParameterCode = substanceParameter.IdParameter,
-                                Missing = !hasValue,
-                                Value = hasValue ? parameterValue.Value : substanceParameter.DefaultValue,
-                                Unit = parameter.Unit,
-                                ParameterName = parameter.Description
-                            };
-                            records.Add(record);
-                        }
-                    } else {
-                        // Physiological parameter or physicochemical parameter not splitting out
-                        var hasValue = instance.KineticModelInstanceParameters
-                            .TryGetValue(parameter.Id, out var parameterValue);
-                        var record = new PbkModelParameterSummaryRecord() {
-                            ModelInstanceCode = instance.IdModelInstance,
-                            ModelInstanceName = instance.Name,
-                            ParameterCode = parameter.Id,
-                            Missing = !hasValue,
-                            Value = hasValue ? parameterValue.Value : parameter.DefaultValue,
-                            Unit = parameter.Unit,
-                            ParameterName = parameter.Description
-                        };
-                        records.Add(record);
-                    }
+                    // Physiological parameter or physicochemical parameter not splitting out
+                    var hasValue = instance.KineticModelInstanceParameters
+                        .TryGetValue(parameter.Id, out var parameterValue);
+                    var record = new PbkModelParameterSummaryRecord() {
+                        ModelInstanceCode = instance.IdModelInstance,
+                        ModelInstanceName = instance.Name,
+                        ParameterCode = parameter.Id,
+                        ParameterDescription = parameter.Description,
+                        Missing = !hasValue,
+                        Value = hasValue ? parameterValue.Value : parameter.DefaultValue,
+                        Unit = parameter.Unit
+                    };
+                    records.Add(record);
                 }
             }
             Records = records;

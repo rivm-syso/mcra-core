@@ -16,7 +16,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.Desolve
             return instance;
         }
 
-        protected override PbkModelCalculatorBase createCalculator(
+        protected override IPbkModelCalculator createCalculator(
             KineticModelInstance instance,
             PbkSimulationSettings simulationSettings
         ) {

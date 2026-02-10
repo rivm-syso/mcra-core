@@ -1,7 +1,7 @@
-﻿using MCRA.General.Sbml;
+﻿using MCRA.General.PbkModelDefinitions.PbkModelSpecifications.Sbml.Extensions;
 using MCRA.Utils.Sbml.Objects;
 
-namespace MCRA.General.Test.UnitTests.KineticModelDefinitions.SbmlPbkExtensions {
+namespace MCRA.General.Test.UnitTests.PbkModelDefinitions.PbkModelSpecifications.Sbml.Extensions {
     [TestClass]
     public class SbmlUnitDefinitionExtensions {
 

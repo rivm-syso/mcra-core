@@ -1,5 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.General.PbkModelDefinitions.PbkModelSpecifications.DeSolve;
 
 namespace MCRA.Data.Compiled.Test {
 
@@ -307,7 +308,7 @@ namespace MCRA.Data.Compiled.Test {
             var modelSubstances = kmSubstanceIds
                 .Select((r, ix) => new PbkModelSubstance() {
                     Substance = substances[ix],
-                    SubstanceDefinition = new PbkModelSubstanceSpecification() {
+                    SubstanceDefinition = new DeSolvePbkModelSubstanceSpecification() {
                         Id = r,
                         Name = r,
                         Description = r,
@@ -318,7 +319,7 @@ namespace MCRA.Data.Compiled.Test {
             var result = new KineticModelInstance() {
                 IdModelInstance = idModelInstance,
                 ModelSubstances = modelSubstances,
-                KineticModelDefinition = new EmbeddedPbkModelSpecification() {
+                KineticModelDefinition = new DeSolvePbkModelSpecification() {
                     Name = $"DEF_{idModelInstance}"
                 }
             };

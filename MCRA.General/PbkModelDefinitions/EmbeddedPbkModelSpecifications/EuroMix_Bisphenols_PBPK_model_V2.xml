@@ -354,16 +354,18 @@
   <Outputs>
     <Output>
       <Id>CPlasmaOut</Id>
-      <Description>Concentration in plasma</Description>
+      <IdCompartment>BloodPlasma</IdCompartment>
       <BiologicalMatrix>BloodPlasma</BiologicalMatrix>
+      <Description>Concentration in plasma</Description>
       <Order>0</Order>
       <Type>Concentration</Type>
       <Unit>nmol/L</Unit>
     </Output>
     <Output>
       <Id>CGonadOut</Id>
-      <Description>Concentration in gonads</Description>
+      <IdCompartment>Gonad</IdCompartment>
       <BiologicalMatrix>Gonad</BiologicalMatrix>
+      <Description>Concentration in gonads</Description>
       <Order>1</Order>
       <Type>Concentration</Type>
       <Unit>nmol/L</Unit>
@@ -371,6 +373,7 @@
     <Output>
       <Id>AurinebpaOut</Id>
       <Type>CumulativeAmount</Type>
+      <IdCompartment>Urine</IdCompartment>
       <BiologicalMatrix>Urine</BiologicalMatrix>
       <Description>Cumulative excretion of BPA in urine</Description>
       <Order>2</Order>

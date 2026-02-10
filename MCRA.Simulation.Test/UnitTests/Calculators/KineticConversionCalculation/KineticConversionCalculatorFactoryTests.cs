@@ -1,4 +1,5 @@
 ﻿using MCRA.General;
+using MCRA.General.PbkModelDefinitions.PbkModelSpecifications;
 using MCRA.Simulation.Calculators.KineticConversionCalculation;
 using System.Reflection;
 

@@ -1,6 +1,5 @@
 ﻿using MCRA.General;
-using MCRA.General.KineticModelDefinitions;
-using MCRA.General.KineticModelDefinitions.SbmlPbkUtils;
+using MCRA.General.PbkModelDefinitions.PbkModelSpecifications.Sbml;
 using MCRA.General.TableDefinitions.RawTableObjects;
 using MCRA.Utils.DataFileReading;
 using MCRA.Utils.ExtensionMethods;
@@ -29,7 +28,7 @@ namespace MCRA.Data.Raw.Copying.PbkModelUploadCopiers {
                 var reader = new SbmlFileReader();
                 try {
                     var sbmlModel = reader.LoadModel(filePath);
-                    var modelDefinition = SbmlPbkModelSpecificationBuilder.Convert(sbmlModel);
+                    var modelDefinition = SbmlPbkModelSpecificationBuilder.Create(sbmlModel);
                     var modelDefinitions = new List<RawPbkModelDefinition> {
                         new() {
                             Id = modelDefinition.Id,
@@ -41,7 +40,7 @@ namespace MCRA.Data.Raw.Copying.PbkModelUploadCopiers {
                     if (tryCopyDataTable(modelDefinitions.ToDataTable(), RawDataSourceTableID.KineticModelDefinitions)) {
                         registerTableGroup(SourceTableGroup.PbkModelDefinitions);
                     }
-                } catch (PbkModelException ) {
+                } catch (SbmlPbkModelException) {
                     throw;
                 } catch (Exception ex) {
                     throw new Exception($"SBML model definition syntax, fatal error. {ex.Message}");

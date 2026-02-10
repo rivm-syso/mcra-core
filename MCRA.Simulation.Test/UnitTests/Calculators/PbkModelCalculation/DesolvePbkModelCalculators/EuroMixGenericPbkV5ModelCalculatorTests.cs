@@ -16,12 +16,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.Desolve
             return instance;
         }
 
-        protected override PbkModelCalculatorBase createCalculator(
+        protected override IPbkModelCalculator createCalculator(
             KineticModelInstance instance,
             PbkSimulationSettings simulationSettings
         ) {
-            var calculator = new CosmosKineticModelCalculator(instance, simulationSettings);
-            return calculator;
+            return new CosmosKineticModelCalculator(instance, simulationSettings);
         }
 
         protected override TargetUnit getDefaultInternalTarget() {

@@ -31,7 +31,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.Desolve
             return instance;
         }
 
-        protected override PbkModelCalculatorBase createCalculator(
+        protected override IPbkModelCalculator createCalculator(
             KineticModelInstance instance,
             PbkSimulationSettings simulationSettings
         ) {
@@ -561,19 +561,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.Desolve
                     Value = r.DefaultValue.Value,
                 })
                 .ToList();
-
-            var kineticModelParametersComplex = modelDefinition.Parameters
-                .Where(r => r.DefaultValue == null)
-                .SelectMany(c => c.SubstanceParameterValues, (q, r) => {
-                    var kmip = new KineticModelInstanceParameter() {
-                        IdModelInstance = idModelInstance,
-                        Parameter = r.IdParameter,
-                        Value = r.DefaultValue.Value,
-                    };
-                    return kmip;
-                })
-                .ToList();
-            kineticModelParameters.AddRange(kineticModelParametersComplex);
 
             var kineticModel = new KineticModelInstance() {
                 IdModelInstance = idModelInstance,

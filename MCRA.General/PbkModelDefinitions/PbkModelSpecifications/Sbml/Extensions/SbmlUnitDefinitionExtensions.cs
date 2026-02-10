@@ -1,6 +1,6 @@
 ﻿using MCRA.Utils.Sbml.Objects;
 
-namespace MCRA.General.Sbml {
+namespace MCRA.General.PbkModelDefinitions.PbkModelSpecifications.Sbml.Extensions {
 
     public static class SbmlUnitDefinitionExtensions {
 
@@ -125,9 +125,7 @@ namespace MCRA.General.Sbml {
         }
 
         private static TimeUnit ToTimeUnit(this SbmlUnit unitPart) {
-            if (unitPart == null) {
-                throw new ArgumentNullException(nameof(unitPart));
-            }
+            ArgumentNullException.ThrowIfNull(unitPart);
 
             // Only time-based units are valid for conversion
             if (unitPart.Kind != SbmlUnitKind.Second)
@@ -147,6 +145,8 @@ namespace MCRA.General.Sbml {
         }
 
         private static SubstanceAmountUnit ToSubstanceAmountUnit(this SbmlUnit unitPart) {
+            ArgumentNullException.ThrowIfNull(unitPart);
+
             if (unitPart.Multiplier != 1) {
                 throw new NotImplementedException();
             }

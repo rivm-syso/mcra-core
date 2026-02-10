@@ -1,6 +1,7 @@
-﻿namespace MCRA.General {
+﻿namespace MCRA.General.PbkModelDefinitions.PbkModelSpecifications.DeSolve {
+
     [Serializable]
-    public class PbkModelInputSpecification {
+    public class DeSolvePbkModelForcingSpecification {
 
         /// <summary>
         /// Gets/sets the parameter id.

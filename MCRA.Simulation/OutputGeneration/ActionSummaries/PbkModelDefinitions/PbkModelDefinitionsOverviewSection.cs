@@ -1,5 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.General.PbkModelDefinitions.PbkModelSpecifications.Sbml;
 using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.OutputGeneration {
@@ -10,22 +11,13 @@ namespace MCRA.Simulation.OutputGeneration {
         public void Summarize(ICollection<PbkModelDefinition> pbkModelDefinitions) {
             foreach (var definition in pbkModelDefinitions) {
                 var def = definition.KineticModelDefinition;
-                if (def.Format == PbkModelType.SBML) {
+                if (def is SbmlPbkModelSpecification) {
                     // We only include SBML PBK models in this table and skip the hard-coded DeSolve models
-                    var inputs = def.GetInputDefinitions();
-                    var oral = inputs
-                        .Where(r => r.Route == ExposureRoute.Oral)
-                        .Select(r => r.Id)
-                        .FirstOrDefault();
-                    var dermal = inputs
-                        .Where(r => r.Route == ExposureRoute.Dermal)
-                        .Select(r => r.Id)
-                        .FirstOrDefault();
-                    var inhalation = inputs
-                        .Where(r => r.Route == ExposureRoute.Inhalation)
-                        .Select(r => r.Id)
-                        .FirstOrDefault();
-                    var exposureRouteStrings = def.GetExposureRoutes()
+                    var inputs = (def as SbmlPbkModelSpecification).GetRouteInputSpecies();
+                    inputs.TryGetValue(ExposureRoute.Oral, out var oral);
+                    inputs.TryGetValue(ExposureRoute.Dermal, out var dermal);
+                    inputs.TryGetValue(ExposureRoute.Inhalation, out var inhalation);
+                    var exposureRouteStrings = inputs.Keys
                         .Select(r => r.GetShortDisplayName())
                         .ToList();
                     var record = new PbkModelDefinitionSummaryRecord() {
@@ -35,9 +27,9 @@ namespace MCRA.Simulation.OutputGeneration {
                         FileName = Path.GetFileName(definition.FileName),
                         TimeResolution = def.Resolution.GetDisplayName(),
                         ExposureRoutes = string.Join(", ", exposureRouteStrings),
-                        OralInputCompartment = oral,
-                        DermalInputCompartment = dermal,
-                        InhalationInputCompartment = inhalation
+                        OralInputCompartment = oral?.Compartment.Id,
+                        DermalInputCompartment = dermal?.Compartment.Id,
+                        InhalationInputCompartment = inhalation?.Compartment.Id
                     };
                     Records.Add(record);
                 }

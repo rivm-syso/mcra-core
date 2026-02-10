@@ -18,9 +18,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation {
         private static readonly string _baseOutputPath = Path.Combine(TestUtilities.TestOutputPath, "PbkModelCalculators");
 
         protected abstract KineticModelInstance getDefaultInstance(params Compound[] substances);
+
         protected abstract PbkSimulationSettings getDefaultSimulationSettings();
 
-        protected abstract PbkModelCalculatorBase createCalculator(
+        protected abstract IPbkModelCalculator createCalculator(
             KineticModelInstance instance,
             PbkSimulationSettings simulationSettings
         );

@@ -26,7 +26,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         [Description("Parameter name/description.")]
         [DisplayName("Description")]
-        public string ParameterName { get; set; }
+        public string ParameterDescription { get; set; }
 
         [Description("Parameter value.")]
         [DisplayName("Value")]

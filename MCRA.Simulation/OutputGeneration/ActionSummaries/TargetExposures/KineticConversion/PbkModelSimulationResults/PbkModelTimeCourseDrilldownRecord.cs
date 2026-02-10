@@ -11,6 +11,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         [Description("Reference body weight of the simulated individual.")]
         [DisplayName("BodyWeight ({BodyWeightUnit})")]
+        [DisplayFormat(DataFormatString = "{0:N0}")]
         public double BodyWeight { get; set; }
 
         [Description("Reference age of the simulated individual.")]

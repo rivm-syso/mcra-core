@@ -1,6 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.General.KineticModelDefinitions;
+using MCRA.General.PbkModelDefinitions.PbkModelSpecifications.Sbml;
 using MCRA.Simulation.Calculators.PbkModelCalculation;
 using MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
@@ -15,7 +15,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.SbmlMod
     [TestClass]
     public class SbmlLifetimePbkModelCalculationTests {
 
-        protected virtual IPbkModelSpecification GetModelDefinition() {
+        protected virtual SbmlPbkModelSpecification GetModelDefinition() {
             return SbmlPbkModelSpecificationBuilder.CreateFromSbmlFile(
                 "Resources/PbkModels/simple_lifetime.sbml"
             );
@@ -33,7 +33,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.SbmlMod
             };
         }
 
-        protected PbkModelCalculatorBase createCalculator(
+        protected SbmlPbkModelCalculator createCalculator(
             KineticModelInstance instance,
             PbkSimulationSettings simulationSettings
         ) {
@@ -46,7 +46,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.SbmlMod
             var expected = new[] { "AGut" };
             CollectionAssert.AreEquivalent(
                 expected,
-                modelDefinition.GetInputDefinitions().Select(r => r.Id).ToArray()
+                modelDefinition.GetRouteInputSpecies().Values.Select(r => r.Id).ToArray()
             );
 
             var bwParam = modelDefinition.GetParameterDefinitionByType(PbkModelParameterType.BodyWeight);

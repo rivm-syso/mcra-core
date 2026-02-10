@@ -1,6 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.General.KineticModelDefinitions;
+using MCRA.General.PbkModelDefinitions.PbkModelSpecifications.Sbml;
 using MCRA.Simulation.Calculators.KineticConversionCalculation;
 using MCRA.Simulation.Calculators.KineticConversionFactorModels;
 

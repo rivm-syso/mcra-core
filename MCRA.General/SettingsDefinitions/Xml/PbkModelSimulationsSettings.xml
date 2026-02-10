@@ -16,4 +16,10 @@
     <IsInteger>true</IsInteger>
     <DefaultValue>1</DefaultValue>
   </SettingsItem>
+  <SettingsItem>
+    <Id>AllowFallbackSystemic</Id>
+    <Name>Allow fallback to systemic dosing for missing exposure routes</Name>
+    <Description>If the PBK model misses specific compartments for certain exposure routes, this setting allows the model to fallback to systemic dosing for those route.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
 </SettingsItems>

@@ -1,4 +1,4 @@
-﻿using MCRA.General;
+﻿using MCRA.General.PbkModelDefinitions.PbkModelSpecifications;
 
 namespace MCRA.Data.Compiled.Objects {
     [Serializable]
@@ -6,7 +6,7 @@ namespace MCRA.Data.Compiled.Objects {
 
         public Compound Substance { get; set; }
 
-        public PbkModelSubstanceSpecification SubstanceDefinition { get; set; }
+        public IPbkModelSubstanceSpecification SubstanceDefinition { get; set; }
 
     }
 }

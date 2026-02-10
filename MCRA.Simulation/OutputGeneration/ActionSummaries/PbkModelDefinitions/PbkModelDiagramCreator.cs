@@ -1,9 +1,8 @@
-﻿using System.Reflection;
-using System.Text;
+﻿using System.Text;
 using System.Text.RegularExpressions;
 using GraphVizNet;
 using MCRA.General;
-using MCRA.General.Sbml;
+using MCRA.General.PbkModelDefinitions.PbkModelSpecifications.Sbml.Extensions;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Sbml.Objects;
 using ModuleDiagramCreator.DiagramCreators;
@@ -144,7 +143,6 @@ namespace MCRA.Simulation.OutputGeneration {
 
             var speciesByCompartment = model.Species.Values.ToLookup(r => r.Compartment);
             foreach (var compartment in model.Compartments.Values) {
-                var matrix = compartment.GetBiologicalMatrix();
                 var compartmentLabel = compartment.Id;
                 sb.AppendLine($"  subgraph cluster_{compartment.Id} {{");
                 sb.AppendLine(

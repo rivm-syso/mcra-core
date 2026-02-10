@@ -119,8 +119,9 @@
   <Outputs>
     <Output>
       <Id>CVen</Id>
-      <Description>Venous blood</Description>
+      <IdCompartment>VenousBlood</IdCompartment>
       <BiologicalMatrix>VenousBlood</BiologicalMatrix>
+      <Description>Venous blood</Description>
       <Order>0</Order>
       <Type>Concentration</Type>
       <Unit>mM</Unit>
@@ -134,8 +135,9 @@
     </Output>
     <Output>
       <Id>CArt</Id>CArt
-      <Description>Arterial blood</Description>
+      <IdCompartment>ArterialBlood</IdCompartment>
       <BiologicalMatrix>ArterialBlood</BiologicalMatrix>
+      <Description>Arterial blood</Description>
       <Order>1</Order>
       <Type>Concentration</Type>
       <Unit>mM</Unit>
@@ -149,8 +151,9 @@
     </Output>
     <Output>
       <Id>CFat</Id>
-      <Description>Fat tissues</Description>
+      <IdCompartment>BodyFat</IdCompartment>
       <BiologicalMatrix>BodyFat</BiologicalMatrix>
+      <Description>Fat tissues</Description>
       <Order>2</Order>
       <Type>Concentration</Type>
       <Unit>mM</Unit>
@@ -161,16 +164,18 @@
     </Output>
     <Output>
       <Id>CPoor</Id>
-      <Description>Muscle tissues</Description>
+      <IdCompartment>PoorlyPerfusedTissue</IdCompartment>
       <BiologicalMatrix>MuscleTissue</BiologicalMatrix>
+      <Description>Muscle tissues</Description>
       <Order>3</Order>
       <Unit>mM</Unit>
       <CompartmentSizeParameter>VPoor</CompartmentSizeParameter>
     </Output>
     <Output>
       <Id>CRich</Id>
-      <Description>Viscera</Description>
+      <IdCompartment>RichlyPerfusedTissue</IdCompartment>
       <BiologicalMatrix>Viscera</BiologicalMatrix>
+      <Description>Viscera</Description>
       <Order>4</Order>
       <Type>Concentration</Type>
       <Unit>mM</Unit>
@@ -181,8 +186,9 @@
     </Output>
     <Output>
       <Id>CLiver</Id>
-      <Description>Liver</Description>
+      <IdCompartment>Liver</IdCompartment>
       <BiologicalMatrix>Liver</BiologicalMatrix>
+      <Description>Liver</Description>
       <Order>5</Order>
       <Type>Concentration</Type>
       <Unit>mM</Unit>
@@ -193,8 +199,9 @@
     </Output>
     <Output>
       <Id>CSkin_u</Id>
-      <Description>Viable skin, unexposed</Description>
+      <IdCompartment>ViableEpidermisUnexposedSkin</IdCompartment>
       <BiologicalMatrix>ViableEpidermisUnexposedSkin</BiologicalMatrix>
+      <Description>Viable skin, unexposed</Description>
       <Order>6</Order>
       <Type>Concentration</Type>
       <Unit>mM</Unit>
@@ -202,8 +209,9 @@
     </Output>
     <Output>
       <Id>CSkin_e</Id>
-      <Description>Viable skin, exposed</Description>
+      <IdCompartment>ViableEpidermisExposedSkin</IdCompartment>
       <BiologicalMatrix>ViableEpidermisExposedSkin</BiologicalMatrix>
+      <Description>Viable skin, exposed</Description>
       <Order>7</Order>
       <Type>Concentration</Type>
       <Unit>mM</Unit>
@@ -216,8 +224,9 @@
     </Output>
     <Output>
       <Id>CSkin_sc_u</Id>
-      <Description>Skin stratum corneum, unexposed</Description>
+      <IdCompartment>StratumCorneumUnexposedSkin</IdCompartment>
       <BiologicalMatrix>StratumCorneumUnexposedSkin</BiologicalMatrix>
+      <Description>Skin stratum corneum, unexposed</Description>
       <Order>8</Order>
       <Type>Concentration</Type>
       <Unit>mM</Unit>
@@ -225,8 +234,9 @@
     </Output>
     <Output>
       <Id>CSkin_sc_e</Id>
-      <Description>Skin stratum corneum, exposed</Description>
+      <IdCompartment>StratumCorneumExposedSkin</IdCompartment>
       <BiologicalMatrix>StratumCorneumExposedSkin</BiologicalMatrix>
+      <Description>Skin stratum corneum, exposed</Description>
       <Order>9</Order>
       <Type>Concentration</Type>
       <Unit>mM</Unit>

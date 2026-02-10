@@ -1,15 +1,15 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.General.PbkModelDefinitions.PbkModelSpecifications;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Calculators.PbkModelCalculation.PbkModelParameterDistributionModels;
 using MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation;
 using MCRA.Simulation.Objects;
-using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.PbkModelCalculation {
-    public abstract class PbkModelCalculatorBase : IPbkModelCalculator {
+    public abstract class PbkModelCalculatorBase<T> : IPbkModelCalculator where T : IPbkModelSpecification {
 
         // Model instance
         public KineticModelInstance KineticModelInstance { get; }
@@ -17,8 +17,8 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation {
         public List<Compound> OutputSubstances => KineticModelInstance.Substances;
 
         // Model definition
-        public IPbkModelSpecification KineticModelDefinition => KineticModelInstance.KineticModelDefinition;
-        protected IDictionary<string, PbkModelParameterSpecification> _modelParameterDefinitions;
+        public T PbkModelSpecification;
+        protected IDictionary<string, IPbkModelParameterSpecification> _modelParameters;
 
         // Run/simulation settings
         public PbkSimulationSettings SimulationSettings { get; }
@@ -45,16 +45,22 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation {
             KineticModelInstance = kineticModelInstance;
             SimulationSettings = simulationSettings;
 
-            // Lookups/dictionaries for model definition elements
-            _modelParameterDefinitions = KineticModelDefinition.GetParameters()?
+            if (kineticModelInstance.KineticModelDefinition is T value) {
+                PbkModelSpecification = value;
+            } else {
+                throw new Exception("Failed to instantiate PBK model calculator.");
+            }
+
+            // Lookup for model parameter definitions
+            _modelParameters = PbkModelSpecification.GetParameters()?
                 .ToDictionary(r => r.Id, StringComparer.OrdinalIgnoreCase);
 
             // Check if model matches settings
             if (SimulationSettings.PbkSimulationMethod != PbkSimulationMethod.Standard
                 && SimulationSettings.BodyWeightCorrected
-                && KineticModelDefinition.GetParameterDefinitionByType(PbkModelParameterType.BodyWeight) == null
+                && PbkModelSpecification.GetParameterDefinitionByType(PbkModelParameterType.BodyWeight) == null
             ) {
-                var msg = $"Cannot apply bodyweight corrected exposures on PBK model [{KineticModelDefinition.Id}]: no BW parameter found.";
+                var msg = $"Cannot apply bodyweight corrected exposures on PBK model [{PbkModelSpecification.Id}]: no BW parameter found.";
                 throw new Exception(msg);
             }
         }
@@ -67,13 +73,6 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation {
             IRandom generator,
             ProgressState progressState
         ) {
-            // Check if routes are supported by the model
-            var missingRoutes = routes.Except(KineticModelDefinition.GetExposureRoutes()).ToList();
-            if (missingRoutes.Count > 0) {
-                var routeNames = string.Join(", ", missingRoutes.Select(r => r.GetDisplayName()));
-                throw new Exception($"Exposure routes {routeNames} are not supported by PBK model {KineticModelDefinition.Id}.");
-            }
-
             progressState?.Update("Starting PBK model simulation");
             var result = calculate(
                 externalIndividualExposures,
@@ -126,7 +125,7 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation {
             var instanceParameters = KineticModelInstance.KineticModelInstanceParameters;
 
             // Set BW
-            var bodyWeightParameter = KineticModelDefinition
+            var bodyWeightParameter = PbkModelSpecification
                 .GetParameterDefinitionByType(PbkModelParameterType.BodyWeight);
             if (!double.IsNaN(individual.BodyWeight) 
                 && bodyWeightParameter != null 
@@ -137,7 +136,7 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation {
                 parametrisation[bodyWeightParameter.Id] = bodyWeight;
 
                 // Set BSA
-                var bsaParameter = KineticModelDefinition
+                var bsaParameter = PbkModelSpecification
                     .GetParameterDefinitionByType(PbkModelParameterType.BodySurfaceArea);
                 if (bsaParameter != null && !bsaParameter.IsInternalParameter) {
                     if (instanceParameters.TryGetValue(bsaParameter.Id, out var bsaParameterValue)
@@ -152,7 +151,7 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation {
             }
 
             // Set age
-            var ageParameter = KineticModelDefinition
+            var ageParameter = PbkModelSpecification
                 .GetParameterDefinitionByType(PbkModelParameterType.Age);
             if (ageParameter != null && !ageParameter.IsInternalParameter) {
                 // Get individual age
@@ -164,7 +163,7 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation {
             }
 
             // Set sex
-            var sexParameter = KineticModelDefinition
+            var sexParameter = PbkModelSpecification
                 .GetParameterDefinitionByType(PbkModelParameterType.Sex);
             if (sexParameter != null && !sexParameter.IsInternalParameter) {
                 // TODO: implicit assumption of Female = 1, Male = 2 should become explicit
@@ -175,20 +174,20 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation {
                     ) {
                         // Fallback on age from kinetic model parametrisation
                         sex = (GenderType)paramValue.Value;
-                    } else if (_modelParameterDefinitions[sexParameter.Id].DefaultValue.HasValue) {
+                    } else if (_modelParameters[sexParameter.Id].DefaultValue.HasValue) {
                         // Fallback on default age from kinetic model definition
-                        sex = (GenderType)_modelParameterDefinitions[sexParameter.Id].DefaultValue;
+                        sex = (GenderType)_modelParameters[sexParameter.Id].DefaultValue;
                     } else {
-                        throw new Exception($"Cannot set required parameter sex for PBK model [{KineticModelDefinition.Name}].");
+                        throw new Exception($"Cannot set required parameter sex for PBK model [{PbkModelSpecification.Name}].");
                     }
                 }
                 parametrisation[sexParameter.Id] = (double)sex;
             }
 
             // For lifetime models, check for reference age and body weight parameters
-            if (KineticModelDefinition.IsLifetimeModel()) {
+            if (PbkModelSpecification.IsLifetimeModel()) {
                 // Check for reference age parameter
-                var ageRefParameter = KineticModelDefinition
+                var ageRefParameter = PbkModelSpecification
                     .GetParameterDefinitionByType(PbkModelParameterType.AgeRef);
                 if (ageRefParameter != null && !ageRefParameter.IsInternalParameter) {
                     var age = individual.Age.HasValue && !double.IsNaN(individual.Age.Value)
@@ -198,7 +197,7 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation {
                 }
 
                 // Check for reference body weight parameter
-                var bwRefParameter = KineticModelDefinition
+                var bwRefParameter = PbkModelSpecification
                     .GetParameterDefinitionByType(PbkModelParameterType.BodyWeightRef);
                 if (bwRefParameter != null && !bwRefParameter.IsInternalParameter) {
                     var bw = !double.IsNaN(individual.BodyWeight)
@@ -208,7 +207,7 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation {
                 }
 
                 // Check for reference age parameter
-                var ageInitParameter = KineticModelDefinition
+                var ageInitParameter = PbkModelSpecification
                     .GetParameterDefinitionByType(PbkModelParameterType.AgeInit);
                 if (ageInitParameter != null && !ageInitParameter.IsInternalParameter) {
                     var age = individual.Age.HasValue && !double.IsNaN(individual.Age.Value)
@@ -235,18 +234,18 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation {
         /// <exception cref="Exception"></exception>
         private double GetFallbackParameterValue(
             IDictionary<string, KineticModelInstanceParameter> instanceParameters,
-            PbkModelParameterSpecification paramDefinition
+            IPbkModelParameterSpecification paramDefinition
         ) {
             if (instanceParameters.TryGetValue(paramDefinition.Id, out var parameterValue)
                 && !double.IsNaN(parameterValue.Value)
             ) {
                 // Fallback on value from PBK model parametrisation
                 return parameterValue.Value;
-            } else if (_modelParameterDefinitions[paramDefinition.Id].DefaultValue.HasValue) {
+            } else if (_modelParameters[paramDefinition.Id].DefaultValue.HasValue) {
                 // Fallback on default value from PBK model definition
-                return _modelParameterDefinitions[paramDefinition.Id].DefaultValue.Value;
+                return _modelParameters[paramDefinition.Id].DefaultValue.Value;
             } else {
-                throw new Exception($"Cannot set required parameter age for PBK model [{KineticModelDefinition.Name}].");
+                throw new Exception($"Cannot set required parameter age for PBK model [{PbkModelSpecification.Name}].");
             }
         }
 
@@ -283,8 +282,8 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation {
             }
             if (SimulationSettings.OutputResolutionTimeUnit == PbkModelOutputResolutionTimeUnit.ModelTimeUnit) {
                 // Use model resolution and frequency
-                var modelTimeUnitMultiplier = TimeUnit.Days.GetTimeUnitMultiplier(KineticModelDefinition.Resolution);
-                return modelTimeUnitMultiplier * KineticModelDefinition.EvaluationFrequency;
+                var modelTimeUnitMultiplier = TimeUnit.Days.GetTimeUnitMultiplier(PbkModelSpecification.Resolution);
+                return modelTimeUnitMultiplier * PbkModelSpecification.EvaluationFrequency;
             } else {
                 // Compute number of evaluations per day
                 if (SimulationSettings.OutputResolutionTimeUnit == PbkModelOutputResolutionTimeUnit.Minutes) {
@@ -308,70 +307,62 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation {
             ICollection<TargetUnit> targetUnits
         ) {
             var result = new List<TargetOutputMapping>();
+            var modelOutputs = PbkModelSpecification
+                .GetOutputs()
+                .Where(c => c.TargetUnit.Target != null)
+                .ToList();
             foreach (var targetUnit in targetUnits) {
-                var output = KineticModelDefinition.GetOutputs()
-                    .FirstOrDefault(c => c.TargetUnit.Target == targetUnit.Target);
+                var outputs = modelOutputs
+                    .Where(c => c.TargetUnit.Target == targetUnit.Target)
+                    .ToList();
 
-                // If no exact match found, check if reading across biological matrices is allowed
-                if (output == null && SimulationSettings.AllowUseSurrogateMatrix
+                // If no exact match found, check for read-across between biological matrices
+                if (outputs.Count == 0 && SimulationSettings.AllowUseSurrogateMatrix
                     && SimulationSettings.SurrogateBiologicalMatrix != BiologicalMatrix.Undefined
                 ) {
-                    output = KineticModelDefinition.GetOutputs()
-                        .FirstOrDefault(c => c.TargetUnit.Target.TargetLevelType == TargetLevelType.Internal
-                            && c.TargetUnit.Target.BiologicalMatrix == SimulationSettings.SurrogateBiologicalMatrix);
+                    outputs = modelOutputs
+                        .Where(c => c.BiologicalMatrix == SimulationSettings.SurrogateBiologicalMatrix)
+                        .ToList();
                 }
 
-                if (output == null && targetUnit.TargetLevelType == TargetLevelType.Internal) {
-                    // Try to find an alternative output in case the biological matrix does not match.
-                    // E.g., when target is blood, but model only has venous/arterial blood, use venous blood.
+                // Try to find an alternative output in case the biological matrix does not match.
+                // E.g., when target is blood, but model only has venous/arterial blood, use venous blood.
+                if (outputs.Count == 0 && targetUnit.TargetLevelType == TargetLevelType.Internal) {
                     if (ExtrapolationMatrices.TryGetValue(targetUnit.BiologicalMatrix, out var extrapolationMatrices)) {
                         foreach (var matrix in extrapolationMatrices) {
-                            output = KineticModelDefinition.GetOutputs()
-                                .FirstOrDefault(c => c.TargetUnit.Target.TargetLevelType == TargetLevelType.Internal
-                                    && c.TargetUnit.Target.BiologicalMatrix == matrix);
-                            if (output != null) {
+                            outputs = modelOutputs
+                                .Where(c => c.BiologicalMatrix == matrix)
+                                .ToList();
+                            if (outputs.Count != 0) {
                                 break;
                             }
                         }
                     }
                 }
 
-                if (output == null) {
-                    var msg = $"No output found in PBK model [{KineticModelDefinition.Id}] for target [{targetUnit.Target.GetDisplayName()}].";
+                // If still no match found, throw an error
+                if (outputs.Count == 0) {
+                    var msg = $"No output found in PBK model [{PbkModelSpecification.Id}] for target [{targetUnit.Target.GetDisplayName()}].";
                     throw new Exception(msg);
                 }
-                var codeCompartment = output.Id;
-                if (output.Species?.Count > 0) {
-                    foreach (var species in output.Species) {
-                        var substance = !string.IsNullOrEmpty(species.IdSubstance)
-                            ? KineticModelInstance.ModelSubstances
-                                .FirstOrDefault(r => r.SubstanceDefinition?.Id == species.IdSubstance)?.Substance
-                            : KineticModelInstance.Substances.FirstOrDefault();
-                        if (substance != null) {
-                            var record = new TargetOutputMapping() {
-                                CompartmentId = codeCompartment,
-                                SpeciesId = species.IdSpecies,
-                                Substance = substance,
-                                OutputDefinition = output,
-                                TargetUnit = targetUnit
-                            };
-                            result.Add(record);
-                        } else {
-                            // TODO: what to do when output substance is not defined?
-                            // It seems reasonable to allow this when the missing substance is a
-                            // metabolite and to throw an exception when the missing substance is
-                            // the parent/input substance.
-                        }
+
+                // Map outputs to model substances and create output mapping records
+                foreach (var output in outputs) {
+                    var substance = !string.IsNullOrEmpty(output.IdSubstance)
+                        ? KineticModelInstance.ModelSubstances
+                            .FirstOrDefault(r => r.SubstanceDefinition?.Id == output.IdSubstance)?.Substance
+                        : KineticModelInstance.Substances.FirstOrDefault();
+                    if (substance != null) {
+                        var record = new TargetOutputMapping() {
+                            OutputId = output.Id,
+                            CompartmentId = output.IdCompartment,
+                            Substance = substance,
+                            OutputType = output.Type,
+                            OutputUnit = output.TargetUnit,
+                            TargetUnit = targetUnit
+                        };
+                        result.Add(record);
                     }
-                } else {
-                    var record = new TargetOutputMapping() {
-                        CompartmentId = codeCompartment,
-                        SpeciesId = codeCompartment,
-                        Substance = KineticModelInstance.Substances.Single(),
-                        OutputDefinition = output,
-                        TargetUnit = targetUnit
-                    };
-                    result.Add(record);
                 }
             }
             return result;
@@ -390,24 +381,25 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation {
             var resultTimeSeries = new List<SubstanceTargetExposureTimeSeries>();
             foreach (var outputMapping in outputMappings) {
                 var compartmentSize = simulationOutput?.OutputStates[outputMapping.CompartmentId] ?? double.NaN;
-                var outputTimeSeries = simulationOutput?.OutputTimeSeries[outputMapping.SpeciesId];
+                var timeSeries = simulationOutput?.OutputTimeSeries[outputMapping.OutputId];
                 var relativeCompartmentWeight = compartmentSize / individual.BodyWeight;
 
                 List<SubstanceTargetExposureTimePoint> exposures = null;
-                if (outputTimeSeries != null && outputTimeSeries.Any(r => r > 0)) {
-                    if (outputMapping.OutputType == KineticModelOutputType.Concentration) {
-                        exposures = [.. outputTimeSeries
+                if (timeSeries != null && timeSeries.Any(r => r > 0)) {
+                    if (outputMapping.OutputType == PbkModelOutputType.Concentration) {
+                        exposures = timeSeries
                             .Select((r, i) => {
                                 return new SubstanceTargetExposureTimePoint(
                                     i * stepLength,
                                     outputMapping.GetUnitAlignmentFactor(compartmentSize) * r
                                 );
-                            })]; ;
-                    } else if (outputMapping.OutputType == KineticModelOutputType.CumulativeAmount) {
+                            })
+                            .ToList();
+                    } else if (outputMapping.OutputType == PbkModelOutputType.CumulativeAmount) {
                         // The cumulative amounts are reverted to differences between timepoints
                         // (according to the specified resolution, in general hours).
                         var runningSum = 0D;
-                        exposures = [.. outputTimeSeries
+                        exposures = timeSeries
                             .Select((r, i) => {
                                 var alignmentFactor = outputMapping.GetUnitAlignmentFactor(compartmentSize);
                                 var exposure = alignmentFactor * r - runningSum;
@@ -416,7 +408,8 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation {
                                     i * stepLength,
                                     exposure
                                 );
-                            })];
+                            })
+                            .ToList();
                     } else {
                         throw new NotImplementedException();
                     }
@@ -437,12 +430,12 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation {
                 SubstanceTargetLevelTimeSeries = resultTimeSeries
             };
 
-            if (KineticModelDefinition.IsLifetimeModel()) {
-                var bwParam = KineticModelDefinition.GetParameterDefinitionByType(PbkModelParameterType.BodyWeight);
+            if (PbkModelSpecification.IsLifetimeModel()) {
+                var bwParam = PbkModelSpecification.GetParameterDefinitionByType(PbkModelParameterType.BodyWeight);
                 if (bwParam != null && bwParam.IsInternalParameter) {
                     result.BodyWeightTimeSeries = simulationOutput?.OutputTimeSeries[bwParam.Id];
                 }
-                var ageParam = KineticModelDefinition.GetParameterDefinitionByType(PbkModelParameterType.Age);
+                var ageParam = PbkModelSpecification.GetParameterDefinitionByType(PbkModelParameterType.Age);
                 if (ageParam != null && ageParam.IsInternalParameter) {
                     var ageTimeSeries = simulationOutput?.OutputTimeSeries[ageParam.Id];
                     result.AgeStart = ageTimeSeries[0];

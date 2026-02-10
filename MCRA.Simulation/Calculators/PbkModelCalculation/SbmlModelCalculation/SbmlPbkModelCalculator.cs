@@ -1,12 +1,14 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.General.PbkModelDefinitions.PbkModelSpecifications.Sbml;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Calculators.PbkModelCalculation.ExposureEventsGeneration;
 using MCRA.Simulation.Objects;
+using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation {
-    public sealed class SbmlPbkModelCalculator : PbkModelCalculatorBase {
+    public sealed class SbmlPbkModelCalculator : PbkModelCalculatorBase<SbmlPbkModelSpecification> {
 
         public SbmlPbkModelCalculator(
             KineticModelInstance kineticModelInstance,
@@ -22,50 +24,60 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation {
             IRandom generator
         ) {
             // Get time resolution
-            var timeUnitMultiplier = TimeUnit.Days.GetTimeUnitMultiplier(KineticModelDefinition.Resolution);
+            var timeUnitMultiplier = TimeUnit.Days.GetTimeUnitMultiplier(PbkModelSpecification.Resolution);
             var stepsPerDay = getSimulationStepsPerDay();
             var stepLength = 1d / stepsPerDay * timeUnitMultiplier;
+
+            // Get model input mappings for exposure routes
+            var inputSpecies = PbkModelSpecification.GetRouteInputSpecies();
+            var inputMappings = inputSpecies.ToDictionary(r => r.Key, r => r.Value.Id);
+
+            // Check if routes are supported by the model
+            var missingRoutes = routes.Except(inputMappings.Keys).ToList();
+            if (missingRoutes.Count > 0) {
+                var routeNames = string.Join(", ", missingRoutes.Select(r => r.GetDisplayName()));
+                throw new Exception($"Exposure routes {routeNames} are not supported by PBK model {PbkModelSpecification.Id}.");
+            }
 
             // Initialise exposure events generator
             var exposureEventsGenerator = new ExposureEventsGenerator(
                 SimulationSettings,
-                KineticModelDefinition.Resolution,
+                PbkModelSpecification.Resolution,
                 exposureUnit,
-                KineticModelDefinition
-                    .GetInputDefinitions()
+                inputSpecies
                     .ToDictionary(
-                        r => r.Route,
-                        r => r.DoseUnit
+                        r => r.Key,
+                        r => r.Value.SubstanceAmountUnit
                     )
             );
 
-            // Get kinetic model output mappings for selected targets
+            // Get model output mappings for selected targets
             var outputMappings = getTargetOutputMappings(targetUnits);
 
-            // The '[..]' bracket notation indicates roadrunner to return
-            // outputs as concentrations
+            // The bracket notation '[..]' indicates roadrunner to return outputs as concentrations
             var outputTimeSeriesSelection = outputMappings
-                .Select(r => r.TargetUnit.IsPerBodyWeight ? $"[{r.SpeciesId}]" : r.SpeciesId)
+                .Select(r => r.TargetUnit.IsPerBodyWeight ? $"[{r.OutputId}]" : r.OutputId)
                 .ToList();
 
-            if (KineticModelDefinition.IsLifetimeModel()) {
-                var bwParam = KineticModelDefinition.GetParameterDefinitionByType(PbkModelParameterType.BodyWeight);
+            // For lifetime modelling, include output timeseries for body weight and age
+            if (PbkModelSpecification.IsLifetimeModel()) {
+                var bwParam = PbkModelSpecification.GetParameterDefinitionByType(PbkModelParameterType.BodyWeight);
                 if (bwParam != null && bwParam.IsInternalParameter) {
                     outputTimeSeriesSelection.Add(bwParam.Id);
                 }
-                var ageParam = KineticModelDefinition.GetParameterDefinitionByType(PbkModelParameterType.Age);
+                var ageParam = PbkModelSpecification.GetParameterDefinitionByType(PbkModelParameterType.Age);
                 if (ageParam != null && ageParam.IsInternalParameter) {
                     outputTimeSeriesSelection.Add(ageParam.Id);
                 }
             }
 
+            // For the compartments, we want to get the final value at the end of the simulation
             var outputStatesSelection = outputMappings
                 .Select(r => r.CompartmentId)
-                .Distinct()
                 .ToList();
 
             var results = new List<PbkSimulationOutput>();
-            using (var runner = new SbmlModelRunner(KineticModelInstance, outputMappings)) {
+            using (var runner = new SbmlModelRunner(KineticModelInstance)) {
 
                 // Loop over individuals
                 foreach (var id in externalIndividualExposures) {
@@ -94,14 +106,16 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation {
                         simulationOutput = runner.Run(
                             exposureEvents,
                             parameters,
-                            outputTimeSeriesSelection,
+                            inputMappings,
                             outputStatesSelection,
+                            outputTimeSeriesSelection,
                             duration,
                             simulationSteps,
                             SimulationSettings.BodyWeightCorrected
                         );
                     }
 
+                    // Collect simulation output and add to results
                     results.Add(
                         collectPbkSimulationResults(
                             outputMappings,

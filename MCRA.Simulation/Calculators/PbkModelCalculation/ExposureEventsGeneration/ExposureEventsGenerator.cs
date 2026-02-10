@@ -10,19 +10,19 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.ExposureEventsGenerati
 
         private readonly int _timeUnitMultiplier;
         private readonly ExposureUnitTriple _exposureUnit;
-        private readonly Dictionary<ExposureRoute, DoseUnit> _routeDoseUnits;
+        private readonly Dictionary<ExposureRoute, SubstanceAmountUnit> _routeDoseAmountUnits;
         private bool _perPerson => !SimulationSettings.BodyWeightCorrected;
 
         public ExposureEventsGenerator(
             PbkSimulationSettings simulationSetings,
             TimeUnit timeScale,
             ExposureUnitTriple exposureUnit,
-            Dictionary<ExposureRoute, DoseUnit> routeDoseUnits
+            Dictionary<ExposureRoute, SubstanceAmountUnit> routeDoseAmountUnits
         ) {
             SimulationSettings = simulationSetings;
             _exposureUnit = exposureUnit;
             _timeUnitMultiplier = (int)TimeUnit.Days.GetTimeUnitMultiplier(timeScale);
-            _routeDoseUnits = routeDoseUnits;
+            _routeDoseAmountUnits = routeDoseAmountUnits;
         }
 
         public List<IExposureEvent> CreateExposureEvents(
@@ -69,9 +69,7 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.ExposureEventsGenerati
 
                 // Get alignment factor for aligning the substance amount unit of the
                 // exposure with the substance amount unit of the PBK model
-                var doseUnit = _routeDoseUnits[route];
-                var substanceAmountAlignmentFactor = doseUnit
-                    .GetSubstanceAmountUnit()
+                var substanceAmountAlignmentFactor = _routeDoseAmountUnits[route]
                     .GetMultiplicationFactor(
                         _exposureUnit.SubstanceAmountUnit,
                         substance.MolecularMass
@@ -98,12 +96,9 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.ExposureEventsGenerati
         ) {
             var exposureEvents = new List<IExposureEvent>();
             foreach (var route in routes) {
-                var doseUnit = _routeDoseUnits[route];
-
                 // Get alignment factor for aligning the substance amount unit of the
                 // exposure with the substance amount unit of the PBK model
-                var substanceAmountAlignmentFactor = doseUnit
-                    .GetSubstanceAmountUnit()
+                var substanceAmountAlignmentFactor = _routeDoseAmountUnits[route]
                     .GetMultiplicationFactor(
                         _exposureUnit.SubstanceAmountUnit,
                         substance.MolecularMass

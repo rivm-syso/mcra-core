@@ -1,9 +1,10 @@
 ﻿using System.Xml.Serialization;
+using MCRA.General.PbkModelDefinitions.PbkModelSpecifications;
 
-namespace MCRA.General {
+namespace MCRA.General.PbkModelDefinitions.PbkModelSpecifications.DeSolve {
 
     [Serializable]
-    public class PbkModelParameterSpecification {
+    public class DeSolvePbkModelParameterSpecification : IPbkModelParameterSpecification {
 
         /// <summary>
         /// Gets/sets the parameter id.
@@ -42,10 +43,5 @@ namespace MCRA.General {
         [XmlAttribute]
         public bool IsInternalParameter { get; set; }
 
-        /// <summary>
-        /// Substance parameters of the kinetic model.
-        /// </summary>
-        [XmlArrayItem("SubstanceParameterValue")]
-        public List<PbkModelSubstanceParameterSpecification> SubstanceParameterValues { get; set; }
     }
 }

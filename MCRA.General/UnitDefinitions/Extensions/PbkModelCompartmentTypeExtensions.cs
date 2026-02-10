@@ -12,18 +12,42 @@
         }
 
         /// <summary>
+        /// Get priority of compartment to serve as input compartment feeding exposures at systemic level.
+        /// </summary>
+        public static int GetSystemicInputPriority(this PbkModelCompartmentType compartmentType) {
+            return compartmentType switch {
+                PbkModelCompartmentType.ArterialBlood => 100,
+                PbkModelCompartmentType.VenousBlood => 95,
+                PbkModelCompartmentType.ArterialPlasma => 90,
+                PbkModelCompartmentType.VenousPlasma => 85,
+                PbkModelCompartmentType.Blood => 80,
+                PbkModelCompartmentType.BloodPlasma => 70,
+                _ => -1,
+            };
+        }
+
+        /// <summary>
         /// Get priority of compartment to serve as input compartment for the specified route.
         /// </summary>
-        public static int GetPriority(this PbkModelCompartmentType compartmentType, ExposureRoute route) {
-            return compartmentType switch {
-                PbkModelCompartmentType.AlveolarAir => route == ExposureRoute.Inhalation ? 4 : -1,
-                PbkModelCompartmentType.Lung => route == ExposureRoute.Inhalation ? 3 : -1,
-                PbkModelCompartmentType.ArterialBlood => route == ExposureRoute.Inhalation ? 2 : -1,
-                PbkModelCompartmentType.ArterialPlasma => route == ExposureRoute.Inhalation ? 1 : -1,
-                PbkModelCompartmentType.Gut => route == ExposureRoute.Oral ? 2 : -1,
-                PbkModelCompartmentType.StratumCorneumExposedSkin => route == ExposureRoute.Dermal ? 3 : -1,
-                PbkModelCompartmentType.ExposedSkin => route == ExposureRoute.Dermal ? 2 : -1,
-                PbkModelCompartmentType.Skin => route == ExposureRoute.Dermal ? 1 : -1,
+        public static int GetExposureRouteInputPriority(this PbkModelCompartmentType compartmentType, ExposureRoute route) {
+            return route switch {
+                ExposureRoute.Oral => compartmentType switch {
+                    PbkModelCompartmentType.Gut => 2,
+                    _ => -1,
+                },
+                ExposureRoute.Dermal => compartmentType switch {
+                    PbkModelCompartmentType.StratumCorneumExposedSkin => 3,
+                    PbkModelCompartmentType.ExposedSkin => 2,
+                    PbkModelCompartmentType.Skin => 1,
+                    _ => -1,
+                },
+                ExposureRoute.Inhalation => compartmentType switch {
+                    PbkModelCompartmentType.AlveolarAir => 4,
+                    PbkModelCompartmentType.Lung => 3,
+                    PbkModelCompartmentType.ArterialBlood => 2,
+                    PbkModelCompartmentType.ArterialPlasma => 1,
+                    _ => -1,
+                },
                 _ => -1,
             };
         }

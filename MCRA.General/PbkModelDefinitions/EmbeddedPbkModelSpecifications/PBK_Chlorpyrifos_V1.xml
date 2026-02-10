@@ -7,7 +7,6 @@
   <Name>PBK model chlorpyrifos (v1)</Name>
   <ShortName>PBK model chlorpyrifos (v1)</ShortName>
   <Description>PBK model chlorpyrifos (v1)</Description>
-  <VersionInfo>VersionInfo</VersionInfo>
   <Aliases>
     <Alias>PBK_Chlorpyrifos_V1</Alias>
   </Aliases>
@@ -59,310 +58,310 @@
       <Unit>umoles</Unit>
     </State>
     <State>
-      <Description>Slowly perfused tissue</Description>
+      <Id>ASP</Id>
+      <IdSubstance>P</IdSubstance>
+      <Description>Slowly perfused tissue (parent)</Description>
+      <Order>2</Order>
       <Unit>umoles</Unit>
-      <StateSubstances>
-        <StateSubstance>
-          <Id>ASP</Id>
-          <IdSubstance>P</IdSubstance>
-          <Order>2</Order>
-        </StateSubstance>
-        <StateSubstance>
-          <Id>ASM1</Id>
-          <IdSubstance>M1</IdSubstance>
-          <Order>18</Order>
-        </StateSubstance>
-        <StateSubstance>
-          <Id>ASM2</Id>
-          <IdSubstance>M2</IdSubstance>
-          <Order>32</Order>
-        </StateSubstance>
-      </StateSubstances>
     </State>
     <State>
-      <Description>Richly perfused tissue</Description>
+      <Id>ASM1</Id>
+      <IdSubstance>M1</IdSubstance>
+      <Description>Slowly perfused tissue (metabolite 1)</Description>
+      <Order>18</Order>
       <Unit>umoles</Unit>
-      <StateSubstances>
-        <StateSubstance>
-          <Id>ARP</Id>
-          <IdSubstance>P</IdSubstance>
-          <Order>3</Order>
-        </StateSubstance>
-        <StateSubstance>
-          <Id>ARM1</Id>
-          <IdSubstance>M1</IdSubstance>
-          <Order>19</Order>
-        </StateSubstance>
-        <StateSubstance>
-          <Id>ARM2</Id>
-          <IdSubstance>M2</IdSubstance>
-          <Order>33</Order>
-        </StateSubstance>
-      </StateSubstances>
     </State>
     <State>
-      <Description>Fat</Description>
+      <Id>ASM2</Id>
+      <IdSubstance>M2</IdSubstance>
+      <Description>Slowly perfused tissue (metabolite 2)</Description>
+      <Order>32</Order>
       <Unit>umoles</Unit>
-      <StateSubstances>
-        <StateSubstance>
-          <Id>AFP</Id>
-          <IdSubstance>P</IdSubstance>
-          <Order>4</Order>
-        </StateSubstance>
-        <StateSubstance>
-          <Id>AFM1</Id>
-          <IdSubstance>M1</IdSubstance>
-          <Order>20</Order>
-        </StateSubstance>
-        <StateSubstance>
-          <Id>AFM2</Id>
-          <IdSubstance>M2</IdSubstance>
-          <Order>34</Order>
-        </StateSubstance>
-      </StateSubstances>
     </State>
     <State>
-      <Description>Liver</Description>
+      <Id>ARP</Id>
+      <IdSubstance>P</IdSubstance>
+      <Description>Richly perfused tissue (parent)</Description>
+      <Order>3</Order>
       <Unit>umoles</Unit>
-      <StateSubstances>
-        <StateSubstance>
-          <Id>ALP</Id>
-          <IdSubstance>P</IdSubstance>
-          <Order>5</Order>
-        </StateSubstance>
-        <StateSubstance>
-          <Id>ALM1</Id>
-          <IdSubstance>M1</IdSubstance>
-          <Order>21</Order>
-        </StateSubstance>
-        <StateSubstance>
-          <Id>ALM2</Id>
-          <IdSubstance>M2</IdSubstance>
-          <Order>35</Order>
-        </StateSubstance>
-      </StateSubstances>
+    </State>
+    <State>
+      <Id>ARM1</Id>
+      <IdSubstance>M1</IdSubstance>
+      <Description>Richly perfused tissue (metabolite 1)</Description>
+      <Order>19</Order>
+      <Unit>umoles</Unit>
+    </State>
+    <State>
+      <Id>ARM2</Id>
+      <IdSubstance>M2</IdSubstance>
+      <Description>Richly perfused tissue (metabolite 2)</Description>
+      <Order>33</Order>
+      <Unit>umoles</Unit>
+    </State>
+    <State>
+      <Id>AFP</Id>
+      <IdSubstance>P</IdSubstance>
+      <Description>Fat (parent)</Description>
+      <Order>4</Order>
+      <Unit>umoles</Unit>
+    </State>
+    <State>
+      <Id>AFM1</Id>
+      <IdSubstance>M1</IdSubstance>
+      <Description>Fat (metabolite 1)</Description>
+      <Order>20</Order>
+      <Unit>umoles</Unit>
+    </State>
+    <State>
+      <Id>AFM2</Id>
+      <IdSubstance>M2</IdSubstance>
+      <Description>Fat (metabolite 2)</Description>
+      <Order>34</Order>
+      <Unit>umoles</Unit>
+    </State>
+    <State>
+      <Id>ALP</Id>
+      <IdSubstance>P</IdSubstance>
+      <Description>Liver (parent)</Description>
+      <Order>5</Order>
+      <Unit>umoles</Unit>
+    </State>
+    <State>
+      <Id>ALM1</Id>
+      <IdSubstance>M1</IdSubstance>
+      <Description>Liver (metabolite 1)</Description>
+      <Order>21</Order>
+      <Unit>umoles</Unit>
+    </State>
+    <State>
+      <Id>ALM2</Id>
+      <IdSubstance>M2</IdSubstance>
+      <Description>Liver (metabolite 2)</Description>
+      <Order>35</Order>
+      <Unit>umoles</Unit>
     </State>
     <State>
       <Id>ACPFO</Id>
-      <Order>6</Order>
       <Description>Amount of Parent metabolized to Metabolite 1 in liver</Description>
+      <Order>6</Order>
       <Unit>umoles</Unit>
     </State>
     <State>
       <Id>ATCPyA</Id>
-      <Order>7</Order>
       <Description>Amount of Parent metabolized to Metabolite 12 in liver</Description>
+      <Order>7</Order>
       <Unit>umoles</Unit>
     </State>
     <State>
-      <Description>Cleared renally</Description>
+      <Id>ACLP</Id>
+      <IdSubstance>P</IdSubstance>
+      <Description>Cleared renally (parent)</Description>
+      <Order>8</Order>
       <Unit>umoles</Unit>
-      <StateSubstances>
-        <StateSubstance>
-          <Id>ACLP</Id>
-          <IdSubstance>P</IdSubstance>
-          <Order>8</Order>
-        </StateSubstance>
-        <StateSubstance>
-          <Id>ACLM1</Id>
-          <IdSubstance>M1</IdSubstance>
-          <Order>23</Order>
-        </StateSubstance>
-        <StateSubstance>
-          <Id>ACLM2</Id>
-          <IdSubstance>M2</IdSubstance>
-          <Order>36</Order>
-        </StateSubstance>
-      </StateSubstances>
     </State>
     <State>
-      <Description>Kidney</Description>
+      <Id>ACLM1</Id>
+      <IdSubstance>M1</IdSubstance>
+      <Description>Cleared renally (metabolite 1)</Description>
+      <Order>23</Order>
       <Unit>umoles</Unit>
-      <StateSubstances>
-        <StateSubstance>
-          <Id>AKP</Id>
-          <IdSubstance>P</IdSubstance>
-          <Order>9</Order>
-        </StateSubstance>
-        <StateSubstance>
-          <Id>AKM1</Id>
-          <IdSubstance>M1</IdSubstance>
-          <Order>24</Order>
-        </StateSubstance>
-        <StateSubstance>
-          <Id>AKM2</Id>
-          <IdSubstance>M2</IdSubstance>
-          <Order>37</Order>
-        </StateSubstance>
-      </StateSubstances>
     </State>
     <State>
-      <Description>Muscle</Description>
+      <Id>ACLM2</Id>
+      <IdSubstance>M2</IdSubstance>
+      <Description>Cleared renally (metabolite 2)</Description>
+      <Order>36</Order>
       <Unit>umoles</Unit>
-      <StateSubstances>
-        <StateSubstance>
-          <Id>AMP</Id>
-          <IdSubstance>P</IdSubstance>
-          <Order>10</Order>
-        </StateSubstance>
-        <StateSubstance>
-          <Id>AMM1</Id>
-          <IdSubstance>M1</IdSubstance>
-          <Order>25</Order>
-        </StateSubstance>
-        <StateSubstance>
-          <Id>AMM2</Id>
-          <IdSubstance>M2</IdSubstance>
-          <Order>38</Order>
-        </StateSubstance>
-      </StateSubstances>
     </State>
     <State>
-      <Description>Uterus</Description>
+      <Id>AKP</Id>
+      <IdSubstance>P</IdSubstance>
+      <Description>Kidney (parent)</Description>
+      <Order>9</Order>
       <Unit>umoles</Unit>
-      <StateSubstances>
-        <StateSubstance>
-          <Id>AUP</Id>
-          <IdSubstance>P</IdSubstance>
-          <Order>11</Order>
-        </StateSubstance>
-        <StateSubstance>
-          <Id>AUM1</Id>
-          <IdSubstance>M1</IdSubstance>
-          <Order>26</Order>
-        </StateSubstance>
-        <StateSubstance>
-          <Id>AUM2</Id>
-          <IdSubstance>M2</IdSubstance>
-          <Order>39</Order>
-        </StateSubstance>
-      </StateSubstances>
     </State>
     <State>
-      <Description>Heart</Description>
+      <Id>AKM1</Id>
+      <IdSubstance>M1</IdSubstance>
+      <Description>Kidney (metabolite 1)</Description>
+      <Order>24</Order>
       <Unit>umoles</Unit>
-      <StateSubstances>
-        <StateSubstance>
-          <Id>AHP</Id>
-          <IdSubstance>P</IdSubstance>
-          <Order>12</Order>
-        </StateSubstance>
-        <StateSubstance>
-          <Id>AHM1</Id>
-          <IdSubstance>M1</IdSubstance>
-          <Order>27</Order>
-        </StateSubstance>
-        <StateSubstance>
-          <Id>AHM2</Id>
-          <IdSubstance>M2</IdSubstance>
-          <Order>40</Order>
-        </StateSubstance>
-      </StateSubstances>
     </State>
     <State>
-      <Description>Lung</Description>
+      <Id>AKM2</Id>
+      <IdSubstance>M2</IdSubstance>
+      <Description>Kidney (metabolite 2)</Description>
+      <Order>37</Order>
       <Unit>umoles</Unit>
-      <StateSubstances>
-        <StateSubstance>
-          <Id>ALuP</Id>
-          <IdSubstance>P</IdSubstance>
-          <Order>13</Order>
-        </StateSubstance>
-        <StateSubstance>
-          <Id>ALuM1</Id>
-          <IdSubstance>M1</IdSubstance>
-          <Order>28</Order>
-        </StateSubstance>
-        <StateSubstance>
-          <Id>ALuM2</Id>
-          <IdSubstance>M2</IdSubstance>
-          <Order>41</Order>
-        </StateSubstance>
-      </StateSubstances>
     </State>
     <State>
-      <Description>Brain blood</Description>
+      <Id>AMP</Id>
+      <IdSubstance>P</IdSubstance>
+      <Description>Muscle (parent)</Description>
+      <Order>10</Order>
       <Unit>umoles</Unit>
-      <StateSubstances>
-        <StateSubstance>
-          <Id>ABrbP</Id>
-          <IdSubstance>P</IdSubstance>
-          <Order>14</Order>
-        </StateSubstance>
-        <StateSubstance>
-          <Id>ABrbM1</Id>
-          <IdSubstance>M1</IdSubstance>
-          <Order>46</Order>
-        </StateSubstance>
-        <StateSubstance>
-          <Id>ABrbM2</Id>
-          <IdSubstance>M2</IdSubstance>
-          <Order>42</Order>
-        </StateSubstance>
-      </StateSubstances>
     </State>
     <State>
-      <Description>Brain tissue</Description>
+      <Id>AMM1</Id>
+      <IdSubstance>M1</IdSubstance>
+      <Description>Muscle (metabolite 1)</Description>
+      <Order>25</Order>
       <Unit>umoles</Unit>
-      <StateSubstances>
-        <StateSubstance>
-          <Id>ABrtP</Id>
-          <IdSubstance>P</IdSubstance>
-          <Order>15</Order>
-        </StateSubstance>
-        <StateSubstance>
-          <Id>ABrtM1</Id>
-          <IdSubstance>M1</IdSubstance>
-          <Order>47</Order>
-        </StateSubstance>
-        <StateSubstance>
-          <Id>ABrtM2</Id>
-          <IdSubstance>M2</IdSubstance>
-          <Order>43</Order>
-        </StateSubstance>
-      </StateSubstances>
     </State>
     <State>
-      <Description>Arterial blood</Description>
+      <Id>AMM2</Id>
+      <IdSubstance>M2</IdSubstance>
+      <Description>Muscle (metabolite 2)</Description>
+      <Order>38</Order>
       <Unit>umoles</Unit>
-      <StateSubstances>
-        <StateSubstance>
-          <Id>AAP</Id>
-          <IdSubstance>P</IdSubstance>
-          <Order>16</Order>
-        </StateSubstance>
-        <StateSubstance>
-          <Id>AAM1</Id>
-          <IdSubstance>M1</IdSubstance>
-          <Order>29</Order>
-        </StateSubstance>
-        <StateSubstance>
-          <Id>AAM2</Id>
-          <IdSubstance>M2</IdSubstance>
-          <Order>45</Order>
-        </StateSubstance>
-      </StateSubstances>
     </State>
     <State>
-      <Description>Venous blood</Description>
+      <Id>AUP</Id>
+      <IdSubstance>P</IdSubstance>
+      <Description>Uterus (parent)</Description>
+      <Order>11</Order>
       <Unit>umoles</Unit>
-      <StateSubstances>
-        <StateSubstance>
-          <Id>AVP</Id>
-          <IdSubstance>P</IdSubstance>
-          <Order>17</Order>
-        </StateSubstance>
-        <StateSubstance>
-          <Id>AVM1</Id>
-          <IdSubstance>M1</IdSubstance>
-          <Order>30</Order>
-        </StateSubstance>
-        <StateSubstance>
-          <Id>AVM2</Id>
-          <IdSubstance>M2</IdSubstance>
-          <Order>44</Order>
-        </StateSubstance>
-      </StateSubstances>
+    </State>
+    <State>
+      <Id>AUM1</Id>
+      <IdSubstance>M1</IdSubstance>
+      <Description>Uterus (metabolite 1)</Description>
+      <Order>26</Order>
+      <Unit>umoles</Unit>
+    </State>
+    <State>
+      <Id>AUM2</Id>
+      <IdSubstance>M2</IdSubstance>
+      <Description>Uterus (metabolite 2)</Description>
+      <Order>39</Order>
+      <Unit>umoles</Unit>
+    </State>
+    <State>
+      <Id>AHP</Id>
+      <IdSubstance>P</IdSubstance>
+      <Description>Heart (parent)</Description>
+      <Order>12</Order>
+      <Unit>umoles</Unit>
+    </State>
+    <State>
+      <Id>AHM1</Id>
+      <IdSubstance>M1</IdSubstance>
+      <Description>Heart (metabolite 1)</Description>
+      <Order>27</Order>
+      <Unit>umoles</Unit>
+    </State>
+    <State>
+      <Id>AHM2</Id>
+      <IdSubstance>M2</IdSubstance>
+      <Description>Heart (metabolite 2)</Description>
+      <Order>40</Order>
+      <Unit>umoles</Unit>
+    </State>
+    <State>
+      <Id>ALuP</Id>
+      <IdSubstance>P</IdSubstance>
+      <Description>Lung (parent)</Description>
+      <Order>13</Order>
+      <Unit>umoles</Unit>
+    </State>
+    <State>
+      <Id>ALuM1</Id>
+      <IdSubstance>M1</IdSubstance>
+      <Description>Lung (metabolite 1)</Description>
+      <Order>28</Order>
+      <Unit>umoles</Unit>
+    </State>
+    <State>
+      <Id>ALuM2</Id>
+      <IdSubstance>M2</IdSubstance>
+      <Description>Lung (metabolite 2)</Description>
+      <Order>41</Order>
+      <Unit>umoles</Unit>
+    </State>
+    <State>
+      <Id>ABrbP</Id>
+      <IdSubstance>P</IdSubstance>
+      <Description>Brain blood (parent)</Description>
+      <Order>14</Order>
+      <Unit>umoles</Unit>
+    </State>
+    <State>
+      <Id>ABrbM1</Id>
+      <IdSubstance>M1</IdSubstance>
+      <Description>Brain blood (metabolite 1)</Description>
+      <Order>46</Order>
+      <Unit>umoles</Unit>
+    </State>
+    <State>
+      <Id>ABrbM2</Id>
+      <IdSubstance>M2</IdSubstance>
+      <Description>Brain blood (metabolite 2)</Description>
+      <Order>42</Order>
+      <Unit>umoles</Unit>
+    </State>
+    <State>
+      <Id>ABrtP</Id>
+      <IdSubstance>P</IdSubstance>
+      <Description>Brain tissue (parent)</Description>
+      <Order>15</Order>
+      <Unit>umoles</Unit>
+    </State>
+    <State>
+      <Id>ABrtM1</Id>
+      <IdSubstance>M1</IdSubstance>
+      <Description>Brain tissue (metabolite 1)</Description>
+      <Order>47</Order>
+      <Unit>umoles</Unit>
+    </State>
+    <State>
+      <Id>ABrtM2</Id>
+      <IdSubstance>M2</IdSubstance>
+      <Description>Brain tissue (metabolite 2)</Description>
+      <Order>43</Order>
+      <Unit>umoles</Unit>
+    </State>
+    <State>
+      <Id>AAP</Id>
+      <IdSubstance>P</IdSubstance>
+      <Description>Arterial blood (parent)</Description>
+      <Order>16</Order>
+      <Unit>umoles</Unit>
+    </State>
+    <State>
+      <Id>AAM1</Id>
+      <IdSubstance>M1</IdSubstance>
+      <Description>Arterial blood (metabolite 1)</Description>
+      <Order>29</Order>
+      <Unit>umoles</Unit>
+    </State>
+    <State>
+      <Id>AAM2</Id>
+      <IdSubstance>M2</IdSubstance>
+      <Description>Arterial blood (metabolite 2)</Description>
+      <Order>45</Order>
+      <Unit>umoles</Unit>
+    </State>
+    <State>
+      <Id>AVP</Id>
+      <IdSubstance>P</IdSubstance>
+      <Description>Venous blood (parent)</Description>
+      <Order>17</Order>
+      <Unit>umoles</Unit>
+    </State>
+    <State>
+      <Id>AVM1</Id>
+      <IdSubstance>M1</IdSubstance>
+      <Description>Venous blood (metabolite 1)</Description>
+      <Order>30</Order>
+      <Unit>umoles</Unit>
+    </State>
+    <State>
+      <Id>AVM2</Id>
+      <IdSubstance>M2</IdSubstance>
+      <Description>Venous blood (metabolite 2)</Description>
+      <Order>44</Order>
+      <Unit>umoles</Unit>
     </State>
     <State>
       <Id>ATCPyB</Id>
@@ -378,24 +377,13 @@
     </State>
   </States>
   <Outputs>
+    <!-- Venous blood -->
     <Output>
-      <Id>O_CV</Id>
-      <Description>Venous blood</Description>
+      <Id>O_CV_P</Id>
+      <IdCompartment>O_CV</IdCompartment>
+      <IdSubstance>P</IdSubstance>
+      <Description>Concentration in venous blood (parent)</Description>
       <BiologicalMatrix>VenousBlood</BiologicalMatrix>
-      <Species>
-        <Species>
-          <IdSpecies>O_CV_P</IdSpecies>
-          <IdSubstance>P</IdSubstance>
-        </Species>
-        <Species>
-          <IdSpecies>O_CV_M1</IdSpecies>
-          <IdSubstance>M1</IdSubstance>
-        </Species>
-        <Species>
-          <IdSpecies>O_CV_M2</IdSpecies>
-          <IdSubstance>M2</IdSubstance>
-        </Species>
-      </Species>
       <Order>0</Order>
       <Type>Concentration</Type>
       <Unit>uM</Unit>
@@ -404,52 +392,89 @@
       </ScalingFactors>
     </Output>
     <Output>
-      <Id>O_CP</Id>
-      <Description>Plasma from whole blood</Description>
+      <Id>O_CV_M1</Id>
+      <IdCompartment>O_CV</IdCompartment>
+      <IdSubstance>M1</IdSubstance>
+      <Description>Concentration in venous blood (metabolite 1)</Description>
+      <BiologicalMatrix>VenousBlood</BiologicalMatrix>
+      <Order>0</Order>
+      <Type>Concentration</Type>
+      <Unit>uM</Unit>
+      <ScalingFactors>
+        <ScalingFactor>VVc</ScalingFactor>
+      </ScalingFactors>
+    </Output>
+    <Output>
+      <Id>O_CV_M2</Id>
+      <IdCompartment>O_CV</IdCompartment>
+      <IdSubstance>M2</IdSubstance>
+      <Description>Concentration in venous blood (metabolite 2)</Description>
+      <BiologicalMatrix>VenousBlood</BiologicalMatrix>
+      <Order>0</Order>
+      <Type>Concentration</Type>
+      <Unit>uM</Unit>
+      <ScalingFactors>
+        <ScalingFactor>VVc</ScalingFactor>
+      </ScalingFactors>
+    </Output>
+
+    <!-- Plasma from whole blood -->
+    <Output>
+      <Id>O_CP_P</Id>
+      <IdCompartment>O_CP</IdCompartment>
+      <IdSubstance>P</IdSubstance>
+      <Description>Concentration in plasma from whole blood (parent)</Description>
       <BiologicalMatrix>BloodPlasma</BiologicalMatrix>
-      <Species>
-        <Species>
-          <IdSpecies>O_CP_P</IdSpecies>
-          <IdSubstance>P</IdSubstance>
-        </Species>
-        <Species>
-          <IdSpecies>O_CP_M1</IdSpecies>
-          <IdSubstance>M1</IdSubstance>
-        </Species>
-        <Species>
-          <IdSpecies>O_CP_M2</IdSpecies>
-          <IdSubstance>M2</IdSubstance>
-        </Species>
-      </Species>
       <Order>1</Order>
       <Type>Concentration</Type>
       <Unit>uM</Unit>
       <ScalingFactors>
         <ScalingFactor>VVc</ScalingFactor>
       </ScalingFactors>
-      <!--Replace this by the correct factor for volume op Plasma-->
       <MultiplicationFactors>
         <MultiplicationFactor>0.6</MultiplicationFactor>
       </MultiplicationFactors>
     </Output>
     <Output>
-      <Id>O_CU</Id>
-      <Description>Uterus tissue</Description>
+      <Id>O_CP_M1</Id>
+      <IdCompartment>O_CP</IdCompartment>
+      <IdSubstance>M1</IdSubstance>
+      <Description>Concentration in plasma from whole blood (metabolite 1)</Description>
+      <BiologicalMatrix>BloodPlasma</BiologicalMatrix>
+      <Order>1</Order>
+      <Type>Concentration</Type>
+      <Unit>uM</Unit>
+      <ScalingFactors>
+        <ScalingFactor>VVc</ScalingFactor>
+      </ScalingFactors>
+      <MultiplicationFactors>
+        <MultiplicationFactor>0.6</MultiplicationFactor>
+      </MultiplicationFactors>
+    </Output>
+    <Output>
+      <Id>O_CP_M2</Id>
+      <IdCompartment>O_CP</IdCompartment>
+      <IdSubstance>M2</IdSubstance>
+      <Description>Concentration in plasma from whole blood (metabolite 2)</Description>
+      <BiologicalMatrix>BloodPlasma</BiologicalMatrix>
+      <Order>1</Order>
+      <Type>Concentration</Type>
+      <Unit>uM</Unit>
+      <ScalingFactors>
+        <ScalingFactor>VVc</ScalingFactor>
+      </ScalingFactors>
+      <MultiplicationFactors>
+        <MultiplicationFactor>0.6</MultiplicationFactor>
+      </MultiplicationFactors>
+    </Output>
+
+    <!-- Uterus tissue -->
+    <Output>
+      <Id>O_CU_P</Id>
+      <IdCompartment>O_CU</IdCompartment>
+      <IdSubstance>P</IdSubstance>
+      <Description>Concentration in uterus tissue (parent)</Description>
       <BiologicalMatrix>UterusTissue</BiologicalMatrix>
-      <Species>
-        <Species>
-          <IdSpecies>O_CU_P</IdSpecies>
-          <IdSubstance>P</IdSubstance>
-        </Species>
-        <Species>
-          <IdSpecies>O_CU_M1</IdSpecies>
-          <IdSubstance>M1</IdSubstance>
-        </Species>
-        <Species>
-          <IdSpecies>O_CU_M2</IdSpecies>
-          <IdSubstance>M2</IdSubstance>
-        </Species>
-      </Species>
       <Order>2</Order>
       <Type>Concentration</Type>
       <Unit>uM</Unit>
@@ -458,23 +483,39 @@
       </ScalingFactors>
     </Output>
     <Output>
-      <Id>O_ACL</Id>
-      <Description>Cleared renally</Description>
+      <Id>O_CU_M1</Id>
+      <IdCompartment>O_CU</IdCompartment>
+      <IdSubstance>M1</IdSubstance>
+      <Description>Concentration in uterus tissue (metabolite 1)</Description>
+      <BiologicalMatrix>UterusTissue</BiologicalMatrix>
+      <Order>2</Order>
+      <Type>Concentration</Type>
+      <Unit>uM</Unit>
+      <ScalingFactors>
+        <ScalingFactor>VUc</ScalingFactor>
+      </ScalingFactors>
+    </Output>
+    <Output>
+      <Id>O_CU_M2</Id>
+      <IdCompartment>O_CU</IdCompartment>
+      <IdSubstance>M2</IdSubstance>
+      <Description>Concentration in uterus tissue (metabolite 2)</Description>
+      <BiologicalMatrix>UterusTissue</BiologicalMatrix>
+      <Order>2</Order>
+      <Type>Concentration</Type>
+      <Unit>uM</Unit>
+      <ScalingFactors>
+        <ScalingFactor>VUc</ScalingFactor>
+      </ScalingFactors>
+    </Output>
+
+    <!-- Cleared renally -->
+    <Output>
+      <Id>O_ACL_P</Id>
+      <IdCompartment>O_ACL</IdCompartment>
+      <IdSubstance>P</IdSubstance>
+      <Description>Concentration in cleared renally (parent)</Description>
       <BiologicalMatrix>Excreta</BiologicalMatrix>
-      <Species>
-        <Species>
-          <IdSpecies>O_ACL_P</IdSpecies>
-          <IdSubstance>P</IdSubstance>
-        </Species>
-        <Species>
-          <IdSpecies>O_ACL_M1</IdSpecies>
-          <IdSubstance>M1</IdSubstance>
-        </Species>
-        <Species>
-          <IdSpecies>O_ACL_M2</IdSpecies>
-          <IdSubstance>M2</IdSubstance>
-        </Species>
-      </Species>
       <Order>3</Order>
       <Type>CumulativeAmount</Type>
       <Unit>umoles</Unit>
@@ -483,67 +524,103 @@
       </MultiplicationFactors>
     </Output>
     <Output>
-      <Id>O_CS</Id>
-      <Description>Slowly perfused tissue</Description>
+      <Id>O_ACL_M1</Id>
+      <IdCompartment>O_ACL</IdCompartment>
+      <IdSubstance>M1</IdSubstance>
+      <Description>Concentration in cleared renally (metabolite 1)</Description>
+      <BiologicalMatrix>Excreta</BiologicalMatrix>
+      <Order>3</Order>
+      <Type>CumulativeAmount</Type>
+      <Unit>umoles</Unit>
+      <MultiplicationFactors>
+        <MultiplicationFactor>0.03</MultiplicationFactor>
+      </MultiplicationFactors>
+    </Output>
+    <Output>
+      <Id>O_ACL_M2</Id>
+      <IdCompartment>O_ACL</IdCompartment>
+      <IdSubstance>M2</IdSubstance>
+      <Description>Concentration in cleared renally (metabolite 2)</Description>
+      <BiologicalMatrix>Excreta</BiologicalMatrix>
+      <Order>3</Order>
+      <Type>CumulativeAmount</Type>
+      <Unit>umoles</Unit>
+      <MultiplicationFactors>
+        <MultiplicationFactor>0.03</MultiplicationFactor>
+      </MultiplicationFactors>
+    </Output>
+
+    <!-- Slowly perfused tissue -->
+    <Output>
+      <Id>O_CS_P</Id>
+      <IdCompartment>O_CS</IdCompartment>
+      <IdSubstance>P</IdSubstance>
+      <Description>Concentration in slowly perfused tissue (parent)</Description>
       <BiologicalMatrix>SlowlyPerfusedTissue</BiologicalMatrix>
-      <Species>
-        <Species>
-          <IdSpecies>O_CS_P</IdSpecies>
-          <IdSubstance>P</IdSubstance>
-        </Species>
-        <Species>
-          <IdSpecies>O_CS_M1</IdSpecies>
-          <IdSubstance>M1</IdSubstance>
-        </Species>
-        <Species>
-          <IdSpecies>O_CS_M2</IdSpecies>
-          <IdSubstance>M2</IdSubstance>
-        </Species>
-      </Species>
       <Order>4</Order>
       <Type>Concentration</Type>
       <Unit>umoles</Unit>
     </Output>
     <Output>
-      <Id>O_CR</Id>
-      <Description>Richly perfused tissue</Description>
+      <Id>O_CS_M1</Id>
+      <IdCompartment>O_CS</IdCompartment>
+      <IdSubstance>M1</IdSubstance>
+      <Description>Concentration in slowly perfused tissue (metabolite 1)</Description>
+      <BiologicalMatrix>SlowlyPerfusedTissue</BiologicalMatrix>
+      <Order>4</Order>
+      <Type>Concentration</Type>
+      <Unit>umoles</Unit>
+    </Output>
+    <Output>
+      <Id>O_CS_M2</Id>
+      <IdCompartment>O_CS</IdCompartment>
+      <IdSubstance>M2</IdSubstance>
+      <Description>Concentration in slowly perfused tissue (metabolite 2)</Description>
+      <BiologicalMatrix>SlowlyPerfusedTissue</BiologicalMatrix>
+      <Order>4</Order>
+      <Type>Concentration</Type>
+      <Unit>umoles</Unit>
+    </Output>
+
+    <!-- Richly perfused tissue -->
+    <Output>
+      <Id>O_CR_P</Id>
+      <IdCompartment>O_CR</IdCompartment>
+      <IdSubstance>P</IdSubstance>
+      <Description>Concentration in richly perfused tissue (parent)</Description>
       <BiologicalMatrix>RichlyPerfusedTissue</BiologicalMatrix>
-      <Species>
-        <Species>
-          <IdSpecies>O_CR_P</IdSpecies>
-          <IdSubstance>P</IdSubstance>
-        </Species>
-        <Species>
-          <IdSpecies>O_CR_M1</IdSpecies>
-          <IdSubstance>M1</IdSubstance>
-        </Species>
-        <Species>
-          <IdSpecies>O_CR_M2</IdSpecies>
-          <IdSubstance>M2</IdSubstance>
-        </Species>
-      </Species>
       <Order>5</Order>
       <Type>Concentration</Type>
       <Unit>umoles</Unit>
     </Output>
     <Output>
-      <Id>O_CF</Id>
-      <Description>Fat</Description>
+      <Id>O_CR_M1</Id>
+      <IdCompartment>O_CR</IdCompartment>
+      <IdSubstance>M1</IdSubstance>
+      <Description>Concentration in richly perfused tissue (metabolite 1)</Description>
+      <BiologicalMatrix>RichlyPerfusedTissue</BiologicalMatrix>
+      <Order>5</Order>
+      <Type>Concentration</Type>
+      <Unit>umoles</Unit>
+    </Output>
+    <Output>
+      <Id>O_CR_M2</Id>
+      <IdCompartment>O_CR</IdCompartment>
+      <IdSubstance>M2</IdSubstance>
+      <Description>Concentration in richly perfused tissue (metabolite 2)</Description>
+      <BiologicalMatrix>RichlyPerfusedTissue</BiologicalMatrix>
+      <Order>5</Order>
+      <Type>Concentration</Type>
+      <Unit>umoles</Unit>
+    </Output>
+
+    <!-- Fat -->
+    <Output>
+      <Id>O_CF_P</Id>
+      <IdCompartment>O_CF</IdCompartment>
+      <IdSubstance>P</IdSubstance>
+      <Description>Concentration in fat (parent)</Description>
       <BiologicalMatrix>BodyFat</BiologicalMatrix>
-      <Species>
-        <Species>
-          <IdSpecies>O_CF_P</IdSpecies>
-          <IdSubstance>P</IdSubstance>
-        </Species>
-        <Species>
-          <IdSpecies>O_CF_M1</IdSpecies>
-          <IdSubstance>M1</IdSubstance>
-        </Species>
-        <Species>
-          <IdSpecies>O_CF_M2</IdSpecies>
-          <IdSubstance>M2</IdSubstance>
-        </Species>
-      </Species>
       <Order>6</Order>
       <Type>Concentration</Type>
       <Unit>umoles</Unit>
@@ -552,23 +629,39 @@
       </ScalingFactors>
     </Output>
     <Output>
-      <Id>O_CL</Id>
-      <Description>Liver</Description>
+      <Id>O_CF_M1</Id>
+      <IdCompartment>O_CF</IdCompartment>
+      <IdSubstance>M1</IdSubstance>
+      <Description>Concentration in fat (metabolite 1)</Description>
+      <BiologicalMatrix>BodyFat</BiologicalMatrix>
+      <Order>6</Order>
+      <Type>Concentration</Type>
+      <Unit>umoles</Unit>
+      <ScalingFactors>
+        <ScalingFactor>VFc</ScalingFactor>
+      </ScalingFactors>
+    </Output>
+    <Output>
+      <Id>O_CF_M2</Id>
+      <IdCompartment>O_CF</IdCompartment>
+      <IdSubstance>M2</IdSubstance>
+      <Description>Concentration in fat (metabolite 2)</Description>
+      <BiologicalMatrix>BodyFat</BiologicalMatrix>
+      <Order>6</Order>
+      <Type>Concentration</Type>
+      <Unit>umoles</Unit>
+      <ScalingFactors>
+        <ScalingFactor>VFc</ScalingFactor>
+      </ScalingFactors>
+    </Output>
+
+    <!-- Liver -->
+    <Output>
+      <Id>O_CL_P</Id>
+      <IdCompartment>O_CL</IdCompartment>
+      <IdSubstance>P</IdSubstance>
+      <Description>Concentration in liver (parent)</Description>
       <BiologicalMatrix>Liver</BiologicalMatrix>
-      <Species>
-        <Species>
-          <IdSpecies>O_CL_P</IdSpecies>
-          <IdSubstance>P</IdSubstance>
-        </Species>
-        <Species>
-          <IdSpecies>O_CL_M1</IdSpecies>
-          <IdSubstance>M1</IdSubstance>
-        </Species>
-        <Species>
-          <IdSpecies>O_CL_M2</IdSpecies>
-          <IdSubstance>M2</IdSubstance>
-        </Species>
-      </Species>
       <Order>7</Order>
       <Type>Concentration</Type>
       <Unit>umoles</Unit>
@@ -577,23 +670,39 @@
       </ScalingFactors>
     </Output>
     <Output>
-      <Id>O_CK</Id>
-      <Description>Kidney</Description>
+      <Id>O_CL_M1</Id>
+      <IdCompartment>O_CL</IdCompartment>
+      <IdSubstance>M1</IdSubstance>
+      <Description>Concentration in liver (metabolite 1)</Description>
+      <BiologicalMatrix>Liver</BiologicalMatrix>
+      <Order>7</Order>
+      <Type>Concentration</Type>
+      <Unit>umoles</Unit>
+      <ScalingFactors>
+        <ScalingFactor>VLc</ScalingFactor>
+      </ScalingFactors>
+    </Output>
+    <Output>
+      <Id>O_CL_M2</Id>
+      <IdCompartment>O_CL</IdCompartment>
+      <IdSubstance>M2</IdSubstance>
+      <Description>Concentration in liver (metabolite 2)</Description>
+      <BiologicalMatrix>Liver</BiologicalMatrix>
+      <Order>7</Order>
+      <Type>Concentration</Type>
+      <Unit>umoles</Unit>
+      <ScalingFactors>
+        <ScalingFactor>VLc</ScalingFactor>
+      </ScalingFactors>
+    </Output>
+
+    <!-- Kidney -->
+    <Output>
+      <Id>O_CK_P</Id>
+      <IdCompartment>O_CK</IdCompartment>
+      <IdSubstance>P</IdSubstance>
+      <Description>Concentration in kidney (parent)</Description>
       <BiologicalMatrix>Kidney</BiologicalMatrix>
-      <Species>
-        <Species>
-          <IdSpecies>O_CK_P</IdSpecies>
-          <IdSubstance>P</IdSubstance>
-        </Species>
-        <Species>
-          <IdSpecies>O_CK_M1</IdSpecies>
-          <IdSubstance>M1</IdSubstance>
-        </Species>
-        <Species>
-          <IdSpecies>O_CK_M2</IdSpecies>
-          <IdSubstance>M2</IdSubstance>
-        </Species>
-      </Species>
       <Order>8</Order>
       <Type>Concentration</Type>
       <Unit>umoles</Unit>
@@ -602,23 +711,39 @@
       </ScalingFactors>
     </Output>
     <Output>
-      <Id>O_CM</Id>
-      <Description>Muscle</Description>
+      <Id>O_CK_M1</Id>
+      <IdCompartment>O_CK</IdCompartment>
+      <IdSubstance>M1</IdSubstance>
+      <Description>Concentration in kidney (metabolite 1)</Description>
+      <BiologicalMatrix>Kidney</BiologicalMatrix>
+      <Order>8</Order>
+      <Type>Concentration</Type>
+      <Unit>umoles</Unit>
+      <ScalingFactors>
+        <ScalingFactor>VKc</ScalingFactor>
+      </ScalingFactors>
+    </Output>
+    <Output>
+      <Id>O_CK_M2</Id>
+      <IdCompartment>O_CK</IdCompartment>
+      <IdSubstance>M2</IdSubstance>
+      <Description>Concentration in kidney (metabolite 2)</Description>
+      <BiologicalMatrix>Kidney</BiologicalMatrix>
+      <Order>8</Order>
+      <Type>Concentration</Type>
+      <Unit>umoles</Unit>
+      <ScalingFactors>
+        <ScalingFactor>VKc</ScalingFactor>
+      </ScalingFactors>
+    </Output>
+
+    <!-- Muscle -->
+    <Output>
+      <Id>O_CM_P</Id>
+      <IdCompartment>O_CM</IdCompartment>
+      <IdSubstance>P</IdSubstance>
+      <Description>Concentration in muscle (parent)</Description>
       <BiologicalMatrix>MuscleTissue</BiologicalMatrix>
-      <Species>
-        <Species>
-          <IdSpecies>O_CM_P</IdSpecies>
-          <IdSubstance>P</IdSubstance>
-        </Species>
-        <Species>
-          <IdSpecies>O_CM_M1</IdSpecies>
-          <IdSubstance>M1</IdSubstance>
-        </Species>
-        <Species>
-          <IdSpecies>O_CM_M2</IdSpecies>
-          <IdSubstance>M2</IdSubstance>
-        </Species>
-      </Species>
       <Order>9</Order>
       <Type>Concentration</Type>
       <Unit>umoles</Unit>
@@ -627,23 +752,39 @@
       </ScalingFactors>
     </Output>
     <Output>
-      <Id>O_CH</Id>
-      <Description>Heart</Description>
+      <Id>O_CM_M1</Id>
+      <IdCompartment>O_CM</IdCompartment>
+      <IdSubstance>M1</IdSubstance>
+      <Description>Concentration in muscle (metabolite 1)</Description>
+      <BiologicalMatrix>MuscleTissue</BiologicalMatrix>
+      <Order>9</Order>
+      <Type>Concentration</Type>
+      <Unit>umoles</Unit>
+      <ScalingFactors>
+        <ScalingFactor>VMc</ScalingFactor>
+      </ScalingFactors>
+    </Output>
+    <Output>
+      <Id>O_CM_M2</Id>
+      <IdCompartment>O_CM</IdCompartment>
+      <IdSubstance>M2</IdSubstance>
+      <Description>Concentration in muscle (metabolite 2)</Description>
+      <BiologicalMatrix>MuscleTissue</BiologicalMatrix>
+      <Order>9</Order>
+      <Type>Concentration</Type>
+      <Unit>umoles</Unit>
+      <ScalingFactors>
+        <ScalingFactor>VMc</ScalingFactor>
+      </ScalingFactors>
+    </Output>
+
+    <!-- Heart -->
+    <Output>
+      <Id>O_CH_P</Id>
+      <IdCompartment>O_CH</IdCompartment>
+      <IdSubstance>P</IdSubstance>
+      <Description>Concentration in heart (parent)</Description>
       <BiologicalMatrix>Heart</BiologicalMatrix>
-      <Species>
-        <Species>
-          <IdSpecies>O_CH_P</IdSpecies>
-          <IdSubstance>P</IdSubstance>
-        </Species>
-        <Species>
-          <IdSpecies>O_CH_M1</IdSpecies>
-          <IdSubstance>M1</IdSubstance>
-        </Species>
-        <Species>
-          <IdSpecies>O_CH_M2</IdSpecies>
-          <IdSubstance>M2</IdSubstance>
-        </Species>
-      </Species>
       <Order>10</Order>
       <Type>Concentration</Type>
       <Unit>umoles</Unit>
@@ -652,23 +793,39 @@
       </ScalingFactors>
     </Output>
     <Output>
-      <Id>O_CLu</Id>
-      <Description>Lung</Description>
+      <Id>O_CH_M1</Id>
+      <IdCompartment>O_CH</IdCompartment>
+      <IdSubstance>M1</IdSubstance>
+      <Description>Concentration in heart (metabolite 1)</Description>
+      <BiologicalMatrix>Heart</BiologicalMatrix>
+      <Order>10</Order>
+      <Type>Concentration</Type>
+      <Unit>umoles</Unit>
+      <ScalingFactors>
+        <ScalingFactor>VHc</ScalingFactor>
+      </ScalingFactors>
+    </Output>
+    <Output>
+      <Id>O_CH_M2</Id>
+      <IdCompartment>O_CH</IdCompartment>
+      <IdSubstance>M2</IdSubstance>
+      <Description>Concentration in heart (metabolite 2)</Description>
+      <BiologicalMatrix>Heart</BiologicalMatrix>
+      <Order>10</Order>
+      <Type>Concentration</Type>
+      <Unit>umoles</Unit>
+      <ScalingFactors>
+        <ScalingFactor>VHc</ScalingFactor>
+      </ScalingFactors>
+    </Output>
+
+    <!-- Lung -->
+    <Output>
+      <Id>O_CLu_P</Id>
+      <IdCompartment>O_CLu</IdCompartment>
+      <IdSubstance>P</IdSubstance>
+      <Description>Concentration in lung (parent)</Description>
       <BiologicalMatrix>Lung</BiologicalMatrix>
-      <Species>
-        <Species>
-          <IdSpecies>O_CLu_P</IdSpecies>
-          <IdSubstance>P</IdSubstance>
-        </Species>
-        <Species>
-          <IdSpecies>O_CLu_M1</IdSpecies>
-          <IdSubstance>M1</IdSubstance>
-        </Species>
-        <Species>
-          <IdSpecies>O_CLu_M2</IdSpecies>
-          <IdSubstance>M2</IdSubstance>
-        </Species>
-      </Species>
       <Order>11</Order>
       <Type>Concentration</Type>
       <Unit>umoles</Unit>
@@ -677,23 +834,39 @@
       </ScalingFactors>
     </Output>
     <Output>
-      <Id>O_CBrb</Id>
-      <Description>Brain blood</Description>
+      <Id>O_CLu_M1</Id>
+      <IdCompartment>O_CLu</IdCompartment>
+      <IdSubstance>M1</IdSubstance>
+      <Description>Concentration in lung (metabolite 1)</Description>
+      <BiologicalMatrix>Lung</BiologicalMatrix>
+      <Order>11</Order>
+      <Type>Concentration</Type>
+      <Unit>umoles</Unit>
+      <ScalingFactors>
+        <ScalingFactor>VLuc</ScalingFactor>
+      </ScalingFactors>
+    </Output>
+    <Output>
+      <Id>O_CLu_M2</Id>
+      <IdCompartment>O_CLu</IdCompartment>
+      <IdSubstance>M2</IdSubstance>
+      <Description>Concentration in lung (metabolite 2)</Description>
+      <BiologicalMatrix>Lung</BiologicalMatrix>
+      <Order>11</Order>
+      <Type>Concentration</Type>
+      <Unit>umoles</Unit>
+      <ScalingFactors>
+        <ScalingFactor>VLuc</ScalingFactor>
+      </ScalingFactors>
+    </Output>
+
+    <!-- Brain blood -->
+    <Output>
+      <Id>O_CBrb_P</Id>
+      <IdCompartment>O_CBrb</IdCompartment>
+      <IdSubstance>P</IdSubstance>
+      <Description>Concentration in brain blood (parent)</Description>
       <BiologicalMatrix>BrainBlood</BiologicalMatrix>
-      <Species>
-        <Species>
-          <IdSpecies>O_CBrb_P</IdSpecies>
-          <IdSubstance>P</IdSubstance>
-        </Species>
-        <Species>
-          <IdSpecies>O_CBrb_M1</IdSpecies>
-          <IdSubstance>M1</IdSubstance>
-        </Species>
-        <Species>
-          <IdSpecies>O_CBrb_M2</IdSpecies>
-          <IdSubstance>M2</IdSubstance>
-        </Species>
-      </Species>
       <Order>12</Order>
       <Type>Concentration</Type>
       <Unit>umoles</Unit>
@@ -705,23 +878,45 @@
       </MultiplicationFactors>
     </Output>
     <Output>
-      <Id>O_CBrt</Id>
-      <Description>Brain tissue</Description>
+      <Id>O_CBrb_M1</Id>
+      <IdCompartment>O_CBrb</IdCompartment>
+      <IdSubstance>M1</IdSubstance>
+      <Description>Concentration in brain blood (metabolite 1)</Description>
+      <BiologicalMatrix>BrainBlood</BiologicalMatrix>
+      <Order>12</Order>
+      <Type>Concentration</Type>
+      <Unit>umoles</Unit>
+      <ScalingFactors>
+        <ScalingFactor>VBrc</ScalingFactor>
+      </ScalingFactors>
+      <MultiplicationFactors>
+        <MultiplicationFactor>0.05</MultiplicationFactor>
+      </MultiplicationFactors>
+    </Output>
+    <Output>
+      <Id>O_CBrb_M2</Id>
+      <IdCompartment>O_CBrb</IdCompartment>
+      <IdSubstance>M2</IdSubstance>
+      <Description>Concentration in brain blood (metabolite 2)</Description>
+      <BiologicalMatrix>BrainBlood</BiologicalMatrix>
+      <Order>12</Order>
+      <Type>Concentration</Type>
+      <Unit>umoles</Unit>
+      <ScalingFactors>
+        <ScalingFactor>VBrc</ScalingFactor>
+      </ScalingFactors>
+      <MultiplicationFactors>
+        <MultiplicationFactor>0.05</MultiplicationFactor>
+      </MultiplicationFactors>
+    </Output>
+
+    <!-- Brain tissue -->
+    <Output>
+      <Id>O_CBrbt_P</Id>
+      <IdCompartment>O_CBrbt</IdCompartment>
+      <IdSubstance>P</IdSubstance>
+      <Description>Concentration in brain tissue (parent)</Description>
       <BiologicalMatrix>BrainTissue</BiologicalMatrix>
-      <Species>
-        <Species>
-          <IdSpecies>O_CBrbt_P</IdSpecies>
-          <IdSubstance>P</IdSubstance>
-        </Species>
-        <Species>
-          <IdSpecies>O_CBrbt_M1</IdSpecies>
-          <IdSubstance>M1</IdSubstance>
-        </Species>
-        <Species>
-          <IdSpecies>O_CBrbt_M2</IdSpecies>
-          <IdSubstance>M2</IdSubstance>
-        </Species>
-      </Species>
       <Order>13</Order>
       <Type>Concentration</Type>
       <Unit>umoles</Unit>
@@ -733,23 +928,45 @@
       </MultiplicationFactors>
     </Output>
     <Output>
-      <Id>O_CBr</Id>
-      <Description>Brain total</Description>
+      <Id>O_CBrbt_M1</Id>
+      <IdCompartment>O_CBrbt</IdCompartment>
+      <IdSubstance>M1</IdSubstance>
+      <Description>Concentration in brain tissue (metabolite 1)</Description>
+      <BiologicalMatrix>BrainTissue</BiologicalMatrix>
+      <Order>13</Order>
+      <Type>Concentration</Type>
+      <Unit>umoles</Unit>
+      <ScalingFactors>
+        <ScalingFactor>VBrc</ScalingFactor>
+      </ScalingFactors>
+      <MultiplicationFactors>
+        <MultiplicationFactor>0.95</MultiplicationFactor>
+      </MultiplicationFactors>
+    </Output>
+    <Output>
+      <Id>O_CBrbt_M2</Id>
+      <IdCompartment>O_CBrbt</IdCompartment>
+      <IdSubstance>M2</IdSubstance>
+      <Description>Concentration in brain tissue (metabolite 2)</Description>
+      <BiologicalMatrix>BrainTissue</BiologicalMatrix>
+      <Order>13</Order>
+      <Type>Concentration</Type>
+      <Unit>umoles</Unit>
+      <ScalingFactors>
+        <ScalingFactor>VBrc</ScalingFactor>
+      </ScalingFactors>
+      <MultiplicationFactors>
+        <MultiplicationFactor>0.95</MultiplicationFactor>
+      </MultiplicationFactors>
+    </Output>
+
+    <!-- Brain total -->
+    <Output>
+      <Id>O_CBr_P</Id>
+      <IdCompartment>O_CBr</IdCompartment>
+      <IdSubstance>P</IdSubstance>
+      <Description>Concentration in brain total (parent)</Description>
       <BiologicalMatrix>Brain</BiologicalMatrix>
-      <Species>
-        <Species>
-          <IdSpecies>O_CBr_P</IdSpecies>
-          <IdSubstance>P</IdSubstance>
-        </Species>
-        <Species>
-          <IdSpecies>O_CBr_M1</IdSpecies>
-          <IdSubstance>M1</IdSubstance>
-        </Species>
-        <Species>
-          <IdSpecies>O_CBr_M2</IdSpecies>
-          <IdSubstance>M2</IdSubstance>
-        </Species>
-      </Species>
       <Order>14</Order>
       <Type>Concentration</Type>
       <Unit>umoles</Unit>
@@ -758,23 +975,65 @@
       </ScalingFactors>
     </Output>
     <Output>
-      <Id>O_CA</Id>
-      <Description>Arterial blood</Description>
+      <Id>O_CBr_M1</Id>
+      <IdCompartment>O_CBr</IdCompartment>
+      <IdSubstance>M1</IdSubstance>
+      <Description>Concentration in brain total (metabolite 1)</Description>
+      <BiologicalMatrix>Brain</BiologicalMatrix>
+      <Order>14</Order>
+      <Type>Concentration</Type>
+      <Unit>umoles</Unit>
+      <ScalingFactors>
+        <ScalingFactor>VBrc</ScalingFactor>
+      </ScalingFactors>
+    </Output>
+    <Output>
+      <Id>O_CBr_M2</Id>
+      <IdCompartment>O_CBr</IdCompartment>
+      <IdSubstance>M2</IdSubstance>
+      <Description>Concentration in brain total (metabolite 2)</Description>
+      <BiologicalMatrix>Brain</BiologicalMatrix>
+      <Order>14</Order>
+      <Type>Concentration</Type>
+      <Unit>umoles</Unit>
+      <ScalingFactors>
+        <ScalingFactor>VBrc</ScalingFactor>
+      </ScalingFactors>
+    </Output>
+
+    <!-- Arterial blood -->
+    <Output>
+      <Id>O_CA_P</Id>
+      <IdCompartment>O_CA</IdCompartment>
+      <IdSubstance>P</IdSubstance>
+      <Description>Concentration in arterial blood (parent)</Description>
       <BiologicalMatrix>ArterialBlood</BiologicalMatrix>
-      <Species>
-        <Species>
-          <IdSpecies>O_CA_P</IdSpecies>
-          <IdSubstance>P</IdSubstance>
-        </Species>
-        <Species>
-          <IdSpecies>O_CA_M1</IdSpecies>
-          <IdSubstance>M1</IdSubstance>
-        </Species>
-        <Species>
-          <IdSpecies>O_CA_M2</IdSpecies>
-          <IdSubstance>M2</IdSubstance>
-        </Species>
-      </Species>
+      <Order>15</Order>
+      <Type>Concentration</Type>
+      <Unit>umoles</Unit>
+      <ScalingFactors>
+        <ScalingFactor>VAc</ScalingFactor>
+      </ScalingFactors>
+    </Output>
+    <Output>
+      <Id>O_CA_M1</Id>
+      <IdCompartment>O_CA</IdCompartment>
+      <IdSubstance>M1</IdSubstance>
+      <Description>Concentration in arterial blood (metabolite 1)</Description>
+      <BiologicalMatrix>ArterialBlood</BiologicalMatrix>
+      <Order>15</Order>
+      <Type>Concentration</Type>
+      <Unit>umoles</Unit>
+      <ScalingFactors>
+        <ScalingFactor>VAc</ScalingFactor>
+      </ScalingFactors>
+    </Output>
+    <Output>
+      <Id>O_CA_M2</Id>
+      <IdCompartment>O_CA</IdCompartment>
+      <IdSubstance>M2</IdSubstance>
+      <Description>Concentration in arterial blood (metabolite 2)</Description>
+      <BiologicalMatrix>ArterialBlood</BiologicalMatrix>
       <Order>15</Order>
       <Type>Concentration</Type>
       <Unit>umoles</Unit>
@@ -921,56 +1180,58 @@
       <Type>Physiological</Type>
     </Parameter>
     <Parameter IsInternalParameter="true">
-      <Id>MW</Id>
-      <Description>Molecular weight</Description>
-      <Type>Physicochemical</Type>
+      <Id>MWP</Id>
+      <IdSubstance>P</IdSubstance>
+      <Description>Molecular weight parent</Description>
       <Unit>g/mol</Unit>
-      <SubstanceParameterValues>
-        <SubstanceParameterValue>
-          <IdSubstance>P</IdSubstance>
-          <IdParameter>MWP</IdParameter>
-          <DefaultValue>350.59</DefaultValue>
-          <Order>17</Order>
-        </SubstanceParameterValue>
-        <SubstanceParameterValue>
-          <IdSubstance>M1</IdSubstance>
-          <IdParameter>MWM1</IdParameter>
-          <DefaultValue>334.52</DefaultValue>
-          <Order>18</Order>
-        </SubstanceParameterValue>
-        <SubstanceParameterValue>
-          <IdSubstance>M2</IdSubstance>
-          <IdParameter>MWM2</IdParameter>
-          <DefaultValue>198.43</DefaultValue>
-          <Order>19</Order>
-        </SubstanceParameterValue>
-      </SubstanceParameterValues>
+      <Order>17</Order>
+      <DefaultValue>350.59</DefaultValue>
+      <Type>Physicochemical</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>MWM1</Id>
+      <IdSubstance>M1</IdSubstance>
+      <Description>Molecular weight metabolite 1</Description>
+      <Unit>g/mol</Unit>
+      <Order>18</Order>
+      <DefaultValue>334.52</DefaultValue>
+      <Type>Physicochemical</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>MWM2</Id>
+      <IdSubstance>M2</IdSubstance>
+      <Description>Molecular weight metabolite 2</Description>
+      <Unit>g/mol</Unit>
+      <Order>19</Order>
+      <DefaultValue>198.43</DefaultValue>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter IsInternalParameter="false">
-      <Id>LogP</Id>
-      <Description>Octanol/water partition coefficient</Description>
-      <Type>PartitionCoefficient</Type>
+      <Id>LogPP</Id>
+      <IdSubstance>P</IdSubstance>
+      <Description>Octanol/water partition coefficient parent</Description>
       <Unit></Unit>
-      <SubstanceParameterValues>
-        <SubstanceParameterValue>
-          <IdSubstance>P</IdSubstance>
-          <IdParameter>LogPP</IdParameter>
-          <DefaultValue>4.784</DefaultValue>
-          <Order>20</Order>
-        </SubstanceParameterValue>
-        <SubstanceParameterValue>
-          <IdSubstance>M1</IdSubstance>
-          <IdParameter>LogPM1</IdParameter>
-          <DefaultValue>3.894</DefaultValue>
-          <Order>21</Order>
-        </SubstanceParameterValue>
-        <SubstanceParameterValue>
-          <IdSubstance>M2</IdSubstance>
-          <IdParameter>LogPM2</IdParameter>
-          <DefaultValue>1.856</DefaultValue>
-          <Order>22</Order>
-        </SubstanceParameterValue>
-      </SubstanceParameterValues>
+      <Order>20</Order>
+      <DefaultValue>4.784</DefaultValue>
+      <Type>PartitionCoefficient</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="false">
+      <Id>LogPM1</Id>
+      <IdSubstance>M1</IdSubstance>
+      <Description>Octanol/water partition coefficient metabolite 1</Description>
+      <Unit></Unit>
+      <Order>21</Order>
+      <DefaultValue>3.894</DefaultValue>
+      <Type>PartitionCoefficient</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="false">
+      <Id>LogPM2</Id>
+      <IdSubstance>M2</IdSubstance>
+      <Description>Octanol/water partition coefficient metabolite 2</Description>
+      <Unit></Unit>
+      <Order>22</Order>
+      <DefaultValue>1.856</DefaultValue>
+      <Type>PartitionCoefficient</Type>
     </Parameter>
     <Parameter IsInternalParameter="false">
       <Id>Fa</Id>
@@ -1005,86 +1266,89 @@
       <Type>Physicochemical</Type>
     </Parameter>
     <Parameter IsInternalParameter="false">
-      <Id>fu</Id>
-      <Description>Unbound fraction in plasma. Obtained from SimCyp</Description>
-      <Type>Physicochemical</Type>
+      <Id>fuP</Id>
+      <IdSubstance>P</IdSubstance>
+      <Description>Unbound fraction in plasma (parent)</Description>
       <Unit></Unit>
-      <SubstanceParameterValues>
-        <SubstanceParameterValue>
-          <IdSubstance>P</IdSubstance>
-          <IdParameter>fuP</IdParameter>
-          <DefaultValue>0.021</DefaultValue>
-          <Order>27</Order>
-        </SubstanceParameterValue>
-        <SubstanceParameterValue>
-          <IdSubstance>M1</IdSubstance>
-          <IdParameter>fuM1</IdParameter>
-          <Order>28</Order>
-          <DefaultValue>0.15</DefaultValue>
-        </SubstanceParameterValue>
-        <SubstanceParameterValue>
-          <IdSubstance>M2</IdSubstance>
-          <IdParameter>fuM2</IdParameter>
-          <Order>29</Order>
-          <DefaultValue>0.082</DefaultValue>
-        </SubstanceParameterValue>
-      </SubstanceParameterValues>
+      <Order>27</Order>
+      <DefaultValue>0.021</DefaultValue>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter IsInternalParameter="false">
-      <Id>BP</Id>
-      <Description>B/P ratio obtained from Hsu, 2013. If no data available, set to 1</Description>
-      <Type>Physicochemical</Type>
+      <Id>fuM1</Id>
+      <IdSubstance>M1</IdSubstance>
+      <Description>Unbound fraction in plasma (metabolite 1)</Description>
       <Unit></Unit>
-      <SubstanceParameterValues>
-        <SubstanceParameterValue>
-          <IdSubstance>P</IdSubstance>
-          <IdParameter>BPP</IdParameter>
-          <DefaultValue>1.3</DefaultValue>
-          <Order>30</Order>
-        </SubstanceParameterValue>
-        <SubstanceParameterValue>
-          <IdSubstance>M1</IdSubstance>
-          <IdParameter>BPM1</IdParameter>
-          <DefaultValue>2.7</DefaultValue>
-          <Order>31</Order>
-        </SubstanceParameterValue>
-        <SubstanceParameterValue>
-          <IdSubstance>M2</IdSubstance>
-          <IdParameter>BPM2</IdParameter>
-          <DefaultValue>1</DefaultValue>
-          <Order>32</Order>
-        </SubstanceParameterValue>
-      </SubstanceParameterValues>
+      <Order>28</Order>
+      <DefaultValue>0.15</DefaultValue>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter IsInternalParameter="false">
-      <Id>Kurine</Id>
-      <Description>Urinary excretion rate constant (/h)</Description>
+      <Id>fuM2</Id>
+      <IdSubstance>M2</IdSubstance>
+      <Description>Unbound fraction in plasma (metabolite 2)</Description>
+      <Unit></Unit>
+      <Order>29</Order>
+      <DefaultValue>0.082</DefaultValue>
+      <Type>Physicochemical</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="false">
+      <Id>BPP</Id>
+      <IdSubstance>P</IdSubstance>
+      <Description>B/P ratio (parent)</Description>
+      <Unit></Unit>
+      <Order>30</Order>
+      <DefaultValue>1.3</DefaultValue>
+      <Type>Physicochemical</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="false">
+      <Id>BPM1</Id>
+      <IdSubstance>M1</IdSubstance>
+      <Description>B/P (metabolite 1)</Description>
+      <Unit></Unit>
+      <Order>31</Order>
+      <DefaultValue>2.7</DefaultValue>
+      <Type>Physicochemical</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="false">
+      <Id>BPM2</Id>
+      <IdSubstance>M2</IdSubstance>
+      <Description>B/P (metabolite 2)</Description>
+      <Unit></Unit>
+      <Order>32</Order>
+      <DefaultValue>1</DefaultValue>
+      <Type>Physicochemical</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="false">
+      <Id>KurineP</Id>
+      <IdSubstance>P</IdSubstance>
+      <Description>Urinary excretion rate constant parent</Description>
       <Unit>/h</Unit>
+      <Order>33</Order>
+      <DefaultValue>0</DefaultValue>
       <Type>Physicochemical</Type>
-      <SubstanceParameterValues>
-        <SubstanceParameterValue>
-          <IdSubstance>P</IdSubstance>
-          <IdParameter>KurineP</IdParameter>
-          <DefaultValue>0</DefaultValue>
-          <Order>33</Order>
-        </SubstanceParameterValue>
-        <SubstanceParameterValue>
-          <IdSubstance>M1</IdSubstance>
-          <IdParameter>KurineM1</IdParameter>
-          <DefaultValue>0</DefaultValue>
-          <Order>34</Order>
-        </SubstanceParameterValue>
-        <SubstanceParameterValue>
-          <IdSubstance>M2</IdSubstance>
-          <IdParameter>KurineM2</IdParameter>
-          <DefaultValue>0.026</DefaultValue>
-          <Order>35</Order>
-        </SubstanceParameterValue>
-      </SubstanceParameterValues>
+    </Parameter>
+    <Parameter IsInternalParameter="false">
+      <Id>KurineM1</Id>
+      <IdSubstance>M1</IdSubstance>
+      <Description>Urinary excretion rate constant metabolite 1</Description>
+      <Unit>/h</Unit>
+      <Order>34</Order>
+      <DefaultValue>0</DefaultValue>
+      <Type>Physicochemical</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="false">
+      <Id>KurineM2</Id>
+      <IdSubstance>M2</IdSubstance>
+      <Description>Urinary excretion rate constant metabolite 2</Description>
+      <Unit>/h</Unit>
+      <Order>35</Order>
+      <DefaultValue>0.026</DefaultValue>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter IsInternalParameter="false">
       <Id>CYPabundanceCYP1A2</Id>
-      <Description>CYP1A2 abundance (pmolCYP/mg protein) ;(calculated based on database in Simcyp; sum of EM, PM and UM)</Description>
+      <Description>CYP1A2 abundance (pmolCYP/mg protein)</Description>
       <Unit></Unit>
       <DefaultValue>52</DefaultValue>
       <Order>36</Order>
@@ -1092,7 +1356,7 @@
     </Parameter>
     <Parameter IsInternalParameter="false">
       <Id>CYPabundanceCYP2B6</Id>
-      <Description>CYP2B6 abundance (pmolCYP/mg protein) ;(calculated based on database in Simcyp; sum of EM, PM and UM) </Description>
+      <Description>CYP2B6 abundance (pmolCYP/mg protein) </Description>
       <Unit></Unit>
       <DefaultValue>15.8</DefaultValue>
       <Order>37</Order>
@@ -1100,7 +1364,7 @@
     </Parameter>
     <Parameter IsInternalParameter="false">
       <Id>CYPabundanceCYP2C19</Id>
-      <Description>CYP2C19 abundance (pmolCYP/mg protein) ;(calculated based on database in Simcyp; sum of EM, PM and UM)</Description>
+      <Description>CYP2C19 abundance (pmolCYP/mg protein)</Description>
       <DefaultValue>5.4</DefaultValue>
       <Unit></Unit>
       <Order>38</Order>
@@ -1108,7 +1372,7 @@
     </Parameter>
     <Parameter IsInternalParameter="false">
       <Id>CYPabundanceCYP3A4</Id>
-      <Description>CYP3A4 abundance (pmolCYP/mg protein) ;(calculated based on database in Simcyp; sum of EM, PM and UM)</Description>
+      <Description>CYP3A4 abundance (pmolCYP/mg protein)</Description>
       <Unit></Unit>
       <DefaultValue>137</DefaultValue>
       <Order>39</Order>
@@ -1116,7 +1380,7 @@
     </Parameter>
     <Parameter IsInternalParameter="false">
       <Id>ISEFCYP1A2</Id>
-      <Description>Scaling factor CYP1A2 ISEF (Vmax) (non compound-specific) (calculated based on probe incubation, lab specific) </Description>
+      <Description>Scaling factor CYP1A2 ISEF (Vmax) (non compound-specific)</Description>
       <Unit></Unit>
       <DefaultValue>0.072</DefaultValue>
       <Order>40</Order>
@@ -1124,7 +1388,7 @@
     </Parameter>
     <Parameter IsInternalParameter="false">
       <Id>ISEFCYP2B6</Id>
-      <Description>Scaling factor CYP2B6 ISEF (Vmax) (non compound-specific) (calculated based on probe incubation, lab specific) </Description>
+      <Description>Scaling factor CYP2B6 ISEF (Vmax) (non compound-specific)</Description>
       <Unit></Unit>
       <DefaultValue>0.476</DefaultValue>
       <Order>41</Order>
@@ -1132,7 +1396,7 @@
     </Parameter>
     <Parameter IsInternalParameter="false">
       <Id>ISEFCYP2C19</Id>
-      <Description>Scaling factor CYP2C19 ISEF (Vmax) (non compound-specific) (calculated based on probe incubation, lab specific)</Description>
+      <Description>Scaling factor CYP2C19 ISEF (Vmax) (non compound-specific)</Description>
       <Unit></Unit>
       <DefaultValue>0.209</DefaultValue>
       <Order>42</Order>
@@ -1140,7 +1404,7 @@
     </Parameter>
     <Parameter IsInternalParameter="false">
       <Id>ISEFCYP3A4</Id>
-      <Description>Scaling factor CYP3A4 ISEF (Vmax) (non compound-specific) (calculated based on probe incubation, lab specific)</Description>
+      <Description>Scaling factor CYP3A4 ISEF (Vmax) (non compound-specific)</Description>
       <Unit></Unit>
       <Order>43</Order>
       <DefaultValue>0.107</DefaultValue>

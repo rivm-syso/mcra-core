@@ -1,7 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.General.KineticModelDefinitions.SbmlPbkUtils;
-using MCRA.General.Sbml;
+using MCRA.General.PbkModelDefinitions.PbkModelSpecifications.DeSolve;
+using MCRA.General.PbkModelDefinitions.PbkModelSpecifications.Sbml;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Sbml.Objects;
 
@@ -9,37 +9,37 @@ namespace MCRA.Simulation.OutputGeneration {
 
     public sealed class PbkModelDefinitionSummarySection : SummarySection {
 
-        public SbmlModel SbmlModel { get; set; }
         public string ModelCode { get; set; }
         public string ModelName { get; set; }
         public List<PbkModelDefinitionSpeciesSummaryRecord> Records { get; set; }
+        public SbmlModel SbmlModel { get; set; }
 
         public void Summarize(PbkModelDefinition modelDefinition) {
+            ModelCode = modelDefinition.IdModelDefinition;
+            ModelName = modelDefinition.Name;
+
             var records = new List<PbkModelDefinitionSpeciesSummaryRecord>();
-            var sbmlModel = (modelDefinition.KineticModelDefinition as SbmlPbkModelSpecification)?.SbmlModel;
-            if (sbmlModel != null) {
-                foreach (var species in sbmlModel.Species.Values) {
-                    var hasCompartment = sbmlModel.Compartments.TryGetValue(species.Compartment, out var compartment);
-                    var matrix = hasCompartment ? compartment.GetBiologicalMatrix() : BiologicalMatrix.Undefined;
+            if (modelDefinition.KineticModelDefinition is SbmlPbkModelSpecification) {
+                var sbmlModelSpecification = modelDefinition.KineticModelDefinition as SbmlPbkModelSpecification;
+                foreach (var species in sbmlModelSpecification.Species) {
+                    var matrix = species.Compartment.GetBiologicalMatrix();
                     var record = new PbkModelDefinitionSpeciesSummaryRecord() {
                         SpeciesCode = species.Id,
                         SpeciesName = species.Name,
-                        CompartmentCode = compartment?.Id,
-                        CompartmentName = compartment?.Name,
+                        CompartmentCode = species.Compartment?.Id,
+                        CompartmentName = species.Compartment?.Name,
                         BiologicalMatrix = matrix != BiologicalMatrix.Undefined
-                            ? compartment.GetBiologicalMatrix().GetShortDisplayName()
+                            ? species.Compartment.GetBiologicalMatrix().GetShortDisplayName()
                             : null,
-                        CompartmentVolumeUnit = sbmlModel
-                            .GetCompartmentVolumeUnit(species.Compartment)
-                            .GetShortDisplayName(),
-                        SpeciesAmountUnit = sbmlModel
-                            .GetSpeciesAmountUnit(species.Id)
-                            .GetShortDisplayName()
+                        CompartmentVolumeUnit = species.Compartment.Unit.GetShortDisplayName(),
+                        SpeciesAmountUnit = species.SubstanceAmountUnit.GetShortDisplayName()
                     };
                     records.Add(record);
                 }
+                SbmlModel = sbmlModelSpecification.SbmlModel;
             } else {
-                foreach (var output in modelDefinition.KineticModelDefinition.GetOutputs()) {
+                var deSolveModelSpecification = modelDefinition.KineticModelDefinition as DeSolvePbkModelSpecification;
+                foreach (var output in deSolveModelSpecification.Outputs) {
                     var record = new PbkModelDefinitionSpeciesSummaryRecord() {
                         CompartmentCode = output.Id,
                         CompartmentName = output.Description,
@@ -50,9 +50,6 @@ namespace MCRA.Simulation.OutputGeneration {
                     records.Add(record);
                 }
             }
-            ModelCode = modelDefinition.IdModelDefinition;
-            ModelName = modelDefinition.Name;
-            SbmlModel = sbmlModel;
             Records = records;
         }
     }

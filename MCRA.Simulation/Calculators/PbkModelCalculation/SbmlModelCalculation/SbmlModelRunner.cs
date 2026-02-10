@@ -12,20 +12,15 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation {
         private readonly string _modelFileName;
         private readonly string _idBodyWeightParameter;
         private readonly Dictionary<string, double> _defaultParameters;
-        private readonly Dictionary<ExposureRoute, string> _modelInputs;
-        private readonly List<TargetOutputMapping> _targetOutputMappings;
 
         private dynamic _rr = null;
         private dynamic _model = null;
 
         public SbmlModelRunner(
-            KineticModelInstance modelInstance,
-            List<TargetOutputMapping> targetOutputMappings
+            KineticModelInstance modelInstance
         ) {
             var modelDefinition = modelInstance.KineticModelDefinition;
-            _modelInputs = modelDefinition.GetInputDefinitions().ToDictionary(r => r.Route, r => r.Id);
             _modelFileName = modelInstance.KineticModelDefinition.FileName;
-            _targetOutputMappings = targetOutputMappings;
 
             // Store default parameters from model instance
             _defaultParameters = [];
@@ -52,7 +47,7 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation {
             Dispose(false);
         }
 
-        private void initializeModel() {
+        private void initializeModel(Dictionary<ExposureRoute, string> routeInputMappings) {
             // Import roadrunner and read model
             if (_model == null) {
                 // Load model
@@ -60,7 +55,7 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation {
                 _model = _rr.RoadRunner(_modelFileName);
 
                 // Set boundary condition for inputs (for discrete/bolus dosing events)
-                foreach (var input in _modelInputs.Values) {
+                foreach (var input in routeInputMappings.Values) {
                     _model.setInitAmount(input, 0);
                     _model.setConstant(input, false);
                     _model.setBoundary(input, false);
@@ -82,14 +77,17 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation {
         public SimulationOutput Run(
             List<IExposureEvent> exposureEvents,
             Dictionary<string, double> parameters,
+            Dictionary<ExposureRoute, string> routeInputMappings,
+            List<string> outputStatesSelection,
             List<string> outputTimeSeriesSelection,
-            List<string> outputStateSelection,
             int evaluationPeriod,
             int steps,
             bool applyBodyWeightScaling
         ) {
             using (Py.GIL()) {
-                initializeModel();
+
+                // (Re)initialize model
+                initializeModel(routeInputMappings);
 
                 // Set default model parameters from instance
                 foreach (var parameter in _defaultParameters) {
@@ -102,7 +100,13 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation {
                         _model.__setattr__(parameter.Key, parameter.Value);
                     }
                 }
-                setExposuresEvents(exposureEvents, applyBodyWeightScaling);
+
+                // Create model exposure events
+                setExposuresEvents(
+                    routeInputMappings,
+                    exposureEvents,
+                    applyBodyWeightScaling
+                );
 
                 // Regenerate model
                 _model.regenerateModel(true, true);
@@ -128,8 +132,8 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation {
                 }
 
                 // Get selected output states at end of simulation
-                foreach (var mapping in _targetOutputMappings) {
-                    result.OutputStates.Add(mapping.CompartmentId, (double)_model[mapping.CompartmentId]);
+                foreach (var item in outputStatesSelection) {
+                    result.OutputStates.Add(item, (double)_model[item]);
                 }
 
                 return result;
@@ -137,6 +141,7 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation {
         }
 
         private void setExposuresEvents(
+            Dictionary<ExposureRoute, string> routeInputMappings,
             List<IExposureEvent> exposureEvents,
             bool applyBodyweightScaling
         ) {
@@ -148,7 +153,7 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation {
                 // Create an event for each exposure event
                 if (exposureEvent.GetType() == typeof(SingleExposureEvent)) {
                     var singleEvent = (SingleExposureEvent)exposureEvent;
-                    var speciesId = _modelInputs[exposureEvent.Route];
+                    var speciesId = routeInputMappings[exposureEvent.Route];
                     var eid = $"ev_{eidCounter++}";
                     _model.addEvent(
                         eid,
@@ -164,7 +169,7 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation {
                     );
                 } else {
                     var repetitiveEvent = (RepeatingExposureEvent)exposureEvent;
-                    var speciesId = _modelInputs[exposureEvent.Route];
+                    var speciesId = routeInputMappings[exposureEvent.Route];
                     var eid = $"ev_{eidCounter++}";
                     _model.addEvent(
                         eid,

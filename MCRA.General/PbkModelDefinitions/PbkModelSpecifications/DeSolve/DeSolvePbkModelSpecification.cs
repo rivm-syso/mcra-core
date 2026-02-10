@@ -1,10 +1,10 @@
 ﻿using System.Xml.Serialization;
 
-namespace MCRA.General {
+namespace MCRA.General.PbkModelDefinitions.PbkModelSpecifications.DeSolve {
 
     [Serializable]
     [XmlType("PbkModelSpecification")]
-    public class EmbeddedPbkModelSpecification : UnitValueDefinition, IPbkModelSpecification {
+    public class DeSolvePbkModelSpecification : UnitValueDefinition, IPbkModelSpecification {
 
         /// <summary>
         /// Identifier of the main model (a definition is a specific version of this main model).
@@ -46,73 +46,77 @@ namespace MCRA.General {
         /// Forcing parameters of the kinetic model.
         /// </summary>
         [XmlArrayItem("ModelSubstance")]
-        public List<PbkModelSubstanceSpecification> ModelSubstances { get; set; }
+        public List<DeSolvePbkModelSubstanceSpecification> ModelSubstances { get; set; }
 
         /// <summary>
         /// Forcing parameters of the PBK model.
         /// </summary>
         [XmlArrayItem("Forcing")]
-        public List<PbkModelInputSpecification> Forcings { get; set; }
+        public List<DeSolvePbkModelForcingSpecification> Forcings { get; set; }
 
         /// <summary>
         /// Input parameters of the PBK model.
         /// </summary>
         [XmlArrayItem("Parameter")]
-        public List<PbkModelParameterSpecification> Parameters { get; set; }
+        public List<DeSolvePbkModelParameterSpecification> Parameters { get; set; }
 
         /// <summary>
         /// State parameters of the PBK model.
         /// </summary>
         [XmlArrayItem("State")]
-        public List<PbkModelStateVariableSpecification> States { get; set; }
+        public List<DeSolvePbkModelStateSpecification> States { get; set; }
 
         /// <summary>
         /// Output parameters of the PBK model.
         /// </summary>
         [XmlArrayItem("Output")]
-        public List<PbkModelOutputSpecification> Outputs { get; set; }
-
-        /// <summary>
-        /// Retrieves the list of inputs available in the PBK model.
-        /// </summary>
-        public List<PbkModelInputSpecification> GetInputDefinitions() {
-            return Forcings;
-        }
+        public List<DeSolvePbkModelOutputSpecification> Outputs { get; set; }
 
         /// <summary>
         /// Retrieves the list of substances defined within the PBK model.
         /// </summary>
-        public List<PbkModelSubstanceSpecification> GetModelSubstances() {
-            return ModelSubstances;
+        public List<IPbkModelSubstanceSpecification> GetModelSubstances() {
+            return ModelSubstances
+                .Cast<IPbkModelSubstanceSpecification>()
+                .ToList();
         }
 
         /// <summary>
         /// Retrieves the list of outputs defined in the PBK model.
         /// </summary>
-        public List<PbkModelOutputSpecification> GetOutputs() {
-            return Outputs;
+        public List<IPbkModelOutputSpecification> GetOutputs() {
+            return Outputs
+                .Cast<IPbkModelOutputSpecification>()
+                .ToList();
+        }
+
+        /// <summary>
+        /// Returns the biological matrices for which this PBK model provides outputs.
+        /// </summary>
+        /// <returns></returns>
+        public List<BiologicalMatrix> GetOutputMatrices() {
+            return Outputs
+                .Select(r => r.BiologicalMatrix)
+                .Where(r => r != BiologicalMatrix.Undefined)
+                .Distinct()
+                .ToList();
         }
 
         /// <summary>
         /// Retrieves the list of states defined within the PBK model.
         /// </summary>
-        public List<PbkModelStateVariableSpecification> GetStates() {
-            return States;
+        public List<DeSolvePbkModelStateSpecification> GetStates() {
+            var result = States
+                .OrderBy(r => r.Order)
+                .ToList();
+            return result;
         }
 
         /// <summary>
         /// Retrieves the list of parameters defined within the PBK model.
         /// </summary>
-        public List<PbkModelParameterSpecification> GetParameters() {
-            return Parameters;
-        }
-
-        /// <summary>
-        /// Returns the exposure routes of the PBK model definition (ordered by
-        /// the order of the forcings).
-        /// </summary>
-        public ICollection<ExposureRoute> GetExposureRoutes() {
-            return Forcings.OrderBy(c => c.Order).Select(c => c.Route).ToList();
+        public List<IPbkModelParameterSpecification> GetParameters() {
+            return Parameters.Cast<IPbkModelParameterSpecification>().ToList();
         }
 
         /// <summary>
@@ -127,7 +131,7 @@ namespace MCRA.General {
         /// <summary>
         /// Gets a parameter definition by its type.
         /// </summary>
-        public PbkModelParameterSpecification GetParameterDefinitionByType(PbkModelParameterType paramType) {
+        public IPbkModelParameterSpecification GetParameterDefinitionByType(PbkModelParameterType paramType) {
             return Parameters.FirstOrDefault(p => p.Type == paramType);
         }
     }

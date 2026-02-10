@@ -1,6 +1,9 @@
-﻿namespace MCRA.General {
+﻿using MCRA.General.PbkModelDefinitions.PbkModelSpecifications;
+
+namespace MCRA.General.PbkModelDefinitions.PbkModelSpecifications.DeSolve {
+
     [Serializable]
-    public class PbkModelSubstanceSpecification {
+    public class DeSolvePbkModelSubstanceSpecification : IPbkModelSubstanceSpecification {
 
         /// <summary>
         /// The substance identifier (within the model).

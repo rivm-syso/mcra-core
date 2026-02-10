@@ -1,5 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.General;
+using MCRA.General.PbkModelDefinitions.PbkModelSpecifications;
 using MCRA.Simulation.Calculators.PbkModelCalculation.DesolvePbkModelCalculators.ChlorpyrifosPbkModelCalculation;
 using MCRA.Simulation.Calculators.PbkModelCalculation.DesolvePbkModelCalculators.CosmosKineticModelCalculation;
 using MCRA.Simulation.Calculators.PbkModelCalculation.DesolvePbkModelCalculators.KarrerKineticModelCalculation;

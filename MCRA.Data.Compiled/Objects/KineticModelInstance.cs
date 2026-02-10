@@ -1,4 +1,5 @@
 ﻿using MCRA.General;
+using MCRA.General.PbkModelDefinitions.PbkModelSpecifications;
 
 namespace MCRA.Data.Compiled.Objects {
     [Serializable]

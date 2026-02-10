@@ -1,25 +1,17 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.General.PbkModelDefinitions.PbkModelSpecifications;
 
 namespace MCRA.Simulation.Calculators.PbkModelCalculation {
     public class TargetOutputMapping {
-        public string CompartmentId { get; set; }
-        public string SpeciesId { get; set; }
-        public Compound Substance { get; set; }
+        // Target, unit and substance
         public TargetUnit TargetUnit { get; set; }
-        public PbkModelOutputSpecification OutputDefinition { get; set; }
+        public Compound Substance { get; set; }
 
-        public TargetUnit OutputUnit {
-            get {
-                return OutputDefinition.TargetUnit;
-            }
-        }
-
-        public KineticModelOutputType OutputType {
-            get {
-                return OutputDefinition.Type;
-            }
-        }
+        public string OutputId { get; set; }
+        public string CompartmentId { get; set; }
+        public TargetUnit OutputUnit { get; set; }
+        public PbkModelOutputType OutputType { get; set; }
 
         public double GetUnitAlignmentFactor(double compartmentWeight) {
             return OutputUnit.GetAlignmentFactor(

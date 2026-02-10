@@ -13,7 +13,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 // Substance dependent parameter splitting out over multiple substances
                 var record = new PbkModelDefinitionParameterSummaryRecord() {
                     ParameterCode = parameter.Id,
-                    ParameterName = parameter.Description,
+                    ParameterDescription = parameter.Description,
                     Unit = parameter.Unit,
                     Value = parameter.DefaultValue,
                     Type = parameter.Type,

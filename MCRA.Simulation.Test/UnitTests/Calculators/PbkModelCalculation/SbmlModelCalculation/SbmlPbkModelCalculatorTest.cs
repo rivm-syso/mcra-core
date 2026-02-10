@@ -1,6 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.General.KineticModelDefinitions;
+using MCRA.General.PbkModelDefinitions.PbkModelSpecifications.Sbml;
 using MCRA.Simulation.Calculators.KineticConversionCalculation;
 using MCRA.Simulation.Calculators.PbkModelCalculation;
 using MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation;
@@ -16,7 +16,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.SbmlMod
     [TestClass]
     public class SbmlPbkModelCalculatorTest : PbkModelCalculatorTestsBase {
 
-        protected virtual IPbkModelSpecification GetModelDefinition() {
+        protected virtual SbmlPbkModelSpecification GetModelDefinition() {
             return SbmlPbkModelSpecificationBuilder.CreateFromSbmlFile(
                 "Resources/PbkModels/EuroMixGenericPbk.sbml"
             );
@@ -34,7 +34,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.SbmlMod
             };
         }
 
-        protected override PbkModelCalculatorBase createCalculator(
+        protected override IPbkModelCalculator createCalculator(
             KineticModelInstance instance,
             PbkSimulationSettings simulationSettings
         ) {
@@ -53,9 +53,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.SbmlMod
         public void SbmlPbkModelCalculator_TestDefinition() {
             var modelDefinition = GetModelDefinition();
             var expected = new[] { "QGut", "QSkin_sc_e", "QAir" };
+            var actual = modelDefinition.GetRouteInputSpecies().Values.Select(r => r.Id).ToArray();
             CollectionAssert.AreEquivalent(
                 expected,
-                modelDefinition.GetInputDefinitions().Select(r => r.Id).ToArray()
+                actual
             );
             var bwParam = modelDefinition.GetParameterDefinitionByType(PbkModelParameterType.BodyWeight);
             Assert.AreEqual("BM", bwParam.Id);
@@ -83,7 +84,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.SbmlMod
         /// SBML ModelCalculator: calculates individual day target exposures, Euromix SBML, acute
         /// </summary>
         [TestMethod]
-        public void SbmlModelCalculator_TestCalculateIndividualDayTargetExposuresEuromix() {
+        public void SbmlPbkModelCalculator_TestCalculateIndividualDayTargetExposuresEuromix() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var substances = FakeSubstancesGenerator.Create(1);
@@ -137,7 +138,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.SbmlMod
             Compound substance
         ) {
             var modelDefinition = GetModelDefinition();
-            var idModelInstance = modelDefinition.IdModel;
+            var idModelInstance = modelDefinition.Id;
             var kineticModelParameters = new List<KineticModelInstanceParameter> {
                 new() {
                     IdModelInstance = idModelInstance,

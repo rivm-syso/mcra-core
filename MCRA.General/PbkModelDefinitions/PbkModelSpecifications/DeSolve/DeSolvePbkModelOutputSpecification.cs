@@ -1,19 +1,24 @@
 ﻿using System.Xml.Serialization;
 
-namespace MCRA.General {
-
-    public enum KineticModelOutputType {
-        Concentration,
-        CumulativeAmount
-    }
+namespace MCRA.General.PbkModelDefinitions.PbkModelSpecifications.DeSolve {
 
     [Serializable]
-    public class PbkModelOutputSpecification {
+    public class DeSolvePbkModelOutputSpecification : IPbkModelOutputSpecification {
 
         /// <summary>
         /// Gets/sets the output id.
         /// </summary>
         public string Id { get; set; }
+
+        /// <summary>
+        /// Identifier of the model substance associated with the output.
+        /// </summary>
+        public string IdSubstance { get; set; }
+
+        /// <summary>
+        /// Identifier of the model compartment associated with the output.
+        /// </summary>
+        public string IdCompartment { get; set; }
 
         /// <summary>
         /// Gets/sets the biological matrix that is associated with
@@ -35,7 +40,7 @@ namespace MCRA.General {
         /// <summary>
         /// The output type: concentration/amount/cumulative amount.
         /// </summary>
-        public KineticModelOutputType Type { get; set; }
+        public PbkModelOutputType Type { get; set; }
 
         /// <summary>
         /// Gets/sets the unit of this parameter.
@@ -65,29 +70,20 @@ namespace MCRA.General {
         public List<double> MultiplicationFactors { get; set; }
 
         /// <summary>
-        /// Species
-        /// </summary>
-        [XmlArrayItem("Species")]
-        public List<PbkModelOutputSubstanceSpecification> Species { get; set; }
-
-        /// <summary>
-        /// Returns the dose unit of this output.
-        /// </summary>
-        public DoseUnit DoseUnit {
-            get {
-                return DoseUnitConverter.FromString(Unit);
-            }
-        }
-
-        /// <summary>
         /// Returns the unit of this output.
         /// </summary>
         public TargetUnit TargetUnit {
             get {
-                return TargetUnit.FromInternalDoseUnit(
-                    DoseUnit,
-                    BiologicalMatrix
-                );
+                var target = BiologicalMatrix != BiologicalMatrix.Undefined
+                    ? new ExposureTarget(BiologicalMatrix)
+                    : null;
+                var doseUnit = DoseUnitConverter.FromString(Unit);
+                var unit = ExposureUnitTriple.FromDoseUnit(doseUnit);
+                var result = new TargetUnit() {
+                    Target = target,
+                    ExposureUnit = unit
+                };
+                return result;
             }
         }
     }

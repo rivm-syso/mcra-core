@@ -353,6 +353,7 @@
   <Outputs>
     <Output>
       <Id>CPlasmaOut</Id>
+      <IdCompartment>BloodPlasma</IdCompartment>
       <Description>Concentration in plasma</Description>
       <BiologicalMatrix>BloodPlasma</BiologicalMatrix>
       <Order>0</Order>
@@ -361,6 +362,7 @@
     </Output>
     <Output>
       <Id>CGonadOut</Id>
+      <IdCompartment>Gonad</IdCompartment>
       <Description>Concentration in gonads</Description>
       <BiologicalMatrix>Gonad</BiologicalMatrix>
       <Order>1</Order>
@@ -369,6 +371,7 @@
     </Output>
     <Output>
       <Id>AurinebpaOut</Id>
+      <IdCompartment>Urine</IdCompartment>
       <BiologicalMatrix>Urine</BiologicalMatrix>
       <Description>Cumulative excretion of BPA in urine</Description>
       <Order>2</Order>
@@ -377,6 +380,7 @@
     </Output>
     <Output>
       <Id>AurinegOut</Id>
+      <IdCompartment>Urine</IdCompartment>
       <Description>Cumulative excretion of BPA-g in urine</Description>
       <Order>3</Order>
       <Type>CumulativeAmount</Type>

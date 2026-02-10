@@ -30,7 +30,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.Exposur
                 settings,
                 timeUnit,
                 ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
-                routes.ToDictionary(r => r, r => DoseUnit.ugPerDay)
+                routes.ToDictionary(r => r, r => SubstanceAmountUnit.Micrograms)
             );
             var events = generator.CreateExposureEvents(
                 externalExposures,
@@ -71,7 +71,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.Exposur
                 settings,
                 timeUnit,
                 ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
-                routes.ToDictionary(r => r, r => DoseUnit.ugPerDay)
+                routes.ToDictionary(r => r, r => SubstanceAmountUnit.Micrograms)
             );
             var events = generator.CreateExposureEvents(
                 externalExposures,
@@ -117,7 +117,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.Exposur
                 settings,
                 TimeUnit.Hours,
                 ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
-                routes.ToDictionary(r => r, r => DoseUnit.ugPerDay)
+                routes.ToDictionary(r => r, r => SubstanceAmountUnit.Micrograms)
             );
             var events = generator.CreateExposureEvents(
                 externalExposures,
@@ -157,7 +157,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.Exposur
                 settings,
                 TimeUnit.Hours,
                 ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
-                routes.ToDictionary(r => r, r => DoseUnit.ugPerDay)
+                routes.ToDictionary(r => r, r => SubstanceAmountUnit.Micrograms)
             );
             var events = generator.CreateExposureEvents(
                 externalExposures,

@@ -17,7 +17,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
     public class PbkModelsActionCalculatorTests : ActionCalculatorTestsBase {
 
         /// <summary>
-        /// Runs the KPbkModels action: load data, load default data, summarize
+        /// Runs the PBK models action: load data, load default data, summarize
         /// action result, load data uncertain method
         /// </summary>
         [TestMethod]

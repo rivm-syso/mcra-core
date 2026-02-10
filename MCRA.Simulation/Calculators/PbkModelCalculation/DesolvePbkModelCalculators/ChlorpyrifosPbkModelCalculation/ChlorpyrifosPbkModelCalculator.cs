@@ -1,6 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Simulation.Calculators.PbkModelCalculation;
-using MCRA.Simulation.Calculators.PbkModelCalculation.DesolvePbkModelCalculators;
+using MCRA.General.PbkModelDefinitions.PbkModelSpecifications.DeSolve;
 
 namespace MCRA.Simulation.Calculators.PbkModelCalculation.DesolvePbkModelCalculators.ChlorpyrifosPbkModelCalculation {
     public sealed class ChlorpyrifosPbkModelCalculator : DesolvePbkModelCalculator {
@@ -12,20 +11,20 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.DesolvePbkModelCalcula
         }
 
         protected override double getRelativeCompartmentWeight(
-            TargetOutputMapping outputMapping,
+            DeSolvePbkModelOutputSpecification outputSpecification,
             IDictionary<string, double> parameters
         ) {
             var factor = 1D;
-            if (outputMapping.CompartmentId == "O_CS") {
+            if (outputSpecification.IdCompartment == "O_CS") {
                 factor = 0.746 - parameters["VFc"] - parameters["VMc"];
-            } else if (outputMapping.CompartmentId == "O_CR") {
+            } else if (outputSpecification.IdCompartment == "O_CR") {
                 factor = 0.09 - parameters["VLc"] - parameters["VLuc"] - parameters["VKc"] - parameters["VHc"] - parameters["VUc"] - parameters["VBrc"];
             } else {
-                foreach (var scalingFactor in outputMapping.OutputDefinition.ScalingFactors) {
+                foreach (var scalingFactor in outputSpecification.ScalingFactors) {
                     factor *= parameters[scalingFactor];
                 }
             }
-            foreach (var multiplicationFactor in outputMapping.OutputDefinition.MultiplicationFactors) {
+            foreach (var multiplicationFactor in outputSpecification.MultiplicationFactors) {
                 factor *= multiplicationFactor;
             }
             return factor;

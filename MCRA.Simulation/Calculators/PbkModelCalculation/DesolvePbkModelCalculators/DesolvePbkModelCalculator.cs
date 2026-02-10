@@ -2,20 +2,20 @@
 using System.Reflection;
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.General.PbkModelDefinitions.PbkModelSpecifications.DeSolve;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Calculators.PbkModelCalculation.ExposureEventsGeneration;
 using MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation;
 using MCRA.Simulation.Objects;
+using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.R.REngines;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.PbkModelCalculation.DesolvePbkModelCalculators {
-    public abstract class DesolvePbkModelCalculator : PbkModelCalculatorBase {
+    public abstract class DesolvePbkModelCalculator : PbkModelCalculatorBase<DeSolvePbkModelSpecification> {
 
         private readonly string _dllFileName;
         private readonly string _modelFilePath;
-        private readonly List<PbkModelStateSubstanceSpecification> _modelStates;
-        private readonly List<(string idSpecies, PbkModelOutputSpecification outputDefinition)> _modelOutputs;
 
         public bool DebugMode { get; set; } = false;
         public Func<RDotNetEngine> CreateREngine = () => new RDotNetEngine();
@@ -24,27 +24,8 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.DesolvePbkModelCalcula
             KineticModelInstance kineticModelInstance,
             PbkSimulationSettings simulationSettings
         ) : base(kineticModelInstance, simulationSettings) {
-            _dllFileName = Path.GetFileNameWithoutExtension(KineticModelDefinition.FileName);
+            _dllFileName = Path.GetFileNameWithoutExtension(PbkModelSpecification.FileName);
             _modelFilePath = getModelFilePath();
-            _modelStates = KineticModelDefinition.GetStates()
-                .SelectMany(c =>
-                    c.StateSubstances?.Count > 0
-                        ? c.StateSubstances
-                        : [new PbkModelStateSubstanceSpecification() {
-                            Id = c.Id,
-                            IdSubstance = c.IdSubstance,
-                            Order = c.Order ?? -1,
-                        }]
-                )
-                .OrderBy(r => r.Order)
-                .ToList();
-            _modelOutputs = [.. KineticModelDefinition.GetOutputs()
-                .OrderBy(c => c.Order)
-                .SelectMany(r => r.Species?.Count > 0
-                    ? r.Species.Select(s => (id: s.IdSpecies, r))
-                    : [(id: r.Id, r)]
-                )];
-
             if (simulationSettings.PbkSimulationMethod != PbkSimulationMethod.Standard) {
                 throw new NotImplementedException($"PBK simulation method [{simulationSettings.PbkSimulationMethod}] not implemented for DeSolve PBK models.");
             }
@@ -64,41 +45,67 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.DesolvePbkModelCalcula
             IRandom generator
         ) {
             // Get time resolution
-            var timeUnitMultiplier = TimeUnit.Days.GetTimeUnitMultiplier(KineticModelDefinition.Resolution);
+            var timeUnitMultiplier = TimeUnit.Days.GetTimeUnitMultiplier(PbkModelSpecification.Resolution);
             var numberOfSimulatedDays = SimulationSettings.NumberOfSimulatedDays;
             var duration = timeUnitMultiplier * numberOfSimulatedDays;
             var stepsPerDay = getSimulationStepsPerDay();
             var stepLength = 1d / stepsPerDay * timeUnitMultiplier;
 
-            var nominalInputParameters = getNominalParameter();
-
             // Get integrator
             var integrator = string.Empty;
-            if (KineticModelDefinition.IdIntegrator != null) {
-                if (KineticModelDefinition.IdIntegrator.StartsWith("rk")) {
-                    integrator = $", method = rkMethod('{KineticModelDefinition.IdIntegrator}') ";
+            if (PbkModelSpecification.IdIntegrator != null) {
+                if (PbkModelSpecification.IdIntegrator.StartsWith("rk")) {
+                    integrator = $", method = rkMethod('{PbkModelSpecification.IdIntegrator}') ";
                 } else {
-                    integrator = $", method = '{KineticModelDefinition.IdIntegrator}' ";
+                    integrator = $", method = '{PbkModelSpecification.IdIntegrator}' ";
                 }
+            }
+
+            // Get nominal parameter values
+            var nominalParameterValues = getNominalParameterValues();
+
+            // Get model inputs
+            var modelInputs = PbkModelSpecification.Forcings;
+
+            // Get model inputs/exposure routes in order of specification to match deSolve forcings
+            var modelInputRoutes = modelInputs
+                .OrderBy(r => r.Order)
+                .Select(c => c.Route)
+                .ToList();
+
+            // Check if routes are supported by the model
+            var missingRoutes = routes.Except(modelInputRoutes).ToList();
+            if (missingRoutes.Count > 0) {
+                var routeNames = string.Join(", ", missingRoutes.Select(r => r.GetDisplayName()));
+                throw new Exception($"Exposure routes {routeNames} are not supported by PBK model {PbkModelSpecification.Id}.");
             }
 
             // Initialise exposure events generator
             var exposureEventsGenerator = new ExposureEventsGenerator(
                 SimulationSettings,
-                KineticModelDefinition.Resolution,
+                PbkModelSpecification.Resolution,
                 exposureUnit,
-                KineticModelDefinition.GetInputDefinitions()
+                modelInputs
                     .ToDictionary(
                         r => r.Route,
-                        r => r.DoseUnit
+                        r => r.DoseUnit.GetSubstanceAmountUnit()
                     )
             );
 
-            // Get kinetic model output mappings for selected targets
+            // Get model output mappings for selected targets
             var outputMappings = getTargetOutputMappings(targetUnits);
 
-            // Determine modelled/unmodelled exposure routes
-            var modelExposureRoutes = KineticModelDefinition.GetExposureRoutes();
+            // Get model states in order of specification to match deSolve states
+            var modelStates = PbkModelSpecification.GetStates();
+
+            // Get model outputs in order of specification to match deSolve outputs
+            var modelOutputs = PbkModelSpecification.Outputs
+                .OrderBy(c => c.Order)
+                .ToList();
+
+            // Create lookup for model outputs by id
+            var outputDefinitionsLookup = PbkModelSpecification.Outputs
+                .ToDictionary(r => r.Id);
 
             var results = new List<PbkSimulationOutput>();
             using (var R = CreateREngine()) {
@@ -120,7 +127,7 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.DesolvePbkModelCalcula
 
                         // Compute event timings and doses per route and set in R
                         (var eventTimings, var dosesPerRoute) = computeDoses(
-                            modelExposureRoutes,
+                            modelInputRoutes,
                             exposureEvents,
                             timeUnitMultiplier
                         );
@@ -130,7 +137,7 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.DesolvePbkModelCalcula
                         // If we have positive exposures, then run simulation
                         if (exposureEvents.Count > 0) {
                             var parameters = drawParameters(
-                                nominalInputParameters,
+                                nominalParameterValues,
                                 generator,
                                 SimulationSettings.UseParameterVariability
                             );
@@ -143,15 +150,15 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.DesolvePbkModelCalcula
                                 R.SetSymbol("doses", routeDoses.Value);
                                 R.EvaluateNoReturn(routeDoses.Key.ToString() + " <- cbind(events, doses)");
                             }
-                            R.EvaluateNoReturn($"allDoses <- list({string.Join(",", modelExposureRoutes.Select(r => r.ToString()))})");
+                            R.EvaluateNoReturn($"allDoses <- list({string.Join(",", modelInputRoutes.Select(r => r.ToString()))})");
 
                             // Initialize ode parameters, states, and doses
                             R.SetSymbol("params", parameters.Values);
                             R.EvaluateNoReturn($"params <- .C('getParms', as.double(params), out=double(length(params)), as.integer(length(params)), PACKAGE='{_dllFileName}')$out");
                             R.SetSymbol("paramNames", parameters.Keys);
                             R.EvaluateNoReturn($"names(params) <- paramNames");
-                            R.SetSymbol("states", Enumerable.Repeat(0d, _modelStates.Count));
-                            R.SetSymbol("outputNames", _modelOutputs.Select(r => r.idSpecies));
+                            R.SetSymbol("states", Enumerable.Repeat(0d, modelStates.Count));
+                            R.SetSymbol("outputNames", modelOutputs.Select(r => r.Id));
 
                             // Call to ODE
                             var cmd = "output <- ode(y = states, times = times, func = 'derivs', parms = params, " +
@@ -162,7 +169,7 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.DesolvePbkModelCalcula
 
                             // When in debug mode, also set state names
                             if (DebugMode) {
-                                R.SetSymbol("stateNames", _modelStates.Select(r => r.Id));
+                                R.SetSymbol("stateNames", modelStates.Select(r => r.Id));
                                 R.EvaluateNoReturn("colnames(output) <- c(\"time\", stateNames, outputNames)");
                             }
 
@@ -172,16 +179,19 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.DesolvePbkModelCalcula
                                 OutputStates = [],
                             };
 
+                            // Collect the compartment sizes as output states
                             foreach (var sc in outputMappings) {
-                                var compartmentSize = !string.IsNullOrEmpty(sc.OutputDefinition.CompartmentSizeParameter)
-                                    ? R.EvaluateDouble($"params['{sc.OutputDefinition.CompartmentSizeParameter}']")
-                                    : getRelativeCompartmentWeight(sc, parameters) * individual.BodyWeight;
+                                var outputDefinition = outputDefinitionsLookup[sc.OutputId];
+                                var compartmentSize = !string.IsNullOrEmpty(outputDefinition.CompartmentSizeParameter)
+                                    ? R.EvaluateDouble($"params['{outputDefinition.CompartmentSizeParameter}']")
+                                    : getRelativeCompartmentWeight(outputDefinition, parameters) * individual.BodyWeight;
                                 simulationOutput.OutputStates[sc.CompartmentId] = compartmentSize;
                             }
 
-                            foreach (var modelOutput in _modelOutputs) {
-                                var series = R.EvaluateNumericArray($"output[,'{modelOutput.idSpecies}']");
-                                simulationOutput.OutputTimeSeries[modelOutput.idSpecies] = series;
+                            // Collect the output timeseries
+                            foreach (var modelOutput in modelOutputs) {
+                                var series = R.EvaluateNumericArray($"output[,'{modelOutput.Id}']");
+                                simulationOutput.OutputTimeSeries[modelOutput.Id] = series;
                             }
                         }
 
@@ -202,43 +212,24 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.DesolvePbkModelCalcula
             return results;
         }
 
-        private Dictionary<string, KineticModelInstanceParameter> getNominalParameter() {
+        private Dictionary<string, KineticModelInstanceParameter> getNominalParameterValues() {
             // Get nominal input parameters
-            var nominalInputParametersOrder = KineticModelDefinition.GetParameters()
-                .Where(r => !r.SubstanceParameterValues.Any())
+            var result = PbkModelSpecification
+                .GetParameters()
+                .OrderBy(c => c.Order)
                 .ToDictionary(
-                    r => r.Order,
+                    r => r.Id,
                     r => {
                         if (KineticModelInstance.KineticModelInstanceParameters.TryGetValue(r.Id, out var parameter)) {
                             return parameter;
                         } else if (!r.IsInternalParameter) {
-                            throw new Exception($"Kinetic model parameter {r.Id} not found in model instance {KineticModelInstance.IdModelInstance}");
+                            throw new Exception($"PBK model parameter {r.Id} not found in model instance {KineticModelInstance.IdModelInstance}");
                         } else {
                             return new KineticModelInstanceParameter() { Parameter = r.Id, Value = 0D };
                         }
                     }
                 );
-
-            // Get nominal input parameters for parent and metabolites
-            var substanceParameterValuesOrder = KineticModelDefinition.GetParameters()
-                .Where(r => r.SubstanceParameterValues.Any())
-                .SelectMany(c => c.SubstanceParameterValues)
-                .ToDictionary(c => c.Order,
-                    c => {
-                        if (KineticModelInstance.KineticModelInstanceParameters.TryGetValue(c.IdParameter, out var parameter)) {
-                            return parameter;
-                        } else {
-                            throw new Exception($"Kinetic model parameter {c.IdParameter} not found in model instance {KineticModelInstance.IdModelInstance}");
-                        }
-                    }
-                );
-
-            // Combine dictionaries
-            substanceParameterValuesOrder.ToList().ForEach(x => nominalInputParametersOrder[x.Key] = x.Value);
-            var nominalInputParameters = nominalInputParametersOrder
-                .OrderBy(c => c.Key)
-                .ToDictionary(c => c.Value.Parameter, c => c.Value);
-            return nominalInputParameters;
+            return result;
         }
 
         protected virtual (List<double> timings, Dictionary<ExposureRoute, List<double>> dosesPerRoute) computeDoses(
@@ -293,14 +284,14 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.DesolvePbkModelCalcula
         }
 
         protected virtual double getRelativeCompartmentWeight(
-            TargetOutputMapping outputMapping,
+            DeSolvePbkModelOutputSpecification outputSpecification,
             IDictionary<string, double> parameters
         ) {
             var factor = 1D;
-            foreach (var scalingFactor in outputMapping.OutputDefinition.ScalingFactors) {
+            foreach (var scalingFactor in outputSpecification.ScalingFactors) {
                 factor *= parameters[scalingFactor];
             }
-            foreach (var multiplicationFactor in outputMapping.OutputDefinition.MultiplicationFactors) {
+            foreach (var multiplicationFactor in outputSpecification.MultiplicationFactors) {
                 factor *= multiplicationFactor;
             }
             return factor;
