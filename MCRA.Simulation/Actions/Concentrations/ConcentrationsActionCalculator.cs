@@ -577,7 +577,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
                 data.ActiveSubstanceSampleCollections.Add(water, waterSampleCollection);
             }
 
-            if (this.ModuleConfig.FocalCommodity
+            if (ModuleConfig.FocalCommodity
                 && ModuleConfig.IsFocalCommodityMeasurementReplacement
                 && ModuleConfig.UseDeterministicSubstanceConversionsForFocalCommodity
             ) {

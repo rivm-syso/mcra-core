@@ -61,7 +61,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                 var numSamples = numberOfSamples != null ? numberOfSamples[i] : 20;
                 var sampleCompoundRecords = Enumerable
                     .Range(0, numSamples)
-                    .Select(r => createSampleCompoundRecord(substances, concentrationModels, random))
+                    .Select(r => createSampleCompoundRecord($"FS_{food.Code}_{r}", substances, concentrationModels, random))
                     .ToList();
                 var record = new SampleCompoundCollection(
                     food,
@@ -142,18 +142,15 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         /// Creates a sample compound record for the specified substances
         /// using the provided simple concentration models.
         /// </summary>
-        /// <param name="substances"></param>
-        /// <param name="concentrationModels"></param>
-        /// <param name="random"></param>
-        /// <returns></returns>
         private static SampleCompoundRecord createSampleCompoundRecord(
+            string sampleCode,
             IEnumerable<Compound> substances,
             IDictionary<Compound, SimpleConcentrationModel> concentrationModels,
             IRandom random
         ) {
             var result = new SampleCompoundRecord() {
                 AuthorisedUse = true,
-                FoodSample = new FoodSample(),
+                FoodSample = new FoodSample() { Code = sampleCode },
                 SampleCompounds = substances
                     .ToDictionary(
                         r => r,

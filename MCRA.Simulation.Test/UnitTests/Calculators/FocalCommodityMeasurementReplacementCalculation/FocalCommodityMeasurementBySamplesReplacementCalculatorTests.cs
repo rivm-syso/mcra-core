@@ -3,6 +3,7 @@ using MCRA.Simulation.Calculators.FocalCommodityMeasurementReplacementCalculatio
 using MCRA.Simulation.Calculators.ProcessingFactorCalculation;
 using MCRA.Simulation.Calculators.ProcessingFactorCalculation.ProcessingFactorModels;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
+using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.FocalCommodityMeasurementReplacementCalculation {
@@ -136,6 +137,72 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FocalCommodityMeasurementRe
                 var expectedFocalCombinationResidues = new[] { 0, adjustmentFactor * foregroundSampleConcentration };
                 CollectionAssert.AreEquivalent(expectedFocalCombinationResidues, residuesFocalCombination);
             }
+        }
+
+        /// <summary>
+        /// Test focal commodity measurement by samples replacement calculator.
+        /// Assert that the order of the sample compound records in the focal
+        /// sample compound collection does not affect the result of the replacement
+        /// calculation.
+        /// </summary>
+        [TestMethod]
+        public void FocalCommodityMeasurementBySamplesReplacementCalculator_TestRandomOrderDependence() {
+            var foods = FakeFoodsGenerator.Create(1);
+            var substances = FakeSubstancesGenerator.Create(1);
+            var focalFood = foods.First();
+            var focalSubstance = substances.First();
+            var focalCombinations = new List<(Food, Compound)>() { (focalFood, focalSubstance) };
+
+            var results = new List<List<double>>();
+            for (int i = 0; i < 10; i++) {
+                var seed = 1;
+                var random = new McraRandomGenerator(seed);
+
+                // Create background sample compound collection
+                var backgroundSampleCompoundCollection = FakeSampleCompoundCollectionsGenerator
+                    .Create(foods, substances, random, numberOfSamples: [10]);
+
+                // Create foreground sample compound collection with only one sample (for the focal food)
+                // and one measurement (for the focal substance) with a specific concentration
+                var focalSampleCompoundCollection = FakeSampleCompoundCollectionsGenerator
+                    .Create([focalFood], [focalSubstance], random, numberOfSamples: [3]);
+
+                var iterationRandom = new McraRandomGenerator(i);
+                focalSampleCompoundCollection[focalFood].SampleCompoundRecords = 
+                    focalSampleCompoundCollection[focalFood].SampleCompoundRecords
+                        .OrderBy(r => iterationRandom.Next())
+                        .ToList();
+
+                var focalConcentrations = focalSampleCompoundCollection[focalFood].SampleCompoundRecords
+                    .Select(r => r.SampleCompounds[focalSubstance].Residue)
+                    .ToArray();
+
+                var adjustmentFactor = 1;
+                var focalCommodityScenarioOccurrencePercentage = 100;
+
+                // Create measurements replacement calculator and compute
+                var model = new FocalCommodityMeasurementBySamplesReplacementCalculator(
+                    focalSampleCompoundCollection,
+                    null,
+                    focalCommodityScenarioOccurrencePercentage,
+                    adjustmentFactor,
+                    false,
+                    null
+                );
+                var result = model.Compute(
+                    backgroundSampleCompoundCollection,
+                    focalCombinations,
+                    random
+                );
+
+                // Check replaced concentrations
+                var residuesFocalCombination = result[focalFood].SampleCompoundRecords
+                    .Select(r => r.SampleCompounds[focalSubstance].Residue)
+                    .ToList();
+                results.Add(residuesFocalCombination);
+            }
+            Assert.AreEqual(results[0].Sum(), results[1].Sum());
+            CollectionAssert.AreEquivalent(results[0], results[1]);
         }
 
         /// <summary>

@@ -47,7 +47,9 @@ namespace MCRA.Simulation.Calculators.FocalCommodityMeasurementReplacementCalcul
             if (!focalCommoditySampleCompoundCollection?.SampleCompoundRecords?.Any() ?? true) {
                 throw new Exception($"No replacement measurements found for focal commodity {food.Name} ({food.Code}).");
             }
-            var focalSampleCompoundRecords = focalCommoditySampleCompoundCollection.SampleCompoundRecords;
+            var focalSampleCompoundRecords = focalCommoditySampleCompoundCollection.SampleCompoundRecords
+                .OrderBy(r => r.FoodSample.Code)
+                .ToList();
 
             // Create the specific number of sample compound records
             var result = new List<SampleCompoundRecord>(numberOfSamples);
