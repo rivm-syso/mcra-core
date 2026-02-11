@@ -3,6 +3,7 @@ using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Actions.ActiveSubstances;
+using MCRA.Simulation.Actions.AirConcentrationDistributions;
 using MCRA.Simulation.Actions.AirExposureDeterminants;
 using MCRA.Simulation.Actions.AirExposures;
 using MCRA.Simulation.Actions.AOPNetworks;
@@ -355,6 +356,19 @@ namespace MCRA.Simulation {
         public IDictionary<(Food Food, Compound Substance), double> TdsReductionFactors {
             get => GetOrCreateModuleOutputData<DietaryExposuresOutputData>(ActionType.DietaryExposures).TdsReductionFactors;
             set => GetOrCreateModuleOutputData<DietaryExposuresOutputData>(ActionType.DietaryExposures).TdsReductionFactors = value;
+        }
+
+        public IDictionary<Compound, ConcentrationModel> IndoorAirConcentrationModels {
+            get => GetOrCreateModuleOutputData<AirConcentrationDistributionsOutputData>(ActionType.AirConcentrationDistributions).IndoorAirConcentrationModels;
+            set => GetOrCreateModuleOutputData<AirConcentrationDistributionsOutputData>(ActionType.AirConcentrationDistributions).IndoorAirConcentrationModels = value;
+        }
+        public AirConcentrationUnit AirConcentrationDistributionUnit {
+            get => GetOrCreateModuleOutputData<AirConcentrationDistributionsOutputData>(ActionType.AirConcentrationDistributions).AirConcentrationDistributionUnit;
+            set => GetOrCreateModuleOutputData<AirConcentrationDistributionsOutputData>(ActionType.AirConcentrationDistributions).AirConcentrationDistributionUnit = value;
+        }
+        public IDictionary<Compound, ConcentrationModel> OutdoorAirConcentrationModels {
+            get => GetOrCreateModuleOutputData<AirConcentrationDistributionsOutputData>(ActionType.AirConcentrationDistributions).OutdoorAirConcentrationModels;
+            set => GetOrCreateModuleOutputData<AirConcentrationDistributionsOutputData>(ActionType.AirConcentrationDistributions).OutdoorAirConcentrationModels = value;
         }
 
         // IndoorAirConcentrations

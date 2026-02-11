@@ -554,6 +554,8 @@ namespace MCRA.Data.Management {
         public IDictionary<string, ExposureDeterminantCombination> AllSingleValueNonDietaryExposureDeterminantCombinations => _dataManager.GetAllSingleValueNonDietaryExposureDeterminantCombinations();
 
         public IList<ExposureEstimate> AllSingleValueNonDietaryExposures => _dataManager.GetAllSingleValueNonDietaryExposures();
+        public IList<AirConcentrationDistribution> AllIndoorAirConcentrationDistributions => _dataManager.GetAllIndoorAirConcentrationDistributions();
+        public IList<AirConcentrationDistribution> AllOutdoorAirConcentrationDistributions => _dataManager.GetAllOutdoorAirConcentrationDistributions();
 
         public IList<AirConcentration> AllIndoorAirConcentrations => _dataManager.GetAllIndoorAirConcentrations();
 

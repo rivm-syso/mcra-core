@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>AirConcentrationDistributionType</Id>
+  <Name>Air concentration distribution types.</Name>
+  <UndefinedValue Id="Constant" Name="Constant">0</UndefinedValue>
+  <UndefinedAliases>
+    <Alias>Constant</Alias>
+  </UndefinedAliases>
+  <Description>
+    Air concentration distribution types.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>LogNormal</Id>
+      <Name>LogNormal</Name>
+      <ShortName>LogNormal</ShortName>
+      <Description>
+        Lognormal distribution parameterised by a mean and a coefficient of variation.
+      </Description>
+      <Aliases>
+        <Alias>LogNormal</Alias>
+      </Aliases>
+    </Unit>
+  </Units>
+</UnitDefinition>

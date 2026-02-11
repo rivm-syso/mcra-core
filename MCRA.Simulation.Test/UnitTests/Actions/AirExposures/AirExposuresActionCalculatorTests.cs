@@ -2,6 +2,7 @@
 using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.AirExposures;
+using MCRA.Simulation.Calculators.ConcentrationModelBuilder;
 using MCRA.Simulation.Calculators.IndividualDaysGenerator;
 using MCRA.Simulation.Calculators.PopulationGeneration;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
@@ -70,13 +71,19 @@ namespace MCRA.Simulation.Test.UnitTests.Actions.AirExposures {
             var ages = individuals.Select(c => c.Age).Distinct().ToList();
             var airIndoorFractions = FakeAirIndoorFractionsGenerator.Create(ages, seed);
             var airVentilatoryFlowRates = FakeAirVentilatoryFlowRatesGenerator.Create(sexes, ages, seed);
-
+            var airConcentrationModelBuilder = new AirConcentrationModelBuilder();
+            var concentrationModels = airConcentrationModelBuilder.Create(
+                indoorAirConcentrations,
+                NonDetectsHandlingMethod.ReplaceByZero,
+                0
+            );
             var data = new ActionData() {
                 AllCompounds = substances,
                 ActiveSubstances = substances,
                 SelectedPopulation = selectedPopulation,
                 IndoorAirConcentrations = indoorAirConcentrations,
                 OutdoorAirConcentrations = outdoorAirConcentrations,
+                IndoorAirConcentrationModels = concentrationModels,
                 AirVentilatoryFlowRates = airVentilatoryFlowRates,
                 AirIndoorFractions = airIndoorFractions,
                 IndoorAirConcentrationUnit = indoorAirConcentrations.FirstOrDefault().Unit,
@@ -122,7 +129,12 @@ namespace MCRA.Simulation.Test.UnitTests.Actions.AirExposures {
             var ages = individuals.Select(c => c.Age).Distinct().ToList();
             var airIndoorFractions = FakeAirIndoorFractionsGenerator.Create(ages, seed);
             var airVentilatoryFlowRates = FakeAirVentilatoryFlowRatesGenerator.Create(sexes, ages, seed);
-
+            var airConcentrationModelBuilder = new AirConcentrationModelBuilder();
+            var concentrationModels = airConcentrationModelBuilder.Create(
+                indoorAirConcentrations,
+                NonDetectsHandlingMethod.ReplaceByZero,
+                0
+            );
             var project = new ProjectDto();
             var config = project.AirExposuresSettings;
             config.SelectedExposureRoutes = [ExposureRoute.Dermal, ExposureRoute.Oral];
@@ -134,6 +146,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions.AirExposures {
                 DietaryIndividualDayIntakes = dietaryIndividualDayIntakes,
                 IndoorAirConcentrations = indoorAirConcentrations,
                 OutdoorAirConcentrations = outdoorAirConcentrations,
+                IndoorAirConcentrationModels = concentrationModels,
                 AirIndoorFractions = airIndoorFractions,
                 AirVentilatoryFlowRates = airVentilatoryFlowRates,
                 IndoorAirConcentrationUnit = indoorAirConcentrations.FirstOrDefault().Unit,

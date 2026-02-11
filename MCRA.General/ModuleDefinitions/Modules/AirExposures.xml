@@ -44,8 +44,7 @@
   </UncertaintySettings>
   <CalculationInputs>
     <Input>DietaryExposures</Input>
-    <Input>IndoorAirConcentrations</Input>
-    <Input>OutdoorAirConcentrations</Input>
+    <Input>AirConcentrationDistributions</Input>
     <Input>AirExposureDeterminants</Input>
     <Input>Individuals</Input>
   </CalculationInputs>

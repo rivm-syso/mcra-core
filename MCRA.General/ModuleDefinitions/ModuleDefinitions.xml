@@ -84,6 +84,7 @@
       <xi:include href="Modules/SoilConcentrationDistributions.xml" />
       <xi:include href="Modules/SoilExposureDeterminants.xml" />
       <xi:include href="Modules/SoilExposures.xml" />
+      <xi:include href="Modules/AirConcentrationDistributions.xml" />
       <xi:include href="Modules/IndoorAirConcentrations.xml" />
       <xi:include href="Modules/OutdoorAirConcentrations.xml" />
       <xi:include href="Modules/AirExposureDeterminants.xml" />

@@ -26,6 +26,11 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         public ConcentrationUnit ConcentrationUnit { get; set; }
 
         /// <summary>
+        /// The air concentration unit of the concentrations modelled by this model.
+        /// </summary>
+        public AirConcentrationUnit AirConcentrationUnit { get; set; }
+
+        /// <summary>
         /// The model type that was actually desired when generating the model.
         /// Differs from the model type when a fallback is used.
         /// </summary>

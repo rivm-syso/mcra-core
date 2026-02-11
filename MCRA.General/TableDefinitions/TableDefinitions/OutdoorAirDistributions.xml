@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>OutdoorAirDistributions</Id>
+  <Name>Outdoor air concentration distributions</Name>
+  <Description>
+    Outdoor air concentration distributions specified in the form of summary statistics: mean and a coefficient of variation, 
+    and a occurrence percentage.
+  </Description>
+  <Aliases>
+    <string>OutdoorAirDistributions</string>
+    <string>DistributionsOutdoorAir</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawOutdoorAirDistributions</string>
+  </HiddenAliases>
+  <TargetDataTable>RawOutdoorAirDistributions</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idSubstance</Id>
+      <Name>idSubstance</Name>
+      <Description>The code of the substance.</Description>
+      <Aliases>
+        <string>idSubstance</string>
+        <string>SubstanceId</string>
+        <string>SubstanceCode</string>
+        <string>Substance</string>
+      </Aliases>
+      <PreferredAlias>SubstanceCode</PreferredAlias>
+      <ForeignKeyTables>
+        <string>Compounds</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>Mean</Id>
+      <Description>The mean of the concentration distribution.</Description>
+      <Aliases>
+        <string>Mean</string>
+        <string>Value</string>
+        <string>Concentration</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="ConcentrationUnit" Required="false">
+      <Id>Unit</Id>
+      <Description>
+        The unit for the substance concentrations. When not specified, then a default unit of ug/m3 is assumed.
+      </Description>
+      <Aliases>
+        <string>Unit</string>
+        <string>ConcentrationUnit</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AirConcentrationDistributionType" Required="true">
+      <Id>DistributionType</Id>
+      <Description>
+        Type of the distribution.
+      </Description>
+      <Aliases>
+        <string>DistributionType</string>
+        <string>Distribution</string>
+      </Aliases>
+      <PossibleValues>
+        <PossibleValue>Uniform</PossibleValue>
+        <PossibleValue>LogNormal</PossibleValue>
+      </PossibleValues>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric" Required="false">
+      <Id>CvVariability</Id>
+      <Description>Coefficient of variation.</Description>
+      <Aliases>
+        <string>CvVariability</string>
+        <string>CV</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric" Required="false">
+      <Id>OccurrencePercentage</Id>
+      <Description>
+        Percentage (%) of the OutdoorAir with substance (default 100%).
+      </Description>
+      <Aliases>
+        <string>OccurrencePercentage</string>
+        <string>Percentage</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

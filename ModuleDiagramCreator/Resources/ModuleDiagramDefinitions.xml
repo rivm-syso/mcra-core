@@ -55,6 +55,7 @@
     <GraphDefinition ActionType="SoilExposureDeterminants" X="36" Y="48" Linebreaks="1"/>
     <GraphDefinition ActionType="SoilExposures" X="38" Y="48" Linebreaks="1"/>
 
+    <GraphDefinition ActionType="AirConcentrationDistributions" X="24" Y="48" Linebreaks="1"/>
     <GraphDefinition ActionType="IndoorAirConcentrations" X="26" Y="48" Linebreaks="1"/>
     <GraphDefinition ActionType="OutdoorAirConcentrations" X="28" Y="48" Linebreaks="1"/>
     <GraphDefinition ActionType="AirExposureDeterminants" X="30" Y="48" Linebreaks="1"/>

@@ -1,5 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
 using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Objects;
 using MCRA.Simulation.Objects.IndividualExposures;
@@ -16,41 +17,35 @@ namespace MCRA.Simulation.Calculators.AirExposureCalculation {
             ICollection<IIndividualDay> individualDays,
             ICollection<Compound> substances,
             List<ExposureRoute> routes,
-            ICollection<AirConcentration> indoorAirConcentrations,
-            ICollection<AirConcentration> outdoorAirConcentrations,
+            IDictionary<Compound, ConcentrationModel> indoorConcentrationModels,
+            IDictionary<Compound, ConcentrationModel> outdoorConcentrationModels,
             ICollection<AirIndoorFraction> airIndoorFractions,
-            ICollection<AirVentilatoryFlowRate> airVentilatoryFlowRates,
+            ICollection<AirVentilatoryFlowRate> ventilatoryFlowRates,
             AirConcentrationUnit airConcentrationUnit,
             ExposureUnitTriple targetUnit,
-            IRandom airExposureDeterminantsRandomGenerator
+            IRandom exposureDeterminantsRandomGenerator
         ) {
-            airVentilatoryFlowRates = [.. airVentilatoryFlowRates.OrderBy(x => x.AgeLower)];
+            ventilatoryFlowRates = [.. ventilatoryFlowRates.OrderBy(x => x.AgeLower)];
             airIndoorFractions = [.. airIndoorFractions.OrderBy(x => x.AgeLower)];
-            var needsAge = airVentilatoryFlowRates.All(r => r.AgeLower.HasValue)
+            var needsAge = ventilatoryFlowRates.All(r => r.AgeLower.HasValue)
                 || airIndoorFractions.All(r => r.AgeLower.HasValue);
             if (needsAge && individualDays.Any(r => r.SimulatedIndividual.Age == null)) {
                 throw new Exception("Missing values for age in individuals.");
             }
 
-            var needsSex = airVentilatoryFlowRates.All(r => r.Sex != GenderType.Undefined);
+            var needsSex = ventilatoryFlowRates.All(r => r.Sex != GenderType.Undefined);
             if (needsSex && individualDays.Any(r => r.SimulatedIndividual.Gender == GenderType.Undefined)) {
                 throw new Exception("Missing values for sex in individuals.");
             }
 
-            var flowRateRandomGenerator = new McraRandomGenerator(airExposureDeterminantsRandomGenerator.Next());
-            var indoorConcentrationRandomGenerator = new McraRandomGenerator(airExposureDeterminantsRandomGenerator.Next());
+            var flowRateRandomGenerator = new McraRandomGenerator(exposureDeterminantsRandomGenerator.Next());
+            var indoorConcentrationRandomGenerator = new McraRandomGenerator(exposureDeterminantsRandomGenerator.Next());
 
             var concentrationAmountAlignmentFactor = airConcentrationUnit.GetSubstanceAmountUnit()
                 .GetMultiplicationFactor(targetUnit.SubstanceAmountUnit);
             var concentrationVolumeAlignmentFactor = 1 / airConcentrationUnit.GetConcentrationVolumeUnit()
                 .GetMultiplicationFactor(VolumeUnit.Cubicmeter);
             var concentrationAlignmentFactor = concentrationAmountAlignmentFactor * concentrationVolumeAlignmentFactor;
-            var alignedIndoorAirConcentrationDistributions = indoorAirConcentrations
-                .GroupBy(r => r.Substance)
-                .ToDictionary(r => r.Key, r => r.Select(c => c.Concentration * concentrationAlignmentFactor));
-            var alignedOutdoorAirConcentrationDistributions = outdoorAirConcentrations
-                .GroupBy(r => r.Substance)
-                .ToDictionary(r => r.Key, r => r.Select(c => c.Concentration * concentrationAlignmentFactor));
 
             var result = new List<AirIndividualExposure>();
             foreach (var individualDay in individualDays) {
@@ -61,7 +56,7 @@ namespace MCRA.Simulation.Calculators.AirExposureCalculation {
                 var exposuresPerPath = new Dictionary<ExposurePath, List<IIntakePerCompound>>();
                 if (routes.Contains(ExposureRoute.Inhalation)) {
                     var individualFlowRate = calculateFlowRate(
-                        airVentilatoryFlowRates,
+                        ventilatoryFlowRates,
                         age,
                         sex,
                         flowRateRandomGenerator
@@ -71,15 +66,15 @@ namespace MCRA.Simulation.Calculators.AirExposureCalculation {
                         substances,
                         individualFlowRate,
                         indoorFraction,
-                        alignedIndoorAirConcentrationDistributions,
-                        alignedOutdoorAirConcentrationDistributions,
+                        indoorConcentrationModels,
+                        outdoorConcentrationModels,
                         indoorConcentrationRandomGenerator
                     );
                     exposuresPerPath[new(ExposureSource.Air, ExposureRoute.Inhalation)] = airExposurePerSubstance;
                 }
 
-                var airIndividualExposure = new AirIndividualExposure(individualDay.SimulatedIndividual, exposuresPerPath);
-                result.Add(airIndividualExposure);
+                var individualExposure = new AirIndividualExposure(individualDay.SimulatedIndividual, exposuresPerPath);
+                result.Add(individualExposure);
             }
             return result;
         }
@@ -88,41 +83,41 @@ namespace MCRA.Simulation.Calculators.AirExposureCalculation {
             ICollection<Compound> substances,
             double individualFlowRate,
             double indoorFraction,
-            Dictionary<Compound, IEnumerable<double>> adjustedIndoorAirConcentrations,
-            Dictionary<Compound, IEnumerable<double>> adjustedOutdoorAirConcentrations,
-            IRandom airConcentrationsRandomGenerator
+            IDictionary<Compound, ConcentrationModel> indoorConcentrationModels,
+            IDictionary<Compound, ConcentrationModel> outdoorConcentrationModels,
+            IRandom concentrationsRandomGenerator
         ) {
             // TODO: create random generator per substance
             // Note: it is assumed that indoor and outdoor concentrations are independent.
-            var airExposurePerSubstance = new List<IIntakePerCompound>();
+            var exposurePerSubstance = new List<IIntakePerCompound>();
             foreach (var substance in substances) {
                 var amount = 0d;
-                if (adjustedIndoorAirConcentrations.TryGetValue(substance, out var indoorConcentrations)) {
-                    var individualIndoorConcentration = indoorConcentrations
-                        .DrawRandom(airConcentrationsRandomGenerator);
+                if (indoorConcentrationModels?.TryGetValue(substance, out var concentrationModel) ?? false) {
+                    var individualIndoorConcentration = concentrationModel
+                        .DrawFromDistribution(concentrationsRandomGenerator, NonDetectsHandlingMethod.ReplaceByZero);
                     amount += individualFlowRate * individualIndoorConcentration * indoorFraction;
                 }
-                if (adjustedOutdoorAirConcentrations.TryGetValue(substance, out var outdoorConcentrations)) {
-                    var individualOutdoorConcentration = outdoorConcentrations
-                        .DrawRandom(airConcentrationsRandomGenerator);
+                if (outdoorConcentrationModels?.TryGetValue(substance, out concentrationModel) ?? false) {
+                    var individualOutdoorConcentration = concentrationModel
+                        .DrawFromDistribution(concentrationsRandomGenerator, NonDetectsHandlingMethod.ReplaceByZero);
                     amount += individualFlowRate * individualOutdoorConcentration * (1 - indoorFraction);
                 }
                 var exposure = new ExposurePerSubstance {
                     Compound = substance,
                     Amount = amount
                 };
-                airExposurePerSubstance.Add(exposure);
+                exposurePerSubstance.Add(exposure);
             }
-            return airExposurePerSubstance;
+            return exposurePerSubstance;
         }
 
         private static double calculateFlowRate(
-            ICollection<AirVentilatoryFlowRate> airVentilatoryFlowRates,
+            ICollection<AirVentilatoryFlowRate> ventilatoryFlowRates,
             double? age,
             GenderType? sex,
             IRandom random
         ) {
-            var flowRate = airVentilatoryFlowRates
+            var flowRate = ventilatoryFlowRates
                 .Where(r => age >= r.AgeLower || r.AgeLower == null)
                 .Where(r => r.Sex == sex || r.Sex == GenderType.Undefined)
                 .Last();

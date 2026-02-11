@@ -338,6 +338,13 @@ namespace MCRA.Simulation.Test.Mock {
         public IList<BodIndicatorConversion> GetAllBodIndicatorConversions() {
             return _data.AllBodIndicatorConversions;
         }
+        public IList<AirConcentrationDistribution> GetAllIndoorAirConcentrationDistributions() {
+            return _data.AllIndoorAirConcentrationDistributions;
+        }
+        public IList<AirConcentrationDistribution> GetAllOutdoorAirConcentrationDistributions() {
+            return _data.AllOutdoorAirConcentrationDistributions;
+        }
+
         public IList<AirConcentration> GetAllIndoorAirConcentrations() {
             return _data.AllIndoorAirConcentrations;
         }

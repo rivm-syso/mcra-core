@@ -20,9 +20,9 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelBuilder {
             double lorReplacementFactor
         ) where T : ISubstanceConcentration {
             var concentrationModels = new Dictionary<Compound, ConcentrationModel>();
-            var groups = concentrations
+            var groups = concentrations?
                 .GroupBy(c => c.Substance)
-                .ToList();
+                .ToList() ?? [];
             foreach (var group in groups) {
                 var concentrationModel = createConcentrationModel(
                     group.Key,
@@ -130,9 +130,63 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelBuilder {
             return concentrationModel;
         }
 
+        /// <summary>
+        /// Creates concentration models for concentrations.
+        /// </summary>
+        public IDictionary<Compound, ConcentrationModel> Create<T>(
+            ICollection<T> concentrationDistributions,
+            NonDetectsHandlingMethod nonDetectsHandlingMethod,
+            double lorReplacementFactor,
+            AirConcentrationUnit targetConcentrationUnit
+        ) where T : IConcentrationDistribution {
+            var concentrationModels = new Dictionary<Compound, ConcentrationModel>();
+            foreach (var distribution in concentrationDistributions) {
+                var concentrationModel = createConcentrationModel(
+                    distribution,
+                    nonDetectsHandlingMethod,
+                    lorReplacementFactor,
+                    targetConcentrationUnit
+                );
+                concentrationModels[distribution.Substance] = concentrationModel;
+            }
+            return concentrationModels;
+        }
+
+        private ConcentrationModel createConcentrationModel<T>(
+            T distribution,
+            NonDetectsHandlingMethod nonDetectsHandlingMethod,
+            double lorReplacementFactor,
+            AirConcentrationUnit targetConcentrationUnit
+        ) where T : IConcentrationDistribution {
+            var alignmentFactor = getAlignmentFactor(targetConcentrationUnit, distribution);
+            var concentrationDistribution = new ConcentrationDistribution() {
+                Mean = distribution.Mean * alignmentFactor,
+                CV = distribution.CvVariability,
+            };
+            var concentrationModel = getModel(distribution);
+
+            var occurrenceFraction = distribution.OccurrencePercentage.HasValue
+                ? distribution.OccurrencePercentage.Value / 100
+                : 1D;
+            concentrationModel.Compound = distribution.Substance;
+            concentrationModel.NonDetectsHandlingMethod = nonDetectsHandlingMethod;
+            concentrationModel.DesiredModelType = concentrationModel.ModelType;
+            concentrationModel.OccurenceFraction = occurrenceFraction;
+            concentrationModel.CorrectedOccurenceFraction = occurrenceFraction;
+            concentrationModel.ConcentrationDistribution = concentrationDistribution;
+            concentrationModel.AirConcentrationUnit = targetConcentrationUnit;
+
+            concentrationModel.CalculateParameters();
+            return concentrationModel;
+        }
+
         protected abstract ConcentrationModel getModel<T>(T distribution);
 
         protected virtual double getAlignmentFactor<T>(ConcentrationUnit targetConcentrationUnit, T distribution) {
+            return 1;
+        }
+
+        protected virtual double getAlignmentFactor<T>(AirConcentrationUnit targetConcentrationUnit, T distribution) {
             return 1;
         }
     }

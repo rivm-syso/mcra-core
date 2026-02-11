@@ -114,11 +114,11 @@ namespace MCRA.Simulation.Actions.AirExposures {
                     individualDays,
                     substances,
                     ModuleConfig.SelectedExposureRoutes,
-                    data.IndoorAirConcentrations,
-                    data.OutdoorAirConcentrations,
+                    data.IndoorAirConcentrationModels,
+                    data.OutdoorAirConcentrationModels,
                     data.AirIndoorFractions,
                     airVentilatoryFlowRates,
-                    data.IndoorAirConcentrationUnit,
+                    data.AirConcentrationDistributionUnit,
                     targetUnit,
                     airExposureDeterminantsRandomGenerator
                 );

@@ -159,6 +159,7 @@
         OccupationalScenarioTasks = 162,
         OccupationalScenarios = 163,
         SoilConcentrationDistributions = 164,
-
+        IndoorAirDistributions = 165,
+        OutdoorAirDistributions = 166,
     }
 }

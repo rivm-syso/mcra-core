@@ -75,6 +75,8 @@ namespace MCRA.Data.Management {
         IDictionary<string, ExposureScenario> GetAllSingleValuNonDietaryExposureScenarios();
         IDictionary<string, ExposureDeterminantCombination> GetAllSingleValueNonDietaryExposureDeterminantCombinations();
         IList<ExposureEstimate> GetAllSingleValueNonDietaryExposures();
+        IList<AirConcentrationDistribution> GetAllIndoorAirConcentrationDistributions();
+        IList<AirConcentrationDistribution> GetAllOutdoorAirConcentrationDistributions();
         IList<AirConcentration> GetAllIndoorAirConcentrations();
         IList<AirConcentration> GetAllOutdoorAirConcentrations();
         IList<AirIndoorFraction> GetAllAirIndoorFractions();

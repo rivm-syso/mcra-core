@@ -1915,6 +1915,32 @@
     <TableGroup>BurdensOfDisease</TableGroup>
   </ScopingTypeDefinition>
   <ScopingTypeDefinition>
+    <Id>IndoorAirDistributions</Id>
+    <Name>Indoor air concentration distributions</Name>
+    <RawTableId>IndoorAirDistributions</RawTableId>
+    <Description>-</Description>
+    <TableGroup>AirConcentrationDistributions</TableGroup>
+    <ParentScopeReferences>
+      <ParentScopeReference>
+        <IdField>idSubstance</IdField>
+        <ReferencedScope>Compounds</ReferencedScope>
+      </ParentScopeReference>
+    </ParentScopeReferences>
+  </ScopingTypeDefinition>
+  <ScopingTypeDefinition>
+    <Id>OutdoorAirDistributions</Id>
+    <Name>Outdoor air concentration distributions</Name>
+    <RawTableId>OutdoorAirDistributions</RawTableId>
+    <Description>-</Description>
+    <TableGroup>AirConcentrationDistributions</TableGroup>
+    <ParentScopeReferences>
+      <ParentScopeReference>
+        <IdField>idSubstance</IdField>
+        <ReferencedScope>Compounds</ReferencedScope>
+      </ParentScopeReference>
+    </ParentScopeReferences>
+  </ScopingTypeDefinition>
+  <ScopingTypeDefinition>
     <Id>IndoorAirConcentrations</Id>
     <Name>Indoor air concentrations</Name>
     <RawTableId>IndoorAirConcentrations</RawTableId>
