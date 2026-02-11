@@ -60,6 +60,32 @@
         <string>RPE</string>
       </Aliases>
     </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="HandProtectionType">
+      <Id>HandProtectionType</Id>
+      <Name>Hand protection type</Name>
+      <Description>
+        Type of protective hand protection considered for this activity exposure estimate. If not specified, then
+        considered to be undefined.
+      </Description>
+      <Aliases>
+        <string>HandProtectionType</string>
+        <string>HandProtection</string>
+        <string>Gloves</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="RPEType">
+      <Id>ProtectiveClothingType</Id>
+      <Name>Protective clothing type</Name>
+      <Description>
+        Type of protective clothing considered for this activity exposure estimate. If not specified, then
+        considered to be undefined.
+      </Description>
+      <Aliases>
+        <string>ProtectiveClothingType</string>
+        <string>ProtectiveClothing</string>
+        <string>Clothing</string>
+      </Aliases>
+    </ColumnDefinition>
     <ColumnDefinition Required="true" FieldType="JobTaskExposureUnit">
       <Id>Unit</Id>
       <Description>Unit of the estimate.</Description>

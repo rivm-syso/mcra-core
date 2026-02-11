@@ -5,6 +5,8 @@ namespace MCRA.Data.Compiled.Objects {
     public sealed class OccupationalTaskExposure {
         public OccupationalTask OccupationalTask { get; set; }
         public RPEType RpeType { get; set; }
+        public HandProtectionType HandProtectionType { get; set; }
+        public ProtectiveClothingType ProtectiveClothingType { get; set; }
         public ExposureRoute ExposureRoute { get; set; }
         public JobTaskExposureUnit Unit { get; set; }
         public JobTaskExposureEstimateType EstimateType { get; set; }
@@ -16,6 +18,8 @@ namespace MCRA.Data.Compiled.Objects {
         public OccupationalTaskDeterminants Determinants() {
             return new OccupationalTaskDeterminants() {
                 RPEType = RpeType,
+                HandProtectionType = HandProtectionType,
+                ProtectiveClothingType = ProtectiveClothingType
             };
         }
     }

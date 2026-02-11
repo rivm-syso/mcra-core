@@ -24,7 +24,9 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                         Description = $"Task ({i}:{r})"
                     })
                     .ToList();
-                var scenarioTaskLists = createScenarioTasksRecursive(tasks, random);
+                var taskDeterminantCombinations = tasks
+                    .ToDictionary(r => r, r => createDeterminantCombinations(random));
+                var scenarioTaskLists = createScenarioTasksRecursive(tasks, taskDeterminantCombinations, random);
                 for (int j = 0; j < scenarioTaskLists.Count; j++) {
                     var scenario = new OccupationalScenario() {
                         Code = $"Scenario_{i}{(char)(j + 97)}",
@@ -110,6 +112,8 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                                 Substance = substance,
                                 ExposureRoute = route,
                                 RpeType = item.Determinants.RPEType,
+                                HandProtectionType = item.Determinants.HandProtectionType,
+                                ProtectiveClothingType = item.Determinants.ProtectiveClothingType,
                                 Percentage = r,
                                 Value = distribution.InvCDF(r/100D),
                                 Unit = unit,
@@ -125,6 +129,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
 
         private static List<List<OccupationalScenarioTask>> createScenarioTasksRecursive(
             IEnumerable<OccupationalTask> tasks,
+            IDictionary<OccupationalTask, List<OccupationalTaskDeterminants>> taskDeterminantCombinations,
             IRandom random
         ) {
             var durations = new double[] { 60, 120, 240, 300, 480 };
@@ -139,8 +144,8 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                 var task = tasks.First();
                 var partialResult = tasks.Count() == 1
                     ? [[]]
-                    : createScenarioTasksRecursive(tasks.Skip(1), random);
-                var determinantCombinations = createDeterminantCombinations(random);
+                    : createScenarioTasksRecursive(tasks.Skip(1), taskDeterminantCombinations, random);
+                var determinantCombinations = taskDeterminantCombinations[task];
                 foreach (var combination in determinantCombinations) {
                     var duration = durations[random.Next(durations.Length)];
                     var frequency = frequencies[random.Next(frequencies.Length)];
@@ -148,6 +153,8 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                         var record = new OccupationalScenarioTask() {
                             OccupationalTask = task,
                             RpeType = combination.RPEType,
+                            HandProtectionType = combination.HandProtectionType,
+                            ProtectiveClothingType = combination.ProtectiveClothingType,
                             Duration = duration,
                             Frequency = frequency.Item1,
                             FrequencyResolution = frequency.Item2,
@@ -164,16 +171,61 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         private static List<OccupationalTaskDeterminants> createDeterminantCombinations(
             IRandom random
         ) {
+            var result = new List<OccupationalTaskDeterminants>();
             if (random.NextDouble() > .5) {
-                return [
-                    new() { RPEType = RPEType.None },
-                    new() { RPEType = RPEType.RPE },
-                ];
+                result.Add(new() {
+                    RPEType = RPEType.None,
+                    HandProtectionType = HandProtectionType.Undefined,
+                    ProtectiveClothingType = ProtectiveClothingType.Undefined
+                });
+                result.Add(new() {
+                    RPEType = RPEType.RPE,
+                    HandProtectionType = HandProtectionType.Undefined,
+                    ProtectiveClothingType = ProtectiveClothingType.Undefined
+                });
             } else {
-                return [
-                    new() { RPEType = RPEType.Undefined }
-                ];
+                result.Add(new() {
+                    RPEType = RPEType.Undefined,
+                    HandProtectionType = HandProtectionType.Undefined,
+                    ProtectiveClothingType = ProtectiveClothingType.Undefined
+                });
             }
+
+            if (random.NextDouble() > .5) {
+                var newResult = new List<OccupationalTaskDeterminants>();
+                foreach (var record in result) {
+                    newResult.Add(new() {
+                        RPEType = record.RPEType,
+                        HandProtectionType = HandProtectionType.None,
+                        ProtectiveClothingType = record.ProtectiveClothingType
+                    });
+                    newResult.Add(new() {
+                        RPEType = record.RPEType,
+                        HandProtectionType = HandProtectionType.Gloves,
+                        ProtectiveClothingType = record.ProtectiveClothingType
+                    });
+                }
+                result = newResult;
+            }
+
+            if (random.NextDouble() > .5) {
+                var newResult = new List<OccupationalTaskDeterminants>();
+                foreach (var record in result) {
+                    newResult.Add(new() {
+                        RPEType = record.RPEType,
+                        HandProtectionType = record.HandProtectionType,
+                        ProtectiveClothingType = ProtectiveClothingType.None
+                    });
+                    newResult.Add(new() {
+                        RPEType = record.RPEType,
+                        HandProtectionType = record.HandProtectionType,
+                        ProtectiveClothingType = ProtectiveClothingType.ProtectiveClothing
+                    });
+                }
+                result = newResult;
+            }
+
+            return result;
         }
     }
 }

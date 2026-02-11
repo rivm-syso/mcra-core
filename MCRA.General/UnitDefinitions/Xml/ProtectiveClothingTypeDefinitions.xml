@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>ProtectiveClothingType</Id>
+  <Name>Protective clothing type</Name>
+  <UndefinedValue>-1</UndefinedValue>
+  <Description>
+    Controlled terminology for type of protective clothing.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>None</Id>
+      <EnumValue>0</EnumValue>
+      <Name>None</Name>
+      <Description>No protective clothing</Description>
+      <Aliases>
+        <Alias>None</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>ProtectiveClothing</Id>
+      <EnumValue>1</EnumValue>
+      <Name>Protective clothing</Name>
+      <Description>Personal protective clothing with unspecified protection level.</Description>
+      <Aliases>
+        <Alias>ProtectiveClothing</Alias>
+        <Alias>PC</Alias>
+        <Alias>PPC</Alias>
+      </Aliases>
+    </Unit>
+  </Units>
+</UnitDefinition>

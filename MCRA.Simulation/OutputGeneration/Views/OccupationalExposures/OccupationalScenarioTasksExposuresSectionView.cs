@@ -8,7 +8,16 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
                 var hiddenProperties = new List<string>();
                 if (Model.Records.All(r => string.IsNullOrEmpty(r.EstimateType))) {
-                    hiddenProperties.Add("EstimateType");
+                    hiddenProperties.Add(nameof(OccupationalScenarioTaskExposureRecord.EstimateType));
+                }
+                if (Model.Records.All(c => string.IsNullOrEmpty(c.RpeType))) {
+                    hiddenProperties.Add(nameof(OccupationalScenarioTaskExposureRecord.RpeType));
+                }
+                if (Model.Records.All(c => string.IsNullOrEmpty(c.HandProtectionType))) {
+                    hiddenProperties.Add(nameof(OccupationalScenarioTaskExposureRecord.HandProtectionType));
+                }
+                if (Model.Records.All(c => string.IsNullOrEmpty(c.ProtectiveClothingType))) {
+                    hiddenProperties.Add(nameof(OccupationalScenarioTaskExposureRecord.ProtectiveClothingType));
                 }
 
                 sb.AppendDescriptionParagraph($"Total {Model.Records.Count} records.");

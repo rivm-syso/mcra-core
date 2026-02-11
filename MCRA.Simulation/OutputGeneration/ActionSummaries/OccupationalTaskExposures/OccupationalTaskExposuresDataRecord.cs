@@ -13,9 +13,17 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Task name")]
         public string TaskName { get; set; }
 
-        [Description("RPE Type.")]
-        [DisplayName("RPE Type")]
+        [Description("Type respiratory protection equipment (RPE).")]
+        [DisplayName("RPE type")]
         public string RpeType { get; set; }
+
+        [Description("Type of hand protection.")]
+        [DisplayName("Hand protection type")]
+        public string HandProtectionType { get; set; }
+
+        [Description("Type of protective clothing.")]
+        [DisplayName("Protective clothing type")]
+        public string ProtectiveClothingType { get; set; }
 
         [Description("Exposure route.")]
         [DisplayName("Route")]

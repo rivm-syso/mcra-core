@@ -69,5 +69,29 @@
         <string>RPE</string>
       </Aliases>
     </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="RPEType">
+      <Id>HandProtectionType</Id>
+      <Name>Hand protection type</Name>
+      <Description>
+        Type of hand protection (e.g., None, Gloves). If not specified then considered to be undefined.
+      </Description>
+      <Aliases>
+        <string>HandProtectionType</string>
+        <string>HandProtection</string>
+        <string>Gloves</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="ProtectiveClothingType">
+      <Id>ProtectiveClothingType</Id>
+      <Name>Protective clothing type</Name>
+      <Description>
+        Type of protective clothing (e.g., None, ProtectiveClothing). If not specified then considered to be undefined.
+      </Description>
+      <Aliases>
+        <string>ProtectiveClothingType</string>
+        <string>ProtectiveClothing</string>
+        <string>Clothing</string>
+      </Aliases>
+    </ColumnDefinition>
   </ColumnDefinitions>
 </TableDefinition>

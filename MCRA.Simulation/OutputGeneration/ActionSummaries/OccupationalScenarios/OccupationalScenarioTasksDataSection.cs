@@ -21,7 +21,11 @@ namespace MCRA.Simulation.OutputGeneration {
                         Frequency = r.Frequency,
                         FrequencyResolution = r.FrequencyResolution.GetShortDisplayName(),
                         RpeType = r.RpeType != RPEType.Undefined
-                            ? r.RpeType.ToString() : null
+                            ? r.RpeType.ToString() : null,
+                        HandProtectionType = r.HandProtectionType != HandProtectionType.Undefined
+                            ? r.HandProtectionType.ToString() : null,
+                        ProtectiveClothingType = r.ProtectiveClothingType != ProtectiveClothingType.Undefined
+                            ? r.ProtectiveClothingType.ToString() : null
                     };
                 })
             )];

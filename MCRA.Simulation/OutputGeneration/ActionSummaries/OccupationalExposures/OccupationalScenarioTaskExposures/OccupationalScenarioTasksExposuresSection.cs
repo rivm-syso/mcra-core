@@ -19,6 +19,10 @@ namespace MCRA.Simulation.OutputGeneration {
                         TaskName = t.Task.Name,
                         RpeType = t.Determinants.RPEType != RPEType.Undefined
                             ? t.Determinants.RPEType.GetShortDisplayName() : null,
+                        HandProtectionType = t.Determinants.HandProtectionType != HandProtectionType.Undefined
+                            ? t.Determinants.HandProtectionType.ToString() : null,
+                        ProtectiveClothingType = t.Determinants.ProtectiveClothingType != ProtectiveClothingType.Undefined
+                            ? t.Determinants.ProtectiveClothingType.ToString() : null,
                         ExposureRoute = t.Route.GetShortDisplayName(),
                         Unit = t.Unit.GetShortDisplayName(),
                         EstimateType = t.Unit.EstimateType != JobTaskExposureEstimateType.Undefined

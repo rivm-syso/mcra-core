@@ -28,6 +28,8 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         var OccupationalTaskExposure = new OccupationalTaskExposure {
                                             OccupationalTask = _data.AllOccupationalTasks[task],
                                             RpeType = r.GetEnum(RawOccupationalTaskExposures.RPEType, fieldMap, RPEType.Undefined),
+                                            HandProtectionType = r.GetEnum(RawOccupationalTaskExposures.HandProtectionType, fieldMap, HandProtectionType.Undefined),
+                                            ProtectiveClothingType = r.GetEnum(RawOccupationalTaskExposures.ProtectiveClothingType, fieldMap, ProtectiveClothingType.Undefined),
                                             ExposureRoute = r.GetEnum(RawOccupationalTaskExposures.ExposureRoute, fieldMap, ExposureRoute.Undefined),
                                             Substance = _data.GetOrAddSubstance(substance),
                                             Unit = r.GetEnum<JobTaskExposureUnit>(RawOccupationalTaskExposures.Unit, fieldMap),

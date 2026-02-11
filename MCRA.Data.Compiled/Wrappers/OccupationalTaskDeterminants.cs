@@ -5,6 +5,8 @@ namespace MCRA.Simulation.Calculators.OccupationalExposureCalculation {
     public sealed class OccupationalTaskDeterminants {
 
         public RPEType RPEType { get; set; }
+        public HandProtectionType HandProtectionType { get; set; }
+        public ProtectiveClothingType ProtectiveClothingType { get; set; }
 
         public static bool operator ==(OccupationalTaskDeterminants val1, OccupationalTaskDeterminants val2) {
             if (ReferenceEquals(val1, val2)) {
@@ -12,7 +14,9 @@ namespace MCRA.Simulation.Calculators.OccupationalExposureCalculation {
             } else if (val1 is null || val2 is null) {
                 return false;
             } else {
-                return val1.RPEType == val2.RPEType;
+                return val1.RPEType == val2.RPEType
+                    && val1.HandProtectionType == val2.HandProtectionType
+                    && val1.ProtectiveClothingType == val2.ProtectiveClothingType;
             }
         }
 
@@ -28,7 +32,7 @@ namespace MCRA.Simulation.Calculators.OccupationalExposureCalculation {
         }
 
         public override string ToString() {
-            return RPEType.GetDisplayName();
+            return $"RPE:{RPEType.GetDisplayName()}_HP:{HandProtectionType.GetDisplayName()}_PC:{ProtectiveClothingType.GetDisplayName()}";
         }
 
         public override bool Equals(object obj) {

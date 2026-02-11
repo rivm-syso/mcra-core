@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>HandProtectionType</Id>
+  <Name>Hand protection type</Name>
+  <UndefinedValue>-1</UndefinedValue>
+  <Description>
+    Controlled terminology for type of hand protection.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>None</Id>
+      <EnumValue>0</EnumValue>
+      <Name>None</Name>
+      <Description>None</Description>
+      <Aliases>
+        <Alias>None</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Gloves</Id>
+      <EnumValue>1</EnumValue>
+      <Name>Gloves</Name>
+      <Description>Gloves with unspecified protection level.</Description>
+      <Aliases>
+        <Alias>Gloves</Alias>
+      </Aliases>
+    </Unit>
+  </Units>
+</UnitDefinition>

@@ -74,6 +74,8 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             var occupationalScenarioTask = new OccupationalScenarioTask {
                                                 OccupationalTask = _data.AllOccupationalTasks[task],
                                                 RpeType = r.GetEnum(RawOccupationalScenarioTasks.RPEType, fieldMap, RPEType.Undefined),
+                                                HandProtectionType = r.GetEnum(RawOccupationalScenarioTasks.HandProtectionType, fieldMap, HandProtectionType.Undefined),
+                                                ProtectiveClothingType = r.GetEnum(RawOccupationalScenarioTasks.ProtectiveClothingType, fieldMap, ProtectiveClothingType.Undefined),
                                                 Duration = r.GetDouble(RawOccupationalScenarioTasks.Duration, fieldMap),
                                                 Frequency = r.GetDouble(RawOccupationalScenarioTasks.Frequency, fieldMap),
                                                 FrequencyResolution = r.GetEnum(RawOccupationalScenarioTasks.FrequencyResolution, fieldMap, FrequencyResolutionType.Undefined)

@@ -35,8 +35,16 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public string FrequencyResolution { get; set; }
 
-        [Description("RPE Type.")]
-        [DisplayName("RPE Type")]
+        [Description("Type of respiratory protection equipment (RPE).")]
+        [DisplayName("RPE type")]
         public string RpeType { get; set; }
+
+        [Description("Type of hand protection.")]
+        [DisplayName("Hand protection type")]
+        public string HandProtectionType { get; set; }
+
+        [Description("Type of protective clothing.")]
+        [DisplayName("Protective clothing type")]
+        public string ProtectiveClothingType { get; set; }
     }
 }
