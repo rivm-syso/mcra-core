@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace MCRA.Utils.Csv.Tests {
+﻿namespace MCRA.Utils.Csv.Tests {
     /// <summary>
     /// Tests CSV writing
     /// </summary>
@@ -75,12 +73,40 @@ namespace MCRA.Utils.Csv.Tests {
         }
 
         /// <summary>
+        /// CsvWriter_WriteToCsvFileWithDataTest
+        /// </summary>
+        [TestMethod]
+        public void CsvWriter_WriteToCsvFileWithDataAppendTest() {
+            //create list of data
+            var records = new[] {
+                new Tuple<string, int, double, bool>("A", 2, .5, true),
+                new Tuple<string, int, double, bool>("No", -100, double.NaN, false)
+            };
+            var csvWriter = new CsvWriter();
+            csvWriter.WriteToCsvFile(records, _tempCsvName);
+            var data = File.ReadAllLines(_tempCsvName);
+            Assert.HasCount(3, data);
+            Assert.AreEqual("\"Item1\",\"Item2\",\"Item3\",\"Item4\"", data[0]);
+            Assert.AreEqual("\"A\",2,0.5,\"True\"", data[1]);
+            Assert.AreEqual("\"No\",-100,NaN,\"False\"", data[2]);
+
+            csvWriter.WriteToCsvFile(records, _tempCsvName, append: true);
+            data = File.ReadAllLines(_tempCsvName);
+            Assert.HasCount(5, data);
+            Assert.AreEqual("\"Item1\",\"Item2\",\"Item3\",\"Item4\"", data[0]);
+            Assert.AreEqual("\"A\",2,0.5,\"True\"", data[1]);
+            Assert.AreEqual("\"No\",-100,NaN,\"False\"", data[2]);
+            Assert.AreEqual("\"A\",2,0.5,\"True\"", data[3]);
+            Assert.AreEqual("\"No\",-100,NaN,\"False\"", data[4]);
+        }
+
+        /// <summary>
         /// CsvWriter_WriteToCsvFileWithRoundedDataTest
         /// </summary>
         [TestMethod]
         public void CsvWriter_WriteToCsvFileWithSignificantDigitsTest() {
             //create list of data
-            var records = new [] {
+            var records = new[] {
                 new Tuple<int, double>(2, .394123456E-50),
                 new Tuple<int, double>(-39049874, 55555E40),
                 new Tuple<int, double>(999, double.NaN),

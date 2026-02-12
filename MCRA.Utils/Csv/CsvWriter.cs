@@ -53,14 +53,15 @@ namespace MCRA.Utils.Csv {
             bool writeHeader = true,
             Func<PropertyInfo, string> headerFormatter = null,
             List<PropertyInfo> visibleProperties = null,
-            Encoding encoding = null
+            Encoding encoding = null,
+            bool append = false
         ) {
             if (encoding == null) {
                 encoding = Encoding.UTF8;
             }
-            using (var stream = new FileStream(fileName, FileMode.Create)) {
+            using (var stream = new FileStream(fileName, append ? FileMode.Append : FileMode.Create)) {
                 var streamWriter = new StreamWriter(stream, encoding);
-                writeCsv(source, typeof(TRecord), streamWriter, writeHeader, headerFormatter, visibleProperties);
+                writeCsv(source, typeof(TRecord), streamWriter, writeHeader && !append, headerFormatter, visibleProperties);
             }
             return fileName;
         }
@@ -81,11 +82,12 @@ namespace MCRA.Utils.Csv {
             string fileName,
             bool writeHeader = true,
             Func<PropertyInfo, string> headerFormatter = null,
-            List<PropertyInfo> visibleProperties = null
+            List<PropertyInfo> visibleProperties = null,
+            bool append = false
         ) {
-            using (var stream = new FileStream(fileName, FileMode.Create)) {
+            using (var stream = new FileStream(fileName, append ? FileMode.Append : FileMode.Create)) {
                 var streamWriter = new StreamWriter(stream, Encoding.Default);
-                writeCsv(source, recType, streamWriter, writeHeader, headerFormatter, visibleProperties);
+                writeCsv(source, recType, streamWriter, writeHeader && !append, headerFormatter, visibleProperties);
             }
             return fileName;
         }
