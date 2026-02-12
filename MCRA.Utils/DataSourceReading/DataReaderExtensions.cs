@@ -206,12 +206,17 @@ namespace MCRA.Utils.DataFileReading {
             var acceptedNameAttributes = property.GetAttributes<AcceptedNameAttribute>(false);
             if (acceptedNameAttributes.Any()) {
                 foreach (var acceptedNameAtrribute in acceptedNameAttributes) {
-                    var index = headers
-                        .FirstIndexMatch(h => acceptedNameAtrribute.Validate(h));
+                    var index = headers.FirstIndexMatch(acceptedNameAtrribute.Validate);
                     if (index >= 0) {
                         return index;
                     }
                 }
+            }
+
+            //check property name itself, match case sensitive
+            var idx = headers.FirstIndexMatch(n => n.Equals(property.Name));
+            if (idx >= 0) {
+                return idx;
             }
 
             if (required) {
