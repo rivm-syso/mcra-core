@@ -16,8 +16,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.Calculators {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var concentrationDistributions = new List<DustConcentrationDistribution>() { new() {
-                Mean = -.1,
-                CvVariability = 0.05,
+                Mean = 2.3,
+                CvVariability = 0.2,
                 DistributionType = DustConcentrationDistributionType.LogNormal,
                 Substance = new Compound() { Code = "C" }
             } };
@@ -29,9 +29,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.Calculators {
                 0,
                 SystemUnits.DefaultDustConcentrationUnit
             );
-
+            var draw = concentrationModels.First().Value.DrawFromDistribution(random, NonDetectsHandlingMethod.ReplaceByZero);
             var name = concentrationModels.FirstOrDefault().Value.GetType().Name;
-            Assert.AreEqual((new CMSummaryStatistics()).GetType().Name, name);
+            Assert.AreEqual((new CMLogNormal()).GetType().Name, name);
         }
     }
 }

@@ -33,7 +33,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
                 FractionNonQuantifications = 0D;
                 FractionTrueZeros = 1 - CorrectedOccurenceFraction;
                 var unitCorrection = ConcentrationDistribution.ConcentrationUnit.GetConcentrationUnitMultiplier(ConcentrationUnit);
-                Sigma = Math.Log(Math.Pow((double)ConcentrationDistribution.CV, 2) + 1);
+                Sigma = Math.Sqrt(Math.Log(Math.Pow((double)ConcentrationDistribution.CV, 2) + 1));
                 Mu = Math.Log(unitCorrection * ConcentrationDistribution.Mean) - .5 * Math.Pow(Sigma, 2);
             } else if (Residues.Positives.Any()
                 && Residues.StandardDeviation != null

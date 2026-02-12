@@ -1,6 +1,5 @@
 ﻿using MCRA.Data.Compiled.Interfaces;
 using MCRA.General;
-using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Data.Compiled.Objects {
     public sealed class DustConcentrationDistribution : IConcentrationDistribution {
