@@ -85,20 +85,22 @@ namespace MCRA.Utils.Charting.OxyPlot {
                 foreach (var item in data) {
                     var x = new List<double>();
                     var y = new List<double>();
-                    try {
-                        if (item.Value.skip) {
-                            xKernel[item.Key] = null;
-                            yKernel[item.Key] = null;
-                        } else {
-                            R.SetSymbol("data", item.Value.x.Select(c => Math.Log(c)).ToList());
-                            R.EvaluateNoReturn("kernel <- density(data, kernel = 'gaussian')");
-                            var logValues = R.EvaluateNumericVector("kernel$x");
-                            xKernel[item.Key] = logValues.Select(c => Math.Exp(c)).ToList();
-                            yKernel[item.Key] = R.EvaluateNumericVector("kernel$y");
-                            maximumY = Math.Max(maximumY, yKernel[item.Key].Max());
-                            numberOfValuesRef = Math.Max(numberOfValuesRef, item.Value.x.Count);
+                    if (!item.Value.x.All(c => c == 0)) {
+                        try {
+                            if (item.Value.skip) {
+                                xKernel[item.Key] = null;
+                                yKernel[item.Key] = null;
+                            } else {
+                                R.SetSymbol("data", item.Value.x.Select(c => Math.Log(c)).ToList());
+                                R.EvaluateNoReturn("kernel <- density(data, kernel = 'gaussian', adjust = 1)");
+                                var logValues = R.EvaluateNumericVector("kernel$x");
+                                xKernel[item.Key] = logValues.Select(c => Math.Exp(c)).ToList();
+                                yKernel[item.Key] = R.EvaluateNumericVector("kernel$y");
+                                maximumY = Math.Max(maximumY, yKernel[item.Key].Max());
+                                numberOfValuesRef = Math.Max(numberOfValuesRef, item.Value.x.Count);
+                            }
+                        } finally {
                         }
-                    } finally {
                     }
                 }
             }

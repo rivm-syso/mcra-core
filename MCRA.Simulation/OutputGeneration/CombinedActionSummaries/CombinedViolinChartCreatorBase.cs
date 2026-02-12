@@ -77,79 +77,81 @@ namespace MCRA.Simulation.OutputGeneration {
                 //Do this for all distributions using a dictionary, otherwise RDotNetEngine should be initialized each time
                 var (yKernel, xKernel, maximumY, numberOfValuesRef) = ComputeKernel(data);
                 var counter = 0;
-                foreach (var item in data) {
-                    if (!item.Value.skip) {
-                        var areaSeries = CreateEnvelope(
-                            item.Value.x,
-                            item.Key,
-                            yKernel,
-                            xKernel,
-                            palette.Colors[paletteNr],
-                            counter,
-                            maximumY,
-                            numberOfValuesRef,
-                            _horizontal,
-                            _equalSize
-                        );
-                        plotModel.Series.Add(areaSeries);
-                    }
-                    counter++;
-                }
-
-                counter = 0;
-                foreach (var item in data) {
-                    if (_boxPlotItem) {
-                        if (_horizontal) {
-                            plotModel.Series.Add(CreateHorizontalBoxPlotItem(
-                                item.Value.x,
-                                palette.Colors[paletteNr],
-                                axis,
-                                counter,
-                                _lowerBound,
-                                _upperBound,
-                                _minimum,
-                                _maximum
-                            ));
-                        } else {
-                            plotModel.Series.Add(CreateBoxPlotItem(
-                                item.Value.x,
-                                palette.Colors[paletteNr],
-                                axis,
-                                counter,
-                                _lowerBound,
-                                _upperBound,
-                                _minimum,
-                                _maximum
-                            ));
-                        }
-                    } else {
-                        plotModel.Series.Add(CreateMeanSeries(
-                            counter,
-                            item.Value.x,
-                            _horizontal
-                        ));
+                if (yKernel.Any()) {
+                    foreach (var item in data) {
                         if (!item.Value.skip) {
-                            var percentages = new List<double>() { _lowerBound, 50, _upperBound };
-                            foreach (var percentage in percentages) {
-                                plotModel.Series.Add(CreatePercentileSeries(
-                                    yKernel[item.Key],
-                                    xKernel[item.Key],
-                                    maximumY,
-                                    numberOfValuesRef,
-                                    counter,
+                            var areaSeries = CreateEnvelope(
+                                item.Value.x,
+                                item.Key,
+                                yKernel,
+                                xKernel,
+                                palette.Colors[paletteNr],
+                                counter,
+                                maximumY,
+                                numberOfValuesRef,
+                                _horizontal,
+                                _equalSize
+                            );
+                            plotModel.Series.Add(areaSeries);
+                        }
+                        counter++;
+                    }
+
+                    counter = 0;
+                    foreach (var item in data) {
+                        if (_boxPlotItem) {
+                            if (_horizontal) {
+                                plotModel.Series.Add(CreateHorizontalBoxPlotItem(
                                     item.Value.x,
-                                    percentage,
-                                    _horizontal,
-                                    _equalSize,
+                                    palette.Colors[paletteNr],
                                     axis,
+                                    counter,
+                                    _lowerBound,
+                                    _upperBound,
+                                    _minimum,
+                                    _maximum
+                                ));
+                            } else {
+                                plotModel.Series.Add(CreateBoxPlotItem(
+                                    item.Value.x,
+                                    palette.Colors[paletteNr],
+                                    axis,
+                                    counter,
+                                    _lowerBound,
+                                    _upperBound,
                                     _minimum,
                                     _maximum
                                 ));
                             }
+                        } else {
+                            plotModel.Series.Add(CreateMeanSeries(
+                                counter,
+                                item.Value.x,
+                                _horizontal
+                            ));
+                            if (!item.Value.skip) {
+                                var percentages = new List<double>() { _lowerBound, 50, _upperBound };
+                                foreach (var percentage in percentages) {
+                                    plotModel.Series.Add(CreatePercentileSeries(
+                                        yKernel[item.Key],
+                                        xKernel[item.Key],
+                                        maximumY,
+                                        numberOfValuesRef,
+                                        counter,
+                                        item.Value.x,
+                                        percentage,
+                                        _horizontal,
+                                        _equalSize,
+                                        axis,
+                                        _minimum,
+                                        _maximum
+                                    ));
+                                }
+                            }
                         }
+                        categoryAxis.Labels.Add(item.Key);
+                        counter++;
                     }
-                    categoryAxis.Labels.Add(item.Key);
-                    counter++;
                 }
             }
             plotModel.Axes.Add(axis);
