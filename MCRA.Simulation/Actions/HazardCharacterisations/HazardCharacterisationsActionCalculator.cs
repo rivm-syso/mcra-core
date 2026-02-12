@@ -159,10 +159,8 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             var hazardCharacterisationsActionResult = new HazardCharacterisationsActionResult();
 
             localProgress.Update("Collecting available hazard characterisations");
-            var referenceSubstance = ModuleConfig.TargetDosesCalculationMethod == TargetDosesCalculationMethod.CombineInVivoPodInVitroDrms
-                ? data.ActiveSubstances?.FirstOrDefault(c => c.Code.Equals(ModuleConfig.CodeReferenceSubstance, StringComparison.OrdinalIgnoreCase))
-                : null;
 
+            var referenceSubstance = getReferenceSubstance(data);
             var exposureTargets = GetExposureTargets(data);
             foreach (var exposureTarget in exposureTargets) {
                 var targetUnit = getDefaultTargetUnit(ModuleConfig.TargetDoseLevelType, ModuleConfig.ExposureType, data, exposureTarget);
@@ -208,6 +206,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             localProgress.Update(100);
         }
 
+
         protected override HazardCharacterisationsActionResult runUncertain(
           ActionData data,
           UncertaintyFactorialSet factorialSet,
@@ -215,15 +214,11 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
           CompositeProgressState progressReport
         ) {
             var localProgress = progressReport.NewProgressState(100);
+            localProgress.Update("Collecting available hazard characterisations");
 
             var hazardCharacterisationsActionResult = new HazardCharacterisationsActionResult();
 
-            var referenceSubstance = ModuleConfig.TargetDosesCalculationMethod == TargetDosesCalculationMethod.CombineInVivoPodInVitroDrms
-                ? data.ActiveSubstances?.FirstOrDefault(c => c.Code.Equals(ModuleConfig.CodeReferenceSubstance, StringComparison.OrdinalIgnoreCase))
-                : null;
-
-            localProgress.Update("Collecting available hazard characterisations");
-
+            var referenceSubstance = getReferenceSubstance(data);
             var exposureTargets = GetExposureTargets(data);
             foreach (var exposureTarget in exposureTargets) {
                 var targetUnit = getDefaultTargetUnit(ModuleConfig.TargetDoseLevelType, ModuleConfig.ExposureType, data, exposureTarget);
@@ -309,18 +304,11 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 (int)RandomSource.HC_DrawKineticModelParameters)
             );
 
-            // TODO: this part is a remnant after the refactoring of code that combined the nominal run with the run uncertain.
-            //       There was a slight difference in the selected reference substance as shown below. This different is kept but
-            //       might possibly be wrong and the same reference substance should be taken.
-            var refSubstanceRun = data.ActiveSubstances.Count == 1
-                ? data.ActiveSubstances.First() : referenceSubstance;
-            var refSubstance = factorialSet == null ? refSubstanceRun : referenceSubstance;
-
             // Compute/collect available hazard doses
             var hazardCharacterisationsFromPodAndBmd = targetDosesCalculator
                 .CollectAvailableHazardCharacterisations(
                     substances,
-                    refSubstance,
+                    referenceSubstance,
                     data.PointsOfDeparture,
                     data.DoseResponseModels,
                     data.FocalEffectRepresentations,
@@ -653,7 +641,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                     isPerPerson: false
                 );
                 targetUnit = TargetUnit.FromSystemicExposureUnit(exposureUnitTriple);
-            };
+            }
             return targetUnit;
         }
 
@@ -739,6 +727,15 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             if (kineticModelDrilldownRecords != null) {
                 hazardCharacterisationsActionResult.KineticModelDrilldownRecords.AddRange(kineticModelDrilldownRecords);
             }
+        }
+
+        private Compound getReferenceSubstance(ActionData data) {
+            var substances = ModuleConfig.RequireActiveSubstances() && data.ActiveSubstances?.Count > 0 ? data.ActiveSubstances : data.AllCompounds;
+            if (substances == null || substances?.Count == 0) {
+                throw new Exception($"No substances or active substances available for setting the reference substance.");
+            }
+            var referenceSubstance = substances.FirstOrDefault(c => c.Code.Equals(ModuleConfig.CodeReferenceSubstance, StringComparison.OrdinalIgnoreCase));
+            return referenceSubstance ?? substances.First();
         }
     }
 }

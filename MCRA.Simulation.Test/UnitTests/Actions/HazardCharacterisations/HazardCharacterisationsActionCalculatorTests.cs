@@ -192,6 +192,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.UseAdditionalAssessmentFactor = true;
             config.AdditionalAssessmentFactor = 100;
             config.InternalModelType = InternalModelType.PBKModel;
+            config.MultipleSubstances = true;
             project.HazardCharacterisationsSettings.IsCompute = true;
 
             var calculator = new HazardCharacterisationsActionCalculator(project);
@@ -259,6 +260,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.TargetDosesCalculationMethod = TargetDosesCalculationMethod.CombineInVivoPodInVitroDrms;
             config.ExposureRoutes = [ExposureRoute.Oral, ExposureRoute.Dermal, ExposureRoute.Inhalation];
             config.InternalModelType = InternalModelType.PBKModel;
+            config.MultipleSubstances = true;
             var calculator = new HazardCharacterisationsActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, "TestComputeIVIVE");
             var uncertaintySourceGenerators = new Dictionary<UncertaintySource, IRandom> {
@@ -338,6 +340,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.ExposureRoutes = [ExposureRoute.Oral, ExposureRoute.Dermal, ExposureRoute.Inhalation];
             config.ExposureType = exposureType;
             config.InternalModelType = InternalModelType.PBKModel;
+            config.MultipleSubstances = true;
             var calculator = new HazardCharacterisationsActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, "TestFromPod");
             var uncertaintySourceGenerators = new Dictionary<UncertaintySource, IRandom> {
