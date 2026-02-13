@@ -11,7 +11,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
         /// <summary>
         /// Scaling constant for envelope and percentiles.
         /// </summary>
-        private const double _scale = 0.4;
+        private const double _scale = 0.3;
 
         /// <summary>
         /// Create logarithmic default axis for horizontal (default) violin plots
@@ -132,7 +132,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
             bool horizontal,
             bool equalSize
         ) {
-            var scaling = equalSize ? _scale : values.Count / numberOfValuesRef / maximumY * .5;
+            var scaling = equalSize ? _scale : values.Count / numberOfValuesRef / yKernel[name].Max() * _scale;
             var areaSeries = new AreaSeries() {
                 Color = paletteColor,
                 MarkerType = MarkerType.None,
@@ -143,12 +143,13 @@ namespace MCRA.Utils.Charting.OxyPlot {
                 for (int i = 0; i < xKernel[name].Count; i++) {
                     areaSeries.Points.Add(new DataPoint(xKernel[name][i], yKernel[name][i] * scaling + counter));
                     areaSeries.Points2.Add(new DataPoint(xKernel[name][i], -yKernel[name][i] * scaling + counter));
-                };
+                }
             } else {
                 for (int i = 0; i < xKernel[name].Count; i++) {
                     areaSeries.Points.Add(new DataPoint(yKernel[name][i] * scaling + counter, xKernel[name][i]));
                     areaSeries.Points2.Add(new DataPoint(-yKernel[name][i] * scaling + counter, xKernel[name][i]));
-                };
+                }
+                ;
             }
             return areaSeries;
         }
@@ -342,7 +343,8 @@ namespace MCRA.Utils.Charting.OxyPlot {
             double maximum
         ) {
             var percentile = values.Percentile(percentage);
-            var scaling = equalSize ? _scale : values.Count / numberOfValuesRef / maximumY * .5;
+
+            var scaling = equalSize ? _scale : values.Count / numberOfValuesRef / yKernel.Max() * _scale;
             var lineSeries = new LineSeries() {
                 Color = OxyColors.Black,
                 MarkerType = MarkerType.None,

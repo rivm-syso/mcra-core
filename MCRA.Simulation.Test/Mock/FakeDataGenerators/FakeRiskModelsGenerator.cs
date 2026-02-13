@@ -1,5 +1,6 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
+using ExCSS;
 
 namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
     /// <summary>
@@ -19,13 +20,15 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             string[] names,
             double[] percentages,
             int numUncertaintyRecords,
-            int seed
+            int seed,
+            int scale = 1
         ) {
             var result = new List<RiskModel>();
             var random = new McraRandomGenerator(seed);
             foreach (var name in names) {
+                var initMu = scale * 100;
                 var mu = NormalDistribution.Draw(random, 0, 1);
-                var sigma = ContinuousUniformDistribution.Draw(0.1, 2);
+                var sigma = ContinuousUniformDistribution.Draw(random, 0.1, 2);
                 var useFraction = 0.25;
                 var model = new RiskModel() {
                     Code = name,
@@ -37,7 +40,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                 model.RiskPercentiles = percentages
                     .Select((r, ix) => new RiskPercentile() {
                         Percentage = r,
-                        Risk = percentiles[ix],
+                        Risk = percentiles[ix] > 0 ? percentiles[ix] + initMu : percentiles[ix],
                         RiskUncertainties = numUncertaintyRecords > 0 ? [] : null
                     })
                     .ToDictionary(r => r.Percentage);
@@ -47,7 +50,8 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                         exposures = createExposures(muUncertain, sigma, useFraction, 10000);
                         percentiles = exposures.Percentiles(percentages);
                         for (int j = 0; j < percentages.Length; j++) {
-                            model.RiskPercentiles[percentages[j]].RiskUncertainties.Add(percentiles[j]);
+                            var value = percentiles[j] > 0 ? percentiles[j] + initMu : percentiles[j];
+                            model.RiskPercentiles[percentages[j]].RiskUncertainties.Add(value);
                         }
                     }
                 }
