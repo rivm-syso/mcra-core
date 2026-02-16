@@ -27,7 +27,7 @@ namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
             ICollection<IKineticConversionFactorModel> kineticConversionFactorModels
         ) {
             _kineticConversionFactorModels = kineticConversionFactorModels
-                .Where(r => r.SubstanceFrom == substance)
+                .Where(r => r.SubstanceFrom == substance || r.SubstanceFrom == null)
                 .GroupBy(r => (r.TargetFrom.ExposureRoute, r.TargetTo))
                 .ToDictionary(
                     r => r.Key,
