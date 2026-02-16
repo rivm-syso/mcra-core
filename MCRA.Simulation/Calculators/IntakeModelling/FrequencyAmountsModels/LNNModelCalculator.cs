@@ -165,8 +165,8 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         modelFit
                     );
                     result.StandardErrors = computeStdErrors(vcovariance, vcovarianceT, modelFit);
-                } catch (Exception) {
-                    throw new Exception("LNN Variance-covariance matrix is probably singular.");
+                } catch {
+                    result.ErrorMessages = ErrorMessages.ConvergenceNoStandardErrors;
                 }
             }
             return result;

@@ -17,6 +17,8 @@ namespace MCRA.Utils.Statistics {
         ModelIsSkipped0Frequencies,
         [Display(Name = "All frequencies are the same, empirical frequency is used without dispersion")]
         ModelIsSkippedEqualFrequencies,
+        [Display(Name = "Successful convergence, but failed to estimate standard errors")]
+        ConvergenceNoStandardErrors,
     }
 
     public class ModelResult {

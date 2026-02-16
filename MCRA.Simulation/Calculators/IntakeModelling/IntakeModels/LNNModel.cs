@@ -103,23 +103,23 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                 var dispersion = new ParameterEstimates() {
                     ParameterName = "FrequencyModelDispersion",
                     Estimate = _estimates.Parameters.Dispersion,
-                    StandardError = stdErrors.Parameters.Dispersion,
+                    StandardError = stdErrors?.Parameters.Dispersion,
                 };
                 var correlation = new ParameterEstimates() {
                     ParameterName = "Correlation",
                     Estimate = _estimates.Parameters.Correlation,
-                    StandardError = stdErrors.Parameters.Correlation,
+                    StandardError = stdErrors?.Parameters.Correlation,
                 };
 
                 var varianceBetween = new ParameterEstimates() {
                     ParameterName = "Variance between individuals",
                     Estimate = _estimates.Parameters.VarianceBetween,
-                    StandardError = stdErrors.Parameters.VarianceBetween,
+                    StandardError = stdErrors?.Parameters.VarianceBetween,
                 };
                 var varianceWithin = new ParameterEstimates() {
                     ParameterName = "Variance within individuals",
                     Estimate = _estimates.Parameters.VarianceWithin,
-                    StandardError = stdErrors.Parameters.VarianceWithin,
+                    StandardError = stdErrors?.Parameters.VarianceWithin,
                 };
 
                 // Set parameters of intakeFrequency to NCI parameters
@@ -129,7 +129,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                     frequencyModelEstimates.Add(new ParameterEstimates() {
                         ParameterName = parameterNames[i],
                         Estimate = _estimates.FreqEstimates[i],
-                        StandardError = stdErrors.FreqEstimates[i]
+                        StandardError = stdErrors?.FreqEstimates[i] ?? double.NaN
                     });
                 }
                 var amountModelEstimates = new List<ParameterEstimates>();
@@ -138,7 +138,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                     amountModelEstimates.Add(new ParameterEstimates() {
                         ParameterName = parameterNames[i],
                         Estimate = _estimates.AmountEstimates[i],
-                        StandardError = stdErrors.AmountEstimates[i]
+                        StandardError = stdErrors?.AmountEstimates[i]
                     });
                 }
 

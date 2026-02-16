@@ -40,15 +40,17 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             sb.AppendTableRow(
                 Model.DispersionEstimates.ParameterName,
                 Model.DispersionEstimates.Estimate.ToString("G2"),
-                Model.DispersionEstimates.StandardError.ToString("G2"),
-                Model.DispersionEstimates.TValue.ToString("G2"));
+                Model.DispersionEstimates.StandardError?.ToString("G2") ?? "-",
+                Model.DispersionEstimates.TValue?.ToString("G2") ?? "-"
+            );
 
             foreach (var item in Model.FrequencyModelEstimates) {
                 sb.AppendTableRow(
                     item.ParameterName,
                     item.Estimate.ToString("G2"),
-                    item.StandardError.ToString("F2"),
-                    item.TValue.ToString("G2"));
+                    item.StandardError?.ToString("F2") ?? "-",
+                    item.TValue?.ToString("G2") ?? "-"
+                );
             }
             sb.AppendTableRow("degrees of freedom", Model.DegreesOfFreedom.ToString("N0"), "", "");
             sb.AppendTableRow("-2*loglikelihood", Model._2LogLikelihood.ToString("F2"), "", "");

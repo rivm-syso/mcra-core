@@ -5,8 +5,8 @@
     public class ParameterEstimates {
         public string ParameterName { get; set; }
         public double Estimate { get; set; }
-        public double StandardError { get; set; }
-        public double TValue {
+        public double? StandardError { get; set; }
+        public double? TValue {
             get { return Estimate / StandardError; }
         }
     }
