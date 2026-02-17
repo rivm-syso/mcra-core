@@ -92,6 +92,10 @@ namespace MCRA.Simulation.OutputGeneration {
                     mu = ((CMSummaryStatistics)concentrationModel).Mu;
                     sigma = ((CMSummaryStatistics)concentrationModel).Sigma;
                     break;
+                case ConcentrationModelType.LogNormal:
+                    mu = ((CMLogNormal)concentrationModel).LogNormalDistribution.Mu;
+                    sigma = ((CMLogNormal)concentrationModel).LogNormalDistribution.Sigma;
+                    break;
                 default:
                     break;
             }

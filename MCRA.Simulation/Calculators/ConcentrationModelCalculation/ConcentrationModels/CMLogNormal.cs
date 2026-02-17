@@ -1,5 +1,6 @@
 ﻿using MCRA.General;
 using MCRA.Simulation.Objects;
+using MCRA.Utils;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels {
@@ -9,7 +10,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
     /// </summary>
     public sealed class CMLogNormal : ConcentrationModel {
 
-        private LogNormalDistribution _logNormalDistribution;
+        public LogNormalDistribution LogNormalDistribution;
 
         public override ConcentrationModelType ModelType => ConcentrationModelType.LogNormal;
 
@@ -19,7 +20,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
                 FractionCensored = FractionNonDetects = FractionNonQuantifications = 0D;
                 FractionTrueZeros = 1 - CorrectedOccurenceFraction;
                 var alignmentFactor = ConcentrationDistribution.ConcentrationUnit.GetConcentrationUnitMultiplier(ConcentrationUnit);
-                _logNormalDistribution = LogNormalDistribution.FromMeanAndCv(ConcentrationDistribution.Mean * alignmentFactor, (double)ConcentrationDistribution.CV);
+                LogNormalDistribution = LogNormalDistribution.FromMeanAndCv(ConcentrationDistribution.Mean * alignmentFactor, (double)ConcentrationDistribution.CV);
             } else {
                 return false;
             }
@@ -28,13 +29,13 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
 
         public override double DrawFromDistribution(IRandom random, NonDetectsHandlingMethod nonDetectsHandlingMethod) {
             if (random.NextDouble() < CorrectedOccurenceFraction) {
-                return _logNormalDistribution.Draw(random);
+                return LogNormalDistribution.Draw(random);
             }
             return 0D;
         }
 
         public override double DrawFromDistributionExceptZeroes(IRandom random, NonDetectsHandlingMethod nonDetectsHandlingMethod) {
-            return _logNormalDistribution.Draw(random);
+            return LogNormalDistribution.Draw(random);
         }
 
         public override double DrawAccordingToNonDetectsHandlingMethod(IRandom random, NonDetectsHandlingMethod nonDetectsHandlingMethod, double fraction) {
@@ -42,7 +43,8 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         }
 
         public override double GetDistributionMean(NonDetectsHandlingMethod nonDetectsHandlingMethod) {
-            throw new NotImplementedException();
+            var residue = CorrectedOccurenceFraction * UtilityFunctions.ExpBound(LogNormalDistribution.Mu + 0.5 * Math.Pow(LogNormalDistribution.Sigma, 2));
+            return residue;
         }
 
         public override double GetImputedCensoredValue(SampleCompound sampleSubstance, IRandom random) {
