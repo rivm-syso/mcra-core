@@ -161,5 +161,6 @@
         SoilConcentrationDistributions = 164,
         IndoorAirDistributions = 165,
         OutdoorAirDistributions = 166,
+        AirBodyExposureFractions = 167,
     }
 }

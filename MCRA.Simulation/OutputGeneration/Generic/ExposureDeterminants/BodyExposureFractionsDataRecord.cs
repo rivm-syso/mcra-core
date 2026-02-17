@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace MCRA.Simulation.OutputGeneration {
+namespace MCRA.Simulation.OutputGeneration.ExposureDeterminants {
 
-    public sealed class DustBodyExposureFractionsDataRecord {
+    public sealed class BodyExposureFractionsDataRecord {
         [DisplayName("Subgroup id")]
         public string idSubgroup { get; set; }
 

@@ -17,4 +17,14 @@
     <ValueType>Boolean</ValueType>
     <DefaultValue>false</DefaultValue>
   </SettingsItem>
+  <!-- Air exposure determinant settings (dermal)  -->
+  <SettingsItem>
+    <Id>DepositionVelocity</Id>
+    <Name>Deposition velocity</Name>
+    <Description>
+      Deposition velocity of airborne particles onto the skin's surface (m/h).
+    </Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>2.15</DefaultValue>
+  </SettingsItem>
 </SettingsItems>

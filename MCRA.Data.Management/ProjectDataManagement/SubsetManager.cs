@@ -564,6 +564,7 @@ namespace MCRA.Data.Management {
         public IList<AirIndoorFraction> AllAirIndoorFractions => _dataManager.GetAllAirIndoorFractions();
 
         public IList<AirVentilatoryFlowRate> AllAirVentilatoryFlowRates => _dataManager.GetAllAirVentilatoryFlowRates();
+        public IList<AirBodyExposureFraction> AllAirBodyExposureFractions => _dataManager.GetAllAirBodyExposureFractions();
 
         public IList<SubstanceConcentration> AllDustConcentrations => _dataManager.GetAllDustConcentrations();
 

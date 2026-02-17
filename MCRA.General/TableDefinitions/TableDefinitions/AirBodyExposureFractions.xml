@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>AirBodyExposureFractions</Id>
+  <Name>Air body exposure fractions</Name>
+  <Description>
+    Variability distributions specifying the individual fractions of the body exposed to air.
+    The distributions are specified using a distribution type, a mean and a coefficient of variation (CV).
+    Distributions may be specified for different subgroups of age and sex.
+  </Description>
+  <Aliases>
+    <string>AirBodyExposureFractions</string>
+    <string>AirBodyExposureFraction</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawAirBodyExposureFractions</string>
+  </HiddenAliases>
+  <TargetDataTable>RawAirBodyExposureFractions</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldSize="50" FieldType="AlphaNumeric">
+      <Id>idSubgroup</Id>
+      <Description>The id of the subgroup.</Description>
+      <Aliases>
+        <string>idSubgroup</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric" FieldSize="50">
+      <Id>AgeLower</Id>
+      <Description>
+        Specifies the lower bound of the age interval (in years) of the air
+        body exposure fractions subgroup. Individuals belong to a subgroup when the age of the
+        individual is equal or greater than the specified lower bound and smaller than the
+        specified lower bound of the next subgroup.
+      </Description>
+      <Aliases>
+        <string>AgeLower</string>
+        <string>LowerAge</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="GenderType">
+      <Id>Sex</Id>
+      <Description>The sex of the subgroup.</Description>
+      <Aliases>
+        <string>Sex</string>
+        <string>Gender</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>Value</Id>
+      <Description>Mean.</Description>
+      <Aliases>
+        <string>Value</string>
+        <string>Mean</string>
+        <string>Mean</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AirBodyExposureFractionDistributionType">
+      <Id>DistributionType</Id>
+      <Description>
+        Distribution type (Uniform, or LogNormal).
+        If not specified, the air body exposure fraction is assumed to be constant.
+      </Description>
+      <Aliases>
+        <string>DistributionType</string>
+        <string>Distribution</string>
+      </Aliases>
+      <PossibleValues>
+        <PossibleValue>Uniform</PossibleValue>
+        <PossibleValue>LogNormal</PossibleValue>
+      </PossibleValues>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric">
+      <Id>CvVariability</Id>
+      <Description>Coefficient of variation.</Description>
+      <Aliases>
+        <string>CvVariability</string>
+        <string>Sd</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

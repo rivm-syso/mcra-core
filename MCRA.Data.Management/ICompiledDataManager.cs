@@ -81,6 +81,7 @@ namespace MCRA.Data.Management {
         IList<AirConcentration> GetAllOutdoorAirConcentrations();
         IList<AirIndoorFraction> GetAllAirIndoorFractions();
         IList<AirVentilatoryFlowRate> GetAllAirVentilatoryFlowRates();
+        IList<AirBodyExposureFraction> GetAllAirBodyExposureFractions();
         IList<SubstanceConcentration> GetAllDustConcentrations();
         IList<DustConcentrationDistribution> GetAllDustConcentrationDistributions();
         IList<DustIngestion> GetAllDustIngestions();

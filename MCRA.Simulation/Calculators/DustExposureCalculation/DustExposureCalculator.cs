@@ -100,10 +100,6 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
                 // Compute dermal exposure
                 if (routes.Contains(ExposureRoute.Dermal)) {
                     var bodySurfaceArea = simulatedIndividual.BodySurfaceArea;
-                    if (!bodySurfaceArea.HasValue) {
-                        var height = simulatedIndividual.Height.Value;
-                        bodySurfaceArea = Math.Sqrt(height * simulatedIndividual.SamplingWeight / 3600);
-                    }
                     var individualDustAdherenceAmount = calculateDustAdherenceAmount(
                         dustAdherenceAmounts,
                         age,

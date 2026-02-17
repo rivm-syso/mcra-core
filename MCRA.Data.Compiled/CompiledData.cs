@@ -90,6 +90,7 @@ namespace MCRA.Data.Compiled {
         public IList<AirConcentration> AllOutdoorAirConcentrations { get; set; }
         public IList<AirIndoorFraction> AllAirIndoorFractions { get; set; }
         public IList<AirVentilatoryFlowRate> AllAirVentilatoryFlowRates { get; set; }
+        public IList<AirBodyExposureFraction> AllAirBodyExposureFractions { get; set; }
         public IList<SubstanceConcentration> AllDustConcentrations { get; set; }
         public IList<DustConcentrationDistribution> AllDustConcentrationDistributions { get; set; }
         public IList<DustIngestion> AllDustIngestions { get; set; }

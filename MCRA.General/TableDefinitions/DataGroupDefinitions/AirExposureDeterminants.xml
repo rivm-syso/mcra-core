@@ -13,5 +13,8 @@
     <DataGroupTable>
       <Id>AirVentilatoryFlowRates</Id>
     </DataGroupTable>
+    <DataGroupTable>
+      <Id>DustBodyExposureFractions</Id>
+    </DataGroupTable>
   </DataGroupTables>
 </DataGroupDefinition>

@@ -22,7 +22,7 @@ namespace MCRA.Simulation.Actions.AirExposures {
                 _configuration.SelectedExposureRoutes.Count > 0
             );
             section.SummarizeSetting(SettingsItemType.AirExposuresIndividualGenerationMethod, _configuration.AirExposuresIndividualGenerationMethod);
-
+            section.SummarizeSetting(SettingsItemType.DepositionVelocity, _configuration.DepositionVelocity);
             return section;
         }
     }

@@ -420,6 +420,10 @@ namespace MCRA.Simulation {
             set => GetOrCreateModuleOutputData<AirExposureDeterminantsOutputData>(ActionType.AirExposureDeterminants).AirVentilatoryFlowRates = value;
         }
 
+        public IList<AirBodyExposureFraction> AirBodyExposureFractions {
+            get => GetOrCreateModuleOutputData<AirExposureDeterminantsOutputData>(ActionType.AirExposureDeterminants).AirBodyExposureFractions;
+            set => GetOrCreateModuleOutputData<AirExposureDeterminantsOutputData>(ActionType.AirExposureDeterminants).AirBodyExposureFractions = value;
+        }
         // DustConcentrations
         public IList<SubstanceConcentration> DustConcentrations {
             get => GetOrCreateModuleOutputData<DustConcentrationsOutputData>(ActionType.DustConcentrations).DustConcentrations;

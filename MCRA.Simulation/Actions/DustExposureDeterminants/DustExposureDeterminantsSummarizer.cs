@@ -65,7 +65,9 @@ namespace MCRA.Simulation.Actions.DustExposureDeterminants {
             var section = new DustBodyExposureFractionsDataSection();
             var subHeader = header.AddSubSectionHeaderFor(section, "Dust body exposure fractions", order);
             section.Summarize(
-                data.DustBodyExposureFractions
+                data.DustBodyExposureFractions,
+                ExposureSource.Dust,
+                "body exposure fraction"
             );
             subHeader.SaveSummarySection(section);
         }

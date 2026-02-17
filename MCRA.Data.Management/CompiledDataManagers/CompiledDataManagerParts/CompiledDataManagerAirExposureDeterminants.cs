@@ -61,5 +61,34 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             }
             return _data.AllAirVentilatoryFlowRates;
         }
+
+        public IList<AirBodyExposureFraction> GetAllAirBodyExposureFractions() {
+            if (_data.AllAirBodyExposureFractions == null) {
+                LoadScope(SourceTableGroup.AirExposureDeterminants);
+                var allAirBodyExposureFractions = new List<AirBodyExposureFraction>();
+                var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.AirExposureDeterminants);
+                if (rawDataSourceIds?.Count > 0) {
+                    using (var rdm = _rawDataProvider.CreateRawDataManager()) {
+                        foreach (var rawDataSourceId in rawDataSourceIds) {
+                            using (var r = rdm.OpenDataReader<RawAirBodyExposureFractions>(rawDataSourceId, out int[] fieldMap)) {
+                                while (r?.Read() ?? false) {
+                                    var airBodyExposureFraction = new AirBodyExposureFraction {
+                                        idSubgroup = r.GetStringOrNull(RawAirBodyExposureFractions.IdSubgroup, fieldMap),
+                                        AgeLower = r.GetDoubleOrNull(RawAirBodyExposureFractions.AgeLower, fieldMap),
+                                        Sex = r.GetEnum(RawAirBodyExposureFractions.Sex, fieldMap, GenderType.Undefined),
+                                        Value = r.GetDouble(RawAirBodyExposureFractions.Value, fieldMap),
+                                        DistributionType = r.GetEnum(RawAirBodyExposureFractions.DistributionType, fieldMap, AirBodyExposureFractionDistributionType.Constant),
+                                        CvVariability = r.GetDoubleOrNull(RawAirBodyExposureFractions.CvVariability, fieldMap)
+                                    };
+                                    allAirBodyExposureFractions.Add(airBodyExposureFraction);
+                                }
+                            }
+                        }
+                    }
+                }
+                _data.AllAirBodyExposureFractions = allAirBodyExposureFractions;
+            }
+            return _data.AllAirBodyExposureFractions;
+        }
     }
 }

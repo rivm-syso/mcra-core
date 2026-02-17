@@ -1967,6 +1967,13 @@
     </ParentScopeReferences>
   </ScopingTypeDefinition>
   <ScopingTypeDefinition>
+    <Id>AirBodyExposureFractions</Id>
+    <Name>Air body exposure fractions</Name>
+    <RawTableId>AirBodyExposureFractions</RawTableId>
+    <Description>-</Description>
+    <TableGroup>AirExposureDeterminants</TableGroup>
+  </ScopingTypeDefinition>
+  <ScopingTypeDefinition>
     <Id>AirIndoorFractions</Id>
     <Name>Air indoor fractions</Name>
     <RawTableId>AirIndoorFractions</RawTableId>

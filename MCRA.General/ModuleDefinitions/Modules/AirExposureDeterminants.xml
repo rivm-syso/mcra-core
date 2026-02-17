@@ -19,4 +19,7 @@
   <Entities>
     <Entity>Substances</Entity>
   </Entities>
+  <CalculationSettings>
+    <CalculationSetting>DepositionVelocity</CalculationSetting>
+  </CalculationSettings>
 </Module>

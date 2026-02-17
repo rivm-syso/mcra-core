@@ -17,10 +17,11 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
         }
 
         public override void TryCopy(IDataSourceReader dataSourceReader, ProgressState progressState) {
-            progressState.Update("Processing AirExposureDeterminants");
-            var hasAirIndoorFractions = tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.AirIndoorFractions);
-            var hasAirVentilatoryFlowRates = tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.AirVentilatoryFlowRates);
-            if (hasAirIndoorFractions && hasAirVentilatoryFlowRates) {
+            progressState.Update("Processing Air Exposure Determinants");
+            var hasIndoorFractions = tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.AirIndoorFractions);
+            var hasVentilatoryFlowRates = tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.AirVentilatoryFlowRates);
+            var hasBodyExposureFractions = tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.AirBodyExposureFractions);
+            if ((hasIndoorFractions && hasVentilatoryFlowRates) || hasBodyExposureFractions) {
                 registerTableGroup(SourceTableGroup.AirExposureDeterminants);
             }
             progressState.Update(100);

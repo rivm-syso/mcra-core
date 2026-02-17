@@ -7,7 +7,8 @@ using MCRA.Utils.ExtensionMethods;
 namespace MCRA.Simulation.Actions.AirExposureDeterminants {
     public enum AirExposureDeterminantsSections {
         AirVentilatoryFlowRatesDataSection,
-        AirIndoorFractionsDataSection
+        AirIndoorFractionsDataSection,
+        AirBodyExposureFractionsDataSection,
     }
 
     public class AirExposureDeterminantsSummarizer : ActionResultsSummarizerBase<IAirExposureDeterminantsActionResult> {
@@ -32,6 +33,11 @@ namespace MCRA.Simulation.Actions.AirExposureDeterminants {
             if (data.AirVentilatoryFlowRates != null) {
                 summarizeAirVentilatoryFlowRates(data, subHeader, subOrder++);
             }
+
+            // Summarize air body exposure fractions.
+            if (data.AirBodyExposureFractions != null) {
+                summarizeAirBodyExposureFractions(data, subHeader, subOrder++);
+            }
         }
 
         private void summarizeAirIndoorFractions(
@@ -55,7 +61,24 @@ namespace MCRA.Simulation.Actions.AirExposureDeterminants {
             var section = new AirVentilatoryFlowRatesDataSection();
             var subHeader = header.AddSubSectionHeaderFor(section, "Air ventilatory flow rates", order);
             section.Summarize(
-                data.AirVentilatoryFlowRates
+                data.AirVentilatoryFlowRates,
+                ExposureSource.Air,
+                "ventilatory flow rate"
+            );
+            subHeader.SaveSummarySection(section);
+        }
+
+        private void summarizeAirBodyExposureFractions(
+           ActionData data,
+           SectionHeader header,
+           int order
+       ) {
+            var section = new AirBodyExposureFractionsDataSection();
+            var subHeader = header.AddSubSectionHeaderFor(section, "Air body exposure fractions", order);
+            section.Summarize(
+                data.AirBodyExposureFractions,
+                ExposureSource.Air,
+                "body exposure fraction"
             );
             subHeader.SaveSummarySection(section);
         }

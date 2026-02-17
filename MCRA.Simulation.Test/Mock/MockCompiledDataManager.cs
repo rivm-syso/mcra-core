@@ -357,7 +357,9 @@ namespace MCRA.Simulation.Test.Mock {
         public IList<AirVentilatoryFlowRate> GetAllAirVentilatoryFlowRates() {
             return _data.AllAirVentilatoryFlowRates;
         }
-
+        public IList<AirBodyExposureFraction> GetAllAirBodyExposureFractions() {
+            return _data.AllAirBodyExposureFractions;
+        }
         public IDictionary<string, ConsumerProduct> GetAllConsumerProducts() {
             return _data.AllConsumerProducts;
         }

@@ -16,10 +16,10 @@ namespace MCRA.Simulation.Actions.AirExposureDeterminants {
 
         protected override void verify() {
         }
-
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
             data.AirIndoorFractions = [.. subsetManager.AllAirIndoorFractions];
             data.AirVentilatoryFlowRates = [.. subsetManager.AllAirVentilatoryFlowRates];
+            data.AirBodyExposureFractions = [.. subsetManager.AllAirBodyExposureFractions];
         }
 
         protected override void summarizeActionResult(IAirExposureDeterminantsActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {
