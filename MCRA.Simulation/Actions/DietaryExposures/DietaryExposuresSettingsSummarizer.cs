@@ -16,19 +16,33 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
         public override ActionSettingsSummary Summarize(ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
             section.SummarizeSetting(SettingsItemType.SelectedTier, _configuration.SelectedTier);
-            section.SummarizeSetting(SettingsItemType.ExposureType, _configuration.ExposureType);
 
+            // Main assessment settings
+            section.SummarizeSetting(SettingsItemType.ExposureType, _configuration.ExposureType);
             if (_configuration.ExposureType == ExposureType.Acute) {
                 section.SummarizeSetting(SettingsItemType.NumberOfMonteCarloIterations, _configuration.NumberOfMonteCarloIterations);
                 if (_configuration.IsSurveySampling) {
                     section.SummarizeSetting(SettingsItemType.IsSurveySampling, _configuration.IsSurveySampling);
                 }
-                section.SummarizeSetting("Apply unit variability", _configuration.UseUnitVariability);
-                if (_configuration.UseUnitVariability) {
-                    section.SubSections.Add(SummarizeUnitVariabilitySettings());
+            } else {
+                section.SummarizeSetting(SettingsItemType.ShorterThanLifetime, _configuration.ShorterThanLifetime, isVisible: _configuration.ShorterThanLifetime);
+                if (_configuration.ShorterThanLifetime) {
+                    section.SummarizeSetting(SettingsItemType.ShorterThanLifetimeNumberOfDays, _configuration.ShorterThanLifetimeNumberOfDays);
+                } else if (_configuration.TotalDietStudy) {
+                    section.SummarizeSetting(SettingsItemType.TotalDietStudy, _configuration.TotalDietStudy);
+                } else if (_configuration.IntakeFirstModelThenAdd) {
+                    section.SummarizeSetting(SettingsItemType.IntakeFirstModelThenAdd, _configuration.IntakeFirstModelThenAdd);
                 }
+            }
+
+            // Residue generation
+            if (_configuration.ExposureType == ExposureType.Chronic && _configuration.ShorterThanLifetime) {
+                section.SummarizeSetting(SettingsItemType.ShorterThanLifetimeResidueGenerationMethod, _configuration.ShorterThanLifetimeResidueGenerationMethod);
+            }
+            if (_configuration.ExposureType == ExposureType.Acute
+                || (_configuration.ShorterThanLifetime && _configuration.ShorterThanLifetimeResidueGenerationMethod == ShorterThanLifetimeResidueGenerationMethod.RandomPerConsumption)
+            ) {
                 section.SummarizeSetting(SettingsItemType.IsSampleBased, _configuration.IsSampleBased);
-                section.SummarizeSetting(SettingsItemType.IsSingleSamplePerDay, _configuration.IsSingleSamplePerDay);
                 if (_configuration.IsSampleBased) {
                     section.SummarizeSetting(SettingsItemType.DefaultConcentrationModel, _configuration.DefaultConcentrationModel);
                 } else {
@@ -36,21 +50,10 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                     section.SummarizeSetting(SettingsItemType.NonDetectsHandlingMethod, _configuration.NonDetectsHandlingMethod);
                     section.SummarizeSetting(SettingsItemType.UseOccurrencePatternsForResidueGeneration, _configuration.UseOccurrencePatternsForResidueGeneration);
                 }
-                section.SummarizeSetting(SettingsItemType.ImputeExposureDistributions, _configuration.ImputeExposureDistributions);
-                if (_configuration.IntakeCovariateModelling) {
-                    section.SummarizeSetting(SettingsItemType.IntakeCovariateModelling, _configuration.IntakeCovariateModelling);
-                }
-                section.SummarizeSetting(SettingsItemType.IntakeModelType, _configuration.IntakeModelType, isVisible: false);
             }
 
-            if (_configuration.IntakeFirstModelThenAdd) {
-                section.SummarizeSetting(SettingsItemType.IntakeFirstModelThenAdd, _configuration.IntakeFirstModelThenAdd);
-                section.SummarizeSetting(SettingsItemType.IsufModelNumberOfIterations, _configuration.NumberOfMonteCarloIterations, isVisible: false);
-            }
-
-            if (_configuration.TotalDietStudy) {
-                section.SummarizeSetting(SettingsItemType.TotalDietStudy, _configuration.TotalDietStudy);
-            } else {
+            // Processing
+            if (_configuration.ExposureType != ExposureType.Chronic || !_configuration.TotalDietStudy) {
                 section.SummarizeSetting(SettingsItemType.IsProcessing, _configuration.IsProcessing);
                 if (_configuration.IsProcessing) {
                     section.SummarizeSetting(SettingsItemType.UseDefaultMissingProcessingFactor, _configuration.UseDefaultMissingProcessingFactor);
@@ -60,12 +63,24 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                 }
             }
 
-            section.SummarizeSetting(SettingsItemType.UseReadAcrossFoodTranslations, _configuration.UseReadAcrossFoodTranslations);
-            section.SummarizeSetting(SettingsItemType.DietaryExposuresDetailsLevel, _configuration.DietaryExposuresDetailsLevel);
-
-            if (_configuration.ExposureType == ExposureType.Chronic || _configuration.IntakeCovariateModelling) {
-                section.SummarizeSetting(SettingsItemType.ReductionToLimitScenario, _configuration.ReductionToLimitScenario);
+            // Unit variability
+            if (_configuration.ExposureType == ExposureType.Acute) {
+                section.SummarizeSetting("Apply unit variability", _configuration.UseUnitVariability);
+                if (_configuration.UseUnitVariability) {
+                    section.SubSections.Add(SummarizeUnitVariabilitySettings());
+                }
                 section.SummarizeSetting(SettingsItemType.ImputeExposureDistributions, _configuration.ImputeExposureDistributions);
+                if (_configuration.IntakeCovariateModelling) {
+                    section.SummarizeSetting(SettingsItemType.IntakeCovariateModelling, _configuration.IntakeCovariateModelling);
+                }
+                section.SummarizeSetting(SettingsItemType.IntakeModelType, _configuration.IntakeModelType, isVisible: false);
+            }
+
+            // Intake modelling
+            if ((_configuration.ExposureType == ExposureType.Chronic && !_configuration.ShorterThanLifetime)
+                || _configuration.IntakeCovariateModelling
+            ) {
+                section.SummarizeSetting(SettingsItemType.IsufModelNumberOfIterations, _configuration.NumberOfMonteCarloIterations, isVisible: false);
                 section.SubSections.Add(SummarizeIntakeModelSettings());
                 section.SummarizeSetting(SettingsItemType.IntakeCovariateModelling, _configuration.IntakeCovariateModelling);
                 if ((_configuration.IntakeModelType != IntakeModelType.OIM
@@ -84,6 +99,17 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                     section.SummarizeSetting(SettingsItemType.Cumulative, _configuration.Cumulative, isVisible: false);
                 }
             }
+
+            // TDS settings
+            if (_configuration.ExposureType == ExposureType.Chronic && _configuration.TotalDietStudy) {
+                section.SummarizeSetting(SettingsItemType.ReductionToLimitScenario, _configuration.ReductionToLimitScenario);
+                section.SummarizeSetting(SettingsItemType.UseReadAcrossFoodTranslations, _configuration.UseReadAcrossFoodTranslations, isVisible: false);
+            }
+
+            section.SummarizeSetting(SettingsItemType.DietaryExposuresDetailsLevel, _configuration.DietaryExposuresDetailsLevel);
+            section.SummarizeSetting(SettingsItemType.ImputeExposureDistributions, _configuration.ImputeExposureDistributions);
+
+            // MCR
             section.SummarizeSetting(SettingsItemType.McrAnalysis, _configuration.McrAnalysis);
             if (_configuration.McrAnalysis) {
                 section.SummarizeSetting(SettingsItemType.McrExposureApproachType, _configuration.McrExposureApproachType);
@@ -91,7 +117,10 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                 section.SummarizeSetting(SettingsItemType.McrPlotPercentiles, _configuration.McrPlotPercentiles);
                 section.SummarizeSetting(SettingsItemType.McrPlotMinimumPercentage, _configuration.McrPlotMinimumPercentage);
             }
+
+            // Variability diagnostics
             section.SummarizeSetting(SettingsItemType.VariabilityDiagnosticsAnalysis, _configuration.VariabilityDiagnosticsAnalysis);
+
             return section;
         }
 

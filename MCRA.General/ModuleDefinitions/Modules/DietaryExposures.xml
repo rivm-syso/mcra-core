@@ -48,10 +48,13 @@
   <CalculationSettings>
     <CalculationSetting source="Action">SelectedTier</CalculationSetting>
     <CalculationSetting source="Action">ExposureType</CalculationSetting>
+    <CalculationSetting>ShorterThanLifetime</CalculationSetting>
+    <CalculationSetting>ShorterThanLifetimeNumberOfDays</CalculationSetting>    
     <CalculationSetting source="FoodConversions">TotalDietStudy</CalculationSetting>
     <CalculationSetting source="Substances">MultipleSubstances</CalculationSetting>
     <CalculationSetting source="Substances">Cumulative</CalculationSetting>
     <!-- Residue generation -->
+    <CalculationSetting>ShorterThanLifetimeResidueGenerationMethod</CalculationSetting>
     <CalculationSetting source="ConcentrationModels">IsSampleBased</CalculationSetting>
     <CalculationSetting>IsSingleSamplePerDay</CalculationSetting>
     <CalculationSetting>MaximiseCoOccurrenceHighResidues</CalculationSetting>

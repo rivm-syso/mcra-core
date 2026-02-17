@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>ShorterThanLifetimeResidueGenerationMethod</Id>
+  <Name>Shorter than lifetime residue generation method</Name>
+  <Description>
+    Methods for generating residues for shorter than lifetime exposure calculations.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>UseMeans</Id>
+      <Name>Use means</Name>
+      <ShortName>Use means</ShortName>
+      <Description>
+        Use means as in chronic exposure calculations.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>RandomPerConsumption</Id>
+      <Name>Random per consumption</Name>
+      <ShortName>RandomPerConsumption</ShortName>
+      <Description>
+        Use random values per consumption, as in acute exposure calculations.
+      </Description>
+    </Unit>
+  </Units>
+</UnitDefinition>

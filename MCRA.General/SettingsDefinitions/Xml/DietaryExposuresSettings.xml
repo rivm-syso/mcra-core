@@ -357,4 +357,25 @@
     <Description>Controls whether to use unit variability.</Description>
     <ValueType>Boolean</ValueType>
   </SettingsItem>
+  <SettingsItem>
+    <Id>ShorterThanLifetime</Id>
+    <Name>Compute shorter than lifetime exposures</Name>
+    <Description>Compute shorter than lifetime exposures.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ShorterThanLifetimeNumberOfDays</Id>
+    <Name>Shorter than lifetime number of days</Name>
+    <Description>Number of days considered for shorter than lifetime exposure assessment.</Description>
+    <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ShorterThanLifetimeResidueGenerationMethod</Id>
+    <Name>Residue generation method for shorter than lifetime</Name>
+    <Description>
+      The method for generating residues for shorter than lifetime exposure assesment.
+    </Description>
+    <ValueType>ShorterThanLifetimeResidueGenerationMethod</ValueType>
+  </SettingsItem>  
 </SettingsItems>

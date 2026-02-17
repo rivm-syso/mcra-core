@@ -1,5 +1,4 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Simulation.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
 using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDayPruning;
@@ -7,6 +6,7 @@ using MCRA.Simulation.Calculators.ProcessingFactorCalculation;
 using MCRA.Simulation.Calculators.ResidueGeneration;
 using MCRA.Simulation.Calculators.SingleValueConsumptionsCalculation;
 using MCRA.Simulation.Calculators.UnitVariabilityCalculation;
+using MCRA.Simulation.Objects;
 
 namespace MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation {
 
@@ -30,7 +30,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDieta
         ) {
             _isSampleBased = isSampleBased;
             _maximiseCoOccurrenceHighResidues = !isSampleBased && maximiseCoOccurrenceHighResidues;
-            _isSingleSamplePerDay= isSingleSamplePerDay;
+            _isSingleSamplePerDay = isSingleSamplePerDay;
             _numberOfMonteCarloIterations = numberOfMonteCarloIterations;
             _exposureType = exposureType;
             _totalDietStudy = totalDietStudy;
@@ -45,11 +45,12 @@ namespace MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDieta
             IIndividualDayIntakePruner individualDayIntakePruner,
             ICollection<ConsumptionsByModelledFood> consumptionsPerFoodAsMeasured,
             ICollection<Compound> activeSubstances,
-            IDictionary<(Food, Compound), ConcentrationModel> concentrationModels
+            IDictionary<(Food, Compound), ConcentrationModel> concentrationModels,
+            bool shorterThanLifetime,
+            int shorterThanLifetimeNumberOfDays
         ) {
             var consumptionsByFoodsAsMeasured = ConsumptionsByModelledFoodCalculator
                 .CreateIndividualDayLookUp(consumptionsPerFoodAsMeasured);
-
 
             if (_exposureType == ExposureType.Acute) {
                 return new AcuteDietaryExposureCalculator(
@@ -64,6 +65,15 @@ namespace MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDieta
                     _isSampleBased,
                     _maximiseCoOccurrenceHighResidues,
                     _isSingleSamplePerDay
+                );
+            } else if (shorterThanLifetime) {
+                return new StlDietaryExposureCalculator(
+                    activeSubstances,
+                    consumptionsByFoodsAsMeasured,
+                    individualDayIntakePruner,
+                    processingFactorProvider,
+                    residueGenerator,
+                    shorterThanLifetimeNumberOfDays
                 );
             } else {
                 return new ChronicDietaryExposureCalculator(

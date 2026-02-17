@@ -156,6 +156,9 @@
         <Setting id="ReductionToLimitScenario" />
         <Setting id="ResampleImputationExposureDistributions" />
         <Setting id="ScenarioAnalysisFoods" />
+        <Setting id="ShorterThanLifetime" />
+        <Setting id="ShorterThanLifetimeNumberOfDays" />
+        <Setting id="ShorterThanLifetimeResidueGenerationMethod" />
         <Setting id="UseOccurrencePatternsForResidueGeneration" />
         <Setting id="VariabilityDiagnosticsAnalysis" />
         <Setting id="DietPopulationAlignmentMethod" />

@@ -72,7 +72,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             }
 
             // Summarize ISUF usual intakes distribution
-            if (_configuration.IntakeModelType == IntakeModelType.ISUF) {
+            if (_configuration.ExposureType == ExposureType.Chronic && _configuration.IntakeModelType == IntakeModelType.ISUF) {
                 summarizeIsufUsualIntakesDistribution(result, referenceSubstance, subHeader, subOrder++);
             }
 
@@ -80,12 +80,17 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             subHeaderDetails.SaveSummarySection(outputSummary);
 
             // Summarize OIM
-            if (result.DietaryObservedIndividualMeans != null) {
+            if (result.DietaryObservedIndividualMeans != null && !_configuration.ShorterThanLifetime) {
                 if (_configuration.IntakeModelType != IntakeModelType.OIM || _configuration.IntakeFirstModelThenAdd) {
                     summarizeOimDistribution(result, referenceSubstance, subHeaderDetails, subOrder++);
                 } else {
                     summarizeOimDistribution(result, referenceSubstance, subHeader, subOrder++);
                 }
+            }
+
+            // Summarize STL
+            if (_configuration.ExposureType == ExposureType.Chronic && _configuration.ShorterThanLifetime) {
+                summarizeStlDistribution(result, referenceSubstance, subHeader, subOrder++);
             }
 
             // Model-then-add OIMs by food
@@ -124,7 +129,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                 && ((data.CorrectedRelativePotencyFactors?.Count > 0) || (substances?.Count == 1))
                 && outputSettings.ShouldSummarize(DietaryExposuresSections.DailyIntakeDistributionSection)
             ) {
-                if (result.DietaryObservedIndividualMeans != null) {
+                if (_configuration.ExposureType == ExposureType.Chronic) {
                     summarizeDailyIntakesDistribution(result, data, subHeaderDetails, subOrder++);
                 } else {
                     summarizeDailyIntakesDistribution(result, data, subHeader, subOrder++);
@@ -291,7 +296,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             }
 
             if (_configuration.ExposureType == ExposureType.Chronic) {
-                // OIM
+                // OIM / STL
                 if (result.DietaryObservedIndividualMeans != null) {
                     subHeader = header.GetSubSectionHeader<ChronicDietarySection>();
                     if (subHeader != null) {
@@ -301,7 +306,8 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                             subHeader,
                             result.DietaryObservedIndividualMeans,
                             _configuration.UncertaintyLowerBound,
-                            _configuration.UncertaintyUpperBound);
+                            _configuration.UncertaintyUpperBound
+                        );
                         subHeader.SaveSummarySection(section);
                     }
                 }
@@ -763,11 +769,6 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
         /// <summary>
         /// Daily intakes distribution
         /// </summary>
-        /// <param name="project"></param>
-        /// <param name="result"></param>
-        /// <param name="data"></param>
-        /// <param name="header"></param>
-        /// <param name="order"></param>
         private void summarizeDailyIntakesDistribution(
             DietaryExposuresActionResult result,
             ActionData data,
@@ -921,10 +922,6 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
         /// <summary>
         /// Summarize ISUF
         /// </summary>
-        /// <param name="project"></param>
-        /// <param name="result"></param>
-        /// <param name="header"></param>
-        /// <param name="order"></param>
         private void summarizeIsufUsualIntakesDistribution(
             DietaryExposuresActionResult result,
             Compound referenceSubstance,
@@ -960,31 +957,45 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             SectionHeader header,
             int order
         ) {
-            if (result.DietaryObservedIndividualMeans != null) {
-                var section = new ChronicDietarySection() { ProgressState = _progressState };
-                var subHeader = header.AddSubSectionHeaderFor(section, "Distribution (OIM)", order);
-                section.Summarize(
-                    subHeader,
-                    result.DietaryObservedIndividualMeans,
-                    _configuration.ExposureMethod,
-                    referenceSubstance,
-                    _configuration.ExposureLevels.ToArray(),
-                    _configuration.SelectedPercentiles.ToArray(),
-                    _configuration.VariabilityUpperTailPercentage,
-                    _configuration.IsPerPerson
-                );
-                subHeader.SaveSummarySection(section);
-            }
+            var section = new ChronicDietarySection() { ProgressState = _progressState };
+            var subHeader = header.AddSubSectionHeaderFor(section, "Distribution (OIM)", order);
+            section.Summarize(
+                subHeader,
+                result.DietaryObservedIndividualMeans,
+                _configuration.ExposureMethod,
+                referenceSubstance,
+                _configuration.ExposureLevels.ToArray(),
+                _configuration.SelectedPercentiles.ToArray(),
+                _configuration.VariabilityUpperTailPercentage,
+                _configuration.IsPerPerson
+            );
+            subHeader.SaveSummarySection(section);
+        }
+
+        private void summarizeStlDistribution(
+            DietaryExposuresActionResult result,
+            Compound referenceSubstance,
+            SectionHeader header,
+            int order
+        ) {
+            var section = new ChronicDietarySection() { ProgressState = _progressState };
+            var subHeader = header.AddSubSectionHeaderFor(section, $"Distribution (STL - {_configuration.ShorterThanLifetimeNumberOfDays} days)", order);
+            section.Summarize(
+                subHeader,
+                result.DietaryObservedIndividualMeans,
+                _configuration.ExposureMethod,
+                referenceSubstance,
+                [.. _configuration.ExposureLevels],
+                [.. _configuration.SelectedPercentiles],
+                _configuration.VariabilityUpperTailPercentage,
+                _configuration.IsPerPerson
+            );
+            subHeader.SaveSummarySection(section);
         }
 
         /// <summary>
         /// Model-then-add OIMs by food
         /// </summary>
-        /// <param name="project"></param>
-        /// <param name="result"></param>
-        /// <param name="data"></param>
-        /// <param name="header"></param>
-        /// <param name="subOrder"></param>
         private void summarizeMtaDistributionsByModelledFood(
             DietaryExposuresActionResult result,
             ActionData data,

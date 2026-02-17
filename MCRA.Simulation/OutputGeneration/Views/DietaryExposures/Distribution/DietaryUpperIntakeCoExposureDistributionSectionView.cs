@@ -4,25 +4,24 @@ using System.Text;
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class DietaryUpperIntakeCoExposureDistributionSectionView : SectionView<DietaryUpperIntakeCoExposureDistributionSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
-
-            if (Model.PercentageZeroIntake == 100) {
-                sb.AppendNotification("No positive exposures.");
-                return;
-            }
-
             sb.AppendDescriptionParagraph($@"Upper tail {Model.CalculatedUpperPercentage:F1}% ({Model.NRecords} records),
                 minimum {Model.LowPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")},
-                maximum {Model.HighPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}");
-            var chartCreator = new DietaryUpperIntakeCoExposureDistributionChartCreator(Model, ViewBag.GetUnit("IntakeUnit"));
-            sb.AppendChart(
-                    "DietaryUpperIntakeCoExposureDistributionChart",
-                    chartCreator,
-                    ChartFileType.Svg,
-                    Model,
-                    ViewBag,
-                    chartCreator.Title,
-                    true
+                maximum {Model.HighPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}"
             );
+            if (Model.IntakeDistributionBins != null) {
+                var chartCreator = new DietaryUpperIntakeCoExposureDistributionChartCreator(Model, ViewBag.GetUnit("IntakeUnit"));
+                sb.AppendChart(
+                        "DietaryUpperIntakeCoExposureDistributionChart",
+                        chartCreator,
+                        ChartFileType.Svg,
+                        Model,
+                        ViewBag,
+                        chartCreator.Title,
+                        true
+                );
+            } else {
+                sb.AppendNotification("No positive exposures found.");
+            }
         }
     }
 }

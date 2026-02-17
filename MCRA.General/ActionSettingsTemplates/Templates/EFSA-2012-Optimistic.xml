@@ -133,6 +133,7 @@
         <Setting id="IntakeCovariateModelling">false</Setting>
         <Setting id="IsSurveySampling">false</Setting>
         <Setting id="IsPerPerson">false</Setting>
+        <Setting id="ShorterThanLifetime">false</Setting>
       </Settings>
       <ExcludedSettings>
         <Setting id="AmountModelCovariateModelType" />
@@ -168,6 +169,8 @@
         <Setting id="ReductionToLimitScenario" />
         <Setting id="ResampleImputationExposureDistributions" />
         <Setting id="ScenarioAnalysisFoods" />
+        <Setting id="ShorterThanLifetimeNumberOfDays" />
+        <Setting id="ShorterThanLifetimeResidueGenerationMethod" />
         <Setting id="UseOccurrencePatternsForResidueGeneration" />
         <Setting id="VariabilityDiagnosticsAnalysis" />
         <Setting id="DietPopulationAlignmentMethod" />

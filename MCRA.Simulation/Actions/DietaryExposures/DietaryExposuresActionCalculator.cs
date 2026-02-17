@@ -66,7 +66,6 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                 && ModuleConfig.UseOccurrencePatternsForResidueGeneration;
             _actionInputRequirements[ActionType.OccurrencePatterns].IsRequired = useOccurrencePatterns;
             _actionInputRequirements[ActionType.OccurrencePatterns].IsVisible = useOccurrencePatterns;
-
             var isTdsReductionToLimitScenario = ModuleConfig.TotalDietStudy && ModuleConfig.ReductionToLimitScenario;
             _actionInputRequirements[ActionType.FoodConversions].IsVisible = isTdsReductionToLimitScenario;
             _actionInputRequirements[ActionType.FoodConversions].IsRequired = isTdsReductionToLimitScenario;
@@ -154,7 +153,9 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                 ModuleConfig.IsSampleBased,
                 ModuleConfig.DefaultConcentrationModel != ConcentrationModelType.Empirical,
                 ModuleConfig.ExposureType,
-                ModuleConfig.NonDetectsHandlingMethod
+                ModuleConfig.ShorterThanLifetime,
+                ModuleConfig.NonDetectsHandlingMethod,
+                ModuleConfig.ShorterThanLifetimeResidueGenerationMethod
             );
             var residueGenerator = residueGeneratorFactory.Create(
                 data.MonteCarloSubstanceSampleCollections?.ToDictionary(r => r.Food),
@@ -221,7 +222,9 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                     individualDayIntakePruner,
                     data.ConsumptionsByModelledFood,
                     substances,
-                    data.ConcentrationModels
+                    data.ConcentrationModels,
+                    ModuleConfig.ShorterThanLifetime,
+                    ModuleConfig.ShorterThanLifetimeNumberOfDays
                 );
 
             data.DietaryIndividualDayIntakes = intakeCalculator
@@ -254,16 +257,6 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             if (ModuleConfig.ExposureType == ExposureType.Chronic
                 && (substances.Count == 1 || data.CorrectedRelativePotencyFactors != null)
             ) {
-                var factory = new IntakeModelFactory(
-                    ModuleConfig.GetFrequencyModelCalculationSettings(),
-                    ModuleConfig.GetAmountModelCalculationSettings(),
-                    ModuleConfig.GetISUFModelCalculationSettings(),
-                    ModuleConfig.NumberOfMonteCarloIterations,
-                    ModuleConfig.IntakeModelPredictionIntervals,
-                    [.. ModuleConfig.IntakeExtraPredictionLevels],
-                    ModuleConfig.FrequencyModelDispersion,
-                    ModuleConfig.AmountModelVarianceRatio);
-
                 var simpleIndividualDayIntakesCalculator = new SimpleIndividualDayIntakesCalculator(
                     substances,
                     data.CorrectedRelativePotencyFactors,
@@ -275,77 +268,89 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                     .Compute(data.DietaryIndividualDayIntakes);
                 var observedIndividualMeans = OIMCalculator
                     .CalculateObservedIndividualMeans(simpleIndividualDayIntakes);
-                if (ModuleConfig.IntakeFirstModelThenAdd) {
-                    var compositeIntakeModel = factory.CreateCompositeIntakeModel(
-                        data.DietaryIndividualDayIntakes,
-                        data.ModelledFoods,
-                        ModuleConfig.IntakeModelsPerCategory
-                    );
-                    foreach (var subModel in compositeIntakeModel.PartialModels) {
-                        var categoryIndividualDayIntakesCalculator = new SimpleIndividualDayIntakesCalculator(
-                            substances,
-                            data.CorrectedRelativePotencyFactors,
-                            data.MembershipProbabilities,
-                            ModuleConfig.IsPerPerson,
-                            subModel.FoodsAsMeasured
-                        );
-                        if (!(subModel.IntakeModel is OIMModel)) {
-                            var categoryIndividualDayIntakes = categoryIndividualDayIntakesCalculator
-                                .Compute(data.DietaryIndividualDayIntakes);
-                            subModel.IntakeModel.CalculateParameters(categoryIndividualDayIntakes);
-                        }
-                        subModel.IndividualIntakes = categoryIndividualDayIntakesCalculator
-                            .ComputeObservedIndividualMeans(data.DietaryIndividualDayIntakes);
-                    }
+                result.DietaryObservedIndividualMeans = observedIndividualMeans;
 
-                    var modelThenAddCalculator = new ModelThenAddUsualIntakesCalculator(progressReport?.CancellationToken);
-                    var mtaIntakeResults = modelThenAddCalculator.CalculateUsualIntakes(
-                        compositeIntakeModel,
-                        data.DietaryIndividualDayIntakes,
+                if (!ModuleConfig.ShorterThanLifetime) {
+                    var factory = new IntakeModelFactory(
+                        ModuleConfig.GetFrequencyModelCalculationSettings(),
+                        ModuleConfig.GetAmountModelCalculationSettings(),
+                        ModuleConfig.GetISUFModelCalculationSettings(),
                         ModuleConfig.NumberOfMonteCarloIterations,
-                        ModuleConfig.FrequencyModelCovariateModelType,
-                        ModuleConfig.AmountModelCovariateModelType,
-                        RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DE_DrawModelBasedExposures),
-                        RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DE_DrawModelAssistedExposures)
+                        ModuleConfig.IntakeModelPredictionIntervals,
+                        [.. ModuleConfig.IntakeExtraPredictionLevels],
+                        ModuleConfig.FrequencyModelDispersion,
+                        ModuleConfig.AmountModelVarianceRatio
                     );
-                    result.IntakeModel = compositeIntakeModel;
-                    result.DietaryObservedIndividualMeans = observedIndividualMeans;
-                    result.DietaryModelBasedIntakeResults = mtaIntakeResults.DietaryModelBasedIntakeResults;
-                    result.DietaryModelAssistedIntakes = mtaIntakeResults.DietaryModelAssistedIntakes;
-                } else {
-                    var intakeModel = factory.CreateIntakeModel(
-                        data.DietaryIndividualDayIntakes,
-                        ModuleConfig.IntakeCovariateModelling,
-                        ModuleConfig.ExposureType,
-                        ModuleConfig.IntakeModelType,
-                        ModuleConfig.AmountModelTransformType
-                    );
-                    intakeModel.CalculateParameters(simpleIndividualDayIntakes);
-                    result.DesiredIntakeModelType = ModuleConfig.IntakeModelType;
-                    if (intakeModel is LNNModel) {
-                        result.DesiredIntakeModelType = (intakeModel as LNNModel).FallBackModel;
-                    }
-                    var usualIntakeCalculator = new UsualIntakesCalculator();
-                    var intakeResults = usualIntakeCalculator
-                        .CalculateUsualIntakes(
-                            intakeModel,
-                            ModuleConfig.ExposureType,
-                            ModuleConfig.IntakeCovariateModelling,
+
+                    if (ModuleConfig.IntakeFirstModelThenAdd) {
+                        var compositeIntakeModel = factory.CreateCompositeIntakeModel(
+                            data.DietaryIndividualDayIntakes,
+                            data.ModelledFoods,
+                            ModuleConfig.IntakeModelsPerCategory
+                        );
+                        foreach (var subModel in compositeIntakeModel.PartialModels) {
+                            var categoryIndividualDayIntakesCalculator = new SimpleIndividualDayIntakesCalculator(
+                                substances,
+                                data.CorrectedRelativePotencyFactors,
+                                data.MembershipProbabilities,
+                                ModuleConfig.IsPerPerson,
+                                subModel.FoodsAsMeasured
+                            );
+                            if (!(subModel.IntakeModel is OIMModel)) {
+                                var categoryIndividualDayIntakes = categoryIndividualDayIntakesCalculator
+                                    .Compute(data.DietaryIndividualDayIntakes);
+                                subModel.IntakeModel.CalculateParameters(categoryIndividualDayIntakes);
+                            }
+                            subModel.IndividualIntakes = categoryIndividualDayIntakesCalculator
+                                .ComputeObservedIndividualMeans(data.DietaryIndividualDayIntakes);
+                        }
+
+                        var modelThenAddCalculator = new ModelThenAddUsualIntakesCalculator(progressReport?.CancellationToken);
+                        var mtaIntakeResults = modelThenAddCalculator.CalculateUsualIntakes(
+                            compositeIntakeModel,
+                            data.DietaryIndividualDayIntakes,
+                            ModuleConfig.NumberOfMonteCarloIterations,
+                            ModuleConfig.FrequencyModelCovariateModelType,
+                            ModuleConfig.AmountModelCovariateModelType,
                             RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DE_DrawModelBasedExposures),
                             RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DE_DrawModelAssistedExposures)
                         );
-                    result.DietaryObservedIndividualMeans = observedIndividualMeans;
-                    result.IntakeModel = intakeModel;
-                    result.DietaryModelAssistedIntakes = intakeResults?.ModelAssistedIntakes;
-                    result.DietaryModelBasedIntakeResults = intakeResults?.ModelBasedIntakeResults;
-                    result.DietaryConditionalUsualIntakeResults = intakeResults?.ConditionalUsualIntakes;
-                    result.IndividualModelAssistedIntakes = intakeResults?.IndividualModelAssistedIntakes;
+                        result.IntakeModel = compositeIntakeModel;
+                        result.DietaryModelBasedIntakeResults = mtaIntakeResults.DietaryModelBasedIntakeResults;
+                        result.DietaryModelAssistedIntakes = mtaIntakeResults.DietaryModelAssistedIntakes;
+                    } else {
+                        var intakeModel = factory.CreateIntakeModel(
+                            data.DietaryIndividualDayIntakes,
+                            ModuleConfig.IntakeCovariateModelling,
+                            ModuleConfig.ExposureType,
+                            ModuleConfig.IntakeModelType,
+                            ModuleConfig.AmountModelTransformType
+                        );
+                        intakeModel.CalculateParameters(simpleIndividualDayIntakes);
+                        result.DesiredIntakeModelType = ModuleConfig.IntakeModelType;
+                        if (intakeModel is LNNModel) {
+                            result.DesiredIntakeModelType = (intakeModel as LNNModel).FallBackModel;
+                        }
+                        var usualIntakeCalculator = new UsualIntakesCalculator();
+                        var intakeResults = usualIntakeCalculator
+                            .CalculateUsualIntakes(
+                                intakeModel,
+                                ModuleConfig.ExposureType,
+                                ModuleConfig.IntakeCovariateModelling,
+                                RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DE_DrawModelBasedExposures),
+                                RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DE_DrawModelAssistedExposures)
+                            );
+                        result.IntakeModel = intakeModel;
+                        result.DietaryModelAssistedIntakes = intakeResults?.ModelAssistedIntakes;
+                        result.DietaryModelBasedIntakeResults = intakeResults?.ModelBasedIntakeResults;
+                        result.DietaryConditionalUsualIntakeResults = intakeResults?.ConditionalUsualIntakes;
+                        result.IndividualModelAssistedIntakes = intakeResults?.IndividualModelAssistedIntakes;
+                    }
                 }
             } else {
                 if (ModuleConfig.ExposureType == ExposureType.Chronic && ModuleConfig.IntakeModelType != IntakeModelType.OIM) {
                     throw new Exception("Parametric exposure models are not allowed for a multiple substance analysis without a reference substance");
                 }
-
             }
 
             localProgress.Update(100);
@@ -405,14 +410,15 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             result.DietaryExposureUnit = data.DietaryExposureUnit;
 
             // Create residue generator
-            // Create residue generator
             var residueGeneratorFactory = new ResidueGeneratorFactory(
                 ModuleConfig.UseOccurrencePatternsForResidueGeneration,
                 ModuleConfig.SetMissingAgriculturalUseAsUnauthorized,
                 ModuleConfig.IsSampleBased,
                 ModuleConfig.DefaultConcentrationModel != ConcentrationModelType.Empirical,
                 ModuleConfig.ExposureType,
-                ModuleConfig.NonDetectsHandlingMethod
+                ModuleConfig.ShorterThanLifetime,
+                ModuleConfig.NonDetectsHandlingMethod,
+                ModuleConfig.ShorterThanLifetimeResidueGenerationMethod
             );
             var residueGenerator = residueGeneratorFactory.Create(
                 data.MonteCarloSubstanceSampleCollections?.ToDictionary(r => r.Food),
@@ -478,7 +484,9 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                     individualDayIntakePruner,
                     data.ConsumptionsByModelledFood,
                     substances,
-                    data.ConcentrationModels
+                    data.ConcentrationModels,
+                    ModuleConfig.ShorterThanLifetime,
+                    ModuleConfig.ShorterThanLifetimeNumberOfDays
                 );
 
             if (factorialSet.Contains(UncertaintySource.Portions)
@@ -574,80 +582,82 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                         .Compute(uncertaintyDietaryIntakes);
                     var observedIndividualMeans = OIMCalculator
                         .CalculateObservedIndividualMeans(simpleIndividualDayIntakes);
-                    if (ModuleConfig.IntakeFirstModelThenAdd) {
-                        var compositeIntakeModel = factory
-                            .CreateCompositeIntakeModel(
-                                uncertaintyDietaryIntakes,
-                                data.ModelledFoods,
-                                ModuleConfig.IntakeModelsPerCategory
-                            );
-                        foreach (var subModel in compositeIntakeModel.PartialModels) {
-                            var categoryIndividualDayIntakesCalculator = new SimpleIndividualDayIntakesCalculator(
-                                substances,
-                                data.CorrectedRelativePotencyFactors,
-                                data.MembershipProbabilities,
-                                ModuleConfig.IsPerPerson,
-                                subModel.FoodsAsMeasured
-                            );
-                            if (!(subModel.IntakeModel is OIMModel)) {
-                                var categoryIndividualDayIntakes = categoryIndividualDayIntakesCalculator
-                                    .Compute(uncertaintyDietaryIntakes);
-                                subModel.IntakeModel.CalculateParameters(categoryIndividualDayIntakes);
+                    result.DietaryObservedIndividualMeans = observedIndividualMeans;
+
+                    if (!ModuleConfig.ShorterThanLifetime) {
+                        if (ModuleConfig.IntakeFirstModelThenAdd) {
+                            var compositeIntakeModel = factory
+                                .CreateCompositeIntakeModel(
+                                    uncertaintyDietaryIntakes,
+                                    data.ModelledFoods,
+                                    ModuleConfig.IntakeModelsPerCategory
+                                );
+                            foreach (var subModel in compositeIntakeModel.PartialModels) {
+                                var categoryIndividualDayIntakesCalculator = new SimpleIndividualDayIntakesCalculator(
+                                    substances,
+                                    data.CorrectedRelativePotencyFactors,
+                                    data.MembershipProbabilities,
+                                    ModuleConfig.IsPerPerson,
+                                    subModel.FoodsAsMeasured
+                                );
+                                if (!(subModel.IntakeModel is OIMModel)) {
+                                    var categoryIndividualDayIntakes = categoryIndividualDayIntakesCalculator
+                                        .Compute(uncertaintyDietaryIntakes);
+                                    subModel.IntakeModel.CalculateParameters(categoryIndividualDayIntakes);
+                                }
+                                subModel.IndividualIntakes = categoryIndividualDayIntakesCalculator
+                                    .ComputeObservedIndividualMeans(uncertaintyDietaryIntakes);
                             }
-                            subModel.IndividualIntakes = categoryIndividualDayIntakesCalculator
-                                .ComputeObservedIndividualMeans(uncertaintyDietaryIntakes);
-                        }
 
-                        // Model-then-add random generator
-                        var modelThenAddCalculator = new ModelThenAddUsualIntakesCalculator(progressReport?.CancellationToken);
-                        var mtaIntakeResults = modelThenAddCalculator.CalculateUsualIntakes(
-                            compositeIntakeModel,
-                            uncertaintyDietaryIntakes,
-                            ModuleConfig.UncertaintyIterationsPerResampledSet,
-                            ModuleConfig.FrequencyModelCovariateModelType,
-                            ModuleConfig.AmountModelCovariateModelType,
-                            RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DE_DrawModelBasedExposures),
-                            RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DE_DrawModelAssistedExposures)
-                        );
+                            // Model-then-add random generator
+                            var modelThenAddCalculator = new ModelThenAddUsualIntakesCalculator(progressReport?.CancellationToken);
+                            var mtaIntakeResults = modelThenAddCalculator.CalculateUsualIntakes(
+                                compositeIntakeModel,
+                                uncertaintyDietaryIntakes,
+                                ModuleConfig.UncertaintyIterationsPerResampledSet,
+                                ModuleConfig.FrequencyModelCovariateModelType,
+                                ModuleConfig.AmountModelCovariateModelType,
+                                RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DE_DrawModelBasedExposures),
+                                RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DE_DrawModelAssistedExposures)
+                            );
 
-                        result.IntakeModel = compositeIntakeModel;
-                        result.DietaryObservedIndividualMeans = observedIndividualMeans;
-                        result.DietaryModelBasedIntakeResults = mtaIntakeResults.DietaryModelBasedIntakeResults;
-                        result.DietaryModelAssistedIntakes = mtaIntakeResults.DietaryModelAssistedIntakes;
-                        uncertaintyFactorialResponses = mtaIntakeResults.DietaryModelBasedIntakes
-                            ?? mtaIntakeResults.DietaryModelAssistedIntakes
-                                .Select(c => c.DietaryIntakePerMassUnit).ToList();
-                    } else {
-                        var intakeModel = factory.CreateIntakeModel(
-                            uncertaintyDietaryIntakes,
-                            ModuleConfig.IntakeCovariateModelling,
-                            ModuleConfig.ExposureType,
-                            data.DesiredIntakeModelType,
-                            ModuleConfig.AmountModelTransformType
-                        );
-                        result.DesiredIntakeModelType = data.DesiredIntakeModelType;
-                        intakeModel.CalculateParameters(simpleIndividualDayIntakes);
-                        var usualIntakeCalculator = new UsualIntakesCalculator();
-                        var intakeResults = usualIntakeCalculator.CalculateUsualIntakes(
-                            intakeModel,
-                            ModuleConfig.ExposureType,
-                            ModuleConfig.IntakeCovariateModelling,
-                            RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DE_DrawModelBasedExposures),
-                            RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DE_DrawModelAssistedExposures)
-                        );
-
-                        result.DietaryObservedIndividualMeans = observedIndividualMeans;
-                        result.IntakeModel = intakeModel;
-                        result.DietaryModelAssistedIntakes = intakeResults?.ModelAssistedIntakes;
-                        result.DietaryModelBasedIntakeResults = intakeResults?.ModelBasedIntakeResults;
-                        result.DietaryConditionalUsualIntakeResults = intakeResults?.ConditionalUsualIntakes;
-                        result.IndividualModelAssistedIntakes = intakeResults?.IndividualModelAssistedIntakes;
-
-                        if (intakeModel is ISUFModel) {
-                            uncertaintyFactorialResponses = (intakeModel as ISUFModel).UsualIntakeResult.UsualIntakes.Select(c => c.UsualIntake).ToList();
+                            result.IntakeModel = compositeIntakeModel;
+                            result.DietaryModelBasedIntakeResults = mtaIntakeResults.DietaryModelBasedIntakeResults;
+                            result.DietaryModelAssistedIntakes = mtaIntakeResults.DietaryModelAssistedIntakes;
+                            uncertaintyFactorialResponses = mtaIntakeResults.DietaryModelBasedIntakes
+                                ?? mtaIntakeResults.DietaryModelAssistedIntakes
+                                    .Select(c => c.DietaryIntakePerMassUnit).ToList();
                         } else {
-                            var modelBasedIntakes = intakeResults?.ModelBasedIntakeResults?.SelectMany(c => c.ModelBasedIntakes).ToList();
-                            uncertaintyFactorialResponses = modelBasedIntakes ?? observedIndividualMeans?.Select(r => r.DietaryIntakePerMassUnit).ToList();
+                            var intakeModel = factory.CreateIntakeModel(
+                                uncertaintyDietaryIntakes,
+                                ModuleConfig.IntakeCovariateModelling,
+                                ModuleConfig.ExposureType,
+                                data.DesiredIntakeModelType,
+                                ModuleConfig.AmountModelTransformType
+                            );
+                            result.DesiredIntakeModelType = data.DesiredIntakeModelType;
+                            intakeModel.CalculateParameters(simpleIndividualDayIntakes);
+                            var usualIntakeCalculator = new UsualIntakesCalculator();
+                            var intakeResults = usualIntakeCalculator.CalculateUsualIntakes(
+                                intakeModel,
+                                ModuleConfig.ExposureType,
+                                ModuleConfig.IntakeCovariateModelling,
+                                RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DE_DrawModelBasedExposures),
+                                RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DE_DrawModelAssistedExposures)
+                            );
+
+                            result.IntakeModel = intakeModel;
+                            result.DietaryModelAssistedIntakes = intakeResults?.ModelAssistedIntakes;
+                            result.DietaryModelBasedIntakeResults = intakeResults?.ModelBasedIntakeResults;
+                            result.DietaryConditionalUsualIntakeResults = intakeResults?.ConditionalUsualIntakes;
+                            result.IndividualModelAssistedIntakes = intakeResults?.IndividualModelAssistedIntakes;
+
+                            if (intakeModel is ISUFModel) {
+                                uncertaintyFactorialResponses = (intakeModel as ISUFModel).UsualIntakeResult.UsualIntakes.Select(c => c.UsualIntake).ToList();
+                            } else {
+                                var modelBasedIntakes = intakeResults?.ModelBasedIntakeResults?.SelectMany(c => c.ModelBasedIntakes).ToList();
+                                uncertaintyFactorialResponses = modelBasedIntakes ?? observedIndividualMeans?.Select(r => r.DietaryIntakePerMassUnit).ToList();
+                            }
                         }
                     }
                 } else {

@@ -1128,5 +1128,72 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             Assert.IsFalse(double.IsNaN(mean));
             Assert.HasCount(100, data.DietaryIndividualDayIntakes);
         }
+
+        [TestMethod]
+        public void DietaryExposuresActionCalculator_TestShorterThanLifetime() {
+            var seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var properties = FakeIndividualPropertiesGenerator.Create();
+            var foods = FakeFoodsGenerator.Create(2);
+            var foodTranslations = FakeFoodTranslationsGenerator.Create(foods, random);
+            var individualDays = FakeIndividualDaysGenerator.Create(5, 2, true, random, properties);
+            var individuals = individualDays.Select(c => c.Individual).Distinct().ToList();
+            var substances = FakeSubstancesGenerator.Create(2);
+            var modelledFoods = foodTranslations.Select(c => c.FoodTo).Distinct().ToList();
+            var correctedRelativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
+            var membershipProbabilities = substances.ToDictionary(c => c, c => 1d);
+            var concentrationModels = FakeConcentrationsModelsGenerator.Create(modelledFoods, substances);
+            var foodConsumptions = FakeFoodConsumptionsGenerator.Create(foods, individualDays, random);
+            var consumptionsByModelledFood = FakeConsumptionsByModelledFoodGenerator
+                .Create(
+                    foodConsumptions,
+                    foodTranslations,
+                    substances
+                );
+
+            var foodsAsEaten = foodConsumptions.Select(c => c.Food).Distinct().ToList();
+            var activeSubstanceSampleCollections = FakeSampleCompoundCollectionsGenerator.Create(
+                modelledFoods,
+                substances,
+                concentrationModels
+            );
+            var compoundResidueCollections = FakeFoodSubstanceResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections);
+
+            var data = new ActionData() {
+                AllFoods = foods,
+                ModelledFoodConsumers = individuals,
+                ModelledFoodConsumerDays = individualDays,
+                ReferenceSubstance = substances.First(),
+                CorrectedRelativePotencyFactors = correctedRelativePotencyFactors,
+                MembershipProbabilities = membershipProbabilities,
+                ConcentrationModels = concentrationModels,
+                MonteCarloSubstanceSampleCollections = activeSubstanceSampleCollections.Values,
+                ActiveSubstances = substances,
+                ModelledFoods = modelledFoods,
+                FoodsAsEaten = foodsAsEaten,
+                CompoundResidueCollections = compoundResidueCollections,
+                ConsumptionsByModelledFood = consumptionsByModelledFood,
+            };
+
+            var config = new DietaryExposuresModuleConfig {
+                IsSampleBased = true,
+                Cumulative = true,
+                ExposureType = ExposureType.Chronic,
+                ShorterThanLifetime = true,
+                ShorterThanLifetimeNumberOfDays = 10,
+            };
+            var project = new ProjectDto(config);
+
+            var calculator = new DietaryExposuresActionCalculator(project);
+            var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, $"TestShorterThanLifetime");
+
+            var factorialSet = new UncertaintyFactorialSet(UncertaintySource.Concentrations, UncertaintySource.Individuals, UncertaintySource.Processing);
+            var uncertaintySourceGenerators = factorialSet.UncertaintySources.ToDictionary(r => r, r => random as IRandom);
+            TestRunUpdateSummarizeUncertainty(calculator, data, header, random, factorialSet, uncertaintySourceGenerators);
+            Assert.IsNotNull(data.DietaryIndividualDayIntakes);
+            Assert.IsNotNull(data.DietaryExposureUnit);
+            Assert.IsNotNull(data.DietaryObservedIndividualMeans);
+            Assert.IsNull(data.DietaryExposuresIntakeModel);
+        }
     }
 }

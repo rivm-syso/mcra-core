@@ -162,7 +162,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
             foodSamples = foodSamples.Where(analysedSubstancesFilter.Passes).ToList();
 
             // Check if there are any food samples left
-            if (!foodSamples.Any()) {
+            if (foodSamples.Count == 0) {
                 throw new Exception("No food samples selected.");
             }
 

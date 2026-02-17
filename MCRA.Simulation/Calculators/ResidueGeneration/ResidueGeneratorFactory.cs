@@ -7,12 +7,14 @@ using MCRA.Simulation.Calculators.OccurrencePatternsCalculation;
 namespace MCRA.Simulation.Calculators.ResidueGeneration {
     public class ResidueGeneratorFactory {
 
+        private readonly bool _shorterThanLifetime;
         private readonly bool _useOccurrencePatternsForResidueGeneration;
         private readonly bool _treatMissingOccurrencePatternsAsNotOccurring;
         private readonly bool _isSampleBased;
         private readonly bool _useEquivalentsModel;
         private readonly ExposureType _exposureType;
         private readonly NonDetectsHandlingMethod _nonDetectsHandlingMethod;
+        private readonly ShorterThanLifetimeResidueGenerationMethod _shorterThanLifetimeResidueGenerationMethod;
 
         public ResidueGeneratorFactory(
             bool useOccurrencePatternsForResidueGeneration,
@@ -20,14 +22,18 @@ namespace MCRA.Simulation.Calculators.ResidueGeneration {
             bool isSampleBased,
             bool useEquivalentsModel,
             ExposureType exposureType,
-            NonDetectsHandlingMethod nonDetectsHandlingMethod
+            bool shorterThanLifetime,
+            NonDetectsHandlingMethod nonDetectsHandlingMethod,
+            ShorterThanLifetimeResidueGenerationMethod shorterThanLifetimeResidueGenerationMethod
         ) {
+            _shorterThanLifetime = shorterThanLifetime;
             _useOccurrencePatternsForResidueGeneration = useOccurrencePatternsForResidueGeneration;
             _treatMissingOccurrencePatternsAsNotOccurring = treatMissingOccurrencePatternsAsNotOccurring;
             _isSampleBased = isSampleBased;
             _useEquivalentsModel = useEquivalentsModel;
             _exposureType = exposureType;
             _nonDetectsHandlingMethod = nonDetectsHandlingMethod;
+            _shorterThanLifetimeResidueGenerationMethod = shorterThanLifetimeResidueGenerationMethod;
         }
 
         public IResidueGenerator Create(
@@ -37,7 +43,9 @@ namespace MCRA.Simulation.Calculators.ResidueGeneration {
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Food, List<MarginalOccurrencePattern>> marginalOccurrencePatterns
         ) {
-            if (_exposureType == ExposureType.Chronic) {
+            if (_exposureType == ExposureType.Chronic 
+                && (!_shorterThanLifetime || _shorterThanLifetimeResidueGenerationMethod == ShorterThanLifetimeResidueGenerationMethod.UseMeans)
+            ) {
                 var result = new MeanConcentrationResidueGenerator(concentrationModels);
                 result.Initialize();
                 return result;

@@ -9,11 +9,10 @@ using MCRA.Simulation.Test.Mock.MockCalculatorSettings;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.ResidueGeneration {
-    /// <summary>
-    /// ResidueGeneratorFactory  calculator
-    /// </summary>
+
     [TestClass]
     public class ResidueGeneratorFactoryModelsTests {
+
         /// <summary>
         /// Test factory models
         /// </summary>
@@ -78,7 +77,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ResidueGeneration {
                 correctedRelativePotencyFactors,
                 cumulativeConcentrationModels,
                 activeSubstanceSampleCollections
-            //NonDetectsHandlingMethod.ReplaceByLOD
             );
             factory.Initialize(correctedRelativePotencyFactors.Keys, cumulativeConcentrationModels.Keys);
             var concentrations = factory.GenerateResidues(modelledFoods.First(), substances, random);
