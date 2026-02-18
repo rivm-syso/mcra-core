@@ -44,8 +44,6 @@
                 ExposureRoute.Inhalation => compartmentType switch {
                     PbkModelCompartmentType.AlveolarAir => 4,
                     PbkModelCompartmentType.Lung => 3,
-                    PbkModelCompartmentType.ArterialBlood => 2,
-                    PbkModelCompartmentType.ArterialPlasma => 1,
                     _ => -1,
                 },
                 _ => -1,

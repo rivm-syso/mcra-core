@@ -49,7 +49,6 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             }
             section.SummarizeSetting(SettingsItemType.Cumulative, _configuration.Cumulative);
             section.SummarizeSetting(SettingsItemType.McrAnalysis, _configuration.McrAnalysis);
-
             if (_configuration.McrAnalysis) {
                 section.SummarizeSetting(SettingsItemType.McrExposureApproachType, _configuration.McrExposureApproachType);
                 section.SummarizeSetting(SettingsItemType.McrPlotRatioCutOff, _configuration.McrPlotRatioCutOff);

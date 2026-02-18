@@ -66,7 +66,7 @@ namespace MCRA.General.PbkModelDefinitions.PbkModelSpecifications.Sbml {
         /// <summary>
         /// Retrieves the list of inputs available in the PBK model.
         /// </summary>
-        public Dictionary<ExposureRoute, SbmlPbkModelSpecies> GetRouteInputSpecies() {
+        public Dictionary<ExposureRoute, SbmlPbkModelSpecies> GetRouteInputSpecies(bool fallbackSystemic = false) {
             var result = new Dictionary<ExposureRoute, SbmlPbkModelSpecies>();
             var routes = new[] { ExposureRoute.Inhalation, ExposureRoute.Oral, ExposureRoute.Dermal };
             foreach (var route in routes) {
@@ -76,6 +76,14 @@ namespace MCRA.General.PbkModelDefinitions.PbkModelSpecifications.Sbml {
                     .OrderByDescending(c => c.priority)
                     .Select(r => r.species)
                     .FirstOrDefault();
+                if (inputForRoute == null && fallbackSystemic) {
+                    inputForRoute = Species
+                    .Select(r => (species: r, priority: r.Compartment.GetSystemicInputPriority()))
+                    .Where(c => c.priority > 0)
+                    .OrderByDescending(c => c.priority)
+                    .Select(r => r.species)
+                    .FirstOrDefault();
+                }
                 if (inputForRoute != null) {
                     result.Add(route, inputForRoute);
                 }

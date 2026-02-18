@@ -115,6 +115,7 @@ namespace MCRA.Simulation.Actions.KineticConversionFactors {
                 OutputResolutionTimeUnit = ModuleConfig.PbkOutputResolutionTimeUnit,
                 OutputResolutionStepSize = ModuleConfig.PbkOutputResolutionStepSize,
                 PbkSimulationMethod = ModuleConfig.PbkSimulationMethod,
+                AllowFallbackSystemic = ModuleConfig.AllowFallbackSystemic,
                 AllowUseSurrogateMatrix = false,
                 SurrogateBiologicalMatrix = BiologicalMatrix.Undefined,
                 LifetimeYears = ModuleConfig.LifetimeYears,

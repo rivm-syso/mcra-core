@@ -7,9 +7,11 @@
   <TableGroup>PbkModelDefinitions</TableGroup>
   <IsAdvancedActionType>true</IsAdvancedActionType>
   <Description>
-    PBK model definitions implement an uploadable version of PBK (SBML) models.
+    Physiologically based kinetic (PBK) models are mathematical representations of biological organisms designed to describe and predict the time-dependent processes of absorption, distribution, metabolism, and excretion (ADME) of chemicals across tissues and organs.
+    PBK model definitions establish the structural framework of these models - specifying compartments, chemical species, and their interconnections - without prescribing specific parameter values.
+    When combined with parameter values, these definitions enable the estimation of internal chemical concentrations from external exposures, and vice versa.
   </Description>
   <DataDescription>
-    PBK model definitions implement an uploadable version of PBK (SBML) models.
+    PBK models can either be uploaded as data (in the SBML format) or can be selected from the collection of embedded models
   </DataDescription>
 </Module>

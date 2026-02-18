@@ -601,6 +601,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 OutputResolutionStepSize = ModuleConfig.PbkOutputResolutionStepSize,
                 PbkSimulationMethod = ModuleConfig.PbkSimulationMethod,
                 AllowUseSurrogateMatrix = ModuleConfig.AllowUseSurrogateMatrix,
+                AllowFallbackSystemic = ModuleConfig.AllowFallbackSystemic,
                 SurrogateBiologicalMatrix = ModuleConfig.SurrogateBiologicalMatrix,
                 LifetimeYears = ModuleConfig.LifetimeYears,
                 BodyWeightCorrected = ModuleConfig.BodyWeightCorrected,

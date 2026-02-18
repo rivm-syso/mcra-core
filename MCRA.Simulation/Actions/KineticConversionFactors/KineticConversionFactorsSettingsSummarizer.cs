@@ -27,6 +27,7 @@ namespace MCRA.Simulation.Actions.KineticConversionFactors {
                     section.SummarizeSetting(SettingsItemType.NonStationaryPeriod, _configuration.NonStationaryPeriod);
                 }
                 section.SummarizeSetting(SettingsItemType.ExposureEventsGenerationMethod, _configuration.ExposureEventsGenerationMethod);
+                section.SummarizeSetting(SettingsItemType.AllowFallbackSystemic, _configuration.AllowFallbackSystemic);
                 section.SummarizeSetting(SettingsItemType.PbkSimulationMethod, _configuration.PbkSimulationMethod);
                 if (_configuration.PbkSimulationMethod != PbkSimulationMethod.Standard) {
                     section.SummarizeSetting(SettingsItemType.BodyWeightCorrected, _configuration.BodyWeightCorrected);

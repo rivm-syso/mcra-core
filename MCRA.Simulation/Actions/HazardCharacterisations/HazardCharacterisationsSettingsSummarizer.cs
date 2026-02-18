@@ -64,6 +64,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 section.SummarizeSetting(SettingsItemType.UseParameterVariability, _configuration.UseParameterVariability);
                 section.SummarizeSetting(SettingsItemType.NumberOfDays, _configuration.NumberOfDays);
                 section.SummarizeSetting(SettingsItemType.NonStationaryPeriod, _configuration.NonStationaryPeriod);
+                section.SummarizeSetting(SettingsItemType.AllowFallbackSystemic, _configuration.AllowFallbackSystemic);
                 section.SummarizeSetting(SettingsItemType.ExposureEventsGenerationMethod, _configuration.ExposureEventsGenerationMethod);
                 if (_configuration.ExposureEventsGenerationMethod == ExposureEventsGenerationMethod.RandomDailyEvents) {
                     if (_configuration.SpecifyEvents) {

@@ -36,6 +36,7 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation {
 
         public double PrecisionReverseDoseCalculation { get; set; } = 0.001;
 
+        public bool AllowFallbackSystemic { get; set; }
         public bool AllowUseSurrogateMatrix { get; set; }
         public BiologicalMatrix SurrogateBiologicalMatrix { get; set; } = BiologicalMatrix.Undefined;
 

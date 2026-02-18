@@ -16,5 +16,6 @@
   <CalculationSettings>
     <CalculationSetting>PbkOutputResolutionTimeUnit</CalculationSetting>
     <CalculationSetting>PbkOutputResolutionStepSize</CalculationSetting>
+    <CalculationSetting>AllowFallbackSystemic</CalculationSetting>
   </CalculationSettings>
 </Module>

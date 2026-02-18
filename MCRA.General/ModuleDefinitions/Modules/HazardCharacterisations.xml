@@ -81,6 +81,7 @@
     <CalculationSetting source="PbkModels">NumberOfDosesPerDayNonDietaryOral</CalculationSetting>
     <CalculationSetting source="PbkModels">SelectedEvents</CalculationSetting>
     <CalculationSetting source="PbkModels">SpecifyEvents</CalculationSetting>
+    <CalculationSetting source="PbkModelSimulations">AllowFallbackSystemic</CalculationSetting>
     <CalculationSetting source="PbkModelSimulations">PbkOutputResolutionTimeUnit</CalculationSetting>
     <CalculationSetting source="PbkModelSimulations">PbkOutputResolutionStepSize</CalculationSetting>
   </CalculationSettings>

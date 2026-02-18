@@ -7,6 +7,15 @@ namespace MCRA.General.Test.UnitTests.PbkModelDefinitions.PbkModelSpecifications
     public class SbmlPbkModelSpecificationTests {
 
         [TestMethod]
+        [DataRow(false, 1)]
+        [DataRow(true, 3)]
+        public void SbmlPbkModelSpecification_TestGetRouteInputSpecies(bool fallbackSystemic, int expected) {
+            var filePath = "Resources/SbmlPbkModels/simple.sbml";
+            var def = loadModel(filePath);
+            Assert.HasCount(expected, def.GetRouteInputSpecies(fallbackSystemic));
+        }
+
+        [TestMethod]
         public void SbmlPbkModelSpecification_TestGetOutputMatrices() {
             var filePath = "Resources/SbmlPbkModels/simple.sbml";
             var def = loadModel(filePath);

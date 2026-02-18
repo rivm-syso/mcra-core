@@ -29,7 +29,7 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation {
             var stepLength = 1d / stepsPerDay * timeUnitMultiplier;
 
             // Get model input mappings for exposure routes
-            var inputSpecies = PbkModelSpecification.GetRouteInputSpecies();
+            var inputSpecies = PbkModelSpecification.GetRouteInputSpecies(SimulationSettings.AllowFallbackSystemic);
             var inputMappings = inputSpecies.ToDictionary(r => r.Key, r => r.Value.Id);
 
             // Check if routes are supported by the model

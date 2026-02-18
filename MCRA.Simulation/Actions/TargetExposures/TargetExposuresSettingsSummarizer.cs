@@ -131,6 +131,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     section.SummarizeSetting(SettingsItemType.NumberOfDays, _configuration.NumberOfDays);
                     section.SummarizeSetting(SettingsItemType.NonStationaryPeriod, _configuration.NonStationaryPeriod);
                 }
+                section.SummarizeSetting(SettingsItemType.AllowFallbackSystemic, _configuration.AllowFallbackSystemic);
                 section.SummarizeSetting(SettingsItemType.ExposureEventsGenerationMethod, _configuration.ExposureEventsGenerationMethod);
                 section.SummarizeSetting(SettingsItemType.PbkSimulationMethod, _configuration.PbkSimulationMethod);
                 if (_configuration.PbkSimulationMethod != PbkSimulationMethod.Standard) {

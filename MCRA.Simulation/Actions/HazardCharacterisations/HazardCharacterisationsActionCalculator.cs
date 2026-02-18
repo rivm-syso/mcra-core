@@ -274,6 +274,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 NumberOfInhalationDosesPerDay = ModuleConfig.NumberOfDosesPerDayNonDietaryInhalation,
                 NonStationaryPeriod = ModuleConfig.NonStationaryPeriod,
                 UseParameterVariability = ModuleConfig.UseParameterVariability,
+                AllowFallbackSystemic = ModuleConfig.AllowFallbackSystemic,
                 SpecifyEvents = ModuleConfig.SpecifyEvents,
                 SelectedEvents = [.. ModuleConfig.SelectedEvents],
                 OutputResolutionTimeUnit = ModuleConfig.PbkOutputResolutionTimeUnit,

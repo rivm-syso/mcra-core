@@ -232,6 +232,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                                 NumberOfInhalationDosesPerDay = ModuleConfig.NumberOfDosesPerDayNonDietaryInhalation,
                                 NonStationaryPeriod = ModuleConfig.NonStationaryPeriodInDays,
                                 UseParameterVariability = ModuleConfig.UseParameterVariability,
+                                AllowFallbackSystemic = ModuleConfig.AllowFallbackSystemic,
                                 SpecifyEvents = ModuleConfig.SpecifyEvents,
                                 SelectedEvents = [.. ModuleConfig.SelectedEvents],
                                 OutputResolutionTimeUnit = ModuleConfig.PbkOutputResolutionTimeUnit,
