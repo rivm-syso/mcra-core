@@ -1,5 +1,26 @@
 # Change Log
 
+## Version 10.2.14 (2026-02-18)
+
+### Added
+
+- Implement AirConcentrationDistributions module (#2343)
+- SoilConcentrations, DustConcentrations, InddorAirConcentrations and OutdoorAirConcentrations.Add user specified percentiles (#2396)
+- Create generic output summary for soil exposures (#2407)
+- Add percentiles summary in internal exposure section by route, source, substance combinations (#2408)
+- Update occupational exposures modules with hand protection and protective clothing determinants (#2411)
+- Implement lognormal distribution instead of concentration model SummaryStatistics (#2416)
+
+### Changed
+
+- Rename Action SoilConcentrationDistributions to SoilConcentrations (#2410)
+
+### Fixed
+
+- Update focal commodity measurement replacement method to assure that the order of the sample compound records does not affect the results (#2413)
+- Object reference not set to instance of an object, active substances not set for determining reference substance (#2417)
+- New scaling in Violin plots bases on local maximum oof density insted of global (#2420)
+
 ## Version 10.2.13 (2026-01-27)
 
 ### Added
