@@ -56,8 +56,7 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation {
                 .ToDictionary(r => r.Id, StringComparer.OrdinalIgnoreCase);
 
             // Check if model matches settings
-            if (SimulationSettings.PbkSimulationMethod != PbkSimulationMethod.Standard
-                && SimulationSettings.BodyWeightCorrected
+            if (SimulationSettings.ApplyBodyWeightScaling
                 && PbkModelSpecification.GetParameterDefinitionByType(PbkModelParameterType.BodyWeight) == null
             ) {
                 var msg = $"Cannot apply bodyweight corrected exposures on PBK model [{PbkModelSpecification.Id}]: no BW parameter found.";
@@ -158,7 +157,7 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation {
                 // TODO: current code assumes age in same unit as kinetic model parameter
                 var age = individual.Age.HasValue && !double.IsNaN(individual.Age.Value)
                     ? individual.Age.Value
-                    : GetFallbackParameterValue(instanceParameters, ageParameter);
+                    : GetFallbackParameterValue(instanceParameters, ageParameter.Id);
                 parametrisation[ageParameter.Id] = age;
             }
 
@@ -185,41 +184,40 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation {
             }
 
             // For lifetime models, check for reference age and body weight parameters
-            if (PbkModelSpecification.IsLifetimeModel()) {
+            if (SimulationSettings.IsLifetime()) {
+
                 // Check for reference age parameter
-                var ageRefParameter = PbkModelSpecification
-                    .GetParameterDefinitionByType(PbkModelParameterType.AgeRef);
-                if (ageRefParameter != null && !ageRefParameter.IsInternalParameter) {
-                    var age = individual.Age.HasValue && !double.IsNaN(individual.Age.Value)
-                        ? individual.Age.Value
-                        : GetFallbackParameterValue(instanceParameters, ageRefParameter);
-                    parametrisation[ageRefParameter.Id] = age;
+                var ageRefParam = PbkModelSpecification.GetParameterDefinitionByType(PbkModelParameterType.AgeRef);
+                if (ageRefParam != null) {
+                    if (!individual.Age.HasValue) {
+                        throw new Exception($"Cannot set age parameter for PBK model [{PbkModelSpecification.Name}]: some individuals have an unspecified age.");
+                    }
+                    parametrisation[ageRefParam.Id] = individual.Age.Value;
                 }
 
                 // Check for reference body weight parameter
-                var bwRefParameter = PbkModelSpecification
-                    .GetParameterDefinitionByType(PbkModelParameterType.BodyWeightRef);
-                if (bwRefParameter != null && !bwRefParameter.IsInternalParameter) {
-                    var bw = !double.IsNaN(individual.BodyWeight)
-                        ? individual.BodyWeight
-                        : GetFallbackParameterValue(instanceParameters, bwRefParameter);
-                    parametrisation[bwRefParameter.Id] = bw;
+                var bwRefParam = PbkModelSpecification.GetParameterDefinitionByType(PbkModelParameterType.BodyWeightRef);
+                if (bwRefParam != null) {
+                    if (double.IsNaN(individual.BodyWeight)) {
+                        throw new Exception($"Cannot set bodyweight parameter for PBK model [{PbkModelSpecification.Name}]: some individuals have an unspecified bodyweight.");
+                    }
+                    parametrisation[bwRefParam.Id] = individual.BodyWeight;
                 }
 
                 // Check for reference age parameter
-                var ageInitParameter = PbkModelSpecification
-                    .GetParameterDefinitionByType(PbkModelParameterType.AgeInit);
-                if (ageInitParameter != null && !ageInitParameter.IsInternalParameter) {
-                    var age = individual.Age.HasValue && !double.IsNaN(individual.Age.Value)
-                        ? individual.Age.Value
-                        : GetFallbackParameterValue(instanceParameters, ageInitParameter);
+                var ageInitParam = PbkModelSpecification.GetParameterDefinitionByType(PbkModelParameterType.AgeInit);
+                if (ageInitParam != null) {
                     var ageInit = SimulationSettings.PbkSimulationMethod switch {
-                        PbkSimulationMethod.Standard => age,
+                        PbkSimulationMethod.Standard => individual.Age.Value,
                         PbkSimulationMethod.LifetimeToSpecifiedAge => 0D,
                         PbkSimulationMethod.LifetimeToCurrentAge => 0D,
+                        PbkSimulationMethod.LifetimeWindowToCurrent => Math.Max(0, individual.Age.Value - SimulationSettings.LifetimeWindowYears),
+                        PbkSimulationMethod.LifetimeRange => SimulationSettings.LifetimeStartAge,
+                        PbkSimulationMethod.LifetimeCurrentToSpecifiedAge => individual.Age.Value,
+                        PbkSimulationMethod.LifetimeCurrentAgeForward => individual.Age.Value,
                         _ => throw new NotImplementedException(),
                     };
-                    parametrisation[ageInitParameter.Id] = ageInit;
+                    parametrisation[ageInitParam.Id] = ageInit;
                 }
             }
         }
@@ -228,22 +226,18 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation {
         /// Gets a (fallback) parameter value from either the model instance or the default value
         /// of the model definition.
         /// </summary>
-        /// <param name="instanceParameters"></param>
-        /// <param name="paramDefinition"></param>
-        /// <returns></returns>
-        /// <exception cref="Exception"></exception>
         private double GetFallbackParameterValue(
             IDictionary<string, KineticModelInstanceParameter> instanceParameters,
-            IPbkModelParameterSpecification paramDefinition
+            string paramId
         ) {
-            if (instanceParameters.TryGetValue(paramDefinition.Id, out var parameterValue)
+            if (instanceParameters.TryGetValue(paramId, out var parameterValue)
                 && !double.IsNaN(parameterValue.Value)
             ) {
                 // Fallback on value from PBK model parametrisation
                 return parameterValue.Value;
-            } else if (_modelParameters[paramDefinition.Id].DefaultValue.HasValue) {
+            } else if (_modelParameters[paramId].DefaultValue.HasValue) {
                 // Fallback on default value from PBK model definition
-                return _modelParameters[paramDefinition.Id].DefaultValue.Value;
+                return _modelParameters[paramId].DefaultValue.Value;
             } else {
                 throw new Exception($"Cannot set required parameter age for PBK model [{PbkModelSpecification.Name}].");
             }
@@ -259,12 +253,33 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation {
                 case PbkSimulationMethod.Standard:
                     return SimulationSettings.NumberOfSimulatedDays;
                 case PbkSimulationMethod.LifetimeToSpecifiedAge:
-                    return (int)(SimulationSettings.LifetimeYears * 365.25);
+                    return (int)(SimulationSettings.LifetimeEndAge * 365.25);
                 case PbkSimulationMethod.LifetimeToCurrentAge:
                     if (!currentAge.HasValue) {
                         throw new Exception("Cannot run PBK model simulation to current age for individuals with undefined age.");
                     }
                     return currentAge.Value * 365.25;
+                case PbkSimulationMethod.LifetimeWindowToCurrent:
+                    if (!currentAge.HasValue) {
+                        throw new Exception("Cannot run PBK model simulation window for individuals with undefined age.");
+                    }
+                    return Math.Min(currentAge.Value, SimulationSettings.LifetimeWindowYears) * 365.25;
+                case PbkSimulationMethod.LifetimeRange:
+                    if (SimulationSettings.LifetimeEndAge <= SimulationSettings.LifetimeStartAge) {
+                        throw new Exception("Invalid lifetime age range specified (start age should be smaller than end age).");
+                    }
+                    return (SimulationSettings.LifetimeEndAge - SimulationSettings.LifetimeStartAge) * 365.25;
+                case PbkSimulationMethod.LifetimeCurrentToSpecifiedAge:
+                    if (!currentAge.HasValue) {
+                        throw new Exception("Cannot run PBK model simulation to specified age for individuals with undefined age.");
+                    }
+                    var durationYears = SimulationSettings.LifetimeEndAge - currentAge.Value;
+                    if (durationYears <= 0) {
+                        throw new Exception($"Cannot run lifetime PBK model simulation from current age to {SimulationSettings.LifetimeEndAge} for individuals with age < {SimulationSettings.LifetimeEndAge}.");
+                    }
+                    return durationYears * 365.25;
+                case PbkSimulationMethod.LifetimeCurrentAgeForward:
+                    return SimulationSettings.LifetimeWindowYears * 365.25;
                 default:
                     throw new NotImplementedException();
             }
@@ -274,9 +289,7 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation {
         /// Gets the number of evaluations per day.
         /// </summary>
         protected double getSimulationStepsPerDay() {
-            if (SimulationSettings.PbkSimulationMethod == PbkSimulationMethod.LifetimeToSpecifiedAge
-                || SimulationSettings.PbkSimulationMethod == PbkSimulationMethod.LifetimeToCurrentAge
-            ) {
+            if (SimulationSettings.IsLifetime()) {
                 // For lifetime models, use one evaluation per day
                 return 1;
             }
@@ -347,10 +360,11 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation {
                 }
 
                 // Map outputs to model substances and create output mapping records
+                var parentCode = PbkModelSpecification.GetModelSubstances().FirstOrDefault(r => r.IsInput)?.Id;
                 foreach (var output in outputs) {
                     var substance = !string.IsNullOrEmpty(output.IdSubstance)
                         ? KineticModelInstance.ModelSubstances
-                            .FirstOrDefault(r => r.SubstanceDefinition?.Id == output.IdSubstance)?.Substance
+                            .FirstOrDefault(r => (r.SubstanceDefinition?.Id ?? parentCode) == output.IdSubstance)?.Substance
                         : KineticModelInstance.Substances.FirstOrDefault();
                     if (substance != null) {
                         var record = new TargetOutputMapping() {

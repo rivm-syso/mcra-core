@@ -2426,7 +2426,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 substance,
                 [targetUnit],
                 externalExposureUnit,
-                _configuration.NonStationaryPeriodInDays
+                _configuration.IsLifetime,
+                _configuration.NonStationaryPeriod
             );
             subHeader.SaveSummarySection(section);
         }

@@ -68,6 +68,15 @@
       </Aliases>
     </Unit>
     <Unit>
+      <Id>DeltaBodyWeight</Id>
+      <Name>Delta bodyweight</Name>
+      <Description>Relative different of individual body weight compared to nominal population bodyweight.</Description>
+      <ParentId>Physiological</ParentId>
+      <Aliases>
+        <Alias>DeltaBodyWeight</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
       <Id>BodyWeight</Id>
       <Name>body weight</Name>
       <ParentId>Physiological</ParentId>

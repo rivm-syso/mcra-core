@@ -77,7 +77,7 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation {
                 .ToList();
 
             var results = new List<PbkSimulationOutput>();
-            using (var runner = new SbmlModelRunner(KineticModelInstance)) {
+            using (var runner = new SbmlModelRunner(PbkModelSpecification, KineticModelInstance)) {
 
                 // Loop over individuals
                 foreach (var id in externalIndividualExposures) {
@@ -96,8 +96,15 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation {
                             generator
                         );
 
-                    // Collect individual properties
+                    // Draw / set parameters
                     var parameters = new Dictionary<string, double>();
+                    foreach (var parameter in PbkModelSpecification.GetParameters()) {
+                        if (KineticModelInstance.KineticModelInstanceParameters.TryGetValue(parameter.Id, out var value)) {
+                            parameters.Add(parameter.Id, value.Value);
+                        }
+                    }
+
+                    // Collect individual properties
                     setPhysiologicalParameterValues(parameters, id.Individual);
 
                     // If we have positive exposures, then run simulation
@@ -111,7 +118,7 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation {
                             outputTimeSeriesSelection,
                             duration,
                             simulationSteps,
-                            SimulationSettings.BodyWeightCorrected
+                            SimulationSettings.ApplyBodyWeightScaling
                         );
                     }
 

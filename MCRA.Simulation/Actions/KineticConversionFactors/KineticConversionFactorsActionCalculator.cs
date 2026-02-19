@@ -104,7 +104,7 @@ namespace MCRA.Simulation.Actions.KineticConversionFactors {
 
             var simulationSettings = new PbkSimulationSettings() {
                 NumberOfSimulatedDays = ModuleConfig.NumberOfDays,
-                UseRepeatedDailyEvents = ModuleConfig.ExposureEventsGenerationMethod == ExposureEventsGenerationMethod.DailyAverageEvents,
+                ExposureEventsGenerationMethod = ModuleConfig.ExposureEventsGenerationMethod,
                 NumberOfOralDosesPerDay = 1,
                 NumberOfDermalDosesPerDay = 1,
                 NumberOfInhalationDosesPerDay = 1,
@@ -118,7 +118,9 @@ namespace MCRA.Simulation.Actions.KineticConversionFactors {
                 AllowFallbackSystemic = ModuleConfig.AllowFallbackSystemic,
                 AllowUseSurrogateMatrix = false,
                 SurrogateBiologicalMatrix = BiologicalMatrix.Undefined,
-                LifetimeYears = ModuleConfig.LifetimeYears,
+                LifetimeWindowYears = ModuleConfig.LifetimeWindowYears,
+                LifetimeStartAge = ModuleConfig.LifetimeStartAge,
+                LifetimeEndAge = ModuleConfig.LifetimeEndAge,
                 BodyWeightCorrected = ModuleConfig.BodyWeightCorrected,
             };
             var generatorPbkModelSimulation = new McraRandomGenerator(

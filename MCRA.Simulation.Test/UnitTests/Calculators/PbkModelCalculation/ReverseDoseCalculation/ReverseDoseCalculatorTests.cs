@@ -34,7 +34,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.Reverse
 
             var simulationSettings = new PbkSimulationSettings {
                 NumberOfSimulatedDays = 10,
-                UseRepeatedDailyEvents = true,
                 PrecisionReverseDoseCalculation = 0.05
             };
             var instance = modelType switch {

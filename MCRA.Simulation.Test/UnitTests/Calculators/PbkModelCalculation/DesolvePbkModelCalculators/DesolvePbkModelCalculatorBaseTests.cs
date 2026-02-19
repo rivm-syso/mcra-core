@@ -19,7 +19,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.Desolve
         protected override PbkSimulationSettings getDefaultSimulationSettings() {
             return new PbkSimulationSettings() {
                 NumberOfSimulatedDays = 10,
-                UseRepeatedDailyEvents = true,
                 NumberOfOralDosesPerDay = 1,
                 NonStationaryPeriod = 5
             };

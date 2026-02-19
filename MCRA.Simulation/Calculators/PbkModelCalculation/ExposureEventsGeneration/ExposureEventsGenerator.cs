@@ -11,7 +11,7 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.ExposureEventsGenerati
         private readonly int _timeUnitMultiplier;
         private readonly ExposureUnitTriple _exposureUnit;
         private readonly Dictionary<ExposureRoute, SubstanceAmountUnit> _routeDoseAmountUnits;
-        private bool _perPerson => !SimulationSettings.BodyWeightCorrected;
+        private bool _perPerson => !SimulationSettings.ApplyBodyWeightScaling;
 
         public ExposureEventsGenerator(
             PbkSimulationSettings simulationSetings,
@@ -31,7 +31,7 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.ExposureEventsGenerati
             Compound substance,
             IRandom generator
         ) {
-            if (SimulationSettings.UseRepeatedDailyEvents) {
+            if (SimulationSettings.RepeatedAverageExposureEvents()) {
                 var result = createRepeatedAverageExposureEvent(
                     externalIndividualDayExposures,
                     routes,

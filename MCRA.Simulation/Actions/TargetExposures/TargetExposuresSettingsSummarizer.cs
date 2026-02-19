@@ -132,30 +132,40 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     section.SummarizeSetting(SettingsItemType.NonStationaryPeriod, _configuration.NonStationaryPeriod);
                 }
                 section.SummarizeSetting(SettingsItemType.AllowFallbackSystemic, _configuration.AllowFallbackSystemic);
-                section.SummarizeSetting(SettingsItemType.ExposureEventsGenerationMethod, _configuration.ExposureEventsGenerationMethod);
                 section.SummarizeSetting(SettingsItemType.PbkSimulationMethod, _configuration.PbkSimulationMethod);
-                if (_configuration.PbkSimulationMethod != PbkSimulationMethod.Standard) {
+                if (_configuration.PbkSimulationMethod == PbkSimulationMethod.Standard) {
+                    section.SummarizeSetting(SettingsItemType.NonStationaryPeriod, _configuration.NonStationaryPeriod);
+                    section.SummarizeSetting(SettingsItemType.ExposureEventsGenerationMethod, _configuration.ExposureEventsGenerationMethod);
+                    if (_configuration.ExposureEventsGenerationMethod == ExposureEventsGenerationMethod.RandomDailyEvents) {
+                        if (_configuration.SpecifyEvents) {
+                            section.SummarizeSetting(SettingsItemType.SelectedEvents, _configuration.SelectedEvents);
+                        }
+                        if (_configuration.ExposureRoutes.Contains(ExposureRoute.Oral)) {
+                            section.SummarizeSetting(SettingsItemType.NumberOfDosesPerDayNonDietaryOral, _configuration.NumberOfDosesPerDayNonDietaryOral);
+                        }
+                        if (_configuration.ExposureRoutes.Contains(ExposureRoute.Dermal)) {
+                            section.SummarizeSetting(SettingsItemType.NumberOfDosesPerDayNonDietaryDermal, _configuration.NumberOfDosesPerDayNonDietaryDermal);
+                        }
+                        if (_configuration.ExposureRoutes.Contains(ExposureRoute.Inhalation)) {
+                            section.SummarizeSetting(SettingsItemType.NumberOfDosesPerDayNonDietaryInhalation, _configuration.NumberOfDosesPerDayNonDietaryInhalation);
+                        }
+                    }
+                } else {
+                    if (_configuration.PbkSimulationMethod == PbkSimulationMethod.LifetimeRange) {
+                        section.SummarizeSetting(SettingsItemType.LifetimeStartAge, _configuration.LifetimeStartAge);
+                    }
+                    if (_configuration.PbkSimulationMethod == PbkSimulationMethod.LifetimeToSpecifiedAge
+                        || _configuration.PbkSimulationMethod == PbkSimulationMethod.LifetimeCurrentToSpecifiedAge
+                        || _configuration.PbkSimulationMethod == PbkSimulationMethod.LifetimeRange
+                    ) {
+                        section.SummarizeSetting(SettingsItemType.LifetimeEndAge, _configuration.LifetimeEndAge);
+                    }
+                    if (_configuration.PbkSimulationMethod == PbkSimulationMethod.LifetimeWindowToCurrent
+                        || _configuration.PbkSimulationMethod == PbkSimulationMethod.LifetimeCurrentAgeForward
+                    ) {
+                        section.SummarizeSetting(SettingsItemType.LifetimeWindowYears, _configuration.LifetimeWindowYears);
+                    }
                     section.SummarizeSetting(SettingsItemType.BodyWeightCorrected, _configuration.BodyWeightCorrected);
-                    section.SummarizeSetting(SettingsItemType.NonStationaryPeriodInYears, _configuration.NonStationaryPeriodInYears);
-                    section.SummarizeSetting(SettingsItemType.NonStationaryPeriod, _configuration.NonStationaryPeriodInDays);
-                    if (_configuration.PbkSimulationMethod == PbkSimulationMethod.LifetimeToSpecifiedAge) {
-                        section.SummarizeSetting(SettingsItemType.LifetimeYears, _configuration.LifetimeYears);
-                    }
-                }
-
-                if (_configuration.ExposureEventsGenerationMethod == ExposureEventsGenerationMethod.RandomDailyEvents) {
-                    if (_configuration.SpecifyEvents) {
-                        section.SummarizeSetting(SettingsItemType.SelectedEvents, _configuration.SelectedEvents);
-                    }
-                    if (_configuration.ExposureRoutes.Contains(ExposureRoute.Oral)) {
-                        section.SummarizeSetting(SettingsItemType.NumberOfDosesPerDayNonDietaryOral, _configuration.NumberOfDosesPerDayNonDietaryOral);
-                    }
-                    if (_configuration.ExposureRoutes.Contains(ExposureRoute.Dermal)) {
-                        section.SummarizeSetting(SettingsItemType.NumberOfDosesPerDayNonDietaryDermal, _configuration.NumberOfDosesPerDayNonDietaryDermal);
-                    }
-                    if (_configuration.ExposureRoutes.Contains(ExposureRoute.Inhalation)) {
-                        section.SummarizeSetting(SettingsItemType.NumberOfDosesPerDayNonDietaryInhalation, _configuration.NumberOfDosesPerDayNonDietaryInhalation);
-                    }
                 }
 
                 section.SummarizeSetting(SettingsItemType.PbkOutputResolutionTimeUnit, _configuration.PbkOutputResolutionTimeUnit);

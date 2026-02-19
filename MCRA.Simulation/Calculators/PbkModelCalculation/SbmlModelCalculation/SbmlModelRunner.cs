@@ -1,6 +1,8 @@
 ﻿using System.Globalization;
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.General.PbkModelDefinitions.PbkModelSpecifications;
+using MCRA.General.PbkModelDefinitions.PbkModelSpecifications.Sbml;
 using MCRA.Simulation.Calculators.PbkModelCalculation.ExposureEventsGeneration;
 using Python.Runtime;
 
@@ -11,36 +13,30 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation {
 
         private readonly string _modelFileName;
         private readonly string _idBodyWeightParameter;
-        private readonly Dictionary<string, double> _defaultParameters;
+        private readonly IPbkModelSpecification _pbkModelSpecification;
+        private readonly Py.GILState _gil;
 
         private dynamic _rr = null;
         private dynamic _model = null;
 
         public SbmlModelRunner(
+            ISbmlPbkModelSpecification pbkModelSpecification,
             KineticModelInstance modelInstance
         ) {
-            var modelDefinition = modelInstance.KineticModelDefinition;
+            _pbkModelSpecification = pbkModelSpecification;
             _modelFileName = modelInstance.KineticModelDefinition.FileName;
 
-            // Store default parameters from model instance
-            _defaultParameters = [];
-            foreach (var parameterDefinition in modelDefinition.GetParameters()) {
-                if (modelInstance.KineticModelInstanceParameters.TryGetValue(parameterDefinition.Id, out var parameter)) {
-                    _defaultParameters[parameterDefinition.Id] = parameter.Value;
-                } else {
-                    //throw new Exception($"Kinetic model parameter {parameterDefinition.Id} not found in model instance [{ModelInstance.IdModelInstance}].");
-                }
-            }
-
             // Body weight parameter
-            _idBodyWeightParameter = modelDefinition
+            _idBodyWeightParameter = _pbkModelSpecification
                 .GetParameterDefinitionByType(PbkModelParameterType.BodyWeight)?.Id;
 
-            // Initialize python
+
+            // Initialize python and acquire GIL for the lifetime of the runner
             if (!PythonEngine.IsInitialized) {
                 PythonEngine.Initialize();
                 PythonEngine.BeginAllowThreads();
             }
+            _gil = Py.GIL();
         }
 
         ~SbmlModelRunner() {
@@ -84,60 +80,53 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation {
             int steps,
             bool applyBodyWeightScaling
         ) {
-            using (Py.GIL()) {
+            // (Re)initialize model
+            initializeModel(routeInputMappings);
 
-                // (Re)initialize model
-                initializeModel(routeInputMappings);
-
-                // Set default model parameters from instance
-                foreach (var parameter in _defaultParameters) {
+            // Set model parameters
+            if (parameters != null) {
+                foreach (var parameter in parameters) {
                     _model.__setattr__(parameter.Key, parameter.Value);
                 }
-
-                // Set model parameters
-                if (parameters != null) {
-                    foreach (var parameter in parameters) {
-                        _model.__setattr__(parameter.Key, parameter.Value);
-                    }
-                }
-
-                // Create model exposure events
-                setExposuresEvents(
-                    routeInputMappings,
-                    exposureEvents,
-                    applyBodyWeightScaling
-                );
-
-                // Regenerate model
-                _model.regenerateModel(true, true);
-
-                // Specify selected output for roadrunner, including time
-                var outputSelection = new List<string>() { "time" }.Union(outputTimeSeriesSelection).ToArray();
-
-                // Determine total evaluation period and output steps and run the model
-                var simulationOutput = _model.simulate(0, evaluationPeriod, steps, outputSelection);
-
-                // Get output data and store in result
-                var output = (double[][])simulationOutput.T.As<double[][]>();
-                var result = new SimulationOutput() {
-                    Time = output[0],
-                    OutputTimeSeries = [],
-                    OutputStates = []
-                };
-                for (var i = 0; i < outputTimeSeriesSelection.Count; i++) {
-                    // Trim concentration brackets. The nature of the output (i.e. concentration
-                    // or amount) should be known by the calling function.
-                    var idOutput = outputTimeSeriesSelection[i].Trim('[', ']');
-                    result.OutputTimeSeries[idOutput] = [.. output[i + 1]];
-                }
-
-                // Get selected output states at end of simulation
-                foreach (var item in outputStatesSelection) {
-                    result.OutputStates.Add(item, (double)_model[item]);
-                }
-
-                return result;
             }
+
+
+            // Create model exposure events
+            setExposuresEvents(
+                routeInputMappings,
+                exposureEvents,
+                applyBodyWeightScaling
+            );
+
+            // Regenerate model
+            _model.regenerateModel(true, true);
+
+            // Specify selected output for roadrunner, including time
+            var outputSelection = new List<string>() { "time" }.Union(outputTimeSeriesSelection).ToArray();
+
+            // Determine total evaluation period and output steps and run the model
+            var simulationOutput = _model.simulate(0, evaluationPeriod, steps, outputSelection);
+
+            // Get output data and store in result
+            var output = (double[][])simulationOutput.T.As<double[][]>();
+            var result = new SimulationOutput() {
+                Time = output[0],
+                OutputTimeSeries = [],
+                OutputStates = []
+            };
+            for (var i = 0; i < outputTimeSeriesSelection.Count; i++) {
+                // Trim concentration brackets. The nature of the output (i.e. concentration
+                // or amount) should be known by the calling function.
+                var idOutput = outputTimeSeriesSelection[i].Trim('[', ']');
+                result.OutputTimeSeries[idOutput] = [.. output[i + 1]];
+            }
+
+            // Get selected output states at end of simulation
+            foreach (var item in outputStatesSelection) {
+                result.OutputStates.Add(item, (double)_model[item]);
+            }
+
+            return result;
         }
 
         private void setExposuresEvents(
@@ -197,6 +186,7 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation {
                 return;
             }
             if (disposing) {
+                _gil?.Dispose();
                 if (PythonEngine.IsInitialized) {
                     //PythonEngine.Shutdown();
                 }

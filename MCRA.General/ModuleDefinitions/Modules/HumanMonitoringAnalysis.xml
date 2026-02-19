@@ -83,7 +83,9 @@
     <CalculationSetting source="PbkModels">SelectedEvents</CalculationSetting>
     <CalculationSetting source="PbkModels">SpecifyEvents</CalculationSetting>
     <CalculationSetting source="PbkModels">PbkSimulationMethod</CalculationSetting>
-    <CalculationSetting source="PbkModels">LifetimeYears</CalculationSetting>
+    <CalculationSetting source="PbkModels">LifetimeStartAge</CalculationSetting>
+    <CalculationSetting source="PbkModels">LifetimeEndAge</CalculationSetting>
+    <CalculationSetting source="PbkModels">LifetimeWindowYears</CalculationSetting>
     <CalculationSetting source="PbkModels">BodyWeightCorrected</CalculationSetting>
     <CalculationSetting source="PbkModelSimulations">AllowFallbackSystemic</CalculationSetting>
     <CalculationSetting source="PbkModelSimulations">PbkOutputResolutionTimeUnit</CalculationSetting>

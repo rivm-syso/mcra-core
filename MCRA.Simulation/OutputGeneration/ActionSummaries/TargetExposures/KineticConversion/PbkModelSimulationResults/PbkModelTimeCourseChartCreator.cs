@@ -45,6 +45,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 xtitle,
                 ytitle,
                 _section.Maximum,
+                _section.IsLifetime,
                 _section.NumberOfDaysSkipped,
                 false
             );
@@ -73,6 +74,7 @@ namespace MCRA.Simulation.OutputGeneration {
             string xtitle,
             string ytitle,
             double globalMaximum,
+            bool isLifetime,
             int numberOfDaysSkipped,
             bool useGlobalYMax
         ) {
@@ -103,15 +105,17 @@ namespace MCRA.Simulation.OutputGeneration {
             }
             plotModel.Series.Add(series);
 
-            // Vertical burn-in period reference line
-            var burnInPeriodLineAnnotation = new LineAnnotation() {
-                Type = LineAnnotationType.Vertical,
-                X = numberOfDaysSkipped,
-                LineStyle = LineStyle.Solid,
-                Color = OxyColors.Black,
-                StrokeThickness = 1
-            };
-            plotModel.Annotations.Add(burnInPeriodLineAnnotation);
+            if (!isLifetime) {
+                // Vertical burn-in period reference line
+                var burnInPeriodLineAnnotation = new LineAnnotation() {
+                    Type = LineAnnotationType.Vertical,
+                    X = numberOfDaysSkipped,
+                    LineStyle = LineStyle.Solid,
+                    Color = OxyColors.Black,
+                    StrokeThickness = 1
+                };
+                plotModel.Annotations.Add(burnInPeriodLineAnnotation);
+            }
 
             return plotModel;
         }

@@ -29,7 +29,7 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.DesolvePbkModelCalcula
             if (simulationSettings.PbkSimulationMethod != PbkSimulationMethod.Standard) {
                 throw new NotImplementedException($"PBK simulation method [{simulationSettings.PbkSimulationMethod}] not implemented for DeSolve PBK models.");
             }
-            if (simulationSettings.BodyWeightCorrected) {
+            if (simulationSettings.ApplyBodyWeightScaling) {
                 throw new NotImplementedException($"Bodyweight corrected exposure events not implemented for DeSolve PBK models.");
             }
         }

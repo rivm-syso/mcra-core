@@ -239,7 +239,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                         usePbkModels
                             ? new PbkSimulationSettings() {
                                 NumberOfSimulatedDays = ModuleConfig.NumberOfDays,
-                                UseRepeatedDailyEvents = ModuleConfig.ExposureEventsGenerationMethod == ExposureEventsGenerationMethod.DailyAverageEvents,
+                                ExposureEventsGenerationMethod = ModuleConfig.ExposureEventsGenerationMethod,
                                 NumberOfOralDosesPerDay = ModuleConfig.NumberOfDosesPerDayNonDietaryOral,
                                 NumberOfDermalDosesPerDay = ModuleConfig.NumberOfDosesPerDayNonDietaryDermal,
                                 NumberOfInhalationDosesPerDay = ModuleConfig.NumberOfDosesPerDayNonDietaryInhalation,
@@ -251,7 +251,9 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                                 OutputResolutionTimeUnit = ModuleConfig.PbkOutputResolutionTimeUnit,
                                 OutputResolutionStepSize = ModuleConfig.PbkOutputResolutionStepSize,
                                 PbkSimulationMethod = ModuleConfig.PbkSimulationMethod,
-                                LifetimeYears = ModuleConfig.LifetimeYears,
+                                LifetimeStartAge = ModuleConfig.LifetimeStartAge,
+                                LifetimeEndAge = ModuleConfig.LifetimeEndAge,
+                                LifetimeWindowYears = ModuleConfig.LifetimeWindowYears,
                                 BodyWeightCorrected = ModuleConfig.BodyWeightCorrected,
                             }
                             : null

@@ -67,7 +67,7 @@ namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
                 );
 
             var timeSeriesExposureCharacterisationCalculator = TimeSeriesExposureCharacterisationCalculatorFactory
-                .Create(ExposureType.Acute, _simulationSettings.NonStationaryPeriod);
+                .Create(ExposureType.Acute, _simulationSettings);
 
             var result = new List<AggregateIndividualDayExposure>();
             for (int i = 0; i < individualDayExposures.Count; i++) {
@@ -112,7 +112,7 @@ namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
             );
 
             var timeSeriesExposureCharacterisationCalculator = TimeSeriesExposureCharacterisationCalculatorFactory
-                .Create(ExposureType.Chronic, _simulationSettings.NonStationaryPeriod);
+                .Create(ExposureType.Chronic, _simulationSettings);
 
             var result = new List<AggregateIndividualExposure>();
             for (int i = 0; i < individualExposures.Count; i++) {
@@ -154,7 +154,7 @@ namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
                 new ProgressState()
             );
             var timeSeriesExposureCharacterisationCalculator = TimeSeriesExposureCharacterisationCalculatorFactory
-                .Create(exposureType, _simulationSettings.NonStationaryPeriod);
+                .Create(exposureType, _simulationSettings);
 
             var targetIndividualExposure = timeSeriesExposureCharacterisationCalculator
                 .ComputeSubstanceTargetExposures(targetExposures.First());

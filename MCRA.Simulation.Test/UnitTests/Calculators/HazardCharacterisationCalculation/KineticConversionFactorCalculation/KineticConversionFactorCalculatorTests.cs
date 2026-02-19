@@ -43,7 +43,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
                 kineticModelFactory,
                 new PbkSimulationSettings() {
                     NumberOfSimulatedDays = 10,
-                    UseRepeatedDailyEvents = true,
                 },
                 70
             );

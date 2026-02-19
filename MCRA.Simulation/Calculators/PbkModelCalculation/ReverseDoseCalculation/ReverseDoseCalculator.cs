@@ -32,7 +32,7 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.ReverseDoseCalculation
             IRandom generator
         ) {
             var targetExposureFromTimeSeriesCalculator = TimeSeriesExposureCharacterisationCalculatorFactory
-                .Create(exposureType, pbkModelCalculator.SimulationSettings.NonStationaryPeriod);
+                .Create(exposureType, pbkModelCalculator.SimulationSettings);
             double f(double x) {
                 var externalExposure = ExternalIndividualDayExposure
                     .FromSingleDose(

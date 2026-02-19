@@ -29,8 +29,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.SbmlMod
 
         protected override PbkSimulationSettings getDefaultSimulationSettings() {
             return new PbkSimulationSettings() {
-                NumberOfSimulatedDays = 10,
-                UseRepeatedDailyEvents = true,
+                NumberOfSimulatedDays = 10
             };
         }
 

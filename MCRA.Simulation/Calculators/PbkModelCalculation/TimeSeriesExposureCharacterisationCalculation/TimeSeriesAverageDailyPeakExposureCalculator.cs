@@ -35,8 +35,7 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.TargetExposureFromTime
                     var timeOffSetStop = (nonStationaryPeriod + i + 1);
                     var max = stationaryTargetExposures
                         .Where(r => r.Time >= timeOffsetStart && r.Time < timeOffSetStop)
-                        .Select(r => r.Exposure)
-                        .Max();
+                        .Max(r => r.Exposure);
                     peaks.Add(max);
                     timeOffsetStart = timeOffSetStop;
                 }

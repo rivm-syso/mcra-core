@@ -19,8 +19,11 @@
         /// Returns true when absorption factors are used / required as input.
         /// </summary>
         public bool RequireAbsorptionFactors => TargetDoseLevelType == TargetLevelType.Systemic;
-        public int NonStationaryPeriodInDays => PbkSimulationMethod == PbkSimulationMethod.Standard
-           ? NonStationaryPeriod
-           : (int)(NonStationaryPeriodInYears * 365.25);
+
+        /// <summary>
+        /// Returns true for lifetime PBK model simulation.
+        /// </summary>
+        public bool IsLifetime => PbkSimulationMethod != PbkSimulationMethod.Standard;
+
     }
 }

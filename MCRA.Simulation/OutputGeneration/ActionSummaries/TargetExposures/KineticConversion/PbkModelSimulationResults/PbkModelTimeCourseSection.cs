@@ -13,6 +13,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         private static readonly int _specifiedTakeNumer = 9;
         public List<PbkModelTimeCourseDrilldownRecord> InternalTargetSystemExposures { get; set; }
+        public bool IsLifetime { get; set; }
         public int NumberOfDaysSkipped { get; set; }
         public double Maximum { get; set; }
 
@@ -23,6 +24,7 @@ namespace MCRA.Simulation.OutputGeneration {
            Compound substance,
            ICollection<TargetUnit> targetUnits,
            ExposureUnitTriple externalExposureUnit,
+           bool isLifetime,
            int nonStationaryPeriod
        ) {
             if (targetUnits.Count > 1) {
@@ -51,6 +53,8 @@ namespace MCRA.Simulation.OutputGeneration {
                     )
                 )
                 .ToList();
+            
+            IsLifetime = isLifetime;
             NumberOfDaysSkipped = nonStationaryPeriod;
             InternalTargetSystemExposures = results;
             Maximum = InternalTargetSystemExposures.Max(c => c.MaximumTargetExposure);

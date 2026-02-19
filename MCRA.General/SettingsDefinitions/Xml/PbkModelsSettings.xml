@@ -107,25 +107,33 @@
     <ValueType>BiologicalMatrix</ValueType>
   </SettingsItem>
   <SettingsItem>
-    <Id>LifetimeYears</Id>
-    <Name>Expected life time in years</Name>
-    <Description>The total expected lifetime (in years) of the PBK model.</Description>
+    <Id>LifetimeStartAge</Id>
+    <Name>Lifetime start age in years</Name>
+    <Description>The starting age (in years) for lifetime range simulation.</Description>
+    <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <DefaultValue>0</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>LifetimeEndAge</Id>
+    <Name>Lifetime end age in years</Name>
+    <Description>The ending age (in years) for lifetime range simulation.</Description>
     <ValueType>Numeric</ValueType>
     <IsInteger>true</IsInteger>
     <DefaultValue>50</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>LifetimeWindowYears</Id>
+    <Name>Lifetime window size in years</Name>
+    <Description>The size of the time window (in years) for the lifetime window simulation.</Description>
+    <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <DefaultValue>10</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>BodyWeightCorrected</Id>
     <Name>Use bodyweight adjusted exposures</Name>
     <Description>Use bodyweight adjusted exposures in PBK model simulations.</Description>
     <ValueType>Boolean</ValueType>
-  </SettingsItem>
-  <SettingsItem>
-    <Id>NonStationaryPeriodInYears</Id>
-    <Name>Number of initial years skipped</Name>
-    <Description>The initial period (or burn-in period, specified in years) that needs to be skipped when calculating the steady-state or peak internal exposures from the simulated time series.</Description>
-    <ValueType>Numeric</ValueType>
-    <IsInteger>true</IsInteger>
-    <DefaultValue>10</DefaultValue>
   </SettingsItem>
 </SettingsItems>

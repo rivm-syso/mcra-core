@@ -40,7 +40,6 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var modelInstance = FakeKineticModelsGenerator.CreatePbkModelInstance(substance);
             var simulationSettings = new PbkSimulationSettings() {
                 NumberOfSimulatedDays = 5,
-                UseRepeatedDailyEvents = true,
                 NumberOfOralDosesPerDay = 1,
                 NonStationaryPeriod = 1
             };
@@ -96,7 +95,6 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var modelInstance = FakeKineticModelsGenerator.CreatePbkModelInstance(substance);
             var simulationSettings = new PbkSimulationSettings() {
                 NumberOfSimulatedDays = 5,
-                UseRepeatedDailyEvents = true,
                 NumberOfOralDosesPerDay = 1,
                 NonStationaryPeriod = 1
             };

@@ -78,6 +78,7 @@
     <EmbeddedResource Include="Action\Serialization\Transforms\Patch-10.00.0001-01.xslt" />
     <EmbeddedResource Include="Action\Serialization\Transforms\Patch-10.00.0000.xslt" />
     <EmbeddedResource Include="Action\Serialization\Transforms\Patch-10.00.0001-00.xslt" />
+    <EmbeddedResource Include="Action\Serialization\Transforms\Patch-10.02.0022-01.xslt" />
     <Content Include="ActionSettingsTemplates\TemplatesCollection.Generated.xml">
       <DependentUpon>TemplatesCollection.tt</DependentUpon>
       <DesignTime>True</DesignTime>

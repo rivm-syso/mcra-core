@@ -257,7 +257,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 ) : null;
             var pbkSimulationSettings = new PbkSimulationSettings() {
                 NumberOfSimulatedDays = ModuleConfig.NumberOfDays,
-                UseRepeatedDailyEvents = ModuleConfig.ExposureEventsGenerationMethod == ExposureEventsGenerationMethod.DailyAverageEvents,
+                ExposureEventsGenerationMethod = ModuleConfig.ExposureEventsGenerationMethod,
                 NumberOfOralDosesPerDay = ModuleConfig.NumberOfDosesPerDayNonDietaryOral,
                 NumberOfDermalDosesPerDay = ModuleConfig.NumberOfDosesPerDayNonDietaryDermal,
                 NumberOfInhalationDosesPerDay = ModuleConfig.NumberOfDosesPerDayNonDietaryInhalation,

@@ -15,34 +15,16 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.SbmlMod
     [TestClass]
     public class SbmlLifetimePbkModelCalculationTests {
 
-        protected virtual SbmlPbkModelSpecification GetModelDefinition() {
+        private SbmlPbkModelSpecification GetModelDefinition(string file) {
             return SbmlPbkModelSpecificationBuilder.CreateFromSbmlFile(
-                "Resources/PbkModels/simple_lifetime.sbml"
+                file
             );
-        }
-
-        protected KineticModelInstance getDefaultInstance(params Compound[] substance) {
-            var instance = createFakeModelInstance(substance.Single());
-            return instance;
-        }
-
-        protected PbkSimulationSettings getDefaultSimulationSettings() {
-            return new PbkSimulationSettings() {
-                NumberOfSimulatedDays = 10,
-                UseRepeatedDailyEvents = true,
-            };
-        }
-
-        protected SbmlPbkModelCalculator createCalculator(
-            KineticModelInstance instance,
-            PbkSimulationSettings simulationSettings
-        ) {
-            return new SbmlPbkModelCalculator(instance, simulationSettings);
         }
 
         [TestMethod]
         public void SbmlLifetimePbkModelCalculation_TestDefinition() {
-            var modelDefinition = GetModelDefinition();
+            var file = "Resources/PbkModels/simple_lifetime.sbml";
+            var modelDefinition = GetModelDefinition(file);
             var expected = new[] { "AGut" };
             CollectionAssert.AreEquivalent(
                 expected,
@@ -90,10 +72,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.SbmlMod
             var individualDayExposures = FakeExternalExposureGenerator
                 .CreateExternalIndividualDayExposures(individualDays, substances, paths, seed);
 
-            var instance = createFakeModelInstance(substances.First());
+            var file = "Resources/PbkModels/simple_lifetime.sbml";
+            var instance = createFakeModelInstance(file, substances.First());
             var simulationSettings = new PbkSimulationSettings() {
                 PbkSimulationMethod = PbkSimulationMethod.LifetimeToCurrentAge,
-                LifetimeYears = 10,
+                LifetimeEndAge = 10,
                 OutputResolutionStepSize = 1,
                 OutputResolutionTimeUnit = PbkModelOutputResolutionTimeUnit.Days
             };
@@ -125,10 +108,193 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.SbmlMod
             );
         }
 
+
+        [TestMethod]
+        public void SbmlLifetimePbkModelCalculation_TestLifetimeWindowToCurrent() {
+            var seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var substances = FakeSubstancesGenerator.Create(1);
+            var routes = new[] { ExposureRoute.Oral };
+            var externalExposureUnit = ExposureUnitTriple.FromExternalExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
+            var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Blood);
+            var paths = FakeExposurePathGenerator.Create(routes);
+            var individual = FakeIndividualsGenerator.CreateSingle(bodyWeight: 80, age: 30);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays([individual]);
+            var individualDayExposures = FakeExternalExposureGenerator
+                .CreateExternalIndividualDayExposures(individualDays, substances, paths, seed);
+
+            var file = "Resources/PbkModels/simple_lifetime.sbml";
+            var instance = createFakeModelInstance(file, substances.First());
+            var simulationSettings = new PbkSimulationSettings() {
+                PbkSimulationMethod = PbkSimulationMethod.LifetimeWindowToCurrent,
+                LifetimeWindowYears = 10,
+                OutputResolutionStepSize = 1,
+                OutputResolutionTimeUnit = PbkModelOutputResolutionTimeUnit.Days
+            };
+            var modelCalculator = new SbmlPbkModelCalculator(instance, simulationSettings);
+
+            var simulationResults = modelCalculator
+                .Calculate(
+                    individualDayExposures
+                        .GroupBy(r => r.SimulatedIndividual)
+                        .Select(r => (r.Key, r.ToList()))
+                        .ToList(),
+                    externalExposureUnit,
+                    routes,
+                    [targetUnit],
+                    random,
+                    new ProgressState()
+                )
+                .Single();
+
+            // Window: starts at age 20 (max(0, 30-10)), ends at 30
+            var expectedStart = individual.Age.Value - simulationSettings.LifetimeWindowYears;
+            var nrOfDays = (int)(simulationSettings.LifetimeWindowYears * 365.25);
+            Assert.AreEqual(expectedStart, simulationResults.AgeStart, 1D / 365);
+            Assert.AreEqual(individual.Age.Value, simulationResults.AgeEnd, 1D / 365);
+            Assert.AreEqual(individual.BodyWeight, simulationResults.BodyWeightTimeSeries.Last(),
+                individual.BodyWeight / nrOfDays);
+        }
+
+        [TestMethod]
+        public void SbmlLifetimePbkModelCalculation_TestLifetimeRange() {
+            var seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var substances = FakeSubstancesGenerator.Create(1);
+            var routes = new[] { ExposureRoute.Oral };
+            var externalExposureUnit = ExposureUnitTriple.FromExternalExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
+            var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Blood);
+            var paths = FakeExposurePathGenerator.Create(routes);
+            var individual = FakeIndividualsGenerator.CreateSingle(bodyWeight: 80, age: 30);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays([individual]);
+            var individualDayExposures = FakeExternalExposureGenerator
+                .CreateExternalIndividualDayExposures(individualDays, substances, paths, seed);
+
+            var file = "Resources/PbkModels/simple_lifetime.sbml";
+            var instance = createFakeModelInstance(file, substances.First());
+            var simulationSettings = new PbkSimulationSettings() {
+                PbkSimulationMethod = PbkSimulationMethod.LifetimeRange,
+                LifetimeStartAge = 10,
+                LifetimeEndAge = 40,
+                OutputResolutionStepSize = 1,
+                OutputResolutionTimeUnit = PbkModelOutputResolutionTimeUnit.Days
+            };
+            var modelCalculator = new SbmlPbkModelCalculator(instance, simulationSettings);
+
+            var simulationResults = modelCalculator
+                .Calculate(
+                    individualDayExposures
+                        .GroupBy(r => r.SimulatedIndividual)
+                        .Select(r => (r.Key, r.ToList()))
+                        .ToList(),
+                    externalExposureUnit,
+                    routes,
+                    [targetUnit],
+                    random,
+                    new ProgressState()
+                )
+                .Single();
+
+            var durationYears = simulationSettings.LifetimeEndAge - simulationSettings.LifetimeStartAge;
+            var nrOfDays = (int)(durationYears * 365.25);
+            Assert.AreEqual(simulationSettings.LifetimeStartAge, simulationResults.AgeStart, 1D / 365);
+            Assert.AreEqual(simulationSettings.LifetimeEndAge, simulationResults.AgeEnd, 1D / 365);
+        }
+
+        [TestMethod]
+        public void SbmlLifetimePbkModelCalculation_TestLifetimeCurrentToSpecifiedAge() {
+            var seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var substances = FakeSubstancesGenerator.Create(1);
+            var routes = new[] { ExposureRoute.Oral };
+            var externalExposureUnit = ExposureUnitTriple.FromExternalExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
+            var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Blood);
+            var paths = FakeExposurePathGenerator.Create(routes);
+            var individual = FakeIndividualsGenerator.CreateSingle(bodyWeight: 80, age: 30);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays([individual]);
+            var individualDayExposures = FakeExternalExposureGenerator
+                .CreateExternalIndividualDayExposures(individualDays, substances, paths, seed);
+
+            var file = "Resources/PbkModels/simple_lifetime.sbml";
+            var instance = createFakeModelInstance(file, substances.First());
+            var simulationSettings = new PbkSimulationSettings() {
+                PbkSimulationMethod = PbkSimulationMethod.LifetimeCurrentToSpecifiedAge,
+                LifetimeEndAge = 50,
+                OutputResolutionStepSize = 1,
+                OutputResolutionTimeUnit = PbkModelOutputResolutionTimeUnit.Days
+            };
+            var modelCalculator = new SbmlPbkModelCalculator(instance, simulationSettings);
+
+            var simulationResults = modelCalculator
+                .Calculate(
+                    individualDayExposures
+                        .GroupBy(r => r.SimulatedIndividual)
+                        .Select(r => (r.Key, r.ToList()))
+                        .ToList(),
+                    externalExposureUnit,
+                    routes,
+                    [targetUnit],
+                    random,
+                    new ProgressState()
+                )
+                .Single();
+
+            Assert.AreEqual(individual.Age.Value, simulationResults.AgeStart, 1D / 365);
+            Assert.AreEqual(simulationSettings.LifetimeEndAge, simulationResults.AgeEnd, 1D / 365);
+            Assert.AreEqual(individual.BodyWeight, simulationResults.BodyWeightTimeSeries.First(),
+                individual.BodyWeight / 365);
+        }
+
+        [TestMethod]
+        public void SbmlLifetimePbkModelCalculation_TestLifetimeCurrentAgeForward() {
+            var seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var substances = FakeSubstancesGenerator.Create(1);
+            var routes = new[] { ExposureRoute.Oral };
+            var externalExposureUnit = ExposureUnitTriple.FromExternalExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
+            var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Blood);
+            var paths = FakeExposurePathGenerator.Create(routes);
+            var individual = FakeIndividualsGenerator.CreateSingle(bodyWeight: 80, age: 30);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays([individual]);
+            var individualDayExposures = FakeExternalExposureGenerator
+                .CreateExternalIndividualDayExposures(individualDays, substances, paths, seed);
+
+            var file = "Resources/PbkModels/simple_lifetime.sbml";
+            var instance = createFakeModelInstance(file, substances.First());
+            var simulationSettings = new PbkSimulationSettings() {
+                PbkSimulationMethod = PbkSimulationMethod.LifetimeCurrentAgeForward,
+                LifetimeWindowYears = 15,
+                OutputResolutionStepSize = 1,
+                OutputResolutionTimeUnit = PbkModelOutputResolutionTimeUnit.Days
+            };
+            var modelCalculator = new SbmlPbkModelCalculator(instance, simulationSettings);
+
+            var simulationResults = modelCalculator
+                .Calculate(
+                    individualDayExposures
+                        .GroupBy(r => r.SimulatedIndividual)
+                        .Select(r => (r.Key, r.ToList()))
+                        .ToList(),
+                    externalExposureUnit,
+                    routes,
+                    [targetUnit],
+                    random,
+                    new ProgressState()
+                )
+                .Single();
+
+            Assert.AreEqual(individual.Age.Value, simulationResults.AgeStart, 1D / 365);
+            Assert.AreEqual(individual.Age.Value + simulationSettings.LifetimeWindowYears, simulationResults.AgeEnd, 1D / 365);
+            // BW at start (age = age_init = current age) should match individual's BW
+            Assert.AreEqual(individual.BodyWeight, simulationResults.BodyWeightTimeSeries.First(),
+                individual.BodyWeight / 365);
+        }
+
         private KineticModelInstance createFakeModelInstance(
+            string file,
             Compound substance
         ) {
-            var modelDefinition = GetModelDefinition();
+            var modelDefinition = GetModelDefinition(file);
             var instance = new KineticModelInstance() {
                 KineticModelDefinition = modelDefinition,
                 ModelSubstances = [

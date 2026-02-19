@@ -4,13 +4,17 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.TargetExposureFromTime
     public class TimeSeriesExposureCharacterisationCalculatorFactory {
         public static ITimeSeriesExposureCharacterisationCalculator Create(
             ExposureType exposureType,
-            int nonStationaryPeriod
+            PbkSimulationSettings simulationSettings
         ) {
             switch (exposureType) {
                 case ExposureType.Acute:
-                    return new TimeSeriesAverageDailyPeakExposureCalculator(nonStationaryPeriod);
+                    return new TimeSeriesAverageDailyPeakExposureCalculator(simulationSettings.NonStationaryPeriod);
                 case ExposureType.Chronic:
-                    return new TimeSeriesSteadyStateExposureCalculator(nonStationaryPeriod);
+                    return new TimeSeriesSteadyStateExposureCalculator(
+                        simulationSettings.IsLifetime(),
+                        simulationSettings.NonStationaryPeriod,
+                        simulationSettings.LifetimeStationaryPeriod
+                    );
                 default:
                     throw new NotImplementedException();
             }

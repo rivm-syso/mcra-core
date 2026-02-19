@@ -597,11 +597,11 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
             var pbkSimulationSettings = new PbkSimulationSettings() {
                 NumberOfSimulatedDays = ModuleConfig.NumberOfDays,
-                UseRepeatedDailyEvents = ModuleConfig.ExposureEventsGenerationMethod == ExposureEventsGenerationMethod.DailyAverageEvents,
+                ExposureEventsGenerationMethod = ModuleConfig.ExposureEventsGenerationMethod,
                 NumberOfOralDosesPerDay = ModuleConfig.NumberOfDosesPerDayNonDietaryOral,
                 NumberOfDermalDosesPerDay = ModuleConfig.NumberOfDosesPerDayNonDietaryDermal,
                 NumberOfInhalationDosesPerDay = ModuleConfig.NumberOfDosesPerDayNonDietaryInhalation,
-                NonStationaryPeriod = ModuleConfig.NonStationaryPeriodInDays,
+                NonStationaryPeriod = ModuleConfig.NonStationaryPeriod,
                 UseParameterVariability = ModuleConfig.UseParameterVariability,
                 SpecifyEvents = ModuleConfig.SpecifyEvents,
                 SelectedEvents = [.. ModuleConfig.SelectedEvents],
@@ -611,7 +611,9 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 AllowUseSurrogateMatrix = ModuleConfig.AllowUseSurrogateMatrix,
                 AllowFallbackSystemic = ModuleConfig.AllowFallbackSystemic,
                 SurrogateBiologicalMatrix = ModuleConfig.SurrogateBiologicalMatrix,
-                LifetimeYears = ModuleConfig.LifetimeYears,
+                LifetimeStartAge = ModuleConfig.LifetimeStartAge,
+                LifetimeEndAge = ModuleConfig.LifetimeEndAge,
+                LifetimeWindowYears = ModuleConfig.LifetimeWindowYears,
                 BodyWeightCorrected = ModuleConfig.BodyWeightCorrected,
             };
             var kineticModelCalculators = kineticConversionCalculatorFactory

@@ -325,6 +325,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                             substance,
                             [record.InternalTargetUnit],
                             record.ExternalTargetUnit.ExposureUnit,
+                            false,
                             _configuration.NonStationaryPeriod
                         );
                         subHeader1.SaveSummarySection(section);

@@ -1,7 +1,7 @@
 ﻿using MCRA.Utils.Sbml.Objects;
 
 namespace MCRA.General.PbkModelDefinitions.PbkModelSpecifications.Sbml {
-    public class SbmlPbkModelSpecification : IPbkModelSpecification {
+    public class SbmlPbkModelSpecification : IPbkModelSpecification, ISbmlPbkModelSpecification {
 
         /// <summary>
         /// Identifier of the model.

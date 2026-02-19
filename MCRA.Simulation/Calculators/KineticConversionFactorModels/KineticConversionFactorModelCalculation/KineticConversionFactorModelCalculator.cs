@@ -35,11 +35,11 @@ namespace MCRA.Simulation.Calculators.KineticConversionFactorModels {
                 .ToDictionary(r => r.InputSubstance);
 
             var timeSeriesExposureCharacterisationCalculator = TimeSeriesExposureCharacterisationCalculatorFactory
-                .Create(exposureType, simulationSettings.NonStationaryPeriod);
+                .Create(exposureType, simulationSettings);
 
             foreach (var substance in activeSubstance) {
                 if (!pbkModelLookup.TryGetValue(substance, out var pbkModelInstance)) {
-                    throw new Exception($"No PBK model for substnace {substance.Name} ({substance.Code}).");
+                    throw new Exception($"No PBK model for substance {substance.Name} ({substance.Code}).");
                 }
                 for (int i = 0; i < exposureRoutes.Count; i++) {
                     var route = exposureRoutes.ElementAt(i);

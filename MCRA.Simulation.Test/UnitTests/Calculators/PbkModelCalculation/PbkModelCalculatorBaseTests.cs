@@ -69,7 +69,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation {
         ) {
             SimulationSettings.PbkSimulationMethod = pbkSimulationMethod;
             SimulationSettings.NumberOfSimulatedDays = numberOfDays;
-            SimulationSettings.LifetimeYears = specifiedAge ?? 0;
+            SimulationSettings.LifetimeEndAge = specifiedAge ?? 0;
             var duration = getSimulationDuration(currentAge);
             Assert.AreEqual(expected, duration);
         }

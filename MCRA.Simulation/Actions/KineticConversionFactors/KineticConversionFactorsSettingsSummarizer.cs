@@ -25,16 +25,27 @@ namespace MCRA.Simulation.Actions.KineticConversionFactors {
                 if (_configuration.PbkSimulationMethod == PbkSimulationMethod.Standard) {
                     section.SummarizeSetting(SettingsItemType.NumberOfDays, _configuration.NumberOfDays);
                     section.SummarizeSetting(SettingsItemType.NonStationaryPeriod, _configuration.NonStationaryPeriod);
+                    section.SummarizeSetting(SettingsItemType.ExposureEventsGenerationMethod, _configuration.ExposureEventsGenerationMethod);
                 }
-                section.SummarizeSetting(SettingsItemType.ExposureEventsGenerationMethod, _configuration.ExposureEventsGenerationMethod);
                 section.SummarizeSetting(SettingsItemType.AllowFallbackSystemic, _configuration.AllowFallbackSystemic);
                 section.SummarizeSetting(SettingsItemType.PbkSimulationMethod, _configuration.PbkSimulationMethod);
-                if (_configuration.PbkSimulationMethod != PbkSimulationMethod.Standard) {
-                    section.SummarizeSetting(SettingsItemType.BodyWeightCorrected, _configuration.BodyWeightCorrected);
-                    section.SummarizeSetting(SettingsItemType.NonStationaryPeriodInYears, _configuration.NonStationaryPeriodInYears);
+                if (_configuration.PbkSimulationMethod == PbkSimulationMethod.Standard) {
                     section.SummarizeSetting(SettingsItemType.NonStationaryPeriod, _configuration.NonStationaryPeriod);
-                    if (_configuration.PbkSimulationMethod == PbkSimulationMethod.LifetimeToSpecifiedAge) {
-                        section.SummarizeSetting(SettingsItemType.LifetimeYears, _configuration.LifetimeYears);
+                    section.SummarizeSetting(SettingsItemType.ExposureEventsGenerationMethod, _configuration.ExposureEventsGenerationMethod);
+                } else {
+                    if (_configuration.PbkSimulationMethod == PbkSimulationMethod.LifetimeRange) {
+                        section.SummarizeSetting(SettingsItemType.LifetimeStartAge, _configuration.LifetimeStartAge);
+                    }
+                    if (_configuration.PbkSimulationMethod == PbkSimulationMethod.LifetimeToSpecifiedAge
+                        || _configuration.PbkSimulationMethod == PbkSimulationMethod.LifetimeCurrentToSpecifiedAge
+                        || _configuration.PbkSimulationMethod == PbkSimulationMethod.LifetimeRange
+                    ) {
+                        section.SummarizeSetting(SettingsItemType.LifetimeEndAge, _configuration.LifetimeEndAge);
+                    }
+                    if (_configuration.PbkSimulationMethod == PbkSimulationMethod.LifetimeWindowToCurrent
+                        || _configuration.PbkSimulationMethod == PbkSimulationMethod.LifetimeCurrentAgeForward
+                    ) {
+                        section.SummarizeSetting(SettingsItemType.LifetimeWindowYears, _configuration.LifetimeWindowYears);
                     }
                 }
 

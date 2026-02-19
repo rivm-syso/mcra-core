@@ -30,9 +30,10 @@
     <CalculationSetting>SpecifyEvents</CalculationSetting>
     <CalculationSetting>ExposureEventsGenerationMethod</CalculationSetting>
     <CalculationSetting>PbkSimulationMethod</CalculationSetting>
-    <CalculationSetting>LifetimeYears</CalculationSetting>
+    <CalculationSetting>LifetimeStartAge</CalculationSetting>
+    <CalculationSetting>LifetimeEndAge</CalculationSetting>
+    <CalculationSetting>LifetimeWindowYears</CalculationSetting>
     <CalculationSetting>BodyWeightCorrected</CalculationSetting>
-    <CalculationSetting>NonStationaryPeriodInYears</CalculationSetting>
   </CalculationSettings>
   <UncertaintySettings>
     <UncertaintySetting>ResamplePbkModelParameters</UncertaintySetting>

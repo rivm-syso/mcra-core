@@ -43,7 +43,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.Desolve
                 NumberOfSimulatedDays = 10,
                 NumberOfOralDosesPerDay = 1,
                 NonStationaryPeriod = 5,
-                UseRepeatedDailyEvents = true,
             };
         }
 
@@ -91,7 +90,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.Desolve
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.mgPerL, biologicalMatrix);
             var simulationSettings = new PbkSimulationSettings() {
                 NumberOfSimulatedDays = 10,
-                UseRepeatedDailyEvents = true,
                 NumberOfOralDosesPerDay = 1,
                 NonStationaryPeriod = 0
             };
@@ -147,7 +145,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.Desolve
             var instance = getDefaultInstance(substances.ToArray());
             var simulationSettings = new PbkSimulationSettings() {
                 NumberOfSimulatedDays = 10,
-                UseRepeatedDailyEvents = true,
                 NumberOfOralDosesPerDay = 1,
                 NonStationaryPeriod = 5,
             };
@@ -172,7 +169,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.Desolve
                 .Select(r => r.GetSubstanceTargetExposure(targetUnit.Target, substances.Single(r => r.Code == codeFocalSubstance)))
                 .Cast<SubstanceTargetExposurePattern>()
                 .Single();
-            var observedSteadyState = TimeSeriesSteadyStateExposureCalculator.Compute(
+            var observedSteadyState = TimeSeriesSteadyStateExposureCalculator.ComputeWithNonStationaryPeriod(
                 substanceTargetExposurePattern.TimeSeries.Exposures,
                 simulationSettings.NonStationaryPeriod
             );

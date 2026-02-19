@@ -41,7 +41,6 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var modelInstance = FakeKineticModelsGenerator.CreatePbkModelInstance(substance);
             var simulationSettings = new PbkSimulationSettings() {
                 NumberOfSimulatedDays = 5,
-                UseRepeatedDailyEvents = true,
                 NumberOfOralDosesPerDay = 1,
                 NonStationaryPeriod = nonStationaryPeriod
             };
@@ -72,6 +71,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 substance,
                 [targetUnit],
                 exposureUnit,
+                isLifetime: false,
                 nonStationaryPeriod: nonStationaryPeriod
             );
 
@@ -104,7 +104,6 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var modelInstance = FakeKineticModelsGenerator.CreatePbkModelInstance(substance);
             var simulationSettings = new PbkSimulationSettings() {
                 NumberOfSimulatedDays = 5,
-                UseRepeatedDailyEvents = true,
                 NumberOfOralDosesPerDay = 1,
                 NonStationaryPeriod = nonStationaryPeriod
             };
@@ -141,6 +140,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 substance,
                 [targetUnit],
                 externalExposuresUnit,
+                false,
                 nonStationaryPeriod
             );
 
@@ -184,7 +184,6 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var modelInstance = FakeKineticModelsGenerator.CreatePbkModelInstance(substance);
             var simulationSettings = new PbkSimulationSettings() {
                 NumberOfSimulatedDays = 5,
-                UseRepeatedDailyEvents = true,
                 NumberOfOralDosesPerDay = 1,
                 NonStationaryPeriod = nonStationaryPeriod
             };
@@ -221,6 +220,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 substance,
                 [targetUnit],
                 exposureUnit,
+                false,
                 nonStationaryPeriod
             );
 
@@ -268,7 +268,6 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var modelInstance = FakeKineticModelsGenerator.CreatePbkModelInstance(substance);
             var simulationSettings = new PbkSimulationSettings() {
                 NumberOfSimulatedDays = 5,
-                UseRepeatedDailyEvents = true,
                 NumberOfOralDosesPerDay = 1,
                 NonStationaryPeriod = nonStationaryPeriod
             };
@@ -304,6 +303,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 substance,
                 [targetUnit],
                 exposureUnit,
+                false,
                 nonStationaryPeriod
             );
 

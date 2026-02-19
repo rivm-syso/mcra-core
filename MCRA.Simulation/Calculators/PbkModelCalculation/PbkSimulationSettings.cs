@@ -3,9 +3,13 @@
 namespace MCRA.Simulation.Calculators.PbkModelCalculation {
     public class PbkSimulationSettings {
         public int NumberOfSimulatedDays { get; set; } = 50;
-        public int LifetimeYears { get; set; } = 50;
-        public bool UseRepeatedDailyEvents { get; set; } = true;
+        public double LifetimeWindowYears { get; set; } = 10;
+        public double LifetimeStartAge { get; set; }
+        public double LifetimeEndAge { get; set; } = 80;
+        public ExposureEventsGenerationMethod ExposureEventsGenerationMethod { get; set; } = ExposureEventsGenerationMethod.DailyAverageEvents;
         public bool BodyWeightCorrected { get; set; }
+
+        public bool ApplyBodyWeightScaling => IsLifetime() && BodyWeightCorrected;
 
         public bool UseParameterVariability { get; set; }
 
@@ -26,6 +30,7 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation {
         public int NumberOfDermalDosesPerDay { get; set; } = 1;
         public int NumberOfInhalationDosesPerDay { get; set; } = 1;
         public int NonStationaryPeriod { get; set; } = 10;
+        public int LifetimeStationaryPeriod { get; set; } = 50;
         public bool SpecifyEvents { get; set; }
         public int[] SelectedEvents { get; set; }
 
@@ -51,6 +56,23 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation {
                 default:
                     throw new NotImplementedException();
             }
+        }
+
+        public bool IsLifetime() {
+            return PbkSimulationMethod switch {
+                PbkSimulationMethod.LifetimeToCurrentAge
+                    or PbkSimulationMethod.LifetimeToSpecifiedAge
+                    or PbkSimulationMethod.LifetimeWindowToCurrent
+                    or PbkSimulationMethod.LifetimeRange
+                    or PbkSimulationMethod.LifetimeCurrentToSpecifiedAge
+                    or PbkSimulationMethod.LifetimeCurrentAgeForward => true,
+                PbkSimulationMethod.Standard => false,
+                _ => throw new NotImplementedException(),
+            };
+        }
+
+        public bool RepeatedAverageExposureEvents() {
+            return IsLifetime() || ExposureEventsGenerationMethod == ExposureEventsGenerationMethod.DailyAverageEvents;
         }
     }
 }

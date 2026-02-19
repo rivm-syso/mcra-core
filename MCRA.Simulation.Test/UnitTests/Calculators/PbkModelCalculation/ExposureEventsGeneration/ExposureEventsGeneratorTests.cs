@@ -23,8 +23,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.Exposur
             var externalExposures = createFakeIndividualDayExposures(random, routes, substances);
 
             var settings = new PbkSimulationSettings() {
-                NumberOfSimulatedDays = 10,
-                UseRepeatedDailyEvents = true
+                NumberOfSimulatedDays = 10
             };
             var generator = new ExposureEventsGenerator(
                 settings,
@@ -62,7 +61,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.Exposur
 
             var settings = new PbkSimulationSettings() {
                 NumberOfSimulatedDays = 10,
-                UseRepeatedDailyEvents = false,
+                ExposureEventsGenerationMethod = ExposureEventsGenerationMethod.RandomDailyEvents,
                 NumberOfOralDosesPerDay = oralDosesPerDay,
                 NumberOfDermalDosesPerDay = 3,
                 NumberOfInhalationDosesPerDay = 4,
@@ -108,7 +107,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.Exposur
 
             var settings = new PbkSimulationSettings() {
                 NumberOfSimulatedDays = 10,
-                UseRepeatedDailyEvents = false,
+                ExposureEventsGenerationMethod = ExposureEventsGenerationMethod.RandomDailyEvents,
                 SpecifyEvents = specifyEvents,
                 SelectedEvents = [0, 8, 16],
                 NumberOfOralDosesPerDay = 6
@@ -135,13 +134,13 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.Exposur
         }
 
         [TestMethod]
-        [DataRow(true, true)]
-        [DataRow(false, true)]
-        [DataRow(true, false)]
-        [DataRow(false, false)]
+        [DataRow(true, ExposureEventsGenerationMethod.DailyAverageEvents)]
+        [DataRow(false, ExposureEventsGenerationMethod.DailyAverageEvents)]
+        [DataRow(true, ExposureEventsGenerationMethod.RandomDailyEvents)]
+        [DataRow(false, ExposureEventsGenerationMethod.RandomDailyEvents)]
         public void ExposureEventsGenerator_TestCreatePerBwDoses(
             bool bodyWeightCorrected,
-            bool useRepeatedDailyEvents
+            ExposureEventsGenerationMethod exposureEventsGenerationMethod
         ) {
             var random = new McraRandomGenerator(seed: 1);
             var routes = new[] { ExposureRoute.Oral };
@@ -149,8 +148,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.Exposur
             var externalExposures = createFakeIndividualDayExposures(random, routes, [substance], nDays: 1);
 
             var settings = new PbkSimulationSettings() {
+                PbkSimulationMethod = PbkSimulationMethod.LifetimeToCurrentAge,
                 NumberOfSimulatedDays = 10,
-                UseRepeatedDailyEvents = useRepeatedDailyEvents,
+                ExposureEventsGenerationMethod = exposureEventsGenerationMethod,
                 BodyWeightCorrected = bodyWeightCorrected
             };
             var generator = new ExposureEventsGenerator(

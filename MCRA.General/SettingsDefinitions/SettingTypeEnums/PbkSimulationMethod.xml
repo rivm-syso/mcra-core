@@ -18,17 +18,49 @@
     <Unit>
       <Id>LifetimeToCurrentAge</Id>
       <Name>Lifetime model simulation from birth to current age</Name>
-      <ShortName>LifeTimeCurrentAge</ShortName>
+      <ShortName>Birth to current</ShortName>
       <Description>
-        Run (lifetime) PBK model simulation from birth until current age.
+        Run lifetime PBK model simulation from birth until current age.
       </Description>
     </Unit>
     <Unit>
       <Id>LifetimeToSpecifiedAge</Id>
-      <Name>Lifetime model simulation from birth until specified age</Name>
-      <ShortName>LifeTimeSpecifiedAge</ShortName>
+      <Name>Lifetime model simulation from birth to specified age</Name>
+      <ShortName>Birth to specified</ShortName>
       <Description>
-        Run (lifetime) PBK model simulation from birth until specified age.
+        Run lifetime PBK model simulation from birth until specified age.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>LifetimeWindowToCurrent</Id>
+      <Name>Lifetime model simulation over a window until current age</Name>
+      <ShortName>Window to current</ShortName>
+      <Description>
+        Run lifetime PBK model simulation over a given window of years up to the current age.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>LifetimeRange</Id>
+      <Name>Lifetime model simulation over a specified age range</Name>
+      <ShortName>Age range</ShortName>
+      <Description>
+        Run lifetime PBK model simulation over a specified age range.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>LifetimeCurrentToSpecifiedAge</Id>
+      <Name>Lifetime model simulation from current to specified age</Name>
+      <ShortName>Current to specified age</ShortName>
+      <Description>
+        Run lifetime PBK model simulation from current age until a specified end age.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>LifetimeCurrentAgeForward</Id>
+      <Name>Lifetime model simulation from current to specified years forward</Name>
+      <ShortName>Current to forward</ShortName>
+      <Description>
+        Run lifetime PBK model simulation from current age forward for a given number of years.
       </Description>
     </Unit>
   </Units>
