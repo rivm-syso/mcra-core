@@ -322,25 +322,25 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 case ReferenceIndividualSet.Air:
                     externalExposureUnit = data.AirExposureUnit;
                     referenceIndividualDays = [.. data.IndividualAirExposures
-                        .Select(r => new SimulatedIndividualDay(r.SimulatedIndividual))
+                        .Select((r, ix) => new SimulatedIndividualDay(r.SimulatedIndividual, ix))
                         .Cast<IIndividualDay>()];
                     break;
                 case ReferenceIndividualSet.Soil:
                     externalExposureUnit = data.SoilExposureUnit;
                     referenceIndividualDays = [.. data.IndividualSoilExposures
-                        .Select(r => new SimulatedIndividualDay(r.SimulatedIndividual))
+                        .Select((r, ix) => new SimulatedIndividualDay(r.SimulatedIndividual, ix))
                         .Cast<IIndividualDay>()];
                     break;
                 case ReferenceIndividualSet.Dust:
                     externalExposureUnit = data.DustExposureUnit;
-                    referenceIndividualDays = [.. data.IndividualDustExposures.
-                        Select(r => new SimulatedIndividualDay(r.SimulatedIndividual))
+                    referenceIndividualDays = [.. data.IndividualDustExposures
+                        .Select((r, ix) => new SimulatedIndividualDay(r.SimulatedIndividual, ix))
                         .Cast<IIndividualDay>()];
                     break;
                 case ReferenceIndividualSet.ConsumerProducts:
                     externalExposureUnit = data.ConsumerProductExposureUnit;
                     referenceIndividualDays = [.. data.ConsumerProductIndividualExposures
-                        .Select(r => new SimulatedIndividualDay(r.SimulatedIndividual))
+                        .Select((r, ix) => new SimulatedIndividualDay(r.SimulatedIndividual, ix))
                         .Cast<IIndividualDay>()];
                     break;
                 case ReferenceIndividualSet.Individuals:

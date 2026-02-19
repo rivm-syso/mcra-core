@@ -3,12 +3,24 @@
     /// <summary>
     /// Stores info about individual, the day and the simulated ID
     /// </summary>
-    public sealed class SimulatedIndividualDay(SimulatedIndividual simulatedIndividual) : IIndividualDay {
+    public sealed class SimulatedIndividualDay : IIndividualDay {
+
+        public SimulatedIndividualDay(SimulatedIndividual simulatedIndividual) {
+            SimulatedIndividual = simulatedIndividual;
+        }
+
+        public SimulatedIndividualDay(
+            SimulatedIndividual simulatedIndividual,
+            int simulatedIndividualDayId
+        ) {
+            SimulatedIndividual = simulatedIndividual;
+            SimulatedIndividualDayId = simulatedIndividualDayId;
+        }
 
         /// <summary>
         /// The source individual that is used for simulation
         /// </summary>
-        public SimulatedIndividual SimulatedIndividual { get; } = simulatedIndividual;
+        public SimulatedIndividual SimulatedIndividual { get; }
 
         /// <summary>
         /// The source day that is used for simulation
