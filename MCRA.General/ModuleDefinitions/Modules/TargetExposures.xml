@@ -126,6 +126,8 @@
     <UncertaintySetting source="Action">UncertaintyUpperBound</UncertaintySetting>
   </UncertaintySettings>
   <OutputSettings>
+    <OutputSetting source="Action">StratifyOutputs</OutputSetting>
+    <OutputSetting source="Action">OutputStratificationVariable</OutputSetting>
     <OutputSetting source="Action">SkipPrivacySensitiveOutputs</OutputSetting>
     <OutputSetting source="DietaryExposures">IsDetailedOutput</OutputSetting>
     <OutputSetting>StoreIndividualDayIntakes</OutputSetting>

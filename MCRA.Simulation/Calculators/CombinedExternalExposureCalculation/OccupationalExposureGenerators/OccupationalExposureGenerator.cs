@@ -1,4 +1,5 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using System;
+using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
@@ -25,20 +26,32 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.Occupa
         ) {
             var occupationalScenarioExposuresLookup = occupationalScenarioExposures
                 .ToLookup(r => r.Scenario);
+
+            var individuals = individualDays
+                .GroupBy(r => r.SimulatedIndividual)
+                .Select(r => r.Key);
+
+            // Assign random scenarios to individuals. For acute, we assume that we have distinct simulated
+            // individuals for all individual days, for chronic, we assume that we have the same simulated
+            // individuals across the individual days, so we assign the scenario at the level of the simulated
+            // individual.
+            var random = new McraRandomGenerator(seed);
+            foreach (var individual in individuals) {
+                individual.OccupationalScenario = occupationalScenarios.ElementAt(random.Next(occupationalScenarios.Count));
+            }
+
             var individualExposures = individualDays
                 .AsParallel()
-                .GroupBy(r => r.SimulatedIndividual.Id)
-                .SelectMany(individualExposures => Generate(
-                    [.. individualExposures],
+                .Select(r => generatedIndividualDayExposure(
+                    r,
                     occupationalScenarios,
                     occupationalScenarioExposuresLookup,
                     substances,
                     substanceAmountUnit,
                     exposureType,
-                    new McraRandomGenerator(RandomUtils.CreateSeed(seed, individualExposures.Key))
+                    new McraRandomGenerator(RandomUtils.CreateSeed(seed, r.SimulatedIndividualDayId))
                 ))
                 .ToList();
-
             var exposureCollection = new ExternalExposureCollection {
                 SubstanceAmountUnit = substanceAmountUnit,
                 ExposureSource = ExposureSource.Occupational,
@@ -47,8 +60,8 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.Occupa
             return exposureCollection;
         }
 
-        protected List<IExternalIndividualDayExposure> Generate(
-            ICollection<IIndividualDay> individualDays,
+        private IExternalIndividualDayExposure generatedIndividualDayExposure(
+            IIndividualDay individualDay,
             ICollection<OccupationalScenario> occupationalScenarios,
             ILookup<OccupationalScenario, OccupationalScenarioExposure> occupationalScenarioExposures,
             ICollection<Compound> substances,
@@ -59,44 +72,35 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.Occupa
             if (exposureType == ExposureType.Acute) {
                 throw new NotImplementedException();
             }
-            var result = new List<IExternalIndividualDayExposure>();
-            var individualScenarios = individualDays
-                .GroupBy(r => r.SimulatedIndividual)
+            var scenario = individualDay.SimulatedIndividual.OccupationalScenario;
+            var exposures = occupationalScenarioExposures[scenario];
+            var exposuresPerPath = occupationalScenarioExposures[scenario]
+                .GroupBy(r => r.Route)
                 .ToDictionary(
-                    r => r.Key,
-                    r => occupationalScenarios.ElementAt(random.Next(occupationalScenarios.Count))
+                    r => new ExposurePath(ExposureSource.Occupational, r.Key),
+                    r => r
+                        .GroupBy(e => e.Substance)
+                        .Select(g => {
+                            var totalAmount = g.Sum(e => {
+                                var amountUnitAlignmentFactor = e.Unit.SubstanceAmountUnit
+                                    .GetMultiplicationFactor(substanceAmountUnit);
+                                return amountUnitAlignmentFactor * e.Value;
+                            });
+                            var ipc = new ExposurePerSubstance() {
+                                Compound = g.Key,
+                                Amount = totalAmount
+                            };
+                            return ipc;
+                        })
+                        .Cast<IIntakePerCompound>()
+                        .ToList()
                 );
-            foreach (var individualDay in individualDays) {
-                var scenario = individualScenarios[individualDay.SimulatedIndividual];
-                var exposures = occupationalScenarioExposures[scenario];
-                var exposuresPerPath = occupationalScenarioExposures[scenario]
-                    .GroupBy(r => r.Route)
-                    .ToDictionary(
-                        r => new ExposurePath(ExposureSource.Occupational, r.Key),
-                        r => r
-                            .GroupBy(e => e.Substance)
-                            .Select(g => {
-                                var totalAmount = g.Sum(e => {
-                                    var amountUnitAlignmentFactor = e.Unit.SubstanceAmountUnit
-                                        .GetMultiplicationFactor(substanceAmountUnit);
-                                    return amountUnitAlignmentFactor * e.Value;
-                                });
-                                var ipc = new ExposurePerSubstance() {
-                                    Compound = g.Key,
-                                    Amount = totalAmount
-                                };
-                                return ipc;
-                            })
-                            .Cast<IIntakePerCompound>()
-                            .ToList()
-                    );
-                var record = new ExternalIndividualDayExposure(exposuresPerPath) {
-                    SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId,
-                    SimulatedIndividual = individualDay.SimulatedIndividual,
-                    Day = individualDay.Day,
-                };
-                result.Add(record);
-            }
+            var result = new ExternalOccupationalIndividualDayExposure(exposuresPerPath) {
+                SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId,
+                SimulatedIndividual = individualDay.SimulatedIndividual,
+                Day = individualDay.Day,
+                OccupationalScenario = scenario
+            };
             return result;
         }
     }

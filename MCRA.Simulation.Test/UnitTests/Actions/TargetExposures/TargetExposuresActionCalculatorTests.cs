@@ -594,10 +594,12 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         }
 
         [TestMethod]
-        public void TargetExposuresActionCalculator_TestChronicOccupational() {
+        [DataRow(false)]
+        [DataRow(true)]
+        public void TargetExposuresActionCalculator_TestChronicOccupational(bool stratifyOutputs) {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = FakeSubstancesGenerator.Create(1);
+            var substances = FakeSubstancesGenerator.Create(2);
             var individuals = FakeIndividualsGenerator.Create(
                 200,
                 2,
@@ -609,15 +611,17 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var routes = new[] { ExposureRoute.Dermal, ExposureRoute.Inhalation };
 
-            var scenarios = FakeOccupationalExposuresGenerator.CreateScenarios([1, 2, 2], random);
-            var occupationalScenarioExposures = FakeOccupationalExposuresGenerator.CreateOccupationalScenarioExposures(
-                scenarios,
-                routes,
-                substances,
-                SubstanceAmountUnit.Micrograms,
-                isSystemic: true,
-                random
-            );
+            var scenarios = FakeOccupationalExposuresGenerator
+                .CreateScenarios([1, 2], random);
+            var occupationalScenarioExposures = FakeOccupationalExposuresGenerator
+                .CreateOccupationalScenarioExposures(
+                    scenarios,
+                    routes,
+                    substances,
+                    SubstanceAmountUnit.Micrograms,
+                    isSystemic: true,
+                    random
+                );
             var absorptionFactors = FakeAbsorptionFactorsGenerator.Create(
                 routes,
                 substances
@@ -639,15 +643,89 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.TargetDoseLevelType = TargetLevelType.Systemic;
             config.IndividualReferenceSet = ReferenceIndividualSet.Individuals;
             config.Cumulative = false;
+
+            if (stratifyOutputs) {
+                config.StratifyOutputs = true;
+                config.OutputStratificationVariable = OutputStratificationVariable.OccupationalScenario;
+            }
+            var outputName = stratifyOutputs ? "TestChronicOccupationalStratified" : "TestChronicOccupational";
+
             var calculator = new TargetExposuresActionCalculator(project);
-            var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, "TestChronicOccupational");
+            var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, outputName);
 
             var factorialSet = new UncertaintyFactorialSet(UncertaintySource.Individuals);
             var uncertaintySourceGenerators = new Dictionary<UncertaintySource, IRandom> {
                 [UncertaintySource.Individuals] = random
             };
 
-            TestRunUpdateSummarizeUncertainty(calculator, data, header, random, factorialSet, uncertaintySourceGenerators, reportFileName: "TestAcuteInternalAggregate");
+            TestRunUpdateSummarizeUncertainty(calculator, data, header, random, factorialSet, uncertaintySourceGenerators, reportFileName: outputName);
+        }
+
+
+        /// <summary>
+        /// Runs the TargetExposures action: run, update simulation data, summarize action result,
+        /// run uncertain, update simulation data uncertain, summarize action result uncertain method
+        /// Chronic, TargetDoseLevelType = TargetDoseLevelType.External, LNN
+        /// Including nondietary exposures (aggregate)
+        /// </summary>
+        [TestMethod]
+        public void TargetExposuresActionCalculator_TestChronicStratifyOutputs() {
+            var seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var substances = FakeSubstancesGenerator.Create(5);
+            var correctedRelativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
+            var membershipProbabilities = substances.ToDictionary(c => c, c => 1d);
+            var individuals = FakeIndividualsGenerator.Create(200, 2, random, useSamplingWeights: true);
+            FakeIndividualsGenerator.AddFakeSexProperty(individuals, random);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var foodsAsMeasured = FakeFoodsGenerator.Create(3);
+            var dietaryIndividualDayIntakes = FakeDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);
+            var dietaryExposureUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
+            var referenceCompound = substances.First();
+            var routes = new HashSet<ExposureRoute>() { ExposureRoute.Oral, ExposureRoute.Inhalation };
+            var kineticConversionFactors = FakeKineticConversionFactorModelsGenerator
+                .CreateKineticConversionFactors(
+                    substances,
+                    routes,
+                    TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerKg, BiologicalMatrix.Blood)
+                );
+            var kineticConversionFactorModels = kineticConversionFactors?
+                .Select(c => KineticConversionFactorCalculatorFactory
+                    .Create(c, false)
+                ).ToList();
+
+            var data = new ActionData() {
+                ActiveSubstances = substances,
+                CorrectedRelativePotencyFactors = correctedRelativePotencyFactors,
+                MembershipProbabilities = membershipProbabilities,
+                DietaryIndividualDayIntakes = dietaryIndividualDayIntakes,
+                DietaryExposureUnit = dietaryExposureUnit,
+                ReferenceSubstance = referenceCompound,
+                KineticConversionFactorModels = kineticConversionFactorModels
+            };
+
+            var project = new ProjectDto();
+            var config = project.TargetExposuresSettings;
+            config.Cumulative = true;
+            config.ExposureType = ExposureType.Chronic;
+            config.TargetDoseLevelType = TargetLevelType.Internal;
+            config.ExposureRoutes = [.. routes];
+            config.ExposureSources = [ExposureSource.Diet];
+            config.CodeCompartment = "Blood";
+            config.InternalModelType = InternalModelType.ConversionFactorModel;
+            config.StratifyOutputs = true;
+            config.OutputStratificationVariable = OutputStratificationVariable.Sex;
+            var calculatorNom = new TargetExposuresActionCalculator(project);
+            _ = TestRunUpdateSummarizeNominal(project, calculatorNom, data, "TestChronicStratifyOutputs");
+
+            var calculator = new TargetExposuresActionCalculator(project);
+            var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, null);
+
+            var factorialSet = new UncertaintyFactorialSet(UncertaintySource.Individuals);
+            var uncertaintySourceGenerators = new Dictionary<UncertaintySource, IRandom> {
+                [UncertaintySource.Individuals] = random
+            };
+            TestRunUpdateSummarizeUncertainty(calculator, data, header, random, factorialSet, uncertaintySourceGenerators, reportFileName: "TestChronicStratifyOutputs");
         }
     }
 }

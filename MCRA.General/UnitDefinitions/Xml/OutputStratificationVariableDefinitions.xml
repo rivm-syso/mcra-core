@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>OutputStratificationVariable</Id>
+  <Name>Output stratification variable</Name>
+  <Description>
+    Supported variables to categorise individuals into distinct subgroups for stratified presentation outputs.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>Sex</Id>
+      <Name>Sex</Name>
+      <ShortName>Sex</ShortName>
+      <Description>Stratify individuals by sex.</Description>
+    </Unit>
+    <Unit>
+      <Id>OccupationalScenario</Id>
+      <Name>Occupational scenario</Name>
+      <ShortName>Occupational scenario</ShortName>
+      <Description>Stratify by occupational scenario.</Description>
+    </Unit>
+  </Units>
+</UnitDefinition>

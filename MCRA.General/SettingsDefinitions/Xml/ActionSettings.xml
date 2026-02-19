@@ -164,4 +164,16 @@
     <ValueType>Numeric</ValueType>
     <DefaultValue>5</DefaultValue>
   </SettingsItem>
+  <SettingsItem>
+    <Id>StratifyOutputs</Id>
+    <Name>Stratify outputs</Name>
+    <Description>This setting is used to get more details e.g. how exposures are distributed among males or females.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>OutputStratificationVariable</Id>
+    <Name>Stratification variable</Name>
+    <Description>The variable used to categorise individuals into distinct subgroups for presentation of stratified outputs.</Description>
+    <ValueType>OutputStratificationVariable</ValueType>
+  </SettingsItem>
 </SettingsItems>

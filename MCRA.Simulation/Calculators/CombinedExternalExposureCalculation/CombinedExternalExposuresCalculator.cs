@@ -7,8 +7,8 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation {
     public class CombinedExternalExposuresCalculator {
 
         /// <summary>
-        /// Merges the dietary, non-dietary, dust, soil and air individual day exposure collections into a
-        /// collection of aggregate individual day exposures.
+        /// Merges the dietary, non-dietary, dust, soil and air individual day exposure
+        /// collections into a collection of aggregate individual day exposures.
         /// </summary>
         public static List<IExternalIndividualDayExposure> CreateCombinedIndividualDayExposures(
             ICollection<ExternalExposureCollection> externalExposureCollections,
@@ -20,6 +20,17 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation {
                 .SelectMany(c => c.ExternalIndividualDayExposures.SelectMany(e => e.ExposuresPerPath.Keys))
                 .ToHashSet();
 
+            var simulatedIndividuals = exposureType == ExposureType.Chronic
+                ? externalExposureCollections.First().ExternalIndividualDayExposures
+                    .GroupBy(r => r.SimulatedIndividual)
+                    .Select(r => r.Key)
+                    .ToList()
+                : externalExposureCollections.First().ExternalIndividualDayExposures
+                    .Select(r => r.SimulatedIndividual)
+                    .Distinct()
+                    .ToList();
+            var simulatedIndividualLookup = simulatedIndividuals.ToDictionary(r => r.Id);
+
             var result = externalExposureCollections
                 .AsParallel()
                 .WithCancellation(cancelToken)
@@ -30,8 +41,14 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation {
                     ))
                 .GroupBy(c => c.externalIndividualDayExposures.SimulatedIndividualDayId)
                 .Select(r => {
-                    var externalExposures = r.Select(s => (s.substanceAmountUnit, s.externalIndividualDayExposures)).ToList();
+                    var individualDay = r.First().externalIndividualDayExposures as IIndividualDay;
+                    var simulatedIndividual = simulatedIndividualLookup[r.First().externalIndividualDayExposures.SimulatedIndividual.Id];
+                    var externalExposures = r
+                        .Select(s => (s.externalIndividualDayExposures, s.substanceAmountUnit))
+                        .ToList();
                     return createExternalIndividualDayExposure(
+                        simulatedIndividual,
+                        individualDay,
                         externalExposures,
                         paths,
                         targetUnit
@@ -80,7 +97,9 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation {
         }
 
         private static ExternalIndividualDayExposure createExternalIndividualDayExposure(
-            List<(SubstanceAmountUnit AmountUnit, IExternalIndividualDayExposure IndividualDayExposure)> externalExposures,
+            SimulatedIndividual simulatedIndividual,
+            IIndividualDay individualDay,
+            List<(IExternalIndividualDayExposure IndividualDayExposure, SubstanceAmountUnit AmountUnit)> externalExposures,
             ICollection<ExposurePath> paths,
             ExposureUnitTriple targetUnit
         ) {
@@ -90,18 +109,14 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation {
                 targetUnit
             );
             return new ExternalIndividualDayExposure(exposuresPerPath) {
-                SimulatedIndividual = externalExposures.First().IndividualDayExposure.SimulatedIndividual,
-                Day = externalExposures.First().IndividualDayExposure.Day,
-                SimulatedIndividualDayId = externalExposures.First().IndividualDayExposure.SimulatedIndividualDayId
+                SimulatedIndividual = simulatedIndividual,
+                SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId,
+                Day = individualDay.Day
             };
         }
 
-        /// <summary>
-        /// Computes the individual day exposures per route compound.
-        /// Change: aggregate the Oral dietary route with the Oral nondietary route.
-        /// </summary>
         private static Dictionary<ExposurePath, List<IIntakePerCompound>> collectIndividualDayExposurePerRouteSubstance(
-            List<(SubstanceAmountUnit AmountUnit, IExternalIndividualDayExposure IndividualDayExposure)> externalIndividualDayExposures,
+            List<(IExternalIndividualDayExposure IndividualDayExposure, SubstanceAmountUnit AmountUnit)> externalIndividualDayExposures,
             ICollection<ExposurePath> paths,
             ExposureUnitTriple targetUnit
         ) {

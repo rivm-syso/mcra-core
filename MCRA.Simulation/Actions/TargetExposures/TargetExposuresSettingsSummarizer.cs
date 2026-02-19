@@ -164,6 +164,11 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 }
             }
 
+            if (_configuration.StratifyOutputs) {
+                section.SummarizeSetting(SettingsItemType.StratifyOutputs, _configuration.StratifyOutputs);
+                section.SummarizeSetting(SettingsItemType.OutputStratificationVariable, _configuration.OutputStratificationVariable);
+            }
+
             // MCR analysis
             section.SummarizeSetting(SettingsItemType.McrAnalysis, _configuration.McrAnalysis);
             if (_configuration.McrAnalysis) {

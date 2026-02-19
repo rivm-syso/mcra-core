@@ -7,6 +7,7 @@ using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.ExposureLevelsCalculation;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Calculators.KineticConversionCalculation;
+using MCRA.Simulation.Calculators.Stratification;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils;
@@ -939,6 +940,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             TargetExposuresActionResult actionResult,
             ActionData data
         ) {
+            var stratifier = getOutputStratifier(actionResult, data);
             var subHeader = header.GetSubSectionHeader<TargetExposuresSummarySection>();
             if (subHeader != null) {
                 var subSubHeader = subHeader.GetSubSectionHeader<ExposureBySubstancePercentilesSection>();
@@ -950,7 +952,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         data.ActiveSubstances,
                         actionResult.KineticConversionFactorsByRouteSubstance,
                         _configuration.SelectedPercentiles,
-                        _configuration.IsPerPerson
+                        _configuration.IsPerPerson,
+                        stratifier
                     );
                     subSubHeader.SaveSummarySection(section);
                 }
@@ -1111,7 +1114,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             TargetExposuresActionResult actionResult,
             ActionData data
         ) {
-
             var subHeader = header.GetSubSectionHeader<TargetExposuresSummarySection>();
             if (subHeader != null) {
                 var subSubHeader = subHeader.GetSubSectionHeader<ExposureByRouteSubstancePercentilesSection>();
@@ -1158,6 +1160,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             }
             return subHeader;
         }
+
         private SectionHeader summarizeSourcSubstanceUncertainty(
             SectionHeader header,
             TargetExposuresActionResult actionResult,
@@ -1274,6 +1277,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             SectionHeader header,
             int order
         ) {
+            var outputStratifier = getOutputStratifier(result, data);
+
             var subHeader = header.AddEmptySubSectionHeader(
                 "Exposures by substance",
                 order++,
@@ -1294,6 +1299,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     _configuration.VariabilityUpperPercentage,
                     data.TargetExposureUnit,
                     _configuration.SkipPrivacySensitiveOutputs,
+                    outputStratifier,
                     _configuration.IsPerPerson
                 );
                 sub2Header.SaveSummarySection(section);
@@ -1309,7 +1315,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     _configuration.UncertaintyLowerBound,
                     _configuration.UncertaintyUpperBound,
                     _configuration.IsPerPerson,
-                    _configuration.SelectedPercentiles
+                    _configuration.SelectedPercentiles,
+                    outputStratifier
                 );
                 sub2Header.SaveSummarySection(section);
             }
@@ -1413,6 +1420,28 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Creates a population stratifier if output stratification is enabled.
+        /// </summary>
+        private PopulationStratifier getOutputStratifier(TargetExposuresActionResult result, ActionData data) {
+            if (_configuration.StratifyOutputs) {
+                if (result.AggregateIndividualExposures != null) {
+                    return PopulationStratifierFactory
+                        .Create(
+                            _configuration.OutputStratificationVariable,
+                            data.OccupationalScenarios?.Values
+                        );
+                } else if (result.AggregateIndividualDayExposures != null) {
+                    return PopulationStratifierFactory
+                        .Create(
+                            _configuration.OutputStratificationVariable,
+                            data.OccupationalScenarios?.Values
+                        );
+                }
+            }
+            return null;
         }
 
         /// <summary>

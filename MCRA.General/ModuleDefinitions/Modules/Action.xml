@@ -28,6 +28,8 @@
     <SelectionSetting>SelectedPercentiles</SelectionSetting>
     <SelectionSetting>SelectedTier</SelectionSetting>
     <SelectionSetting>SkipPrivacySensitiveOutputs</SelectionSetting>
+    <SelectionSetting>StratifyOutputs</SelectionSetting>
+    <SelectionSetting>OutputStratificationVariable</SelectionSetting>
     <SelectionSetting>UncertaintyAnalysisCycles</SelectionSetting>
     <SelectionSetting>UncertaintyIterationsPerResampledSet</SelectionSetting>
     <SelectionSetting>UncertaintyLowerBound</SelectionSetting>

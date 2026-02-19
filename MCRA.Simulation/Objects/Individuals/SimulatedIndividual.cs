@@ -45,6 +45,23 @@ namespace MCRA.Simulation.Objects {
 
         public string Cofactor => individual.Cofactor;
 
+        public OccupationalScenario OccupationalScenario { get; set; }
+
+        public Dictionary<IndividualProperty, IndividualPropertyValue> IndividualProperties { get; set; }
+            = individual.IndividualPropertyValues.ToDictionary(r => r.IndividualProperty);
+
+        public SimulatedIndividual Clone() {
+            return new SimulatedIndividual(individual, Id) {
+                SamplingWeight = SamplingWeight,
+                Age = Age,
+                BodyWeight = BodyWeight,
+                Gender = Gender,
+                OccupationalScenario = OccupationalScenario,
+                IndividualProperties = IndividualProperties.Values
+                    .ToDictionary(r => r.IndividualProperty)
+            };
+        }
+
         public override string ToString() {
             return $"[{GetHashCode():X8}] {Id:000} {Code} (Indiv: {Individual})";
         }

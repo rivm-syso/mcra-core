@@ -351,6 +351,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     throw new NotImplementedException();
             }
 
+            // Determine target exposure unit (will only be done in nominal run, when not already set)
             var targetUnit = data.TargetExposureUnit;
             if (targetUnit == null) {
                 if (ModuleConfig.TargetDoseLevelType == TargetLevelType.Systemic) {
@@ -556,7 +557,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     (int)RandomSource.IE_DrawOccupationalExposures
                 );
                 var generator = new OccupationalExposureGenerator();
-                var occupationalExposureCollection = generator
+                var exposureCollection = generator
                     .Generate(
                         referenceIndividualDays,
                         data.ActiveSubstances,
@@ -566,7 +567,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         ModuleConfig.ExposureType,
                         seedOccupationalExposuresSampling
                     );
-                externalExposureCollections.Add(occupationalExposureCollection);
+                externalExposureCollections.Add(exposureCollection);
             }
 
             // Combine all external exposures
@@ -576,6 +577,13 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     externalExposureUnit,
                     ModuleConfig.ExposureType,
                     progressReport.CancellationToken
+                );
+
+            // Create aggregate individual exposures for acute
+            var externalIndividualExposures = CombinedExternalExposuresCalculator
+                .CreateCombinedExternalIndividualExposures(
+                    [.. combinedExternalIndividualDayExposures],
+                    ModuleConfig.ExposureRoutes
                 );
 
             // Create kinetic model calculators
@@ -629,6 +637,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         kineticConversionRandomGenerator,
                         progressReport.NewProgressState(80)
                     );
+
                 result.AggregateIndividualDayExposures = aggregateIndividualDayExposures;
 
                 // Compute kinetic conversion factors
@@ -644,23 +653,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         kineticConversionRandomGenerator
                     );
                 result.KineticConversionFactors = kineticConversionFactors;
-
-                // Create aggregate individual exposures for acute
-                var externalIndividualExposures = CombinedExternalExposuresCalculator
-                    .CreateCombinedExternalIndividualExposures(
-                        [.. combinedExternalIndividualDayExposures],
-                        ModuleConfig.ExposureRoutes
-                    );
-                result.ExternalIndividualExposures = externalIndividualExposures;
             } else {
-                // Create aggregate individual exposures
-                var externalIndividualExposures = CombinedExternalExposuresCalculator
-                    .CreateCombinedExternalIndividualExposures(
-                        [.. combinedExternalIndividualDayExposures],
-                        ModuleConfig.ExposureRoutes
-                    );
-                result.ExternalIndividualExposures = externalIndividualExposures;
-
                 // Compute target exposures
                 var aggregateIndividualExposures = targetExposuresCalculator
                     .ComputeChronic(
@@ -672,6 +665,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         kineticConversionRandomGenerator,
                         progressReport.NewProgressState(80)
                     );
+
                 result.AggregateIndividualExposures = aggregateIndividualExposures;
 
                 // Compute kinetic conversion factors
@@ -690,6 +684,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             }
 
             result.ExternalIndividualDayExposures = combinedExternalIndividualDayExposures;
+            result.ExternalIndividualExposures = externalIndividualExposures;
             result.ExternalExposureUnit = externalExposureUnit;
             result.TargetExposureUnit = targetUnit;
             result.ExposureRoutes = ModuleConfig.ExposureRoutes;

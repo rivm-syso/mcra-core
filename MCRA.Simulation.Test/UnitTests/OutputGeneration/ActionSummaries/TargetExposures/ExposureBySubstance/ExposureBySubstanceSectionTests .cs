@@ -2,12 +2,9 @@
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.TargetExposures {
-    /// <summary>
-    /// OutputGeneration, ActionSummaries, TargetExposures, ExposureByCompound, ByCompound
-    /// </summary>
+
     [TestClass]
     public class ExposureBySubstanceSectionTests : SectionTestBase {
 
@@ -15,7 +12,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
         /// Summarize (uncertainty) chronic dietary and nondietary aggregate
         /// </summary>
         [TestMethod]
-        public void TotalDistributionCompoundSection_TestAggregateChronic() {
+        public void ExposureBySubstanceSection_TestAggregateChronic() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(100, 2, false, random);
@@ -44,6 +41,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 75,
                 targetUnit,
                 false,
+                outputStratifier: null,
                 false
             );
             Assert.HasCount(substances.Count, section.ExposureRecords);
@@ -53,7 +51,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
         /// Summarize (uncertainty) acute dietary and nondietary aggregate
         /// </summary>
         [TestMethod]
-        public void TotalDistributionCompoundSection_TestAggregateAcute() {
+        public void ExposureBySubstanceSection_TestAggregateAcute() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(100, 2, false, random);
@@ -83,6 +81,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 75,
                 targetUnit,
                 false,
+                outputStratifier: null,
                 false
             );
             Assert.HasCount(substances.Count, section.ExposureRecords);

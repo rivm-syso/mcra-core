@@ -33,6 +33,9 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Substance code")]
         public string SubstanceCode { get; set; }
 
+        [DisplayName("Stratification")]
+        public string Stratification { get; set; }
+
         [Description("Exposure (IntakeUnit) at the specified percentage.")]
         [DisplayName("Exposure (IntakeUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]

@@ -20,6 +20,9 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Substance code")]
         public string SubstanceCode { get; set; }
 
+        [DisplayName("Stratification")]
+        public string Stratification { get; set; }
+
         [Description("Number of days for acute or number of individuals for chronic with exposure > 0.")]
         [DisplayName("{IndividualDayUnit} with exposure")]
         [DisplayFormat(DataFormatString = "{0:N0}")]

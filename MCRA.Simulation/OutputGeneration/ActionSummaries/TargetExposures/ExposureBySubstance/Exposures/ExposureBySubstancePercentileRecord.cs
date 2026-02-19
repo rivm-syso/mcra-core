@@ -9,8 +9,15 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Substance code")]
         public string SubstanceCode { get; set; }
 
+        [DisplayName("Stratification")]
+        public string Stratification { get; set; }
+
         public override string GetLabel() {
-            return SubstanceName;
+            if (!string.IsNullOrEmpty(Stratification)) {
+                return $"{SubstanceName} ({Stratification})";
+            } else {
+                return SubstanceName;
+            }
         }
     }
 }

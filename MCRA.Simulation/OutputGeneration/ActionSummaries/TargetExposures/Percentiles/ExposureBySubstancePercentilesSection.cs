@@ -1,5 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.Simulation.Calculators.Stratification;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
@@ -17,46 +18,51 @@ namespace MCRA.Simulation.OutputGeneration {
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
             bool isPerPerson,
-            List<double> percentages
+            List<double> percentages,
+            PopulationStratifier outputStratifier
         ) {
-            var aggregateExposures = aggregateIndividualExposures != null
-               ? aggregateIndividualExposures
-               : aggregateIndividualDayExposures.Cast<AggregateIndividualExposure>().ToList();
+            var aggregateExposures = aggregateIndividualExposures
+                ?? [.. aggregateIndividualDayExposures.Cast<AggregateIndividualExposure>()];
 
             foreach (var substance in substances) {
-                var exposures = aggregateExposures
+                var exposureGroups = aggregateExposures
                     .Select(c => (
-                        SimulatedIndividual: c.SimulatedIndividual,
+                        SamplingWeight: c.SimulatedIndividual.SamplingWeight,
+                        Stratification: outputStratifier?.GetLevel(c.SimulatedIndividual),
                         Exposure: c.GetTotalExternalExposureForSubstance(
                             substance,
                             kineticConversionFactors,
                             isPerPerson
                         )
                     ))
+                    .GroupBy(c => c.Stratification)
                     .ToList();
+                foreach (var group in exposureGroups) {
+                    var exposures = group.Select(c => (c.SamplingWeight, c.Exposure)).ToList();
+                    if (exposures.Any(c => c.Exposure > 0)) {
+                        var weights = exposures
+                            .Select(c => c.SamplingWeight)
+                            .ToList();
+                        var percentiles = exposures
+                            .Select(c => c.Exposure)
+                            .PercentilesWithSamplingWeights(weights, percentages);
 
-                if (exposures.Any(c => c.Exposure > 0)) {
-                    var weights = exposures
-                        .Select(c => c.SimulatedIndividual.SamplingWeight)
+                        var zip = percentages.Zip(percentiles, (x, v) => new { X = x, V = v })
+                            .ToList();
+
+                        var records = zip.Select(p => new TargetExposurePercentileRecord {
+                            UncertaintyLowerLimit = uncertaintyLowerBound,
+                            UncertaintyUpperLimit = uncertaintyUpperBound,
+                            XValue = p.X / 100,
+                            Value = p.V,
+                            Values = [],
+                            SubstanceCode = substance.Code,
+                            SubstanceName = substance.Name,
+                            Stratification = group.Key?.Name,
+                        })
                         .ToList();
-                    var percentiles = exposures
-                        .Select(c => c.Exposure)
-                        .PercentilesWithSamplingWeights(weights, percentages);
-
-                    var zip = percentages.Zip(percentiles, (x, v) => new { X = x, V = v })
-                        .ToList();
-
-                    var records = zip.Select(p => new TargetExposurePercentileRecord {
-                        UncertaintyLowerLimit = uncertaintyLowerBound,
-                        UncertaintyUpperLimit = uncertaintyUpperBound,
-                        XValue = p.X / 100,
-                        Value = p.V,
-                        Values = [],
-                        SubstanceCode = substance.Code,
-                        SubstanceName = substance.Name
-                    })
-                    .ToList();
-                    Records.AddRange(records);
+                        Records.AddRange(records);
+                    }
                 }
             }
         }
@@ -67,32 +73,37 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<Compound> substances,
             IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
             List<double> percentages,
-            bool isPerPerson
+            bool isPerPerson,
+            PopulationStratifier outputStratifier
         ) {
             var aggregateExposures = aggregateIndividualExposures != null
                 ? aggregateIndividualExposures
                 : aggregateIndividualDayExposures.Cast<AggregateIndividualExposure>().ToList();
 
             foreach (var substance in substances) {
-                var exposures = aggregateExposures
+                var exposureGroups = aggregateExposures
                     .Select(c => (
-                        SimulatedIndividual: c.SimulatedIndividual,
+                        SamplingWeight: c.SimulatedIndividual.SamplingWeight,
+                        Stratification: outputStratifier?.GetLevel(c.SimulatedIndividual),
                         Exposure: c.GetTotalExternalExposureForSubstance(
                             substance,
                             kineticConversionFactors,
                             isPerPerson
                         )
                     ))
+                    .GroupBy(c => c.Stratification)
                     .ToList();
-                if (exposures.Any(c => c.Exposure > 0)) {
+                foreach (var group in exposureGroups) {
+                    var exposures = group.Select(c => (c.SamplingWeight, c.Exposure)).ToList();
                     var weights = exposures
-                        .Select(c => c.SimulatedIndividual.SamplingWeight)
+                        .Select(c => c.SamplingWeight)
                         .ToList();
                     var percentiles = exposures
                         .Select(c => c.Exposure)
                         .PercentilesWithSamplingWeights(weights, percentages);
                     var records = Records
-                        .Where(r => r.SubstanceCode == substance.Code);
+                        .Where(r => r.SubstanceCode == substance.Code 
+                            && r.Stratification == group.Key?.Name);
                     var zip = records.Zip(percentiles, (r, v) => new { Record = r, Value = v })
                         .ToList();
                     foreach (var item in zip) {
