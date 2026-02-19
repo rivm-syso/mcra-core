@@ -213,7 +213,11 @@ namespace MCRA.Simulation.Calculators.AirExposureCalculation {
             var airBodyExposureFraction = bodyExposureFractions
                 .Where(r => age >= r.AgeLower || r.AgeLower == null)
                 .Where(r => r.Sex == sex || r.Sex == GenderType.Undefined)
-                .Last();
+                ?.Last();
+
+            if (airBodyExposureFraction == null) {
+                throw new Exception("No matching air body exposure fraction found.");
+            }
 
             var distribution = AirBodyExposureFractionProbabilityDistributionFactory
                 .createProbabilityDistribution(airBodyExposureFraction);
