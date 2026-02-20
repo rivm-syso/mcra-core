@@ -139,7 +139,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions.AirExposures {
             var config = project.AirExposuresSettings;
             config.SelectedExposureRoutes = [ExposureRoute.Dermal, ExposureRoute.Oral];
             config.AirExposuresIndividualGenerationMethod = AirExposuresIndividualGenerationMethod.UseDietaryExposures;
-
+            var airBodyExposureFractions = FakeAirBodyExposureFractionGenerator.Create();
             var data = new ActionData() {
                 AllCompounds = substances,
                 ActiveSubstances = substances,
@@ -147,11 +147,12 @@ namespace MCRA.Simulation.Test.UnitTests.Actions.AirExposures {
                 IndoorAirConcentrations = indoorAirConcentrations,
                 OutdoorAirConcentrations = outdoorAirConcentrations,
                 IndoorAirConcentrationModels = concentrationModels,
+                AirBodyExposureFractions = airBodyExposureFractions,
                 AirIndoorFractions = airIndoorFractions,
                 AirVentilatoryFlowRates = airVentilatoryFlowRates,
                 IndoorAirConcentrationUnit = indoorAirConcentrations.FirstOrDefault().Unit,
             };
-                
+
             var calculator = new AirExposuresActionCalculator(project);
             TestRunUpdateSummarizeNominal(project, calculator, data, "TestAirExposures");
             _ = calculator.Run(data, new CompositeProgressState());
