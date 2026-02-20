@@ -44,5 +44,27 @@
         <Alias>mg/m3</Alias>
       </Aliases>
     </Unit>
+    <Unit>
+      <Id>ugPerDay</Id>
+      <Name>µg/day</Name>
+      <ShortName>µg/day</ShortName>
+      <Description>Exposure expressed in micrograms per day (µg/day).</Description>
+      <Aliases>
+        <Alias>µg/day</Alias>
+        <Alias>ug/day</Alias>
+        <Alias>µg/d</Alias>
+        <Alias>ug/d</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>mgPerDay</Id>
+      <Name>mg/day</Name>
+      <ShortName>mg/day</ShortName>
+      <Description>Exposure expressed in milligrams per day (mg/day).</Description>
+      <Aliases>
+        <Alias>mg/day</Alias>
+        <Alias>mg/d</Alias>
+      </Aliases>
+    </Unit>
   </Units>
 </UnitDefinition>
