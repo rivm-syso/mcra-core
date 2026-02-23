@@ -1,6 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation;
+using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
 
@@ -152,6 +153,33 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
         public double MeanAllresidues {
             get {
                 return Positives.Sum() / NumberOfResidues;
+            }
+        }
+
+        /// <summary>
+        /// Gets the average non-detects value based on the provided non-detects handling method
+        /// and the specified replacement fraction.
+        /// </summary>
+        public double GetAverageNonDetects(NonDetectsHandlingMethod nonDetectsHandlingMethod, double fractionOfLor) {
+            if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByLOR) {
+                return CensoredValues.AverageOrZero() * fractionOfLor;
+            } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByLODLOQSystem) {
+                return CensoredValuesCollection
+                    .AverageOrZero(c => {
+                        var loq = !double.IsNaN(c.LOQ) ? c.LOQ: c.LOD;
+                        var lod = !double.IsNaN(c.LOD) ? c.LOD : loq;
+                        var result = c.ResType == ResType.LOD
+                            ? lod * fractionOfLor
+                            : lod + fractionOfLor * (loq - lod);
+                        return result;
+                    });
+            } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZeroLOQSystem) {
+                return CensoredValuesCollection
+                    .AverageOrZero(c => c.ResType == ResType.LOD ? 0 : fractionOfLor * c.LOQ);
+            } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZero) {
+                return 0D;
+            } else {
+                throw new NotImplementedException();
             }
         }
     }

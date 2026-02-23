@@ -94,18 +94,8 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
             if (FractionCensored > 0 && (Residues?.CensoredValues?.Count > 0)) {
                 var weightedAveragePositives = FractionPositives * UtilityFunctions.ExpBound(Mu + .5 * Math.Pow(Sigma, 2));
                 var replacementFactor = nonDetectsHandlingMethod != NonDetectsHandlingMethod.ReplaceByZero ? 1 : 0D;
-                var weightedAverageCensoredValues = 0d;
-                if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByLOR) {
-                    weightedAverageCensoredValues = FractionCensored * Residues.CensoredValues.AverageOrZero() * FractionOfLor * replacementFactor;
-                } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByLODLOQSystem) {
-                    var meanLoqLod = Residues.CensoredValuesCollection
-                        .AverageOrZero(c => c.ResType == ResType.LOD ? c.LOD * FractionOfLor : c.LOD + FractionOfLor * (c.LOQ - c.LOD));
-                    weightedAverageCensoredValues = FractionCensored * meanLoqLod * replacementFactor;
-                } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZeroLOQSystem) {
-                    var meanLoqLod = Residues.CensoredValuesCollection
-                        .AverageOrZero(c => c.ResType == ResType.LOD ? 0 : FractionOfLor * c.LOQ);
-                    weightedAverageCensoredValues = FractionCensored * meanLoqLod * replacementFactor;
-                }
+                var averageNonDetects = Residues.GetAverageNonDetects(nonDetectsHandlingMethod, FractionOfLor);
+                var weightedAverageCensoredValues = FractionCensored * averageNonDetects * replacementFactor;
                 return weightedAveragePositives + weightedAverageCensoredValues;
             } else {
                 var residue = CorrectedOccurenceFraction * UtilityFunctions.ExpBound(Mu + 0.5 * Math.Pow(Sigma, 2));
