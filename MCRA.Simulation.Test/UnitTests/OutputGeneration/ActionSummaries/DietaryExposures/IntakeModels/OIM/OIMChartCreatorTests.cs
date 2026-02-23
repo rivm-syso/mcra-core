@@ -24,7 +24,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
                 var section = new ModelBasedDistributionSection() {
                     IntakeDistributionBins = bins,
                     TotalNumberOfIntakes = number,
-                    PercentageZeroIntake = 0
+                    PercentageZeroIntake = 0,
+                    PercentagePositiveIntake = 100
                 };
                 var chart = new OIMChartCreator(section, "mg/kg bw/day");
                 RenderChart(chart, $"TestCreate1{number}");
@@ -50,6 +51,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
                     IntakeDistributionBins = bins,
                     TotalNumberOfIntakes = number,
                     PercentageZeroIntake = 0,
+                    PercentagePositiveIntake = 100
                 };
                 var chart = new OIMCumulativeChartCreator(section, "mg/kg bw/day");
                     RenderChart(chart, $"TestCreate{ number}.png");

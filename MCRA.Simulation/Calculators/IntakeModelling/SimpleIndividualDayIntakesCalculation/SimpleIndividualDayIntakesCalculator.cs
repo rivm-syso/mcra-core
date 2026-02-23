@@ -92,7 +92,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling.IndividualAmountCalculatio
                         Covariable = individual.Covariable,
                         NumberOfDays = g.Count(),
                         NumberOfPositiveIntakeDays = numPositiveIntakeDays,
-                        Intake = totalIntake / numPositiveIntakeDays,
+                        Intake = numPositiveIntakeDays > 0 ? totalIntake / numPositiveIntakeDays : 0,
                         DayIntakes = intakes,
                     };
                 })

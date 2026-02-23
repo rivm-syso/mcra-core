@@ -23,7 +23,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public override string Title => $"Cumulative dietary exposure distribution ({100 - _section.PercentageZeroIntake:F1}% positives)";
 
         public override PlotModel Create() {
-            return base.createPlotModel(
+            return createPlotModel(
                 _section.Percentiles,
                 _section.UncertaintyLowerlimit,
                 _section.UncertaintyUpperlimit,

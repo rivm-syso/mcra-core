@@ -44,7 +44,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     hiddenProperties: hiddenProperties
                 );
             } else {
-                sb.AppendParagraph("No positive exposures found.");
+                sb.AppendNotification("No positive exposures.");
             }
         }
     }

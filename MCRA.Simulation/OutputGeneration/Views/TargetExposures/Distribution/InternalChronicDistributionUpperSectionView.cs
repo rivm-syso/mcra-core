@@ -21,7 +21,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     true
                 );
             } else {
-                sb.AppendParagraph("No positive exposures!", "warning");
+                sb.AppendNotification("No positive exposures.");
             }
             if ((Model.CategorizedHistogramBins?.Count ?? 0) > 1) {
                 var chartCreator = new InternalChronicStackedHistogramUpperChartCreator(Model, ViewBag.GetUnit("IntakeUnit"));

@@ -5,7 +5,11 @@ namespace MCRA.Simulation.OutputGeneration.Views {
     public class OIMDistributionSectionView : SectionView<OIMDistributionSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
 
-            //Render HTML
+            if (Model.PercentagePositiveIntake == 0) {
+                sb.AppendNotification("No positive exposures.");
+                return;
+            }
+
             if (!Model.IsTotalDistribution) {
                 sb.AppendDescriptionParagraph($"Exposure: upper percentage {Model.UpperPercentage:F1} % ({Model.NRecords} records), " +
                     $"minimum {Model.LowPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}, " +

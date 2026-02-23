@@ -6,11 +6,15 @@ namespace MCRA.Simulation.OutputGeneration.Views {
         public override void RenderSectionHtml(StringBuilder sb) {
             bool showUncertainty = !Model.Percentiles.All(p => double.IsNaN(p.MedianUncertainty));
 
-            //Render HTML
+            if (Model.PercentageZeroIntake == 100) {
+                sb.AppendNotification("No positive exposures.");
+                return;
+            }
+
             if (Model is DietaryTotalIntakeCoExposureDistributionSection) {
-                sb.Append("div");
+                sb.Append("<div>");
                 renderSectionView(sb, "DietaryTotalIntakeCoExposureDistributionSection", Model);
-                sb.Append("/div");
+                sb.Append("</div>");
             } else {
                 sb.Append("<div class=\"figure-container\">");
                 var chartCreator1 = new DietaryTotalIntakeDistributionChartCreator(Model, ViewBag.GetUnit("IntakeUnit"));

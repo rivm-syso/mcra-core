@@ -5,7 +5,6 @@ namespace MCRA.Simulation.OutputGeneration.Views {
     public class InternalUntransformedExposureDistributionSectionView : SectionView<InternalUntransformedExposureDistributionSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             if (Model.PercentageZeroIntake < 100) {
-
                 var chartCreator = new InternalUntransformedExposureDistributionSectionChartCreator(Model, ViewBag.GetUnit("IntakeUnit"));
                 sb.AppendChart(
                         "UntransformedExposureDistributionChart",
@@ -17,7 +16,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         true
                     );
             } else {
-                sb.AppendDescriptionParagraph("No positive exposures.");
+                sb.AppendNotification("No positive exposures.");
             }
         }
     }

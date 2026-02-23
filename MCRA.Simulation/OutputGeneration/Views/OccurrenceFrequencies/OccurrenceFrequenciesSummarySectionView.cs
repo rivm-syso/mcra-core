@@ -27,7 +27,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                Model.Records,
                "AgriculturalUseByFoodSubstanceTable",
                ViewBag,
-               caption: "agricultural use by food x substance.",
+               caption: "Occurrence frequencies by food and substance.",
                saveCsv: true,
                header: true,
                hiddenProperties: hiddenProperties

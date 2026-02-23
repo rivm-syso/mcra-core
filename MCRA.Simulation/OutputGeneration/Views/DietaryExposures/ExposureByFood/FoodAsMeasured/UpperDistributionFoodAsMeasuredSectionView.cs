@@ -140,7 +140,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     );
                 }
             } else {
-                sb.AppendParagraph("No positive exposures found", "warning");
+                sb.AppendNotification("No positive exposures.");
             }
         }
     }

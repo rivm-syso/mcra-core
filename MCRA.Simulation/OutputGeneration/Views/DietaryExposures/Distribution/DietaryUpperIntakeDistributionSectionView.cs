@@ -4,9 +4,12 @@ using System.Text;
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class DietaryUpperIntakeDistributionSectionView : SectionView<DietaryUpperIntakeDistributionSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
-            bool showUncertainty = !Model.Percentiles.All(p => double.IsNaN(p.MedianUncertainty));
 
-            //Render HTML
+            if (Model.PercentageZeroIntake == 100) {
+                sb.AppendNotification("No positive exposures.");
+                return;
+            }
+
             if (Model is DietaryUpperIntakeCoExposureDistributionSection) {
                 renderSectionView(sb, "DietaryUpperIntakeCoExposureDistributionSection", Model);
             } else {
@@ -16,14 +19,14 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
                 var chartCreator = new DietaryUpperIntakeDistributionChartCreator(Model, ViewBag.GetUnit("IntakeUnit"));
                 sb.AppendChart(
-                        "DietaryUpperIntakeDistributionChartCreatorChart",
-                        chartCreator,
-                        ChartFileType.Svg,
-                        Model,
-                        ViewBag,
-                        chartCreator.Title,
-                        true
-                    );
+                    "DietaryUpperIntakeDistributionChartCreatorChart",
+                    chartCreator,
+                    ChartFileType.Svg,
+                    Model,
+                    ViewBag,
+                    chartCreator.Title,
+                    true
+                );
             }
         }
     }

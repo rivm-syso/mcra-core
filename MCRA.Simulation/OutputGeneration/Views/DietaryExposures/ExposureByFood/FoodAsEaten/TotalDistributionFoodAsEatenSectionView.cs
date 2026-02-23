@@ -35,7 +35,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     );
                 }
             } else {
-                sb.AppendDescriptionParagraph("No positive exposures found");
+                sb.AppendNotification("No positive exposures.");
             }
             sb.AppendDescriptionParagraph($"Number of foods as eaten: {Model.Records.Count}");
             sb.AppendTable(

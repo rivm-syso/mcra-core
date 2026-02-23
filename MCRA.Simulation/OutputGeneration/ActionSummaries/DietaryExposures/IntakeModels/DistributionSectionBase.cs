@@ -14,6 +14,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<CategorizedHistogramBin<ExposureRoute>> CategorizedHistogramBins { get; set; }
         public int TotalNumberOfIntakes { get; set; }
         public double PercentageZeroIntake { get; set; }
+        public double PercentagePositiveIntake { get; set; }
         public bool IsTotalDistribution { get; set; }
 
         protected UncertainDataPointCollection<double> _percentiles = [];
@@ -47,9 +48,11 @@ namespace MCRA.Simulation.OutputGeneration {
                 var numberOfBins = Math.Sqrt(TotalNumberOfIntakes) < 100 ? BMath.Ceiling(Math.Sqrt(TotalNumberOfIntakes)) : 100;
                 IntakeDistributionBins = exposures.MakeHistogramBins(sampleWeights, numberOfBins, min, max);
                 PercentageZeroIntake = intakes.Count(c => c == 0) / (double)TotalNumberOfIntakes * 100;
+                PercentagePositiveIntake = intakes.Count(c => c > 0) / (double)TotalNumberOfIntakes * 100;
             } else {
                 IntakeDistributionBins = null;
                 PercentageZeroIntake = 100;
+                PercentagePositiveIntake = 0;
             }
 
             // Summarize the exposures for based on a grid defined by the percentages array
