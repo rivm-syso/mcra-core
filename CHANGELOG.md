@@ -1,5 +1,17 @@
 # Change Log
 
+## Version 10.2.15 (2026-02-24)
+
+### Added
+
+- Add PBK model simulation setting to allow systemic fallback
+- Implement AirBodyExposureFractions for Air dermal contact (RSExpo). Refactor and implement generic code for Air and Dust (#2399)
+
+### Fixed
+
+- Correct air exposure determinants data group
+- Update check for missing air body exposure fractions and related unit test
+
 ## Version 10.2.14 (2026-02-18)
 
 ### Added
