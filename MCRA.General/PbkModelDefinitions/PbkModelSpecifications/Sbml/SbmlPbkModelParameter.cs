@@ -1,5 +1,4 @@
-﻿using MCRA.General.PbkModelDefinitions.PbkModelSpecifications;
-using MCRA.Utils.Sbml.Objects;
+﻿using MCRA.Utils.Sbml.Objects;
 
 namespace MCRA.General.PbkModelDefinitions.PbkModelSpecifications.Sbml {
     public class SbmlPbkModelParameter : IPbkModelParameterSpecification {
@@ -9,12 +8,15 @@ namespace MCRA.General.PbkModelDefinitions.PbkModelSpecifications.Sbml {
         /// </summary>
         public SbmlModelParameter SbmlModelParameter { get; set; }
 
+        /// <summary>
+        /// The SBML unit definition of the parameter.
+        /// </summary>
         public SbmlUnitDefinition SbmlUnit { get; set; }
 
         /// <summary>
         /// Parameter unit string.
         /// </summary>
-        public string Unit => SbmlUnit.GetUnitString();
+        public string Unit => SbmlUnit?.GetUnitString();
 
         /// <summary>
         /// Gets/sets the parameter id.
