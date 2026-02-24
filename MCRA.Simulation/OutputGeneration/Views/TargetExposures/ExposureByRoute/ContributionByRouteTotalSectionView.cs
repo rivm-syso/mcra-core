@@ -7,11 +7,11 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             var hiddenProperties = new List<string>();
             var isUncertainty = Model.Records.First().Contributions.Count > 0;
             if (!isUncertainty) {
-                hiddenProperties.Add("LowerContributionPercentage");
-                hiddenProperties.Add("UpperContributionPercentage");
-                hiddenProperties.Add("MeanContribution");
+                hiddenProperties.Add(nameof(ContributionByRouteRecord.LowerContributionPercentage));
+                hiddenProperties.Add(nameof(ContributionByRouteRecord.UpperContributionPercentage));
+                hiddenProperties.Add(nameof(ContributionByRouteRecord.MeanContribution));
             } else {
-                hiddenProperties.Add("ContributionPercentage");
+                hiddenProperties.Add(nameof(ContributionByRouteRecord.ContributionPercentage));
             }
             if (Model.Records.Count(r => !double.IsNaN(r.ContributionPercentage)) > 1) {
                 var chartCreator = new ContributionByRouteTotalPieChartCreator(Model, isUncertainty);

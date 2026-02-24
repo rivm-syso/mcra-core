@@ -9,27 +9,27 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             var isUncertainty = Model.Records.Any() && Model.Records.First().Contributions.Any();
 
             if (!isUncertainty) {
-                hiddenProperties.Add("LowerContributionPercentage");
-                hiddenProperties.Add("UpperContributionPercentage");
-                hiddenProperties.Add("MeanContribution");
+                hiddenProperties.Add(nameof(DistributionCompoundRecord.LowerContributionPercentage));
+                hiddenProperties.Add(nameof(DistributionCompoundRecord.UpperContributionPercentage));
+                hiddenProperties.Add(nameof(DistributionCompoundRecord.MeanContribution));
             } else {
-                hiddenProperties.Add("ContributionPercentage");
+                hiddenProperties.Add(nameof(DistributionCompoundRecord.ContributionPercentage));
             }
             if (Model.Records.All(c => c.AssessmentGroupMembership == 1)) {
-                hiddenProperties.Add("AssessmentGroupMembership");
+                hiddenProperties.Add(nameof(DistributionCompoundRecord.AssessmentGroupMembership));
             }
             if (Model.Records.All(c => double.IsNaN(c.RelativePotencyFactor))) {
-                hiddenProperties.Add("RelativePotencyFactor");
+                hiddenProperties.Add(nameof(DistributionCompoundRecord.RelativePotencyFactor));
             }
             if (Model.Records.All(r => double.IsNaN(r.ContributionPercentage))) {
-                hiddenProperties.Add("ContributionPercentage");
-                hiddenProperties.Add("Contribution");
-                hiddenProperties.Add("MeanContribution");
+                hiddenProperties.Add(nameof(DistributionCompoundRecord.ContributionPercentage));
+                hiddenProperties.Add(nameof(DistributionCompoundRecord.Contribution));
+                hiddenProperties.Add(nameof(DistributionCompoundRecord.MeanContribution));
             }
 
             var records = isUncertainty
                 ? Model.Records.Where(c => c.MeanContribution > 0).ToList()
-                : Model.Records.Where(c => c.Mean > 0).ToList();
+                : [.. Model.Records.Where(c => c.Mean > 0)];
 
             //Render HTML
             if (records.Any()) {

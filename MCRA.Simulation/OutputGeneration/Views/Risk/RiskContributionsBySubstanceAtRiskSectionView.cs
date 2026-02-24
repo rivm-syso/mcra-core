@@ -9,13 +9,13 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
                 var isUncertainty = Model.Records.FirstOrDefault()?.Contributions.Any() ?? false;
                 if (!isUncertainty) {
-                    hiddenProperties.Add("LowerContributionPercentage");
-                    hiddenProperties.Add("UpperContributionPercentage");
-                    hiddenProperties.Add("MeanContribution");
+                    hiddenProperties.Add(nameof(RiskBySubstanceRecord.LowerContributionPercentage));
+                    hiddenProperties.Add(nameof(RiskBySubstanceRecord.UpperContributionPercentage));
+                    hiddenProperties.Add(nameof(RiskBySubstanceRecord.MeanContribution));
                 } else {
-                    hiddenProperties.Add("ContributionPercentage");
+                    hiddenProperties.Add(nameof(RiskBySubstanceRecord.ContributionPercentage));
                 }
-                hiddenProperties.Add("MeanAll");
+                hiddenProperties.Add(nameof(RiskBySubstanceRecord.MeanAll));
 
                 //Render HTML
                 if (Model.Records.Any()) {

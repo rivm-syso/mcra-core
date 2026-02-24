@@ -7,11 +7,11 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             var hiddenProperties = new List<string>();
             var isUncertainty = Model.Records.First().Contributions.Count > 0;
             if (!isUncertainty) {
-                hiddenProperties.Add("LowerContributionPercentage");
-                hiddenProperties.Add("UpperContributionPercentage");
-                hiddenProperties.Add("MeanContribution");
+                hiddenProperties.Add(nameof(ExternalContributionBySourceRecord.LowerContributionPercentage));
+                hiddenProperties.Add(nameof(ExternalContributionBySourceRecord.UpperContributionPercentage));
+                hiddenProperties.Add(nameof(ExternalContributionBySourceRecord.MeanContribution));
             } else {
-                hiddenProperties.Add("ContributionPercentage");
+                hiddenProperties.Add(nameof(ExternalContributionBySourceRecord.ContributionPercentage));
             }
             if (Model.Records.Count > 1) {
                 var chartCreator = new ExternalContributionBySourceTotalPieChartCreator(Model, isUncertainty);

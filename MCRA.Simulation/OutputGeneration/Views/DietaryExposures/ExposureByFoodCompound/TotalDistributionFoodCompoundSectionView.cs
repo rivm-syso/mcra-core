@@ -7,22 +7,22 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             var hiddenProperties = new List<string>();
 
             if (Model.Records.All(c => double.IsNaN(c.Contribution))) {
-                hiddenProperties.Add("Contribution");
-                hiddenProperties.Add("MeanContribution");
-                hiddenProperties.Add("ContributionPercentage");
+                hiddenProperties.Add(nameof(DistributionFoodCompoundRecord.Contribution));
+                hiddenProperties.Add(nameof(DistributionFoodCompoundRecord.MeanContribution));
+                hiddenProperties.Add(nameof(DistributionFoodCompoundRecord.ContributionPercentage));
             }
             if (Model.Records.All(c => c.CompoundCode == null)) {
-                hiddenProperties.Add("CompoundCode");
+                hiddenProperties.Add(nameof(DistributionFoodCompoundRecord.CompoundCode));
             }
             if (Model.Records.All(c => c.FoodCode == null)) {
-                hiddenProperties.Add("FoodCode");
+                hiddenProperties.Add(nameof(DistributionFoodCompoundRecord.FoodCode));
             }
             var tableRecords = new List<DistributionFoodCompoundRecord>();
             var isUncertainty = Model.Records.FirstOrDefault()?.Contributions.Any() ?? false;
             if (!isUncertainty) {
-                hiddenProperties.Add("LowerContributionPercentage");
-                hiddenProperties.Add("UpperContributionPercentage");
-                hiddenProperties.Add("MeanContribution");
+                hiddenProperties.Add(nameof(DistributionFoodCompoundRecord.LowerContributionPercentage));
+                hiddenProperties.Add(nameof(DistributionFoodCompoundRecord.UpperContributionPercentage));
+                hiddenProperties.Add(nameof(DistributionFoodCompoundRecord.MeanContribution));
                 tableRecords = Model.Records
                     .Where(c => double.IsNaN(c.Contribution) || c.Contribution > 0)
                     .OrderByDescending(r => r.Contribution)

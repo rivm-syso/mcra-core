@@ -8,11 +8,11 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             var hiddenProperties = new List<string>();
             var isUncertainty = Model.Records.FirstOrDefault()?.Contributions.Any() ?? false;
             if (!isUncertainty) {
-                hiddenProperties.Add("LowerContributionPercentage");
-                hiddenProperties.Add("UpperContributionPercentage");
-                hiddenProperties.Add("MeanContribution");
+                hiddenProperties.Add(nameof(RiskByFoodSubstanceRecord.LowerContributionPercentage));
+                hiddenProperties.Add(nameof(RiskByFoodSubstanceRecord.UpperContributionPercentage));
+                hiddenProperties.Add(nameof(RiskByFoodSubstanceRecord.MeanContribution));
             } else {
-                hiddenProperties.Add("ContributionPercentage");
+                hiddenProperties.Add(nameof(RiskByFoodSubstanceRecord.ContributionPercentage));
             }
 
             //Render HTML

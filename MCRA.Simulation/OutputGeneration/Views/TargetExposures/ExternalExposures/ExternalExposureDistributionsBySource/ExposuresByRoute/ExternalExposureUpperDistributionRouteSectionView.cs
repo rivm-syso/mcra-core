@@ -7,11 +7,11 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             var isUncertainty = Model.Records.Count > 0 &&  Model.Records.First().Contributions.Count > 0;
             var hiddenProperties = new List<string>();
             if (!isUncertainty) {
-                hiddenProperties.Add("LowerContributionPercentage");
-                hiddenProperties.Add("UpperContributionPercentage");
-                hiddenProperties.Add("MeanContribution");
+                hiddenProperties.Add(nameof(ExternalExposureDistributionRouteRecord.LowerContributionPercentage));
+                hiddenProperties.Add(nameof(ExternalExposureDistributionRouteRecord.UpperContributionPercentage));
+                hiddenProperties.Add(nameof(ExternalExposureDistributionRouteRecord.MeanContribution));
             } else {
-                hiddenProperties.Add("ContributionPercentage");
+                hiddenProperties.Add(nameof(ExternalExposureDistributionRouteRecord.ContributionPercentage));
             }
             //Render HTML
             if (Model.Records.Count > 0) {

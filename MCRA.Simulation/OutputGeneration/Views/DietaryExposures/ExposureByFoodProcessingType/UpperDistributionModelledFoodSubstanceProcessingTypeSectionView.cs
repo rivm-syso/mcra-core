@@ -9,9 +9,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (Model.Records?.Count > 0) {
                 var isUncertainty = Model.Records.Any(r => r.Contributions?.Count > 0);
                 if (!isUncertainty) {
-                    hiddenProperties.Add("LowerContributionPercentage");
-                    hiddenProperties.Add("UpperContributionPercentage");
-                    hiddenProperties.Add("MeanContribution");
+                    hiddenProperties.Add(nameof(FoodAsMeasuredSubstanceProcessingTypeRecord.LowerContributionPercentage));
+                    hiddenProperties.Add(nameof(FoodAsMeasuredSubstanceProcessingTypeRecord.UpperContributionPercentage));
+                    hiddenProperties.Add(nameof(FoodAsMeasuredSubstanceProcessingTypeRecord.MeanContribution));
                     result = Model.Records.Where(c => c.Contribution > 0)
                         .OrderByDescending(r => r.Contribution)
                         .ThenBy(r => r.FoodName, StringComparer.OrdinalIgnoreCase)
@@ -22,7 +22,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         .ThenBy(r => r.ProcessingTypeCode, StringComparer.OrdinalIgnoreCase)
                         .ToList();
                 } else {
-                    hiddenProperties.Add("ContributionPercentage");
+                    hiddenProperties.Add(nameof(FoodAsMeasuredSubstanceProcessingTypeRecord.ContributionPercentage));
                     result = Model.Records.Where(c => c.Contribution > 0 || c.MeanContribution > 0)
                         .OrderByDescending(r => r.MeanContribution)
                         .ThenBy(r => r.FoodName, StringComparer.OrdinalIgnoreCase)

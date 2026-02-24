@@ -6,8 +6,8 @@ namespace MCRA.Simulation.OutputGeneration.Views {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>();
             if (Model.Records.Count > 0 && Model.Records.First().Contributions.Count == 0) {
-                hiddenProperties.Add("LowerContributionPercentage");
-                hiddenProperties.Add("UpperContributionPercentage");
+                hiddenProperties.Add(nameof(TDSReadAcrossFoodRecord.LowerContributionPercentage));
+                hiddenProperties.Add(nameof(TDSReadAcrossFoodRecord.UpperContributionPercentage));
             }
 
             //Render HTML

@@ -13,8 +13,6 @@ namespace MCRA.Simulation.OutputGeneration {
         public int TotalNumberOfIntakes { get; set; }
         public double PercentageZeroIntake { get; set; }
 
-        //public ReferenceDoseRecord Reference { get; set; }
-
         public double UncertaintyLowerlimit { get; set; }
         public double UncertaintyUpperlimit { get; set; }
 

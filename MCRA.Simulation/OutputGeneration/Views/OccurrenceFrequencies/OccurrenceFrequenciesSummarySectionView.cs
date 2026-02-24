@@ -6,19 +6,19 @@ namespace MCRA.Simulation.OutputGeneration.Views {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>();
             if (Model.Records.All(r => r.AgriculturalUseFractionUncertaintyValues == null || !r.AgriculturalUseFractionUncertaintyValues.Any())) {
-                hiddenProperties.Add("AgriculturalUseFractionLowerBoundPercentile");
-                hiddenProperties.Add("AgriculturalUseFractionUpperBoundPercentile");
-                hiddenProperties.Add("AgriculturalUseFractionMeanUncertaintyValue");
+                hiddenProperties.Add(nameof(AgriculturalUseByFoodSubstanceSummaryRecord.AgriculturalUseFractionLowerBoundPercentile));
+                hiddenProperties.Add(nameof(AgriculturalUseByFoodSubstanceSummaryRecord.AgriculturalUseFractionUpperBoundPercentile));
+                hiddenProperties.Add(nameof(AgriculturalUseByFoodSubstanceSummaryRecord.AgriculturalUseFractionMeanUncertaintyValue));
             } else {
                 if (Model.Records.Any(r => r.AgriculturalUseFractionUncertaintyValues.Distinct().Count() > 2)) {
-                    hiddenProperties.Add("AgriculturalUseFractionMeanUncertaintyValue");
+                    hiddenProperties.Add(nameof(AgriculturalUseByFoodSubstanceSummaryRecord.AgriculturalUseFractionMeanUncertaintyValue));
                 } else {
-                    hiddenProperties.Add("AgriculturalUseFractionLowerBoundPercentile");
-                    hiddenProperties.Add("AgriculturalUseFractionUpperBoundPercentile");
+                    hiddenProperties.Add(nameof(AgriculturalUseByFoodSubstanceSummaryRecord.AgriculturalUseFractionLowerBoundPercentile));
+                    hiddenProperties.Add(nameof(AgriculturalUseByFoodSubstanceSummaryRecord.AgriculturalUseFractionUpperBoundPercentile));
                 }
             }
             if (Model.Records.All(r => r.IsAuthorised == null)) {
-                hiddenProperties.Add("IsAuthorised");
+                hiddenProperties.Add(nameof(AgriculturalUseByFoodSubstanceSummaryRecord.IsAuthorised));
             }
 
             //Render HTML

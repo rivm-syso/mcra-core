@@ -8,10 +8,10 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             var hiddenProperties = new List<string>();
             if (Model.Records.All(c => c.AtRiskWithOrWithout == 0)) {
-                hiddenProperties.Add("AtRiskWithOrWithout");
+                hiddenProperties.Add(nameof(ModelledFoodSubstanceAtRiskRecord.AtRiskWithOrWithout));
             }
             if (Model.Records.All(c => c.AtRiskDueToModelledFoodSubstance == 0)) {
-                hiddenProperties.Add("AtRiskDueToModelledFoodSubstance");
+                hiddenProperties.Add(nameof(ModelledFoodSubstanceAtRiskRecord.AtRiskDueToModelledFoodSubstance));
             }
             //Render HTML
             if (Model.Records.Any()) {

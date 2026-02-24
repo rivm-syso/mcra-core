@@ -7,17 +7,17 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             var hiddenProperties = new List<string>();
 
             if (Model.Records.All(c => c.CompoundCode == null)) {
-                hiddenProperties.Add("CompoundCode");
+                hiddenProperties.Add(nameof(DistributionFoodCompoundRecord.CompoundCode));
             }
             if (Model.Records.All(c => c.FoodCode == null)) {
-                hiddenProperties.Add("FoodCode");
+                hiddenProperties.Add(nameof(DistributionFoodCompoundRecord.FoodCode));
             }
             var result = new List<DistributionFoodCompoundRecord>();
             var isUncertainty = Model.Records.Any() && Model.Records.First().Contributions.Any();
             if (!isUncertainty) {
-                hiddenProperties.Add("LowerContributionPercentage");
-                hiddenProperties.Add("UpperContributionPercentage");
-                hiddenProperties.Add("MeanContribution");
+                hiddenProperties.Add(nameof(DistributionFoodCompoundRecord.LowerContributionPercentage));
+                hiddenProperties.Add(nameof(DistributionFoodCompoundRecord.UpperContributionPercentage));
+                hiddenProperties.Add(nameof(DistributionFoodCompoundRecord.MeanContribution));
                 result = Model.Records.Where(c => c.Contribution > 0)
                     .OrderByDescending(r => r.Contribution)
                     .ThenBy(r => r.FoodName, StringComparer.OrdinalIgnoreCase)
