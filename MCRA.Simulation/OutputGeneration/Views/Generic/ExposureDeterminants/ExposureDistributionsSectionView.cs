@@ -1,4 +1,5 @@
-﻿using MCRA.Simulation.OutputGeneration.Generic.ExposureDeterminants;
+﻿using MCRA.Simulation.OutputGeneration.ExposureDeterminants;
+using MCRA.Simulation.OutputGeneration.Generic.ExposureDeterminants;
 using MCRA.Simulation.OutputGeneration.Helpers;
 using System.Text;
 
@@ -17,17 +18,17 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 var hiddenProperties = new List<string>();
                 if (Model.Records.All(c => c.AgeLower == null) &&
                     Model.Records.All(c => string.IsNullOrEmpty(c.Sex))) {
-                    hiddenProperties.Add("idSubgroup");
-                    hiddenProperties.Add("Sec");
+                    hiddenProperties.Add(nameof(BodyExposureFractionsDataRecord.idSubgroup));
+                    hiddenProperties.Add(nameof(BodyExposureFractionsDataRecord.Sex));
                 }
                 if (Model.Records.All(c => string.IsNullOrEmpty(c.DistributionType))) {
-                    hiddenProperties.Add("DistributionType");
+                    hiddenProperties.Add(nameof(BodyExposureFractionsDataRecord.DistributionType));
                 }
                 if (Model.Records.All(c => !c.CvVariability.HasValue)) {
-                    hiddenProperties.Add("CvVariability");
+                    hiddenProperties.Add(nameof(BodyExposureFractionsDataRecord.CvVariability));
                 }
                 if (Model.Records.All(c => !c.AgeLower.HasValue)) {
-                    hiddenProperties.Add("AgeLower");
+                    hiddenProperties.Add(nameof(BodyExposureFractionsDataRecord.AgeLower));
                 }
 
                 // Table

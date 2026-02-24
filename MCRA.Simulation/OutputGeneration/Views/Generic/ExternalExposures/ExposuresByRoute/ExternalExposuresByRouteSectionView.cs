@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using MCRA.Simulation.OutputGeneration.ExposureDeterminants;
 using MCRA.Simulation.OutputGeneration.Generic.ExternalExposures.ExposuresByRoute;
 using MCRA.Simulation.OutputGeneration.Helpers;
 
@@ -16,7 +17,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             var hiddenProperties = new List<string>();
 
             if (Model.TableRecords.All(c => c.NumberOfSubstances <= 1)) {
-                hiddenProperties.Add("NumberOfSubstances");
+                hiddenProperties.Add(nameof(ExternalExposuresByRouteRecord.NumberOfSubstances));
             }
 
             //Render HTML
