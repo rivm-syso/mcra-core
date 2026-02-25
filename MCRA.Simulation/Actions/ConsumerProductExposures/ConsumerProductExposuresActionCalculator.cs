@@ -70,9 +70,7 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
             // Create individual days
             localProgress.Update("Generating individual days", 30);
 
-            var simulatedIndividuals = data.AllIndividualConsumerProductUseFrequencies
-                .Select(r => r.Individual)
-                .Distinct()
+            var simulatedIndividuals = data.ConsumerProductIndividuals
                 .Select((ind, ix) => new SimulatedIndividual(ind, ix))
                 .ToList();
 

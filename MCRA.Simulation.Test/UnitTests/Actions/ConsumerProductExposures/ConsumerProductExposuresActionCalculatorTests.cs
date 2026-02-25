@@ -86,6 +86,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions.ConsumerProductExposures {
                 AllIndividualConsumerProductUseFrequencies = cpUseFrequencies,
                 ConsumerProductConcentrationUnit = cpConcentrations.FirstOrDefault().Unit,
                 ConsumerProductConcentrationModels = concentrationModels,
+                ConsumerProductIndividuals = individuals
             };
 
             var calculator = new ConsumerProductExposuresActionCalculator(project);

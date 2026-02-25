@@ -1099,8 +1099,8 @@ namespace MCRA.Simulation {
         }
 
         public ICollection<Individual> ConsumerProductIndividuals {
-            get => GetOrCreateModuleOutputData<ConsumerProductUseFrequenciesOutputData>(ActionType.HumanMonitoringData).ConsumerProductIndividuals;
-            set => GetOrCreateModuleOutputData<ConsumerProductUseFrequenciesOutputData>(ActionType.HumanMonitoringData).ConsumerProductIndividuals = value;
+            get => GetOrCreateModuleOutputData<ConsumerProductUseFrequenciesOutputData>(ActionType.ConsumerProductUseFrequencies).ConsumerProductIndividuals;
+            set => GetOrCreateModuleOutputData<ConsumerProductUseFrequenciesOutputData>(ActionType.ConsumerProductUseFrequencies).ConsumerProductIndividuals = value;
         }
 
         public ExposureUnitTriple ConsumerProductExposureUnit {
