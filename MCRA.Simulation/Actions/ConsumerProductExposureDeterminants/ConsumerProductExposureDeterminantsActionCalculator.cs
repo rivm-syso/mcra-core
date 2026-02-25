@@ -22,7 +22,7 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposureDeterminants {
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
-            var applicationAmountUnit = ApplicationAmountUnit.g;
+            var applicationAmountUnit = ApplicationAmountUnit.kg;
             var consumerProductsApplicationAmounts = subsetManager.AllConsumerProductApplicationAmounts
                 .Select(r => {
                     var alignmentFactor = r.Unit.GetMultiplicationFactor(applicationAmountUnit);
