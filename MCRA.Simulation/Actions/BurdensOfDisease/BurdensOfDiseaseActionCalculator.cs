@@ -41,7 +41,10 @@ namespace MCRA.Simulation.Actions.BurdensOfDisease {
                     || data.SelectedPopulation.Code == "Generated"
                     || r.Population == data.SelectedPopulation
                 )];
-            data.BodIndicatorModels = [.. data.BurdensOfDisease.Select(BodIndicatorModelFactory.Create)];
+
+            //TODO this needs further attention when a population loop is implemented
+            data.BodIndicatorModels = [.. data.BurdensOfDisease
+                .Select(c => BodIndicatorModelFactory.Create(c, data.SelectedPopulation))];
             data.BodIndicatorConversions = [.. subsetManager.AllBodIndicatorConversions];
             if (data.BodIndicatorConversions?.Count > 0) {
                 var bodIndicatorConversionsCalculator = new BodConversionsCalculator();
@@ -51,7 +54,7 @@ namespace MCRA.Simulation.Actions.BurdensOfDisease {
                         data.BodIndicatorModels,
                         conversionsLookup
                     );
-                data.BodIndicatorModels = [..data.BodIndicatorModels.Union(derivedBodIndicatorModels)];
+                data.BodIndicatorModels = [.. data.BodIndicatorModels.Union(derivedBodIndicatorModels)];
             }
         }
 
@@ -83,6 +86,5 @@ namespace MCRA.Simulation.Actions.BurdensOfDisease {
             }
             localProgress.Update(100);
         }
-
     }
 }

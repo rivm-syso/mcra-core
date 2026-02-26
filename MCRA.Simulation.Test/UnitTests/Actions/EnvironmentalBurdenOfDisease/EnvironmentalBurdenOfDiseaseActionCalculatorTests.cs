@@ -87,7 +87,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 .Create(1, populationCharacteristicTypes, seed: 1).First();
             var burdenOfDiseases = effects.Select(r => FakeBurdenOfDiseasesGenerator.Create(r, population)).ToList();
             var bodIndicatorModels = FakeBurdenOfDiseasesGenerator
-                .FakeBodIndicatorValueModel(burdenOfDiseases);
+                .FakeBodIndicatorValueModel(burdenOfDiseases, population);
             var data = new ActionData() {
                 AllEffects = effects,
                 SelectedPopulation = population,

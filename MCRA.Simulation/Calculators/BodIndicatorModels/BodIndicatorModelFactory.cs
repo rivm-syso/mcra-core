@@ -9,10 +9,10 @@ namespace MCRA.Simulation.Calculators.BodIndicatorModels {
         /// <summary>
         /// Creates a BoD indicator model for the specified data record.
         /// </summary>
-        public static IBodIndicatorModel Create(BurdenOfDisease bod) {
+        public static IBodIndicatorModel Create(BurdenOfDisease bod, Population population) {
             switch (bod.BodUncertaintyDistribution) {
                 case BodIndicatorDistributionType.Constant: {
-                        return new BodIndicatorConstantModel(bod);
+                        return new BodIndicatorConstantModel(bod, population);
                     }
                 case BodIndicatorDistributionType.Normal: {
                         if (!bod.BodUncertaintyUpper.HasValue) {
@@ -20,7 +20,7 @@ namespace MCRA.Simulation.Calculators.BodIndicatorModels {
                             throw new Exception(msg);
                         }
                         var distribution = NormalDistribution.FromMeanAndUpper(bod.Value, bod.BodUncertaintyUpper.Value);
-                        return new BodIndicatorDistributionModel<NormalDistribution>(distribution, bod);
+                        return new BodIndicatorDistributionModel<NormalDistribution>(distribution, bod, population);
                     }
                 case BodIndicatorDistributionType.LogNormal: {
                         if (!bod.BodUncertaintyUpper.HasValue) {
@@ -28,7 +28,7 @@ namespace MCRA.Simulation.Calculators.BodIndicatorModels {
                             throw new Exception(msg);
                         }
                         var distribution = LogNormalDistribution.FromMeanAndUpper(bod.Value, bod.BodUncertaintyUpper.Value);
-                        return new BodIndicatorDistributionModel<LogNormalDistribution>(distribution, bod);
+                        return new BodIndicatorDistributionModel<LogNormalDistribution>(distribution, bod, population);
                     }
                 case BodIndicatorDistributionType.Triangular: {
                         if (!bod.BodUncertaintyLower.HasValue) {
@@ -40,7 +40,7 @@ namespace MCRA.Simulation.Calculators.BodIndicatorModels {
                             throw new Exception(msg);
                         }
                         var distribution = TriangularDistribution.FromModeLowerandUpper(bod.Value, bod.BodUncertaintyLower.Value, bod.BodUncertaintyUpper.Value);
-                        return new BodIndicatorDistributionModel<TriangularDistribution>(distribution, bod);
+                        return new BodIndicatorDistributionModel<TriangularDistribution>(distribution, bod, population);
                     }
                 default: {
                         var msg = $"No burden of disease indicator for distribution type ${bod.BodUncertaintyDistribution}.";

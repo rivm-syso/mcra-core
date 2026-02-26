@@ -45,6 +45,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                 Code = code,
                 Name = $"Fake population {code} name",
                 Description = $"Fake population {code} description",
+                Size = 1000
             };
             if (populationCharacteristicTypes?.Count > 0) {
                 record.PopulationCharacteristics = populationCharacteristicTypes?

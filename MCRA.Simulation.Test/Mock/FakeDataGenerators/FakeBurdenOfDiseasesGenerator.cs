@@ -22,9 +22,9 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             return record;
         }
 
-        public static List<IBodIndicatorModel> FakeBodIndicatorValueModel(List<BurdenOfDisease> bods) {
+        public static List<IBodIndicatorModel> FakeBodIndicatorValueModel(List<BurdenOfDisease> bods, Population population) {
             var bodIndicatorValueModels = bods
-                .Select(BodIndicatorModelFactory.Create)
+                .Select(c => BodIndicatorModelFactory.Create(c, population))
                 .ToList();
             return bodIndicatorValueModels;
         }

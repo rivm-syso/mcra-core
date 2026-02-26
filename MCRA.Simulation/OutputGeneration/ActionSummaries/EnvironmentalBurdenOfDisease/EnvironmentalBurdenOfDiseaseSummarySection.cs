@@ -35,6 +35,9 @@ namespace MCRA.Simulation.OutputGeneration {
                 record.TotalPopulationAttributableFractions.Add(
                     resultSummaryRecord.TotalPopulationAttributableFraction
                 );
+                record.TotalAttributableBodsStandardised.Add(
+                   resultSummaryRecord.TotalAttributableBod / resultSummaryRecord.PopulationSize
+                );
             }
         }
 
@@ -62,6 +65,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 ErfName = ebdResultRecord.ExposureResponseModel.Name,
                 TotalAttributableBod = totalAttributableBod,
                 TotalAttributableBods = [],
+                TotalAttributableBodsStandardised = [],
                 StandardisedPopulationSize = ebdResultRecord.StandardisedPopulationSize,
                 TotalPopulationAttributableFraction = totalPopulationAttributableFraction,
                 TotalPopulationAttributableFractions = []

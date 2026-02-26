@@ -66,6 +66,9 @@ namespace MCRA.Simulation.OutputGeneration {
         [Display(AutoGenerateField = false)]
         public List<double> TotalAttributableBods { get; set; }
 
+        [Display(AutoGenerateField = false)]
+        public List<double> TotalAttributableBodsStandardised { get; set; }
+
         [Description("Median total attributable burden of disease for the whole population.")]
         [DisplayName("Total attr. BoD - Unc median")]
         [DisplayFormat(DataFormatString = "{0:G4}")]
@@ -112,16 +115,16 @@ namespace MCRA.Simulation.OutputGeneration {
         [Description("Standardised median attributable burden of disease {EbdStandardisedPopulationSize}.")]
         [DisplayName("Standardised attr. BoD ({EbdStandardisedPopulationSize}) - Unc median")]
         [DisplayFormat(DataFormatString = "{0:G4}")]
-        public double MedianStandardisedTotalAttributableBod { get { return MedianTotalAttributableBod / PopulationSize * StandardisedPopulationSize; } }
+        public double MedianStandardisedTotalAttributableBod { get { return TotalAttributableBodsStandardised.Percentile(50) * StandardisedPopulationSize; } }
 
         [Description("Standardised attributable burden of disease lower uncertainty bound {EbdStandardisedPopulationSize}.")]
         [DisplayName("Standardised attr. BoD ({EbdStandardisedPopulationSize}) - Unc lower (LowerBound)")]
         [DisplayFormat(DataFormatString = "{0:G4}")]
-        public double LowerStandardisedTotalAttributableBod { get { return LowerTotalAttributableBod / PopulationSize * StandardisedPopulationSize; } }
+        public double LowerStandardisedTotalAttributableBod { get { return TotalAttributableBodsStandardised.Percentile(UncertaintyLowerBound) * StandardisedPopulationSize; } }
 
         [Description("Standardised attributable burden of disease upper uncertainty bound {EbdStandardisedPopulationSize}.")]
         [DisplayName("Standardised attr. BoD ({EbdStandardisedPopulationSize}) - Unc upper (UpperBound)")]
         [DisplayFormat(DataFormatString = "{0:G4}")]
-        public double UpperStandardisedTotalAttributableBod { get { return UpperTotalAttributableBod / PopulationSize * StandardisedPopulationSize; } }
+        public double UpperStandardisedTotalAttributableBod { get { return TotalAttributableBodsStandardised.Percentile(UncertaintyUpperBound) * StandardisedPopulationSize; } }
     }
 }

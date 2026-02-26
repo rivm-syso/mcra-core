@@ -175,7 +175,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.EnvironmentalBurdenOfDiseas
             List<BodIndicatorConversion> conversions,
             List<BurdenOfDisease> bods
         ) {
-            var bodIndicatorModels = bods.Select(BodIndicatorModelFactory.Create).ToList();
+            var population = new Population() {
+                Name = "Fake Population",
+                Size = 1000
+            };
+            var bodIndicatorModels = bods.Select(c => BodIndicatorModelFactory.Create(c, population)).ToList();
             var bodIndicatorConversionsCalculator = new BodConversionsCalculator();
             var result = bodIndicatorConversionsCalculator
                 .Compute(

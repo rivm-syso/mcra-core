@@ -28,7 +28,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.EnvironmentalBurdenOfDiseas
                 BodUncertaintyLower = lower,
                 BodIndicator = indicator
             };
-            var model = BodIndicatorModelFactory.Create(bod);
+            var population = new Population() {
+                Name = "Fake Population",
+                Size = 1000
+            };
+            var model = BodIndicatorModelFactory.Create(bod, population);
             Assert.IsInstanceOfType(model, expectedType);
             Assert.AreEqual(nominalValue, model.GetBodIndicatorValue());
             Assert.AreEqual(indicator, model.BodIndicator);
