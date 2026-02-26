@@ -31,6 +31,7 @@
     <CalculationSetting source="Action">RandomSeed</CalculationSetting>
     <CalculationSetting>SelectedExposureRoutes</CalculationSetting>
     <CalculationSetting source="AirExposureDeterminants">DepositionVelocity</CalculationSetting>
+    <CalculationSetting source="AirExposureDeterminants">AirBodyExposureFraction</CalculationSetting>
   </CalculationSettings>
   <OutputSettings>
     <OutputSetting source="Action">SelectedPercentiles</OutputSetting>

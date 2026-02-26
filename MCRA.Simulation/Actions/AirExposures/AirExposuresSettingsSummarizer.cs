@@ -23,6 +23,7 @@ namespace MCRA.Simulation.Actions.AirExposures {
             );
             section.SummarizeSetting(SettingsItemType.AirExposuresIndividualGenerationMethod, _configuration.AirExposuresIndividualGenerationMethod);
             section.SummarizeSetting(SettingsItemType.DepositionVelocity, _configuration.DepositionVelocity);
+            section.SummarizeSetting(SettingsItemType.AirBodyExposureFraction, _configuration.AirBodyExposureFraction);
             return section;
         }
     }

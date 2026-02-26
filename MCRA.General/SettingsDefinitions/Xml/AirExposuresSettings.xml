@@ -27,4 +27,13 @@
     <ValueType>Numeric</ValueType>
     <DefaultValue>2.15</DefaultValue>
   </SettingsItem>
+  <SettingsItem>
+    <Id>AirBodyExposureFraction</Id>
+    <Name>Default air body exposure fraction</Name>
+    <Description>
+      Default fraction of total body surface area exposed to air. Used when no distributions (for specific sub-groups) are found in the data.
+    </Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>0.15</DefaultValue>
+  </SettingsItem>
 </SettingsItems>

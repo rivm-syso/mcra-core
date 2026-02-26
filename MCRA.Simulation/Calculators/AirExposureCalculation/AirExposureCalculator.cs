@@ -5,7 +5,6 @@ using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryEx
 using MCRA.Simulation.Calculators.DustExposureCalculation;
 using MCRA.Simulation.Objects;
 using MCRA.Simulation.Objects.IndividualExposures;
-using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.AirExposureCalculation {
@@ -25,6 +24,7 @@ namespace MCRA.Simulation.Calculators.AirExposureCalculation {
             ICollection<AirVentilatoryFlowRate> ventilatoryFlowRates,
             ICollection<AirBodyExposureFraction> exposureBodyFractions,
             AirConcentrationUnit airConcentrationUnit,
+            double defaultAirBodyExposureFraction,
             ExposureUnitTriple targetUnit,
             IRandom exposureDeterminantsRandomGenerator
         ) {
@@ -87,6 +87,7 @@ namespace MCRA.Simulation.Calculators.AirExposureCalculation {
                         exposureBodyFractions,
                         age,
                         sex,
+                        defaultAirBodyExposureFraction,
                         exposureBodyFractionsRandomGenerator
                     );
                     var indoorFraction = calculateIndoorFraction(airIndoorFractions, age);
@@ -208,21 +209,24 @@ namespace MCRA.Simulation.Calculators.AirExposureCalculation {
             ICollection<AirBodyExposureFraction> bodyExposureFractions,
             double? age,
             GenderType? sex,
+            double defaultAirBodyExposureFraction,
             IRandom random
         ) {
-            var airBodyExposureFraction = (bodyExposureFractions?
+            var distributionSpecification = bodyExposureFractions?
                 .Where(r => age >= r.AgeLower || r.AgeLower == null)
                 .Where(r => r.Sex == sex || r.Sex == GenderType.Undefined)?
-                .LastOrDefault()) ?? throw new Exception("No matching air body exposure fraction found.");
+                .LastOrDefault();
 
-            var distribution = AirBodyExposureFractionProbabilityDistributionFactory
-                .createProbabilityDistribution(airBodyExposureFraction);
-
-            var individualBodyExposureFraction = airBodyExposureFraction.DistributionType
-                == AirBodyExposureFractionDistributionType.Constant
-                ? airBodyExposureFraction.Value : distribution.Draw(random);
-
-            return individualBodyExposureFraction;
+            if (distributionSpecification != null) {
+                var distribution = AirBodyExposureFractionProbabilityDistributionFactory
+                    .createProbabilityDistribution(distributionSpecification);
+                var individualBodyExposureFraction = distributionSpecification.DistributionType
+                    == AirBodyExposureFractionDistributionType.Constant
+                    ? distributionSpecification.Value : distribution.Draw(random);
+                return individualBodyExposureFraction;
+            } else {
+                return defaultAirBodyExposureFraction;
+            }
         }
     }
 }
