@@ -52,6 +52,8 @@
                 case ConcentrationMassUnit.Milliliter:
                 case ConcentrationMassUnit.PerUnit:
                     return 0;
+                case ConcentrationMassUnit.MilliGrams:
+                    return -3;
                 default:
                     throw new Exception($"Failed to extract log 10 multiplier for concentration mass unit {unit}!");
             }

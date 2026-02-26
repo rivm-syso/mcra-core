@@ -9,6 +9,8 @@ namespace MCRA.General {
         Kilograms,
         [Display(ShortName = "g", Name = "grams")]
         Grams,
+        [Display(ShortName = "mg", Name = "milligrams")]
+        MilliGrams,
         [Display(ShortName = "L", Name = "liter")]
         Liter,
         [Display(ShortName = "mL", Name = "milliliter")]

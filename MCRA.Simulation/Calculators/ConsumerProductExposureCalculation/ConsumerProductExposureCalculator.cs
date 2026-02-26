@@ -20,7 +20,6 @@ namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
             IDictionary<(ConsumerProduct, Compound), ConcentrationModel> cpConcentrationModels
         ) {
             _concentrationModels = cpConcentrationModels;
-
             _exposureFractions = cpExposureFractions.ToDictionary(c => (c.Product, c.Substance, c.Route), c => c.ExposureFraction);
             _applicationAmounts = cpApplicationAmounts
                  .GroupBy(c => c.Product)
@@ -33,6 +32,7 @@ namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
                      return new ConsumerProductApplicationAmountSGs() {
                          Product = c.Key,
                          Amount = fallbackApplicationAmount?.Amount,
+                         AmountUnit = fallbackApplicationAmount != null ? fallbackApplicationAmount.Unit : c.First().Unit,
                          CvVariability = fallbackApplicationAmount?.CvVariability,
                          DistributionType = fallbackApplicationAmount?.DistributionType ?? c.First().DistributionType,
                          CPAASubgroups = subgroups
@@ -45,7 +45,8 @@ namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
             ICollection<SimulatedIndividual> individuals,
             ICollection<IndividualConsumerProductUseFrequency> cpUseFrequencies,
             ICollection<ExposureRoute> routes,
-            ICollection<Compound> substances
+            ICollection<Compound> substances,
+            ExposureUnitTriple targetUnit
         ) {
             var useFrequencyLookup = cpUseFrequencies.ToLookup(r => r.Individual);
             var cpIndividualDayExposures = individuals
@@ -54,6 +55,7 @@ namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
                     useFrequencyLookup.Contains(si.Individual) ? [.. useFrequencyLookup[si.Individual]] : [],
                     routes,
                     substances,
+                    targetUnit,
                     new McraRandomGenerator(RandomUtils.CreateSeed(si.Id, (int)RandomSource.CPE_ConsumerProductExposureDeterminants))
                 ))
                 .ToList();
@@ -65,6 +67,7 @@ namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
             List<IndividualConsumerProductUseFrequency> useFrequencies,
             ICollection<ExposureRoute> routes,
             ICollection<Compound> substances,
+            ExposureUnitTriple targetUnit,
             IRandom random
         ) {
             var intakesPerConsumerProduct = new List<IIntakePerConsumerProduct>(useFrequencies.Count);
@@ -83,9 +86,10 @@ namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
                         ) {
                             (var concentration, var occurrenceFraction) = getConcentration(substance, cpcModel);
                             var applicationAmount = model.Draw(random, useFrequency.Individual.Age, useFrequency.Individual.Gender);
+                            var alignmentFactor = cpApplicationAmount.AmountUnit.GetMultiplicationFactor(targetUnit.ConcentrationMassUnit);
                             var ipc = new ConsumerProductExposurePerSubstance() {
                                 UseAmount = useFrequency.Frequency * (double)applicationAmount * cpFraction,
-                                Concentration = concentration * occurrenceFraction,
+                                Concentration = concentration * occurrenceFraction * alignmentFactor,
                                 Compound = substance
                             };
                             exposuresPerSubstance.Add(ipc);

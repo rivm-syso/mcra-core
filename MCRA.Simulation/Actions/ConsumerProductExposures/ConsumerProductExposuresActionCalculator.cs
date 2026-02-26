@@ -80,20 +80,21 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
                 data.ConsumerProductConcentrationModels
             );
 
-            var consumerProductIndividualDayIntakes = exposureCalculator
-                .Compute(
-                    simulatedIndividuals,
-                    data.AllIndividualConsumerProductUseFrequencies,
-                    ModuleConfig.SelectedExposureRoutes,
-                    data.ActiveSubstances
-                );
-
             // For now, we assume consumer product exposures to be expressed in
             // - ug/day when output is expressed per person
             // - ug/kg bw/day when output is expressed per kilogram bodyweight
             var targetUnit = ModuleConfig.IsPerPerson
                 ? ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerDay)
                 : ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
+
+            var consumerProductIndividualDayIntakes = exposureCalculator
+                .Compute(
+                    simulatedIndividuals,
+                    data.AllIndividualConsumerProductUseFrequencies,
+                    ModuleConfig.SelectedExposureRoutes,
+                    data.ActiveSubstances,
+                    targetUnit
+                );
 
             result.ConsumerProductExposureUnit = targetUnit;
             result.ConsumerProductIndividualExposures = consumerProductIndividualDayIntakes;
