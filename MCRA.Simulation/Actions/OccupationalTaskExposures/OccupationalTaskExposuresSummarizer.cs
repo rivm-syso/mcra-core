@@ -26,17 +26,37 @@ namespace MCRA.Simulation.Actions.OccupationalTaskExposures {
             if (data.OccupationalTaskExposures != null) {
                 summarizeOccupationalTaskExposures(data, subHeader, subOrder++);
             }
+
+            // Summarize occupational task exposures for combination of scenario, tasks, determinants and route.
+            if (data.OccupationalTaskExposures != null) {
+                summarizeOccupationalTaskExposuresPerRoute(data, subHeader, subOrder++);
+            }
         }
 
         private void summarizeOccupationalTaskExposures(
           ActionData data,
           SectionHeader header,
           int order
-       ) {
+        ) {
             var section = new OccupationalTaskExposuresDataSection();
             var subHeader = header.AddSubSectionHeaderFor(section, "Occupational task exposures", order);
             section.Summarize(
                 data.OccupationalTaskExposures
+            );
+            subHeader.SaveSummarySection(section);
+        }
+
+        private void summarizeOccupationalTaskExposuresPerRoute(
+          ActionData data,
+          SectionHeader header,
+          int order
+        ) {
+            var section = new OccupationalTaskExposuresPerRouteSection();
+            var subHeader = header.AddSubSectionHeaderFor(section, "Occupational scenarios and tasks with exposures", order);
+            section.Summarize(
+                data.OccupationalTaskExposures,
+                data.OccupationalScenarios,
+                data.ActiveSubstances ?? data.AllCompounds
             );
             subHeader.SaveSummarySection(section);
         }
