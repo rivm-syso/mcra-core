@@ -1,5 +1,13 @@
 # Change Log
 
+## Version 10.2.16 (2026-02-27)
+
+### Fixed
+
+- Subset selection in ConsumerProducts is not used (#2424)
+- Population size uncertainty is not used in EBD calculation (#2425)
+- Correct alignment of application amounts in consumer product exposures calculation (#2426)
+
 ## Version 10.2.15 (2026-02-24)
 
 ### Added
