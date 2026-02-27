@@ -21,7 +21,12 @@ namespace MCRA.Simulation.Actions.OccupationalTaskExposures {
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
-            data.OccupationalTaskExposures = subsetManager.AllOccupationalTaskExposures;
+            var tasks = data.OccupationalScenarios.Values
+                .SelectMany(c => c.Tasks)
+                .Select(c => c.OccupationalTask)
+                .ToHashSet();
+
+            data.OccupationalTaskExposures = [.. subsetManager.AllOccupationalTaskExposures.Where(c => tasks.Contains(c.OccupationalTask))];
         }
 
         protected override void summarizeActionResult(IOccupationalTaskExposuresActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {

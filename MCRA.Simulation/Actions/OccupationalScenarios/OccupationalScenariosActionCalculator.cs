@@ -14,11 +14,17 @@ namespace MCRA.Simulation.Actions.OccupationalScenarios {
 
         public OccupationalScenariosActionCalculator(ProjectDto project) : base(project) {
         }
+        protected override ActionSettingsSummary summarizeSettings() {
+            var summarizer = new OccupationalScenariosSettingsSummarizer();
+            return summarizer.Summarize(_project);
+        }
 
         protected override void verify() {
             _actionDataLinkRequirements[ScopingType.OccupationalScenarioTasks][ScopingType.OccupationalScenarios].AlertTypeMissingData = AlertType.Notification;
             _actionDataLinkRequirements[ScopingType.OccupationalScenarioTasks][ScopingType.OccupationalTasks].AlertTypeMissingData = AlertType.Notification;
         }
+
+
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
             data.OccupationalScenarios = subsetManager.AllOccupationalScenarios;
