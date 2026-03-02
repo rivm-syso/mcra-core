@@ -10,13 +10,16 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
 
         private readonly BodApproach _bodApproach;
         private readonly EnvironmentalBodStandardisationMethod _ebdStandardisationMethod;
+        private readonly bool _forcePafLimit;
 
         public EnvironmentalBurdenOfDiseaseCalculator(
             BodApproach bodApproach,
-            EnvironmentalBodStandardisationMethod ebdStandardisationMethod
+            EnvironmentalBodStandardisationMethod ebdStandardisationMethod,
+            bool forcePafLimit
         ) {
             _bodApproach = bodApproach;
             _ebdStandardisationMethod = ebdStandardisationMethod;
+            _forcePafLimit = forcePafLimit;
         }
 
         /// <summary>
@@ -83,6 +86,7 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
                     exposureResponseResult.EffectMetric,
                     bodIndicatorModel,
                     _bodApproach,
+                    _forcePafLimit,
                     standardisedPopulationSize
                 ))
                 .ToList();
@@ -121,6 +125,7 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
             EffectMetric effectMetric,
             IBodIndicatorModel bodIndicatorModel,
             BodApproach bodApproach,
+            bool forcePafLimit,
             double standardisedPopulationSize
         ) {
             var totalBod = bodIndicatorModel.GetBodIndicatorValue()
@@ -143,6 +148,7 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
                     responseValue,
                     effectMetric
                 );
+                attributableFraction = forcePafLimit ? Math.Max(0, attributableFraction) : attributableFraction;
                 result.AttributableFraction = attributableFraction;
                 result.AttributableBod = totalBod * attributableFraction;
             } else {

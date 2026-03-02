@@ -114,7 +114,8 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
             // Create EBD calculator and compute
             var ebdCalculator = new EnvironmentalBurdenOfDiseaseCalculator(
                 ModuleConfig.BodApproach,
-                ModuleConfig.EbdStandardisation
+                ModuleConfig.EbdStandardisation,
+                ModuleConfig.ForcePAFLimit
             );
             var environmentalBurdenOfDiseases = ebdCalculator.Compute(
                 bodIndicatorModels,

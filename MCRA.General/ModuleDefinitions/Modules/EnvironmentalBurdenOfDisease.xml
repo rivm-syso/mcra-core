@@ -51,6 +51,7 @@
     <CalculationSetting>EbdStandardisation</CalculationSetting>
     <CalculationSetting>UsePointEstimates</CalculationSetting>
     <CalculationSetting>WithinBinExposureRepresentationMethod</CalculationSetting>
+    <CalculationSetting>ForcePAFLimit</CalculationSetting>
   </CalculationSettings>
   <UncertaintySettings>
     <UncertaintySetting source="Action">UncertaintyLowerBound</UncertaintySetting>

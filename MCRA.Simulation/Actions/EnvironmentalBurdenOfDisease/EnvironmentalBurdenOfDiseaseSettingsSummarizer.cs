@@ -33,6 +33,9 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
             if (_configuration.MultipleSubstances) {
                 section.SummarizeSetting(SettingsItemType.EbdCumulative, _configuration.EbdCumulative);
             }
+            if (_configuration.BodApproach == BodApproach.TopDown) {
+                section.SummarizeSetting(SettingsItemType.ForcePAFLimit, _configuration.ForcePAFLimit);
+            }
             return section;
         }
     }

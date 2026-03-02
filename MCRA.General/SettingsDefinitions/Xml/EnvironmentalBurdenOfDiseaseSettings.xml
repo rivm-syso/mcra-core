@@ -60,4 +60,14 @@
     </Description>
     <ValueType>WithinBinExposureRepresentationMethod</ValueType>
   </SettingsItem>
+  <SettingsItem>
+    <Id>ForcePAFLimit</Id>
+    <Name>Forces PAF values to a minimum of 0</Name>
+    <Description>
+      Ensures that PAF values have a lower limit of 0. This is useful for exposure-response functions where the
+      lower bound of an odds ratio confidence interval falls below 1, preventing undesirable negative results.
+    </Description>
+    <ValueType>Boolean</ValueType>
+    <DefaultValue>true</DefaultValue>
+  </SettingsItem>
 </SettingsItems>
