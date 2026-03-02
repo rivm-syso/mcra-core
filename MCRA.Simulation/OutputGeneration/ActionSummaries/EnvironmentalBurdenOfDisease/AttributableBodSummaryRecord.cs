@@ -68,8 +68,8 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("ERF Code")]
         public string ErfCode { get; set; }
 
-        [Description("Exposure bin.")]
-        [DisplayName("Exposure bin")]
+        [Description("Exposure bin nominal run.")]
+        [DisplayName("Exposure bin (nominal)")]
         public string ExposureBin { get; set; }
 
         [Description("Exposure percentile bin.")]
@@ -224,52 +224,6 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Standardised attr. BoD ({EbdStandardisedPopulationSize}) upper bound (UpperBound) ({BodIndicator})")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double UpperStandardisedAttributableBod { get { return AttributableBodsStandardised.Percentile(UncertaintyUpperBound) * StandardisedPopulationSize; } }
-
-        [Description("Standardised exposed burden of disease attributable to part of population identified by exposure bin, {EbdStandardisedPopulationSize} exposed ({BodIndicator}).")]
-        [DisplayName("Standardised exposed attr. BoD ({EbdStandardisedPopulationSize}) ({BodIndicator})")]
-        [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double StandardisedExposedAttributableBod { get { return AttributableBod / PopulationSize / BinPercentage * StandardisedPopulationSize * 100; } }
-
-        [Display(AutoGenerateField = false)]
-        public List<double> StandardisedExposedAttributableBods { get; set; }
-
-        [Description("Median standardised exposed burden of disease attributable to part of population identified by exposure bin, {EbdStandardisedPopulationSize} exposed ({BodIndicator}).")]
-        [DisplayName("Standardised exposed attr. BoD ({EbdStandardisedPopulationSize}) median ({BodIndicator})")]
-        [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double MedianStandardisedExposedAttributableBod { get { return StandardisedExposedAttributableBods.Count != 0 ? StandardisedExposedAttributableBods.Percentile(50) / PopulationSize * StandardisedPopulationSize : double.NaN; } }
-
-        [Description("Lower uncertainty bound standardised exposed burden of disease attributable to part of population, {EbdStandardisedPopulationSize} exposed ({BodIndicator}).")]
-        [DisplayName("Standardised exposed attr. BoD ({EbdStandardisedPopulationSize}) lower bound (LowerBound) ({BodIndicator})")]
-        [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double LowerStandardisedExposedAttributableBod { get { return StandardisedExposedAttributableBods.Percentile(UncertaintyLowerBound) / PopulationSize * StandardisedPopulationSize * 100; } }
-
-        [Description("Upper uncertainty bound standardised exposed burden of disease attributable to part of population, {EbdStandardisedPopulationSize} exposed ({BodIndicator}).")]
-        [DisplayName("Standardised exposed attr. BoD ({EbdStandardisedPopulationSize}) upper bound (UpperBound) ({BodIndicator})")]
-        [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double UpperStandardisedExposedAttributableBod { get { return StandardisedExposedAttributableBods.Percentile(UncertaintyUpperBound) / PopulationSize * StandardisedPopulationSize * 100; } }
-
-        [Description("Cumulative percentage standardised exposed burden of disease attributable to part of population identified by exposure bin, {EbdStandardisedPopulationSize} exposed.")]
-        [DisplayName("Cumulative standardised exposed attr. BoD ({EbdStandardisedPopulationSize}) (%)")]
-        [DisplayFormat(DataFormatString = "{0:F1}")]
-        public double CumulativeStandardisedExposedAttributableBod { get; set; }
-
-        [Display(AutoGenerateField = false)]
-        public List<double> CumulativeStandardisedExposedAttributableBods { get; set; }
-
-        [Description("Median cumulative standardised exposed burden of disease attributable to part of population identified by exposure bin, {EbdStandardisedPopulationSize} exposed.")]
-        [DisplayName("Cumulative standardised exposed attributable BoD median (%)")]
-        [DisplayFormat(DataFormatString = "{0:F1}")]
-        public double MedianCumulativeStandardisedExposedAttributableBod { get { return CumulativeStandardisedExposedAttributableBods.Count != 0 ? CumulativeStandardisedExposedAttributableBods.Percentile(50) : double.NaN; } }
-
-        [Description("Lower uncertainty bound cumulative standardised exposed burden of disease attributable to part of population, {EbdStandardisedPopulationSize} exposed.")]
-        [DisplayName("Cumulative standardised exposed attributable BoD lower bound (LowerBound) (%)")]
-        [DisplayFormat(DataFormatString = "{0:F1}")]
-        public double LowerCumulativeStandardisedExposedAttributableBod { get { return CumulativeStandardisedExposedAttributableBods.Percentile(UncertaintyLowerBound); } }
-
-        [Description("Upper uncertainty bound cumulative standardised exposed burden of disease attributable to part of population, {EbdStandardisedPopulationSize} exposed.")]
-        [DisplayName("Cumulative standardised exposed attributable BoD upper bound (UpperBound) (%)")]
-        [DisplayFormat(DataFormatString = "{0:F1}")]
-        public double UpperCumulativeStandardisedExposedAttributableBod { get { return CumulativeStandardisedExposedAttributableBods.Percentile(UncertaintyUpperBound); } }
 
         public string GetGroupKey() {
             if (SourceIndicatorList?.Count > 0) {

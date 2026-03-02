@@ -7,79 +7,61 @@ namespace MCRA.Simulation.OutputGeneration.Views {
     public class AttributableBodSummarySectionView : SectionView<AttributableBodSummarySection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>() {
-                "SourceIndicators",
-                "ErfCode",
-                "EffectCode",
-                "EffectName",
-                "SubstanceCode",
-                "SubstanceName",
-                "Unit",
-                "PopulationCode",
-                "PopulationName",
-                // Hide all columns with standardized EXPOSED attributable BoD
-                "UpperCumulativeStandardisedExposedAttributableBod",
-                "LowerCumulativeStandardisedExposedAttributableBod",
-                "MedianCumulativeStandardisedExposedAttributableBod",
-                "CumulativeStandardisedExposedAttributableBod",
-                "UpperStandardisedExposedAttributableBod",
-                "LowerStandardisedExposedAttributableBod",
-                "MedianStandardisedExposedAttributableBod",
-                "StandardisedExposedAttributableBod"
+                nameof(AttributableBodSummaryRecord.SourceIndicators),
+                nameof(AttributableBodSummaryRecord.ErfCode),
+                nameof(AttributableBodSummaryRecord.EffectCode),
+                nameof(AttributableBodSummaryRecord.EffectName),
+                nameof(AttributableBodSummaryRecord.SubstanceCode),
+                nameof(AttributableBodSummaryRecord.SubstanceName),
+                nameof(AttributableBodSummaryRecord.PopulationCode),
+                nameof(AttributableBodSummaryRecord.PopulationName),
             };
             var isUncertainty = Model.Records.FirstOrDefault()?.AttributableBods.Any() ?? false;
 
             if (isUncertainty) {
-                hiddenProperties.Add("AttributableBod");
-                hiddenProperties.Add("StandardisedAttributableBod");
-                hiddenProperties.Add("CumulativeAttributableBod");
-                hiddenProperties.Add("BinPercentage");
-                hiddenProperties.Add("Exposure");
-                hiddenProperties.Add("ResponseValue");
-                hiddenProperties.Add("AttributableFraction");
-                hiddenProperties.Add("TotalBod");
+                hiddenProperties.Add(nameof(AttributableBodSummaryRecord.AttributableBod));
+                hiddenProperties.Add(nameof(AttributableBodSummaryRecord.StandardisedAttributableBod));
+                hiddenProperties.Add(nameof(AttributableBodSummaryRecord.CumulativeAttributableBod));
+                hiddenProperties.Add(nameof(AttributableBodSummaryRecord.BinPercentage));
+                hiddenProperties.Add(nameof(AttributableBodSummaryRecord.Exposure));
+                hiddenProperties.Add(nameof(AttributableBodSummaryRecord.ResponseValue));
+                hiddenProperties.Add(nameof(AttributableBodSummaryRecord.AttributableFraction));
+                hiddenProperties.Add(nameof(AttributableBodSummaryRecord.TotalBod));
             } else {
-                hiddenProperties.Add("LowerAttributableBod");
-                hiddenProperties.Add("UpperAttributableBod");
-                hiddenProperties.Add("MedianAttributableBod");
-                hiddenProperties.Add("LowerStandardisedAttributableBod");
-                hiddenProperties.Add("UpperStandardisedAttributableBod");
-                hiddenProperties.Add("MedianStandardisedAttributableBod");
-                hiddenProperties.Add("LowerCumulativeAttributableBod");
-                hiddenProperties.Add("UpperCumulativeAttributableBod");
-                hiddenProperties.Add("MedianCumulativeAttributableBod");
-                hiddenProperties.Add("LowerBoundExposure");
-                hiddenProperties.Add("UpperBoundExposure");
-                hiddenProperties.Add("MedianExposure");
-                hiddenProperties.Add("MedianBinPercentage");
-                hiddenProperties.Add("MedianResponseValue");
-                hiddenProperties.Add("MedianAttributableFraction");
-                hiddenProperties.Add("MedianTotalBod");
+                hiddenProperties.Add(nameof(AttributableBodSummaryRecord.LowerAttributableBod));
+                hiddenProperties.Add(nameof(AttributableBodSummaryRecord.UpperAttributableBod));
+                hiddenProperties.Add(nameof(AttributableBodSummaryRecord.MedianAttributableBod));
+                hiddenProperties.Add(nameof(AttributableBodSummaryRecord.LowerStandardisedAttributableBod));
+                hiddenProperties.Add(nameof(AttributableBodSummaryRecord.UpperStandardisedAttributableBod));
+                hiddenProperties.Add(nameof(AttributableBodSummaryRecord.MedianStandardisedAttributableBod));
+                hiddenProperties.Add(nameof(AttributableBodSummaryRecord.LowerCumulativeAttributableBod));
+                hiddenProperties.Add(nameof(AttributableBodSummaryRecord.UpperCumulativeAttributableBod));
+                hiddenProperties.Add(nameof(AttributableBodSummaryRecord.MedianCumulativeAttributableBod));
+                hiddenProperties.Add(nameof(AttributableBodSummaryRecord.LowerBoundExposure));
+                hiddenProperties.Add(nameof(AttributableBodSummaryRecord.UpperBoundExposure));
+                hiddenProperties.Add(nameof(AttributableBodSummaryRecord.MedianExposure));
+                hiddenProperties.Add(nameof(AttributableBodSummaryRecord.MedianBinPercentage));
+                hiddenProperties.Add(nameof(AttributableBodSummaryRecord.MedianResponseValue));
+                hiddenProperties.Add(nameof(AttributableBodSummaryRecord.MedianAttributableFraction));
+                hiddenProperties.Add(nameof(AttributableBodSummaryRecord.MedianTotalBod));
             }
             // Remove all standardised records when the population size is not specified
             // and in that case there is room for an extra column, otherwise surpress
             var missingPopulationSize = Model.Records.All(c => double.IsNaN(c.PopulationSize));
             if (missingPopulationSize) {
-                hiddenProperties.Add("LowerStandardisedAttributableBod");
-                hiddenProperties.Add("UpperStandardisedAttributableBod");
-                hiddenProperties.Add("MedianStandardisedAttributableBod");
-                hiddenProperties.Add("LowerStandardisedExposedAttributableBod");
-                hiddenProperties.Add("UpperStandardisedExposedAttributableBod");
-                hiddenProperties.Add("MedianStandardisedExposedAttributableBod");
-                hiddenProperties.Add("LowerCumulativeStandardisedExposedAttributableBod");
-                hiddenProperties.Add("UpperCumulativeStandardisedExposedAttributableBod");
-                hiddenProperties.Add("MedianCumulativeStandardisedExposedAttributableBod");
-                hiddenProperties.Add("StandardisedAttributableBod");
-                hiddenProperties.Add("StandardisedExposedAttributableBod");
-                hiddenProperties.Add("CumulativeStandardisedExposedAttributableBod");
+                hiddenProperties.Add(nameof(AttributableBodSummaryRecord.LowerStandardisedAttributableBod));
+                hiddenProperties.Add(nameof(AttributableBodSummaryRecord.UpperStandardisedAttributableBod));
+                hiddenProperties.Add(nameof(AttributableBodSummaryRecord.MedianStandardisedAttributableBod));
+                hiddenProperties.Add(nameof(AttributableBodSummaryRecord.StandardisedAttributableBod));
             } else {
-                hiddenProperties.Add("ExposurePercentileBin");
+                hiddenProperties.Add(nameof(AttributableBodSummaryRecord.ExposurePercentileBin));
             }
             var isBottomUp = Model.Records.All(r => r.AttributableFraction == 0D);
             if (isBottomUp) {
-                hiddenProperties.Add("AttributableFraction");
-                hiddenProperties.Add("MedianAttributableFraction");
-                hiddenProperties.Add("TotalBod");
-                hiddenProperties.Add("MedianTotalBod");
+                hiddenProperties.Add(nameof(AttributableBodSummaryRecord.AttributableFraction));
+                hiddenProperties.Add(nameof(AttributableBodSummaryRecord.MedianAttributableFraction));
+                hiddenProperties.Add(nameof(AttributableBodSummaryRecord.TotalBod));
+                hiddenProperties.Add(nameof(AttributableBodSummaryRecord.MedianTotalBod));
             }
 
             var panelBuilder = new HtmlTabPanelBuilder();
@@ -141,11 +123,6 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                             Model.StandardisationMethod,
                             Model.SectionId
                         );
-                        var chartCreatorExposed = new StandardisedExposedAttributableBodChartCreator(
-                            [.. group],
-                            Model.StandardisationMethod,
-                            Model.SectionId
-                        );
 
                         chartStandardised = ChartHelpers
                             .Chart(
@@ -157,17 +134,6 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                                fileType: ChartFileType.Svg,
                                saveChartFile: true
                            ).ToString();
-
-                        // Hide charts with standardized EXPOSED attributable BoD
-                        //chartExposed = ChartHelpers.Chart(
-                        //       name: $"ExposedAttributableBodChart{key}{id}",
-                        //       section: Model,
-                        //       viewBag: ViewBag,
-                        //       caption: chartCreatorExposed.Title,
-                        //       chartCreator: chartCreatorExposed,
-                        //       fileType: ChartFileType.Svg,
-                        //       saveChartFile: true
-                        //   ).ToString();
                     }
 
                     var contentPanel = new HtmlString(

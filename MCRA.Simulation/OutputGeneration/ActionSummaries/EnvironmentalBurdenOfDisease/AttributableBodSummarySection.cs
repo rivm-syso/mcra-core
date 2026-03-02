@@ -37,11 +37,9 @@ namespace MCRA.Simulation.OutputGeneration {
                 record.AttributableFractions.Add(resultSummaryRecord.AttributableFraction);
                 record.AttributableBods.Add(resultSummaryRecord.AttributableBod);
                 record.AttributableBodsStandardised.Add(resultSummaryRecord.AttributableBod/resultSummaryRecord.PopulationSize);
-                record.StandardisedExposedAttributableBods.Add(resultSummaryRecord.AttributableBod / resultSummaryRecord.BinPercentage);
                 record.BinPercentages.Add(resultSummaryRecord.BinPercentage);
                 record.TotalBods.Add(resultSummaryRecord.TotalBod);
                 record.CumulativeAttributableBods.Add(resultSummaryRecord.CumulativeAttributableBod);
-                record.CumulativeStandardisedExposedAttributableBods.Add(resultSummaryRecord.CumulativeStandardisedExposedAttributableBod);
                 record.Exposures.Add(resultSummaryRecord.Exposure);
             }
         }
@@ -83,12 +81,9 @@ namespace MCRA.Simulation.OutputGeneration {
                     AttributableBod = r.AttributableBod * multiplicator,
                     AttributableBods = [],
                     AttributableBodsStandardised = [],
-                    StandardisedExposedAttributableBods = [],
                     TotalBods = [],
                     CumulativeAttributableBod = r.CumulativeAttributableBod,
                     CumulativeAttributableBods = [],
-                    CumulativeStandardisedExposedAttributableBod = r.CumulativeStandardisedExposedAttributableBod,
-                    CumulativeStandardisedExposedAttributableBods = [],
                     StandardisedPopulationSize = r.StandardisedPopulationSize
                 })
                 .ToList();

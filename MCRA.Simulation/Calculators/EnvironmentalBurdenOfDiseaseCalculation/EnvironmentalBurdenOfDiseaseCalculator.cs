@@ -101,7 +101,6 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
                 cumulative += record.AttributableBod;
                 cumulativeExposed += record.AttributableBod / population.Size / record.ExposurePercentileBin.Percentage * 100;
                 record.CumulativeAttributableBod = cumulative / sum * 100;
-                record.CumulativeStandardisedExposedAttributableBod = cumulativeExposed / sumExposed * 100;
             }
             var result = new EnvironmentalBurdenOfDiseaseResultRecord {
                 Population = bodIndicatorModel.Population,
