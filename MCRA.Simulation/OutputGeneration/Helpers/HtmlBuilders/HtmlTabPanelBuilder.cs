@@ -1,5 +1,6 @@
-﻿using Microsoft.AspNetCore.Html;
-using System.Text;
+﻿using System.Text;
+using DocumentFormat.OpenXml.Office2010.Excel;
+using Microsoft.AspNetCore.Html;
 
 namespace MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders {
 
@@ -16,9 +17,15 @@ namespace MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders {
             public HtmlString AdditionalContent { get; set; }
         }
 
-        private List<TabPanelItem> _tabPanelItems { get; set; } = [];
+        private List<TabPanelItem> _tabPanelItems = [];
 
-        public void AddPanel(string id, string title, string hoverText, HtmlString content, HtmlString additionalContent = null) {
+        public void AddPanel(
+            string id,
+            string title,
+            string hoverText,
+            HtmlString content,
+            HtmlString additionalContent = null
+        ) {
             var item = new TabPanelItem() {
                 Id = id,
                 Title = title,
@@ -29,23 +36,32 @@ namespace MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders {
             _tabPanelItems.Add(item);
         }
 
-        public void RenderPanel(StringBuilder sb) {
-            renderPanel(sb, _tabPanelItems);
+        public void RenderPanel(StringBuilder sb, bool collapseSingleTab = false) {
+            renderPanel(sb, _tabPanelItems, collapseSingleTab);
         }
 
-        private static void renderPanel(StringBuilder sb, List<TabPanelItem> panelItems) {
-            sb.Append($"<div class='tab-panel'>");
-            sb.Append("<ul class='tab-panel-header'>");
-            foreach (var item in panelItems) {
-                appendTabPaneHeader(sb, item.Id, item.Title, item.HoverText);
+        private static void renderPanel(
+            StringBuilder sb,
+            List<TabPanelItem> panelItems,
+            bool collapseSingleTab
+        ) {
+            if (panelItems.Count == 1 && collapseSingleTab) {
+                var item = panelItems.Single();
+                sb.Append($@"{item.Content}{item.AdditionalContent}");
+            } else {
+                sb.Append($"<div class='tab-panel'>");
+                sb.Append("<ul class='tab-panel-header'>");
+                foreach (var item in panelItems) {
+                    appendTabPaneHeader(sb, item.Id, item.Title, item.HoverText);
+                }
+                sb.Append("</ul>");
+                sb.Append("<div class='tab-panel-content'>");
+                foreach (var item in panelItems) {
+                    appendTabContent(sb, item.Id, item.Content, item.AdditionalContent);
+                }
+                sb.Append("</div>");
+                sb.Append("</div>");
             }
-            sb.Append("</ul>");
-            sb.Append("<div class='tab-panel-content'>");
-            foreach (var item in panelItems) {
-                appendTabContent(sb, item.Id, item.Content, item.AdditionalContent);
-            }
-            sb.Append("</div>");
-            sb.Append("</div>");
         }
 
         private static void appendTabPaneHeader(StringBuilder sb, string id, string title, string hoverText) {
