@@ -80,10 +80,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var memberships = substances.ToDictionary(r => r, r => 1d);
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
             var aggregateIndividualExposures = FakeAggregateIndividualExposuresGenerator
-                .Create(individualDays, substances, targetUnit, random);
+                .Create(individualDays, substances, [targetUnit], random);
 
             var aggregateIndividualDayExposures = FakeAggregateIndividualDayExposuresGenerator
-                .Create(individualDays, substances, targetUnit, random);
+                .Create(individualDays, substances, [targetUnit], random);
 
             var data = new ActionData() {
                 AggregateIndividualExposures = aggregateIndividualExposures,

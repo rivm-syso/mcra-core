@@ -85,28 +85,24 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             TargetUnit targetUnit,
             IRandom random
         ) {
-            // TODO: add mock dust exposure data
-            var foods = FakeFoodsGenerator.Create(3);
-            var dietaryIndividualDayIntakes = FakeDietaryIndividualDayIntakeGenerator
-                .Create(simulatedIndividualDays, foods, substances, 0.5, true, random);
-            var nonDietaryExposureRoutes = routes
-                .Where(r => r != ExposureRoute.Oral)
-                .ToList();
-            var nonDietaryIndividualDayIntakes = FakeNonDietaryIndividualDayIntakeGenerator
-                .Generate(simulatedIndividualDays, substances, nonDietaryExposureRoutes, 0.5, random);
-
-            var nonDietaryExternalIndividualDayExposures = nonDietaryIndividualDayIntakes
-                .Select(r => r as IExternalIndividualDayExposure)
-                .ToList();
-
+            var paths = FakeExposurePathGenerator.Create([.. routes]);
+            var pathsGrouped = paths.GroupBy(r => r.Source);
             var externalExposureCollections = new List<ExternalExposureCollection>();
-            if (nonDietaryExternalIndividualDayExposures?.Count > 0) {
-                var nonDietaryExposureCollection = new ExternalExposureCollection {
+            foreach (var group in pathsGrouped) {
+                var exposures = FakeExternalExposureGenerator.CreateExternalIndividualDayExposures(
+                    simulatedIndividualDays,
+                    substances,
+                    [.. group],
+                    random.Next(),
+                    random,
+                    random.NextDouble(0, 1)
+                );
+                var sourceExposureCollection = new ExternalExposureCollection {
                     ExposureSource = ExposureSource.OtherNonDiet,
                     SubstanceAmountUnit = externalExposuresUnit.SubstanceAmountUnit,
-                    ExternalIndividualDayExposures = nonDietaryExternalIndividualDayExposures
+                    ExternalIndividualDayExposures = exposures
                 };
-                externalExposureCollections.Add(nonDietaryExposureCollection);
+                externalExposureCollections.Add(sourceExposureCollection);
             }
 
             var aggregateIndividualDayExposures = CombinedExternalExposuresCalculator

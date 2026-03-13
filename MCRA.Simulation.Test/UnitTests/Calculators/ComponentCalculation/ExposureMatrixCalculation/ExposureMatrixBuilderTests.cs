@@ -45,10 +45,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
                 .Create(
                     individualDays,
                     substances,
-                    routes,
-                    kineticModelCalculators,
-                    externalExposuresUnit,
-                    targetUnit,
+                    [targetUnit],
                     random
                 );
             var rpfs = substances.ToDictionary(r => r, r => 1D);

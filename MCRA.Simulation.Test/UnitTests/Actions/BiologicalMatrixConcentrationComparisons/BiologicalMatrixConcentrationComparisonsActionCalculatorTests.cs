@@ -49,10 +49,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 .Create(
                     individualDays,
                     substances,
-                    [ExposureRoute.Oral],
-                    kineticModelCalculators,
-                    externalExposuresUnit,
-                    targetUnit,
+                    [targetUnit],
                     random
                 );
 
@@ -97,7 +94,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 .Create(individuals, substances, samplingMethod, targetUnit, random);
 
             var individualTargetExposures = FakeAggregateIndividualExposuresGenerator
-                .Create(individualDays, substances, targetUnit, random);
+                .Create(individualDays, substances, [targetUnit], random);
 
             var project = new ProjectDto();
             var config = project.BiologicalMatrixConcentrationComparisonsSettings;

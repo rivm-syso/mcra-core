@@ -65,7 +65,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 .Create(
                     individualDays,
                     substances,
-                    targetUnit,
+                    [targetUnit],
                     random
                 );
 

@@ -7,7 +7,7 @@ using MCRA.Utils.Statistics;
 namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
 
     /// <summary>
-    /// Class for generating mock external exposures
+    /// Class for generating fake external exposures.
     /// </summary>
     public static class FakeExternalExposureGenerator {
 
@@ -27,17 +27,17 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             }
 
             var result = simulatedIndividualDays
-            .GroupBy(r => r.SimulatedIndividual)
-            .Select(g => {
-                var indvDayExposures = CreateExternalIndividualDayExposures(
-                    [.. g],
-                    substances,
-                    paths,
-                    seed + g.Key.Id,
-                    randomZeros,
-                    percentageZeros
-                );
-                var exposuresPerPath = indvDayExposures
+                .GroupBy(r => r.SimulatedIndividual)
+                .Select(g => {
+                    var indvDayExposures = CreateExternalIndividualDayExposures(
+                        [.. g],
+                        substances,
+                        paths,
+                        seed + g.Key.Id,
+                        randomZeros,
+                        percentageZeros
+                    );
+                    var exposuresPerPath = indvDayExposures
                         .SelectMany(x => x.ExposuresPerPath)
                         .GroupBy(r => r.Key)
                         .ToDictionary(
@@ -45,13 +45,13 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                             d => d.SelectMany(r => r.Value).ToList()
                         );
 
-                var exposure = new ExternalIndividualExposure(g.Key, exposuresPerPath) {
-                    ExternalIndividualDayExposures = indvDayExposures
-                };
-                return exposure;
-            })
-            .Cast<IExternalIndividualExposure>()
-            .ToList();
+                    var exposure = new ExternalIndividualExposure(g.Key, exposuresPerPath) {
+                        ExternalIndividualDayExposures = indvDayExposures
+                    };
+                    return exposure;
+                })
+                .Cast<IExternalIndividualExposure>()
+                .ToList();
             
             return result;
         }
