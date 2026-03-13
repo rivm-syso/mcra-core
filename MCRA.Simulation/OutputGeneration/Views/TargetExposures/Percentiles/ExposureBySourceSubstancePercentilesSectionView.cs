@@ -4,14 +4,18 @@ using MCRA.Simulation.OutputGeneration.Helpers;
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class ExposureBySourceSubstancePercentilesSectionView : SectionView<ExposureBySourceSubstancePercentilesSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
-            var hiddenProperties = new List<string> {
-                "Route"
-            };
             sb.AppendDescriptionParagraph($"Number of records: {Model.Records?.Count ?? 0}");
+
+            var hiddenProperties = new List<string> {
+                nameof(TargetExposurePercentileRecord.Route)
+            };
+            if (Model.Records.All(c => string.IsNullOrEmpty(c.Stratification))) {
+                hiddenProperties.Add(nameof(TargetExposurePercentileRecord.Stratification));
+            }
             if (Model.Records.All(c => c.Values.Count == 0)) {
-                hiddenProperties.Add("Median");
-                hiddenProperties.Add("LowerBound");
-                hiddenProperties.Add("UpperBound");
+                hiddenProperties.Add(nameof(TargetExposurePercentileRecord.Median));
+                hiddenProperties.Add(nameof(TargetExposurePercentileRecord.LowerBound));
+                hiddenProperties.Add(nameof(TargetExposurePercentileRecord.UpperBound));
             }
 
             if (Model.Records?.Count > 0) {
