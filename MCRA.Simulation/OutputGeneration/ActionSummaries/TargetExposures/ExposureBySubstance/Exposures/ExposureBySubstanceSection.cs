@@ -78,7 +78,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 aggregateExposures,
                 kineticConversionFactors,
                 substances,
-                targetUnit
+                targetUnit,
+                isPerPerson
             );
 
             if (outputStratifier != null) {
@@ -87,6 +88,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     kineticConversionFactors,
                     substances,
                     targetUnit,
+                    isPerPerson,
                     outputStratifier
                 );
             }
@@ -168,6 +170,7 @@ namespace MCRA.Simulation.OutputGeneration {
             IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
             ICollection<Compound> substances,
             TargetUnit targetUnit,
+            bool isPerPerson,
             PopulationStratifier stratifier = null
         ) {
             var cancelToken = ProgressState?.CancellationToken ?? new();
@@ -185,7 +188,7 @@ namespace MCRA.Simulation.OutputGeneration {
                             Exposure: c.GetTotalExternalExposureForSubstance(
                                 substance,
                                 kineticConversionFactors,
-                                targetUnit.IsPerBodyWeight
+                                isPerPerson
                             )
                         ))
                         .ToList();
