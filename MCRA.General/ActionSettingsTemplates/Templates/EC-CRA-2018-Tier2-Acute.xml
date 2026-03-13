@@ -20,10 +20,12 @@
         <Setting id="McrPlotRatioCutOff" />
         <Setting id="OutputSectionSelectionMethod" />
         <Setting id="OutputSections" />
+        <Setting id="OutputStratificationVariable" />
         <Setting id="RandomSeed" />
         <Setting id="SelectedPercentiles" />
         <Setting id="SelectedTier" />
         <Setting id="SkipPrivacySensitiveOutputs" />
+        <Setting id="StratifyOutputs" />
         <Setting id="UncertaintyAnalysisCycles" />
         <Setting id="UncertaintyIterationsPerResampledSet" />
         <Setting id="UncertaintyLowerBound" />
