@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
@@ -12,6 +10,7 @@ using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils;
 using MCRA.Utils.ExtensionMethods;
+using Microsoft.AspNetCore.Mvc;
 
 namespace MCRA.Simulation.Actions.TargetExposures {
 
@@ -1453,6 +1452,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             SectionHeader header,
             int order
         ) {
+            var stratifier = getOutputStratifier(result, data);
             var subHeader = header.AddEmptySubSectionHeader(
                 "Exposures by source",
                 order++,
@@ -1471,6 +1471,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     _configuration.VariabilityUpperPercentage,
                     result.TargetExposureUnit,
                     _configuration.IsPerPerson,
+                    stratifier,
                     _configuration.SkipPrivacySensitiveOutputs
                 );
                 sub2Header.SaveSummarySection(section);

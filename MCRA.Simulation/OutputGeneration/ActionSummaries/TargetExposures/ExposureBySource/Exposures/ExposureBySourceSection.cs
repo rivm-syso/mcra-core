@@ -1,6 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
+using MCRA.Simulation.Calculators.Stratification;
 using MCRA.Simulation.Constants;
 using MCRA.Simulation.Objects;
 using MCRA.Utils.ExtensionMethods;
@@ -13,12 +14,13 @@ namespace MCRA.Simulation.OutputGeneration {
         public override bool SaveTemporaryData => true;
 
         private static readonly double _upperWhisker = 95;
-
         private static readonly double[] _percentages = [5, 10, 25, 50, 75, 90, 95];
+
         public bool ShowOutliers { get; set; }
         public double? RestrictedUpperPercentile { get; set; }
         public List<ExposureBySourceRecord> Records { get; set; }
         public List<ExposureBySourcePercentileRecord> BoxPlotRecords { get; set; }
+        public List<ExposureBySourcePercentileRecord> StratifiedExposureBoxPlotRecords { get; set; }
         public TargetUnit TargetUnit { get; set; }
 
         public void Summarize(
@@ -31,6 +33,7 @@ namespace MCRA.Simulation.OutputGeneration {
             double upperPercentage,
             TargetUnit targetUnit,
             bool isPerPerson,
+            PopulationStratifier outputStratifier,
             bool skipPrivacySensitiveOutputs
         ) {
             relativePotencyFactors = substances.Count > 1
@@ -65,11 +68,49 @@ namespace MCRA.Simulation.OutputGeneration {
                 exposureCollection,
                 targetUnit
             );
+
+            if (outputStratifier != null) {
+                var groups = externalIndividualExposures
+                    .GroupBy(r => outputStratifier.GetLevel(r.SimulatedIndividual));
+                var groupRecords = groups
+                    .SelectMany(r => {
+                        var groupExposures = CalculateExposures(
+                            [.. r],
+                            relativePotencyFactors,
+                            membershipProbabilities,
+                            kineticConversionFactors,
+                            isPerPerson
+                        );
+                        return summarizeExposureRecords(
+                            groupExposures,
+                            percentages,
+                            r.Key
+                        );
+                    });
+                Records.AddRange(groupRecords);
+                StratifiedExposureBoxPlotRecords = groups
+                    .SelectMany(r => {
+                        var groupExposures = CalculateExposures(
+                            [.. r],
+                            relativePotencyFactors,
+                            membershipProbabilities,
+                            kineticConversionFactors,
+                            isPerPerson
+                        );
+                        return summarizeBoxPlotsRecords(
+                            groupExposures,
+                            targetUnit,
+                            r.Key
+                        );
+                    })
+                    .ToList();
+            }
         }
 
         public List<ExposureBySourceRecord> summarizeExposureRecords(
             List<(ExposureSource ExposureSource, List<(SimulatedIndividual SimulatedIndividual, double Exposure)> Exposures)> exposureSourceCollection,
-            double[] percentages
+            double[] percentages,
+            IStratificationLevel stratification = null
         ) {
             var records = new List<ExposureBySourceRecord>();
             foreach (var item in exposureSourceCollection) {
@@ -77,7 +118,8 @@ namespace MCRA.Simulation.OutputGeneration {
                     var record = getExposureSourceRecord(
                         item.ExposureSource,
                         item.Exposures,
-                        percentages
+                        percentages,
+                        stratification
                     );
                     records.Add(record);
                 }
@@ -87,26 +129,29 @@ namespace MCRA.Simulation.OutputGeneration {
 
         private List<ExposureBySourcePercentileRecord> summarizeBoxPlotsRecords(
             List<(ExposureSource ExposureSource, List<(SimulatedIndividual SimulatedIndividual, double Exposure)> Exposures)> exposureSourceCollection,
-            TargetUnit targetUnit
+            TargetUnit targetUnit,
+            IStratificationLevel stratification = null
         ) {
             var records = new List<ExposureBySourcePercentileRecord>();
-
             foreach (var item in exposureSourceCollection) {
                 if (item.Exposures.Any(c => c.Exposure > 0)) {
                     var boxPlotRecord = getBoxPlotRecord(
                         item.ExposureSource,
                         item.Exposures,
-                        targetUnit
+                        targetUnit,
+                        stratification
                     );
                     records.Add(boxPlotRecord);
                 }
             }
             return records;
         }
+
         private ExposureBySourceRecord getExposureSourceRecord(
             ExposureSource source,
             List<(SimulatedIndividual SimulatedIndividual, double Exposure)> exposures,
-            double[] percentages
+            double[] percentages,
+            IStratificationLevel stratification
         ) {
             var weights = exposures.Where(c => c.Exposure > 0)
                 .Select(idi => idi.SimulatedIndividual.SamplingWeight)
@@ -123,6 +168,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var total = exposures.Sum(c => c.Exposure * c.SimulatedIndividual.SamplingWeight);
             var record = new ExposureBySourceRecord {
                 ExposureSource = source.GetShortDisplayName(),
+                Stratification = stratification?.Name,
                 Percentage = weights.Count / (double)exposures.Count * 100,
                 MeanAll = total / weightsAll.Sum(),
                 Mean = total / weights.Sum(),
@@ -140,7 +186,8 @@ namespace MCRA.Simulation.OutputGeneration {
         private static ExposureBySourcePercentileRecord getBoxPlotRecord(
             ExposureSource source,
             List<(SimulatedIndividual SimulatedIndividual, double Exposure)> exposures,
-            TargetUnit targetUnit
+            TargetUnit targetUnit,
+            IStratificationLevel stratification
         ) {
             var weights = exposures
                 .Select(c => c.SimulatedIndividual.SamplingWeight)
@@ -161,6 +208,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .ToList();
             var record = new ExposureBySourcePercentileRecord() {
                 ExposureSource = source.GetDisplayName(),
+                Stratification = stratification?.Name,
                 MinPositives = positives.Any() ? positives.Min() : 0,
                 MaxPositives = positives.Any() ? positives.Max() : 0,
                 Percentiles = percentiles,

@@ -7,8 +7,14 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Source")]
         public string ExposureSource { get; set; }
 
+        [DisplayName("Stratification")]
+        public string Stratification { get; set; }
+
         public override string GetLabel() {
-            return $"{ExposureSource}";
+            if (!string.IsNullOrEmpty(Stratification)) {
+                return $"{ExposureSource} ({Stratification})";
+            }
+            return ExposureSource;
         }
     }
 }
