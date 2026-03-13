@@ -27,6 +27,13 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 chartData: percentileDataSection
             );
 
+            var hiddenProperties = new List<string>();
+            if (Model.Records.All(r => double.IsNaN(r.RelativePotencyFactor))) {
+                hiddenProperties.Add(nameof(ExposureBySourceSubstanceRecord.RelativePotencyFactor));
+            }
+            if (Model.Records.All(r => r.AssessmentGroupMembership == 1D)) {
+                hiddenProperties.Add(nameof(ExposureBySourceSubstanceRecord.AssessmentGroupMembership));
+            }
             sb.AppendTable(
                 Model,
                 Model.Records,
@@ -34,7 +41,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 ViewBag,
                 caption: "Exposure statistics by source and substance (total distribution).",
                 saveCsv: true,
-                hiddenProperties: null
+                hiddenProperties: hiddenProperties
             );
         }
     }

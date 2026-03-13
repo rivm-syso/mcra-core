@@ -74,6 +74,12 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (Model.ExposureRecords.All(c => string.IsNullOrEmpty(c.Stratification))) {
                 hiddenProperties.Add(nameof(ExposureBySubstanceRecord.Stratification));
             }
+            if (Model.ExposureRecords.All(r => double.IsNaN(r.RelativePotencyFactor))) {
+                hiddenProperties.Add(nameof(ExposureBySubstanceRecord.RelativePotencyFactor));
+            }
+            if (Model.ExposureRecords.All(r => r.AssessmentGroupMembership == 1D)) {
+                hiddenProperties.Add(nameof(ExposureBySubstanceRecord.AssessmentGroupMembership));
+            }
             sb.AppendTable(
                 Model,
                 Model.ExposureRecords,

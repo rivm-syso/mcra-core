@@ -96,7 +96,6 @@ namespace MCRA.Simulation.OutputGeneration {
             TargetUnit targetUnit
         ) {
             var records = new List<ExposureBySourceSubstancePercentileRecord>();
-
             foreach (var item in exposureSourceCollection) {
                 if (item.Exposures.Any(c => c.Exposure > 0)) {
                     var boxPlotRecord = getBoxPlotRecord(
@@ -110,6 +109,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
             return records;
         }
+
         private ExposureBySourceSubstanceRecord getExposureSourceSubstanceRecord(
             ExposureSource source,
             Compound substance,
