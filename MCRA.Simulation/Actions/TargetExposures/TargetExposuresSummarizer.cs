@@ -939,7 +939,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             TargetExposuresActionResult actionResult,
             ActionData data
         ) {
-            var stratifier = getOutputStratifier(actionResult, data);
+            var outputStratifier = getOutputStratifier(actionResult, data);
             var subHeader = header.GetSubSectionHeader<TargetExposuresSummarySection>();
             if (subHeader != null) {
                 var subSubHeader = subHeader.GetSubSectionHeader<ExposureBySubstancePercentilesSection>();
@@ -952,7 +952,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         actionResult.KineticConversionFactorsByRouteSubstance,
                         _configuration.SelectedPercentiles,
                         _configuration.IsPerPerson,
-                        stratifier
+                        outputStratifier
                     );
                     subSubHeader.SaveSummarySection(section);
                 }
@@ -995,9 +995,11 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
         private SectionHeader summarizeSourceUncertainty(
             SectionHeader header,
-            TargetExposuresActionResult actionResult,
+            TargetExposuresActionResult result,
             ActionData data
         ) {
+            var outputStratifier = getOutputStratifier(result, data);
+
             // Toc: Internal exposures by source, percentiles
             var subHeader = header.GetSubSectionHeader<TargetExposuresSummarySection>();
             if (subHeader != null) {
@@ -1005,13 +1007,14 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 if (subSubHeader != null) {
                     var section = subSubHeader.GetSummarySection() as ExposureBySourcePercentilesSection;
                     section.SummarizeUncertainty(
-                        actionResult.ExternalIndividualExposures,
+                        result.ExternalIndividualExposures,
                         data.ActiveSubstances,
                         data.CorrectedRelativePotencyFactors,
                         data.MembershipProbabilities,
-                        actionResult.KineticConversionFactorsByRouteSubstance,
+                        result.KineticConversionFactorsByRouteSubstance,
                         _configuration.SelectedPercentiles,
-                        _configuration.IsPerPerson
+                        _configuration.IsPerPerson,
+                        outputStratifier
                     );
                     subSubHeader.SaveSummarySection(section);
                 }
@@ -1024,11 +1027,11 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 if (subSubHeader != null) {
                     var section = subSubHeader.GetSummarySection() as ContributionBySourceTotalSection;
                     section.SummarizeUncertainty(
-                        actionResult.ExternalIndividualExposures,
+                        result.ExternalIndividualExposures,
                         data.ActiveSubstances,
                         data.CorrectedRelativePotencyFactors,
                         data.MembershipProbabilities,
-                        actionResult.KineticConversionFactorsByRouteSubstance,
+                        result.KineticConversionFactorsByRouteSubstance,
                         _configuration.IsPerPerson
                     );
                     subSubHeader.SaveSummarySection(section);
@@ -1037,11 +1040,11 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 if (subSubHeader != null) {
                     var section = subSubHeader.GetSummarySection() as ContributionBySourceUpperSection;
                     section.SummarizeUncertainty(
-                        actionResult.ExternalIndividualExposures,
+                        result.ExternalIndividualExposures,
                         data.ActiveSubstances,
                         data.CorrectedRelativePotencyFactors,
                         data.MembershipProbabilities,
-                        actionResult.KineticConversionFactorsByRouteSubstance,
+                        result.KineticConversionFactorsByRouteSubstance,
                         _configuration.VariabilityUpperTailPercentage,
                         _configuration.IsPerPerson
                     );
@@ -1452,7 +1455,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             SectionHeader header,
             int order
         ) {
-            var stratifier = getOutputStratifier(result, data);
+            var outputStratifier = getOutputStratifier(result, data);
             var subHeader = header.AddEmptySubSectionHeader(
                 "Exposures by source",
                 order++,
@@ -1471,7 +1474,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     _configuration.VariabilityUpperPercentage,
                     result.TargetExposureUnit,
                     _configuration.IsPerPerson,
-                    stratifier,
+                    outputStratifier,
                     _configuration.SkipPrivacySensitiveOutputs
                 );
                 sub2Header.SaveSummarySection(section);
@@ -1488,7 +1491,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     _configuration.UncertaintyLowerBound,
                     _configuration.UncertaintyUpperBound,
                     _configuration.IsPerPerson,
-                    _configuration.SelectedPercentiles
+                    _configuration.SelectedPercentiles,
+                    outputStratifier
                 );
                 sub2Header.SaveSummarySection(section);
             }
