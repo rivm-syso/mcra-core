@@ -1,5 +1,7 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using DocumentFormat.OpenXml.Drawing.Charts;
+using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.Simulation.Calculators.Stratification;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Utils.Statistics;
 
@@ -15,9 +17,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<Compound> substances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
-            ICollection<ExposureRoute> routes,
-            ExposureUnitTriple externalExposureUnit,
+            PopulationStratifier populationStratifier,
             TargetUnit targetUnit
         ) {
             if (substances.Count == 1) {
@@ -27,29 +27,33 @@ namespace MCRA.Simulation.OutputGeneration {
                     ?? substances.ToDictionary(r => r, r => 1D);
             }
 
-            var aggregates = aggregateIndividualExposures
-                .Select(c => (
-                    Exposure: c.GetTotalExposureAtTarget(
-                        targetUnit.Target,
-                        relativePotencyFactors,
-                        membershipProbabilities
-                    ),
-                    SamplingWeight: c.SimulatedIndividual.SamplingWeight
-                ))
-                .ToList();
-
-            // Total distribution section
-            //var totalDistributionSection = new InternalDistributionTotalSection();
-            Summarize(aggregates);
-            SummarizeCategorizedBins(
+            // Total distribution section: histogram and cumulative distribution chart
+            SummarizeUnstratifiedBinsGraph(
                 aggregateIndividualExposures,
                 relativePotencyFactors,
                 membershipProbabilities,
-                routes,
-                kineticConversionFactors,
-                externalExposureUnit,
+                populationStratifier,
                 targetUnit
             );
+
+            SummarizeStratifiedBinsGraph(
+                aggregateIndividualExposures,
+                relativePotencyFactors,
+                membershipProbabilities,
+                populationStratifier,
+                targetUnit
+            );
+
+            //TODO: to discuss with Jasper, move this section to exposures by route
+            //SummarizeCategorizedBins(
+            //    aggregateIndividualExposures,
+            //    relativePotencyFactors,
+            //    membershipProbabilities,
+            //    routes, 
+            //    kineticConversionFactors,
+            //    externalExposureUnit,
+            //    targetUnit
+            //);
         }
 
 
@@ -82,14 +86,59 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         public void SummarizeUncertainty(
-            List<double> intakes,
-            List<double> weights,
+            ICollection<AggregateIndividualExposure> aggregateExposures,
+            IDictionary<Compound, double> rpfs,
+            IDictionary<Compound, double> memberships,
+            TargetUnit targetUnit,
+            PopulationStratifier populationStratifier,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound
         ) {
             UncertaintyLowerLimit = uncertaintyLowerBound;
             UncertaintyUpperLimit = uncertaintyUpperBound;
-            _percentiles.AddUncertaintyValues(intakes.PercentilesWithSamplingWeights(weights, _percentiles.XValues.ToArray()));
+            {
+                var exposures = aggregateExposures
+                        .Select(c => (
+                            Exposure: c.GetTotalExposureAtTarget(
+                                targetUnit.Target,
+                                rpfs,
+                                memberships
+                            ),
+                            SimulatedIndividual: c.SimulatedIndividual
+                        ));
+
+                var weights = exposures
+                    .Select(c => c.SimulatedIndividual.SamplingWeight)
+                    .ToList();
+                _percentiles.AddUncertaintyValues(exposures.Select(c => c.Exposure).PercentilesWithSamplingWeights(weights, [.. _percentiles.XValues]));
+            }
+            if (populationStratifier != null) {
+                var exposures = aggregateExposures
+                    .Select(c => (
+                        Exposure: c.GetTotalExposureAtTarget(
+                            targetUnit.Target,
+                            rpfs,
+                            memberships
+                        ),
+                        SimulatedIndividual: c.SimulatedIndividual,
+                        StratificationLevel: populationStratifier.GetLevel(c.SimulatedIndividual).Code
+                    ))
+                    .GroupBy(c => c.StratificationLevel)
+                    .ToList();
+                foreach (var group in exposures) {
+                    var weights = group
+                        .Select(c => c.SimulatedIndividual.SamplingWeight)
+                        .ToList();
+                    var collection = StratifiedPercentiles.Where(c => c.Item1 == group.Key).FirstOrDefault().Item2;
+                    if (collection != null) {
+                        var percentiles = group
+                            .Select(c => c.Exposure)
+                            .PercentilesWithSamplingWeights(weights, [.. collection.XValues]);
+                        collection.AddUncertaintyValues(percentiles);
+                    }
+                }
+            } 
+                        
         }
     }
 }

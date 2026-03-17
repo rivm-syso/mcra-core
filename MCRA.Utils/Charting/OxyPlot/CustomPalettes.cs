@@ -323,7 +323,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
                 OxyColors.Orange,
                 OxyColors.CornflowerBlue
             };
-            colors.AddRange(getPalette(_lightBlueTone).Reverse());
+            colors.AddRange(getPalette(_distinctTone).Reverse());
             return new OxyPalette(colors.Take(number));
         }
 

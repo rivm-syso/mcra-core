@@ -312,8 +312,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             }
         }
 
-
-
         private void summarizeMCRSection(
             TargetExposuresActionResult result,
             SectionHeader subHeaderDetails,
@@ -348,6 +346,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             SectionHeader header,
             int subOrder
         ) {
+            var outputStratifier = getOutputStratifier(result, data);
             var subHeader = header.AddEmptySubSectionHeader($"Distribution", subOrder++);
             {
                 var section = new InternalDistributionTotalSection();
@@ -357,9 +356,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     data.ActiveSubstances,
                     data.CorrectedRelativePotencyFactors,
                     data.MembershipProbabilities,
-                    result.KineticConversionFactorsByRouteSubstance,
-                    data.ExposureRoutes,
-                    data.ExternalExposureUnit,
+                    outputStratifier,
                     data.TargetExposureUnit
                 );
                 sub2Header.SaveSummarySection(section);
@@ -603,9 +600,9 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 ? data.AggregateIndividualExposures
                 : [.. data.AggregateIndividualDayExposures.Cast<AggregateIndividualExposure>()];
             if (substances.Count == 1 || rpfs != null) {
+                rpfs = rpfs ?? substances.ToDictionary(r => r, r => 1D);
+                memberships = memberships ?? substances.ToDictionary(r => r, r => 1D);
                 if (exposureType == ExposureType.Acute) {
-                    rpfs = rpfs ?? substances.ToDictionary(r => r, r => 1D);
-                    memberships = memberships ?? substances.ToDictionary(r => r, r => 1D);
 
                     var exposures = aggregateExposures
                         .Select(c => c
@@ -646,21 +643,20 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     //Percentiles for a grid of values
                     sub2Header = subHeader.GetSubSectionHeader<InternalDistributionTotalSection>();
                     if (sub2Header != null) {
+                        var outputStratifier = getOutputStratifier(actionResult, data);
                         var section = sub2Header.GetSummarySection() as InternalDistributionTotalSection;
                         section.SummarizeUncertainty(
-                            exposures,
-                            samplingWeights,
+                            aggregateExposures,
+                            rpfs,
+                            memberships,
+                            data.TargetExposureUnit,
+                            outputStratifier,
                             uncertaintyLowerBound,
                             uncertaintyUpperBound
                          );
                         sub2Header.SaveSummarySection(section);
                     }
                 } else {
-                    rpfs = rpfs
-                        ?? substances.ToDictionary(r => r, r => 1D);
-                    memberships = memberships
-                        ?? substances.ToDictionary(r => r, r => 1D);
-
                     var exposures = aggregateExposures
                         .Select(c => c
                             .GetTotalExposureAtTarget(
@@ -700,13 +696,17 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     //Percentiles for a grid of values
                     sub2Header = subHeader.GetSubSectionHeader<InternalDistributionTotalSection>();
                     if (sub2Header != null) {
+                        var outputStratifier = getOutputStratifier(actionResult, data);
                         var section = sub2Header.GetSummarySection() as InternalDistributionTotalSection;
                         section.SummarizeUncertainty(
-                            exposures,
-                            samplingWeights,
+                            aggregateExposures,
+                            rpfs,
+                            memberships,
+                            data.TargetExposureUnit,
+                            outputStratifier,
                             uncertaintyLowerBound,
                             uncertaintyUpperBound
-                            );
+                        );
                         sub2Header.SaveSummarySection(section);
                     }
                 }

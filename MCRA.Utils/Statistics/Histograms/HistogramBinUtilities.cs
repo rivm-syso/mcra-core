@@ -402,13 +402,11 @@
                     XMaxValue = xMinValue + binSize,
                 };
                 bin.Frequency = source.Zip(weightsNormalized, (v, w) => (valueExtractor(v) >= bin.XMinValue && valueExtractor(v) < bin.XMaxValue) ? w : 0).Sum();
-                //bin.Frequency = source.Count(v => valueExtractor(v) >= bin.XMinValue && valueExtractor(v) < bin.XMaxValue);
-                bin.ContributionFractions = source
+                bin.ContributionFractions = [.. source
                     .Where(v => valueExtractor(v) >= bin.XMinValue && valueExtractor(v) < bin.XMaxValue)
                     .SelectMany(v => categoryExtractor(v))
                     .GroupBy(g => g.Category)
-                    .Select(g => new CategoryContribution<TCategories>(g.Key, g.Sum(v => v.Contribution)))
-                    .ToList();
+                    .Select(g => new CategoryContribution<TCategories>(g.Key, g.Sum(v => v.Contribution)))];
                 bins.Add(bin);
             }
 
@@ -417,7 +415,6 @@
             // items that lie on the maxbound twice
             maxBound = bins.Last().XMaxValue;
             bins.Last().Frequency += source.Zip(weightsNormalized, (v, w) => (valueExtractor(v) == maxBound) ? w : 0).Sum();
-            //bins.Last().Frequency += source.Count(v => valueExtractor(v) == maxBound);
 
             if (outlierHandlingMethod == OutlierHandlingMethod.IncludeLower || outlierHandlingMethod == OutlierHandlingMethod.IncludeBoth) {
                 var firstBin = bins.FirstOrDefault();
@@ -429,7 +426,6 @@
                     bins.Add(firstBin);
                 }
                 firstBin.Frequency += source.Zip(weightsNormalized, (v, w) => (valueExtractor(v) < minBound) ? w : 0).Sum();
-                //firstBin.Frequency += source.Count(v => valueExtractor(v) < minBound);
             }
 
             if (outlierHandlingMethod == OutlierHandlingMethod.IncludeHigher || outlierHandlingMethod == OutlierHandlingMethod.IncludeBoth) {
@@ -442,7 +438,6 @@
                     bins.Add(lastBin);
                 }
                 lastBin.Frequency += source.Zip(weightsNormalized, (v, w) => (valueExtractor(v) > maxBound) ? w : 0).Sum();
-                //lastBin.Frequency += source.Count(v => valueExtractor(v) > maxBound);
             }
             return bins;
         }
@@ -475,7 +470,15 @@
             var minBound = sourceValues.Min();
             var maxBound = sourceValues.Max();
             var weights = Enumerable.Repeat(1D, sourceValues.Count()).ToList();
-            return source.MakeCategorizedHistogramBins(categoryExtractor, valueExtractor, weights, numberOfBins, minBound, maxBound, outlierHandlingMethod);
+            return source.MakeCategorizedHistogramBins(
+                categoryExtractor,
+                valueExtractor,
+                weights,
+                numberOfBins,
+                minBound,
+                maxBound,
+                outlierHandlingMethod
+            );
         }
 
         /// <summary>
@@ -492,7 +495,12 @@
         /// <param name="valueExtractor"></param>
         /// <param name="weights"></param>
         /// <returns></returns>
-        public static List<CategorizedHistogramBin<TCategories>> MakeCategorizedHistogramBins<TList, TCategories>(this IEnumerable<TList> source, Func<TList, List<CategoryContribution<TCategories>>> categoryExtractor, Func<TList, double> valueExtractor, List<double> weights) {
+        public static List<CategorizedHistogramBin<TCategories>> MakeCategorizedHistogramBins<TList, TCategories>(
+            this IEnumerable<TList> source,
+            Func<TList, List<CategoryContribution<TCategories>>> categoryExtractor,
+            Func<TList, double> valueExtractor,
+            List<double> weights
+        ) {
             if (weights == null) {
                 return source.MakeCategorizedHistogramBins(categoryExtractor, valueExtractor);
             }
@@ -506,7 +514,15 @@
             var outlierHandlingMethod = OutlierHandlingMethod.IncludeNone;
             var minBound = sourceValues.Min();
             var maxBound = sourceValues.Max();
-            return source.MakeCategorizedHistogramBins(categoryExtractor, valueExtractor, weights, numberOfBins, minBound, maxBound, outlierHandlingMethod);
+            return source.MakeCategorizedHistogramBins(
+                categoryExtractor,
+                valueExtractor,
+                weights,
+                numberOfBins,
+                minBound,
+                maxBound,
+                outlierHandlingMethod
+            );
         }
 
         /// <summary>
@@ -538,7 +554,15 @@
             var outlierHandlingMethod = OutlierHandlingMethod.IncludeNone;
             var minBound = sourceValues.Min();
             var maxBound = sourceValues.Max();
-            return source.MakeCategorizedHistogramBins(categoryExtractor, valueExtractor, weights, numberOfBins, minBound, maxBound, outlierHandlingMethod);
+            return source.MakeCategorizedHistogramBins(
+                categoryExtractor,
+                valueExtractor,
+                weights,
+                numberOfBins,
+                minBound,
+                maxBound,
+                outlierHandlingMethod
+            );
         }
 
         /// <summary>
@@ -570,7 +594,15 @@
             var outlierHandlingMethod = OutlierHandlingMethod.IncludeNone;
             var minBound = sourceValues.Min();
             var maxBound = sourceValues.Max();
-            return source.MakeCategorizedHistogramBins(categoryExtractor, valueExtractor, weights, numberOfBins, minBound, maxBound, outlierHandlingMethod);
+            return source.MakeCategorizedHistogramBins(
+                categoryExtractor,
+                valueExtractor,
+                weights,
+                numberOfBins,
+                minBound,
+                maxBound,
+                outlierHandlingMethod
+            );
         }
 
         /// <summary>
@@ -603,7 +635,15 @@
             if (weights == null) {
                 weights = Enumerable.Repeat(1d, source.Count()).ToList();
             }
-            return source.MakeCategorizedHistogramBins(categoryExtractor, valueExtractor, weights, numberOfBins, minBound, maxBound, outlierHandlingMethod);
+            return source.MakeCategorizedHistogramBins(
+                categoryExtractor,
+                valueExtractor,
+                weights,
+                numberOfBins,
+                minBound,
+                maxBound,
+                outlierHandlingMethod
+            );
         }
     }
 }

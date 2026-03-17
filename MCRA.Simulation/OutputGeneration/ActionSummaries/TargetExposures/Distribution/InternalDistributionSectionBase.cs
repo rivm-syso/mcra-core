@@ -1,14 +1,18 @@
-﻿using MCRA.Utils;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
+using MCRA.Simulation.Calculators.Stratification;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
+using MCRA.Simulation.Objects;
+using MCRA.Utils;
+using MCRA.Utils.Collections;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.Histograms;
-using MCRA.Data.Compiled.Objects;
-using MCRA.General;
-using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 
 namespace MCRA.Simulation.OutputGeneration {
     public abstract class InternalDistributionSectionBase : SummarySection {
         public override bool SaveTemporaryData => true;
         public List<HistogramBin> IntakeDistributionBins { get; set; }
+        public List<CategorizedHistogramBin<string>> StratifiedIntakeDistributionBins { get; set; }
         public List<HistogramBin> IntakeDistributionBinsCoExposure { get; set; }
         public List<CategorizedHistogramBin<ExposureRoute>> CategorizedHistogramBins { get; set; }
         public double PercentageZeroIntake { get; set; }
@@ -20,6 +24,8 @@ namespace MCRA.Simulation.OutputGeneration {
             get => _percentiles;
             set => _percentiles = value;
         }
+
+        public List<(string, UncertainDataPointCollection<double>)> StratifiedPercentiles { get; set; }
 
         public int TotalNumberOfIntakes { get; set; }
 
@@ -67,7 +73,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var coExposureLookup = coExposureIds?.ToHashSet();
 
             //iterate exposure array only once, todo: make concurrent
-            foreach(var exposure in aggregateIndividualDayExposures) {
+            foreach (var exposure in aggregateIndividualDayExposures) {
                 var totalExposureAtTarget = exposure
                     .GetTotalExposureAtTarget(targetUnit.Target, relativePotencyFactors, membershipProbabilities);
                 var individualSamplingWeight = exposure.SimulatedIndividual.SamplingWeight;
@@ -75,14 +81,14 @@ namespace MCRA.Simulation.OutputGeneration {
                 totalTargetConcentrationsList.Add(totalExposureAtTarget);
                 allWeightsList.Add(individualSamplingWeight);
 
-                if(totalExposureAtTarget > 0) {
+                if (totalExposureAtTarget > 0) {
                     //get the log value of the positive concentration
                     var logValue = Math.Log10(totalExposureAtTarget);
                     //adjust the min and max value if necessary
-                    if(minLogConcentration > logValue) {
+                    if (minLogConcentration > logValue) {
                         minLogConcentration = logValue;
                     }
-                    if(maxLogConcentration < logValue) {
+                    if (maxLogConcentration < logValue) {
                         maxLogConcentration = logValue;
                     }
                     positiveLogDataList.Add(logValue);
@@ -192,39 +198,55 @@ namespace MCRA.Simulation.OutputGeneration {
         /// Summarize intakes, calculates distribution and cumulative distribution
         /// </summary>
         /// <param name="exposures"></param>
-        /// <param name="weights"></param>
-        public void Summarize(
-            List<(double Exposure, double SamplingWeight)> exposures,
+        /// <param name="isTotalDistribution"></param>
+        public void SummarizeUnstratifiedBinsGraph(
+            ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
+            IDictionary<Compound, double> relativePotencyFactors,
+            IDictionary<Compound, double> membershipProbabilities,
+            PopulationStratifier populationStratifier,
+            TargetUnit targetUnit,
             bool isTotalDistribution = true
         ) {
-            var weights = exposures.Select(c => c.SamplingWeight).ToList();
+            var exposures = aggregateIndividualExposures
+                .Select(c => (
+                    Exposure: c.GetTotalExposureAtTarget(
+                        targetUnit.Target,
+                        relativePotencyFactors,
+                        membershipProbabilities
+                    ),
+                    SimulatedIndividual: c.SimulatedIndividual
+                ))
+                .ToList();
+
             TotalNumberOfIntakes = exposures.Count;
-            var percentages = GriddingFunctions.GetPlotPercentages();
-            if (weights == null) {
-                weights = Enumerable.Repeat(1D, exposures.Count).ToList();
-            }
-            var exposuresTransf = exposures.Where(c => c.Exposure > 0).Select(c => (
-                    Exposure:Math.Log10(c.Exposure),
-                    SampingWeight:c.SamplingWeight)
+            var logExposures = exposures.Where(c => c.Exposure > 0)
+                .Select(c => (
+                    Exposure: Math.Log10(c.Exposure),
+                    SampingWeight: c.SimulatedIndividual.SamplingWeight)
                 ).ToList();
 
-            var sampleWeights = exposuresTransf.Select(c => c.SampingWeight).ToList();
-            var intakes = exposuresTransf.Select(c => c.Exposure).ToList();
-
-            if (intakes.Any()) {
-                var min = intakes.Min();
-                var max = intakes.Max();
+            if (logExposures.Any()) {
+                var weights = logExposures.Select(c => c.SampingWeight).ToList();
+                var intakes = logExposures.Select(c => c.Exposure).ToList();
                 // Take all intakes for a better resolution
                 var numberOfBins = Math.Sqrt(TotalNumberOfIntakes) < 100 ? BMath.Ceiling(Math.Sqrt(TotalNumberOfIntakes)) : 100;
-                IntakeDistributionBins = intakes.MakeHistogramBins(sampleWeights, numberOfBins, min, max);
+                IntakeDistributionBins = intakes.MakeHistogramBins(
+                    weights,
+                    numberOfBins,
+                    intakes.Min(),
+                    intakes.Max()
+                );
                 PercentageZeroIntake = exposures.Count(c => c.Exposure == 0) / (double)TotalNumberOfIntakes * 100;
             } else {
                 IntakeDistributionBins = null;
                 PercentageZeroIntake = 100;
             }
 
-            // Summarize the exposures for based on a grid defined by the percentages array
-            if (percentages.Length > 0 && isTotalDistribution) {
+            // Summarize the exposures based on a grid defined by the percentages array
+            if (isTotalDistribution) {
+                var percentages = GriddingFunctions.GetPlotPercentages();
+                var weights = exposures.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
+                weights = weights ?? [.. Enumerable.Repeat(1D, exposures.Count)];
                 _percentiles.XValues = percentages;
                 _percentiles.ReferenceValues = exposures
                     .Select(c => c.Exposure)
@@ -282,6 +304,82 @@ namespace MCRA.Simulation.OutputGeneration {
                 weights
             );
             CategorizedHistogramBins = result;
+        }
+
+        public void SummarizeStratifiedBinsGraph(
+            ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
+            IDictionary<Compound, double> relativePotencyFactors,
+            IDictionary<Compound, double> membershipProbabilities,
+            PopulationStratifier populationStratifier,
+            TargetUnit targetUnit,
+            bool isTotalDistribution = true
+        ) {
+
+            if (populationStratifier != null) {
+                {
+                    var positiveExposures = aggregateIndividualExposures
+                        .Where(c => c.GetTotalExposureAtTarget(
+                            targetUnit.Target,
+                            relativePotencyFactors,
+                            membershipProbabilities) > 0
+                        )
+                        .ToList();
+                    var positiveWeights = positiveExposures
+                        .Select(c => c.SimulatedIndividual.SamplingWeight)
+                        .ToList();
+
+                    var result = positiveExposures.MakeCategorizedHistogramBins(
+                        categoryExtractor: (x) => {
+                            var level = populationStratifier.GetLevel(x.SimulatedIndividual);
+                            var categoryContributions = new List<CategoryContribution<string>> { new(level.Code, 1) };
+                            return categoryContributions;
+                        },
+                        valueExtractor: (x) => {
+                            var totalExposure = x.GetTotalExposureAtTarget(
+                                targetUnit.Target,
+                                relativePotencyFactors,
+                                membershipProbabilities
+                            );
+                            return Math.Log10(totalExposure);
+                        },
+                        positiveWeights
+                    );
+                    StratifiedIntakeDistributionBins = result;
+                }
+                // Summarize the exposures based on a grid defined by the percentages array
+                if (isTotalDistribution) {
+                    var exposures = aggregateIndividualExposures
+                        .Select(c => (
+                            Exposure: c.GetTotalExposureAtTarget(
+                                targetUnit.Target,
+                                relativePotencyFactors,
+                                membershipProbabilities
+                            ),
+                            SimulatedIndividual: c.SimulatedIndividual,
+                            StratificationLevel: populationStratifier.GetLevel(c.SimulatedIndividual).Code
+                        ))
+                        .GroupBy(c => c.StratificationLevel)
+                        .ToList();
+
+                    var percentages = GriddingFunctions.GetPlotPercentages();
+                    var stratifiedPercentiles = new List<(string, UncertainDataPointCollection<double>)>();
+                    foreach (var group in exposures) {
+                        var weights = group.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
+                        weights = weights ?? [.. Enumerable.Repeat(1D, exposures.Count)];
+                        var udpCollection = new UncertainDataPointCollection<double> {
+                            XValues = percentages,
+                            ReferenceValues = group
+                                .Select(c => c.Exposure)
+                                .PercentilesWithSamplingWeights(weights, percentages)
+                        };
+                        stratifiedPercentiles.Add((group.Key, udpCollection));
+                    }
+                    StratifiedPercentiles = [.. stratifiedPercentiles.OrderBy(c => c.Item1, StringComparer.OrdinalIgnoreCase)];
+                }
+            } else {
+                StratifiedIntakeDistributionBins = null;
+                StratifiedPercentiles = null;
+            }
         }
     }
 }

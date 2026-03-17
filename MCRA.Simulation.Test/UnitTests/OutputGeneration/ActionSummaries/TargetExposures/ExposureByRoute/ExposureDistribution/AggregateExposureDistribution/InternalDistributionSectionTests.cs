@@ -40,9 +40,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 substances,
                 rpfs,
                 memberships,
-                kineticConversionFactors,
-                routes,
-                externalExposuresUnit,
+                null,
                 targetUnit
             );
             var subHeader = header.AddSubSectionHeaderFor(section, "Graph total", 3);

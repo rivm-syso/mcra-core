@@ -64,15 +64,16 @@ namespace MCRA.Simulation.OutputGeneration {
                         relativePotencyFactors,
                         membershipProbabilities
                     ),
-                    SamplingWeight: c.SimulatedIndividual.SamplingWeight
+                    SimulatedIndividual: c.SimulatedIndividual
                 ))
                 .ToList();
             UpperPercentage = 100 - percentageForUpperTail;
-            CalculatedUpperPercentage = upperIntakes.Select(c => c.SamplingWeight).Sum() / weights.Sum() * 100;
+            CalculatedUpperPercentage = upperIntakes.Select(c => c.SimulatedIndividual.SamplingWeight).Sum() / weights.Sum() * 100;
             LowPercentileValue = upperIntakes.Select(c => c.Exposure).DefaultIfEmpty(double.NaN).Min();
             HighPercentileValue = upperIntakes.Select(c => c.Exposure).DefaultIfEmpty(double.NaN).Max();
             NRecords = upperIntakes.Count;
-            Summarize(upperIntakes);
+            //TODO deze kan weg
+            //Summarize(upperIntakes);
         }
     }
 }

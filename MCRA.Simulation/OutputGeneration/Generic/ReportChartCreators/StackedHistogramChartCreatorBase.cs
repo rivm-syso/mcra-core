@@ -46,14 +46,15 @@ namespace MCRA.Simulation.OutputGeneration {
                     frequency: c.Frequency,
                     midPoint: c.XMidPointValue))
                 .GroupBy(c => c.category)
-                .Select(r => r.Key)
+                .Select(r => r.Key.ToString())
+                .OrderBy(c => c.ToString(), StringComparer.OrdinalIgnoreCase)
                 .ToList();
 
             var nColors = selectedCategories.Count == 1 ? 2 : selectedCategories.Count;
             var stackedHistogramSeries = new StackedHistogramSeries<T>() {
                 Palette = CustomPalettes.DietaryNonDietaryColors(nColors),
                 ShowContributions = ShowContributions,
-                LegendaLabels = selectedCategories.Select(c => c.ToString()).ToList(),
+                LegendaLabels = selectedCategories
             };
             stackedHistogramSeries.Items = categorizedHistogramBins;
             plotModel.Series.Add(stackedHistogramSeries);

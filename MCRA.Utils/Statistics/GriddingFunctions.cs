@@ -55,7 +55,7 @@
             grid.AddRange(Arange(step, 100 - step, 199));
             grid.AddRange(secondPart.Select(p => 100 - p));
             grid.AddRange(firstPart.Select(p => 100 - p));
-            return grid.Distinct().Order().ToArray();
+            return [.. grid.Distinct().Order()];
         }
 
         /// <summary>
