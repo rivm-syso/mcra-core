@@ -362,18 +362,19 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 sub2Header.SaveSummarySection(section);
             }
             {
-                var section = new InternalChronicDistributionUpperSection();
-                var sub2Header = subHeader.AddSubSectionHeaderFor(section, $"Graph upper tail", 2);
+                var section = new ExposureDistributionSection();
+                var sub2Header = subHeader.AddSubSectionHeaderFor(section, $"Exposure distribution", 2);
                 section.Summarize(
                     result.AggregateIndividualExposures,
                     data.ActiveSubstances,
                     data.CorrectedRelativePotencyFactors,
                     data.MembershipProbabilities,
-                    result.KineticConversionFactorsByRouteSubstance,
-                    data.ExposureRoutes,
-                    data.ExternalExposureUnit,
-                    data.TargetExposureUnit,
-                    _configuration.VariabilityUpperTailPercentage
+                    _configuration.VariabilityLowerPercentage,
+                    _configuration.VariabilityUpperPercentage,
+                    result.TargetExposureUnit,
+                    _configuration.IsPerPerson,
+                    outputStratifier,
+                    _configuration.SkipPrivacySensitiveOutputs
                 );
                 sub2Header.SaveSummarySection(section);
             }
@@ -739,7 +740,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             // Toc: Internal exposures by source, route and substance
             subHeader = summarizeSourceRouteSubstanceUncertainty(header, actionResult, data);
 
-
             // Toc: External exposures by source
             subHeader = summarizeExternalSourceUncertainty(header, actionResult, data);
             // Toc: External exposures by route
@@ -762,8 +762,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             }
             header.SaveSummarySection(outputSummary);
         }
-
-
 
         private SectionHeader summarizeExternalSourceRouteUncertainty(
             SectionHeader header,
