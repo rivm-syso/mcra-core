@@ -1,5 +1,4 @@
-﻿using DocumentFormat.OpenXml.Bibliography;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.Stratification;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
@@ -88,6 +87,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 ))
                 .GroupBy(c => c.Stratification)
                 .ToList();
+
             var result = new List<TargetExposurePercentileRecord>();
             foreach (var group in exposureGroups) {
                 if (group.Any(c => c.Exposure > 0)) {

@@ -4,13 +4,11 @@ using MCRA.Simulation.Calculators.Stratification;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.Constants;
 using MCRA.Simulation.Objects;
-using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 using static MCRA.General.TargetUnit;
 
 namespace MCRA.Simulation.OutputGeneration {
 
-    /// </summary>
     public class ExposureDistributionSection : SummarySection {
         public override bool SaveTemporaryData => true;
 
@@ -22,6 +20,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<ExposureDistributionPercentileRecord> BoxPlotRecords { get; set; }
         public List<ExposureDistributionPercentileRecord> StratifiedExposureBoxPlotRecords { get; set; }
         public TargetUnit TargetUnit { get; set; }
+
         public void Summarize(
             ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
             ICollection<Compound> substances,
@@ -30,7 +29,6 @@ namespace MCRA.Simulation.OutputGeneration {
             double lowerPercentage,
             double upperPercentage,
             TargetUnit targetUnit,
-            bool isPerPerson,
             PopulationStratifier outputStratifier,
             bool skipPrivacySensitiveOutputs
         ) {
@@ -65,11 +63,6 @@ namespace MCRA.Simulation.OutputGeneration {
                 percentages
             );
 
-            BoxPlotRecords = summarizeBoxPlotsRecords(
-                exposures,
-                targetUnit
-            );
-
             if (outputStratifier != null) {
                 var groups = exposures
                     .GroupBy(r => outputStratifier.GetLevel(r.SimulatedIndividual));
@@ -92,6 +85,11 @@ namespace MCRA.Simulation.OutputGeneration {
                     })
                     .ToList();
             }
+
+            BoxPlotRecords = summarizeBoxPlotsRecords(
+                exposures,
+                targetUnit
+            );
         }
 
         public List<ExposureDistributionRecord> summarizeExposureRecords(

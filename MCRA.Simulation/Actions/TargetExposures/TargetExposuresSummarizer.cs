@@ -363,7 +363,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             }
             {
                 var section = new ExposureDistributionSection();
-                var sub2Header = subHeader.AddSubSectionHeaderFor(section, $"Exposures", 2);
+                var sub2Header = subHeader.AddSubSectionHeaderFor(section, $"Boxplot total", 2);
                 section.Summarize(
                     result.AggregateIndividualExposures,
                     data.ActiveSubstances,
@@ -372,7 +372,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     _configuration.VariabilityLowerPercentage,
                     _configuration.VariabilityUpperPercentage,
                     result.TargetExposureUnit,
-                    _configuration.IsPerPerson,
                     outputStratifier,
                     _configuration.SkipPrivacySensitiveOutputs
                 );
