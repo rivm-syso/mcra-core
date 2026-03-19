@@ -2,9 +2,7 @@
 using MCRA.General;
 using MCRA.Simulation.Calculators.Stratification;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
-using MCRA.Simulation.Objects;
 using MCRA.Utils;
-using MCRA.Utils.Collections;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.Histograms;
 
@@ -252,58 +250,6 @@ namespace MCRA.Simulation.OutputGeneration {
                     .Select(c => c.Exposure)
                     .PercentilesWithSamplingWeights(weights, percentages);
             }
-        }
-        public void SummarizeCategorizedBins(
-            ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
-            IDictionary<Compound, double> relativePotencyFactors,
-            IDictionary<Compound, double> membershipProbabilities,
-            ICollection<ExposureRoute> routes,
-            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
-            ExposureUnitTriple externalExposureUnit,
-            TargetUnit targetUnit
-        ) {
-            // TODO: revise code
-            var positiveExposures = aggregateIndividualExposures
-                .Where(c => c.GetTotalExposureAtTarget(
-                    targetUnit.Target,
-                    relativePotencyFactors,
-                    membershipProbabilities) > 0
-                )
-                .ToList();
-            var weights = positiveExposures
-                .Select(c => c.SimulatedIndividual.SamplingWeight)
-                .ToList();
-
-            var result = positiveExposures.MakeCategorizedHistogramBins(
-                categoryExtractor: (x) => {
-                    // TODO: route contributions are currently estimated by
-                    // dividing the total external route exposure by the total
-                    // external exposure. This should be reconsidered.
-                    var contributions = x.GetExternalRouteExposureContributions(
-                        routes,
-                        relativePotencyFactors,
-                        membershipProbabilities,
-                        kineticConversionFactors,
-                        externalExposureUnit,
-                        targetUnit
-                    );
-                    var categoryContributions = routes
-                        .Zip(contributions)
-                        .Select(r => new CategoryContribution<ExposureRoute>(r.First, r.Second))
-                        .ToList();
-                    return categoryContributions;
-                },
-                valueExtractor: (x) => {
-                    var totalExposure = x.GetTotalExposureAtTarget(
-                        targetUnit.Target,
-                        relativePotencyFactors,
-                        membershipProbabilities
-                    );
-                    return Math.Log10(totalExposure);
-                },
-                weights
-            );
-            CategorizedHistogramBins = result;
         }
 
         public void SummarizeStratifiedBinsGraph(
