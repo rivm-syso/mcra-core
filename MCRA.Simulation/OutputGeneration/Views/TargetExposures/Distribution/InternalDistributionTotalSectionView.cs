@@ -11,31 +11,55 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             if (Model.PercentageZeroIntake < 100) {
                 {
-                    var chartCreator1 = new InternalChronicDistributionTotalChartCreator(Model, ViewBag.GetUnit("IntakeUnit"));
+                    var histChartCreator = new InternalChronicDistributionTotalChartCreator(Model, ViewBag.GetUnit("IntakeUnit"));
                     var histogramChart = ChartHelpers
                         .Chart(
                             name: "AggregateTotalIntakeDistributionChart",
                             section: Model,
-                            chartCreator: chartCreator1,
+                            chartCreator: histChartCreator,
                             fileType: ChartFileType.Svg,
                             viewBag: ViewBag,
                             saveChartFile: true,
-                            caption: chartCreator1.Title
-                        )
-                        .ToString();
+                            caption: histChartCreator.Title
+                        ).ToString();
 
-                    var chartCreator2 = new InternalCumulativeDistributionChartCreator(Model, ViewBag.GetUnit("IntakeUnit"));
+                    var boxplotChartCreator = new InternalExposureDistributionBoxPlotChartCreator(
+                        Model,
+                        Model.BoxPlotRecords,
+                        Model.TargetUnit,
+                        Model.ShowOutliers,
+                        false
+                    );
+                    var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
+                        name: $"BoxPlotData",
+                        section: Model,
+                        items: Model.BoxPlotRecords,
+                        viewBag: ViewBag
+                    );
+
+                    var boxplotChart = ChartHelpers
+                        .Chart(
+                            name: "BoxPlotChart",
+                            section: Model,
+                            chartCreator: boxplotChartCreator,
+                            fileType: ChartFileType.Svg,
+                            viewBag: ViewBag,
+                            saveChartFile: true,
+                            caption: boxplotChartCreator.Title,
+                            chartData: percentileDataSection
+                        ).ToString();
+
+                    var lineChartCreator = new InternalCumulativeDistributionChartCreator(Model, ViewBag.GetUnit("IntakeUnit"));
                     var lineChart = ChartHelpers
                         .Chart(
                             name: "AggregateTotalIntakeCumulativeDistributionChart",
                             section: Model,
-                            chartCreator: chartCreator2,
+                            chartCreator: lineChartCreator,
                             fileType: ChartFileType.Svg,
                             viewBag: ViewBag,
                             saveChartFile: true,
-                            caption: chartCreator2.Title
-                        )
-                        .ToString();
+                            caption: lineChartCreator.Title
+                        ).ToString();
 
                     panelBuilder.AddPanel(
                         id: "Panel_unstratified",
@@ -45,36 +69,62 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                             "<div class=\"figure-container\">"
                             + histogramChart + lineChart
                             + "</div>"
+                            + boxplotChart
                         )
                     );
                 }
 
                 if ((Model.StratifiedIntakeDistributionBins?.Count ?? 0) > 1) {
-                    var chartCreator1 = new StratifiedStackedHistogramChartCreator(Model, ViewBag.GetUnit("IntakeUnit"));
+                    var histChartCreator = new StratifiedStackedHistogramChartCreator(Model, ViewBag.GetUnit("IntakeUnit"));
                     var histogramChart = ChartHelpers
                         .Chart(
                             name: "StratifiedStackedHistogramChart",
                             section: Model,
-                            chartCreator: chartCreator1,
+                            chartCreator: histChartCreator,
                             fileType: ChartFileType.Svg,
                             viewBag: ViewBag,
-                            caption: chartCreator1.Title,
+                            caption: histChartCreator.Title,
                             saveChartFile: true
-                        )
-                        .ToString();
+                        ).ToString();
 
-                    var chartCreator2 = new InternalStratifiedCumulativeDistributionChartCreator(Model, ViewBag.GetUnit("IntakeUnit"));
+                    var boxplotChartCreator = new InternalExposureDistributionBoxPlotChartCreator(
+                        Model,
+                        Model.StratifiedExposureBoxPlotRecords,
+                        Model.TargetUnit,
+                        Model.ShowOutliers,
+                        true
+                    );
+
+                    var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
+                        name: $"StratifiedBoxPlotData",
+                        section: Model,
+                        items: Model.StratifiedExposureBoxPlotRecords,
+                        viewBag: ViewBag
+                    );
+
+                    var boxplotChart = ChartHelpers
+                        .Chart(
+                            name: "StratifiedBoxPlotChart",
+                            section: Model,
+                            chartCreator: boxplotChartCreator,
+                            fileType: ChartFileType.Svg,
+                            viewBag: ViewBag,
+                            caption: boxplotChartCreator.Title,
+                            saveChartFile: true,
+                            chartData: percentileDataSection
+                        ).ToString();
+
+                    var lineChartCreator = new InternalStratifiedCumulativeDistributionChartCreator(Model, ViewBag.GetUnit("IntakeUnit"));
                     var lineChart = ChartHelpers
                         .Chart(
                             name: "StratifiedCumulativeDistributionChart",
                             section: Model,
-                            chartCreator: chartCreator2,
+                            chartCreator: lineChartCreator,
                             fileType: ChartFileType.Svg,
                             viewBag: ViewBag,
                             saveChartFile: true,
-                            caption: chartCreator2.Title
-                        )
-                        .ToString();
+                            caption: lineChartCreator.Title
+                        ).ToString();
 
                     panelBuilder.AddPanel(
                         id: "Panel_stratified",
@@ -84,10 +134,25 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                             "<div class=\"figure-container\">"
                             + histogramChart + lineChart
                             + "</div>"
+                            + boxplotChart
                         )
                     );
                 }
                 panelBuilder.RenderPanel(sb, collapseSingleTab: true);
+
+                var hiddenProperties = new List<string>();
+                if (Model.Records.All(c => string.IsNullOrEmpty(c.Stratification))) {
+                    hiddenProperties.Add(nameof(ExposureDistributionRecord.Stratification));
+                }
+                sb.AppendTable(
+                    Model,
+                    Model.Records,
+                    "ExposureDistributionTable",
+                    ViewBag,
+                    caption: "Exposure statistics (total distribution).",
+                    saveCsv: true,
+                    hiddenProperties: hiddenProperties
+                );
             } else {
                 sb.AppendNotification("No positive exposures.");
             }

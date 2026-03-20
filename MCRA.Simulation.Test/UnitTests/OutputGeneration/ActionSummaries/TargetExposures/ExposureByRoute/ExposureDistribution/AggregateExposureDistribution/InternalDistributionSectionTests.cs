@@ -2,7 +2,6 @@
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.TargetExposures {
     /// <summary>
@@ -40,10 +39,13 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 substances,
                 rpfs,
                 memberships,
+                targetUnit,
                 null,
-                targetUnit
+                2.5,
+                97.5,
+                false
             );
-            var subHeader = header.AddSubSectionHeaderFor(section, "Graph total", 3);
+            var subHeader = header.AddSubSectionHeaderFor(section, "Summary", 3);
             var section1 = subHeader.GetSummarySection() as InternalDistributionTotalSection;
             AssertIsValidView(section1);
         }

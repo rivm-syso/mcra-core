@@ -350,29 +350,16 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             var subHeader = header.AddEmptySubSectionHeader($"Distribution", subOrder++);
             {
                 var section = new InternalDistributionTotalSection();
-                var sub2Header = subHeader.AddSubSectionHeaderFor(section, $"Graph total", 1);
+                var sub2Header = subHeader.AddSubSectionHeaderFor(section, $"Summary", 1);
                 section.Summarize(
                     result.AggregateIndividualExposures,
                     data.ActiveSubstances,
                     data.CorrectedRelativePotencyFactors,
                     data.MembershipProbabilities,
+                    data.TargetExposureUnit,
                     outputStratifier,
-                    data.TargetExposureUnit
-                );
-                sub2Header.SaveSummarySection(section);
-            }
-            {
-                var section = new ExposureDistributionSection();
-                var sub2Header = subHeader.AddSubSectionHeaderFor(section, $"Boxplot total", 2);
-                section.Summarize(
-                    result.AggregateIndividualExposures,
-                    data.ActiveSubstances,
-                    data.CorrectedRelativePotencyFactors,
-                    data.MembershipProbabilities,
                     _configuration.VariabilityLowerPercentage,
                     _configuration.VariabilityUpperPercentage,
-                    result.TargetExposureUnit,
-                    outputStratifier,
                     _configuration.SkipPrivacySensitiveOutputs
                 );
                 sub2Header.SaveSummarySection(section);
@@ -393,37 +380,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         _configuration.UncertaintyLowerBound,
                         _configuration.UncertaintyUpperBound,
                         [.. _configuration.SelectedPercentiles]
-                    );
-                    sub2Header.SaveSummarySection(section);
-                }
-
-                {
-                    var relativePotencyFactors = data.CorrectedRelativePotencyFactors
-                        ?? data.ActiveSubstances.ToDictionary(r => r, r => 1D);
-                    var membershipProbabilities = data.MembershipProbabilities
-                        ?? data.ActiveSubstances.ToDictionary(r => r, r => 1D);
-                    var exposures = result.AggregateIndividualExposures
-                        .Select(c => c.GetTotalExposureAtTarget(
-                                data.TargetExposureUnit.Target,
-                                relativePotencyFactors,
-                                membershipProbabilities
-                            )
-                        ).ToList();
-                    var samplingWeights = result.AggregateIndividualExposures
-                        .Select(c => c.SimulatedIndividual.SamplingWeight)
-                        .ToList();
-                    var section = new IntakePercentageSection();
-                    var sub2Header = subHeader.AddSubSectionHeaderFor(section, "Percentages", 4);
-                    var exposureLevels = ExposureLevelsCalculator.GetExposureLevels(
-                        exposures,
-                        _configuration.ExposureMethod,
-                        [.. _configuration.ExposureLevels]
-                    );
-                    section.Summarize(
-                        exposures,
-                        samplingWeights,
-                        data.ReferenceSubstance,
-                        exposureLevels
                     );
                     sub2Header.SaveSummarySection(section);
                 }

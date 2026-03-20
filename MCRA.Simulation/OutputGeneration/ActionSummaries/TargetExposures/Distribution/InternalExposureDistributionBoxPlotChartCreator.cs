@@ -3,16 +3,16 @@ using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class BoxPlotChartCreator : BoxPlotChartCreatorBase {
+    public sealed class InternalExposureDistributionBoxPlotChartCreator : BoxPlotChartCreatorBase {
 
-        private readonly ExposureDistributionSection _section;
+        private readonly InternalDistributionTotalSection _section;
         private readonly List<ExposureDistributionPercentileRecord> _records;
         private readonly string _unit;
         private readonly bool _showOutliers;
         private readonly bool _stratified;
 
-        public BoxPlotChartCreator(
-            ExposureDistributionSection section,
+        public InternalExposureDistributionBoxPlotChartCreator(
+            InternalDistributionTotalSection section,
             List<ExposureDistributionPercentileRecord> records,
             TargetUnit unit,
             bool showOutliers,
