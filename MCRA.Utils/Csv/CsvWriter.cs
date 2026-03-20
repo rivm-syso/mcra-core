@@ -171,6 +171,7 @@ namespace MCRA.Utils.Csv {
                     if (generateField ?? true) {
                         var formatAttribute = property.GetAttribute<DisplayFormatAttribute>(false);
                         var isInteger = property.PropertyType == typeof(int) || property.PropertyType == typeof(int?);
+                        var isDateTime = property.PropertyType == typeof(DateTime) || property.PropertyType == typeof(DateTime?);
                         var isEnum = property.PropertyType.IsSubclassOf(typeof(Enum));
                         var propertyValue = property.GetValue(tableRow, null);
                         string cellValue;
@@ -199,6 +200,11 @@ namespace MCRA.Utils.Csv {
                             }
                         } else if (formatAttribute != null) {
                             cellValue = string.Format(CultureInfo.InvariantCulture, formatAttribute.DataFormatString, propertyValue);
+                        } else if (isDateTime) {
+                            //default datetime formatting when no specific formatting has been provided
+                            var dt = (DateTime)propertyValue;
+                            //don't write time of day when it is zero
+                            cellValue = dt.TimeOfDay == TimeSpan.Zero ? dt.ToString("yyyy-MM-dd") : dt.ToString("yyyy-MM-dd HH:mm:ss");
                         } else {
                             cellValue = stringToCSVCell(string.Format(CultureInfo.InvariantCulture, "{0}", propertyValue), true);
                         }
