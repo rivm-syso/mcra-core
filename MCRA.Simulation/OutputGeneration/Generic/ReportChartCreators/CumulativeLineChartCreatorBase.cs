@@ -19,7 +19,10 @@ namespace MCRA.Simulation.OutputGeneration {
             var minimum = double.MaxValue;
             var maximum = double.MinValue;
             if (percentiles.Any()) {
-                minimum = percentiles.Min(c => c.ReferenceValue * 0.9);
+                minimum = percentiles
+                    .Where(c => c.XValue > 0.1 && c.ReferenceValue > 0)
+                    .Select(c => c.ReferenceValue * 0.9)
+                    .MinOrDefault(minimum);
                 maximum = percentiles.Max(c => c.ReferenceValue * 1.1);
             }
             var allUncertaintyValues = percentiles.SelectMany(c => c.UncertainValues).Where(c => c > 0);
@@ -89,7 +92,11 @@ namespace MCRA.Simulation.OutputGeneration {
             foreach (var group in stratifiedPercentiles) {
                 // Values from nominal run
                 if (group.percentiles.Any()) {
-                    minimum = Math.Min(minimum, group.percentiles.Min(c => c.ReferenceValue) * 0.9);
+                    var groupMin = group.percentiles
+                        .Where(c => c.XValue > 0.1 && c.ReferenceValue > 0)
+                        .Select(c => c.ReferenceValue * 0.9)
+                        .MinOrDefault(minimum);
+                    minimum = Math.Min(groupMin, minimum);
                     maximum = Math.Max(maximum, group.percentiles.Max(c => c.ReferenceValue) * 1.1);
                 }
                 // Values from uncertainty run
