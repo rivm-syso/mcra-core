@@ -7,11 +7,14 @@ using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
 
-    public sealed class ExposureDistributionPercentilesSection : SummarySection {
+    public sealed class ExposureDistributionPercentilesSection : PercentileBootstrapSectionBase<IntakePercentileExposureBootstrapRecord> {
 
         public override bool SaveTemporaryData => true;
-
+        public double UncertaintyLowerLimit { get; set; } = 2.5;
+        public double UncertaintyUpperLimit { get; set; } = 97.5;
         public List<TargetExposurePercentileRecord> Records { get; set; } = [];
+
+        public bool Stratify { get; set; }
 
         /// <summary>
         /// Summarizes the exposures for OIM,BBN,LNN0.
@@ -51,6 +54,7 @@ namespace MCRA.Simulation.OutputGeneration {
              );
 
             if (outputStratifier != null) {
+                Stratify = true;
                 var stratifiedRecords = computePercentileRecords(
                     aggregateIndividualExposures,
                     relativePotencyFactors,
@@ -65,7 +69,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        private static List<TargetExposurePercentileRecord> computePercentileRecords(
+        private List<TargetExposurePercentileRecord> computePercentileRecords(
             ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
@@ -75,6 +79,9 @@ namespace MCRA.Simulation.OutputGeneration {
             TargetUnit targetUnit,
             PopulationStratifier outputStratifier = null
         ) {
+            UncertaintyLowerLimit = uncertaintyLowerBound;
+            UncertaintyUpperLimit = uncertaintyUpperBound;
+
             var exposureGroups = aggregateIndividualExposures
                 .Select(c => (
                     SamplingWeight: c.SimulatedIndividual.SamplingWeight,
