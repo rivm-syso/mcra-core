@@ -14,14 +14,21 @@ namespace MCRA.Simulation.OutputGeneration {
             string xtitle
         ) {
             var plotModel = createDefaultPlotModel();
-            var allUncertaintyValues = percentiles.SelectMany(c => c.UncertainValues).Where(c => c > 0);
-            var maximumUncertainty = allUncertaintyValues.Any() ? allUncertaintyValues.Max() : 0;
-            var maximum = percentiles.Any() ? percentiles.Max(c => c.ReferenceValue) : 0;
-            maximum = Math.Max(maximumUncertainty, maximum);
 
-            var minimum = percentiles.Any(c => c.XValue > 0.1 && c.ReferenceValue > 0)
-                ? percentiles.Where(c => c.XValue > 0.1 && c.ReferenceValue > 0).Min(c => c.ReferenceValue)
-                : 1e-3;
+            // Determine minimum and maximum
+            var minimum = double.MaxValue;
+            var maximum = double.MinValue;
+            if (percentiles.Any()) {
+                minimum = percentiles.Min(c => c.ReferenceValue * 0.9);
+                maximum = percentiles.Max(c => c.ReferenceValue * 1.1);
+            }
+            var allUncertaintyValues = percentiles.SelectMany(c => c.UncertainValues).Where(c => c > 0);
+            if (allUncertaintyValues.Any()) {
+                minimum = Math.Min(minimum, allUncertaintyValues.Min() * 0.9);
+                maximum = Math.Max(maximum, allUncertaintyValues.Max() * 1.1);
+            }
+
+            // Create axes
             var horizontalAxis = createLogarithmicAxis(xtitle, minimum, maximum);
             plotModel.Axes.Add(horizontalAxis);
 
@@ -34,7 +41,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 StrokeThickness = 0.8
             };
             referenceLineSeries.Points.AddRange(percentiles
-                .Select(r => new DataPoint(r.ReferenceValue, r.XValue / 100D)));
+                .Select(r => new DataPoint(r.ReferenceValue, r.XValue / 100D))
+            );
             plotModel.Series.Add(referenceLineSeries);
 
             if (percentiles.Any() && percentiles.First().UncertainValues.Any()) {
@@ -45,11 +53,14 @@ namespace MCRA.Simulation.OutputGeneration {
                     StrokeThickness = .5,
                 };
                 areaSeries.Points.AddRange(percentiles
-                    .Select(r => new DataPoint(r.Percentile(uncertaintyLowerLimit), r.XValue / 100D)));
+                    .Select(r => new DataPoint(r.Percentile(uncertaintyLowerLimit), r.XValue / 100D))
+                );
+                
                 //Add extra datapoint to get correct uncertainty area in plot (aligned to right vertical axes)
                 areaSeries.Points.Add(new DataPoint(maximum, percentiles.XValues.Last() / 100d));
                 areaSeries.Points2.AddRange(percentiles
-                    .Select(r => new DataPoint(r.Percentile(uncertaintyUpperLimit), r.XValue / 100D)));
+                    .Select(r => new DataPoint(r.Percentile(uncertaintyUpperLimit), r.XValue / 100D))
+                );
 
                 plotModel.Series.Add(areaSeries);
             }
@@ -63,26 +74,39 @@ namespace MCRA.Simulation.OutputGeneration {
             string xtitle
         ) {
             var plotModel = createDefaultPlotModel();
+
+            // Create legend
             var legend = new Legend() {
                 LegendPlacement = LegendPlacement.Inside,
-                LegendTitle = new string(' ', 20),
-                LegendBackground = OxyColors.Transparent,
-                LegendBorder = OxyColors.Transparent,
+                LegendPosition = LegendPosition.TopLeft
             };
             plotModel.Legends.Add(legend);
             plotModel.IsLegendVisible = true;
+
+            // Determine minimum and maximum
             var minimum = double.MaxValue;
             var maximum = double.MinValue;
+            foreach (var group in stratifiedPercentiles) {
+                // Values from nominal run
+                if (group.percentiles.Any()) {
+                    minimum = Math.Min(minimum, group.percentiles.Min(c => c.ReferenceValue) * 0.9);
+                    maximum = Math.Max(maximum, group.percentiles.Max(c => c.ReferenceValue) * 1.1);
+                }
+                // Values from uncertainty run
+                var allUncertaintyValues = group.percentiles.SelectMany(c => c.UncertainValues).Where(c => c > 0);
+                if (allUncertaintyValues.Any()) {
+                    minimum = Math.Min(minimum, allUncertaintyValues.Min() * 0.9);
+                    maximum = Math.Max(maximum, allUncertaintyValues.Max() * 1.1);
+                }
+            }
+
+            // Create palette
             var nColors = stratifiedPercentiles.Count == 1 ? 2 : stratifiedPercentiles.Count;
             var palette = CustomPalettes.DietaryNonDietaryColors(nColors);
+
+            // Create line and area series per stratification group
             var counter = 0;
             foreach (var group in stratifiedPercentiles) {
-                var allUncertaintyValues = group.percentiles.SelectMany(c => c.UncertainValues).Where(c => c > 0);
-                var maximumUncertainty = allUncertaintyValues.Any() ? allUncertaintyValues.Max() : 0;
-                maximum = Math.Max(maximum, Math.Max(maximumUncertainty, group.percentiles.Any() ? group.percentiles.Max(c => c.ReferenceValue) : 0));
-                minimum = Math.Min(minimum, Math.Min(minimum, group.percentiles.Any(c => c.XValue > 0.1 && c.ReferenceValue > 0)
-                    ? group.percentiles.Where(c => c.XValue > 0.1 && c.ReferenceValue > 0).Min(c => c.ReferenceValue)
-                    : 1e-3));
                 var referenceLineSeries = new LineSeries() {
                     Color = palette.Colors[counter],
                     LineStyle = LineStyle.Solid,
@@ -111,6 +135,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 }
                 counter++;
             }
+
             var horizontalAxis = createLogarithmicAxis(xtitle, minimum, maximum);
             plotModel.Axes.Add(horizontalAxis);
 
