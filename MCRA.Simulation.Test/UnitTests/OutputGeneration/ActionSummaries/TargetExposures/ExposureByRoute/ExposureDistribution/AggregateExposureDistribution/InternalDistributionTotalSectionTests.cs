@@ -1,5 +1,5 @@
-﻿using MCRA.Simulation.OutputGeneration;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using MCRA.General;
+using MCRA.Simulation.OutputGeneration;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.TargetExposures {
     /// <summary>
@@ -11,8 +11,11 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
         /// Test AggregateTotalIntakeDistributionSection view
         /// </summary>
         [TestMethod]
-        public void AggregateChronicTotalIntakeDistributionSection_Test1() {
+        public void InternalDistributionTotalSection_TestView() {
             var section = new InternalDistributionTotalSection() {
+                TargetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Blood),
+                Records = [],
+                BoxPlotRecords = [],
                 IntakeDistributionBins = [],
                 CategorizedHistogramBins = [],
             };
