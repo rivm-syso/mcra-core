@@ -1,4 +1,6 @@
-﻿namespace MCRA.Utils.Statistics.Histograms {
+﻿using DocumentFormat.OpenXml.InkML;
+
+namespace MCRA.Utils.Statistics.Histograms {
 
     /// <summary>
     /// Extension utility class for producing and handling histogram bins.
@@ -395,19 +397,46 @@
 
             var binSize = (maxBound - minBound) / numberOfBins;
             var sourceValues = source.Select(v => valueExtractor(v)).ToList();
-            for (int i = 0; i < numberOfBins; i++) {
-                var xMinValue = (bins.Count == 0) ? minBound : bins.Last().XMaxValue;
+            var xMaxValue = minBound;
+            for (int i = 0; i < numberOfBins - 1; i++) {
+                var xMinValue = xMaxValue;
+                xMaxValue = xMinValue + binSize;
                 var bin = new CategorizedHistogramBin<TCategories>() {
                     XMinValue = xMinValue,
-                    XMaxValue = xMinValue + binSize,
+                    XMaxValue = xMaxValue,
                 };
-                bin.Frequency = source.Zip(weightsNormalized, (v, w) => (valueExtractor(v) >= bin.XMinValue && valueExtractor(v) < bin.XMaxValue) ? w : 0).Sum();
+                bin.Frequency = source
+                    .Zip(
+                        weightsNormalized,
+                        (v, w) => (valueExtractor(v) >= bin.XMinValue && valueExtractor(v) < bin.XMaxValue) ? w : 0
+                    )
+                    .Sum();
                 bin.ContributionFractions = [.. source
                     .Where(v => valueExtractor(v) >= bin.XMinValue && valueExtractor(v) < bin.XMaxValue)
                     .SelectMany(v => categoryExtractor(v))
                     .GroupBy(g => g.Category)
                     .Select(g => new CategoryContribution<TCategories>(g.Key, g.Sum(v => v.Contribution)))];
                 bins.Add(bin);
+            }
+            {
+                var xMinValue = xMaxValue; // X min value starts at X max from previous bin
+                var lastBin = new CategorizedHistogramBin<TCategories>() {
+                    XMinValue = xMaxValue,
+                    XMaxValue = maxBound
+                };
+                lastBin.Frequency = BMath.Ceiling(
+                    source.Zip(
+                        weightsNormalized,
+                        (v, w) => (valueExtractor(v) >= lastBin.XMinValue && valueExtractor(v) <= lastBin.XMaxValue) ? w : 0
+                    )
+                    .Sum()
+                );
+                lastBin.ContributionFractions = [.. source
+                    .Where(v => valueExtractor(v) >= lastBin.XMinValue && valueExtractor(v) <= lastBin.XMaxValue)
+                    .SelectMany(v => categoryExtractor(v))
+                    .GroupBy(g => g.Category)
+                    .Select(g => new CategoryContribution<TCategories>(g.Key, g.Sum(v => v.Contribution)))];
+                bins.Add(lastBin);
             }
 
             // Hack: it may happen that XMaxValue of the last bin is greater than maxBound
