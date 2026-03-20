@@ -25,7 +25,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 sb.AppendTable(
                     Model,
                     Model.Records,
-                    "DistributionPercentilesTable",
+                    "IntakePercentileTable",
                     ViewBag,
                     header: true,
                     caption: "Percentiles",
