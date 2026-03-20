@@ -31,6 +31,28 @@ namespace MCRA.Utils.Test.UnitTests.DataSourceReading {
             }
         }
 
+        [TestMethod]
+        public void FieldTypeConverter_TestReadDefaultTypeMappings() {
+            var csvFilePath = @"Resources/CsvReaderTests/Test.csv";
+            using (var reader = new StreamReader(csvFilePath)) {
+                var stream = reader.BaseStream;
+                var csvReader = new CsvDataReader(
+                    stream,
+                    fieldTypes: [typeof(int), typeof(double), typeof(DateTime), typeof(string), typeof(bool), typeof(string)]
+                );
+                var records = csvReader.ReadRecords<Test>().ToList();
+                var record = records[4];
+                Assert.AreEqual(15, record.IntField);
+                Assert.AreEqual(2.5, record.NumericField);
+                Assert.AreEqual(2001, record.DateField.Year);
+                Assert.AreEqual(2, record.DateField.Month);
+                Assert.AreEqual(1, record.DateField.Day);
+                Assert.AreEqual("EE E", record.AlphaNumericField);
+                Assert.IsFalse(record.BooleanField);
+                Assert.HasCount(7, records);
+            }
+        }
+
         internal class Test {
             public int Unmapped { get; set; }
             public int? IntField { get; set; }

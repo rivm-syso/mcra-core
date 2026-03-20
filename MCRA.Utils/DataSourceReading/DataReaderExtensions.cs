@@ -191,7 +191,7 @@ namespace MCRA.Utils.DataFileReading {
             if (property.GetAttribute<IgnoreFieldAttribute>(false) != null) {
                 return -1;
             }
-            var required = property.GetAttribute<RequiredFieldAttribute>(false)?.Required ?? true;
+            var required = property.GetAttribute<RequiredFieldAttribute>(false)?.Required ?? false;
 
             var columnIndexAttribute = property.GetAttribute<ColumnIndexAttribute>(false);
             if (columnIndexAttribute != null) {
