@@ -1,5 +1,24 @@
 # Change Log
 
+## Version 10.2.17 (2026-03-23)
+
+### Added
+
+- Add support for oral route in occupational exposures module (#2386)
+- Add option in internal exposures module to stratify outputs by sex and occupational scenario (#2388)
+- EBD, create implement options to force PAF values >= 0 (#2427)
+
+### Changed
+
+- Remove all EBD fields for standardised exposed (attributable) Bods incl uncertainty (#2428)
+
+### Fixed
+
+- Implement default body exposure fraction in AirExposures module (#2423)
+- Correct boxplots in internal exposures by substance section (#2435)
+- Use "yyyy-MM-dd HH:mm:ss" as default format for writing DateTime values to CSV when no formatting is provided
+- Wrong default for 'required' when required attribute is null in DataReaderExtensions.findMatchingHeader
+
 ## Version 10.2.16 (2026-02-27)
 
 ### Fixed
