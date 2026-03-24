@@ -176,4 +176,10 @@
     <Description>The variable used to categorise individuals into distinct subgroups for presentation of stratified outputs.</Description>
     <ValueType>OutputStratificationVariable</ValueType>
   </SettingsItem>
+  <SettingsItem>
+    <Id>CoExposure</Id>
+    <Name>Show co-exposure</Name>
+    <Description>Show co-exposure in output.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
 </SettingsItems>

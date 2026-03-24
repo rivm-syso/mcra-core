@@ -22,7 +22,6 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<ExposureDistributionRecord> Records { get; set; }
         public List<ExposureDistributionPercentileRecord> BoxPlotRecords { get; set; }
         public List<ExposureDistributionPercentileRecord> StratifiedExposureBoxPlotRecords { get; set; }
-        public TargetUnit TargetUnit { get; set; }
 
         public void Summarize(
             ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
@@ -33,7 +32,9 @@ namespace MCRA.Simulation.OutputGeneration {
             PopulationStratifier outputStratifier,
             double lowerPercentage,
             double upperPercentage,
-            bool skipPrivacySensitiveOutputs
+            bool skipPrivacySensitiveOutputs,
+            List<int> coExposureIds = null
+
         ) {
             if (substances.Count == 1) {
                 relativePotencyFactors = relativePotencyFactors
@@ -57,7 +58,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 relativePotencyFactors,
                 membershipProbabilities,
                 outputStratifier,
-                targetUnit
+                targetUnit,
+                coExposureIds
             );
 
             SummarizeStratifiedBinsGraph(
@@ -89,42 +91,12 @@ namespace MCRA.Simulation.OutputGeneration {
                 var groupRecords = groups
                     .SelectMany(r => summarizeExposureRecords([.. r], percentages, r.Key));
                 Records.AddRange(groupRecords);
-                StratifiedExposureBoxPlotRecords = groups
-                    .SelectMany(r => summarizeBoxPlotsRecords([.. r], targetUnit, r.Key))
-                    .ToList();
+                StratifiedExposureBoxPlotRecords = [.. groups.SelectMany(r => summarizeBoxPlotsRecords([.. r], targetUnit, r.Key))];
             }
 
             BoxPlotRecords = summarizeBoxPlotsRecords(
                 exposures,
                 targetUnit
-            );
-        }
-
-        public void Summarize(
-            List<int> coExposureIds,
-            ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
-            IDictionary<Compound, double> relativePotencyFactors,
-            IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
-            ICollection<ExposureRoute> routes,
-            ExposureUnitTriple externalExposureUnit,
-            TargetUnit targetUnit,
-            double[] percentages,
-            double uncertaintyLowerLimit,
-            double uncertaintyUpperLimit
-        ) {
-            summarize(
-                coExposureIds,
-                aggregateIndividualDayExposures,
-                relativePotencyFactors,
-                membershipProbabilities,
-                kineticConversionFactors,
-                routes,
-                externalExposureUnit,
-                targetUnit,
-                percentages,
-                uncertaintyLowerLimit,
-                uncertaintyUpperLimit
             );
         }
 
@@ -250,7 +222,6 @@ namespace MCRA.Simulation.OutputGeneration {
             };
             return record;
         }
-
         private static ExposureDistributionPercentileRecord getBoxPlotRecord(
             List<(SimulatedIndividual SimulatedIndividual, double Exposure)> exposures,
             TargetUnit targetUnit,

@@ -20,17 +20,11 @@ namespace MCRA.Simulation.OutputGeneration {
             var maximum = double.MinValue;
             if (percentiles.Any()) {
                 minimum = percentiles
-                    .Where(c => c.XValue > 0.1 && c.ReferenceValue > 0)
+                    .Where(c => c.XValue > 1 && c.ReferenceValue > 0)
                     .Select(c => c.ReferenceValue * 0.9)
                     .MinOrDefault(minimum);
                 maximum = percentiles.Max(c => c.ReferenceValue * 1.1);
             }
-            var allUncertaintyValues = percentiles.SelectMany(c => c.UncertainValues).Where(c => c > 0);
-            if (allUncertaintyValues.Any()) {
-                minimum = Math.Min(minimum, allUncertaintyValues.Min() * 0.9);
-                maximum = Math.Max(maximum, allUncertaintyValues.Max() * 1.1);
-            }
-
             // Create axes
             var horizontalAxis = createLogarithmicAxis(xtitle, minimum, maximum);
             plotModel.Axes.Add(horizontalAxis);
@@ -93,17 +87,11 @@ namespace MCRA.Simulation.OutputGeneration {
                 // Values from nominal run
                 if (group.percentiles.Any()) {
                     var groupMin = group.percentiles
-                        .Where(c => c.XValue > 0.1 && c.ReferenceValue > 0)
+                        .Where(c => c.XValue > 1 && c.ReferenceValue > 0)
                         .Select(c => c.ReferenceValue * 0.9)
                         .MinOrDefault(minimum);
                     minimum = Math.Min(groupMin, minimum);
                     maximum = Math.Max(maximum, group.percentiles.Max(c => c.ReferenceValue) * 1.1);
-                }
-                // Values from uncertainty run
-                var allUncertaintyValues = group.percentiles.SelectMany(c => c.UncertainValues).Where(c => c > 0);
-                if (allUncertaintyValues.Any()) {
-                    minimum = Math.Min(minimum, allUncertaintyValues.Min() * 0.9);
-                    maximum = Math.Max(maximum, allUncertaintyValues.Max() * 1.1);
                 }
             }
 

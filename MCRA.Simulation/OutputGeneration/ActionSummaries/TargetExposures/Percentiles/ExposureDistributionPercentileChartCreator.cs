@@ -51,7 +51,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public override PlotModel Create() {
             var palette = CustomPalettes.DietaryNonDietaryColors(_numberOfStratifications);
             var records = _section.Records.Where(c => c.Stratification == _category).ToList();
-            var color = _numberOfStratifications == 0 ? OxyColors.RoyalBlue : palette.Colors[_paletteColor];
+            var color = _numberOfStratifications == 0 ? OxyColor.FromAColor(100, OxyColors.RoyalBlue) : palette.Colors[_paletteColor];
             return create(records, color);
         }
 

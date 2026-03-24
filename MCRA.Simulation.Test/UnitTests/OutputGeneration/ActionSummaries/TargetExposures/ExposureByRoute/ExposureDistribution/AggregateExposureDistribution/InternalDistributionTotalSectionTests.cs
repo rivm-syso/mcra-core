@@ -16,8 +16,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 TargetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Blood),
                 Records = [],
                 BoxPlotRecords = [],
-                IntakeDistributionBins = [],
-                CategorizedHistogramBins = [],
+                IntakeDistributionBins = []
             };
 
             AssertIsValidView(section);

@@ -28,7 +28,7 @@ namespace MCRA.Simulation.OutputGeneration {
                _section.Percentiles,
                _section.UncertaintyLowerLimit,
                _section.UncertaintyUpperLimit,
-               $"exposure ({_intakeUnit})"
+               $"Exposure ({_intakeUnit})"
            );
         }
     }

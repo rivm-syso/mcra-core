@@ -415,7 +415,8 @@ namespace MCRA.Utils.Statistics.Histograms {
                     .Where(v => valueExtractor(v) >= bin.XMinValue && valueExtractor(v) < bin.XMaxValue)
                     .SelectMany(v => categoryExtractor(v))
                     .GroupBy(g => g.Category)
-                    .Select(g => new CategoryContribution<TCategories>(g.Key, g.Sum(v => v.Contribution)))];
+                    .Select(g => new CategoryContribution<TCategories>(g.Key, g.Sum(v => v.Contribution)))
+                    .OrderBy(c => c.Category.ToString(), StringComparer.OrdinalIgnoreCase)];
                 bins.Add(bin);
             }
             {

@@ -17,7 +17,6 @@ namespace MCRA.Simulation.OutputGeneration {
         public bool Stratify { get; set; }
 
         /// <summary>
-        /// Summarizes the exposures for OIM,BBN,LNN0.
         /// Percentiles (output) from specified percentages (input).
         /// </summary>
         /// <param name="intakes"></param>
@@ -25,7 +24,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="referenceSubstance"></param>
         /// <param name="percentages"></param>
         public void Summarize(
-            ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
+            ICollection<AggregateIndividualExposure> aggregates,
             ICollection<Compound> substances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
@@ -44,7 +43,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
 
             Records = computePercentileRecords(
-                aggregateIndividualExposures,
+                aggregates,
                 relativePotencyFactors,
                 membershipProbabilities,
                 uncertaintyLowerBound,
@@ -56,7 +55,7 @@ namespace MCRA.Simulation.OutputGeneration {
             if (outputStratifier != null) {
                 Stratify = true;
                 var stratifiedRecords = computePercentileRecords(
-                    aggregateIndividualExposures,
+                    aggregates,
                     relativePotencyFactors,
                     membershipProbabilities,
                     uncertaintyLowerBound,
@@ -70,7 +69,7 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         private List<TargetExposurePercentileRecord> computePercentileRecords(
-            ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
+            ICollection<AggregateIndividualExposure> aggregates,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             double uncertaintyLowerBound,
@@ -82,7 +81,7 @@ namespace MCRA.Simulation.OutputGeneration {
             UncertaintyLowerLimit = uncertaintyLowerBound;
             UncertaintyUpperLimit = uncertaintyUpperBound;
 
-            var exposureGroups = aggregateIndividualExposures
+            var exposureGroups = aggregates
                 .Select(c => (
                     SamplingWeight: c.SimulatedIndividual.SamplingWeight,
                     Exposure: c.GetTotalExposureAtTarget(
@@ -124,30 +123,30 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         public void SummarizeUncertainty(
-            ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
+            ICollection<AggregateIndividualExposure> aggregates,
             ICollection<Compound> substances,
-            IDictionary<Compound, double> rpfs,
-            IDictionary<Compound, double> memberships,
+            IDictionary<Compound, double> relativePotencyFactors,
+            IDictionary<Compound, double> membershipProbabilities,
             List<double> percentages,
             TargetUnit targetUnit,
             PopulationStratifier outputStratifier
         ) {
-            rpfs = rpfs ?? substances.ToDictionary(r => r, r => 1D);
-            memberships = memberships ?? substances.ToDictionary(r => r, r => 1D);
+            relativePotencyFactors = relativePotencyFactors ?? substances.ToDictionary(r => r, r => 1D);
+            membershipProbabilities = membershipProbabilities ?? substances.ToDictionary(r => r, r => 1D);
 
             updatePercentileRecords(
-                aggregateIndividualExposures,
-                rpfs,
-                memberships,
+                aggregates,
+                relativePotencyFactors,
+                membershipProbabilities,
                 targetUnit,
                 percentages
             );
 
             if (outputStratifier != null) {
                 updatePercentileRecords(
-                    aggregateIndividualExposures,
-                    rpfs,
-                    memberships,
+                    aggregates,
+                    relativePotencyFactors,
+                    membershipProbabilities,
                     targetUnit,
                     percentages,
                     outputStratifier
@@ -156,20 +155,20 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         private void updatePercentileRecords(
-            ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
+            ICollection<AggregateIndividualExposure> aggregates,
             IDictionary<Compound, double> rpfs,
-            IDictionary<Compound, double> memberships,
+            IDictionary<Compound, double> membershipProbabilities,
             TargetUnit targetUnit,
             List<double> percentages,
             PopulationStratifier outputStratifier = null
         ) {
-            var exposuresGroups = aggregateIndividualExposures
+            var exposuresGroups = aggregates
                 .Select(c => (
                     SamplingWeight: c.SimulatedIndividual.SamplingWeight,
                     Exposure: c.GetTotalExposureAtTarget(
                         targetUnit.Target,
                         rpfs,
-                        memberships
+                        membershipProbabilities
                     ),
                     Stratification: outputStratifier?.GetLevel(c.SimulatedIndividual)
                 ))
