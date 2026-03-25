@@ -80,7 +80,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             }
             // Each toc has a subtoc: exposures total distibution, percentiles and contributions, total, upper (for single substance)
             // Toc: Internal exposures by route
-            if (_configuration.ExposureSources.Count > 1
+            if (_configuration.ExposureRoutes.Count > 1
                 && (data.ActiveSubstances.Count == 1 || data.CorrectedRelativePotencyFactors != null)
                 && outputSettings.ShouldSummarize(TargetExposuresSections.ExposuresByRouteSection)
             ) {
@@ -106,7 +106,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             }
 
             // Toc: Internal exposures by route and substance
-            if (_configuration.ExposureSources.Count > 1
+            if (_configuration.ExposureRoutes.Count > 1
                 && data.ActiveSubstances.Count > 1
                 && (result.AggregateIndividualExposures != null || result.AggregateIndividualDayExposures != null)
                 && outputSettings.ShouldSummarize(TargetExposuresSections.ExposuresByRouteSubstanceSection)

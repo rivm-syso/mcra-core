@@ -132,11 +132,10 @@ namespace MCRA.Simulation.OutputGeneration {
                                 Values = [],
                             })
                             .ToList();
-                        Records.AddRange(records);
+                        result.AddRange(records);
                     }
                 }
             }
-
             return result;
         }
 
