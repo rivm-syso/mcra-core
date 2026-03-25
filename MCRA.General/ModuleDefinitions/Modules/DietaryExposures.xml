@@ -147,6 +147,7 @@
     <OutputSetting source="Action">VariabilityLowerPercentage</OutputSetting>
     <OutputSetting source="Action">VariabilityUpperPercentage</OutputSetting>
     <OutputSetting>IsPerPerson</OutputSetting>
+    <OutputSetting source="Action">CoExposure</OutputSetting>
   </OutputSettings>
   <TierSelectionSetting>SelectedTier</TierSelectionSetting>
 </Module>

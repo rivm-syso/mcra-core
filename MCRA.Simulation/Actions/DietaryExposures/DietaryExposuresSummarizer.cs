@@ -163,6 +163,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             if (result.DietaryIndividualDayIntakes != null
                 && substances.Count > 1
                 && outputSettings.ShouldSummarize(DietaryExposuresSections.CoExposuresSection)
+                && _configuration.CoExposure
             ) {
                 if (data.CorrectedRelativePotencyFactors != null) {
                     summarizeCoExposures(result, data, subHeaderDetails, subOrder++);
