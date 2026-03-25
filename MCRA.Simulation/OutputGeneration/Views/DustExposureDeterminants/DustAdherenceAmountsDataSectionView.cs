@@ -12,13 +12,19 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 sb.AppendDescriptionParagraph($"Total {totalRecords} dust adherence amount records.");
 
                 var hiddenProperties = new List<string>();
-                if (Model.Records.All(c => c.AgeLower == null) &&
+                if (Model.Records.All(c => !c.AgeLower.HasValue) &&
                     Model.Records.All(c => string.IsNullOrEmpty(c.Sex))) {
-                    hiddenProperties.Add("idSubgroup");
+                    hiddenProperties.Add(nameof(DustAdherenceAmountsDataRecord.idSubgroup));
                 }
                 if (Model.Records.All(c => string.IsNullOrEmpty(c.DistributionType))) {
-                    hiddenProperties.Add("DistributionType");
-                    hiddenProperties.Add("CvVariability");
+                    hiddenProperties.Add(nameof(DustAdherenceAmountsDataRecord.DistributionType));
+                    hiddenProperties.Add(nameof(DustAdherenceAmountsDataRecord.CvVariability));
+                }
+                if (Model.Records.All(c => !c.AgeLower.HasValue)) {
+                    hiddenProperties.Add(nameof(DustAdherenceAmountsDataRecord.AgeLower));
+                }
+                if (Model.Records.All(c => string.IsNullOrEmpty(c.Sex))) {
+                    hiddenProperties.Add(nameof(DustAdherenceAmountsDataRecord.Sex));
                 }
 
                 // Table

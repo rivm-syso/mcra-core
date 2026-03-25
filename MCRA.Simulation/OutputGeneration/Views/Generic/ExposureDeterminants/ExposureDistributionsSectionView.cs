@@ -4,8 +4,8 @@ using MCRA.Simulation.OutputGeneration.Helpers;
 using System.Text;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
-    public class ExposureDistributionsSectionView<Tsection> : SectionView<Tsection> 
-        where Tsection : ExposureDistributionsDataSection{
+    public class ExposureDistributionsSectionView<Tsection> : SectionView<Tsection>
+        where Tsection : ExposureDistributionsDataSection {
 
         public override void RenderSectionHtml(StringBuilder sb) {
             var source = Model.Source.ToLower();
@@ -16,7 +16,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 sb.AppendDescriptionParagraph($"Total {totalRecords} {source} {Model.Message} records.");
 
                 var hiddenProperties = new List<string>();
-                if (Model.Records.All(c => c.AgeLower == null) &&
+                if (Model.Records.All(c => !c.AgeLower.HasValue) &&
                     Model.Records.All(c => string.IsNullOrEmpty(c.Sex))) {
                     hiddenProperties.Add(nameof(BodyExposureFractionsDataRecord.idSubgroup));
                     hiddenProperties.Add(nameof(BodyExposureFractionsDataRecord.Sex));
@@ -29,6 +29,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 }
                 if (Model.Records.All(c => !c.AgeLower.HasValue)) {
                     hiddenProperties.Add(nameof(BodyExposureFractionsDataRecord.AgeLower));
+                }
+                if (Model.Records.All(c => string.IsNullOrEmpty(c.Sex))) {
+                    hiddenProperties.Add(nameof(BodyExposureFractionsDataRecord.Sex));
                 }
 
                 // Table

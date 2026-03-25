@@ -12,13 +12,19 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 sb.AppendDescriptionParagraph($"Total {totalRecords} dust ingestion records.");
 
                 var hiddenProperties = new List<string>();
-                if (Model.Records.All(c => c.AgeLower == null) &&
+                if (Model.Records.All(c => !c.AgeLower.HasValue) &&
                     Model.Records.All(c => string.IsNullOrEmpty(c.Sex))) {
-                    hiddenProperties.Add("idSubgroup");
+                    hiddenProperties.Add(nameof(DustIngestionsDataRecord.idSubgroup));
                 }
                 if (Model.Records.All(c => string.IsNullOrEmpty(c.DistributionType))) {
-                    hiddenProperties.Add("DistributionType");
-                    hiddenProperties.Add("CvVariability");
+                    hiddenProperties.Add(nameof(DustIngestionsDataRecord.DistributionType));
+                    hiddenProperties.Add(nameof(DustIngestionsDataRecord.CvVariability));
+                }
+                if (Model.Records.All(c => !c.AgeLower.HasValue)) {
+                    hiddenProperties.Add(nameof(DustIngestionsDataRecord.AgeLower));
+                }
+                if (Model.Records.All(c => string.IsNullOrEmpty(c.Sex))) {
+                    hiddenProperties.Add(nameof(DustIngestionsDataRecord.Sex));
                 }
 
                 // Table
@@ -35,6 +41,5 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 sb.AppendDescriptionParagraph("No dust ingestion data available.");
             }
         }
-
     }
 }

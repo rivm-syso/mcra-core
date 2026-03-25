@@ -10,18 +10,18 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 sb.AppendDescriptionParagraph($"Total {totalRecords} consumer product application amount records.");
 
                 var hiddenProperties = new List<string>();
-                if (!Model.Records.Any(c => c.AgeLower.HasValue)){
-                    hiddenProperties.Add("AgeLower");
+                if (Model.Records.All(c => !c.AgeLower.HasValue)){
+                    hiddenProperties.Add(nameof(ConsumerProductApplicationAmountRecord.AgeLower));
                 }
                 if (Model.Records.All(c => string.IsNullOrEmpty(c.ParentName))) {
-                    hiddenProperties.Add("ParentName");
+                    hiddenProperties.Add(nameof(ConsumerProductApplicationAmountRecord.ParentName));
                 }
                 if (Model.Records.All(c => string.IsNullOrEmpty(c.Sex))) {
-                    hiddenProperties.Add("Sex");
+                    hiddenProperties.Add(nameof(ConsumerProductApplicationAmountRecord.Sex));
                 }
                 if (Model.Records.All(c => string.IsNullOrEmpty(c.DistributionType))) {
-                    hiddenProperties.Add("DistributionType");
-                    hiddenProperties.Add("CvVariability");
+                    hiddenProperties.Add(nameof(ConsumerProductApplicationAmountRecord.DistributionType));
+                    hiddenProperties.Add(nameof(ConsumerProductApplicationAmountRecord.CvVariability));
                 }
                 sb.AppendTable(
                     Model,

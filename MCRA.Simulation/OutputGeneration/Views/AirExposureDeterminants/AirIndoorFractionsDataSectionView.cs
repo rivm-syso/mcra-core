@@ -12,8 +12,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 sb.AppendDescriptionParagraph($"Total {totalRecords} air indoor fraction records.");
 
                 var hiddenProperties = new List<string>();
-                if (Model.Records.All(c => c.AgeLower == null)) {
-                    hiddenProperties.Add("idSubgroup");
+                if (Model.Records.All(c => !c.AgeLower.HasValue)) {
+                    hiddenProperties.Add(nameof(AirIndoorFractionsDataRecord.idSubgroup));
+                    hiddenProperties.Add(nameof(AirIndoorFractionsDataRecord.AgeLower));
                 }
 
                 // Table

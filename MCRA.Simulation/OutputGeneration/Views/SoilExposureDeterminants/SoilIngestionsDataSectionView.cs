@@ -12,15 +12,20 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 sb.AppendDescriptionParagraph($"Total {totalRecords} soil ingestion records.");
 
                 var hiddenProperties = new List<string>();
-                if (Model.Records.All(c => c.AgeLower == null) &&
+                if (Model.Records.All(c => !c.AgeLower.HasValue) &&
                     Model.Records.All(c => string.IsNullOrEmpty(c.Sex))) {
-                    hiddenProperties.Add("idSubgroup");
+                    hiddenProperties.Add(nameof(SoilIngestionsDataRecord.idSubgroup));
                 }
                 if (Model.Records.All(c => string.IsNullOrEmpty(c.DistributionType))) {
-                    hiddenProperties.Add("DistributionType");
-                    hiddenProperties.Add("CvVariability");
+                    hiddenProperties.Add(nameof(SoilIngestionsDataRecord.DistributionType));
+                    hiddenProperties.Add(nameof(SoilIngestionsDataRecord.CvVariability));
                 }
-
+                if (Model.Records.All(c => string.IsNullOrEmpty(c.Sex))) {
+                    hiddenProperties.Add(nameof(SoilIngestionsDataRecord.Sex));
+                }
+                if (Model.Records.All(c => !c.AgeLower.HasValue))  {
+                    hiddenProperties.Add(nameof(SoilIngestionsDataRecord.AgeLower));
+                }
                 // Table
                 sb.AppendTable(
                     Model,
