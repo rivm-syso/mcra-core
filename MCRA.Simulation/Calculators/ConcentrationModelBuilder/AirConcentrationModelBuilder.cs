@@ -13,7 +13,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelBuilder {
             var distribution = concentrationDistribution as AirConcentrationDistribution;
             ConcentrationModel concentrationModel = distribution.DistributionType switch {
                 AirConcentrationDistributionType.Constant => new CMConstant(),
-                AirConcentrationDistributionType.LogNormal => new CMSummaryStatistics(),
+                AirConcentrationDistributionType.LogNormal => new CMLogNormal(),
                 _ => throw new NotImplementedException($"Unsupported concentration model type {distribution.DistributionType} for air distributions."),
             };
             return concentrationModel;

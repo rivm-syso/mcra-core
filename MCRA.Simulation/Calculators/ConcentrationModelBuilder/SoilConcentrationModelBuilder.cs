@@ -14,7 +14,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelBuilder {
             var distribution = concentrationDistribution as SoilConcentrationDistribution;
             ConcentrationModel concentrationModel = distribution.DistributionType switch {
                 SoilConcentrationDistributionType.Constant => new CMConstant(),
-                SoilConcentrationDistributionType.LogNormal => new CMSummaryStatistics(),
+                SoilConcentrationDistributionType.LogNormal => new CMLogNormal(),
                 _ => throw new NotImplementedException($"Unsupported concentration model type {distribution.DistributionType} for soil distributions."),
             };
             return concentrationModel;
