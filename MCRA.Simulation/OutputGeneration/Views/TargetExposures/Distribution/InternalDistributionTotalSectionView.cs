@@ -11,7 +11,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             if (Model.PercentageZeroIntake < 100) {
                 {
-                    var histChartCreator = new InternalChronicDistributionTotalChartCreator(Model, ViewBag.GetUnit("IntakeUnit"));
+                    var histChartCreator = new InternalExposureDistributionChartCreator(Model, ViewBag.GetUnit("IntakeUnit"));
                     var histogramChart = ChartHelpers
                         .Chart(
                             name: "AggregateTotalIntakeDistributionChart",

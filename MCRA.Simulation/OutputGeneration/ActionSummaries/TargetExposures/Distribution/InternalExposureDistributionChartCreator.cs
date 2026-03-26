@@ -2,13 +2,12 @@
 using OxyPlot;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class InternalChronicStackedHistogramChartCreator : StackedHistogramChartCreatorBase {
+    public sealed class InternalExposureDistributionChartCreator : ExposureHistogramChartCreatorBase {
 
         private readonly InternalDistributionTotalSection _section;
         private readonly string _intakeUnit;
 
-        public InternalChronicStackedHistogramChartCreator(InternalDistributionTotalSection section, string intakeUnit) {
-            ShowContributions = false;
+        public InternalExposureDistributionChartCreator(InternalDistributionTotalSection section, string intakeUnit) {
             Width = 500;
             Height = 350;
             _section = section;
@@ -17,17 +16,18 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public override string ChartId {
             get {
-                var pictureId = "4244e496-1685-4711-91f0-abed63c19c41";
+                var pictureId = "b88fe720-50d7-4bd4-a49c-e7bfbe915509";
                 return StringExtensions.CreateFingerprint(_section.SectionId + pictureId);
             }
         }
-
-        public override string Title => $"Stacked transformed exposure distribution ({100 - _section.PercentageZeroIntake:F1}% positives).";
+        public override string Title => $"Transformed exposure distribution ({100 - _section.PercentageZeroIntake:F1}% positives).";
 
         public override PlotModel Create() {
             return create(
-                _section.CategorizedHistogramBins,
-                $"Exposure ({_intakeUnit})"
+                _section.IntakeDistributionBins,
+                _section.IntakeDistributionBinsCoExposure,
+                string.Empty,
+                _intakeUnit
             );
         }
     }

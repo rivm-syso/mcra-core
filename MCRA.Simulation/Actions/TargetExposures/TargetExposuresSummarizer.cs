@@ -335,9 +335,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         ) {
             var outputStratifier = getOutputStratifier(result, data);
             var subHeader = header.AddEmptySubSectionHeader($"Distribution", subOrder++);
-            var aggregates = data.AggregateIndividualExposures != null
-                ? data.AggregateIndividualExposures
-                : data.AggregateIndividualDayExposures.Cast<AggregateIndividualExposure>().ToList();
+            var aggregates = data.AggregateIndividualExposures ?? data.AggregateIndividualDayExposures.Cast<AggregateIndividualExposure>().ToList();
             {
                 var coExposureIds = _configuration.CoExposure
                     ? aggregates?
@@ -432,9 +430,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             if (outputSummary == null) {
                 return;
             }
-            var aggregateExposures = actionResult.AggregateIndividualExposures != null
-                ? data.AggregateIndividualExposures
-                : [.. data.AggregateIndividualDayExposures.Cast<AggregateIndividualExposure>()];
+            var aggregateExposures = actionResult.AggregateIndividualExposures ?? [.. data.AggregateIndividualDayExposures.Cast<AggregateIndividualExposure>()];
             if (substances.Count == 1 || rpfs != null) {
                 rpfs = rpfs ?? substances.ToDictionary(r => r, r => 1D);
                 memberships = memberships ?? substances.ToDictionary(r => r, r => 1D);
