@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Module>
   <Id>Concentrations</Id>
-  <Name>Concentrations</Name>
+  <Name>Food concentrations</Name>
   <ModuleType>DataModule</ModuleType>
   <ActionType>Concentrations</ActionType>
   <TableGroup>Concentrations</TableGroup>
   <IsAdvancedActionType>true</IsAdvancedActionType>
   <Description>
-    Concentrations data are analytical measurements of chemical substances occurring in food samples.
-    In their simplest form, concentration data can just be used as provided by datasets.
-    Optionally, concentrations data can be manipulated for active substances, extrapolated to other foods, and/or default values can be added for water.
+    Food concentrations data are analytical measurements of chemical substances occurring in food samples.
+    In their simplest form, food concentration data can just be used as provided by datasets.
+    Optionally, food concentrations data can be manipulated for active substances, extrapolated to other foods, and/or default values can be added for water.
   </Description>
   <ShortDescription>
-    Concentration data are data on analytical measurements of chemical substances occurring in food samples.
+    Food concentration data are data on analytical measurements of chemical substances occurring in food samples.
   </ShortDescription>
   <DataDescription>
-    Concentration data can be entered using the internal, relational data format or using the EFSA SSD format.
-    Depending on the settings, the entered concentration data can be pre-processed for conversion to active substances, extrapolation to other foods, and/or default values can be added for water.
+    Food concentration data can be entered using the internal, relational data format or using the EFSA SSD format.
+    Depending on the settings, the entered food concentration data can be pre-processed for conversion to active substances, extrapolation to other foods, and/or default values can be added for water.
   </DataDescription>
   <Entities>
     <Entity>Foods</Entity>

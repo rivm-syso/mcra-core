@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Module>
   <Id>ConcentrationModels</Id>
-  <Name>Concentration models</Name>
+  <Name>Food concentration models</Name>
   <ActionType>ConcentrationModels</ActionType>
   <ModuleType>CalculatorModule</ModuleType>
   <CanCompute>true</CanCompute>
   <IsAdvancedActionType>true</IsAdvancedActionType>
   <Description>
-    Concentration models are distributional models of substance concentrations on foods.
+    Food concentration models are distributional models of substance concentrations on foods.
     They describe both the substance presence (yes/no, with no representing an absolute zero concentration) and the substance concentrations.
-    Concentration models are specified per food/substance combination.
+    Food concentration models are specified per food/substance combination.
   </Description>
   <ShortDescription>
-    Concentration models are distributional models of substance concentrations on foods.
+    Food concentration models are distributional models of substance concentrations on foods.
   </ShortDescription>
   <HasUncertaintyAnalysis>true</HasUncertaintyAnalysis>
   <Entities>

@@ -46,7 +46,8 @@ namespace MCRA.General {
         Effects = 3,
         [Display(Name = "Populations")]
         Populations = 4,
-        [Display(Name = "Concentrations")]
+        [Description("Obsolete: Concentrations")]
+        [Display(Name = "Food concentrations")]
         Concentrations = 5,
         [Display(Name = "Processing factors")]
         ProcessingFactors = 6,
@@ -60,7 +61,8 @@ namespace MCRA.General {
         [Description("Obsolete: ConsumptionsPerFoodsAsMeasured")]
         [Display(Name = "Consumptions by modelled food")]
         ConsumptionsByModelledFood = 10,
-        [Display(Name = "Concentration models")]
+        [Description("Obsolete: Concentrations models")]
+        [Display(Name = "Food concentration models")]
         ConcentrationModels = 11,
         [Description("Obsolete: TargetExposures")]
         [Display(Name = "Internal exposures")]
@@ -151,7 +153,8 @@ namespace MCRA.General {
         OccurrenceFrequencies = 50,
         [Display(Name = "Single value risks")]
         SingleValueRisks = 51,
-        [Display(Name = "Concentration distributions")]
+        [Description("Obsolete: Concentrations distributions")]
+        [Display(Name = "Food concentration distributions")]
         ConcentrationDistributions = 52,
         [Display(Name = "Biological matrix concentration comparisons")]
         BiologicalMatrixConcentrationComparisons = 53,

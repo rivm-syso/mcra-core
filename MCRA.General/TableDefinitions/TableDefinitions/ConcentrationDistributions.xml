@@ -8,6 +8,7 @@
   <Aliases>
     <string>ConcentrationDistributions</string>
     <string>ConcentrationDistribution</string>
+    <string>FoodConcentrationDistribution</string>
   </Aliases>
   <HiddenAliases>
     <string>RawConcentrationDistributions</string>
