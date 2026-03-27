@@ -2,7 +2,6 @@
 using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
 using OxyPlot.Axes;
-using OxyPlot.Legends;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
@@ -10,7 +9,6 @@ namespace MCRA.Simulation.OutputGeneration {
 
         private readonly ExposureDistributionPercentilesSection _section;
         private readonly string _intakeUnit;
-        private readonly bool _stratified;
         private readonly string _title;
         private readonly string _category;
         private readonly int _paletteColor;

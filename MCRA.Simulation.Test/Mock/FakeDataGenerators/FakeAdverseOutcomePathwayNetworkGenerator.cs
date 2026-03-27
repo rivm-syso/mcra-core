@@ -34,7 +34,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                         ("MIE2", "KE2"),
                         ("MIE3", "KE1A"),
                         ("MIE3", "KE2"),
-                        ("MIE4", "KE2"),~
+                        ("MIE4", "KE2"),
                         ("MIE4", "KE1B"),
                         ("KE1B", "AO"),
                         ("KE2", "AO")
