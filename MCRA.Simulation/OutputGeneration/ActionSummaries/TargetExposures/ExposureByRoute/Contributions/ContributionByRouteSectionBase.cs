@@ -1,14 +1,14 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
-using MCRA.Simulation.Objects;
+using MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Generic;
 using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public abstract class ContributionByRouteSectionBase : ExposureByRouteSectionBase {
-        public override bool SaveTemporaryData => true;
-        public List<ContributionByRouteRecord> Records { get; set; }
-        public List<ContributionByRouteRecord> SummarizeContributions(
+    public static class ContributionByRouteSectionBase {
+
+
+        public static List<ContributionByRouteRecord> SummarizeContributions(
             ICollection<IExternalIndividualExposure> externalIndividualExposures,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
@@ -17,11 +17,9 @@ namespace MCRA.Simulation.OutputGeneration {
             double uncertaintyUpperBound,
             bool isPerPerson
         ) {
-            //var cancelToken = ProgressState?.CancellationToken ?? new();
-            //var routesxx = kineticConversionFactors.Select(c => c.Key.route).Distinct().ToList();
             var result = new List<ContributionByRouteRecord>();
 
-            var exposureCollection = CalculateExposures(
+            var exposureCollection = ExposureByRouteCalculator.CalculateExposures(
                 externalIndividualExposures,
                 relativePotencyFactors,
                 membershipProbabilities,
@@ -29,11 +27,10 @@ namespace MCRA.Simulation.OutputGeneration {
                 isPerPerson
             );
 
-            foreach (var (Route, Exposures) in exposureCollection) {
-                if (Exposures.Any(c => c.Exposure > 0)) {
+            foreach (var collection in exposureCollection) {
+                if (collection.Exposures.Any(c => c.Exposure > 0)) {
                     var record = getContributionByRouteRecord(
-                        Route,
-                        Exposures,
+                        collection,
                         uncertaintyLowerBound,
                         uncertaintyUpperBound
                     );
@@ -46,23 +43,22 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         private static ContributionByRouteRecord getContributionByRouteRecord(
-            ExposureRoute route,
-            List<(SimulatedIndividual SimulatedIndividual, double Exposure)> exposures,
+            InternalExposuresByDescriptor<RouteContributorKey> collection,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound
         ) {
-            var weightsAll = exposures
+            var weightsAll = collection.Exposures
                 .Select(c => c.SimulatedIndividual.SamplingWeight)
                 .ToList();
-            var weights = exposures
+            var weights = collection.Exposures
                 .Where(c => c.Exposure > 0)
                 .Select(c => c.SimulatedIndividual.SamplingWeight)
                 .ToList();
-            var total = exposures.Sum(c => c.Exposure * c.SimulatedIndividual.SamplingWeight);
+            var total = collection.Exposures.Sum(c => c.Exposure * c.SimulatedIndividual.SamplingWeight);
             var record = new ContributionByRouteRecord {
-                ExposureRoute = route.GetShortDisplayName(),
+                ExposureRoute = collection.Descriptor.Route.GetShortDisplayName(),
                 Contribution = total,
-                Percentage = weights.Count / (double)exposures.Count * 100,
+                Percentage = weights.Count / (double)collection.Exposures.Count * 100,
                 Mean = total / weightsAll.Sum(),
                 NumberOfDays = weights.Count,
                 Contributions = [],
@@ -72,17 +68,15 @@ namespace MCRA.Simulation.OutputGeneration {
             return record;
         }
 
-        protected List<ContributionByRouteRecord> SummarizeUncertainty(
+        public static List<ContributionByRouteRecord> SummarizeUncertainty(
              ICollection<IExternalIndividualExposure> externalIndividualExposures,
              IDictionary<Compound, double> relativePotencyFactors,
              IDictionary<Compound, double> membershipProbabilities,
              IDictionary<(ExposureRoute route, Compound substance), double> kineticConversionFactors,
              bool isPerPerson
         ) {
-            //var routes = kineticConversionFactors.Select(c => c.Key.route).Distinct().ToList();
-            //var cancelToken = ProgressState?.CancellationToken ?? new();
             var result = new List<ContributionByRouteRecord>();
-            var exposureCollection = CalculateExposures(
+            var exposureCollection = ExposureByRouteCalculator.CalculateExposures(
                 externalIndividualExposures,
                 relativePotencyFactors,
                 membershipProbabilities,
@@ -90,11 +84,11 @@ namespace MCRA.Simulation.OutputGeneration {
                 isPerPerson
             );
 
-            foreach (var (Route, Exposures) in exposureCollection) {
-                if (Exposures.Any(c => c.Exposure > 0)) {
+            foreach (var collection in exposureCollection) {
+                if (collection.Exposures.Any(c => c.Exposure > 0)) {
                     var record = new ContributionByRouteRecord {
-                        ExposureRoute = Route.GetShortDisplayName(),
-                        Contribution = Exposures.Sum(c => c.Exposure * c.SimulatedIndividual.SamplingWeight),
+                        ExposureRoute = collection.Descriptor.Route.GetShortDisplayName(),
+                        Contribution = collection.Exposures.Sum(c => c.Exposure * c.SimulatedIndividual.SamplingWeight),
                     };
                     result.Add(record);
                 };
@@ -104,8 +98,8 @@ namespace MCRA.Simulation.OutputGeneration {
             return [.. result.OrderByDescending(c => c.Contribution)];
         }
 
-        protected void UpdateContributions(List<ContributionByRouteRecord> records) {
-            foreach (var record in Records) {
+        public static void UpdateContributions(List<ContributionByRouteRecord> updateRecords, List<ContributionByRouteRecord> records) {
+            foreach (var record in updateRecords) {
                 var contribution = records.FirstOrDefault(c => c.ExposureRoute == record.ExposureRoute)?.Contribution * 100 ?? 0;
                 record.Contributions.Add(contribution);
             }

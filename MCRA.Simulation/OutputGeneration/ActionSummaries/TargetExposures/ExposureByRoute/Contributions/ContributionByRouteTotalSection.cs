@@ -5,8 +5,9 @@ using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 
 namespace MCRA.Simulation.OutputGeneration {
 
-    public sealed class ContributionByRouteTotalSection : ContributionByRouteSectionBase {
-
+    public sealed class ContributionByRouteTotalSection : SummarySection {
+        public override bool SaveTemporaryData => true;
+        public List<ContributionByRouteRecord> Records { get; set; }
         public void Summarize(
             ICollection<IExternalIndividualExposure> externalIndividualExposures,
             ICollection<Compound> activeSubstances,
@@ -23,7 +24,7 @@ namespace MCRA.Simulation.OutputGeneration {
             membershipProbabilities = activeSubstances.Count > 1
                 ? membershipProbabilities : activeSubstances.ToDictionary(r => r, r => 1D);
 
-            Records = SummarizeContributions(
+            Records = ContributionByRouteSectionBase.SummarizeContributions(
                 externalIndividualExposures,
                 relativePotencyFactors,
                 membershipProbabilities,
@@ -46,14 +47,14 @@ namespace MCRA.Simulation.OutputGeneration {
                 ? relativePotencyFactors : activeSubstances.ToDictionary(r => r, r => 1D);
             membershipProbabilities = activeSubstances.Count > 1
                 ? membershipProbabilities : activeSubstances.ToDictionary(r => r, r => 1D);
-            var records = SummarizeUncertainty(
+            var records = ContributionByRouteSectionBase.SummarizeUncertainty(
                  externalIndividualExposures,
                  relativePotencyFactors,
                  membershipProbabilities,
                  kineticConversionFactors,
                  isPerPerson
             );
-            UpdateContributions(records);
+            ContributionByRouteSectionBase.UpdateContributions(Records, records);
         }
     }
 }

@@ -41,6 +41,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 75,
                 targetUnit,
                 false,
+                null,
                 false
             );
             AssertIsValidView(section);
@@ -77,7 +78,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 25,
                 75,
                 targetUnit,
-                false, 
+                false,
+                null
+,
                 false
             );
             AssertIsValidView(section);

@@ -1,17 +1,20 @@
 ﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Generic;
 using MCRA.Utils.ExtensionMethods;
-using Microsoft.AspNetCore.Routing;
 
 namespace MCRA.Simulation.OutputGeneration {
+    public class ExposureByRouteBoxPlotRecord : InternalExposureBoxPlotRecordBase<RouteContributorKey> {
 
-    public sealed class ExposureByRouteRecord : InternalExposureDistributionRecordBase<RouteContributorKey> {
         [Description("Exposure route.")]
         [DisplayName("Route")]
         public string Route { get; set; }
 
-        public ExposureByRouteRecord() { }
+        public override string GetLabel() {
+            if (!string.IsNullOrEmpty(Stratification)) {
+                return $"{Route} ({Stratification})";
+            }
+            return Route;
+        }
 
         public override void SetDescriptorValues(RouteContributorKey key) {
             Route = key.Route.GetDisplayName();

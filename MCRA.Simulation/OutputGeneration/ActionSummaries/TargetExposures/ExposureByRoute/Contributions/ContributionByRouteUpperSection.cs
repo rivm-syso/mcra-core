@@ -6,12 +6,14 @@ using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
 
-    public sealed class ContributionByRouteUpperSection : ContributionByRouteSectionBase {
+    public sealed class ContributionByRouteUpperSection : SummarySection {
+        public override bool SaveTemporaryData => true;
         public double UpperPercentage { get; set; }
         public double CalculatedUpperPercentage { get; set; }
         public double LowPercentileValue { get; set; }
         public double HighPercentileValue { get; set; }
         public int NumberOfIntakes { get; set; }
+        public List<ContributionByRouteRecord> Records { get; set; }
 
         public void Summarize(
             ICollection<IExternalIndividualExposure> externalIndividualExposures,
@@ -59,7 +61,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
             externalIndividualExposures = externalIndividualExposures.Where(c => individualIds.Contains(c.SimulatedIndividual)).ToList();
 
-            Records = SummarizeContributions(
+            Records = ContributionByRouteSectionBase.SummarizeContributions(
                 externalIndividualExposures,
                 relativePotencyFactors,
                 membershipProbabilities,
@@ -106,14 +108,14 @@ namespace MCRA.Simulation.OutputGeneration {
             var individualIds = upperExposures.Select(c => c.SimulatedIndividual).ToHashSet();
             externalIndividualExposures = externalIndividualExposures.Where(c => individualIds.Contains(c.SimulatedIndividual)).ToList();
 
-            var records = SummarizeUncertainty(
+            var records = ContributionByRouteSectionBase.SummarizeUncertainty(
                   externalIndividualExposures,
                   relativePotencyFactors,
                   membershipProbabilities,
                   kineticConversionFactors,
                   isPerPerson
               );
-            UpdateContributions(records);
+            ContributionByRouteSectionBase.UpdateContributions(Records, records);
         }
 
         private static List<(SimulatedIndividual SimulatedIndividual, double Exposure)> getSumExposures(
@@ -123,7 +125,7 @@ namespace MCRA.Simulation.OutputGeneration {
             IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
             bool isPerPerson
         ) {
-            var exposureCollection = CalculateExposures(
+            var exposureCollection = ExposureByRouteCalculator.CalculateExposures(
                 externalIndividualExposures,
                 relativePotencyFactors,
                 membershipProbabilities,

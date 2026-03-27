@@ -1,20 +1,20 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
-using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.Objects;
+using MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Generic;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public abstract class ExposureByRouteSectionBase : SummarySection {
+    public abstract class ExposureByRouteCalculator {
 
-        protected static List<(ExposureRoute Route, List<(SimulatedIndividual SimulatedIndividual, double Exposure)> Exposures)> CalculateExposures(
+        public static List<InternalExposuresByDescriptor<RouteContributorKey>> CalculateExposures(
            ICollection<IExternalIndividualExposure> externalIndividualExposures,
            IDictionary<Compound, double> relativePotencyFactors,
            IDictionary<Compound, double> membershipProbabilities,
            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
            bool isPerPerson
         ) {
-            var exposureRouteCollection = new List<(ExposureRoute ExposureRoute, List<(SimulatedIndividual SimulatedIndividual, double Exposure)>)>();
+            var exposureRouteCollection = new List<InternalExposuresByDescriptor<RouteContributorKey>>();
             var paths = externalIndividualExposures
                 .SelectMany(c => c.ExposuresPerPath.Keys)
                 .ToHashSet();
@@ -51,7 +51,11 @@ namespace MCRA.Simulation.OutputGeneration {
                         Exposure: c.Exposure
                     ))
                     .ToList();
-                exposureRouteCollection.Add((route, exposures));
+                var internalExposures = new InternalExposuresByDescriptor<RouteContributorKey>() {
+                    Descriptor = new RouteContributorKey() { Route = route },
+                    Exposures = exposures
+                };
+                exposureRouteCollection.Add(internalExposures);
             }
             return exposureRouteCollection;
         }

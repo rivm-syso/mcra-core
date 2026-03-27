@@ -712,22 +712,24 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         }
         private SectionHeader summarizeRouteUncertainty(
             SectionHeader header,
-            TargetExposuresActionResult actionResult,
+            TargetExposuresActionResult result,
             ActionData data
         ) {
+            var outputStratifier = getOutputStratifier(result, data);
             var subHeader = header.GetSubSectionHeader<TargetExposuresSummarySection>();
             if (subHeader != null) {
                 var subSubHeader = subHeader.GetSubSectionHeader<ExposureByRoutePercentilesSection>();
                 if (subSubHeader != null) {
                     var section = subSubHeader.GetSummarySection() as ExposureByRoutePercentilesSection;
                     section.SummarizeUncertainty(
-                        actionResult.ExternalIndividualExposures,
+                        result.ExternalIndividualExposures,
                         data.ActiveSubstances,
                         data.CorrectedRelativePotencyFactors,
                         data.MembershipProbabilities,
-                        actionResult.KineticConversionFactorsByRouteSubstance,
+                        result.KineticConversionFactorsByRouteSubstance,
                         _configuration.SelectedPercentiles,
-                        _configuration.IsPerPerson
+                        _configuration.IsPerPerson,
+                        outputStratifier
                     );
                     subSubHeader.SaveSummarySection(section);
                 }
@@ -740,11 +742,11 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 if (subSubHeader != null) {
                     var section = subSubHeader.GetSummarySection() as ContributionByRouteTotalSection;
                     section.SummarizeUncertainty(
-                        actionResult.ExternalIndividualExposures,
+                        result.ExternalIndividualExposures,
                         data.ActiveSubstances,
                         data.CorrectedRelativePotencyFactors,
                         data.MembershipProbabilities,
-                        actionResult.KineticConversionFactorsByRouteSubstance,
+                        result.KineticConversionFactorsByRouteSubstance,
                         _configuration.IsPerPerson
                     );
                     subSubHeader.SaveSummarySection(section);
@@ -753,11 +755,11 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 if (subSubHeader != null) {
                     var section = subSubHeader.GetSummarySection() as ContributionByRouteUpperSection;
                     section.SummarizeUncertainty(
-                        actionResult.ExternalIndividualExposures,
+                        result.ExternalIndividualExposures,
                         data.ActiveSubstances,
                         data.CorrectedRelativePotencyFactors,
                         data.MembershipProbabilities,
-                        actionResult.KineticConversionFactorsByRouteSubstance,
+                        result.KineticConversionFactorsByRouteSubstance,
                         _configuration.VariabilityUpperTailPercentage,
                         _configuration.IsPerPerson
                     );
@@ -1353,8 +1355,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     result.KineticConversionFactorsByRouteSubstance,
                     _configuration.UncertaintyLowerBound,
                     _configuration.UncertaintyUpperBound,
-                    _configuration.IsPerPerson,
                     _configuration.SelectedPercentiles,
+                    _configuration.IsPerPerson,
                     outputStratifier
                 );
                 sub2Header.SaveSummarySection(section);
@@ -1404,6 +1406,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             SectionHeader header,
             int order
         ) {
+            var outputStratifier = getOutputStratifier(result, data);
             var subHeader = header.AddEmptySubSectionHeader(
                 "Exposures by route",
                 order++,
@@ -1425,6 +1428,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     _configuration.VariabilityUpperPercentage,
                     result.TargetExposureUnit,
                     _configuration.IsPerPerson,
+                    outputStratifier,
                     _configuration.SkipPrivacySensitiveOutputs
                 );
                 sub2Header.SaveSummarySection(section);
@@ -1441,7 +1445,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     _configuration.UncertaintyLowerBound,
                     _configuration.UncertaintyUpperBound,
                     _configuration.SelectedPercentiles,
-                    _configuration.IsPerPerson
+                    _configuration.IsPerPerson,
+                    outputStratifier
                 );
                 sub2Header.SaveSummarySection(section);
             }
