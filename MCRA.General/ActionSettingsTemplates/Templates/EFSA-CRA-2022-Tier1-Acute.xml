@@ -11,6 +11,7 @@
         <Setting id="ExposureType">Acute</Setting>
       </Settings>
       <ExcludedSettings>
+        <Setting id="CoExposure" />
         <Setting id="DoUncertaintyAnalysis" />
         <Setting id="DoUncertaintyFactorial" />
         <Setting id="McrCalculationRatioCutOff" />
