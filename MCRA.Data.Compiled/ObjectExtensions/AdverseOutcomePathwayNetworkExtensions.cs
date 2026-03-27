@@ -59,20 +59,21 @@ namespace MCRA.Data.Compiled.ObjectExtensions {
         /// Returns the upstream effect relationships of the specified effect (i.e., the
         /// effects / key events that lead to the specified effect).
         /// </summary>
-        /// <param name="aopNetwork"></param>
-        /// <param name="commonKeyEvent"></param>
-        /// <returns></returns>
         public static ICollection<EffectRelationship> GetUpstreamEffectRelations(
             this AdverseOutcomePathwayNetwork aopNetwork,
-            Effect commonKeyEvent
+            Effect commonKeyEvent,
+            HashSet<EffectRelationship> tabuList = null
         ) {
             var result = new HashSet<EffectRelationship>();
+            tabuList ??= [];
             var upstreamEffects = aopNetwork.EffectRelations
                 .Where(r => r.DownstreamKeyEvent == commonKeyEvent)
+                .Where(r => !tabuList.Contains(r))
                 .ToList();
             result.UnionWith(upstreamEffects);
+            tabuList.UnionWith(upstreamEffects);
             foreach (var effect in upstreamEffects) {
-                var childPaths = aopNetwork.GetUpstreamEffectRelations(effect.UpstreamKeyEvent);
+                var childPaths = aopNetwork.GetUpstreamEffectRelations(effect.UpstreamKeyEvent, tabuList);
                 result.UnionWith(childPaths);
             }
             return result;
@@ -82,20 +83,21 @@ namespace MCRA.Data.Compiled.ObjectExtensions {
         /// Returns the downstream effect relationships of the specified effect (i.e., the
         /// effects / key events caused by the specified effect).
         /// </summary>
-        /// <param name="aopNetwork"></param>
-        /// <param name="commonKeyEvent"></param>
-        /// <returns></returns>
         public static ICollection<EffectRelationship> GetDownstreamEffectRelations(
             this AdverseOutcomePathwayNetwork aopNetwork,
-            Effect commonKeyEvent
+            Effect commonKeyEvent,
+            HashSet<EffectRelationship> tabuList = null
         ) {
             var result = new HashSet<EffectRelationship>();
+            tabuList ??= [];
             var upstreamEffects = aopNetwork.EffectRelations
                 .Where(r => r.UpstreamKeyEvent == commonKeyEvent)
+                .Where(r => !tabuList.Contains(r))
                 .ToList();
             result.UnionWith(upstreamEffects);
+            tabuList.UnionWith(upstreamEffects);
             foreach (var effect in upstreamEffects) {
-                var childPaths = aopNetwork.GetDownstreamEffectRelations(effect.DownstreamKeyEvent);
+                var childPaths = aopNetwork.GetDownstreamEffectRelations(effect.DownstreamKeyEvent, tabuList);
                 result.UnionWith(childPaths);
             }
             return result;
@@ -107,7 +109,9 @@ namespace MCRA.Data.Compiled.ObjectExtensions {
         /// </summary>
         /// <param name="aopNetwork"></param>
         /// <returns></returns>
-        public static ICollection<EffectRelationship> FindFeedbackRelationships(this AdverseOutcomePathwayNetwork aopNetwork) {
+        public static ICollection<EffectRelationship> FindFeedbackRelationships(
+            this AdverseOutcomePathwayNetwork aopNetwork
+        ) {
             var toNodesLookup = aopNetwork.EffectRelations.Select(r => r.DownstreamKeyEvent).ToHashSet();
             var fromNodesLookup = aopNetwork.EffectRelations.ToLookup(r => r.UpstreamKeyEvent);
             var rootNodes = aopNetwork.GetAllEffects().Where(r => !toNodesLookup.Contains(r)).ToList();
@@ -125,7 +129,9 @@ namespace MCRA.Data.Compiled.ObjectExtensions {
         /// </summary>
         /// <param name="aopNetwork"></param>
         /// <returns></returns>
-        public static ICollection<EffectRelationship> GetIndirectKeyEventRelationships(this AdverseOutcomePathwayNetwork aopNetwork) {
+        public static ICollection<EffectRelationship> GetIndirectKeyEventRelationships(
+            this AdverseOutcomePathwayNetwork aopNetwork
+        ) {
             var cyclicKers = aopNetwork.FindFeedbackRelationships();
             var kers = aopNetwork.EffectRelations.Except(cyclicKers);
             var toNodesLookup = kers.Select(r => r.DownstreamKeyEvent).ToHashSet();
@@ -169,7 +175,6 @@ namespace MCRA.Data.Compiled.ObjectExtensions {
             if (visited.Contains(keyEventRelationship)) {
                 return [keyEventRelationship];
             } else {
-                visited = visited.ToHashSet();
                 visited.Add(keyEventRelationship);
                 var linkedKeyEventRelationships = fromNodesLookup.Contains(keyEventRelationship.UpstreamKeyEvent)
                     ? fromNodesLookup[keyEventRelationship.DownstreamKeyEvent].ToList()
