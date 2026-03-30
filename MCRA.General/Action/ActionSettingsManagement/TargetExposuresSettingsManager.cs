@@ -7,18 +7,11 @@ namespace MCRA.General.Action.ActionSettingsManagement {
 
         public override void initializeSettings(ProjectDto project) {
             Verify(project);
+
             var config = project.TargetExposuresSettings;
-
-            // Only change default if this is the main action 
-            if (project.ActionType == ActionType) {
-                config.TargetDoseLevelType = TargetLevelType.Systemic;
-            }
-
             var cumulative = config.MultipleSubstances && config.Cumulative;
 
-            var activeSubstancesConfig = project.ActiveSubstancesSettings;
-            activeSubstancesConfig.FilterByAvailableHazardDose = cumulative;
-
+            project.ActiveSubstancesSettings.FilterByAvailableHazardDose = cumulative;
             if (cumulative) {
                 project.RelativePotencyFactorsSettings.IsCompute = true;
             }

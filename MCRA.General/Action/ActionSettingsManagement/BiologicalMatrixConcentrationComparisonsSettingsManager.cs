@@ -7,10 +7,7 @@ namespace MCRA.General.Action.ActionSettingsManagement {
 
         public override void initializeSettings(ProjectDto project) {
             Verify(project);
-            var config = project.BiologicalMatrixConcentrationComparisonsSettings;
-            config.TargetDoseLevelType = TargetLevelType.Systemic;
         }
-
         public override void Verify(ProjectDto project) {
         }
     }
