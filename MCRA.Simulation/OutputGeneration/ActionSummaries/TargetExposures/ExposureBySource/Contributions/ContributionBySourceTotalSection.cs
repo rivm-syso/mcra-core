@@ -4,8 +4,9 @@ using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 
 namespace MCRA.Simulation.OutputGeneration {
 
-    public sealed class ContributionBySourceTotalSection : ContributionBySourceSectionBase {
-
+    public sealed class ContributionBySourceTotalSection : SummarySection {
+        public override bool SaveTemporaryData => true;
+        public List<ContributionBySourceRecord> Records { get; set; }
         public void Summarize(
             ICollection<IExternalIndividualExposure> externalIndividualExposures,
             ICollection<Compound> substances,
@@ -22,7 +23,7 @@ namespace MCRA.Simulation.OutputGeneration {
             membershipProbabilities = substances.Count > 1
                 ? membershipProbabilities : substances.ToDictionary(r => r, r => 1D);
 
-            Records = SummarizeContributions(
+            Records = ContributionBySourceSectionBase.SummarizeContributions(
                 externalIndividualExposures,
                 relativePotencyFactors,
                 membershipProbabilities,
@@ -46,14 +47,14 @@ namespace MCRA.Simulation.OutputGeneration {
             membershipProbabilities = substances.Count > 1
                 ? membershipProbabilities : substances.ToDictionary(r => r, r => 1D);
 
-            var records = SummarizeUncertainty(
+            var records = ContributionBySourceSectionBase.SummarizeUncertainty(
                  externalIndividualExposures,
                  relativePotencyFactors,
                  membershipProbabilities,
                  kineticConversionFactors,
                  isPerPerson
              );
-            UpdateContributions(records);
+            ContributionBySourceSectionBase.UpdateContributions(Records, records);
         }
     }
 }

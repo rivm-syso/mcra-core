@@ -3,13 +3,18 @@ using MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Generic;
 using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.OutputGeneration {
+    public class ExposureBySourceBoxPlotRecord : InternalExposureBoxPlotRecordBase<SourceContributorKey> {
 
-    public sealed class ExposureBySourceRecord : InternalExposureDistributionRecordBase<SourceContributorKey> {
         [Description("Exposure source.")]
         [DisplayName("Source")]
         public string Source { get; set; }
 
-        public ExposureBySourceRecord() { }
+        public override string GetLabel() {
+            if (!string.IsNullOrEmpty(Stratification)) {
+                return $"{Source} ({Stratification})";
+            }
+            return Source;
+        }
 
         public override void SetDescriptorValues(SourceContributorKey key) {
             Source = key.Source.GetDisplayName();

@@ -1,19 +1,20 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Simulation.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
+using MCRA.Simulation.Objects;
+using MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Generic;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public abstract class ExposureBySourceSectionBase : SummarySection {
+    public abstract class ExposureBySourceCalculator {
 
-        protected static List<(ExposureSource Source, List<(SimulatedIndividual SimulatedIndividual, double Exposure)> Exposures)> CalculateExposures(
+        public static List<InternalExposuresByDescriptor<SourceContributorKey>> CalculateExposures(
            ICollection<IExternalIndividualExposure> externalIndividualExposures,
            IDictionary<Compound, double> relativePotencyFactors,
            IDictionary<Compound, double> membershipProbabilities,
            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
            bool isPerPerson
        ) {
-            var exposureSourceCollection = new List<(ExposureSource ExposureSource, List<(SimulatedIndividual SimulatedIndividual, double Exposure)>)>();
+            var exposureSourceCollection = new List<InternalExposuresByDescriptor<SourceContributorKey>>(); ;
             var paths = externalIndividualExposures
                 .SelectMany(c => c.ExposuresPerPath.Keys)
                 .ToHashSet();
@@ -49,7 +50,11 @@ namespace MCRA.Simulation.OutputGeneration {
                         Exposure: c.Exposure
                     ))
                     .ToList();
-                exposureSourceCollection.Add((source, exposures));
+                var internalExposures = new InternalExposuresByDescriptor<SourceContributorKey>() {
+                    Descriptor = new SourceContributorKey() { Source = source },
+                    Exposures = exposures
+                };
+                exposureSourceCollection.Add(internalExposures);
             }
             return exposureSourceCollection;
         }
