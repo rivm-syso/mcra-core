@@ -49,50 +49,12 @@ namespace MCRA.Simulation.OutputGeneration {
                 isPerPerson
             );
 
-            Records = summarizeExposureRecords(
-                exposureCollection,
-                percentages
-            );
+            Records = summarizeExposureRecords(exposureCollection, percentages, outputStratifier);
 
-            BoxPlotRecords = summarizeBoxPlotsRecords(
-                exposureCollection,
-                targetUnit
-            );
+            BoxPlotRecords = summarizeBoxPlotsRecords(exposureCollection, targetUnit);
 
             if (outputStratifier != null) {
-                var groups = externalIndividualExposures
-                    .GroupBy(r => outputStratifier.GetLevel(r.SimulatedIndividual));
-                var groupRecords = groups
-                    .SelectMany(r => {
-                        var groupExposures = ExposureBySourceCalculator.CalculateExposures(
-                            [.. r],
-                            relativePotencyFactors,
-                            membershipProbabilities,
-                            kineticConversionFactors,
-                            isPerPerson
-                        );
-                        return summarizeExposureRecords(
-                            groupExposures,
-                            percentages,
-                            r.Key
-                        );
-                    });
-                Records.AddRange(groupRecords);
-                StratifiedExposureBoxPlotRecords = [.. groups
-                    .SelectMany(r => {
-                        var groupExposures = ExposureBySourceCalculator.CalculateExposures(
-                            [.. r],
-                            relativePotencyFactors,
-                            membershipProbabilities,
-                            kineticConversionFactors,
-                            isPerPerson
-                        );
-                        return summarizeBoxPlotsRecords(
-                            groupExposures,
-                            targetUnit,
-                            r.Key
-                        );
-                    })];
+                StratifiedBoxPlotRecords = summarizeStratifiedBoxPlots(exposureCollection, targetUnit, outputStratifier);
             }
         }
     }

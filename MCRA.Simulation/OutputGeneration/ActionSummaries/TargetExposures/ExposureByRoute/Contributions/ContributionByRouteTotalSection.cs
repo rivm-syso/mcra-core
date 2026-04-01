@@ -1,13 +1,14 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
-using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
+using MCRA.Simulation.Calculators.Stratification;
+using MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Generic;
 
 namespace MCRA.Simulation.OutputGeneration {
 
-    public sealed class ContributionByRouteTotalSection : SummarySection {
-        public override bool SaveTemporaryData => true;
-        public List<ContributionByRouteRecord> Records { get; set; }
+    public sealed class ContributionByRouteTotalSection : InternalExposureContributionSectionBase<RouteContributorKey, ContributionByRouteRecord> {
+        public override string DescriptorKey => "Route";
+        public override string DescriptorName => "route";
         public void Summarize(
             ICollection<IExternalIndividualExposure> externalIndividualExposures,
             ICollection<Compound> activeSubstances,
@@ -16,22 +17,23 @@ namespace MCRA.Simulation.OutputGeneration {
             IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
-            ExposureUnitTriple externalExposureUnit,
+            PopulationStratifier outputStratifier,
             bool isPerPerson
         ) {
-            relativePotencyFactors = activeSubstances.Count > 1
-                ? relativePotencyFactors : activeSubstances.ToDictionary(r => r, r => 1D);
-            membershipProbabilities = activeSubstances.Count > 1
-                ? membershipProbabilities : activeSubstances.ToDictionary(r => r, r => 1D);
-
-            Records = ContributionByRouteSectionBase.SummarizeContributions(
+            var exposureCollection = ExposureByRouteCalculator.CalculateExposures(
                 externalIndividualExposures,
+                activeSubstances,
                 relativePotencyFactors,
                 membershipProbabilities,
                 kineticConversionFactors,
+                isPerPerson
+            );
+
+            Records = summarize(
+                exposureCollection,
                 uncertaintyLowerBound,
                 uncertaintyUpperBound,
-                isPerPerson
+                outputStratifier
             );
         }
 
@@ -41,20 +43,19 @@ namespace MCRA.Simulation.OutputGeneration {
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
+            PopulationStratifier outputStratifier,
             bool isPerPerson
         ) {
-            relativePotencyFactors = activeSubstances.Count > 1
-                ? relativePotencyFactors : activeSubstances.ToDictionary(r => r, r => 1D);
-            membershipProbabilities = activeSubstances.Count > 1
-                ? membershipProbabilities : activeSubstances.ToDictionary(r => r, r => 1D);
-            var records = ContributionByRouteSectionBase.SummarizeUncertainty(
-                 externalIndividualExposures,
-                 relativePotencyFactors,
-                 membershipProbabilities,
-                 kineticConversionFactors,
-                 isPerPerson
+            var exposureCollection = ExposureByRouteCalculator.CalculateExposures(
+                externalIndividualExposures,
+                activeSubstances,
+                relativePotencyFactors,
+                membershipProbabilities,
+                kineticConversionFactors,
+                isPerPerson
             );
-            ContributionByRouteSectionBase.UpdateContributions(Records, records);
+            var records = summarizeUncertainty(exposureCollection, outputStratifier);
+            updateContributions(Records, records);
         }
     }
 }

@@ -42,10 +42,10 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 ));
             }
             {
-                if (Model.StratifiedExposureBoxPlotRecords?.Count > 0) {
+                if (Model.StratifiedBoxPlotRecords?.Count > 0) {
                     var chartCreator = new InternalExposureBoxPlotChartCreator<S, T2>(
                         Model.DescriptorKey,
-                        Model.StratifiedExposureBoxPlotRecords,
+                        Model.StratifiedBoxPlotRecords,
                         Model.TargetUnit,
                         Model.ShowOutliers,
                         true
@@ -54,7 +54,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
                         name: $"StratifiedBoxPlotBy{Model.DescriptorKey}Data",
                         section: Model,
-                        items: Model.StratifiedExposureBoxPlotRecords,
+                        items: Model.StratifiedBoxPlotRecords,
                         viewBag: ViewBag
                     );
                     panelBuilder.AddPanel(

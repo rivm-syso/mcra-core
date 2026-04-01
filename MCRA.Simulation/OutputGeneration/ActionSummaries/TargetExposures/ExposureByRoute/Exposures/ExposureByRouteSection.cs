@@ -18,7 +18,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public void Summarize(
             ICollection<IExternalIndividualExposure> externalIndividualExposures,
-            ICollection<Compound> substances,
+            ICollection<Compound> activeSubstances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             IDictionary<(ExposureRoute route, Compound substance), double> kineticConversionFactors,
@@ -34,13 +34,9 @@ namespace MCRA.Simulation.OutputGeneration {
             var percentages = new double[] { lowerPercentage, 50, upperPercentage };
             var routes = kineticConversionFactors.Select(c => c.Key.route).Distinct().ToList();
 
-            relativePotencyFactors = substances.Count > 1
-                ? relativePotencyFactors : substances.ToDictionary(r => r, r => 1D);
-            membershipProbabilities = substances.Count > 1
-                ? membershipProbabilities : substances.ToDictionary(r => r, r => 1D);
-
             var exposureCollection = ExposureByRouteCalculator.CalculateExposures(
                 externalIndividualExposures,
+                activeSubstances,
                 relativePotencyFactors,
                 membershipProbabilities,
                 kineticConversionFactors,
@@ -54,47 +50,12 @@ namespace MCRA.Simulation.OutputGeneration {
                 }
             }
 
-            Records = summarizeExposureRecords(exposureCollection, percentages);
+            Records = summarizeExposureRecords(exposureCollection, percentages, outputStratifier);
 
-            BoxPlotRecords = summarizeBoxPlotsRecords(
-                exposureCollection,
-                targetUnit
-            );
+            BoxPlotRecords = summarizeBoxPlotsRecords(exposureCollection, targetUnit);
 
             if (outputStratifier != null) {
-                var groups = externalIndividualExposures
-                    .GroupBy(r => outputStratifier.GetLevel(r.SimulatedIndividual));
-                var groupRecords = groups
-                    .SelectMany(r => {
-                        var groupExposures = ExposureByRouteCalculator.CalculateExposures(
-                            [.. r],
-                            relativePotencyFactors,
-                            membershipProbabilities,
-                            kineticConversionFactors,
-                            isPerPerson
-                        );
-                        return summarizeExposureRecords(
-                            groupExposures,
-                            percentages,
-                            r.Key
-                        );
-                    });
-                Records.AddRange(groupRecords);
-                StratifiedExposureBoxPlotRecords = [.. groups
-                    .SelectMany(r => {
-                        var groupExposures = ExposureByRouteCalculator.CalculateExposures(
-                            [.. r],
-                            relativePotencyFactors,
-                            membershipProbabilities,
-                            kineticConversionFactors,
-                            isPerPerson
-                        );
-                        return summarizeBoxPlotsRecords(
-                            groupExposures,
-                            targetUnit,
-                            r.Key
-                        );
-                    })];
+                StratifiedBoxPlotRecords = summarizeStratifiedBoxPlots(exposureCollection, targetUnit, outputStratifier);
             }
         }
     }

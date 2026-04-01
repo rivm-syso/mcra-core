@@ -747,6 +747,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         data.CorrectedRelativePotencyFactors,
                         data.MembershipProbabilities,
                         result.KineticConversionFactorsByRouteSubstance,
+                        outputStratifier,
                         _configuration.IsPerPerson
                     );
                     subSubHeader.SaveSummarySection(section);
@@ -760,6 +761,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         data.CorrectedRelativePotencyFactors,
                         data.MembershipProbabilities,
                         result.KineticConversionFactorsByRouteSubstance,
+                        outputStratifier,
                         _configuration.VariabilityUpperTailPercentage,
                         _configuration.IsPerPerson
                     );
@@ -1463,7 +1465,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         result.KineticConversionFactorsByRouteSubstance,
                         _configuration.UncertaintyLowerBound,
                         _configuration.UncertaintyUpperBound,
-                        result.ExternalExposureUnit,
+                        outputStratifier,
                         _configuration.IsPerPerson
                     );
                     sub3Header.SaveSummarySection(section);
@@ -1477,6 +1479,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         data.CorrectedRelativePotencyFactors,
                         data.MembershipProbabilities,
                         result.KineticConversionFactorsByRouteSubstance,
+                        outputStratifier,
                         _configuration.VariabilityUpperTailPercentage,
                         _configuration.UncertaintyLowerBound,
                         _configuration.UncertaintyUpperBound,

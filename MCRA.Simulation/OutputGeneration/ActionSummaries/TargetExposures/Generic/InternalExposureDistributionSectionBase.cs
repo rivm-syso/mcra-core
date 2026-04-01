@@ -1,4 +1,5 @@
-﻿using MCRA.General;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 using MCRA.Simulation.Calculators.Stratification;
 using MCRA.Utils.Statistics;
 using static MCRA.General.TargetUnit;
@@ -14,7 +15,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Gener
         public override bool SaveTemporaryData => true;
         public List<T1> Records { get; set; }
         public List<T2> BoxPlotRecords { get; set; }
-        public List<T2> StratifiedExposureBoxPlotRecords { get; set; }
+        public List<T2> StratifiedBoxPlotRecords { get; set; }
         public double? RestrictedUpperPercentile { get; set; }
         public bool ShowOutliers { get; set; }
         public TargetUnit TargetUnit { get; set; }
@@ -22,17 +23,45 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Gener
         protected List<T1> summarizeExposureRecords(
             List<InternalExposuresByDescriptor<S>> exposureCollection,
             double[] percentages,
-            IStratificationLevel stratification = null
+            PopulationStratifier outputStratifier
         ) {
             var records = new List<T1>();
             foreach (var item in exposureCollection) {
                 if (item.Exposures.Any(c => c.Exposure > 0)) {
                     var record = getExposureRecord(
                         item,
-                        percentages,
-                        stratification
+                        percentages
                     );
                     records.Add(record);
+                }
+            }
+            if (outputStratifier != null) {
+                var groups = exposureCollection
+                    .SelectMany(c => c.Exposures.Select(e => (
+                        Exposure: e.Exposure,
+                        SimulatedIndividual: e.SimulatedIndividual,
+                        Descriptor: c.Descriptor,
+                        Stratifier: outputStratifier.GetLevel(e.SimulatedIndividual)
+                    )))
+                    .GroupBy(c => c.Stratifier)
+                    .ToList();
+
+                foreach (var group in groups) {
+                    var internalExposures = group.GroupBy(c => c.Descriptor)
+                        .Select(r => new InternalExposuresByDescriptor<S> {
+                            Descriptor = r.Key,
+                            Exposures = [.. r.Select(e => (
+                                SimulatedIndividual: e.SimulatedIndividual,
+                                Exposure: e.Exposure
+                            ))]
+                        }).ToList();
+                    var results = internalExposures
+                        .Select(c => getExposureRecord(
+                             c,
+                             percentages,
+                             outputStratifier.GetLevel(c.Exposures.First().SimulatedIndividual)
+                         )).ToList();
+                    records.AddRange(results);
                 }
             }
             return records;
@@ -58,10 +87,46 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Gener
             return records;
         }
 
+        protected List<T2> summarizeStratifiedBoxPlots(
+            List<InternalExposuresByDescriptor<S>> exposureCollection,
+            TargetUnit targetUnit,
+            PopulationStratifier outputStratifier
+        ) {
+            var records = new List<T2>();
+            var groups = exposureCollection
+                .SelectMany(c => c.Exposures.Select(e => (
+                    Exposure: e.Exposure,
+                    SimulatedIndividual: e.SimulatedIndividual,
+                    Descriptor: c.Descriptor,
+                    Stratifier: outputStratifier.GetLevel(e.SimulatedIndividual)
+                )))
+                .GroupBy(c => c.Stratifier)
+                .ToList();
+
+            foreach (var group in groups) {
+                var internalExposures = group.GroupBy(c => c.Descriptor)
+                    .Select(r => new InternalExposuresByDescriptor<S> {
+                        Descriptor = r.Key,
+                        Exposures = [.. r.Select(e => (
+                            SimulatedIndividual: e.SimulatedIndividual,
+                            Exposure: e.Exposure
+                        ))]
+                    }).ToList();
+
+                var results = summarizeBoxPlotsRecords(
+                    internalExposures,
+                    targetUnit,
+                    group.Key
+                );
+                records.AddRange(results);
+            }
+            return records;
+        }
+
         private static T1 getExposureRecord(
             InternalExposuresByDescriptor<S> collection,
             double[] percentages,
-            IStratificationLevel stratification
+            IStratificationLevel stratification = null
         ) {
             var weights = collection.Exposures
                 .Where(c => c.Exposure > 0)

@@ -1,8 +1,6 @@
 ﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Generic;
 using MCRA.Utils.ExtensionMethods;
-using Microsoft.AspNetCore.Routing;
 
 namespace MCRA.Simulation.OutputGeneration {
 
