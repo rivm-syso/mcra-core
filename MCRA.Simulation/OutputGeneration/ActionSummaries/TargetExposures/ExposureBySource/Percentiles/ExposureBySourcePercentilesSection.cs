@@ -13,9 +13,9 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public void Summarize(
             ICollection<IExternalIndividualExposure> externalIndividualExposures,
-            ICollection<Compound> substances,
-            IDictionary<Compound, double> rpfs,
-            IDictionary<Compound, double> memberships,
+            ICollection<Compound> activeSubstances,
+            IDictionary<Compound, double> relativePotencyFactors,
+            IDictionary<Compound, double> membershipProbabilities,
             IDictionary<(ExposureRoute Route, Compound substance), double> kineticConversionFactors,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
@@ -23,12 +23,11 @@ namespace MCRA.Simulation.OutputGeneration {
             bool isPerPerson,
             PopulationStratifier outputStratifier
         ) {
-            rpfs = substances.Count > 1 ? rpfs : substances.ToDictionary(r => r, r => 1D);
-            memberships = substances.Count > 1 ? memberships : substances.ToDictionary(r => r, r => 1D);
             var exposureCollection = ExposureBySourceCalculator.CalculateExposures(
                 externalIndividualExposures,
-                rpfs,
-                memberships,
+                activeSubstances,
+                relativePotencyFactors,
+                membershipProbabilities,
                 kineticConversionFactors,
                 isPerPerson
             );
@@ -37,22 +36,19 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public void SummarizeUncertainty(
             ICollection<IExternalIndividualExposure> externalIndividualExposures,
-            ICollection<Compound> substances,
-            IDictionary<Compound, double> rpfs,
-            IDictionary<Compound, double> memberships,
+            ICollection<Compound> activeSubstances,
+            IDictionary<Compound, double> relativePotencyFactors,
+            IDictionary<Compound, double> membershipProbabilities,
             IDictionary<(ExposureRoute Route, Compound substance), double> kineticConversionFactors,
             List<double> percentages,
             bool isPerPerson,
             PopulationStratifier outputStratifier
         ) {
-            //var Sources = kineticConversionFactors.Select(c => c.Key.Source).Distinct().ToList();
-            rpfs = rpfs ?? substances.ToDictionary(r => r, r => 1D);
-            memberships = memberships ?? substances.ToDictionary(r => r, r => 1D);
-
             var exposureCollection = ExposureBySourceCalculator.CalculateExposures(
                 externalIndividualExposures,
-                rpfs,
-                memberships,
+                activeSubstances,
+                relativePotencyFactors,
+                membershipProbabilities,
                 kineticConversionFactors,
                 isPerPerson
             );

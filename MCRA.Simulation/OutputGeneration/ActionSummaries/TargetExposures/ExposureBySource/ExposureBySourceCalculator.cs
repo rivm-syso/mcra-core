@@ -9,11 +9,16 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public static List<InternalExposuresByDescriptor<SourceContributorKey>> CalculateExposures(
            ICollection<IExternalIndividualExposure> externalIndividualExposures,
+           ICollection<Compound> activeSubstances,
            IDictionary<Compound, double> relativePotencyFactors,
            IDictionary<Compound, double> membershipProbabilities,
            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
            bool isPerPerson
        ) {
+            relativePotencyFactors = activeSubstances.Count > 1
+                ? relativePotencyFactors : activeSubstances.ToDictionary(r => r, r => 1D);
+            membershipProbabilities = activeSubstances.Count > 1
+                ? membershipProbabilities : activeSubstances.ToDictionary(r => r, r => 1D);
             var exposureSourceCollection = new List<InternalExposuresByDescriptor<SourceContributorKey>>(); ;
             var paths = externalIndividualExposures
                 .SelectMany(c => c.ExposuresPerPath.Keys)

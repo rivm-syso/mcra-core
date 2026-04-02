@@ -16,7 +16,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public void Summarize(
             ICollection<IExternalIndividualExposure> externalIndividualExposures,
-            ICollection<Compound> substances,
+            ICollection<Compound> activeSubstances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
@@ -27,11 +27,6 @@ namespace MCRA.Simulation.OutputGeneration {
             PopulationStratifier outputStratifier,
             bool skipPrivacySensitiveOutputs
         ) {
-            relativePotencyFactors = substances.Count > 1
-                ? relativePotencyFactors : substances.ToDictionary(r => r, r => 1D);
-            membershipProbabilities = substances.Count > 1
-                ? membershipProbabilities : substances.ToDictionary(r => r, r => 1D);
-
             var percentages = new double[] { lowerPercentage, 50, upperPercentage };
             if (skipPrivacySensitiveOutputs) {
                 var maxUpperPercentile = SimulationConstants.MaxUpperPercentage(externalIndividualExposures.Count);
@@ -43,6 +38,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
             var exposureCollection = ExposureBySourceCalculator.CalculateExposures(
                 externalIndividualExposures,
+                activeSubstances,
                 relativePotencyFactors,
                 membershipProbabilities,
                 kineticConversionFactors,
