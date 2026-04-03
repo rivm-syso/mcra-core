@@ -632,7 +632,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             } else if (targetLevelType == TargetLevelType.Internal) {
                 targetUnit = new TargetUnit(
                     exposureTarget,
-                    ExposureUnitTriple.CreateDefaultExposureUnit(exposureTarget, ModuleConfig.ExposureType)
+                    ExposureUnitTriple.CreateInternalExposureUnit(exposureTarget, ModuleConfig.ExposureType)
                 );
             } else {
                 var exposureUnitTriple = ExposureUnitTriple.CreateDietaryExposureUnit(

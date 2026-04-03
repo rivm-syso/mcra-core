@@ -29,10 +29,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.Generic.ExternalExposu
             var substancesOne = FakeSubstancesGenerator.Create(1);
             var substancesThree = FakeSubstancesGenerator.Create(3);
 
-            ExposureUnitTriple unit = ExposureUnitTriple.CreateDefaultExposureUnit(
-                ExposureTarget.DietaryExposureTarget,
-                ExposureType.Chronic
-            );
+            ExposureUnitTriple unit = ExposureUnitTriple.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
 
             // create external individual exposures for the individuals and substances
             var exposuresForThree = FakeExternalExposureGenerator.CreateExternalIndividualExposures(

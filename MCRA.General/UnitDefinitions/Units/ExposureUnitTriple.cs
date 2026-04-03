@@ -108,46 +108,41 @@ namespace MCRA.General {
         }
 
         /// <summary>
-        /// Creates a default exposure unit for the specified target.
+        /// Creates a unit for an internal target.
         /// </summary>
-        public static ExposureUnitTriple CreateDefaultExposureUnit(
+        public static ExposureUnitTriple CreateInternalExposureUnit(
             ExposureTarget exposureTarget,
             ExposureType exposureType
         ) {
-            if (exposureTarget.TargetLevelType == TargetLevelType.Internal) {
-                var timeScaleUnit = exposureType == ExposureType.Acute
-                    ? TimeScaleUnit.Peak
-                    : TimeScaleUnit.SteadyState;
-                var defaultUnit = exposureTarget.BiologicalMatrix.GetTargetConcentrationUnit();
-                var substanceAmountUnit = defaultUnit.GetSubstanceAmountUnit();
-                var result = exposureTarget.ExpressionType switch {
-                    ExpressionType.None => new ExposureUnitTriple(
-                        substanceAmountUnit,
-                        defaultUnit.GetConcentrationMassUnit(),
-                        timeScaleUnit
-                    ),
-                    ExpressionType.Lipids => new ExposureUnitTriple(
-                        substanceAmountUnit,
-                        ConcentrationMassUnit.Grams,
-                        timeScaleUnit
-                    ),
-                    ExpressionType.Creatinine => new ExposureUnitTriple(
-                        substanceAmountUnit,
-                        ConcentrationMassUnit.Grams,
-                        timeScaleUnit
-                    ),
-                    ExpressionType.SpecificGravity => new ExposureUnitTriple(
-                        substanceAmountUnit,
-                        defaultUnit.GetConcentrationMassUnit(),
-                        timeScaleUnit
-                    ),
-                    _ => throw new NotImplementedException(),
-                };
-                return result;
-            } else {
-                // For extern, use as default ug/kg bw/day
-                return FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
-            }
+            var timeScaleUnit = exposureType == ExposureType.Acute
+                ? TimeScaleUnit.Peak
+                : TimeScaleUnit.SteadyState;
+            var defaultUnit = exposureTarget.BiologicalMatrix.GetTargetConcentrationUnit();
+            var substanceAmountUnit = defaultUnit.GetSubstanceAmountUnit();
+            var result = exposureTarget.ExpressionType switch {
+                ExpressionType.None => new ExposureUnitTriple(
+                    substanceAmountUnit,
+                    defaultUnit.GetConcentrationMassUnit(),
+                    timeScaleUnit
+                ),
+                ExpressionType.Lipids => new ExposureUnitTriple(
+                    substanceAmountUnit,
+                    ConcentrationMassUnit.Grams,
+                    timeScaleUnit
+                ),
+                ExpressionType.Creatinine => new ExposureUnitTriple(
+                    substanceAmountUnit,
+                    ConcentrationMassUnit.Grams,
+                    timeScaleUnit
+                ),
+                ExpressionType.SpecificGravity => new ExposureUnitTriple(
+                    substanceAmountUnit,
+                    defaultUnit.GetConcentrationMassUnit(),
+                    timeScaleUnit
+                ),
+                _ => throw new NotImplementedException(),
+            };
+            return result;
         }
 
         /// <summary>

@@ -377,7 +377,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     var target = new ExposureTarget(biologicalMatrix, expressionType);
                     targetUnit = new TargetUnit(
                         target,
-                        ExposureUnitTriple.CreateDefaultExposureUnit(target, ModuleConfig.ExposureType)
+                        ExposureUnitTriple.CreateInternalExposureUnit(target, ModuleConfig.ExposureType)
                     );
                 } else {
                     var msg = "Cannot compute internal exposures for target level 'external'.";

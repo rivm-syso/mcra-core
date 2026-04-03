@@ -97,7 +97,7 @@ namespace MCRA.Simulation.Actions.KineticConversionFactors {
                     var target = new ExposureTarget(r, ExpressionType.None);
                     return new TargetUnit(
                         target,
-                        ExposureUnitTriple.CreateDefaultExposureUnit(target, ModuleConfig.ExposureType)
+                        ExposureUnitTriple.CreateInternalExposureUnit(target, ModuleConfig.ExposureType)
                     );
                 })
                 .ToList();
