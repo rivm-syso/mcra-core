@@ -4,10 +4,8 @@
         /// Converts the specified hazard dose type to its quite similar potency origin
         /// type counterpart.
         /// </summary>
-        /// <param name="hazardDoseType"></param>
-        /// <returns></returns>
-        public static PotencyOrigin ToPotencyOrigin(this PointOfDepartureType hazardDoseType) {
-            return hazardDoseType switch {
+        public static PotencyOrigin ToPotencyOrigin(this PointOfDepartureType podType) {
+            return podType switch {
                 PointOfDepartureType.Bmd => PotencyOrigin.Bmd,
                 PointOfDepartureType.Noael => PotencyOrigin.Noael,
                 PointOfDepartureType.Loael => PotencyOrigin.Loael,
@@ -23,8 +21,6 @@
         /// Converts the specified hazard dose type to its quite similar potency origin
         /// type counterpart.
         /// </summary>
-        /// <param name="hazardCharacterisationType"></param>
-        /// <returns></returns>
         public static PotencyOrigin ToPotencyOrigin(this HazardCharacterisationType hazardCharacterisationType) {
             return hazardCharacterisationType switch {
                 HazardCharacterisationType.Unspecified => PotencyOrigin.Unknown,
@@ -40,6 +36,40 @@
                 HazardCharacterisationType.Bmdl10 => PotencyOrigin.Bmdl10,
                 HazardCharacterisationType.Hbmgv => PotencyOrigin.Hbmgv,
                 _ => PotencyOrigin.Unknown,
+            };
+        }
+
+        public static double GetExpressionTypeConversionFactor(this PointOfDepartureType podType, PointOfDepartureType sourceType) {
+            return podType switch {
+                PointOfDepartureType.Bmd => toBmdFactor(sourceType),
+                PointOfDepartureType.Bmdl01 or PointOfDepartureType.Bmdl10 
+                    => throw new Exception(message: $"No conversion from {sourceType} to {podType}"),
+                PointOfDepartureType.Noael => toNoaelFactor(sourceType),
+                PointOfDepartureType.Loael => throw new Exception(message: $"No conversion from {sourceType} to LOAEL"),
+                PointOfDepartureType.Unspecified => 1D,
+                _ => throw new Exception(message: $"No conversion from {sourceType} to {podType}"),
+            };
+        }
+
+        private static double toBmdFactor(PointOfDepartureType sourceType) {
+            return sourceType switch {
+                PointOfDepartureType.Bmd => 1D,
+                PointOfDepartureType.Bmdl01 or PointOfDepartureType.Bmdl10 
+                    => throw new Exception(message: $"No conversion from {sourceType} to benchmark dose"),
+                PointOfDepartureType.Loael => toNoaelFactor(PointOfDepartureType.Loael) * toBmdFactor(PointOfDepartureType.Noael),
+                PointOfDepartureType.Noael => 3D,
+                _ => throw new Exception(message: $"No conversion from {sourceType} to benchmark dose"),
+            };
+        }
+
+        private static double toNoaelFactor(PointOfDepartureType sourceType) {
+            return sourceType switch {
+                PointOfDepartureType.Bmd => 1D / 3,
+                PointOfDepartureType.Bmdl01 or PointOfDepartureType.Bmdl10 
+                    => throw new Exception(message: $"No conversion from {sourceType} to NOAEL"),
+                PointOfDepartureType.Noael => 1,
+                PointOfDepartureType.Loael => 1D / 3,
+                _ => throw new Exception(message: $"No conversion from {sourceType} to NOAEL"),
             };
         }
     }

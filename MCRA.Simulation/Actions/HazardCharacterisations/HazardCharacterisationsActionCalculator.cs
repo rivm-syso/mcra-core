@@ -1,4 +1,5 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿
+using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Management;
 using MCRA.Data.Management.CompiledDataManagers.DataReadingSummary;
 using MCRA.Data.Management.RawDataWriters;
@@ -14,7 +15,6 @@ using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.AggregateHaz
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCharacterisationImputation;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCharacterisationsFromIviveCalculation;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCharacterisationTimeCourseCalculation;
-using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardDoseTypeConversion;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticConversionFactorCalculation;
 using MCRA.Simulation.Calculators.KineticConversionCalculation;
 using MCRA.Simulation.Calculators.PbkModelCalculation;
@@ -116,16 +116,12 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 .Where(r => substances.Contains(r.Substance))
                 .GroupBy(r => r.ExposureTarget)
                 .Select(hc => {
-                    // MCRA expresses the hazard characterisaiton values in a default unit, so imported values may
-                    // be scaled to match these default units.
                     var targetUnit = getDefaultTargetUnit(ModuleConfig.TargetDoseLevelType, ModuleConfig.ExposureType, data, hc.Key);
-                    var hazardDoseConverter = new HazardDoseConverter(targetUnit.ExposureUnit);
                     return new HazardCharacterisationModelCompoundsCollection {
                         TargetUnit = targetUnit,
                         HazardCharacterisationModels = loadHazardCharacterisationsFromData(
                             hc,
                             targetUnit.ExposureUnit,
-                            hazardDoseConverter,
                             podLookup,
                             ModuleConfig.HCSubgroupDependent
                         )
@@ -164,13 +160,9 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             var exposureTargets = GetExposureTargets(data);
             foreach (var exposureTarget in exposureTargets) {
                 var targetUnit = getDefaultTargetUnit(ModuleConfig.TargetDoseLevelType, ModuleConfig.ExposureType, data, exposureTarget);
-                var hazardDoseConverter = new HazardDoseConverter(
-                    ModuleConfig.GetTargetHazardDoseType(),
-                    targetUnit.ExposureUnit
-                );
                 computeHazardCharacterisations(
                     targetUnit,
-                    hazardDoseConverter,
+                    ModuleConfig.GetTargetHazardDoseType(),
                     data,
                     referenceSubstance,
                     ref hazardCharacterisationsActionResult
@@ -222,13 +214,9 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             var exposureTargets = GetExposureTargets(data);
             foreach (var exposureTarget in exposureTargets) {
                 var targetUnit = getDefaultTargetUnit(ModuleConfig.TargetDoseLevelType, ModuleConfig.ExposureType, data, exposureTarget);
-                var hazardDoseConverter = new HazardDoseConverter(
-                    ModuleConfig.GetTargetHazardDoseType(),
-                    targetUnit.ExposureUnit
-                );
                 computeHazardCharacterisations(
                     targetUnit,
-                    hazardDoseConverter,
+                    ModuleConfig.GetTargetHazardDoseType(),
                     data,
                     referenceSubstance,
                     ref hazardCharacterisationsActionResult,
@@ -248,7 +236,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
 
         private void computeHazardCharacterisations(
             TargetUnit targetUnit,
-            HazardDoseConverter hazardDoseConverter,
+            PointOfDepartureType targetPod,
             ActionData data,
             Compound referenceSubstance,
             ref HazardCharacterisationsActionResult hazardCharacterisationsActionResult,
@@ -316,7 +304,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                     ModuleConfig.ExposureType,
                     ModuleConfig.TargetDosesCalculationMethod,
                     ModuleConfig.ConvertToSingleTargetMatrix,
-                    hazardDoseConverter,
+                    targetPod,
                     targetUnit,
                     ModuleConfig.UseBMDL,
                     kineticModelRandomGenerator
@@ -380,7 +368,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                     if (factorialSet?.Contains(UncertaintySource.HazardCharacterisationsImputation) == true) {
                         imputedHazardCharacterisations = imputationCalculator.ImputeUncertaintyRun(
                             missingPointsOfDeparture,
-                            hazardDoseConverter,
+                            targetPod,
                             targetUnit,
                             imputationRandomGenerator,
                             kineticModelRandomGenerator
@@ -388,7 +376,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                     } else {
                         imputedHazardCharacterisations = imputationCalculator.ImputeNominal(
                             missingPointsOfDeparture,
-                            hazardDoseConverter,
+                            targetPod,
                             targetUnit,
                             kineticModelRandomGenerator);
                     }
@@ -451,14 +439,14 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                     if (factorialSet?.Contains(UncertaintySource.HazardCharacterisationsImputation) == true) {
                         imputationRecords = imputationCalculator.ImputeUncertaintyRun(
                             missingHazardDoses,
-                            hazardDoseConverter,
+                            targetPod,
                             targetUnit,
                             imputationRandomGenerator,
                             kineticModelRandomGenerator);
                     } else {
                         imputationRecords = imputationCalculator.ImputeNominal(
                             missingHazardDoses,
-                            hazardDoseConverter,
+                            targetPod,
                             targetUnit,
                             kineticModelRandomGenerator);
                     }
@@ -522,7 +510,6 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
         private IDictionary<Compound, IHazardCharacterisationModel> loadHazardCharacterisationsFromData(
            IEnumerable<HazardCharacterisation> hazardCharacterisations,
            ExposureUnitTriple exposureUnit,
-           HazardDoseConverter hazardDoseConverter,
            ILookup<string, Data.Compiled.Objects.PointOfDeparture> podLookup,
            bool hcSubgroupDependent
        ) {
@@ -532,31 +519,36 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 .Where(r => !ModuleConfig.RestrictToCriticalEffect || r.IsCriticalEffect)
                 .Where(r => r.TargetLevel == ModuleConfig.TargetDoseLevelType)
                 .Where(r => r.TargetLevel == TargetLevelType.Internal || routes.Contains(r.ExposureRoute))
-                .Select(r => new HazardCharacterisationModel() {
-                    Code = r.Code,
-                    Effect = r.Effect,
-                    Substance = r.Substance,
-                    TargetUnit = new TargetUnit(r.ExposureTarget, exposureUnit),
-                    Value = hazardDoseConverter.ConvertToTargetUnit(r.DoseUnit, r.Substance, r.Value),
-                    PotencyOrigin = findPotencyOrigin(podLookup, r),
-                    TestSystemHazardCharacterisation = new TestSystemHazardCharacterisation() { Effect = r.Effect },
-                    HazardCharacterisationType = r.HazardCharacterisationType,
-                    HazardCharacterisationsUncertains = r.HazardCharacterisationsUncertains
-                        .Select(u => {
-                            return new HazardCharacterisationUncertain {
-                                Substance = u.Substance,
-                                IdHazardCharacterisation = u.IdHazardCharacterisation,
-                                Value = hazardDoseConverter.ConvertToTargetUnit(r.DoseUnit, u.Substance, u.Value)
-                            };
-                        })
-                        .ToList(),
-                    Reference = new PublicationReference() {
-                        PublicationAuthors = r.PublicationAuthors,
-                        PublicationTitle = r.PublicationTitle,
-                        PublicationUri = r.PublicationUri,
-                        PublicationYear = r.PublicationYear
-                    },
-                    HCSubgroups = hcSubgroupDependent ? r.HCSubgroups.OrderBy(c => c.AgeLower).ToList() : null,
+                .Select(r => {
+                    var alignmentFactor = r.DoseUnit.GetDoseAlignmentFactor(exposureUnit, r.Substance.MolecularMass);
+                    return new HazardCharacterisationModel() {
+                        Code = r.Code,
+                        Effect = r.Effect,
+                        Substance = r.Substance,
+                        TargetUnit = new TargetUnit(r.ExposureTarget, exposureUnit),
+                        Value = alignmentFactor * r.Value,
+                        PotencyOrigin = findPotencyOrigin(podLookup, r),
+                        TestSystemHazardCharacterisation = new TestSystemHazardCharacterisation() { Effect = r.Effect },
+                        HazardCharacterisationType = r.HazardCharacterisationType,
+                        HazardCharacterisationsUncertains = r.HazardCharacterisationsUncertains
+                            .Select(u => {
+                                var alignmentFactor = r.DoseUnit
+                                    .GetDoseAlignmentFactor(exposureUnit, r.Substance.MolecularMass);
+                                return new HazardCharacterisationUncertain {
+                                    Substance = u.Substance,
+                                    IdHazardCharacterisation = u.IdHazardCharacterisation,
+                                    Value = alignmentFactor * u.Value
+                                };
+                            })
+                            .ToList(),
+                        Reference = new PublicationReference() {
+                            PublicationAuthors = r.PublicationAuthors,
+                            PublicationTitle = r.PublicationTitle,
+                            PublicationUri = r.PublicationUri,
+                            PublicationYear = r.PublicationYear
+                        },
+                        HCSubgroups = hcSubgroupDependent ? r.HCSubgroups.OrderBy(c => c.AgeLower).ToList() : null,
+                    };
                 })
                 .ToDictionary(r => r.Substance, r => r as IHazardCharacterisationModel);
 

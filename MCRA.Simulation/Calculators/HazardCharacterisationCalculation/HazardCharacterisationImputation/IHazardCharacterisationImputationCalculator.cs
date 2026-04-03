@@ -1,7 +1,6 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardDoseTypeConversion;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCharacterisationImputation {
 
@@ -9,21 +8,21 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
 
         IHazardCharacterisationModel ImputeNominal(
             Compound substance,
-            HazardDoseConverter hazardDoseTypeConverter,
+            PointOfDepartureType targetPod,
             TargetUnit targetUnit,
             IRandom kineticModelRandomGenerator
         );
 
         ICollection<IHazardCharacterisationModel> ImputeNominal(
             ICollection<Compound> substances,
-            HazardDoseConverter hazardDoseTypeConverter,
+            PointOfDepartureType targetPod,
             TargetUnit targetUnit,
             IRandom kineticModelRandomGenerator
         );
 
         IHazardCharacterisationModel ImputeUncertaintyRun(
             Compound substance,
-            HazardDoseConverter hazardDoseTypeConverter,
+            PointOfDepartureType targetPod,
             TargetUnit targetUnit,
             IRandom generator,
             IRandom kineticModelRandomGenerator
@@ -31,7 +30,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
 
         ICollection<IHazardCharacterisationModel> ImputeUncertaintyRun(
             ICollection<Compound> substances,
-            HazardDoseConverter hazardDoseTypeConverter,
+            PointOfDepartureType targetPod,
             TargetUnit targetUnit,
             IRandom generator,
             IRandom kineticModelRandomGenerator

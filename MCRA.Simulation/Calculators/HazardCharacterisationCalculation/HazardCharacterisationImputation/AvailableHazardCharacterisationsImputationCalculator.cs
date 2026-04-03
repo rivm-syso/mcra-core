@@ -1,7 +1,6 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardDoseTypeConversion;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticConversionFactorCalculation;
 using MCRA.Simulation.Calculators.InterSpeciesConversion;
 using MCRA.Simulation.Calculators.IntraSpeciesConversion;
@@ -14,12 +13,6 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
         /// sampling from the hazard characterisations available for other
         /// substances.
         /// </summary>
-        /// <param name="effect"></param>
-        /// <param name="imputationRecords"></param>
-        /// <param name="percentile"></param>
-        /// <param name="interSpeciesFactorModels"></param>
-        /// <param name="kineticConversionFactorCalculator"></param>
-        /// <param name="intraSpeciesVariabilityModels"></param>
         public AvailableHazardCharacterisationsImputationCalculator(
             Effect effect,
             ICollection<IHazardCharacterisationModel> imputationRecords,
@@ -34,14 +27,9 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
         /// <summary>
         /// Creates the hazard characterisation records used for imputation.
         /// </summary>
-        /// <param name="substance"></param>
-        /// <param name="hazardDoseTypeConverter"></param>
-        /// <param name="targetDoseUnit"></param>
-        /// <param name="kineticModelRandomGenerator"></param>
-        /// <returns></returns>
         protected override List<IHazardCharacterisationModel> getImputationTargetDoseRecords(
             Compound substance,
-            HazardDoseConverter hazardDoseTypeConverter,
+            PointOfDepartureType targetPod,
             TargetUnit targetDoseUnit,
             IRandom kineticModelRandomGenerator
         ) {

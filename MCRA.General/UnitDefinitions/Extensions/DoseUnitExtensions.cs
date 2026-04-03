@@ -5,10 +5,6 @@
         /// target unit. This method ignores the time-component of the target unit and assumes that the
         /// target is specified as a concentration (i.e., per kg or per g and not per person).
         /// </summary>
-        /// <param name="unit"></param>
-        /// <param name="targetUnit"></param>
-        /// <param name="molarMass"></param>
-        /// <returns></returns>
         public static double GetDoseAlignmentFactor(
             this DoseUnit unit,
             ExposureUnitTriple targetUnit,
@@ -43,8 +39,6 @@
         /// <summary>
         /// Returns the substance amount unit of the dose unit.
         /// </summary>
-        /// <param name="doseUnit"></param>
-        /// <returns></returns>
         public static SubstanceAmountUnit GetSubstanceAmountUnit(this DoseUnit doseUnit) {
             switch (doseUnit) {
                 case DoseUnit.kgPerDay:
@@ -125,12 +119,9 @@
             }
         }
 
-
         /// <summary>
         /// Returns the day or week divider of the dose unit. For days = 1; for weeks = 7
         /// </summary>
-        /// <param name="doseUnit"></param>
-        /// <returns></returns>
         public static double GetDoseUnitPeriodDivider(this DoseUnit doseUnit) {
             switch (doseUnit) {
                 case DoseUnit.kgPerWeek:
@@ -205,8 +196,6 @@
         /// <summary>
         /// Returns the unit mass unit of the dose unit.
         /// </summary>
-        /// <param name="doseUnit"></param>
-        /// <returns></returns>
         public static ConcentrationMassUnit GetConcentrationMassUnit(this DoseUnit doseUnit) {
             switch (doseUnit) {
                 case DoseUnit.gPerKgBWPerDay:
@@ -287,8 +276,6 @@
         /// <summary>
         /// Returns the time scale specification of the dose unit.
         /// </summary>
-        /// <param name="doseUnit"></param>
-        /// <returns></returns>
         public static TimeScaleUnit GetTimeScale(this DoseUnit doseUnit) {
             switch (doseUnit) {
                 case DoseUnit.gPerKgBWPerDay:

@@ -1,6 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardDoseTypeConversion;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticConversionFactorCalculation;
 using MCRA.Simulation.Calculators.InterSpeciesConversion;
 using MCRA.Simulation.Calculators.IntraSpeciesConversion;
@@ -15,7 +14,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
         /// </summary>
         public IHazardCharacterisationModel Compute(
             Data.Compiled.Objects.PointOfDeparture hazardDose,
-            HazardDoseConverter hazardDoseTypeConverter,
+            PointOfDepartureType targetPodType,
             TargetUnit targetUnit,
             ExposureType exposureType,
             IDictionary<(Effect, Compound), IntraSpeciesFactorModel> intraSpeciesVariabilityModels,
@@ -24,13 +23,12 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
             double additionalAssessmentFactor,
             IRandom kineticModelRandomGenerator
         ) {
-            var expressionTypeConversionFactor = hazardDoseTypeConverter
-                .GetExpressionTypeConversionFactor(hazardDose.PointOfDepartureType);
+            var expressionTypeConversionFactor = targetPodType.GetExpressionTypeConversionFactor(hazardDose.PointOfDepartureType);
             var interSpeciesFactor = InterSpeciesFactorModelsBuilder
                 .GetInterSpeciesFactor(interSpeciesFactorModels, hazardDose.Effect, hazardDose.Species, hazardDose.Compound);
-            var alignedTestSystemHazardDose = hazardDoseTypeConverter
-                .ConvertToTargetUnit(hazardDose.DoseUnit, hazardDose.Compound, hazardDose.LimitDose);
-            var targetUnitAlignmentFactor = alignedTestSystemHazardDose / hazardDose.LimitDose;
+            var targetUnitAlignmentFactor = hazardDose.DoseUnit
+                .GetDoseAlignmentFactor(targetUnit.ExposureUnit, hazardDose.Compound.MolecularMass);
+            var alignedTestSystemHazardDose = targetUnitAlignmentFactor * hazardDose.LimitDose;
 
             var kineticConversionFactor = kineticConversionFactorCalculator
                 .ComputeKineticConversionFactor(

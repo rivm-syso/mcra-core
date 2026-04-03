@@ -1,10 +1,9 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardDoseTypeConversion;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticConversionFactorCalculation;
 using MCRA.Simulation.Calculators.InterSpeciesConversion;
 using MCRA.Simulation.Calculators.IntraSpeciesConversion;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCharacterisationImputation {
     public abstract class HazardCharacterisationImputationCalculatorBase : IHazardCharacterisationImputationCalculator {
@@ -38,20 +37,15 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
         /// In the nominal runs, the specified percentile will be used for
         /// imputation of the hazard doses of new compounds.
         /// </summary>
-        /// <param name="substance"></param>
-        /// <param name="hazardDoseTypeConverter"></param>
-        /// <param name="targetUnit"></param>
-        /// <param name="kineticModelRandomGenerator"></param>
-        /// <returns></returns>
         public IHazardCharacterisationModel ImputeNominal(
             Compound substance,
-            HazardDoseConverter hazardDoseTypeConverter,
+            PointOfDepartureType targetPod,
             TargetUnit targetUnit,
             IRandom kineticModelRandomGenerator
         ) {
             var imputationRecords = getImputationTargetDoseRecords(
                     substance,
-                    hazardDoseTypeConverter,
+                    targetPod,
                     targetUnit,
                     kineticModelRandomGenerator
                 )
@@ -72,7 +66,8 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                 imputedTargetDose = 1D / imputationValues.Select(r => 1D / r).Average();
             } else {
                 imputedTargetDose = imputationValues.Percentile(_percentile);
-            };
+            }
+            ;
 
             var intraSpeciesFactorModel = _intraSpeciesVariabilityModels.Get(_effect, substance);
             var intraSpeciesFactor = intraSpeciesFactorModel?.Factor ?? 1D;
@@ -107,7 +102,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
         /// <returns></returns>
         public ICollection<IHazardCharacterisationModel> ImputeNominal(
             ICollection<Compound> substances,
-            HazardDoseConverter hazardDoseConverter,
+            PointOfDepartureType targetPod,
             TargetUnit targetDoseUnit,
             IRandom kineticModelRandomGenerator
         ) {
@@ -115,7 +110,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
             foreach (var substance in substances) {
                 var record = ImputeNominal(
                     substance,
-                    hazardDoseConverter,
+                    targetPod,
                     targetDoseUnit,
                     kineticModelRandomGenerator
                 );
@@ -129,22 +124,16 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
         /// In the nominal runs, the specified percentile will be used for imputation
         /// of the hazard doses of new substances.
         /// </summary>
-        /// <param name="substance"></param>
-        /// <param name="hazardDoseTypeConverter"></param>
-        /// <param name="targetUnit"></param>
-        /// <param name="hazardDosesRandomGenerator"></param>
-        /// <param name="kineticModelRandomGenerator"></param>
-        /// <returns></returns>
         public IHazardCharacterisationModel ImputeUncertaintyRun(
             Compound substance,
-            HazardDoseConverter hazardDoseTypeConverter,
+            PointOfDepartureType targetPod,
             TargetUnit targetUnit,
             IRandom hazardDosesRandomGenerator,
             IRandom kineticModelRandomGenerator
         ) {
             var imputationRecords = getImputationTargetDoseRecords(
                     substance,
-                    hazardDoseTypeConverter,
+                    targetPod,
                     targetUnit,
                     kineticModelRandomGenerator
                 )
@@ -178,15 +167,9 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
         /// Imputation of hazard characterisations of the specifies substances
         /// in the bootstrap run.
         /// </summary>
-        /// <param name="substances"></param>
-        /// <param name="hazardDoseConverter"></param>
-        /// <param name="targetDoseUnit"></param>
-        /// <param name="generator"></param>
-        /// <param name="kineticModelRandomGenerator"></param>
-        /// <returns></returns>
         public ICollection<IHazardCharacterisationModel> ImputeUncertaintyRun(
             ICollection<Compound> substances,
-            HazardDoseConverter hazardDoseConverter,
+            PointOfDepartureType targetPod,
             TargetUnit targetDoseUnit,
             IRandom generator,
             IRandom kineticModelRandomGenerator
@@ -195,7 +178,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
             foreach (var substance in substances) {
                 var record = ImputeUncertaintyRun(
                     substance,
-                    hazardDoseConverter,
+                    targetPod,
                     targetDoseUnit,
                     generator,
                     kineticModelRandomGenerator
@@ -208,7 +191,6 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
         /// <summary>
         /// Returns the collection of records used for imputation.
         /// </summary>
-        /// <returns></returns>
         public ICollection<IHazardCharacterisationModel> GetImputationRecords() {
             return _imputationRecords;
         }
@@ -216,14 +198,9 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
         /// <summary>
         /// Creates the hazard characterisation records used for imputation.
         /// </summary>
-        /// <param name="compound"></param>
-        /// <param name="hazardDoseTypeConverter"></param>
-        /// <param name="targetIntakeUnit"></param>
-        /// <param name="kineticModelRandomGenerator"></param>
-        /// <returns></returns>
         protected abstract List<IHazardCharacterisationModel> getImputationTargetDoseRecords(
             Compound compound,
-            HazardDoseConverter hazardDoseTypeConverter,
+            PointOfDepartureType targetPod,
             TargetUnit targetIntakeUnit,
             IRandom kineticModelRandomGenerator
         );

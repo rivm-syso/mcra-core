@@ -1,13 +1,12 @@
-﻿using MCRA.Utils.DataFileReading;
-using MCRA.Utils.Statistics;
+﻿using System.Globalization;
+using System.Reflection;
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardDoseTypeConversion;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticConversionFactorCalculation;
 using MCRA.Simulation.Calculators.InterSpeciesConversion;
 using MCRA.Simulation.Calculators.IntraSpeciesConversion;
-using System.Globalization;
-using System.Reflection;
+using MCRA.Utils.DataFileReading;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCharacterisationImputation {
 
@@ -28,11 +27,9 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
         /// <summary>
         /// Creates the hazard characterisation records used for imputation.
         /// </summary>
-        /// <param name="substance"></param>
-        /// <returns></returns>
         protected override List<IHazardCharacterisationModel> getImputationTargetDoseRecords(
             Compound substance,
-            HazardDoseConverter hazardDoseTypeConverter,
+            PointOfDepartureType targetPod,
             TargetUnit targetDoseUnit,
             IRandom kineticModelRandomGenerator
         ) {
@@ -40,7 +37,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                 _imputationRecords = createHazardCharacterisations(
                     _effect,
                     targetDoseUnit,
-                    hazardDoseTypeConverter,
+                    targetPod,
                     _interSpeciesFactorModels,
                     _kineticConversionFactorCalculator,
                     _intraSpeciesVariabilityModels,
@@ -59,7 +56,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
         private static List<IHazardCharacterisationModel> createHazardCharacterisations(
             Effect effect,
             TargetUnit targetDoseUnit,
-            HazardDoseConverter hazardDoseTypeConverter,
+            PointOfDepartureType targetPod,
             IDictionary<(string species, Compound substance, Effect effect), InterSpeciesFactorModel> interSpeciesFactorModels,
             IKineticConversionFactorCalculator kineticConversionFactorCalculator,
             IDictionary<(Effect, Compound), IntraSpeciesFactorModel> intraSpeciesVariabilityModels,
@@ -74,7 +71,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                     noelRecord,
                     effect,
                     targetDoseUnit,
-                    hazardDoseTypeConverter,
+                    targetPod,
                     interSpeciesFactorModels,
                     kineticConversionFactorCalculator,
                     intraSpeciesVariabilityModels,
@@ -91,18 +88,18 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
             NoelRecord r,
             Effect effect,
             TargetUnit targetDoseUnit,
-            HazardDoseConverter hazardDoseTypeConverter,
+            PointOfDepartureType targetPod,
             IDictionary<(string species, Compound substance, Effect effect), InterSpeciesFactorModel> interSpeciesFactorModels,
             IKineticConversionFactorCalculator kineticConversionFactorCalculator,
             IDictionary<(Effect, Compound), IntraSpeciesFactorModel> intraSpeciesVariabilityModels,
             IRandom kineticModelRandomGenerator,
             Dictionary<int?, Compound> substances
         ) {
-            var expressionTypeConversionFactor = hazardDoseTypeConverter
+            var expressionTypeConversionFactor = targetPod
                 .GetExpressionTypeConversionFactor(PointOfDepartureType.Noael);
-            var alignedTestSystemHazardDose = hazardDoseTypeConverter
-                .ConvertToTargetUnit(r.DoseUnit, substances[r.CramerClass], r.Noel);
-            var targetUnitAlignmentFactor = alignedTestSystemHazardDose / r.Noel;
+            var targetUnitAlignmentFactor = r.DoseUnit
+                .GetDoseAlignmentFactor(targetDoseUnit.ExposureUnit, substances[r.CramerClass].MolecularMass);
+            var alignedTestSystemHazardDose = targetUnitAlignmentFactor * r.Noel;
 
             var interSpeciesFactor = InterSpeciesFactorModelsBuilder
                 .GetInterSpeciesFactor(interSpeciesFactorModels, null, r.Species, null);

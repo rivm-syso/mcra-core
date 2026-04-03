@@ -2,7 +2,6 @@
 using MCRA.General;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCharacterisationFromDoseResponseModelCalculation;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCharacterisationsFromPoDCalculation;
-using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardDoseTypeConversion;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticConversionFactorCalculation;
 using MCRA.Simulation.Calculators.InterSpeciesConversion;
 using MCRA.Simulation.Calculators.IntraSpeciesConversion;
@@ -41,7 +40,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
             ExposureType exposureType,
             TargetDosesCalculationMethod targetDosesCalculationMethod,
             bool convertToSingleMatrix,
-            HazardDoseConverter hazardDoseConverter,
+            PointOfDepartureType targetPod,
             TargetUnit targetUnit,
             bool useBMDL,
             IRandom kineticModelRandomGenerator
@@ -58,7 +57,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
                         var model = hazardCharacterisationsFromPoDCalculator
                             .Compute(
                                 pointOfDeparture,
-                                hazardDoseConverter,
+                                targetPod,
                                 targetUnit,
                                 exposureType,
                                 _intraSpeciesFactorModelCollection,
@@ -94,7 +93,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
                     extractedPointsOfDeparture.AddRange(
                         calculator.Compute(
                             focalSubstances,
-                            hazardDoseConverter,
+                            targetPod,
                             targetUnit,
                             exposureType,
                             representativeResponses,

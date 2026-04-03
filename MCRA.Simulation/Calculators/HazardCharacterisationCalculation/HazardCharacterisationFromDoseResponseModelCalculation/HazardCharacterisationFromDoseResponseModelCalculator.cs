@@ -1,6 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardDoseTypeConversion;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticConversionFactorCalculation;
 using MCRA.Simulation.Calculators.InterSpeciesConversion;
 using MCRA.Simulation.Calculators.IntraSpeciesConversion;
@@ -11,7 +10,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
 
         public List<IHazardCharacterisationModel> Compute(
             ICollection<Compound> substances,
-            HazardDoseConverter hazardDoseTypeConverter,
+            PointOfDepartureType targetPod,
             TargetUnit targetUnit,
             ExposureType exposureType,
             ILookup<Response, EffectRepresentation> representativeResponses,
@@ -34,10 +33,12 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                 foreach (var representation in representations) {
                     if (representation.HasBenchmarkResponse()) {
                         foreach (var benchmarkDose in benchmarkDoses) {
-                            var specifiedBenchMarkDose = useBMDL ? benchmarkDose.BenchmarkDoseLower: benchmarkDose.BenchmarkDose;
-                            var alignedTestSystemHazardDose = hazardDoseTypeConverter.ConvertToTargetUnit(doseResponseModel.DoseUnit, benchmarkDose.Substance, specifiedBenchMarkDose);
-                            var targetUnitAlignmentFactor = alignedTestSystemHazardDose / specifiedBenchMarkDose;
-                            var expressionTypeConversionFactor = hazardDoseTypeConverter.GetExpressionTypeConversionFactor(PointOfDepartureType.Bmd);
+                            var specifiedBenchMarkDose = useBMDL ? benchmarkDose.BenchmarkDoseLower : benchmarkDose.BenchmarkDose;
+                            var targetUnitAlignmentFactor = doseResponseModel.DoseUnit
+                                .GetDoseAlignmentFactor(targetUnit.ExposureUnit, benchmarkDose.Substance.MolecularMass);
+                            var alignedTestSystemHazardDose = targetUnitAlignmentFactor * specifiedBenchMarkDose;
+
+                            var expressionTypeConversionFactor = targetPod.GetExpressionTypeConversionFactor(PointOfDepartureType.Bmd);
                             var interSpeciesFactor = InterSpeciesFactorModelsBuilder
                                 .GetInterSpeciesFactor(interSpeciesFactorModels, representation.Effect, response.TestSystem.Species, benchmarkDose.Substance);
 
@@ -97,7 +98,6 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                             result.Add(hazardDose);
                         }
                     } else {
-                        // TODO: benchmark response calibration
                         var msg = $"No benchmark response for response {representation.Response.Name} ({representation.Response.Code})" +
                             $"and effect {representation.Effect.Name} ({representation.Effect.Code})";
                         throw new NotImplementedException(msg);
