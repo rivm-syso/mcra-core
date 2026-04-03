@@ -15,6 +15,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
            ExposureType exposureType,
            TargetLevelType targetLevelType,
            BiologicalMatrix targetMatrix,
+           ExposureRoute exposureRoute,
            Func<TargetMatrixKineticConversionCalculator> matrixConversionCalculatorFactory,
            IRandom generator,
            CompositeProgressState progress
@@ -27,7 +28,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
             // Get target surface level(s)
             var targets = new List<ExposureTarget>();
             if (targetLevelType == TargetLevelType.External) {
-                targets.Add(new ExposureTarget(ExposureRoute.Oral));
+                targets.Add(new ExposureTarget(exposureRoute));
             } else {
                 targets = [.. hbmIndividualDayCollections
                     .Where(r => r.Target.BiologicalMatrix == targetMatrix)

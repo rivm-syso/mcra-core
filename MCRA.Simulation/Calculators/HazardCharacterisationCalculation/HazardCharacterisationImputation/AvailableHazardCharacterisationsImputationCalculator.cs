@@ -29,7 +29,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
         /// </summary>
         protected override List<IHazardCharacterisationModel> getImputationTargetDoseRecords(
             Compound substance,
-            PointOfDepartureType targetPod,
+            PointOfDepartureType targetPodType,
             TargetUnit targetDoseUnit,
             IRandom kineticModelRandomGenerator
         ) {

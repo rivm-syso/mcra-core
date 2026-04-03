@@ -119,6 +119,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                     ExposureType.Chronic,
                     TargetLevelType.Internal,
                     BiologicalMatrix.Blood,
+                    ExposureRoute.Undefined,
                     kineticConversionCalculatorFactory,
                     null,
                     new CompositeProgressState()

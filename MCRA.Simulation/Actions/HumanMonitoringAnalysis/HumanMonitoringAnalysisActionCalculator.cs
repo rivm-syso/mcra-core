@@ -251,6 +251,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                         : null;
 
                     if (ModuleConfig.HbmConvertToSingleTargetMatrix) {
+
+                        var exposureRoute = ModuleConfig.ExposureRoutes.FirstOrDefault();
                         // Kinetic conversions to a single target
                         hbmIndividualDayCollections = HbmSingleTargetExtrapolationCalculator
                             .Calculate(
@@ -260,6 +262,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                                 ModuleConfig.ExposureType,
                                 ModuleConfig.TargetDoseLevelType,
                                 ModuleConfig.TargetMatrix,
+                                exposureRoute,
                                 kineticConversionCalculatorFactory,
                                 kineticConversionRandomGenerator,
                                 conversionProgress

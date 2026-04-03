@@ -39,13 +39,13 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
         /// </summary>
         public IHazardCharacterisationModel ImputeNominal(
             Compound substance,
-            PointOfDepartureType targetPod,
+            PointOfDepartureType targetPodType,
             TargetUnit targetUnit,
             IRandom kineticModelRandomGenerator
         ) {
             var imputationRecords = getImputationTargetDoseRecords(
                     substance,
-                    targetPod,
+                    targetPodType,
                     targetUnit,
                     kineticModelRandomGenerator
                 )
@@ -102,7 +102,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
         /// <returns></returns>
         public ICollection<IHazardCharacterisationModel> ImputeNominal(
             ICollection<Compound> substances,
-            PointOfDepartureType targetPod,
+            PointOfDepartureType targetPodType,
             TargetUnit targetDoseUnit,
             IRandom kineticModelRandomGenerator
         ) {
@@ -110,7 +110,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
             foreach (var substance in substances) {
                 var record = ImputeNominal(
                     substance,
-                    targetPod,
+                    targetPodType,
                     targetDoseUnit,
                     kineticModelRandomGenerator
                 );
@@ -126,14 +126,14 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
         /// </summary>
         public IHazardCharacterisationModel ImputeUncertaintyRun(
             Compound substance,
-            PointOfDepartureType targetPod,
+            PointOfDepartureType targetPodType,
             TargetUnit targetUnit,
             IRandom hazardDosesRandomGenerator,
             IRandom kineticModelRandomGenerator
         ) {
             var imputationRecords = getImputationTargetDoseRecords(
                     substance,
-                    targetPod,
+                    targetPodType,
                     targetUnit,
                     kineticModelRandomGenerator
                 )
@@ -169,7 +169,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
         /// </summary>
         public ICollection<IHazardCharacterisationModel> ImputeUncertaintyRun(
             ICollection<Compound> substances,
-            PointOfDepartureType targetPod,
+            PointOfDepartureType targetPodType,
             TargetUnit targetDoseUnit,
             IRandom generator,
             IRandom kineticModelRandomGenerator
@@ -178,7 +178,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
             foreach (var substance in substances) {
                 var record = ImputeUncertaintyRun(
                     substance,
-                    targetPod,
+                    targetPodType,
                     targetDoseUnit,
                     generator,
                     kineticModelRandomGenerator
@@ -200,7 +200,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
         /// </summary>
         protected abstract List<IHazardCharacterisationModel> getImputationTargetDoseRecords(
             Compound compound,
-            PointOfDepartureType targetPod,
+            PointOfDepartureType targetPodType,
             TargetUnit targetIntakeUnit,
             IRandom kineticModelRandomGenerator
         );

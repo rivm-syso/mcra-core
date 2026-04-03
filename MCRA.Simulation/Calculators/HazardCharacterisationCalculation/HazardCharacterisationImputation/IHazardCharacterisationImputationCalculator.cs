@@ -8,21 +8,21 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
 
         IHazardCharacterisationModel ImputeNominal(
             Compound substance,
-            PointOfDepartureType targetPod,
+            PointOfDepartureType targetPodType,
             TargetUnit targetUnit,
             IRandom kineticModelRandomGenerator
         );
 
         ICollection<IHazardCharacterisationModel> ImputeNominal(
             ICollection<Compound> substances,
-            PointOfDepartureType targetPod,
+            PointOfDepartureType targetPodType,
             TargetUnit targetUnit,
             IRandom kineticModelRandomGenerator
         );
 
         IHazardCharacterisationModel ImputeUncertaintyRun(
             Compound substance,
-            PointOfDepartureType targetPod,
+            PointOfDepartureType targetPodType,
             TargetUnit targetUnit,
             IRandom generator,
             IRandom kineticModelRandomGenerator
@@ -30,7 +30,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
 
         ICollection<IHazardCharacterisationModel> ImputeUncertaintyRun(
             ICollection<Compound> substances,
-            PointOfDepartureType targetPod,
+            PointOfDepartureType targetPodType,
             TargetUnit targetUnit,
             IRandom generator,
             IRandom kineticModelRandomGenerator

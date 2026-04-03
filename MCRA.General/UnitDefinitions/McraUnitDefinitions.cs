@@ -10,8 +10,6 @@ namespace MCRA.General {
 
         private static IDictionary<string, UnitDefinition> _unitDefinitions = null;
 
-        public static readonly ConcentrationUnit DefaultExternalConcentrationUnit = ConcentrationUnit.mgPerKg;
-
         /// <summary>
         /// Singleton accessor.
         /// </summary>

@@ -29,7 +29,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
         /// </summary>
         protected override List<IHazardCharacterisationModel> getImputationTargetDoseRecords(
             Compound substance,
-            PointOfDepartureType targetPod,
+            PointOfDepartureType targetPodType,
             TargetUnit targetDoseUnit,
             IRandom kineticModelRandomGenerator
         ) {
@@ -37,7 +37,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                 _imputationRecords = createHazardCharacterisations(
                     _effect,
                     targetDoseUnit,
-                    targetPod,
+                    targetPodType,
                     _interSpeciesFactorModels,
                     _kineticConversionFactorCalculator,
                     _intraSpeciesVariabilityModels,
@@ -56,7 +56,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
         private static List<IHazardCharacterisationModel> createHazardCharacterisations(
             Effect effect,
             TargetUnit targetDoseUnit,
-            PointOfDepartureType targetPod,
+            PointOfDepartureType targetPodType,
             IDictionary<(string species, Compound substance, Effect effect), InterSpeciesFactorModel> interSpeciesFactorModels,
             IKineticConversionFactorCalculator kineticConversionFactorCalculator,
             IDictionary<(Effect, Compound), IntraSpeciesFactorModel> intraSpeciesVariabilityModels,
@@ -71,7 +71,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                     noelRecord,
                     effect,
                     targetDoseUnit,
-                    targetPod,
+                    targetPodType,
                     interSpeciesFactorModels,
                     kineticConversionFactorCalculator,
                     intraSpeciesVariabilityModels,
@@ -88,14 +88,14 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
             NoelRecord r,
             Effect effect,
             TargetUnit targetDoseUnit,
-            PointOfDepartureType targetPod,
+            PointOfDepartureType targetPodType,
             IDictionary<(string species, Compound substance, Effect effect), InterSpeciesFactorModel> interSpeciesFactorModels,
             IKineticConversionFactorCalculator kineticConversionFactorCalculator,
             IDictionary<(Effect, Compound), IntraSpeciesFactorModel> intraSpeciesVariabilityModels,
             IRandom kineticModelRandomGenerator,
             Dictionary<int?, Compound> substances
         ) {
-            var expressionTypeConversionFactor = targetPod
+            var expressionTypeConversionFactor = targetPodType
                 .GetExpressionTypeConversionFactor(PointOfDepartureType.Noael);
             var targetUnitAlignmentFactor = r.DoseUnit
                 .GetDoseAlignmentFactor(targetDoseUnit.ExposureUnit, substances[r.CramerClass].MolecularMass);

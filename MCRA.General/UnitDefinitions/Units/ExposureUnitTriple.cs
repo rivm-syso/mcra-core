@@ -150,12 +150,6 @@ namespace MCRA.General {
         /// food consumption unit, concentration unit, bodyweight unit, and specification
         /// of per-person or per-bodyweight.
         /// </summary>
-        /// <param name="consumptionUnit"></param>
-        /// <param name="concentrationUnit"></param>
-        /// <param name="bodyWeightUnit"></param>
-        /// <param name="isPerPerson"></param>
-        /// <returns></returns>
-        /// <exception cref="Exception"></exception>
         public static ExposureUnitTriple CreateDietaryExposureUnit(
             ConsumptionUnit consumptionUnit,
             ConcentrationUnit concentrationUnit,

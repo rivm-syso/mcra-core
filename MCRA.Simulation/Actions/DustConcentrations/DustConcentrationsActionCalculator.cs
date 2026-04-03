@@ -31,23 +31,24 @@ namespace MCRA.Simulation.Actions.DustConcentrations {
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
+            var targetUnit = SystemUnits.DefaultDustConcentrationUnit;
             var alignedConcentrations = subsetManager.AllDustConcentrations
                 .Select(r => {
                     var alignmentFactor = r.Unit
-                        .GetConcentrationAlignmentFactor(SystemUnits.DefaultDustConcentrationUnit, r.Substance.MolecularMass);
+                        .GetConcentrationAlignmentFactor(targetUnit, r.Substance.MolecularMass);
                     var conc = r.Concentration * alignmentFactor;
                     return new SubstanceConcentration {
                         idSample = r.idSample,
                         Substance = r.Substance,
                         Concentration = conc,
-                        Unit = SystemUnits.DefaultDustConcentrationUnit
+                        Unit = targetUnit
                     };
                 })
                 .OrderBy(c => c.idSample)
                 .ToList();
 
             data.DustConcentrations = alignedConcentrations;
-            data.DustConcentrationUnit = SystemUnits.DefaultDustConcentrationUnit;
+            data.DustConcentrationUnit = targetUnit;
         }
 
         protected override void loadDataUncertain(

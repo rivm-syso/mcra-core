@@ -10,7 +10,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
 
         public List<IHazardCharacterisationModel> Compute(
             ICollection<Compound> substances,
-            PointOfDepartureType targetPod,
+            PointOfDepartureType targetPodType,
             TargetUnit targetUnit,
             ExposureType exposureType,
             ILookup<Response, EffectRepresentation> representativeResponses,
@@ -38,7 +38,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                                 .GetDoseAlignmentFactor(targetUnit.ExposureUnit, benchmarkDose.Substance.MolecularMass);
                             var alignedTestSystemHazardDose = targetUnitAlignmentFactor * specifiedBenchMarkDose;
 
-                            var expressionTypeConversionFactor = targetPod.GetExpressionTypeConversionFactor(PointOfDepartureType.Bmd);
+                            var expressionTypeConversionFactor = targetPodType.GetExpressionTypeConversionFactor(PointOfDepartureType.Bmd);
                             var interSpeciesFactor = InterSpeciesFactorModelsBuilder
                                 .GetInterSpeciesFactor(interSpeciesFactorModels, representation.Effect, response.TestSystem.Species, benchmarkDose.Substance);
 

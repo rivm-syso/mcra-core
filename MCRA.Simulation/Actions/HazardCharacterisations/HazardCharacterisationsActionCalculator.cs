@@ -8,6 +8,7 @@ using MCRA.General.Action.ActionSettingsManagement;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
 using MCRA.General.ModuleDefinitions.Settings;
+using MCRA.General.UnitDefinitions.Defaults;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
@@ -116,7 +117,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 .Where(r => substances.Contains(r.Substance))
                 .GroupBy(r => r.ExposureTarget)
                 .Select(hc => {
-                    var targetUnit = getDefaultTargetUnit(ModuleConfig.TargetDoseLevelType, ModuleConfig.ExposureType, data, hc.Key);
+                    var targetUnit = getDefaultTargetUnit(ModuleConfig.TargetDoseLevelType, ModuleConfig.ExposureType, hc.Key);
                     return new HazardCharacterisationModelCompoundsCollection {
                         TargetUnit = targetUnit,
                         HazardCharacterisationModels = loadHazardCharacterisationsFromData(
@@ -159,7 +160,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             var referenceSubstance = getReferenceSubstance(data);
             var exposureTargets = GetExposureTargets(data);
             foreach (var exposureTarget in exposureTargets) {
-                var targetUnit = getDefaultTargetUnit(ModuleConfig.TargetDoseLevelType, ModuleConfig.ExposureType, data, exposureTarget);
+                var targetUnit = getDefaultTargetUnit(ModuleConfig.TargetDoseLevelType, ModuleConfig.ExposureType, exposureTarget);
                 computeHazardCharacterisations(
                     targetUnit,
                     ModuleConfig.GetTargetHazardDoseType(),
@@ -213,7 +214,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             var referenceSubstance = getReferenceSubstance(data);
             var exposureTargets = GetExposureTargets(data);
             foreach (var exposureTarget in exposureTargets) {
-                var targetUnit = getDefaultTargetUnit(ModuleConfig.TargetDoseLevelType, ModuleConfig.ExposureType, data, exposureTarget);
+                var targetUnit = getDefaultTargetUnit(ModuleConfig.TargetDoseLevelType, ModuleConfig.ExposureType, exposureTarget);
                 computeHazardCharacterisations(
                     targetUnit,
                     ModuleConfig.GetTargetHazardDoseType(),
@@ -236,7 +237,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
 
         private void computeHazardCharacterisations(
             TargetUnit targetUnit,
-            PointOfDepartureType targetPod,
+            PointOfDepartureType targetPodType,
             ActionData data,
             Compound referenceSubstance,
             ref HazardCharacterisationsActionResult hazardCharacterisationsActionResult,
@@ -304,7 +305,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                     ModuleConfig.ExposureType,
                     ModuleConfig.TargetDosesCalculationMethod,
                     ModuleConfig.ConvertToSingleTargetMatrix,
-                    targetPod,
+                    targetPodType,
                     targetUnit,
                     ModuleConfig.UseBMDL,
                     kineticModelRandomGenerator
@@ -368,7 +369,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                     if (factorialSet?.Contains(UncertaintySource.HazardCharacterisationsImputation) == true) {
                         imputedHazardCharacterisations = imputationCalculator.ImputeUncertaintyRun(
                             missingPointsOfDeparture,
-                            targetPod,
+                            targetPodType,
                             targetUnit,
                             imputationRandomGenerator,
                             kineticModelRandomGenerator
@@ -376,7 +377,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                     } else {
                         imputedHazardCharacterisations = imputationCalculator.ImputeNominal(
                             missingPointsOfDeparture,
-                            targetPod,
+                            targetPodType,
                             targetUnit,
                             kineticModelRandomGenerator);
                     }
@@ -439,14 +440,14 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                     if (factorialSet?.Contains(UncertaintySource.HazardCharacterisationsImputation) == true) {
                         imputationRecords = imputationCalculator.ImputeUncertaintyRun(
                             missingHazardDoses,
-                            targetPod,
+                            targetPodType,
                             targetUnit,
                             imputationRandomGenerator,
                             kineticModelRandomGenerator);
                     } else {
                         imputationRecords = imputationCalculator.ImputeNominal(
                             missingHazardDoses,
-                            targetPod,
+                            targetPodType,
                             targetUnit,
                             kineticModelRandomGenerator);
                     }
@@ -607,35 +608,17 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
         private TargetUnit getDefaultTargetUnit(
             TargetLevelType targetLevelType,
             ExposureType exposureType,
-            ActionData data,
             ExposureTarget exposureTarget
         ) {
-            TargetUnit targetUnit;
-            if (targetLevelType == TargetLevelType.External) {
-                // NOTE: the value for isPerPerson should come from the project settings, but this
-                // is also related to the BodyWeightUnit settings. This needs to be looked into in more detail,
-                // see issue 1739.
-                targetUnit = TargetUnit.CreateDietaryExposureUnit(
-                   data.ConsumptionUnit,
-                   McraUnitDefinitions.DefaultExternalConcentrationUnit,
-                   data.BodyWeightUnit,
-                   isPerPerson: false
-               );
-            } else if (targetLevelType == TargetLevelType.Internal) {
-                targetUnit = new TargetUnit(
-                    exposureTarget,
-                    ExposureUnitTriple.CreateInternalExposureUnit(exposureTarget, ModuleConfig.ExposureType)
-                );
+            ExposureUnitTriple exposureUnit;
+            if (targetLevelType == TargetLevelType.Internal) {
+                exposureUnit = ExposureUnitTriple.CreateInternalExposureUnit(exposureTarget, exposureType);
             } else {
-                var exposureUnitTriple = ExposureUnitTriple.CreateDietaryExposureUnit(
-                    data.ConsumptionUnit,
-                    McraUnitDefinitions.DefaultExternalConcentrationUnit,
-                    data.BodyWeightUnit,
-                    isPerPerson: false
-                );
-                targetUnit = TargetUnit.FromSystemicExposureUnit(exposureUnitTriple);
+                // For external and systemic
+                exposureUnit = ExposureUnitTriple.FromDoseUnit(SystemUnits.DefaultExternalHazardDoseUnit);
             }
-            return targetUnit;
+
+            return new TargetUnit(exposureTarget, exposureUnit);
         }
 
         private PotencyOrigin findPotencyOrigin(
