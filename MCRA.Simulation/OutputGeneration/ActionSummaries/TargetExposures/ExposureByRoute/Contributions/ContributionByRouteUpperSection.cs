@@ -3,13 +3,13 @@ using MCRA.General;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Calculators.Stratification;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Generic;
-using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
 
     public sealed class ContributionByRouteUpperSection : InternalExposureContributionSectionBase<RouteContributorKey, ContributionByRouteRecord> {
-        public override string DescriptorKey => "Route";
-        public override string DescriptorName => "route";
+
+        public override string DescriptorKey => ExposureByRouteCalculator.DescriptorKey;
+        public override string DescriptorName => ExposureByRouteCalculator.DescriptorName;
 
         public void Summarize(
             ICollection<IExternalIndividualExposure> externalIndividualExposures,

@@ -8,8 +8,8 @@ namespace MCRA.Simulation.OutputGeneration {
 
     public sealed class ExposureBySourcePercentilesSection : InternalExposurePercentileSectionBase<SourceContributorKey, ExposureBySourcePercentileRecord> {
 
-        public override string DescriptorKey => "Source";
-        public override string DescriptorName => "source";
+        public override string DescriptorKey => ExposureBySourceCalculator.DescriptorKey;
+        public override string DescriptorName => ExposureBySourceCalculator.DescriptorName;
 
         public void Summarize(
             ICollection<IExternalIndividualExposure> externalIndividualExposures,
@@ -31,7 +31,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 kineticConversionFactors,
                 isPerPerson
             );
-            summarize(uncertaintyLowerBound, uncertaintyUpperBound, percentages, outputStratifier, exposureCollection);
+            summarize(exposureCollection, uncertaintyLowerBound, uncertaintyUpperBound, outputStratifier, percentages);
         }
 
         public void SummarizeUncertainty(

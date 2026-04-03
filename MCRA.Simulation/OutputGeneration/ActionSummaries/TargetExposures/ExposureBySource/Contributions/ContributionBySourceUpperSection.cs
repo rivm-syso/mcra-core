@@ -8,8 +8,10 @@ using MCRA.Utils.Statistics;
 namespace MCRA.Simulation.OutputGeneration {
 
     public sealed class ContributionBySourceUpperSection : InternalExposureContributionSectionBase<SourceContributorKey, ContributionBySourceRecord> {
-        public override string DescriptorKey => "Source";
-        public override string DescriptorName => "source";
+
+        public override string DescriptorKey => ExposureBySourceCalculator.DescriptorKey;
+        public override string DescriptorName => ExposureBySourceCalculator.DescriptorName;
+
         public void Summarize(
             ICollection<IExternalIndividualExposure> externalIndividualExposures,
             ICollection<Compound> activeSubstances,

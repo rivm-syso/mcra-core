@@ -7,8 +7,10 @@ using MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Generic;
 namespace MCRA.Simulation.OutputGeneration {
 
     public sealed class ContributionByRouteTotalSection : InternalExposureContributionSectionBase<RouteContributorKey, ContributionByRouteRecord> {
-        public override string DescriptorKey => "Route";
-        public override string DescriptorName => "route";
+
+        public override string DescriptorKey => ExposureByRouteCalculator.DescriptorKey;
+        public override string DescriptorName => ExposureByRouteCalculator.DescriptorName;
+
         public void Summarize(
             ICollection<IExternalIndividualExposure> externalIndividualExposures,
             ICollection<Compound> activeSubstances,

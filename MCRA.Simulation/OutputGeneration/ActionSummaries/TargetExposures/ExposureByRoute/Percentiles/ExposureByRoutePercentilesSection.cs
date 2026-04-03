@@ -8,8 +8,8 @@ namespace MCRA.Simulation.OutputGeneration {
 
     public sealed class ExposureByRoutePercentilesSection : InternalExposurePercentileSectionBase<RouteContributorKey, ExposureByRoutePercentileRecord> {
 
-        public override string DescriptorKey => "Route";
-        public override string DescriptorName => "route";
+        public override string DescriptorKey => ExposureByRouteCalculator.DescriptorKey;
+        public override string DescriptorName => ExposureByRouteCalculator.DescriptorName;
 
         public void Summarize(
             ICollection<IExternalIndividualExposure> externalIndividualExposures,
@@ -31,7 +31,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 kineticConversionFactors,
                 isPerPerson
             );
-            summarize(uncertaintyLowerBound, uncertaintyUpperBound, percentages, outputStratifier, exposureCollection);
+            summarize(exposureCollection, uncertaintyLowerBound, uncertaintyUpperBound, outputStratifier, percentages);
         }
 
         public void SummarizeUncertainty(

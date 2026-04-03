@@ -5,7 +5,10 @@ using MCRA.Simulation.Objects;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Generic;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public abstract class ExposureByRouteCalculator {
+    public sealed class ExposureByRouteCalculator {
+
+        public static string DescriptorKey => "Route";
+        public static string DescriptorName => "route";
 
         public static List<InternalExposuresByDescriptor<RouteContributorKey>> CalculateExposures(
            ICollection<IExternalIndividualExposure> externalIndividualExposures,

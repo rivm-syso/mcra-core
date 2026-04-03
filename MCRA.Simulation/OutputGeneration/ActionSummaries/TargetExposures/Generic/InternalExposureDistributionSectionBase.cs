@@ -1,6 +1,6 @@
-﻿using MCRA.Data.Compiled.Objects;
-using MCRA.General;
+﻿using MCRA.General;
 using MCRA.Simulation.Calculators.Stratification;
+using MCRA.Simulation.Constants;
 using MCRA.Utils.Statistics;
 using static MCRA.General.TargetUnit;
 
@@ -12,6 +12,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Gener
 
         private readonly double[] _percentages = [5, 10, 25, 50, 75, 90, 95];
 
+        private static readonly double _upperWhisker = 95;
         public override bool SaveTemporaryData => true;
         public List<T1> Records { get; set; }
         public List<T2> BoxPlotRecords { get; set; }
@@ -122,6 +123,33 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Gener
             }
             return records;
         }
+
+        protected void summarize(
+            List<InternalExposuresByDescriptor<S>> exposureCollection,
+            TargetUnit targetUnit,
+            PopulationStratifier outputStratifier,
+            bool skipPrivacySensitiveOutputs,
+            double lowerPercentage,
+            double upperPercentage
+        ) {
+            var percentages = new double[] { lowerPercentage, 50, upperPercentage };
+            ShowOutliers = !skipPrivacySensitiveOutputs;
+            if (skipPrivacySensitiveOutputs) {
+                var maxUpperPercentile = SimulationConstants.MaxUpperPercentage(exposureCollection.Count);
+                if (_upperWhisker > maxUpperPercentile) {
+                    RestrictedUpperPercentile = maxUpperPercentile;
+                }
+            }
+
+            Records = summarizeExposureRecords(exposureCollection, percentages, outputStratifier);
+
+            BoxPlotRecords = summarizeBoxPlotsRecords(exposureCollection, targetUnit);
+
+            if (outputStratifier != null) {
+                StratifiedBoxPlotRecords = summarizeStratifiedBoxPlots(exposureCollection, targetUnit, outputStratifier);
+            }
+        }
+
 
         private static T1 getExposureRecord(
             InternalExposuresByDescriptor<S> collection,

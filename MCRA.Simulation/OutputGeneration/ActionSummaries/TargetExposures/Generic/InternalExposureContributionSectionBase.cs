@@ -6,6 +6,7 @@ namespace MCRA.Simulation.OutputGeneration {
     public abstract class InternalExposureContributionSectionBase<S, T> : InternalExposuresByDescriptorSection<S>
         where S : IExposureContributorKey, new()
         where T : InternalExposureContributionRecordBase<S>, new() {
+
         public override bool SaveTemporaryData => true;
         public List<T> Records { get; set; }
         public double CalculatedUpperPercentage { get; set; }
@@ -25,7 +26,8 @@ namespace MCRA.Simulation.OutputGeneration {
                     c,
                     uncertaintyLowerBound,
                     uncertaintyUpperBound
-                )).ToList();
+                ))
+                .ToList();
             var rescale = result.Sum(c => c.Contribution);
             result.ForEach(c => c.Contribution = c.Contribution / rescale);
 
@@ -159,11 +161,8 @@ namespace MCRA.Simulation.OutputGeneration {
             var totalExposures = exposureCollection
                 .SelectMany(c => c.Exposures)
                 .GroupBy(c => c.SimulatedIndividual)
-                .Select(c => (
-                    SimulatedIndividual: c.Key,
-                    Exposure: c.Sum(r => r.Exposure)
-                )
-            ).ToList();
+                .Select(c => (SimulatedIndividual: c.Key, Exposure: c.Sum(r => r.Exposure)))
+                .ToList();
 
             var weights = totalExposures.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
             var intakeValue = totalExposures.Select(c => c.Exposure)
@@ -171,17 +170,15 @@ namespace MCRA.Simulation.OutputGeneration {
 
             var upperExposures = totalExposures
                 .Where(c => c.Exposure >= intakeValue)
-                .Select(c => (
-                    c.Exposure,
-                    c.SimulatedIndividual
-                    )
-                ).ToList();
+                .Select(c => (c.Exposure, c.SimulatedIndividual))
+                .ToList();
 
             var individualIds = upperExposures.Select(c => c.SimulatedIndividual).ToHashSet();
             if (isNominal) {
                 var exposures = upperExposures.Select(c => c.Exposure).ToList();
                 NumberOfIntakes = upperExposures.Count;
-                CalculatedUpperPercentage = upperExposures.Sum(c => c.SimulatedIndividual.SamplingWeight) / totalExposures.Sum(c => c.SimulatedIndividual.SamplingWeight) * 100;
+                CalculatedUpperPercentage = upperExposures.Sum(c => c.SimulatedIndividual.SamplingWeight)
+                    / totalExposures.Sum(c => c.SimulatedIndividual.SamplingWeight) * 100;
                 if (NumberOfIntakes > 0) {
                     LowPercentileValue = exposures.Min();
                     HighPercentileValue = exposures.Max();
@@ -202,7 +199,9 @@ namespace MCRA.Simulation.OutputGeneration {
                     .FirstOrDefault(c => c.GetKey() == record.GetKey()
                         && c.Stratification == record.Stratification
                     )?.Contribution * 100 ?? double.NaN;
-                if (double.IsNaN(contribution)){ continue; }
+                if (double.IsNaN(contribution)) {
+                    continue;
+                }
                 record.Contributions.Add(contribution);
             }
         }

@@ -11,12 +11,11 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Gener
         public List<T> Records { get; set; }
 
         protected void summarize(
+            List<InternalExposuresByDescriptor<S>> exposureCollection,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
-            List<double> percentages,
             PopulationStratifier outputStratifier,
-            List<InternalExposuresByDescriptor<S>> exposureCollection
-        ) {
+            List<double> percentages) {
             Records = computePercentileRecords(
                 exposureCollection,
                 uncertaintyLowerBound,

@@ -13,7 +13,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             var panelBuilder = new HtmlTabPanelBuilder();
             {
                 var chartCreator = new InternalExposureBoxPlotChartCreator<S, T2>(
-                    Model.DescriptorKey,
+                    Model.DescriptorName,
                     Model.BoxPlotRecords,
                     Model.TargetUnit,
                     Model.ShowOutliers,
@@ -44,7 +44,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             {
                 if (Model.StratifiedBoxPlotRecords?.Count > 0) {
                     var chartCreator = new InternalExposureBoxPlotChartCreator<S, T2>(
-                        Model.DescriptorKey,
+                        Model.DescriptorName,
                         Model.StratifiedBoxPlotRecords,
                         Model.TargetUnit,
                         Model.ShowOutliers,

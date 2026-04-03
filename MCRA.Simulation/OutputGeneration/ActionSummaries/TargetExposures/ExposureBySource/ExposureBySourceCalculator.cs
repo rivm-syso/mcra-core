@@ -5,7 +5,10 @@ using MCRA.Simulation.Objects;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Generic;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public abstract class ExposureBySourceCalculator {
+    public sealed class ExposureBySourceCalculator {
+
+        public static string DescriptorKey => "Source";
+        public static string DescriptorName => "source";
 
         public static List<InternalExposuresByDescriptor<SourceContributorKey>> CalculateExposures(
            ICollection<IExternalIndividualExposure> externalIndividualExposures,
