@@ -25,7 +25,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             var unstratifiedRecords = Model.Records.Where(r => string.IsNullOrEmpty(r.Stratification)).ToList();
             if (unstratifiedRecords.Count(r => !double.IsNaN(r.ContributionPercentage)) > 1) {
-                var chartCreator = new InternalExposureStackedBarChartCreator<S, T>(unstratifiedRecords, "unstratified", isUncertainty, Model.DescriptorKey);
+                var chartCreator = new InternalExposureContributionPieChartCreator<S, T>(unstratifiedRecords, isUncertainty, Model.DescriptorName);
                 panelBuilder.AddPanel(
                     id: "Panel_unstratified",
                     title: "Unstratified",
@@ -42,7 +42,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             }
             var stratifiedRecords = Model.Records.Where(r => !string.IsNullOrEmpty(r.Stratification)).ToList();
             if (stratifiedRecords.Count(r => !double.IsNaN(r.ContributionPercentage)) > 1) {
-                var chartCreator = new InternalExposureStackedBarChartCreator<S, T>(stratifiedRecords, "stratified", isUncertainty, Model.DescriptorKey);
+                var chartCreator = new InternalExposureStackedBarChartCreator<S, T>(stratifiedRecords, isUncertainty, Model.DescriptorName);
                 panelBuilder.AddPanel(
                     id: "Panel_stratified",
                     title: "Stratified",

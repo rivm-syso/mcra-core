@@ -46,7 +46,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var sum = section.Records.Sum(c => c.ContributionPercentage);
             Assert.AreEqual(98D, sum, 3D);
 
-            var chart = new InternalExposureStackedBarChartCreator<RouteContributorKey, ContributionByRouteRecord>(section.Records, "",  false, "");
+            var chart = new InternalExposureStackedBarChartCreator<RouteContributorKey, ContributionByRouteRecord>(section.Records, false, "");
             RenderChart(chart, $"TestChronic");
             AssertIsValidView(section);
         }
@@ -86,7 +86,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             );
             var sum = section.Records.Sum(c => c.ContributionPercentage);
             Assert.AreEqual(98D, sum, 3D);
-            var chart = new InternalExposureStackedBarChartCreator<RouteContributorKey, ContributionByRouteRecord>(section.Records, "", false, "");
+            var chart = new InternalExposureStackedBarChartCreator<RouteContributorKey, ContributionByRouteRecord>(section.Records, false, "");
             RenderChart(chart, $"TestAcute");
             AssertIsValidView(section);
         }
