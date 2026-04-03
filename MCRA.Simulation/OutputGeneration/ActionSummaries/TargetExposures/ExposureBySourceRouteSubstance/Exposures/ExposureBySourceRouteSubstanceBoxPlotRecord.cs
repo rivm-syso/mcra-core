@@ -3,8 +3,7 @@ using MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Generic;
 using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.OutputGeneration {
-
-    public sealed class ContributionBySourceRouteSubstanceRecord : InternalExposureContributionRecordBase<SourceRouteSubstanceContributorKey> {
+    public class ExposureBySourceRouteSubstanceBoxPlotRecord : InternalExposureBoxPlotRecordBase<SourceRouteSubstanceContributorKey> {
 
         [Description("Exposure route.")]
         [DisplayName("Route")]
@@ -17,6 +16,13 @@ namespace MCRA.Simulation.OutputGeneration {
         [Description("Substancee.")]
         [DisplayName("Substance")]
         public string Substance { get; set; }
+
+        public override string GetLabel() {
+            if (!string.IsNullOrEmpty(Stratification)) {
+                return $"{Source} {Route} {Substance} ({Stratification})";
+            }
+            return $"{Source} {Route} {Substance}";
+        }
 
         public override void SetDescriptorValues(SourceRouteSubstanceContributorKey key) {
             Route = key.Route.GetDisplayName();
