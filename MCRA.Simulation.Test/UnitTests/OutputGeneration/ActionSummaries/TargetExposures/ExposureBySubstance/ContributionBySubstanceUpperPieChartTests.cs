@@ -33,7 +33,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     kineticConversionFactors,
                     targetUnit
                 );
-                var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
+                var externalExposuresUnit = ExposureUnitTriple.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
                 var aggregateIndividualExposures = FakeAggregateIndividualExposuresGenerator.Create(
                     individualDays,
                     substances,

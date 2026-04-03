@@ -86,7 +86,7 @@ namespace MCRA.General {
         }
 
         /// <summary>
-        /// Create a target unit from a dose unit.
+        /// Create a unit from a dose unit.
         /// </summary>
         public static ExposureUnitTriple FromDoseUnit(DoseUnit doseUnit) {
             return new ExposureUnitTriple(
@@ -97,9 +97,9 @@ namespace MCRA.General {
         }
 
         /// <summary>
-        /// Create a target unit from an exposure unit.
+        /// Create a unit from an external exposure unit.
         /// </summary>
-        public static ExposureUnitTriple FromExposureUnit(ExternalExposureUnit exposureUnit) {
+        public static ExposureUnitTriple FromExternalExposureUnit(ExternalExposureUnit exposureUnit) {
             return new ExposureUnitTriple(
                 exposureUnit.GetSubstanceAmountUnit(),
                 exposureUnit.GetConcentrationMassUnit(),
@@ -146,7 +146,7 @@ namespace MCRA.General {
                 return result;
             } else {
                 // For extern, use as default ug/kg bw/day
-                return FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
+                return FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
             }
         }
 

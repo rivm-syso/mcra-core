@@ -29,7 +29,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.Exposur
             var generator = new ExposureEventsGenerator(
                 settings,
                 timeUnit,
-                ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
+                ExposureUnitTriple.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
                 routes.ToDictionary(r => r, r => SubstanceAmountUnit.Micrograms)
             );
             var events = generator.CreateExposureEvents(
@@ -70,7 +70,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.Exposur
             var generator = new ExposureEventsGenerator(
                 settings,
                 timeUnit,
-                ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
+                ExposureUnitTriple.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
                 routes.ToDictionary(r => r, r => SubstanceAmountUnit.Micrograms)
             );
             var events = generator.CreateExposureEvents(
@@ -116,7 +116,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.Exposur
             var generator = new ExposureEventsGenerator(
                 settings,
                 TimeUnit.Hours,
-                ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
+                ExposureUnitTriple.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
                 routes.ToDictionary(r => r, r => SubstanceAmountUnit.Micrograms)
             );
             var events = generator.CreateExposureEvents(
@@ -156,7 +156,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.Exposur
             var generator = new ExposureEventsGenerator(
                 settings,
                 TimeUnit.Hours,
-                ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
+                ExposureUnitTriple.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
                 routes.ToDictionary(r => r, r => SubstanceAmountUnit.Micrograms)
             );
             var events = generator.CreateExposureEvents(

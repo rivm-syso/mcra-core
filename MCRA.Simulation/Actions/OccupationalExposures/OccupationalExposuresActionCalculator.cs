@@ -49,7 +49,7 @@ namespace MCRA.Simulation.Actions.OccupationalExposures {
             var result = new OccupationalExposuresActionResult();
 
             var substances = data.ActiveSubstances ?? data.AllCompounds;
-            var targetUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerDay);
+            var targetUnit = ExposureUnitTriple.FromExternalExposureUnit(ExternalExposureUnit.ugPerDay);
 
             result.OccupationalTaskExposureModels = OccupationalTaskExposureModelsCalculator
                 .Compute(

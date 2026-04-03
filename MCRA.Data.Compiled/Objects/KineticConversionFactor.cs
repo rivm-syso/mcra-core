@@ -48,7 +48,7 @@ namespace MCRA.Data.Compiled.Objects {
             var kineticConversionFactor = new KineticConversionFactor() {
                 SubstanceFrom = substance,
                 ExposureRouteFrom = route,
-                DoseUnitFrom = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
+                DoseUnitFrom = ExposureUnitTriple.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
                 SubstanceTo = substance,
                 DoseUnitTo = ExposureUnitTriple.FromDoseUnit(DoseUnit.ugPerKg),
                 ConversionFactor = factor,

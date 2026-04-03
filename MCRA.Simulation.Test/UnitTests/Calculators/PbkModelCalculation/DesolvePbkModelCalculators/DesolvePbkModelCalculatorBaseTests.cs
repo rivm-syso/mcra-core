@@ -37,7 +37,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.Desolve
 
             var dose = 1;
             var route = ExposureRoute.Oral;
-            var exposureUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
+            var exposureUnit = ExposureUnitTriple.FromExternalExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
             var targetUnit = getDefaultInternalTarget();
             var externalExposure = ExternalIndividualDayExposure
                 .FromSingleDose(

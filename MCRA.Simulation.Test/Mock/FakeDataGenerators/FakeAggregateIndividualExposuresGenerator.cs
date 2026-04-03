@@ -64,7 +64,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                 substances,
                 paths,
                 kineticModelCalculators,
-                ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
+                ExposureUnitTriple.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
                 targetUnit,
                 random
             );

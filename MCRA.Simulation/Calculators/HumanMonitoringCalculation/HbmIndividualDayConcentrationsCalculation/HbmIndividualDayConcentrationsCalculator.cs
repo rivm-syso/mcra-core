@@ -60,7 +60,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                     target,
                     target.TargetLevelType == TargetLevelType.Internal
                         ? ExposureUnitTriple.FromDoseUnit(DoseUnit.ugPerL)
-                        : ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay)
+                        : ExposureUnitTriple.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay)
                 ),
                 HbmIndividualDayConcentrations = hbmIndividualDayConcentrations
             };

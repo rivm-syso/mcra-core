@@ -192,7 +192,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
         ) {
             var numSubstances = benchmarkDoses.Length;
             var exposureType = ExposureType.Chronic;
-            var exposureUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
+            var exposureUnit = ExposureUnitTriple.FromExternalExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
             var targetUnit = new TargetUnit(target, exposureUnit);
             var random = new McraRandomGenerator(seed);
             var effects = FakeEffectsGenerator.Create(1);

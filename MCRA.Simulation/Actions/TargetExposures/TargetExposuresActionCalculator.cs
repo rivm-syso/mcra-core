@@ -344,7 +344,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         .Cast<IIndividualDay>()];
                     break;
                 case ReferenceIndividualSet.Individuals:
-                    externalExposureUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
+                    externalExposureUnit = ExposureUnitTriple.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
                     referenceIndividualDays = data.Individuals;
                     break;
                 default:

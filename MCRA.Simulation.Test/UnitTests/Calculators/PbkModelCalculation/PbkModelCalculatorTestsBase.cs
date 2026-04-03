@@ -60,7 +60,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation {
             var internalExposures = forwardCalculator.CalculateIndividualDayTargetExposures(
                 individualDayExposures,
                 routes,
-                ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay),
+                ExposureUnitTriple.FromExternalExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay),
                 [targetUnit],
                 new ProgressState(),
                 random
@@ -108,7 +108,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation {
             var internalExposures = forwardCalculator.CalculateIndividualTargetExposures(
                 individualExposures,
                 routes,
-                ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay),
+                ExposureUnitTriple.FromExternalExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay),
                 [targetUnit],
                 new ProgressState(),
                 random

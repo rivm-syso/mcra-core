@@ -143,7 +143,7 @@ namespace MCRA.General {
         ) {
             return new TargetUnit(
                 new ExposureTarget(route),
-                ExposureUnitTriple.FromExposureUnit(exposureUnit)
+                ExposureUnitTriple.FromExternalExposureUnit(exposureUnit)
             );
         }
 

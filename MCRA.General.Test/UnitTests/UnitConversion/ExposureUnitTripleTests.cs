@@ -37,14 +37,14 @@
 
         [TestMethod]
         public void ExposureUnitTriple_TestFromExposureUnit() {
-            Assert.AreEqual(SubstanceAmountUnit.Picograms, ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.pgPerKgBWPerDay).SubstanceAmountUnit);
-            Assert.AreEqual(SubstanceAmountUnit.Milligrams, ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay).SubstanceAmountUnit);
-            Assert.AreEqual(ConcentrationMassUnit.Kilograms, ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.pgPerKgBWPerDay).ConcentrationMassUnit);
-            Assert.AreEqual(TimeScaleUnit.PerDay, ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.pgPerKgBWPerDay).TimeScaleUnit);
-            Assert.AreEqual(TimeScaleUnit.PerDay, ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerGBWPerDay).TimeScaleUnit);
+            Assert.AreEqual(SubstanceAmountUnit.Picograms, ExposureUnitTriple.FromExternalExposureUnit(ExternalExposureUnit.pgPerKgBWPerDay).SubstanceAmountUnit);
+            Assert.AreEqual(SubstanceAmountUnit.Milligrams, ExposureUnitTriple.FromExternalExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay).SubstanceAmountUnit);
+            Assert.AreEqual(ConcentrationMassUnit.Kilograms, ExposureUnitTriple.FromExternalExposureUnit(ExternalExposureUnit.pgPerKgBWPerDay).ConcentrationMassUnit);
+            Assert.AreEqual(TimeScaleUnit.PerDay, ExposureUnitTriple.FromExternalExposureUnit(ExternalExposureUnit.pgPerKgBWPerDay).TimeScaleUnit);
+            Assert.AreEqual(TimeScaleUnit.PerDay, ExposureUnitTriple.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay).TimeScaleUnit);
             var intakeUnits = Enum.GetValues(typeof(ExternalExposureUnit)).Cast<ExternalExposureUnit>().ToList();
             foreach (var intakeUnit in intakeUnits) {
-                var target = ExposureUnitTriple.FromExposureUnit(intakeUnit);
+                var target = ExposureUnitTriple.FromExternalExposureUnit(intakeUnit);
                 Assert.IsNotNull(target);
             }
         }
@@ -85,7 +85,7 @@
         ) {
             Assert.AreEqual(
                 ExposureUnitTriple.CreateDietaryExposureUnit(consumptionUnit, concentrationUnit, bodyWeightUnit, false).GetShortDisplayName(),
-                ExposureUnitTriple.FromExposureUnit(expected).GetShortDisplayName()
+                ExposureUnitTriple.FromExternalExposureUnit(expected).GetShortDisplayName()
             );
         }
     }

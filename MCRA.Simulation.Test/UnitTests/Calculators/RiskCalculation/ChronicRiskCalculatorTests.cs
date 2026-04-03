@@ -143,9 +143,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
             var individualEffectsDictionary = effectCalculator
                 .ComputeBySubstance(
                     targetIndividualExposures,
-                    new TargetUnit(target, ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay)),
+                    new TargetUnit(target, ExposureUnitTriple.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay)),
                     hazardCharacterisations,
-                    new TargetUnit(target, ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay)),
+                    new TargetUnit(target, ExposureUnitTriple.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay)),
                     substances);
             var individualEffects = effectCalculator.ComputeSumOfRatios(
                 individualEffectsDictionary,
@@ -198,9 +198,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
             var individualEffectsDictionary = effectCalculator
                 .ComputeBySubstance(
                     targetIndividualExposures,
-                    new TargetUnit(target, ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay)),
+                    new TargetUnit(target, ExposureUnitTriple.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay)),
                     hazardCharacterisations,
-                    new TargetUnit(target, ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay)),
+                    new TargetUnit(target, ExposureUnitTriple.FromExternalExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay)),
                     substances);
             var individualEffects = effectCalculator.ComputeSumOfRatios(
                 individualEffectsDictionary,

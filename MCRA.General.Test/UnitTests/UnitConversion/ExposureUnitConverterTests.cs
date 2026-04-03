@@ -190,7 +190,7 @@ namespace MCRA.General.Test.UnitTests.UnitConversion {
             ExternalExposureUnit targetExposureUnit
         ) {
             var val = sourceExposureUnit
-                .GetExposureUnitMultiplier(ExposureUnitTriple.FromExposureUnit(targetExposureUnit), 70);
+                .GetExposureUnitMultiplier(ExposureUnitTriple.FromExternalExposureUnit(targetExposureUnit), 70);
             Assert.AreEqual(expected, val, 1e-10);
         }
 
@@ -200,7 +200,7 @@ namespace MCRA.General.Test.UnitTests.UnitConversion {
             var exposureUnitValues = Enum.GetValues(typeof(ExternalExposureUnit)).Cast<ExternalExposureUnit>();
             foreach (var enumValue in enumValues) {
                 foreach (var exposureUnit in exposureUnitValues) {
-                    var factor = ExposureUnitExtensions.GetExposureUnitMultiplier(enumValue, ExposureUnitTriple.FromExposureUnit(exposureUnit), 70);
+                    var factor = ExposureUnitExtensions.GetExposureUnitMultiplier(enumValue, ExposureUnitTriple.FromExternalExposureUnit(exposureUnit), 70);
                     Assert.IsFalse(double.IsNaN(factor));
                 }
             }

@@ -26,7 +26,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                         SubstanceFrom = substance,
                         SubstanceTo = substance,
                         ExposureRouteFrom = route,
-                        DoseUnitFrom = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
+                        DoseUnitFrom = ExposureUnitTriple.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
                         ConversionFactor = .5,
                         BiologicalMatrixTo = target.BiologicalMatrix,
                         ExpressionTypeTo = target.ExpressionType,

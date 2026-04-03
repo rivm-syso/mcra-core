@@ -111,7 +111,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.SbmlMod
             var internalExposures = forwardCalculator.CalculateIndividualDayTargetExposures(
                 individualDayExposures,
                 routes,
-                ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay),
+                ExposureUnitTriple.FromExternalExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay),
                 [targetUnit],
                 new ProgressState(),
                 random

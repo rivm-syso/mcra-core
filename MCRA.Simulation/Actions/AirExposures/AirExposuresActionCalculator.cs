@@ -106,8 +106,8 @@ namespace MCRA.Simulation.Actions.AirExposures {
             // - ug/day when output is expressed per person
             // - ug/kg bw/day when output is expressed per kilogram bodyweight
             var targetUnit = ModuleConfig.IsPerPerson
-                ? ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerDay)
-                : ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
+                ? ExposureUnitTriple.FromExternalExposureUnit(ExternalExposureUnit.ugPerDay)
+                : ExposureUnitTriple.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
 
             var individualAirExposureRecords = AirExposureCalculator
                 .ComputeAirExposure(

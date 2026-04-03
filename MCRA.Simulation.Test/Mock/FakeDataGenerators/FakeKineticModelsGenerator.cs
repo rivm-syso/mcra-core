@@ -30,7 +30,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                             .Select(c => new KineticConversionFactor() {
                                 SubstanceFrom = r,
                                 ExposureRouteFrom = c.Key.Route,
-                                DoseUnitFrom = ExposureUnitTriple.FromExposureUnit(externalExposureUnit),
+                                DoseUnitFrom = ExposureUnitTriple.FromExternalExposureUnit(externalExposureUnit),
                                 ConversionFactor = c.Value,
                                 SubstanceTo = r,
                                 BiologicalMatrixTo = target.BiologicalMatrix,

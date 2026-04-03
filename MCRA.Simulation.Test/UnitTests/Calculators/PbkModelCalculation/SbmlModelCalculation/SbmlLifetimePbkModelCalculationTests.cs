@@ -79,7 +79,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.SbmlMod
             var random = new McraRandomGenerator(seed);
             var substances = FakeSubstancesGenerator.Create(1);
             var routes = new[] { ExposureRoute.Oral };
-            var externalExposureUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
+            var externalExposureUnit = ExposureUnitTriple.FromExternalExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Blood);
             var paths = FakeExposurePathGenerator.Create(routes);
             var individual = FakeIndividualsGenerator.CreateSingle(

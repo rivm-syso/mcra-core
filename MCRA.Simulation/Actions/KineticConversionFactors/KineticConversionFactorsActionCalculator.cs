@@ -89,7 +89,7 @@ namespace MCRA.Simulation.Actions.KineticConversionFactors {
             var result = new KineticConversionFactorsActionResult();
             var localProgress = progressReport.NewProgressState(1);
 
-            var externalExposureUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
+            var externalExposureUnit = ExposureUnitTriple.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
 
             // Determine internal targets and appropriate internal unit
             var internalTargets = ModuleConfig.InternalMatrices
