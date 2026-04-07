@@ -4,34 +4,27 @@ using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public class InternalExposureStackedBarChartCreator<S, T> : ReportStackedBarChartCreatorBase 
+    public sealed class InternalExposureUpperStackedBarChartCreator<S, T> : InternalExposureStackedBarChartCreator<S, T>
         where S : IExposureContributorKey, new()
         where T : InternalExposureContributionRecordBase<S>, new() {
 
-        protected readonly List<T> _records;
-        protected readonly bool _isUncertainty;
-        protected readonly string _descriptorName;
-
-        public InternalExposureStackedBarChartCreator(
+        public InternalExposureUpperStackedBarChartCreator(
             List<T> records,
             bool isUncertainty,
             string descriptorName
-        ) {
+         ) : base(records, isUncertainty, descriptorName) {
             Width = 500;
             Height = 350;
-            _records = records;
-            _isUncertainty = isUncertainty;
-            _descriptorName = descriptorName;
         }
 
         public override string ChartId {
             get {
-                var pictureId = "baf521df-1aa5-44ea-b999-7dce0cda89cd";
+                var pictureId = "c478674c-0a5d-4434-8d64-77b0554b92cd";
                 return StringExtensions.CreateFingerprint(_descriptorName + pictureId);
             }
         }
 
-        public override string Title => $"Contribution by {_descriptorName} for the total exposure distribution.";
+        public override string Title =>  $"Contribution by {_descriptorName} for the upper exposure distribution.";
 
         public override PlotModel Create() {
             var barDatapoints = _records.Select(

@@ -6,7 +6,7 @@ using MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Generic;
 
 namespace MCRA.Simulation.OutputGeneration {
 
-    public sealed class ContributionBySourceRouteSubstanceUpperSection : InternalExposureContributionSectionBase<SourceRouteSubstanceContributorKey, ContributionBySourceRouteSubstanceRecord> {
+    public sealed class ContributionBySourceRouteSubstanceUpperSection : InternalExposureUpperContributionSectionBase<SourceRouteSubstanceContributorKey, ContributionBySourceRouteSubstanceRecord> {
 
         public override string DescriptorKey => ExposureBySourceRouteSubstanceCalculator.DescriptorKey;
         public override string DescriptorName => ExposureBySourceRouteSubstanceCalculator.DescriptorName;
@@ -32,17 +32,13 @@ namespace MCRA.Simulation.OutputGeneration {
                 isPerPerson
             );
 
-            var upperExposureCollection = getUpperTailExposures(
-                exposureCollection,
-                percentageForUpperTail,
-                true
-            );
-
             Records = summarize(
-                upperExposureCollection,
+                exposureCollection,
+                outputStratifier,
+                percentageForUpperTail,
                 uncertaintyLowerBound,
                 uncertaintyUpperBound,
-                outputStratifier
+                true
             );
         }
 
@@ -65,12 +61,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 isPerPerson
             );
 
-            var upperExposureCollection = getUpperTailExposures(
-                exposureCollection,
-                percentageForUpperTail
-            );
-
-            var records = summarizeUncertainty(upperExposureCollection, outputStratifier);
+            var records = summarizeUncertainty(exposureCollection, outputStratifier, percentageForUpperTail);
             updateContributions(Records, records);
         }
     }

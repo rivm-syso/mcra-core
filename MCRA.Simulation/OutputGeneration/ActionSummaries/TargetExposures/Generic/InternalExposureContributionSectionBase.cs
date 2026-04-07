@@ -8,13 +8,9 @@ namespace MCRA.Simulation.OutputGeneration {
         where T : InternalExposureContributionRecordBase<S>, new() {
 
         public override bool SaveTemporaryData => true;
-        public List<T> Records { get; set; }
-        public double CalculatedUpperPercentage { get; set; }
-        public double LowPercentileValue { get; set; }
-        public double HighPercentileValue { get; set; }
-        public int NumberOfIntakes { get; set; }
+        public List<T> Records { get; set; } = [];
 
-        protected List<T> summarize(
+        protected virtual List<T> summarize(
             List<InternalExposuresByDescriptor<S>> exposureCollection,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
@@ -68,7 +64,7 @@ namespace MCRA.Simulation.OutputGeneration {
             return [.. result.OrderBy(c => c.Stratification).ThenBy(c => c.GetKey())]; ;
         }
 
-        private static T getContributionRecord(
+        protected static T getContributionRecord(
             InternalExposuresByDescriptor<S> collection,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
@@ -95,8 +91,7 @@ namespace MCRA.Simulation.OutputGeneration {
             record.SetDescriptorValues(collection.Descriptor);
             return record;
         }
-
-        protected static List<T> summarizeUncertainty(
+        protected virtual List<T> summarizeUncertainty(
             List<InternalExposuresByDescriptor<S>> exposureCollection,
             PopulationStratifier outputStratifier = null
         ) {
@@ -152,47 +147,6 @@ namespace MCRA.Simulation.OutputGeneration {
             return [.. result.OrderBy(c => c.Stratification).ThenBy(c => c.GetKey())];
         }
 
-
-        protected List<InternalExposuresByDescriptor<S>> getUpperTailExposures(
-            List<InternalExposuresByDescriptor<S>> exposureCollection,
-            double percentageForUpperTail,
-            bool isNominal = false
-        ) {
-            var totalExposures = exposureCollection
-                .SelectMany(c => c.Exposures)
-                .GroupBy(c => c.SimulatedIndividual)
-                .Select(c => (SimulatedIndividual: c.Key, Exposure: c.Sum(r => r.Exposure)))
-                .ToList();
-
-            var weights = totalExposures.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
-            var intakeValue = totalExposures.Select(c => c.Exposure)
-                .PercentilesWithSamplingWeights(weights, percentageForUpperTail);
-
-            var upperExposures = totalExposures
-                .Where(c => c.Exposure >= intakeValue)
-                .Select(c => (c.Exposure, c.SimulatedIndividual))
-                .ToList();
-
-            var individualIds = upperExposures.Select(c => c.SimulatedIndividual).ToHashSet();
-            if (isNominal) {
-                var exposures = upperExposures.Select(c => c.Exposure).ToList();
-                NumberOfIntakes = upperExposures.Count;
-                CalculatedUpperPercentage = upperExposures.Sum(c => c.SimulatedIndividual.SamplingWeight)
-                    / totalExposures.Sum(c => c.SimulatedIndividual.SamplingWeight) * 100;
-                if (NumberOfIntakes > 0) {
-                    LowPercentileValue = exposures.Min();
-                    HighPercentileValue = exposures.Max();
-                }
-            }
-
-            var upperExposureCollection = exposureCollection
-                .Select(item => new InternalExposuresByDescriptor<S> {
-                    Descriptor = item.Descriptor,
-                    Exposures = item.Exposures.Where(e => individualIds.Contains(e.SimulatedIndividual)).ToList()
-                })
-                .ToList();
-            return upperExposureCollection;
-        }
         protected static void updateContributions(List<T> updateRecords, List<T> records) {
             foreach (var record in updateRecords) {
                 var contribution = records

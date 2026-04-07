@@ -6,8 +6,6 @@ using OxyPlot.Series;
 namespace MCRA.Utils.Charting.OxyPlot {
 
     public abstract class OxyPlotStackedBarChartCreator : OxyPlotChartCreator {
-
-
         protected PlotModel create(
             List<BarDataPoint> data,
             OxyPalette palette = null
@@ -19,7 +17,8 @@ namespace MCRA.Utils.Charting.OxyPlot {
 
             var categoryAxis = new CategoryAxis() {
                 Key = "y",
-                MinorStep = 1
+                MinorStep = 1,
+                Angle = -15
             };
             foreach (var stratifier in stratifiers) {
                 categoryAxis.Labels.Add($"{stratifier}");
@@ -34,6 +33,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
             };
             plotModel.Axes.Add(linearAxis);
             var groups = data.GroupBy(c => c.Serie).ToList();
+            var allCategories = data.Select(d => d.Category).OrderBy(c => c).ToHashSet();
             if (palette == null) {
                 palette = CustomPalettes.SplitComplementary(groups.Count(), 0.5883, .3, .3, .9, .9);
             }
@@ -49,8 +49,9 @@ namespace MCRA.Utils.Charting.OxyPlot {
                     LabelPlacement = LabelPlacement.Middle,
                     TextColor = OxyColors.White,
                 };
-                foreach (var item in group) {
-                    var barItem = new BarItem(item.Contribution, -1);
+                foreach (var category in allCategories) {
+                    var item = group.FirstOrDefault(g => g.Category == category);
+                    var barItem = item != null ? new BarItem(item.Contribution, -1) : new BarItem(0, -1);
                     barSeries.Items.Add(barItem);
                 }
                 plotModel.Series.Add(barSeries);

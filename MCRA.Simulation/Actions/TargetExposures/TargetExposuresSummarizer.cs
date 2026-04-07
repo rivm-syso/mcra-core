@@ -424,7 +424,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             var uncertaintyLowerBound = _configuration.UncertaintyLowerBound;
             var uncertaintyUpperBound = _configuration.UncertaintyUpperBound;
             var isPerPerson = _configuration.IsPerPerson;
-            var isAggregate = _configuration.ExposureSources.Count > 1;
+            var isAggregate = (_configuration.ExposureSources.Count > 1 || _configuration.ExposureRoutes.Count > 1);
 
             var outputSummary = subHeader?.GetSummarySection() as TargetExposuresSummarySection;
             if (outputSummary == null) {
@@ -573,7 +573,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             subHeader = summarizeSourcSubstanceUncertainty(header, actionResult, data);
             // Toc: Internal exposures by source, route and substance
             subHeader = summarizeSourceRouteSubstanceUncertainty(header, actionResult, data);
-
             // Toc: External exposures by source
             subHeader = summarizeExternalSourceUncertainty(header, actionResult, data);
             // Toc: External exposures by route

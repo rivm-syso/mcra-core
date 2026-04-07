@@ -3,11 +3,10 @@ using MCRA.General;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Calculators.Stratification;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Generic;
-using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
 
-    public sealed class ContributionBySourceUpperSection : InternalExposureContributionSectionBase<SourceContributorKey, ContributionBySourceRecord> {
+    public sealed class ContributionBySourceUpperSection : InternalExposureUpperContributionSectionBase<SourceContributorKey, ContributionBySourceRecord> {
 
         public override string DescriptorKey => ExposureBySourceCalculator.DescriptorKey;
         public override string DescriptorName => ExposureBySourceCalculator.DescriptorName;
@@ -33,17 +32,13 @@ namespace MCRA.Simulation.OutputGeneration {
                 isPerPerson
             );
 
-            var upperExposureCollection = getUpperTailExposures(
-                exposureCollection,
-                percentageForUpperTail,
-                true
-            );
-
             Records = summarize(
-                upperExposureCollection,
+                exposureCollection,
+                outputStratifier,
+                percentageForUpperTail,
                 uncertaintyLowerBound,
                 uncertaintyUpperBound,
-                outputStratifier
+                true
             );
         }
 
@@ -66,12 +61,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 isPerPerson
             );
 
-            var upperExposureCollection = getUpperTailExposures(
-                exposureCollection,
-                percentageForUpperTail
-            );
-
-            var records = summarizeUncertainty(upperExposureCollection, outputStratifier);
+            var records = summarizeUncertainty(exposureCollection, outputStratifier, percentageForUpperTail);
             updateContributions(Records, records);
         }
     }

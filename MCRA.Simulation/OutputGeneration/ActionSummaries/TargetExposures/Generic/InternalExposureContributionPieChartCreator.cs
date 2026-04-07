@@ -5,37 +5,32 @@ using OxyPlot;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class InternalExposureContributionPieChartCreator<S, T> : ReportPieChartCreatorBase
+    public class InternalExposureContributionPieChartCreator<S, T> : ReportPieChartCreatorBase
         where S : IExposureContributorKey, new()
         where T : InternalExposureContributionRecordBase<S>, new() {
 
-        private readonly List<T> _records;
-        private readonly bool _isUncertainty;
-        private readonly bool _isUpper;
-        private readonly string _descriptorName;
+        protected readonly List<T> _records;
+        protected readonly bool _isUncertainty;
+        protected readonly string _descriptorName;
         public InternalExposureContributionPieChartCreator(
             List<T> records,
             bool isUncertainty,
-            string descriptorName,
-            bool isUpper = false
+            string descriptorName
         ) {
             Width = 500;
             Height = 350;
             _records = records;
             _isUncertainty = isUncertainty;
-            _isUpper = isUpper;
             _descriptorName = descriptorName;
         }
 
         public override string ChartId {
             get {
                 var pictureId = "4a1262b6-ad55-4537-91dd-baa518e90927";
-                return StringExtensions.CreateFingerprint(_descriptorName + pictureId + _isUpper.ToString());
+                return StringExtensions.CreateFingerprint(_descriptorName + pictureId);
             }
         }
-        public override string Title => _isUpper
-            ? $"Contribution by {_descriptorName} for the upper exposure distribution."
-            : $"Contribution by {_descriptorName} for the total exposure distribution.";
+        public override string Title => $"Contribution by {_descriptorName} for the total exposure distribution.";
 
         public override PlotModel Create() {
             var pieSlices = _records.Select(
@@ -54,7 +49,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// </summary>
         /// <param name="pieSlices"></param>
         /// <returns></returns>
-        private PlotModel create(List<PieSlice> pieSlices) {
+        protected PlotModel create(List<PieSlice> pieSlices) {
             var noSlices = pieSlices.Count;
             var palette = new OxyPalette(CustomPalettes.SplitComplementary(noSlices, 0.5883, .3, .3, .9, .9)
                 .Colors

@@ -12,7 +12,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>();
-            var isUncertainty = Model.Records.First().Contributions.Count > 0;
+            var isUncertainty = Model.Records.Any() ? Model.Records.First().Contributions.Count > 0: false;
 
             var panelBuilder = new HtmlTabPanelBuilder();
             if (!isUncertainty) {

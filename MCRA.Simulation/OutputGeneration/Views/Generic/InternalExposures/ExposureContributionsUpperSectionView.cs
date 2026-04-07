@@ -1,36 +1,35 @@
 ﻿using System.Text;
+using DocumentFormat.OpenXml.Drawing.Diagrams;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Generic;
 using MCRA.Simulation.OutputGeneration.Helpers;
 using MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
 
-    public class ExposureContributionsUpperSectionView<S, T> : SectionView<InternalExposureContributionSectionBase<S, T>>
+    public class ExposureContributionsUpperSectionView<S, T> : SectionView<InternalExposureUpperContributionSectionBase<S, T>>
         where S : IExposureContributorKey, new()
-        where T : InternalExposureContributionRecordBase<S>, new()
-    {
+        where T : InternalExposureContributionRecordBase<S>, new() {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>();
-            var isUncertainty = Model.Records.First().Contributions.Count > 0;
+            var isUncertainty = Model.Records.Any() ? Model.Records.First().Contributions.Count > 0 : false;
 
             var panelBuilder = new HtmlTabPanelBuilder();
             if (!isUncertainty) {
                 hiddenProperties.Add("LowerContributionPercentage");
                 hiddenProperties.Add("UpperContributionPercentage");
                 hiddenProperties.Add("MeanContribution");
-            } else {                 
+            } else {
                 hiddenProperties.Add("ContributionPercentage");
             }
 
             var individualString = Model.NumberOfIntakes == 1 ? $"1 individual" : $"{Model.NumberOfIntakes} individuals";
-            sb.AppendParagraph($"Exposure: upper tail {Model.CalculatedUpperPercentage:F1}% ({individualString}), " +
+            var description = $"Contribution by {Model.DescriptorName} for the upper tail ({Model.CalculatedUpperPercentage:F1}%, {individualString}), " +
                 $"minimum {Model.LowPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}, " +
-                $"maximum {Model.HighPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}");
-
+                $"maximum {Model.HighPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}";
             if (Model.Records.Count > 0) {
                 var unstratifiedRecords = Model.Records.Where(r => string.IsNullOrEmpty(r.Stratification)).ToList();
                 if (unstratifiedRecords.Count(r => !double.IsNaN(r.ContributionPercentage)) > 1) {
-                    var chartCreator = new InternalExposureContributionPieChartCreator<S, T>(unstratifiedRecords, isUncertainty, Model.DescriptorName, true);
+                    var chartCreator = new InternalExposureUpperContributionPieChartCreator<S, T>(unstratifiedRecords, isUncertainty, Model.DescriptorName);
                     panelBuilder.AddPanel(
                         id: "Panel_unstratified",
                         title: "Unstratified",
@@ -42,12 +41,12 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                             fileType: ChartFileType.Svg,
                             viewBag: ViewBag,
                             saveChartFile: true,
-                            caption: chartCreator.Title
+                            caption: description
                     ));
                 }
                 var stratifiedRecords = Model.Records.Where(r => !string.IsNullOrEmpty(r.Stratification)).ToList();
                 if (stratifiedRecords.Count(r => !double.IsNaN(r.ContributionPercentage)) > 1) {
-                    var chartCreator = new InternalExposureStackedBarChartCreator<S, T>(stratifiedRecords, isUncertainty, Model.DescriptorName, true);
+                    var chartCreator = new InternalExposureUpperStackedBarChartCreator<S, T>(stratifiedRecords, isUncertainty, Model.DescriptorName);
                     panelBuilder.AddPanel(
                         id: "Panel_stratified",
                         title: "Stratified",

@@ -18,11 +18,6 @@ namespace MCRA.Simulation.OutputGeneration {
         [Display(AutoGenerateField = false)]
         public List<double> Values { get; set; }
 
-        [Description("Specified percentage.")]
-        [DisplayName("Percentage")]
-        [DisplayFormat(DataFormatString = "{0:F2}")]
-        public double Percentage { get { return XValue * 100; } }
-
         [DisplayName("Stratification")]
         public string Stratification { get; set; }
 
