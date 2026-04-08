@@ -13,7 +13,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Source")]
         public string Source { get; set; }
 
-        [Description("Substancee.")]
+        [Description("Substance.")]
         [DisplayName("Substance")]
         public string Substance { get; set; }
 

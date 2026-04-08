@@ -3,7 +3,6 @@ using MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Generic;
 using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.OutputGeneration {
-
     public sealed class ContributionBySourceRouteSubstanceRecord : InternalExposureContributionRecordBase<SourceRouteSubstanceContributorKey> {
 
         [Description("Exposure route.")]
@@ -14,7 +13,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Source")]
         public string Source { get; set; }
 
-        [Description("Substancee.")]
+        [Description("Substance.")]
         [DisplayName("Substance")]
         public string Substance { get; set; }
 

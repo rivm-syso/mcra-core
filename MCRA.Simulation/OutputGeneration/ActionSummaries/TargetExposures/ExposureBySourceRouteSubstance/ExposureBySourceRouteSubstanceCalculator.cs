@@ -5,7 +5,6 @@ using MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Generic;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class ExposureBySourceRouteSubstanceCalculator {
-
         public static string DescriptorKey => "SourceRouteSubstance";
         public static string DescriptorName => "source, route and substance";
 
@@ -32,15 +31,16 @@ namespace MCRA.Simulation.OutputGeneration {
                     var exposures = externalIndividualExposures
                         .Select(c => (
                             SimulatedIndividual: c.SimulatedIndividual,
-                            Exposure: c.GetExposure(path, substance, isPerPerson) * kineticConversionFactor
-                            * relativePotencyFactors[substance] * membershipProbabilities[substance]
+                            Exposure: c.GetExposure(path, substance, isPerPerson)
+                                * kineticConversionFactor * relativePotencyFactors[substance] * membershipProbabilities[substance]
                         ))
                         .ToList();
                     var internalExposures = new InternalExposuresByDescriptor<SourceRouteSubstanceContributorKey>() {
-                        Descriptor = new SourceRouteSubstanceContributorKey() { 
+                        Descriptor = new SourceRouteSubstanceContributorKey() {
                             Route = path.Route,
                             Source = path.Source,
-                            Substance = substance.Name  },
+                            Substance = substance.Name
+                        },
                         Exposures = exposures
                     };
                     exposureCollection.Add(internalExposures);

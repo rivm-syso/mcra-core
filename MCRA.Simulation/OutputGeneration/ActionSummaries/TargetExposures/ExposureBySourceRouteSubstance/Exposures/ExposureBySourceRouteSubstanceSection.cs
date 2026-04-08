@@ -7,7 +7,6 @@ using MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Generic;
 namespace MCRA.Simulation.OutputGeneration {
 
     public sealed class ExposureBySourceRouteSubstanceSection : InternalExposureDistributionSectionBase<SourceRouteSubstanceContributorKey, ExposureBySourceRouteSubstanceRecord, ExposureBySourceRouteSubstanceBoxPlotRecord> {
-
         public override string DescriptorKey => ExposureBySourceRouteSubstanceCalculator.DescriptorKey;
         public override string DescriptorName => ExposureBySourceRouteSubstanceCalculator.DescriptorName;
 
@@ -15,11 +14,11 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<IExternalIndividualExposure> externalIndividualExposures,
             ICollection<Compound> activeSubstances,
             IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
+            PopulationStratifier outputStratifier,
+            TargetUnit targetUnit,
             double lowerPercentage,
             double upperPercentage,
-            TargetUnit targetUnit,
             bool isPerPerson,
-            PopulationStratifier outputStratifier,
             bool skipPrivacySensitiveOutputs
         ) {
             // The relative potency factors and membership probabilities are not relevant for this summary,

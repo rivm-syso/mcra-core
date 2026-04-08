@@ -7,7 +7,6 @@ using MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Generic;
 namespace MCRA.Simulation.OutputGeneration {
 
     public sealed class ContributionBySourceRouteSubstanceUpperSection : InternalExposureUpperContributionSectionBase<SourceRouteSubstanceContributorKey, ContributionBySourceRouteSubstanceRecord> {
-
         public override string DescriptorKey => ExposureBySourceRouteSubstanceCalculator.DescriptorKey;
         public override string DescriptorName => ExposureBySourceRouteSubstanceCalculator.DescriptorName;
 
