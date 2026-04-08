@@ -7,7 +7,6 @@ using MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Generic;
 namespace MCRA.Simulation.OutputGeneration {
 
     public sealed class ExposureBySourcePercentilesSection : InternalExposurePercentileSectionBase<SourceContributorKey, ExposureBySourcePercentileRecord> {
-
         public override string DescriptorKey => ExposureBySourceCalculator.DescriptorKey;
         public override string DescriptorName => ExposureBySourceCalculator.DescriptorName;
 

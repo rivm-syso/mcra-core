@@ -9,8 +9,6 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Source")]
         public string Source { get; set; }
 
-        public ExposureBySourceRecord() { }
-
         public override void SetDescriptorValues(SourceContributorKey key) {
             Source = key.Source.GetDisplayName();
         }

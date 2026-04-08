@@ -6,7 +6,6 @@ using MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Generic;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class ExposureBySourceCalculator {
-
         public static string DescriptorKey => "Source";
         public static string DescriptorName => "source";
 
