@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Text;
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Collections;
@@ -30,10 +31,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     substances,
                     [targetUnit],
                     random
-                );
+                ).Cast<AggregateIndividualExposure>();
 
             var section = new CoExposureTotalDistributionSubstanceSection();
-            section.Summarize(exposures, null, substances, targetUnit);
+            section.SummarizeCoExposure([.. exposures], substances, targetUnit);
             Assert.IsNotNull(section.AggregatedExposureRecords);
             AssertIsValidView(section);
         }
@@ -55,10 +56,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     substances,
                     [targetUnit],
                     random
-                );
+                ).Cast<AggregateIndividualExposure>();
 
             var section = new CoExposureTotalDistributionSubstanceSection();
-            section.Summarize(null, exposures, substances, targetUnit);
+            section.SummarizeCoExposure([.. exposures], substances, targetUnit);
             Assert.IsNotNull(section.AggregatedExposureRecords);
             AssertIsValidView(section);
         }

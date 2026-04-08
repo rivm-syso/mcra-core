@@ -1,6 +1,7 @@
 ﻿using MCRA.General;
 using MCRA.Simulation.Calculators.KineticConversionCalculation;
 using MCRA.Simulation.OutputGeneration;
+using MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Generic;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 
@@ -39,6 +40,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 rpfs,
                 memberships,
                 kineticConversionFactors,
+                null,
                 95,
                 2.5,
                 97.5,
@@ -47,7 +49,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var sum = section.Records.Sum(c => c.ContributionPercentage);
             Assert.AreEqual(98D, sum, 3D);
 
-            var chart = new ContributionByRouteSubstanceUpperPieChartCreator(section, false);
+            var chart = new InternalExposureUpperContributionPieChartCreator<RouteSubstanceContributorKey, ContributionByRouteSubstanceRecord>(section.Records, false, "");
             RenderChart(chart, $"TestCreate1");
             AssertIsValidView(section);
         }
@@ -83,6 +85,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 rpfs,
                 memberships,
                 kineticConversionFactors,
+                null,
                 95,
                 2.5,
                 97.5,
@@ -91,7 +94,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var sum = section.Records.Sum(c => c.ContributionPercentage);
             Assert.AreEqual(98D, sum, 3D);
 
-            var chart = new ContributionByRouteSubstanceUpperPieChartCreator(section, false);
+            var chart = new InternalExposureUpperContributionPieChartCreator<RouteSubstanceContributorKey, ContributionByRouteSubstanceRecord>(section.Records, false, "");
             RenderChart(chart, $"TestCreate2");
             AssertIsValidView(section);
         }

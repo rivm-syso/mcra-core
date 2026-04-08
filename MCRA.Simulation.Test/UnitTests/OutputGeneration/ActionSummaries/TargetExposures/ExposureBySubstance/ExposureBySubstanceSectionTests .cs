@@ -1,4 +1,5 @@
 ﻿using MCRA.General;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
@@ -32,19 +33,16 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var section = new ExposureBySubstanceSection();
             section.Summarize(
                 aggregateIndividualExposures,
-                null,
-                rpfs,
-                memberships,
-                kineticConversionFactors,
                 substances,
+                kineticConversionFactors,
+                outputStratifier: null,
+                targetUnit,
                 25,
                 75,
-                targetUnit,
                 false,
-                outputStratifier: null,
                 false
             );
-            Assert.HasCount(substances.Count, section.ExposureRecords);
+            Assert.HasCount(substances.Count, section.Records);
         }
 
         /// <summary>
@@ -61,30 +59,26 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var kineticConversionFactors = FakeAbsorptionFactorsGenerator.CreateAbsorptionFactors(substances, .1);
             var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
-            var aggregateIndividualDayExposures = FakeAggregateIndividualDayExposuresGenerator
+            var aggregates = FakeAggregateIndividualDayExposuresGenerator
                 .Create(
                     individualDays,
                     substances,
                     [targetUnit],
                     random
-                );
+                ).Cast<AggregateIndividualExposure>();
 
             var section = new ExposureBySubstanceSection();
             section.Summarize(
-                null,
-                aggregateIndividualDayExposures,
-                rpfs,
-                memberships,
-                kineticConversionFactors,
+                [ ..aggregates],
                 substances,
+                kineticConversionFactors,
+                outputStratifier: null,
+                targetUnit,
                 25,
                 75,
-                targetUnit,
                 false,
-                outputStratifier: null,
                 false
             );
-            Assert.HasCount(substances.Count, section.ExposureRecords);
         }
     }
 }

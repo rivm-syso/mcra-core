@@ -1,8 +1,8 @@
 ﻿using MCRA.General;
 using MCRA.Simulation.OutputGeneration;
+using MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Generic;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.TargetExposures {
 
@@ -49,11 +49,11 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 var section = new ContributionBySubstanceTotalSection();
                 section.Summarize(
                     aggregateIndividualExposures,
-                    null,
                     substances,
                     rpfs,
                     memberships,
                     kineticConversionFactors,
+                    null,
                     2.5,
                     97.5,
                     false
@@ -61,8 +61,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 if (aggregateIndividualExposures.Any(r => r.IsPositiveTargetExposure(targetUnit.Target))) {
                     Assert.AreEqual(100D, section.Records.Sum(c => c.ContributionPercentage), .001);
                 }
-                Assert.HasCount(substances.Count, section.Records);
-                var chart = new ContributionBySubstanceTotalPieChartCreator(section, false);
+                var chart = new InternalExposureUpperContributionPieChartCreator<SubstanceContributorKey, ContributionBySubstanceRecord>(section.Records, false, "");
                 RenderChart(chart, $"TestCreate1{numIndividuals}");
                 AssertIsValidView(section);
             }

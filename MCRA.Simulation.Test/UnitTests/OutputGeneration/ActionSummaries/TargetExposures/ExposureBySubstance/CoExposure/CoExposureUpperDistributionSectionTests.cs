@@ -1,8 +1,9 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
+using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.TargetExposures {
@@ -34,10 +35,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     substances,
                     [targetUnit],
                     random
-                );
+                ).Cast<AggregateIndividualExposure>(); ;
 
             var section = new CoExposureUpperDistributionSubstanceSection();
-            section.Summarize(exposures, null, substances, rpfs, memberships, kineticConversionFactors, 97.5, targetUnit);
+            section.SummarizeCoExposure([..exposures], substances, rpfs, memberships, kineticConversionFactors, 97.5, targetUnit);
             Assert.IsNotNull(section.AggregatedExposureRecords);
             AssertIsValidView(section);
         }
@@ -66,9 +67,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     substances,
                     [targetUnit],
                     random
-                );
+                ).Cast<AggregateIndividualExposure>(); ;
             var section = new CoExposureUpperDistributionSubstanceSection();
-            section.Summarize(null, exposures, substances, rpfs, memberships, kineticConversionFactors, 97.5, targetUnit);
+            section.SummarizeCoExposure([..exposures], substances, rpfs, memberships, kineticConversionFactors, 97.5, targetUnit);
             Assert.IsNotNull(section.AggregatedExposureRecords);
             AssertIsValidView(section);
         }
