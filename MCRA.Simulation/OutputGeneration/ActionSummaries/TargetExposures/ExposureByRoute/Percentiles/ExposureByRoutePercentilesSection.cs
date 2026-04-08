@@ -17,12 +17,11 @@ namespace MCRA.Simulation.OutputGeneration {
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             IDictionary<(ExposureRoute route, Compound substance), double> kineticConversionFactors,
+            PopulationStratifier outputStratifier,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
             List<double> percentages,
-            bool isPerPerson,
-            PopulationStratifier outputStratifier
-        ) {
+            bool isPerPerson) {
             var exposureCollection = ExposureByRouteCalculator.CalculateExposures(
                 externalIndividualExposures,
                 activeSubstances,
@@ -40,10 +39,9 @@ namespace MCRA.Simulation.OutputGeneration {
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             IDictionary<(ExposureRoute route, Compound substance), double> kineticConversionFactors,
+            PopulationStratifier outputStratifier,
             List<double> percentages,
-            bool isPerPerson,
-            PopulationStratifier outputStratifier
-        ) {
+            bool isPerPerson) {
             var exposureCollection = ExposureByRouteCalculator.CalculateExposures(
                 externalIndividualExposures,
                 activeSubstances,

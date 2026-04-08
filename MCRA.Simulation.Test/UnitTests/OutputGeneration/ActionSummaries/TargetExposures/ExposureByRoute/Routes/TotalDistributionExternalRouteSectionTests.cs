@@ -37,11 +37,11 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 rpfs,
                 memberships,
                 kineticConversionFactors,
+                null,
+                targetUnit,
                 25,
                 75,
-                targetUnit,
                 false,
-                null,
                 false
             );
             AssertIsValidView(section);
@@ -75,12 +75,11 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 rpfs,
                 memberships,
                 kineticConversionFactors,
+                null,
+                targetUnit,
                 25,
                 75,
-                targetUnit,
                 false,
-                null
-,
                 false
             );
             AssertIsValidView(section);
