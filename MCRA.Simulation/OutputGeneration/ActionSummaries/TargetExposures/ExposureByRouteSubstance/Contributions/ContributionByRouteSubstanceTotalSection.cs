@@ -1,61 +1,62 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
-using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
+using MCRA.Simulation.Calculators.Stratification;
+using MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Generic;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class ContributionByRouteSubstanceTotalSection : ContributionByRouteSubstanceSectionBase {
+
+    public sealed class ContributionByRouteSubstanceTotalSection : InternalExposureContributionSectionBase<RouteSubstanceContributorKey, ContributionByRouteSubstanceRecord> {
+        public override string DescriptorKey => ExposureByRouteSubstanceCalculator.DescriptorKey;
+        public override string DescriptorName => ExposureByRouteSubstanceCalculator.DescriptorName;
 
         public void Summarize(
             ICollection<IExternalIndividualExposure> externalIndividualExposures,
-            ICollection<Compound> substances,
+            ICollection<Compound> activeSubstances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
+            PopulationStratifier outputStratifier,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
             bool isPerPerson
         ) {
-
-            relativePotencyFactors = substances.Count > 1
-                ? relativePotencyFactors : substances.ToDictionary(r => r, r => 1D);
-            membershipProbabilities = substances.Count > 1
-                ? membershipProbabilities : substances.ToDictionary(r => r, r => 1D);
-
-            Records = SummarizeContributions(
+            var exposureCollection = ExposureByRouteSubstanceCalculator.CalculateExposures(
                 externalIndividualExposures,
-                substances,
+                activeSubstances,
                 relativePotencyFactors,
                 membershipProbabilities,
                 kineticConversionFactors,
+                isPerPerson
+            );
+
+            Records = summarize(
+                exposureCollection,
                 uncertaintyLowerBound,
                 uncertaintyUpperBound,
-                isPerPerson
+                outputStratifier
             );
         }
 
         public void SummarizeUncertainty(
             ICollection<IExternalIndividualExposure> externalIndividualExposures,
-            ICollection<Compound> substances,
+            ICollection<Compound> activeSubstances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
+            PopulationStratifier outputStratifier,
             bool isPerPerson
         ) {
-            relativePotencyFactors = substances.Count > 1
-                ? relativePotencyFactors : substances.ToDictionary(r => r, r => 1D);
-            membershipProbabilities = substances.Count > 1
-                ? membershipProbabilities : substances.ToDictionary(r => r, r => 1D);
-
-            var records = summarizeUncertainty(
-                 externalIndividualExposures,
-                 substances,
-                 relativePotencyFactors,
-                 membershipProbabilities,
-                 kineticConversionFactors,
-                 isPerPerson
-             );
-            UpdateContributions(records);
+            var exposureCollection = ExposureByRouteSubstanceCalculator.CalculateExposures(
+                externalIndividualExposures,
+                activeSubstances,
+                relativePotencyFactors,
+                membershipProbabilities,
+                kineticConversionFactors,
+                isPerPerson
+            );
+            var records = summarizeUncertainty(exposureCollection, outputStratifier);
+            updateContributions(Records, records);
         }
     }
 }
