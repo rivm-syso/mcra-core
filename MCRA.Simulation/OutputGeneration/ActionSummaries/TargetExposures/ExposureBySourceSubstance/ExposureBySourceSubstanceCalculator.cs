@@ -2,22 +2,31 @@
 using MCRA.General;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Objects;
+using MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Generic;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public abstract class ExposureBySourceSubstanceSectionBase : SummarySection {
+    public sealed class ExposureBySourceSubstanceCalculator  {
+        public static string DescriptorKey => "SourceSubstance";
+        public static string DescriptorName => "source and substance";
 
-        protected static List<(ExposureSource Source, Compound Substance, List<(SimulatedIndividual SimulatedIndividual, double Exposure)> Exposures)> CalculateExposures(
+        public static List<InternalExposuresByDescriptor<SourceSubstanceContributorKey>> CalculateExposures(
            ICollection<IExternalIndividualExposure> externalIndividualExposures,
-           ICollection<Compound> substances,
+           ICollection<Compound> activeSubstances,
+           IDictionary<Compound, double> relativePotencyFactors,
+           IDictionary<Compound, double> membershipProbabilities,
            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
            bool isPerPerson
        ) {
-            var exposureSourceSubstanceCollection = new List<(ExposureSource ExposureSource, Compound Substance, List<(SimulatedIndividual SimulatedIndividual, double Exposure)>)>();
+            relativePotencyFactors = activeSubstances.Count > 1
+                ? relativePotencyFactors : activeSubstances.ToDictionary(r => r, r => 1D);
+            membershipProbabilities = activeSubstances.Count > 1
+                ? membershipProbabilities : activeSubstances.ToDictionary(r => r, r => 1D);
+            var exposureSourceSubstanceCollection = new List<InternalExposuresByDescriptor<SourceSubstanceContributorKey>>();
             var paths = externalIndividualExposures
                 .SelectMany(c => c.ExposuresPerPath.Keys)
                 .ToHashSet();
             var results = new List<(ExposureSource Source, Compound Substance, SimulatedIndividual SimulatedIndividual, double Exposure)>();
-            foreach (var substance in substances) {
+            foreach (var substance in activeSubstances) {
                 foreach (var path in paths) {
                     var kineticConversionFactor = kineticConversionFactors[(path.Route, substance)];
                     var exposures = externalIndividualExposures
@@ -25,7 +34,8 @@ namespace MCRA.Simulation.OutputGeneration {
                             Source: path.Source,
                             Substance: substance,
                             SimulatedIndividual: c.SimulatedIndividual,
-                            Exposure: c.GetExposure(path, substance, isPerPerson) * kineticConversionFactor
+                            Exposure: c.GetExposure(path, substance, isPerPerson) 
+                                * kineticConversionFactor * relativePotencyFactors[substance] * membershipProbabilities[substance]
                         )
                     ).ToList();
                     results.AddRange(exposures);
@@ -41,7 +51,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 ))
                 .ToList();
             var sources = grouping.Select(c => c.Source).ToHashSet();
-            foreach (var substance in substances) {
+            foreach (var substance in activeSubstances) {
                 foreach (var source in sources) {
                     var exposures = grouping
                         .Where(c => c.Source == source && c.Substance == substance)
@@ -50,7 +60,11 @@ namespace MCRA.Simulation.OutputGeneration {
                             Exposure: c.Exposure
                         ))
                         .ToList();
-                    exposureSourceSubstanceCollection.Add((source, substance, exposures));
+                    var internalExposures = new InternalExposuresByDescriptor<SourceSubstanceContributorKey>() {
+                        Descriptor = new SourceSubstanceContributorKey() { Source = source, Substance = substance.Name },
+                        Exposures = exposures
+                    };
+                    exposureSourceSubstanceCollection.Add(internalExposures);
                 }
             }
             return exposureSourceSubstanceCollection;
