@@ -2,15 +2,18 @@
 using MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Generic;
 
 namespace MCRA.Simulation.OutputGeneration {
-
-    /// <summary>
-    /// Helper class for substances, relative contribution to the upper exposure distribution.
-    /// </summary>
-    public sealed class ExposureBySubstanceRecord : InternalExposureDistributionRecordBase<SubstanceContributorKey> {
+    public class ExposureBySubstanceBoxPlotRecord : InternalExposureBoxPlotRecordBase<SubstanceContributorKey> {
 
         [Description("Substance.")]
         [DisplayName("Substance")]
         public string Substance { get; set; }
+
+        public override string GetLabel() {
+            if (!string.IsNullOrEmpty(Stratification)) {
+                return $"{Substance} ({Stratification})";
+            }
+            return $"{Substance}";
+        }
 
         public override void SetDescriptorValues(SubstanceContributorKey key) {
             Substance = key.Substance;

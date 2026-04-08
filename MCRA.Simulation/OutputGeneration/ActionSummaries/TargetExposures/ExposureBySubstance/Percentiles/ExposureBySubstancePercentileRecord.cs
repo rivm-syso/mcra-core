@@ -1,12 +1,13 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Generic;
 
 namespace MCRA.Simulation.OutputGeneration {
-
-    /// <summary>
-    /// Helper class for substances, relative contribution to the upper exposure distribution.
-    /// </summary>
-    public sealed class ExposureBySubstanceRecord : InternalExposureDistributionRecordBase<SubstanceContributorKey> {
+    public class ExposureBySubstancePercentileRecord : InternalExposurePercentileRecordBase<SubstanceContributorKey> {
+        [Description("Specified percentage.")]
+        [DisplayName("Percentage")]
+        [DisplayFormat(DataFormatString = "{0:F2}")]
+        public double Percentage { get { return XValue * 100; } }
 
         [Description("Substance.")]
         [DisplayName("Substance")]

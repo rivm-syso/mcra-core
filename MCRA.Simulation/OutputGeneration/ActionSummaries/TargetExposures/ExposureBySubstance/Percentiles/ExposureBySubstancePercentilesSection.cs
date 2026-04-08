@@ -5,57 +5,49 @@ using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Generic;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class ContributionBySubstanceTotalSection : InternalExposureContributionSectionBase<SubstanceContributorKey, ContributionBySubstanceRecord> {
+
+    public sealed class ExposureBySubstancePercentilesSection : InternalExposurePercentileSectionBase<SubstanceContributorKey, ExposureBySubstancePercentileRecord> {
         public override string DescriptorKey => ExposureBySubstanceCalculator.DescriptorKey;
         public override string DescriptorName => ExposureBySubstanceCalculator.DescriptorName;
 
         public void Summarize(
             ICollection<AggregateIndividualExposure> aggregates,
             ICollection<Compound> activeSubstances,
-            IDictionary<Compound, double> relativePotencyFactors,
-            IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
+            IDictionary<(ExposureRoute route, Compound substance), double> kineticConversionFactors,
             PopulationStratifier outputStratifier,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
+            List<double> percentages,
             bool isPerPerson
         ) {
             var exposureCollection = ExposureBySubstanceCalculator.CalculateExposures(
                 aggregates,
                 activeSubstances,
-                relativePotencyFactors,
-                membershipProbabilities,
+                activeSubstances.ToDictionary(r => r, r => 1D),
+                activeSubstances.ToDictionary(r => r, r => 1D),
                 kineticConversionFactors,
                 isPerPerson
             );
-
-            Records = summarize(
-                exposureCollection,
-                uncertaintyLowerBound,
-                uncertaintyUpperBound,
-                outputStratifier
-            );
+            summarize(exposureCollection, uncertaintyLowerBound, uncertaintyUpperBound, outputStratifier, percentages);
         }
 
         public void SummarizeUncertainty(
             ICollection<AggregateIndividualExposure> aggregates,
             ICollection<Compound> activeSubstances,
-            IDictionary<Compound, double> relativePotencyFactors,
-            IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
+            IDictionary<(ExposureRoute route, Compound substance), double> kineticConversionFactors,
             PopulationStratifier outputStratifier,
+            List<double> percentages,
             bool isPerPerson
         ) {
             var exposureCollection = ExposureBySubstanceCalculator.CalculateExposures(
                 aggregates,
                 activeSubstances,
-                relativePotencyFactors,
-                membershipProbabilities,
+                activeSubstances.ToDictionary(r => r, r => 1D),
+                activeSubstances.ToDictionary(r => r, r => 1D),
                 kineticConversionFactors,
                 isPerPerson
             );
-            var records = summarizeUncertainty(exposureCollection, outputStratifier);
-            updateContributions(Records, records);
+            summarize(percentages, outputStratifier, exposureCollection);
         }
     }
 }

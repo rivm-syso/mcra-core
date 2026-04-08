@@ -6,9 +6,8 @@ using MCRA.Simulation.Calculators.UpperIntakesCalculation;
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class CoExposureUpperDistributionSubstanceSection : CoExposureDistributionSubstanceSectionBase {
 
-        public void Summarize(
-            ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
-            ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
+        public void SummarizeCoExposure(
+            ICollection<AggregateIndividualExposure> aggregateExposures,
             ICollection<Compound> substances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
@@ -18,9 +17,6 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             var upperPercentage = percentageForUpperTail;
             var upperIntakeCalculator = new UpperAggregateIntakeCalculator();
-            var aggregateExposures = aggregateIndividualExposures != null
-                ? aggregateIndividualExposures
-                : aggregateIndividualDayExposures.Cast<AggregateIndividualExposure>().ToList();
             var upperIntakes = upperIntakeCalculator
                 .GetUpperTargetIndividualExposures(
                     aggregateExposures,
@@ -29,7 +25,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     upperPercentage,
                     targetUnit
                 );
-            Summarize(upperIntakes, substances, targetUnit);
+            summarize(upperIntakes, substances, targetUnit);
         }
     }
 }

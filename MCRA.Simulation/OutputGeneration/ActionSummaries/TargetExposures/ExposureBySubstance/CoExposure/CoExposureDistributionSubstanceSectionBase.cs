@@ -6,7 +6,7 @@ using MCRA.Utils.Collections;
 namespace MCRA.Simulation.OutputGeneration {
     public class CoExposureDistributionSubstanceSectionBase : CoExposureSectionBase {
 
-        protected void Summarize(
+        protected void summarize(
             ICollection<AggregateIndividualExposure> targetExposures,
             ICollection<Compound> substances,
             TargetUnit targetUnit
