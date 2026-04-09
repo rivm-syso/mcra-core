@@ -10,17 +10,22 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Source")]
         public string Source { get; set; }
 
-        [Description("Substance.")]
+        [Description("Substance name")]
         [DisplayName("Substance")]
-        public string Substance { get; set; }
+        public string SubstanceName { get; set; }
+
+        [Description("Substance code")]
+        [DisplayName("Substance code")]
+        public string SubstanceCode { get; set; }
 
         public override void SetDescriptorValues(SourceSubstanceContributorKey key) {
             Source = key.Source.GetDisplayName();
-            Substance = key.Substance;
+            SubstanceName = key.Substance.Name;
+            SubstanceCode = key.Substance.Code;
         }
 
         public override string GetKey() {
-            return $"{Source} {Substance}";
+            return $"{Source} {SubstanceCode}";
         }
     }
 }

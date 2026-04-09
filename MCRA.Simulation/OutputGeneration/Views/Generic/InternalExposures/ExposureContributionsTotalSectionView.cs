@@ -23,6 +23,10 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add("ContributionPercentage");
             }
 
+            if (Model.Records.All(r => string.IsNullOrEmpty(r.Stratification))) {
+                hiddenProperties.Add("Stratification");
+            }
+
             var unstratifiedRecords = Model.Records.Where(r => string.IsNullOrEmpty(r.Stratification)).ToList();
             if (unstratifiedRecords.Count(r => !double.IsNaN(r.ContributionPercentage)) > 1) {
                 var chartCreator = new InternalExposureContributionPieChartCreator<S, T>(unstratifiedRecords, isUncertainty, Model.DescriptorName);

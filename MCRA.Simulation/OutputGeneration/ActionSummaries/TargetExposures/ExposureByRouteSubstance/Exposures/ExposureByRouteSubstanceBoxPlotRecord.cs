@@ -9,24 +9,24 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Route")]
         public string Route { get; set; }
 
-        [Description("Substance.")]
+        [Description("Substance name")]
         [DisplayName("Substance")]
-        public string Substance { get; set; }
+        public string SubstanceName { get; set; }
 
         public override string GetLabel() {
             if (!string.IsNullOrEmpty(Stratification)) {
-                return $"{Route} {Substance} ({Stratification})";
+                return $"{Route} {SubstanceName} ({Stratification})";
             }
-            return $"{Route} {Substance}";
+            return $"{Route} {SubstanceName}";
         }
 
         public override void SetDescriptorValues(RouteSubstanceContributorKey key) {
             Route = key.Route.GetDisplayName();
-            Substance = key.Substance;
+            SubstanceName = key.Substance.Name;
         }
 
         public override string GetKey() {
-            return $"{Route} {Substance}";
+            return $"{Route} {SubstanceName}";
         }
     }
 }

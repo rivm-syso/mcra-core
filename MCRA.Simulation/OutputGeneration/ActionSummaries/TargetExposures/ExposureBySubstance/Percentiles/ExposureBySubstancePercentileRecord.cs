@@ -9,16 +9,21 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:F2}")]
         public double Percentage { get { return XValue * 100; } }
 
-        [Description("Substance.")]
+        [Description("Substance name")]
         [DisplayName("Substance")]
-        public string Substance { get; set; }
+        public string SubstanceName { get; set; }
+
+        [Description("Substance code")]
+        [DisplayName("Substance code")]
+        public string SubstanceCode { get; set; }
 
         public override void SetDescriptorValues(SubstanceContributorKey key) {
-            Substance = key.Substance;
+            SubstanceName = key.Substance.Name;
+            SubstanceCode = key.Substance.Code;
         }
 
         public override string GetKey() {
-            return $"{Substance}";
+            return $"{SubstanceCode}";
         }
     }
 }

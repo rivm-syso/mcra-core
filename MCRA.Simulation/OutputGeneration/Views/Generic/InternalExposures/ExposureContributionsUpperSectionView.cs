@@ -22,6 +22,10 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add("ContributionPercentage");
             }
 
+            if (Model.Records.All(r => string.IsNullOrEmpty(r.Stratification))) {
+                hiddenProperties.Add("Stratification");
+            }
+
             var individualString = Model.NumberOfIntakes == 1 ? $"1 individual" : $"{Model.NumberOfIntakes} individuals";
             var description = $"Contribution by {Model.DescriptorName} for the upper tail ({Model.CalculatedUpperPercentage:F1}%, {individualString}), " +
                 $"minimum {Model.LowPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}, " +

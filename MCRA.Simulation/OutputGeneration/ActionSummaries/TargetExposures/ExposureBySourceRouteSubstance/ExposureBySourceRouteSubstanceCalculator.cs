@@ -39,7 +39,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         Descriptor = new SourceRouteSubstanceContributorKey() {
                             Route = path.Route,
                             Source = path.Source,
-                            Substance = substance.Name
+                            Substance = substance
                         },
                         Exposures = exposures
                     };

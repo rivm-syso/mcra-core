@@ -13,25 +13,25 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Source")]
         public string Source { get; set; }
 
-        [Description("Substance.")]
+        [Description("Substance name")]
         [DisplayName("Substance")]
-        public string Substance { get; set; }
+        public string SubstanceName { get; set; }
 
         public override string GetLabel() {
             if (!string.IsNullOrEmpty(Stratification)) {
-                return $"{Source} {Route} {Substance} ({Stratification})";
+                return $"{Source} {Route} {SubstanceName} ({Stratification})";
             }
-            return $"{Source} {Route} {Substance}";
+            return $"{Source} {Route} {SubstanceName}";
         }
 
         public override void SetDescriptorValues(SourceRouteSubstanceContributorKey key) {
             Route = key.Route.GetDisplayName();
             Source = key.Source.GetDisplayName();
-            Substance = key.Substance;
+            SubstanceName = key.Substance.Name;
         }
 
         public override string GetKey() {
-            return $"{Source} {Route} {Substance}";
+            return $"{Source} {Route} {SubstanceName}";
         }
     }
 }

@@ -41,8 +41,8 @@ namespace MCRA.Simulation.OutputGeneration {
             var grouping = results
                 .GroupBy(c => (c.Substance, c.SimulatedIndividual))
                 .Select(c => (
-                    Substance: c.Key.Substance,
-                    SimulatedIndividual: c.Key.SimulatedIndividual,
+                    c.Key.Substance,
+                    c.Key.SimulatedIndividual,
                     Exposure: c.Sum(r => r.Exposure)
                 ))
                 .ToList();
@@ -50,12 +50,12 @@ namespace MCRA.Simulation.OutputGeneration {
                 var exposures = grouping
                     .Where(c => c.Substance == substance)
                     .Select(c => (
-                        SimulatedIndividual: c.SimulatedIndividual,
-                        Exposure: c.Exposure
+                        c.SimulatedIndividual,
+                        c.Exposure
                     ))
                     .ToList();
                 var internalExposures = new InternalExposuresByDescriptor<SubstanceContributorKey>() {
-                    Descriptor = new SubstanceContributorKey() { Substance = substance.Name },
+                    Descriptor = new SubstanceContributorKey() { Substance = substance },
                     Exposures = exposures
                 };
                 exposureSubstanceCollection.Add(internalExposures);

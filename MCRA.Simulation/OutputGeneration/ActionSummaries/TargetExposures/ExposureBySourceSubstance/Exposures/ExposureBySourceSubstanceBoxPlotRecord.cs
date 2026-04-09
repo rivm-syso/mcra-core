@@ -9,24 +9,24 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Source")]
         public string Source { get; set; }
 
-        [Description("Substance.")]
+        [Description("Substance name")]
         [DisplayName("Substance")]
-        public string Substance { get; set; }
+        public string SubstanceName { get; set; }
 
         public override string GetLabel() {
             if (!string.IsNullOrEmpty(Stratification)) {
-                return $"{Source} {Substance} ({Stratification})";
+                return $"{Source} {SubstanceName} ({Stratification})";
             }
-            return $"{Source} {Substance}";
+            return $"{Source} {SubstanceName}";
         }
 
         public override void SetDescriptorValues(SourceSubstanceContributorKey key) {
             Source = key.Source.GetDisplayName();
-            Substance = key.Substance;
+            SubstanceName = key.Substance.Name;
         }
 
         public override string GetKey() {
-            return $"{Source} {Substance}";
+            return $"{Source} {SubstanceName}";
         }
     }
 }

@@ -4,23 +4,23 @@ using MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Generic;
 namespace MCRA.Simulation.OutputGeneration {
     public class ExposureBySubstanceBoxPlotRecord : InternalExposureBoxPlotRecordBase<SubstanceContributorKey> {
 
-        [Description("Substance.")]
+        [Description("Substance name")]
         [DisplayName("Substance")]
-        public string Substance { get; set; }
+        public string SubstanceName { get; set; }
 
         public override string GetLabel() {
             if (!string.IsNullOrEmpty(Stratification)) {
-                return $"{Substance} ({Stratification})";
+                return $"{SubstanceName} ({Stratification})";
             }
-            return $"{Substance}";
+            return $"{SubstanceName}";
         }
 
         public override void SetDescriptorValues(SubstanceContributorKey key) {
-            Substance = key.Substance;
+            SubstanceName = key.Substance.Name;
         }
 
         public override string GetKey() {
-            return $"{Substance}";
+            return $"{SubstanceName}";
         }
     }
 }

@@ -5,7 +5,7 @@ using MCRA.Simulation.Objects;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Generic;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class ExposureBySourceSubstanceCalculator  {
+    public sealed class ExposureBySourceSubstanceCalculator {
         public static string DescriptorKey => "SourceSubstance";
         public static string DescriptorName => "source and substance";
 
@@ -34,7 +34,7 @@ namespace MCRA.Simulation.OutputGeneration {
                             Source: path.Source,
                             Substance: substance,
                             SimulatedIndividual: c.SimulatedIndividual,
-                            Exposure: c.GetExposure(path, substance, isPerPerson) 
+                            Exposure: c.GetExposure(path, substance, isPerPerson)
                                 * kineticConversionFactor * relativePotencyFactors[substance] * membershipProbabilities[substance]
                         )
                     ).ToList();
@@ -44,9 +44,9 @@ namespace MCRA.Simulation.OutputGeneration {
             var grouping = results
                 .GroupBy(c => (c.Source, c.Substance, c.SimulatedIndividual))
                 .Select(c => (
-                    Source: c.Key.Source,
-                    Substance: c.Key.Substance,
-                    SimulatedIndividual: c.Key.SimulatedIndividual,
+                    c.Key.Source,
+                    c.Key.Substance,
+                    c.Key.SimulatedIndividual,
                     Exposure: c.Sum(r => r.Exposure)
                 ))
                 .ToList();
@@ -56,12 +56,12 @@ namespace MCRA.Simulation.OutputGeneration {
                     var exposures = grouping
                         .Where(c => c.Source == source && c.Substance == substance)
                         .Select(c => (
-                            SimulatedIndividual: c.SimulatedIndividual,
-                            Exposure: c.Exposure
+                            c.SimulatedIndividual,
+                            c.Exposure
                         ))
                         .ToList();
                     var internalExposures = new InternalExposuresByDescriptor<SourceSubstanceContributorKey>() {
-                        Descriptor = new SourceSubstanceContributorKey() { Source = source, Substance = substance.Name },
+                        Descriptor = new SourceSubstanceContributorKey() { Source = source, Substance = substance },
                         Exposures = exposures
                     };
                     exposureSourceSubstanceCollection.Add(internalExposures);

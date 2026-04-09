@@ -14,17 +14,22 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Route")]
         public string Route { get; set; }
 
-        [Description("Substance.")]
+        [Description("Substance name")]
         [DisplayName("Substance")]
-        public string Substance { get; set; }
+        public string SubstanceName { get; set; }
+
+        [Description("Substance code")]
+        [DisplayName("Substance code")]
+        public string SubstanceCode { get; set; }
 
         public override void SetDescriptorValues(RouteSubstanceContributorKey key) {
             Route = key.Route.GetDisplayName();
-            Substance = key.Substance;
+            SubstanceName = key.Substance.Name;
+            SubstanceCode = key.Substance.Code;
         }
 
         public override string GetKey() {
-            return $"{Route} {Substance}";
+            return $"{Route} {SubstanceCode}";
         }
     }
 }
