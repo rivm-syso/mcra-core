@@ -1,4 +1,5 @@
-﻿using MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Generic;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Generic;
 using MCRA.Utils.Charting.OxyPlot;
 using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
@@ -51,11 +52,8 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <returns></returns>
         protected PlotModel create(List<PieSlice> pieSlices) {
             var noSlices = pieSlices.Count;
-            var palette = new OxyPalette(CustomPalettes.SplitComplementary(noSlices, 0.5883, .3, .3, .9, .9)
-                .Colors
-                .Select(c => OxyColor.FromAColor(175, c))
-                .ToList()
-            );
+            var palette = CustomPalettes.DistinctTone(noSlices);
+
             var plotModel = create(pieSlices, noSlices, palette);
             return plotModel;
         }

@@ -2,6 +2,7 @@
 using MCRA.Utils.Statistics;
 using OxyPlot;
 using OxyPlot.Axes;
+using OxyPlot.Legends;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
@@ -14,7 +15,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public OxyColor StrokeColor { get; set; } = OxyColors.Blue;
 
-        public static double[] BoxPlotPercentages { get;  } = [5, 10, 25, 50, 75, 90, 95];
+        public static double[] BoxPlotPercentages { get; } = [5, 10, 25, 50, 75, 90, 95];
 
         public abstract string ChartId { get; }
 
@@ -64,7 +65,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 series.Items.Add(boxPlotItem);
                 maximum = Math.Max(maximum, double.IsNaN(item.P95) ? maximum : item.P95);
                 xOrder++;
-            };
+            }
+            ;
             plotModel.Series.Add(series);
 
             // Create horizontal logarithmic axis

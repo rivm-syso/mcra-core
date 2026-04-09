@@ -35,8 +35,9 @@ namespace MCRA.Utils.Charting.OxyPlot {
             var groups = data.GroupBy(c => c.Serie).ToList();
             var allCategories = data.Select(d => d.Category).OrderBy(c => c).ToHashSet();
             if (palette == null) {
-                palette = CustomPalettes.SplitComplementary(groups.Count(), 0.5883, .3, .3, .9, .9);
+               palette = CustomPalettes.DistinctTone(groups.Count);
             }
+
             plotModel.DefaultColors = [.. palette.Colors.Select(c => OxyColor.FromAColor(175, c))];
             foreach (var group in groups) {
                 var barSeries = new BarSeries {

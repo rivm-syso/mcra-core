@@ -43,7 +43,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             }
             {
                 if (Model.StratifiedBoxPlotRecords?.Count > 0) {
-                    var chartCreator = new InternalExposureBoxPlotChartCreator<S, T2>(
+                    var chartCreator = new InternalExposureStratifiedBoxPlotChartCreator<S, T2>(
                         Model.DescriptorName,
                         Model.StratifiedBoxPlotRecords,
                         Model.TargetUnit,
