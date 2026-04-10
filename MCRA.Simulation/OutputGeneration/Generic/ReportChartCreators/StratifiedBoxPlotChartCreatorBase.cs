@@ -95,9 +95,7 @@ namespace MCRA.Simulation.OutputGeneration {
             plotModel.Axes.Add(logarithmicAxis);
             var linearAxis = new LinearAxis() {
                 Position = AxisPosition.Right,
-                MajorStep = groups.Count,
-                MinorStep = 1,
-                MajorGridlineThickness = 5,
+                MajorStep = 1,
                 IsAxisVisible = false,
             };
 
@@ -105,7 +103,8 @@ namespace MCRA.Simulation.OutputGeneration {
             // to the number of groups to ensure that labels are rendered correctly
             var categoryAxis = new CategoryAxis() {
                 MinorStep = 1,
-                MajorStep = groups.Count,
+                MajorStep = 1,
+                //MajorStep = groups.Count,
                 Position = AxisPosition.Left,
                 IsTickCentered = false,
                 MajorGridlineStyle = LineStyle.Dot,
