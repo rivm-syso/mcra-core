@@ -1,7 +1,7 @@
 ﻿using OxyPlot.Series;
 
 namespace MCRA.Utils.Charting.OxyPlot {
-    public class MultipleWhiskerBoxPlotItem {
+    public class MultipleWhiskerBoxPlotItem : BarItemBase {
         private readonly BoxPlotItem _boxPlotItem;
 
         /// <summary>
@@ -17,6 +17,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
             MinWhisker = minWhisker;
             MaxWhisker = maxWhisker;
             LowerBound = lowerBound;
+            CategoryIndex = (int)boxPlotItem.X;
         }
         public double MinWhisker { get; set; }
         public double MaxWhisker { get; set; }

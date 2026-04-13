@@ -16,9 +16,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     Model.DescriptorName,
                     Model.BoxPlotRecords,
                     Model.TargetUnit,
-                    Model.ShowOutliers,
-                    false
-                );
+                    Model.ShowOutliers);
 
                 var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
                     name: $"BoxPlotBy{Model.DescriptorKey}Data",

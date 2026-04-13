@@ -46,7 +46,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 Fill = OxyColor.FromAColor(100, ModelledBoxColor),
                 StrokeThickness = 1,
                 Stroke = ModelledStrokeColor,
-                BoxWidth = .4,
+                BoxWidth = .6,
                 WhiskerWidth = 1.1,
                 Title = "Blue: monitoring"
             };
@@ -54,7 +54,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 Fill = OxyColor.FromAColor(100, MonitoringBoxColor),
                 StrokeThickness = 1,
                 Stroke = MonitoringStrokeColor,
-                BoxWidth = .4,
+                BoxWidth = .6,
                 WhiskerWidth = 1.1,
                 Title = "Green: modelled"
             };

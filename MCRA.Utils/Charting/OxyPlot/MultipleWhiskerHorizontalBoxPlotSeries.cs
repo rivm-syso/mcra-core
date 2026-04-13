@@ -6,7 +6,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
     /// <summary>
     /// Represents a series for box plots.
     /// </summary>
-    public class MultipleWhiskerHorizontalBoxPlotSeries : XYAxisSeries {
+    public class MultipleWhiskerHorizontalBoxPlotSeries : BarSeriesBase<MultipleWhiskerBoxPlotItem> {
         /// <summary>
         /// The default tracker format string
         /// </summary>
@@ -26,13 +26,11 @@ namespace MCRA.Utils.Charting.OxyPlot {
         /// Initializes a new instance of the <see cref="BoxPlotSeries" /> class.
         /// </summary>
         public MultipleWhiskerHorizontalBoxPlotSeries() {
-            Items = [];
             TrackerFormatString = DefaultTrackerFormatString;
             OutlierTrackerFormatString = "{0}\n{1}: {2}\nY: {3:0.00}";
             Title = null;
             Fill = OxyColors.Automatic;
             Stroke = OxyColors.Black;
-            BoxWidth = 0.3;
             StrokeThickness = 1;
             MedianThickness = 2;
             MeanThickness = 2;
@@ -51,19 +49,16 @@ namespace MCRA.Utils.Charting.OxyPlot {
         /// Gets or sets the width of the boxes (specified in x-axis units).
         /// </summary>
         /// <value>The width of the boxes.</value>
-        public double BoxWidth { get; set; }
+        public double BoxWidth {
+            get { return BarWidth; }
+            set { BarWidth = value; }
+        }
 
         /// <summary>
         /// Gets or sets the fill color. If <c>null</c>, this color will be automatically set.
         /// </summary>
         /// <value>The fill color.</value>
         public OxyColor Fill { get; set; }
-
-        /// <summary>
-        /// Gets or sets the box plot items.
-        /// </summary>
-        /// <value>The items.</value>
-        public List<MultipleWhiskerBoxPlotItem> Items { get; set; }
 
         /// <summary>
         /// Gets or sets the line style.
@@ -143,24 +138,13 @@ namespace MCRA.Utils.Charting.OxyPlot {
         public OxyColor Stroke { get; set; }
 
         /// <summary>
-        /// Gets or sets the stroke thickness.
-        /// </summary>
-        /// <value>The stroke thickness.</value>
-        public double StrokeThickness { get; set; }
-
-        /// <summary>
         /// Gets or sets the width of the whiskers (relative to the BoxWidth).
         /// </summary>
         /// <value>The width of the whiskers.</value>
         public double WhiskerWidth { get; set; }
 
-        /// <summary>
-        /// Gets the list of items that should be rendered.
-        /// </summary>
-        protected IList<MultipleWhiskerBoxPlotItem> ActualItems {
-            get {
-                return ItemsSource != null ? itemsSourceItems : Items;
-            }
+        protected override bool IsValid(MultipleWhiskerBoxPlotItem item) {
+            return XAxis.IsValidValue(item.X);
         }
 
         /// <summary>
@@ -176,160 +160,218 @@ namespace MCRA.Utils.Charting.OxyPlot {
                    && (xaxis != null && item.Values.All(xaxis.IsValidValue));
         }
 
-        /// <summary>
-        /// Renders the series on the specified render context.
-        /// </summary>
-        /// <param name="rc">The rendering context.</param>
         public override void Render(IRenderContext rc) {
-            if (ActualItems.Count == 0) {
+            var actualBarRectangles = new List<OxyRect>();
+
+            var items = ActualItems;
+            if (items.Count == 0) {
                 return;
             }
 
-            var clippingRect = GetClippingRect();
+            var actualBarWidth = GetActualBarWidth();
+            for (var i = 0; i < items.Count; i++) {
+                var item = items[i];
+                var categoryIndex = items[i].CategoryIndex;
 
-            var outlierScreenPoints = new List<ScreenPoint>();
-            var halfBoxWidth = BoxWidth * 0.5;
+                // Get base- and topValue
+                var baseValue = item.MinWhisker;
+                var topValue = item.MaxWhisker;
+
+                if (YAxis.IsLogarithmic() && !YAxis.IsValidValue(topValue)) {
+                    continue;
+                }
+
+                // Calculate offset
+                var categoryValue = categoryIndex - 0.5 + Manager.GetCurrentBarOffset(categoryIndex) + .5 * actualBarWidth;
+
+                var clampBase = XAxis.IsLogarithmic() && !XAxis.IsValidValue(baseValue);
+                var p1 = this.Transform(clampBase ? XAxis.ClipMinimum : baseValue, categoryValue - .5 * actualBarWidth);
+                var p2 = this.Transform(topValue, categoryValue + .5 * actualBarWidth);
+
+                var rectangle = new OxyRect(p1, p2);
+
+                actualBarRectangles.Add(rectangle);
+
+                RenderItem(rc, topValue, categoryValue, actualBarWidth, item, rectangle);
+
+                Manager.IncreaseCurrentBarOffset(categoryIndex, actualBarWidth);
+            }
+        }
+
+        public override void RenderLegend(IRenderContext rc, OxyRect legendBox) {
+            var xmid = (legendBox.Left + legendBox.Right) / 2;
+            var ymid = (legendBox.Top + legendBox.Bottom) / 2;
+            var height = (legendBox.Bottom - legendBox.Top) * 0.8;
+            var width = height;
+            rc.DrawRectangle(
+                new OxyRect(xmid - (0.5 * width), ymid - (0.5 * height), width, height),
+                GetSelectableColor(Fill),
+                StrokeColor,
+                StrokeThickness,
+                EdgeRenderingMode);
+        }
+
+        /// <summary>
+        /// Renders the bar/column item.
+        /// </summary>
+        /// <param name="rc">The render context.</param>
+        /// <param name="barValue">The end value of the bar.</param>
+        /// <param name="categoryValue">The category value.</param>
+        /// <param name="actualBarWidth">The actual width of the bar.</param>
+        /// <param name="item">The item.</param>
+        /// <param name="rect">The rectangle of the bar.</param>
+        protected virtual void RenderItem(
+            IRenderContext rc,
+            double barValue,
+            double categoryValue,
+            double actualBarWidth,
+            MultipleWhiskerBoxPlotItem item,
+            OxyRect rect
+        ) {
+            var halfBoxWidth = actualBarWidth * .5 * BoxWidth;
             var halfWhiskerWidth = halfBoxWidth * WhiskerWidth;
             var strokeColor = GetSelectableColor(Stroke);
             var fillColor = GetSelectableFillColor(Fill);
-
             var dashArray = LineStyle.GetDashArray();
 
-            foreach (var item in ActualItems) {
-                // Add the outlier points
-                outlierScreenPoints.AddRange(item.Outliers.Select(outlier => Transform(new DataPoint(outlier, item.X))));
-                var upperWhisker = item.UpperWhisker > item.MaxWhisker ? item.UpperWhisker : item.MaxWhisker;
-                var lowerWhisker = item.LowerWhisker < item.MinWhisker ? item.LowerWhisker : item.MinWhisker;
-                var topWhiskerTop = Transform(new DataPoint(upperWhisker, item.X));
-                var topWhiskerBottom = Transform(new DataPoint(item.BoxTop, item.X));
-                var bottomWhiskerTop = Transform(new DataPoint(item.BoxBottom, item.X));
-                var bottomWhiskerBottom = Transform(new DataPoint(lowerWhisker, item.X));
+            if (ShowBox) {
+                var boxTop = Transform(new DataPoint(item.BoxTop, categoryValue - halfBoxWidth));
+                var boxBottom = Transform(new DataPoint(item.BoxBottom, categoryValue + halfBoxWidth));
+                var boxRect = new OxyRect(boxBottom.X, boxBottom.Y, boxTop.X - boxBottom.X, boxTop.Y - boxBottom.Y);
+                rc.DrawRectangle(boxRect, fillColor, strokeColor, StrokeThickness, EdgeRenderingMode.Automatic);
+            }
+
+            // Add the outlier points
+            var upperWhisker = item.UpperWhisker > item.MaxWhisker ? item.UpperWhisker : item.MaxWhisker;
+            var lowerWhisker = item.LowerWhisker < item.MinWhisker ? item.LowerWhisker : item.MinWhisker;
+            var topWhiskerTop = Transform(new DataPoint(upperWhisker, categoryValue));
+            var topWhiskerBottom = Transform(new DataPoint(item.BoxTop, categoryValue));
+            var bottomWhiskerTop = Transform(new DataPoint(item.BoxBottom, categoryValue));
+            var bottomWhiskerBottom = Transform(new DataPoint(lowerWhisker, categoryValue));
+            rc.DrawLine(
+                [topWhiskerTop, topWhiskerBottom],
+                strokeColor,
+                StrokeThickness,
+                EdgeRenderingMode.Automatic,
+                dashArray,
+                LineJoin.Miter);
+            rc.DrawLine(
+                [bottomWhiskerTop, bottomWhiskerBottom],
+                strokeColor,
+                StrokeThickness,
+                EdgeRenderingMode.Automatic,
+                dashArray,
+                LineJoin.Miter);
+
+            // Draw the whiskers
+            if (WhiskerWidth > 0) {
+                var topWhiskerLine1 = Transform(new DataPoint(item.UpperWhisker, categoryValue - halfWhiskerWidth));
+                var topWhiskerLine2 = Transform(new DataPoint(item.UpperWhisker, categoryValue + halfWhiskerWidth));
+                var bottomWhiskerLine1 = Transform(new DataPoint(item.LowerWhisker, categoryValue - halfWhiskerWidth));
+                var bottomWhiskerLine2 = Transform(new DataPoint(item.LowerWhisker, categoryValue + halfWhiskerWidth));
+                var top2WhiskerLine1 = Transform(new DataPoint(item.MaxWhisker, categoryValue - halfWhiskerWidth));
+                var top2WhiskerLine2 = Transform(new DataPoint(item.MaxWhisker, categoryValue + halfWhiskerWidth));
+                var bottom2WhiskerLine1 = Transform(new DataPoint(item.MinWhisker, categoryValue - halfWhiskerWidth));
+                var bottom2WhiskerLine2 = Transform(new DataPoint(item.MinWhisker, categoryValue + halfWhiskerWidth));
                 rc.DrawLine(
-                    [topWhiskerTop, topWhiskerBottom],
+                    [topWhiskerLine1, topWhiskerLine2],
                     strokeColor,
                     StrokeThickness,
                     EdgeRenderingMode.Automatic,
-                    dashArray,
+                    null,
                     LineJoin.Miter);
                 rc.DrawLine(
-                    [bottomWhiskerTop, bottomWhiskerBottom],
+                    [bottomWhiskerLine1, bottomWhiskerLine2],
                     strokeColor,
                     StrokeThickness,
                     EdgeRenderingMode.Automatic,
-                    dashArray,
+                    null,
                     LineJoin.Miter);
+                rc.DrawLine(
+                   [top2WhiskerLine1, top2WhiskerLine2],
+                   strokeColor,
+                   StrokeThickness,
+                   EdgeRenderingMode.Automatic,
+                   null,
+                   LineJoin.Miter);
+                rc.DrawLine(
+                    [bottom2WhiskerLine1, bottom2WhiskerLine2],
+                    strokeColor,
+                    StrokeThickness,
+                    EdgeRenderingMode.Automatic,
+                    null,
+                    LineJoin.Miter);
+            }
 
-                // Draw the whiskers
-                if (WhiskerWidth > 0) {
-                    var topWhiskerLine1 = Transform(new DataPoint(item.UpperWhisker, item.X - halfWhiskerWidth));
-                    var topWhiskerLine2 = Transform(new DataPoint(item.UpperWhisker, item.X + halfWhiskerWidth));
-                    var bottomWhiskerLine1 = Transform(new DataPoint(item.LowerWhisker, item.X - halfWhiskerWidth));
-                    var bottomWhiskerLine2 = Transform(new DataPoint(item.LowerWhisker, item.X + halfWhiskerWidth));
-                    var top2WhiskerLine1 = Transform(new DataPoint(item.MaxWhisker, item.X - halfWhiskerWidth));
-                    var top2WhiskerLine2 = Transform(new DataPoint(item.MaxWhisker, item.X + halfWhiskerWidth));
-                    var bottom2WhiskerLine1 = Transform(new DataPoint(item.MinWhisker, item.X - halfWhiskerWidth));
-                    var bottom2WhiskerLine2 = Transform(new DataPoint(item.MinWhisker, item.X + halfWhiskerWidth));
-                    rc.DrawLine(
-                        [topWhiskerLine1, topWhiskerLine2],
-                        strokeColor,
-                        StrokeThickness,
-                        EdgeRenderingMode.Automatic,
-                        null,
-                        LineJoin.Miter);
-                    rc.DrawLine(
-                        [bottomWhiskerLine1, bottomWhiskerLine2],
-                        strokeColor,
-                        StrokeThickness,
-                        EdgeRenderingMode.Automatic,
-                        null,
-                        LineJoin.Miter);
-                    rc.DrawLine(
-                       [top2WhiskerLine1, top2WhiskerLine2],
-                       strokeColor,
-                       StrokeThickness,
-                       EdgeRenderingMode.Automatic,
-                       null,
-                       LineJoin.Miter);
-                    rc.DrawLine(
-                        [bottom2WhiskerLine1, bottom2WhiskerLine2],
-                        strokeColor,
-                        StrokeThickness,
-                        EdgeRenderingMode.Automatic,
-                        null,
-                        LineJoin.Miter);
+            if (!ShowMedianAsDot) {
+                // Draw the median line
+                var medianLeft = Transform(new DataPoint(item.Median, categoryValue - halfBoxWidth));
+                var medianRight = Transform(new DataPoint(item.Median, categoryValue + halfBoxWidth));
+                rc.DrawLine(
+                    [medianLeft, medianRight],
+                    strokeColor,
+                    StrokeThickness * MedianThickness,
+                    EdgeRenderingMode.Automatic,
+                    null,
+                    LineJoin.Miter);
+            } else {
+                var mc = Transform(new DataPoint(item.Median, categoryValue));
+                var clippingRect = GetClippingRect();
+                if (clippingRect.Contains(mc)) {
+                    var ellipseRect = new OxyRect(
+                        mc.X - MedianPointSize,
+                        mc.Y - MedianPointSize,
+                        MedianPointSize * 2,
+                        MedianPointSize * 2);
+                    rc.DrawEllipse(ellipseRect, fillColor, OxyColors.Undefined, 0, EdgeRenderingMode.Automatic);
                 }
+            }
 
-                if (ShowBox) {
-                    // Draw the box
-                    var rect = GetBoxRect(item);
-                    rc.DrawRectangle(rect, fillColor, strokeColor, StrokeThickness, EdgeRenderingMode.Automatic);
+            if (!ShowMeanAsDot && !double.IsNaN(item.Median)) {
+                // Draw the median line
+                var meanLeft = Transform(new DataPoint(item.Median, categoryValue - halfBoxWidth));
+                var meanRight = Transform(new DataPoint(item.Median, categoryValue + halfBoxWidth));
+                rc.DrawLine(
+                    [meanLeft, meanRight],
+                    strokeColor,
+                    StrokeThickness * MeanThickness,
+                    EdgeRenderingMode.Automatic,
+                    LineStyle.Dash.GetDashArray(),
+                    LineJoin.Miter);
+            } else if (!double.IsNaN(item.Median)) {
+                var mc = Transform(new DataPoint(item.Median, categoryValue));
+                var clippingRect = GetClippingRect();
+                if (clippingRect.Contains(mc)) {
+                    var ellipseRect = new OxyRect(
+                        mc.X - MeanPointSize,
+                        mc.Y - MeanPointSize,
+                        MeanPointSize * 2,
+                        MeanPointSize * 2);
+                    rc.DrawEllipse(ellipseRect, fillColor, OxyColors.Undefined, 0, EdgeRenderingMode.Automatic);
                 }
+            }
 
-                if (!ShowMedianAsDot) {
-                    // Draw the median line
-                    var medianLeft = Transform(new DataPoint(item.Median, item.X - halfBoxWidth));
-                    var medianRight = Transform(new DataPoint(item.Median, item.X + halfBoxWidth));
-                    rc.DrawLine(
-                        [medianLeft, medianRight],
-                        strokeColor,
-                        StrokeThickness * MedianThickness,
-                        EdgeRenderingMode.Automatic,
-                        null,
-                        LineJoin.Miter);
-                } else {
-                    var mc = Transform(new DataPoint(item.Median, item.X));
-                    if (clippingRect.Contains(mc)) {
-                        var ellipseRect = new OxyRect(
-                            mc.X - MedianPointSize,
-                            mc.Y - MedianPointSize,
-                            MedianPointSize * 2,
-                            MedianPointSize * 2);
-                        rc.DrawEllipse(ellipseRect, fillColor, OxyColors.Undefined, 0, EdgeRenderingMode.Automatic);
-                    }
-                }
-
-                if (!ShowMeanAsDot && !double.IsNaN(item.Median)) {
-                    // Draw the median line
-                    var meanLeft = Transform(new DataPoint(item.Median, item.X - halfBoxWidth));
-                    var meanRight = Transform(new DataPoint(item.Median, item.X + halfBoxWidth));
-                    rc.DrawLine(
-                        [meanLeft, meanRight],
-                        strokeColor,
-                        StrokeThickness * MeanThickness,
-                        EdgeRenderingMode.Automatic,
-                        LineStyle.Dash.GetDashArray(),
-                        LineJoin.Miter);
-                } else if (!double.IsNaN(item.Median)) {
-                    var mc = Transform(new DataPoint(item.Median, item.X));
-                    if (clippingRect.Contains(mc)) {
-                        var ellipseRect = new OxyRect(
-                            mc.X - MeanPointSize,
-                            mc.Y - MeanPointSize,
-                            MeanPointSize * 2,
-                            MeanPointSize * 2);
-                        rc.DrawEllipse(ellipseRect, fillColor, OxyColors.Undefined, 0, EdgeRenderingMode.Automatic);
-                    }
-                }
-
-                // Draw the LOR whiskers
-                if (item.LowerBound > 0) {
-                    var lorLine1 = Transform(new DataPoint(item.LowerBound, item.X - halfWhiskerWidth));
-                    var lorLine2 = Transform(new DataPoint(item.LowerBound, item.X + halfWhiskerWidth));
-                    rc.DrawLine(
-                        [lorLine1, lorLine2],
-                        OxyColors.Red,
-                        StrokeThickness,
-                        EdgeRenderingMode.Automatic,
-                        null,
-                        LineJoin.Miter);
-                }
+            // Draw the LowerBound whiskers
+            if (item.LowerBound > 0) {
+                var lorLine1 = Transform(new DataPoint(item.LowerBound, categoryValue - halfWhiskerWidth));
+                var lorLine2 = Transform(new DataPoint(item.LowerBound, categoryValue + halfWhiskerWidth));
+                rc.DrawLine(
+                    [lorLine1, lorLine2],
+                    OxyColors.Red,
+                    StrokeThickness,
+                    EdgeRenderingMode.Automatic,
+                    null,
+                    LineJoin.Miter);
             }
 
             if (OutlierType != MarkerType.None) {
                 // Draw the outlier(s)
-                var markerSizes = outlierScreenPoints.Select(o => OutlierSize).ToList();
+                var outliers = item.Outliers
+                    .Select(outlier => Transform(new DataPoint(outlier, categoryValue)))
+                    .ToList();
+                var markerSizes = outliers.Select(o => OutlierSize).ToList();
                 rc.DrawMarkers(
-                    outlierScreenPoints,
+                    outliers,
                     OutlierType,
                     OutlierOutline,
                     markerSizes,
@@ -427,19 +469,6 @@ namespace MCRA.Utils.Charting.OxyPlot {
         }
 
         /// <summary>
-        /// Gets the screen rectangle for the box.
-        /// </summary>
-        /// <param name="item">The box item.</param>
-        /// <returns>A rectangle.</returns>
-        private OxyRect GetBoxRect(MultipleWhiskerBoxPlotItem item) {
-            var halfBoxWidth = BoxWidth * 0.5;
-            var boxTop = Transform(new DataPoint(item.BoxTop, item.X - halfBoxWidth));
-            var boxBottom = Transform(new DataPoint(item.BoxBottom, item.X + halfBoxWidth));
-            var rect = new OxyRect(boxBottom.X, boxBottom.Y, boxTop.X - boxBottom.X, boxTop.Y - boxBottom.Y);
-            return rect;
-        }
-
-        /// <summary>
         /// Clears or creates the <see cref="itemsSourceItems"/> list.
         /// </summary>
         private void ClearItemsSourceItems() {
@@ -449,6 +478,10 @@ namespace MCRA.Utils.Charting.OxyPlot {
                 itemsSourceItems.Clear();
             }
             ownsItemsSourceItems = true;
+        }
+
+        protected override bool UpdateFromDataFields() {
+            return true;
         }
     }
 }

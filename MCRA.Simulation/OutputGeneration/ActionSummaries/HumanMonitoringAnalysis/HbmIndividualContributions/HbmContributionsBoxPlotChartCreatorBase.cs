@@ -27,7 +27,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 Fill = OxyColor.FromAColor(100, BoxColor),
                 StrokeThickness = 1,
                 Stroke = StrokeColor,
-                BoxWidth = .4,
+                BoxWidth = .8,
                 WhiskerWidth = 1.1,
             };
             var isMultipleMatrices = records.Select(r => r.BiologicalMatrix).Distinct().Count() > 1;

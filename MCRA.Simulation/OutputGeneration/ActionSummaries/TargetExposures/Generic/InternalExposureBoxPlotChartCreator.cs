@@ -12,20 +12,17 @@ namespace MCRA.Simulation.OutputGeneration {
         private readonly string _unit;
         private readonly string _descriptorName;
         private readonly bool _showOutliers;
-        private readonly bool _stratified;
 
         public InternalExposureBoxPlotChartCreator(
-            string sectionName,
+            string descriptorName,
             List<T> records,
             TargetUnit unit,
-            bool showOutliers,
-            bool stratified
+            bool showOutliers
         ) {
             _records = records;
             _unit = unit.GetShortDisplayName();
-            _stratified = stratified;
             _showOutliers = showOutliers;
-            _descriptorName = sectionName; 
+            _descriptorName = descriptorName; 
             Width = 500;
             Height = 80 + Math.Max(_records.Count * _cellSize, 80);
         }
@@ -35,9 +32,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public override string ChartId {
             get {
                 var pictureId = "1c7a3cb3-c55b-41f9-9ba9-151571d3ab84";
-                return StringExtensions.CreateFingerprint(
-                    _descriptorName + pictureId + _stratified.ToString()
-                );
+                return StringExtensions.CreateFingerprint(_descriptorName + pictureId);
             }
         }
 

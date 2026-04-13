@@ -66,7 +66,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     Fill = OxyColor.FromAColor(100, palette.Colors[i]),
                     StrokeThickness = 1,
                     Stroke = palette.Colors[i],
-                    BoxWidth = .4,
+                    BoxWidth = .6,
                     WhiskerWidth = 1.1,
                     Title = $"Subgroup {i + 1}",
                 };

@@ -4,7 +4,7 @@ using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class InternalExposureStratifiedBoxPlotChartCreator<S, T> : StratifiedBoxPlotChartCreatorBase
+    public sealed class InternalExposureStratifiedBoxPlotChartCreator<S, T> : CategorizedBoxPlotChartCreatorBase
         where S : IExposureContributorKey, new()
         where T : InternalExposureBoxPlotRecordBase<S>, new() {
 
@@ -46,6 +46,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .OrderBy(c => c.GetLabel())
                 .Select(c =>  (
                     stratifier: c.Stratification,
+                    descriptor: getLabel(c.GetLabel(), c.Stratification),
                     record: c as BoxPlotChartRecord
                 ))
                 .ToList();
