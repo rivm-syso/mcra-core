@@ -1,5 +1,20 @@
 # Change Log
 
+## Version 10.2.18 (2026-04-14)
+
+### Added
+
+- Implement setting calculate co-exposure in dietary exposure assessment (#2439)
+
+### Changed
+
+- Replace concentrationModel SummaryStatistics by CMLogNormal (#2416)
+
+### Fixed
+
+- Internal exposures action wizard option Target level not working (#2430)
+- Exposure routes cannot be specified for a Risks action when set to external target and human biomonitoring concentrations (#2431)
+
 ## Version 10.2.17 (2026-03-23)
 
 ### Added
