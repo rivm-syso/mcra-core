@@ -10,6 +10,7 @@
         public string TimeOfSampling { get; set; }
         public double? SpecificGravity { get; set; }
         public double? SpecificGravityCorrectionFactor { get; set; }
+        public HumanMonitoringTimepoint TimePoint { get; set; }
         /// <summary>
         /// Lipids concentration in sample measured by gravimetric analysis, unit see HumanMonitoringSurvey.LipidConcentrationUnitString, default in mg/dL
         /// </summary>

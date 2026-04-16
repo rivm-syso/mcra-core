@@ -57,6 +57,7 @@
         <TableId>HumanMonitoringSamples</TableId>
         <TableId>HumanMonitoringSampleAnalyses</TableId>
         <TableId>HumanMonitoringSampleConcentrations</TableId>
+        <TabelId>HumanMonitoringTimepoints</TabelId>
       </TableIds>
     </DataFormat>
     <DataFormat>

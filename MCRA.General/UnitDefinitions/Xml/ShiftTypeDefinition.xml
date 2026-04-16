@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>ShiftType</Id>
+  <Name>Shift types.</Name>
+  <UndefinedValue Id="Undefined" Name="Undefined">0</UndefinedValue>
+  <UndefinedAliases>
+    <Alias>Undefined</Alias>
+  </UndefinedAliases>
+  <Description>
+    Shift types.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>PreShift</Id>
+      <Name>Pre-shift</Name>
+      <ShortName>Pre-shift</ShortName>
+      <Description>
+        Pre-shift.
+      </Description>
+      <Aliases>
+        <Alias>PreShift</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>PostShift</Id>
+      <Name>Post-shift</Name>
+      <ShortName>Post-shift</ShortName>
+      <Description>
+        Post-shift.
+      </Description>
+      <Aliases>
+        <Alias>PostShift</Alias>
+      </Aliases>
+    </Unit>
+  </Units>
+</UnitDefinition>

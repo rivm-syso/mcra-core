@@ -53,5 +53,15 @@
         <string>Description</string>
       </Aliases>
     </ColumnDefinition>
+    <ColumnDefinition FieldType="ShiftType">
+      <Id>ShiftType</Id>
+      <Description>
+        Pre- or post-shift.
+      </Description>
+      <Aliases>
+        <string>ShiftType</string>
+        <string>Shift</string>
+      </Aliases>
+    </ColumnDefinition>
   </ColumnDefinitions>
 </TableDefinition>

@@ -55,6 +55,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             Code = r.GetString(RawHumanMonitoringTimepoints.IdTimepoint, fieldMap),
                                             Name = r.GetStringOrNull(RawHumanMonitoringTimepoints.Name, fieldMap),
                                             Description = r.GetStringOrNull(RawHumanMonitoringTimepoints.Description, fieldMap),
+                                            ShiftType = r.GetEnum<ShiftType>(RawHumanMonitoringTimepoints.ShiftType, fieldMap)
                                         };
                                         allHumanMonitoringSurveys[surveyId].Timepoints.Add(timepoint);
                                     }
@@ -134,6 +135,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 if (rawDataSourceIds?.Count > 0) {
                     GetAllCompounds();
                     var allIndividuals = GetAllHumanMonitoringIndividuals();
+                    var allSurveys = GetAllHumanMonitoringSurveys();
                     using (var rdm = _rawDataProvider.CreateRawDataManager()) {
                         fillAnalyticalMethods(rdm, allAnalyticalMethods, SourceTableGroup.HumanMonitoringData, ScopingType.HumanMonitoringAnalyticalMethods);
 
@@ -145,6 +147,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                     var valid = CheckLinkSelected(ScopingType.HumanMonitoringIndividuals, idIndividual);
                                     if (valid) {
                                         var individual = allIndividuals[idIndividual];
+                                        var survey = allSurveys[individual.CodeFoodSurvey];
                                         var compartment = r.GetStringOrNull(RawHumanMonitoringSamples.Compartment, fieldMap);
                                         var exposureRoute = r.GetStringOrNull(RawHumanMonitoringSamples.ExposureRoute, fieldMap);
                                         var sampleType = r.GetStringOrNull(RawHumanMonitoringSamples.SampleType, fieldMap);
@@ -156,11 +159,14 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             };
                                             exposureEndpoints.Add((exposureRoute, compartment, sampleType), exposureEndpoint);
                                         }
+                                        var idTimePoint = r.GetStringOrNull(RawHumanMonitoringSamples.DayOfSurvey, fieldMap);
+                                        var timePoint = survey.Timepoints.FirstOrDefault(r => string.Equals(r.Code, idTimePoint, StringComparison.OrdinalIgnoreCase));
                                         var sample = new HumanMonitoringSample() {
                                             Code = r.GetString(RawHumanMonitoringSamples.IdSample, fieldMap),
                                             Individual = individual,
                                             DateSampling = r.GetDateTimeOrNull(RawHumanMonitoringSamples.DateSampling, fieldMap),
-                                            DayOfSurvey = r.GetStringOrNull(RawHumanMonitoringSamples.DayOfSurvey, fieldMap),
+                                            DayOfSurvey = idTimePoint,
+                                            TimePoint = timePoint,
                                             TimeOfSampling = r.GetStringOrNull(RawHumanMonitoringSamples.TimeOfSampling, fieldMap),
                                             SamplingMethod = exposureEndpoint,
                                             SpecificGravity = r.GetDoubleOrNull(RawHumanMonitoringSamples.SpecificGravity, fieldMap),

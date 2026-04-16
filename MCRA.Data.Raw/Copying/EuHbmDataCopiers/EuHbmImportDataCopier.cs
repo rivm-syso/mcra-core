@@ -4,6 +4,7 @@ using MCRA.Utils.DataFileReading;
 using MCRA.Utils.DataSourceReading.Attributes;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.ProgressReporting;
+using System;
 
 namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
 
@@ -206,6 +207,8 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
             public string IdTimepoint { get; set; }
             [AcceptedName("timepoint_description")]
             public string Description { get; set; }
+            [AcceptedName("shift_type")]
+            public ShiftType ShiftType { get; set; }
         }
 
         [AcceptedName("SUBJECTUNIQUE")]
@@ -228,6 +231,8 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
             public string ControlType { get; set; }
             [AcceptedName("job_task")]
             public int? JobTask { get; set; }
+            [AcceptedName("id_scenario")]
+            public string IdScenario { get; set; }
         }
 
         [AcceptedName("SUBJECTREPEATED")]
@@ -389,7 +394,8 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                     idSurvey = surveyCode,
                     idTimepoint = c.IdTimepoint,
                     Name = c.Description?[..Math.Min(c.Description.Length, 100)],
-                    Description = c.Description?[..Math.Min(c.Description.Length, 200)]
+                    Description = c.Description?[..Math.Min(c.Description.Length, 200)],
+                    ShiftType = c.ShiftType.ToString()
                 });
 
                 // Create the survey
@@ -419,6 +425,8 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                 var iscedFatherProperty = !subjectRepeatedRecords.SelectMany(c => c).All(c => c.IscedFather == null);
                 var iscedHouseholdProperty = !subjectRepeatedRecords.SelectMany(c => c).All(c => c.IscedHousehold == null);
                 var smokingProperty = !subjectRepeatedRecords.SelectMany(c => c).All(c => string.IsNullOrEmpty(c.SmokingStatus));
+                var scenarioProperty = !subjectUniqueRecords.All(c => c.IdScenario == null);
+
                 // Add individual properties
                 var individualProperties = new List<RawIndividualProperty>();
                 if (genderProperty) {
@@ -525,6 +533,15 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                         idIndividualProperty = "SmokingStatus",
                         Name = "Smoking status",
                         Description = "Smoking status of subject at sampling",
+                        PropertyLevel = PropertyLevelType.Individual.ToString(),
+                        Type = IndividualPropertyType.Boolean.ToString()
+                    });
+                }
+                if (scenarioProperty) {
+                    individualProperties.Add(new RawIndividualProperty() {
+                        idIndividualProperty = "IdScenario",
+                        Name = "Scenario",
+                        Description = "Scenario associated with subject",
                         PropertyLevel = PropertyLevelType.Individual.ToString(),
                         Type = IndividualPropertyType.Boolean.ToString()
                     });
@@ -639,6 +656,13 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                             TextValue = subjectSmokingStatus,
                         });
                     }
+                    if (!string.IsNullOrEmpty(subject.IdScenario)) {
+                        individualPropertyValues.Add(new RawIndividualPropertyValue() {
+                            idIndividual = subject.IdSubject,
+                            PropertyName = "IdScenario",
+                            TextValue = subject.IdScenario,
+                        });
+                    }
                     // NOTE: here you can add other individual properties (mapped from codebook)
                 }
 
@@ -660,7 +684,10 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                     if (!_matrixMappings.TryGetValue(sampleRecord.Matrix, out var matrix)) {
                         throw new Exception($"Unknown matrix code {sampleRecord.Matrix}.");
                     }
+
                     // Note: from version[2,2], values for lipids/cholesterol/creatinine/etc. were moved to another sheet
+                    var validDate = createSamplingDate(sampleRecord);
+
                     var record = new RawHumanMonitoringSample() {
                         idSample = sampleRecord.IdSample,
                         idIndividual = sampleRecord.IdSubject,
@@ -668,7 +695,7 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                         SampleType = matrix.samplingType,
                         SpecificGravity = sampleRecord.SpecificGravity,
                         DateSampling = sampleRecord.SamplingYear.HasValue
-                            ? new DateTime(sampleRecord.SamplingYear.Value, sampleRecord.SamplingMonth ?? 1, sampleRecord.SamplingDay ?? 1)
+                            ? validDate
                             : null,
                         DayOfSurvey = sampleRecord.IdTimepoint,
                         LipidGrav = sampleRecord.Lipids,
@@ -693,7 +720,7 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                     .ToDictionary(
                         r => r.IdSample,
                         r => r.AnalysisYear.HasValue
-                            ? new DateTime(r.AnalysisYear.Value, r.AnalysisMonth ?? 1, r.AnalysisDay ?? 1) as DateTime?
+                            ? createAnalysisDate(r) as DateTime?
                             : null
                     );
 
@@ -932,6 +959,25 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                 registerTableGroup(SourceTableGroup.Compounds);
                 registerTableGroup(SourceTableGroup.HumanMonitoringData);
             }
+        }
+
+        private static DateTime createSamplingDate(EuHbmImportSampleRecord sampleRecord) {
+            if (!DateTime.TryParse($"{sampleRecord.SamplingYear.Value}-{sampleRecord.SamplingMonth ?? 1}-{sampleRecord.SamplingDay ?? 1}", out DateTime validDate)) {
+                throw new Exception($"Invalid date for sample '{sampleRecord.IdSample}' with sampling year " +
+                    $"'{sampleRecord.SamplingYear}', sampling month '{sampleRecord.SamplingMonth}' and " +
+                    $"sampling day '{sampleRecord.SamplingDay}'.");
+            }
+
+            return validDate;
+        }
+
+        private static DateTime createAnalysisDate(EuHbmImportSampleRecord sampleRecord) {
+            if (!DateTime.TryParse($"{sampleRecord.AnalysisYear.Value}-{sampleRecord.AnalysisMonth ?? 1}-{sampleRecord.AnalysisDay ?? 1}", out DateTime validDate)) {
+                throw new Exception($"Invalid date for sample '{sampleRecord.IdSample}' with analysis year " +
+                    $"'{sampleRecord.AnalysisYear}', analysis month '{sampleRecord.AnalysisMonth}' and " +
+                    $"analysis day '{sampleRecord.AnalysisDay}'.");
+            }
+            return validDate;
         }
 
         private static CodebookInfo getCodebookInfo(Dictionary<string, string> studyInfo) {

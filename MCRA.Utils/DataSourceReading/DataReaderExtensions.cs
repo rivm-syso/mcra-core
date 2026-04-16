@@ -102,6 +102,9 @@ namespace MCRA.Utils.DataFileReading {
 
             if (conversionType.BaseType == typeof(Enum)) {
                 // Target type is an Enum. Parse the enum value.
+                if (value == null || value == DBNull.Value) {
+                    return null;
+                }
                 return Enum.Parse(conversionType, value.ToString(), true);
             }
 
