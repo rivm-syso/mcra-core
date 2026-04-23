@@ -77,20 +77,23 @@
         /// </summary>
         [TestMethod]
         public void CsvWriter_WriteToCsvFileWithDatesTest() {
-            //create list of data
+            //create list of data, use whitespace around and within string values
+            //whitespace around should be trimmed and between words should converge to a single space
             var records = new[] {
                 new Tuple<string, DateTime, DateTime?>("A", new(2026, 01, 31), DateTime.MinValue),
-                new Tuple<string, DateTime, DateTime?>("No", new (1975, 12, 14, 23, 52, 11), DateTime.MaxValue),
-                new Tuple<string, DateTime, DateTime?>("Nul", new (1905390393023943L), null)
+                new Tuple<string, DateTime, DateTime?>("\t  No   \t\t", new (1975, 12, 14, 23, 52, 11), DateTime.MaxValue),
+                new Tuple<string, DateTime, DateTime?>("\r\n\n\tNul   \r\n", new (1905390393023943L), null),
+                new Tuple<string, DateTime, DateTime?>("\r\n\n\tTwo\r\n\r\n\n\t\t\tLines    \t\t\twith  space   \r\n", new (1905390393023943L), null)
             };
             var csvWriter = new CsvWriter();
             csvWriter.WriteToCsvFile(records, _tempCsvName);
             var data = File.ReadAllLines(_tempCsvName);
-            Assert.HasCount(4, data);
+            Assert.HasCount(5, data);
             Assert.AreEqual("\"Item1\",\"Item2\",\"Item3\"", data[0]);
             Assert.AreEqual("\"A\",2026-01-31,0001-01-01", data[1]);
             Assert.AreEqual("\"No\",1975-12-14 23:52:11,9999-12-31 23:59:59", data[2]);
             Assert.AreEqual("\"Nul\",0007-01-15 07:30:39,", data[3]);
+            Assert.AreEqual("\"Two Lines with space\",0007-01-15 07:30:39,", data[4]);
         }
 
         /// <summary>

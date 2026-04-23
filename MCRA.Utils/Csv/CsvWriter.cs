@@ -206,10 +206,10 @@ namespace MCRA.Utils.Csv {
                             //don't write time of day when it is zero
                             cellValue = dt.TimeOfDay == TimeSpan.Zero ? dt.ToString("yyyy-MM-dd") : dt.ToString("yyyy-MM-dd HH:mm:ss");
                         } else {
-                            cellValue = stringToCSVCell(string.Format(CultureInfo.InvariantCulture, "{0}", propertyValue), true);
+                            cellValue = stringToCSVCell(string.Format(CultureInfo.InvariantCulture, "{0}", propertyValue).Trim(), true);
                         }
-                        // Remove any line endings, replace with a space
-                        cellValue = Regex.Replace(cellValue, @"\r\n?|\n", " ");
+                        // Replace all whitespace (spaces/tabs/line ends) with a single space in the resulting cell value
+                        cellValue = Regex.Replace(cellValue, @"\s+", " ");
                         valueStrings.Add(cellValue);
                     }
                 }
