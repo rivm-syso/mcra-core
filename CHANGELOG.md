@@ -1,5 +1,16 @@
 # Change Log
 
+## Version 10.2.19 (2026-04-24)
+
+### Changed
+
+- Refactor multiple whisker horizontal boxplot series to allow for multiple category series and use for stratified boxplots (#2442)
+
+### Fixed
+
+- Updated 3rd party NuGet package(s) containing a (low level) security warning
+- fix: CSV writer should trim written values and replace any whitespace within values with a single space
+
 ## Version 10.2.18 (2026-04-14)
 
 ### Added
