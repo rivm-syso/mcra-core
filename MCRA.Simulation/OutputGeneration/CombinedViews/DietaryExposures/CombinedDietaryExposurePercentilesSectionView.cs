@@ -48,7 +48,17 @@ namespace MCRA.Simulation.OutputGeneration.CombinedViews {
                 }
                 panelBuilder.RenderPanel(sb);
 
-                sb.Append($"<table class=\"sortable\">");
+                var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
+                    name: $"CombinedDietaryExposurePercentilesData",
+                    section: Model,
+                    items: Model.CombinedPercentileRecords,
+                    viewBag: ViewBag
+               );
+
+                sb.Append($"<table ");
+                sb.Append($" class=\"sortable\"");
+                sb.Append($" csv-download-id=\"{percentileDataSection.SectionGuid:N}\"");
+                sb.Append($" csv-download-name=\"{percentileDataSection.TableName}\">");
                 sb.Append($"<caption>Dietary exposures ({Model.ExposureUnit.GetShortDisplayName()}) at different percentiles of " +
                     $"the exposure distribution.</caption>");
                 sb.Append($"<thead><tr>");

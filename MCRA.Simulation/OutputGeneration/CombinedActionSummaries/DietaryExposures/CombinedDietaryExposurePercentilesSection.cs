@@ -30,16 +30,16 @@ namespace MCRA.Simulation.OutputGeneration {
             foreach (var model in exposureModels) {
                 CombinedPercentileRecords.AddRange(
                     model.DietaryExposurePercentiles
-                        .Select(r => new CombinedPercentileRecord(
-                            IdModel: model.Code,
-                            Name: model.Name,
-                            Percentage: r.Key,
-                            Value: r.Value.Exposure,
-                            UncertaintyMedian: r.Value.ExposureUncertainties?.Median(),
-                            UncertaintyLowerBound: r.Value.ExposureUncertainties?.Percentile(UncertaintyLowerLimit),
-                            UncertaintyUpperBound: r.Value.ExposureUncertainties?.Percentile(UncertaintyUpperLimit),
-                            UncertaintyValues: r.Value.ExposureUncertainties?.ToList()
-                        ))
+                        .Select(r => new CombinedPercentileRecord {
+                            IdModel = model.Code,
+                            Name = model.Name,
+                            Percentage = r.Key,
+                            Value = r.Value.Exposure,
+                            UncertaintyMedian = r.Value.ExposureUncertainties?.Median(),
+                            UncertaintyLowerBound = r.Value.ExposureUncertainties?.Percentile(UncertaintyLowerBound),
+                            UncertaintyUpperBound = r.Value.ExposureUncertainties?.Percentile(UncertaintyUpperBound),
+                            UncertaintyValues = r.Value.ExposureUncertainties?.ToList()
+                        })
                         .ToList()
                 );
             }

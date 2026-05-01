@@ -1,6 +1,6 @@
-﻿using MCRA.Utils.ExtensionMethods;
+﻿using System.Text;
 using MCRA.Simulation.OutputGeneration.Helpers;
-using System.Text;
+using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.OutputGeneration.CombinedViews {
     public class CombinedTargetExposurePercentilesSectionView : SectionView<CombinedTargetExposurePercentilesSection> {
@@ -17,7 +17,18 @@ namespace MCRA.Simulation.OutputGeneration.CombinedViews {
                     saveChartFile: true,
                     caption: chartCreator.Title
                 );
-                sb.Append($"<table class=\"sortable\">");
+
+                var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
+                     name: $"CombinedTargetExposurePercentilesData",
+                     section: Model,
+                     items: Model.CombinedPercentileRecords,
+                     viewBag: ViewBag
+                );
+
+                sb.Append($"<table ");
+                sb.Append($" class=\"sortable\"");
+                sb.Append($" csv-download-id=\"{percentileDataSection.SectionGuid:N}\"");
+                sb.Append($" csv-download-name=\"{percentileDataSection.TableName}\">");
                 sb.Append($"<caption>Exposures in {Model.ExposureUnit.GetDisplayName()}</caption>");
                 sb.Append($"<thead><tr>");
                 sb.Append($"<th>Population</th>");

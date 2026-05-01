@@ -55,16 +55,16 @@ namespace MCRA.Simulation.OutputGeneration {
             foreach (var model in riskModels) {
                 CombinedPercentileRecords.AddRange(
                     model.RiskPercentiles
-                        .Select(r => new CombinedPercentileRecord(
-                            IdModel: model.Code,
-                            Name: model.Name,
-                            Percentage: r.Key,
-                            Value: r.Value.Risk,
-                            UncertaintyMedian: r.Value.RiskUncertainties?.Median(),
-                            UncertaintyLowerBound: r.Value.RiskUncertainties?.Percentile(UncertaintyLowerLimit),
-                            UncertaintyUpperBound: r.Value.RiskUncertainties?.Percentile(UncertaintyUpperLimit),
-                            UncertaintyValues: r.Value.RiskUncertainties
-                        ))
+                        .Select(r => new CombinedPercentileRecord {
+                            IdModel = model.Code,
+                            Name = model.Name,
+                            Percentage = r.Key,
+                            Value = r.Value.Risk,
+                            UncertaintyMedian = r.Value.RiskUncertainties?.Median(),
+                            UncertaintyLowerBound = r.Value.RiskUncertainties?.Percentile(UncertaintyLowerBound),
+                            UncertaintyUpperBound = r.Value.RiskUncertainties?.Percentile(UncertaintyUpperBound),
+                            UncertaintyValues = r.Value.RiskUncertainties
+                        })
                         .ToList()
                 );
             }

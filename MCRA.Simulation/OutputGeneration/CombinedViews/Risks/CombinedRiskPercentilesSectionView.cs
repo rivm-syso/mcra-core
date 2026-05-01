@@ -8,6 +8,7 @@ namespace MCRA.Simulation.OutputGeneration.CombinedViews {
     public class CombinedRiskPercentilesSectionView : SectionView<CombinedRiskPercentilesSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             if (Model.Percentages.Count != 0 && Model.ModelSummaryRecords.Count != 0) {
+
                 var panelBuilder = new HtmlTabPanelBuilder();
                 var safetyChartCreator = new CombinedRisksSafetyChartCreator(Model);
                 panelBuilder.AddPanel(
@@ -24,10 +25,10 @@ namespace MCRA.Simulation.OutputGeneration.CombinedViews {
                         caption: safetyChartCreator.Title
                     )
                 );
-                
+
                 if (Model.CombinedPercentileRecords.First().UncertaintyValues?.Count > 1) {
                     foreach (var percentage in Model.DisplayPercentages) {
-                        var violinChartCreator = new CombinedRisksViolinChartCreator(Model, percentage, 
+                        var violinChartCreator = new CombinedRisksViolinChartCreator(Model, percentage,
                             true, false, false);
                         panelBuilder.AddPanel(
                             id: percentage.ToString(),
@@ -48,8 +49,18 @@ namespace MCRA.Simulation.OutputGeneration.CombinedViews {
 
                 panelBuilder.RenderPanel(sb);
 
+                var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
+                     name: $"CombinedRisksPercentilesData",
+                     section: Model,
+                     items: Model.CombinedPercentileRecords,
+                     viewBag: ViewBag
+                );
+
                 var percentilesLookup = Model.CombinedPercentileRecords.ToLookup(r => r.IdModel);
-                sb.Append($"<table class=\"sortable\">");
+                sb.Append($"<table ");
+                sb.Append($" class=\"sortable\"");
+                sb.Append($" csv-download-id=\"{percentileDataSection.SectionGuid:N}\"");
+                sb.Append($" csv-download-name=\"{percentileDataSection.TableName}\">");
                 sb.Append($"<caption>Risk characterisation ratio ({Model.RiskMetric.GetDisplayName()}) at different percentiles of the risk distribution.</caption>");
                 sb.Append($"<thead><tr>");
                 sb.Append($"<th>Population</th>");

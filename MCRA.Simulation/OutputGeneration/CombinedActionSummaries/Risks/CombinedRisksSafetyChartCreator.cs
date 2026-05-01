@@ -33,9 +33,9 @@ namespace MCRA.Simulation.OutputGeneration.CombinedActionSummaries.Risks {
                     $"p{_section.UpperPercentile:G4} of the risk distribution.";
 
                 if (_section.HasUncertainty) {
-                    str += $" The left whisker indicates the {_section.UncertaintyLowerLimit}% limit " +
+                    str += $" The left whisker indicates the {_section.UncertaintyLowerBound}% limit " +
                         $"of the p{_section.LowerPercentile:G4} and the right wisker the " +
-                        $"{_section.UncertaintyUpperLimit}% limit of the p{_section.UpperPercentile:G4}.";
+                        $"{_section.UncertaintyUpperBound}% limit of the p{_section.UpperPercentile:G4}.";
                 }
                 return str;
             }

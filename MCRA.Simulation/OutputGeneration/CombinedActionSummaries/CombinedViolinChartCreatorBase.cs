@@ -30,8 +30,8 @@ namespace MCRA.Simulation.OutputGeneration {
             _horizontal = horizontal;
             _boxPlotItem = boxplotItem;
             _equalSize = equalSize;
-            _lowerBound = section.UncertaintyLowerLimit;
-            _upperBound = section.UncertaintyUpperLimit;
+            _lowerBound = section.UncertaintyLowerBound;
+            _upperBound = section.UncertaintyUpperBound;
         }
 
         protected abstract string HorizontalAxisTitle { get; }

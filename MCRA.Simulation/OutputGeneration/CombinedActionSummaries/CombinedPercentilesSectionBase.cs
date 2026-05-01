@@ -4,8 +4,8 @@
     /// Represents a collection of all simulation data that has been post-processed for visualization.
     /// </summary>
     public class CombinedPercentilesSectionBase : SummarySection {
-        public double UncertaintyLowerLimit { get; protected set; } = 2.5;
-        public double UncertaintyUpperLimit { get; protected set; } = 97.5;
+        public double UncertaintyLowerBound { get; protected set; } = 2.5;
+        public double UncertaintyUpperBound { get; protected set; } = 97.5;
         public List<double> Percentages { get; protected set; }
         public List<ModelSummaryRecord> ModelSummaryRecords { get; protected set; }
         public List<CombinedPercentileRecord> CombinedPercentileRecords { get; protected set; }
