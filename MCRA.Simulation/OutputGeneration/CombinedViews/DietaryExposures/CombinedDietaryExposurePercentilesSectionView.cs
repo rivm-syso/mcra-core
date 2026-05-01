@@ -77,9 +77,9 @@ namespace MCRA.Simulation.OutputGeneration.CombinedViews {
                     foreach (var percentage in Model.Percentages) {
                         if (percentiles?.TryGetValue(percentage, out var value) ?? false) {
                             if (value.HasUncertainty) {
-                                sb.Append($"<td>{value.UncertaintyMedian:G4}<br />[{value.UncertaintyLowerBound:G4}, {value.UncertaintyUpperBound:G4}]</td>");
+                                sb.Append($"<td>{value.UncertaintyMedian:G3}<br />[{value.UncertaintyLowerBound:G3}, {value.UncertaintyUpperBound:G3}]</td>");
                             } else {
-                                sb.Append($"<td>{value.Value:G4}</td>");
+                                sb.Append($"<td>{value.Value:G3}</td>");
                             }
                         }
                     }

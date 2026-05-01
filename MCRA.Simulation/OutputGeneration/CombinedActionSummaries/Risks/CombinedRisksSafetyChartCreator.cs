@@ -30,7 +30,7 @@ namespace MCRA.Simulation.OutputGeneration.CombinedActionSummaries.Risks {
                 var str = $"The safety plot shows the variability of the risk characterisation ratio " +
                     $"{_section.RiskMetric.GetDisplayName()} in the population. The left side of the bar is the " +
                     $"p{_section.LowerPercentile:G4} percentile and the right side is the " +
-                    $"p{_section.UpperPercentile:G4} of the risk distribution.";
+                    $"p{_section.UpperPercentile:G4} percentile of the risk distribution.";
 
                 if (_section.HasUncertainty) {
                     str += $" The left whisker indicates the {_section.UncertaintyLowerBound}% limit " +

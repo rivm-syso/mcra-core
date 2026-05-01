@@ -13,6 +13,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public double LowerPercentile { get; set; }
         public double MedianPercentile { get; } = 50.0;
         public double UpperPercentile { get; set; }
+        public double TailPercentile => RiskMetric == RiskMetricType.HazardExposureRatio ? LowerPercentile : UpperPercentile;
         public double[] PercentagesConfidenceInterval { get; set; }
         public List<double> DisplayPercentages { get; set; }
         public RiskMetricType RiskMetric { get; set; }

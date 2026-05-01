@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using MCRA.Simulation.OutputGeneration.CombinedActionSummaries;
 using MCRA.Simulation.OutputGeneration.CombinedActionSummaries.Risks;
 using MCRA.Simulation.OutputGeneration.Helpers;
 using MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders;
@@ -9,6 +10,7 @@ namespace MCRA.Simulation.OutputGeneration.CombinedViews {
         public override void RenderSectionHtml(StringBuilder sb) {
             if (Model.Percentages.Count != 0 && Model.ModelSummaryRecords.Count != 0) {
 
+                // The main safety chart
                 var panelBuilder = new HtmlTabPanelBuilder();
                 var safetyChartCreator = new CombinedRisksSafetyChartCreator(Model);
                 panelBuilder.AddPanel(
@@ -26,6 +28,7 @@ namespace MCRA.Simulation.OutputGeneration.CombinedViews {
                     )
                 );
 
+                // Optional violin charts, when uncertainty is available
                 if (Model.CombinedPercentileRecords.First().UncertaintyValues?.Count > 1) {
                     foreach (var percentage in Model.DisplayPercentages) {
                         var violinChartCreator = new CombinedRisksViolinChartCreator(Model, percentage,
@@ -46,16 +49,36 @@ namespace MCRA.Simulation.OutputGeneration.CombinedViews {
                         );
                     }
                 }
-
                 panelBuilder.RenderPanel(sb);
 
+                // Table with main tail percentile risk values, for all models
+                var hiddenProperties = new List<string>();
+                if (!Model.CombinedPercentileRecords.Any(r => r.HasUncertainty)) {
+                    hiddenProperties.Add(nameof(CombinedPercentileRecord.UncertaintyMedian));
+                    hiddenProperties.Add(nameof(CombinedPercentileRecord.UncertaintyLowerBound));
+                    hiddenProperties.Add(nameof(CombinedPercentileRecord.UncertaintyUpperBound));
+                }
+                var modelIds = Model.ModelSummaryRecords.Select(r => r.Id).Distinct().ToList();
+                var riskAssessmentRecords = modelIds
+                    .Select(i => Model.GetPercentileRecord(i, Model.TailPercentile))
+                    .ToList();
+                sb.AppendTable(
+                    Model,
+                    riskAssessmentRecords,
+                    $"CombinedRisk{Model.RiskMetric}PercentilesSummaryTable",
+                    ViewBag,
+                    caption: $"Risk characterisation ratio ({Model.RiskMetric.GetDisplayName()}) at the {Model.TailPercentile:F1}th percentile of the risk distribution.",
+                    saveCsv: true,
+                    hiddenProperties: hiddenProperties
+                );
+
+                // Detailed table with all percentiles for all models
                 var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
                      name: $"CombinedRisksPercentilesData",
                      section: Model,
                      items: Model.CombinedPercentileRecords,
                      viewBag: ViewBag
                 );
-
                 var percentilesLookup = Model.CombinedPercentileRecords.ToLookup(r => r.IdModel);
                 sb.Append($"<table ");
                 sb.Append($" class=\"sortable\"");
@@ -78,9 +101,9 @@ namespace MCRA.Simulation.OutputGeneration.CombinedViews {
                     foreach (var percentage in Model.DisplayPercentages) {
                         if (percentiles?.TryGetValue(percentage, out var value) ?? false) {
                             if (value.HasUncertainty) {
-                                sb.Append($"<td>{value.UncertaintyMedian:G4}<br />[{value.UncertaintyLowerBound:G4}, {value.UncertaintyUpperBound:G4}]</td>");
+                                sb.Append($"<td>{value.UncertaintyMedian:G3}<br />[{value.UncertaintyLowerBound:G3}, {value.UncertaintyUpperBound:G3}]</td>");
                             } else {
-                                sb.Append($"<td>{value.Value:G4}</td>");
+                                sb.Append($"<td>{value.Value:G3}</td>");
                             }
                         }
                     }
@@ -93,3 +116,4 @@ namespace MCRA.Simulation.OutputGeneration.CombinedViews {
         }
     }
 }
+

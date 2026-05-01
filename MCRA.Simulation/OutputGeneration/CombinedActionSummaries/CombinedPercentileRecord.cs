@@ -9,11 +9,12 @@ namespace MCRA.Simulation.OutputGeneration.CombinedActionSummaries {
         [Display(AutoGenerateField = false)]
         public List<double> UncertaintyValues { get; set; }
 
+        [Description("The country and population of the consumption data (survey).")]
         [DisplayName("Population")]
         public string Name { get; set; }
 
-        [Description("Specified percentage.")]
-        [DisplayName("Percentage")]
+        [Description("Specified percentage (%).")]
+        [DisplayName("Percentage (%)")]
         [DisplayFormat(DataFormatString = "{0:F2}")]
         public double Percentage { get; set; }
 
