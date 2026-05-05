@@ -31,24 +31,25 @@ namespace MCRA.Simulation.OutputGeneration.CombinedViews {
                 sb.Append($" csv-download-name=\"{percentileDataSection.TableName}\">");
                 sb.Append($"<caption>Exposures in {Model.ExposureUnit.GetDisplayName()}</caption>");
                 sb.Append($"<thead><tr>");
-                sb.Append($"<th>Population</th>");
+                sb.Append($"<th style=\"text-align: center\">Population</th>");
                 foreach (var percentage in Model.Percentages) {
-                    sb.Append($"<th>p{percentage:G3}</th>");
+                    sb.Append($"<th style=\"text-align: center\">p{percentage:G3}</th>");
                 }
                 sb.Append($"</tr></thead>");
                 sb.Append($"<tbody>");
+                var emDash = "\u2014";
                 foreach (var item in Model.ModelSummaryRecords) {
                     var percentiles = percentilesLookup.Contains(item.Id)
                         ? percentilesLookup[item.Id].ToDictionary(r => r.Percentage)
                         : null;
                     sb.Append($"<tr>");
-                    sb.Append($"<th>{item.Name}</th>");
+                    sb.Append($"<td>{item.Name}</td>");
                     foreach (var percentage in Model.Percentages) {
                         if (percentiles?.TryGetValue(percentage, out var value) ?? false) {
                             if (value.HasUncertainty) {
-                                sb.Append($"<td>{value.UncertaintyMedian:G3}<br />[{value.UncertaintyLowerBound:G3}, {value.UncertaintyUpperBound:G3}]</td>");
+                                sb.Append($"<td>&nbsp;{value.UncertaintyMedian.FormatAdaptive()}&nbsp;&nbsp;[{value.UncertaintyLowerBound.FormatAdaptive()}{emDash}{value.UncertaintyUpperBound.FormatAdaptive()}]&nbsp;</td>");
                             } else {
-                                sb.Append($"<td>{value.Value:G3}</td>");
+                                sb.Append($"<td>&nbsp;{value.Value.FormatAdaptive()}&nbsp;</td>");
                             }
                         }
                     }

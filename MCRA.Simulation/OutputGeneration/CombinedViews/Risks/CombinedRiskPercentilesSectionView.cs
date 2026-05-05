@@ -67,7 +67,7 @@ namespace MCRA.Simulation.OutputGeneration.CombinedViews {
                     riskAssessmentRecords,
                     $"CombinedRisk{Model.RiskMetric}PercentilesSummaryTable",
                     ViewBag,
-                    caption: $"Risk characterisation ratio ({Model.RiskMetric.GetDisplayName()}) at the {Model.TailPercentile:F1}th percentile of the risk distribution.",
+                    caption: $"Risk characterisation ratio ({Model.RiskMetric.GetDisplayName()}), calculated at the {Model.TailPercentile:F1} percentile (p{Model.TailPercentile:F1}) of the risk distribution.",
                     saveCsv: true,
                     hiddenProperties: hiddenProperties
                 );
@@ -84,26 +84,27 @@ namespace MCRA.Simulation.OutputGeneration.CombinedViews {
                 sb.Append($" class=\"sortable\"");
                 sb.Append($" csv-download-id=\"{percentileDataSection.SectionGuid:N}\"");
                 sb.Append($" csv-download-name=\"{percentileDataSection.TableName}\">");
-                sb.Append($"<caption>Risk characterisation ratio ({Model.RiskMetric.GetDisplayName()}) at different percentiles of the risk distribution.</caption>");
+                sb.Append($"<caption>Risk characterisation ratio ({Model.RiskMetric.GetDisplayName()}), calculated at different percentiles of the risk distribution.</caption>");
                 sb.Append($"<thead><tr>");
-                sb.Append($"<th>Population</th>");
+                sb.Append($"<th style=\"text-align: center\">Population</th>");
                 foreach (var percentage in Model.DisplayPercentages) {
-                    sb.Append($"<th>p{percentage:G4}</th>");
+                    sb.Append($"<th style=\"text-align: center\">p{percentage:G4}</th>");
                 }
                 sb.Append($"</tr></thead>");
                 sb.Append($"<tbody>");
+                var emDash = "\u2014";
                 foreach (var item in Model.ModelSummaryRecords) {
                     var percentiles = percentilesLookup.Contains(item.Id)
                         ? percentilesLookup[item.Id].ToDictionary(r => r.Percentage)
                         : null;
                     sb.Append($"<tr>");
-                    sb.Append($"<th>{item.Name}</th>");
+                    sb.Append($"<td>{item.Name}</td>");
                     foreach (var percentage in Model.DisplayPercentages) {
                         if (percentiles?.TryGetValue(percentage, out var value) ?? false) {
                             if (value.HasUncertainty) {
-                                sb.Append($"<td>{value.UncertaintyMedian:G3}<br />[{value.UncertaintyLowerBound:G3}, {value.UncertaintyUpperBound:G3}]</td>");
+                                sb.Append($"<td>&nbsp;{value.UncertaintyMedian.FormatAdaptive()}&nbsp;&nbsp;[{value.UncertaintyLowerBound.FormatAdaptive()}{emDash}{value.UncertaintyUpperBound.FormatAdaptive()}]&nbsp;</td>");
                             } else {
-                                sb.Append($"<td>{value.Value:G3}</td>");
+                                sb.Append($"<td>&nbsp;{value.Value.FormatAdaptive()}&nbsp;</td>");
                             }
                         }
                     }

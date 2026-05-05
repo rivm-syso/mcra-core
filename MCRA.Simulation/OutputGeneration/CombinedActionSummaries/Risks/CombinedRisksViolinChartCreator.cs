@@ -21,7 +21,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public override string Title {
             get {
                 return $"Violin plots of the uncertainty distribution of the {RiskType.GetDisplayName().ToLower()} " +
-                    $"at the p{_percentile} percentile of the population risk distributions. The vertical lines " +
+                    $"at the {_percentile} percentile of the population risk distribution. The vertical lines " +
                     $"represent the median and the lower p{_lowerBound} and upper p{_upperBound} bound of the " +
                     $"uncertainty distribution. The nominal run is indicated by the black dot.";
             }

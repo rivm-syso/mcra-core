@@ -29,13 +29,13 @@ namespace MCRA.Simulation.OutputGeneration.CombinedActionSummaries.Risks {
             get {
                 var str = $"The safety plot shows the variability of the risk characterisation ratio " +
                     $"{_section.RiskMetric.GetDisplayName()} in the population. The left side of the bar is the " +
-                    $"p{_section.LowerPercentile:G4} percentile and the right side is the " +
-                    $"p{_section.UpperPercentile:G4} percentile of the risk distribution.";
+                    $"{_section.LowerPercentile:G4} percentile (p{_section.LowerPercentile:G4}) and the right side is the " +
+                    $"{_section.UpperPercentile:G4} percentile (p{_section.UpperPercentile:G4}) of the risk distribution.";
 
                 if (_section.HasUncertainty) {
-                    str += $" The left whisker indicates the {_section.UncertaintyLowerBound}% limit " +
+                    str += $" The left whisker indicates the {_section.UncertaintyLowerBound}% uncertainty bound " +
                         $"of the p{_section.LowerPercentile:G4} and the right wisker the " +
-                        $"{_section.UncertaintyUpperBound}% limit of the p{_section.UpperPercentile:G4}.";
+                        $"{_section.UncertaintyUpperBound}% uncertainty bound of the p{_section.UpperPercentile:G4}.";
                 }
                 return str;
             }

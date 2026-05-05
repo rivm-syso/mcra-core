@@ -18,8 +18,8 @@ namespace MCRA.Simulation.OutputGeneration.CombinedActionSummaries {
         [DisplayFormat(DataFormatString = "{0:F2}")]
         public double Percentage { get; set; }
 
-        [Description("The reference value at the specified percentage.")]
-        [DisplayName("Value")]
+        [Description("The nominal value at the specified percentage.")]
+        [DisplayName("Nominal value")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double Value { get; set; }
 
