@@ -74,7 +74,7 @@ namespace MCRA.Simulation.OutputGeneration.CombinedViews {
 
                 // Detailed table with all percentiles for all models
                 var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
-                     name: $"CombinedRisksPercentilesData",
+                     name: $"CombinedRisk{Model.RiskMetric}PercentilesData",
                      section: Model,
                      items: Model.CombinedPercentileRecords,
                      viewBag: ViewBag
@@ -86,9 +86,9 @@ namespace MCRA.Simulation.OutputGeneration.CombinedViews {
                 sb.Append($" csv-download-name=\"{percentileDataSection.TableName}\">");
                 sb.Append($"<caption>Risk characterisation ratio ({Model.RiskMetric.GetDisplayName()}), calculated at different percentiles of the risk distribution.</caption>");
                 sb.Append($"<thead><tr>");
-                sb.Append($"<th style=\"text-align: center\">Population</th>");
+                sb.Append($"<th>Population</th>");
                 foreach (var percentage in Model.DisplayPercentages) {
-                    sb.Append($"<th style=\"text-align: center\">p{percentage:G4}</th>");
+                    sb.Append($"<th>p{percentage:G4}</th>");
                 }
                 sb.Append($"</tr></thead>");
                 sb.Append($"<tbody>");

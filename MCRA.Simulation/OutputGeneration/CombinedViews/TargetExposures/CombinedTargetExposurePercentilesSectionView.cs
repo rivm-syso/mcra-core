@@ -31,9 +31,9 @@ namespace MCRA.Simulation.OutputGeneration.CombinedViews {
                 sb.Append($" csv-download-name=\"{percentileDataSection.TableName}\">");
                 sb.Append($"<caption>Exposures in {Model.ExposureUnit.GetDisplayName()}</caption>");
                 sb.Append($"<thead><tr>");
-                sb.Append($"<th style=\"text-align: center\">Population</th>");
+                sb.Append($"<th>Population</th>");
                 foreach (var percentage in Model.Percentages) {
-                    sb.Append($"<th style=\"text-align: center\">p{percentage:G3}</th>");
+                    sb.Append($"<th>p{percentage:G3}</th>");
                 }
                 sb.Append($"</tr></thead>");
                 sb.Append($"<tbody>");
