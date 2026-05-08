@@ -50,6 +50,9 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             _actionInputRequirements[ActionType.KineticConversionFactors].IsVisible = useKineticConversionFactorModels;
             _actionInputRequirements[ActionType.PbkModels].IsRequired = usePbkModels;
             _actionInputRequirements[ActionType.PbkModels].IsVisible = usePbkModels;
+            var occupationalScenarios = ModuleConfig.OccupationalExposureAssessment;
+            _actionInputRequirements[ActionType.OccupationalScenarios].IsRequired = occupationalScenarios;
+            _actionInputRequirements[ActionType.OccupationalScenarios].IsVisible = occupationalScenarios;
         }
 
         public override ICollection<UncertaintySource> GetRandomSources() {
@@ -169,6 +172,16 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 .ToList();
             IndividualDaysGenerator.ImputeBodyWeight(simulatedIndividualDays.Select(d => d.SimulatedIndividual).Distinct());
 
+            // For occupational exposure assessments, link scenarios
+            if (ModuleConfig.OccupationalExposureAssessment) {
+                foreach (var individualDay in simulatedIndividualDays) {
+                    var idScenario = individualDay.SimulatedIndividual.IndividualProperties
+                        .FirstOrDefault(c => c.Key.Code.Equals("idScenario", StringComparison.OrdinalIgnoreCase))
+                        .Value.TextValue;
+                    individualDay.SimulatedIndividual.OccupationalScenario = data.OccupationalScenarios[idScenario];
+                }
+            }
+
             // Compute HBM individual day concentration collections (per combination of matrix and expression type)
             var hbmIndividualDayCollections = new List<HbmIndividualDayCollection>();
             foreach (var standardisedSubstanceCollection in standardisedSubstanceCollections) {
@@ -251,7 +264,6 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                         : null;
 
                     if (ModuleConfig.HbmConvertToSingleTargetMatrix) {
-
                         var exposureRoute = ModuleConfig.ExposureRoutes.FirstOrDefault();
                         // Kinetic conversions to a single target
                         hbmIndividualDayCollections = HbmSingleTargetExtrapolationCalculator
@@ -264,6 +276,9 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                                 ModuleConfig.TargetMatrix,
                                 exposureRoute,
                                 kineticConversionCalculatorFactory,
+                                data.HbmSurveys?
+                                    .SelectMany(r => r.Timepoints)
+                                    .ToDictionary(r => r.Code),
                                 kineticConversionRandomGenerator,
                                 conversionProgress
                             );
@@ -279,6 +294,9 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                                 simulatedIndividualDays,
                                 substances,
                                 ModuleConfig.ExposureType,
+                                data.HbmSurveys?
+                                    .SelectMany(r => r.Timepoints)
+                                    .ToDictionary(r => r.Code),
                                 conversionProgress
                             );
                     }
@@ -326,8 +344,19 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             }
 
             // Compute cumulative concentrations (only for single target)
+            // Allways calculate cumulative individual day concentrations, these are needed for startification on a daily day base
             if (individualDayCollections.Count == 1) {
                 if (data.CorrectedRelativePotencyFactors != null) {
+
+                    // For cumulative assessments, compute cumulative individual day concentrations
+                    var hbmCumulativeIndividualDayCalculator = new HbmCumulativeIndividualDayConcentrationCalculator();
+                    var cumulativeIndividualDayCollection = hbmCumulativeIndividualDayCalculator
+                        .Calculate(
+                            individualDayCollections,
+                            data.ActiveSubstances,
+                            data.CorrectedRelativePotencyFactors
+                        );
+                    result.HbmCumulativeIndividualDayCollection = cumulativeIndividualDayCollection;
                     if (ModuleConfig.ExposureType == ExposureType.Chronic) {
                         // For cumulative assessments, compute cumulative individual concentrations
                         var hbmCumulativeIndividualCalculator = new HbmCumulativeIndividualConcentrationCalculator();
@@ -337,17 +366,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                                 data.ActiveSubstances,
                                 data.CorrectedRelativePotencyFactors
                             );
+                        cumulativeIndividualCollection.TimePointIndividualDayConcentrations = cumulativeIndividualDayCollection.HbmCumulativeIndividualDayConcentrations;
                         result.HbmCumulativeIndividualCollection = cumulativeIndividualCollection;
-                    } else {
-                        // For cumulative assessments, compute cumulative individual day concentrations
-                        var hbmCumulativeIndividualDayCalculator = new HbmCumulativeIndividualDayConcentrationCalculator();
-                        var cumulativeIndividualDayCollection = hbmCumulativeIndividualDayCalculator
-                            .Calculate(
-                                individualDayCollections,
-                                data.ActiveSubstances,
-                                data.CorrectedRelativePotencyFactors
-                            );
-                        result.HbmCumulativeIndividualDayCollection = cumulativeIndividualDayCollection;
                     }
                 }
             }
@@ -376,8 +396,9 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             }
 
             localProgress.Update(100);
-            result.HbmIndividualDayConcentrations = individualDayCollections;
-            result.HbmIndividualConcentrations = individualCollections;
+
+            result.HbmIndividualDayCollection = individualDayCollections;
+            result.HbmIndividualCollection = individualCollections;
             result.HbmConcentrationModels = concentrationModels;
             return result;
         }
@@ -435,17 +456,19 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 var individualDayConcentrations = collection.HbmIndividualDayConcentrations
                     .Where(r => completeCases.Contains(r.SimulatedIndividualDayId))
                     .ToList();
-                completeResults.Add(new HbmIndividualDayCollection() {
+
+                var hbmCollection = new HbmIndividualDayCollection() {
                     TargetUnit = collection.TargetUnit,
                     HbmIndividualDayConcentrations = individualDayConcentrations
-                });
+                };
+                completeResults.Add(hbmCollection);
             }
             return completeResults;
         }
 
         protected override void updateSimulationData(ActionData data, HumanMonitoringAnalysisActionResult result) {
-            data.HbmIndividualDayCollections = result.HbmIndividualDayConcentrations;
-            data.HbmIndividualCollections = result.HbmIndividualConcentrations;
+            data.HbmIndividualDayCollections = result.HbmIndividualDayCollection;
+            data.HbmIndividualCollections = result.HbmIndividualCollection;
             data.HbmCumulativeIndividualCollection = result.HbmCumulativeIndividualCollection;
             data.HbmCumulativeIndividualDayCollection = result.HbmCumulativeIndividualDayCollection;
         }

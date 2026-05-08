@@ -8,7 +8,7 @@ namespace MCRA.Simulation.OutputGeneration {
     public abstract class CategorizedBoxPlotChartCreatorBase : BoxPlotChartCreatorBase {
 
         protected PlotModel create(
-           ICollection<(string stratifier, string descriptor, BoxPlotChartRecord bps)> records,
+           ICollection<(string stratifier, BoxPlotChartRecord bps)> records,
            string labelHorizontalAxis,
            bool showOutliers,
            bool showLabels = true,
@@ -21,10 +21,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var minimum = minima.Any() ? minima.Min() * 0.9 : 1e-8;
 
             var stratificationGroups = recordsReversed.GroupBy(r => r.stratifier).ToList();
-            var descriptorValues = recordsReversed
-                .Select(r => r.descriptor)
-                .Distinct()
-                .ToList();
+            var descriptorValues = recordsReversed.Select(c => c.bps.GetLabel()).ToHashSet();
             var descriptorIndexes = descriptorValues
                 .Select((r, ix) => (r, ix))
                 .ToDictionary(r => r.r, r => r.ix);
@@ -43,9 +40,10 @@ namespace MCRA.Simulation.OutputGeneration {
                     Stroke = OxyColors.Black,
                     BoxWidth = 0.8,
                     WhiskerWidth = 1.1,
+
                 };
-                foreach (var (stratifier, descriptor, bps) in group) {
-                    var ix = descriptorIndexes[descriptor];
+                foreach (var (stratifier, bps) in group) {
+                    var ix = descriptorIndexes[bps.GetLabel()];
                     var outliers = new List<double>();
                     if (showOutliers) {
                         if (bps.Outliers?.Count > outliersLimit) {
@@ -79,11 +77,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 MajorGridlineColor = OxyColors.Black,
                 GapWidth = 0.1
             };
-            var categories = new HashSet<string>();
-            foreach (var (stratifier, descriptor, bps) in recordsReversed) {
-                var category = getLabel(bps.GetLabel(), stratifier);
-                categories.Add(category);
-            }
+            var categories = recordsReversed.Select(c => c.bps.GetLabel()).ToHashSet();
             foreach (var category in categories) {
                 categoryAxis.Labels.Add(category);
             }
@@ -98,31 +92,51 @@ namespace MCRA.Simulation.OutputGeneration {
                 MajorStep = 100,
                 MinorStep = 100,
                 MajorGridlineStyle = LineStyle.Dash,
-                MajorTickSize = 2
+                MajorTickSize = 2,
             };
             plotModel.Axes.Add(logarithmicAxis);
-            updateLogarithmicAxis(logarithmicAxis, minimum, maximum);
+            updateLogarithmicAxis(logarithmicAxis, minimum, maximum, 1.1);
 
-            var legend = new Legend {
-                LegendBackground = OxyColor.FromArgb(200, 255, 255, 255),
+            var legend = new PositionLegend {
+                LegendBackground = OxyColors.Transparent,
                 LegendBorder = OxyColors.Undefined,
                 LegendOrientation = LegendOrientation.Vertical,
                 LegendPlacement = LegendPlacement.Outside,
                 LegendPosition = LegendPosition.RightTop,
-                LegendFontSize = 13
             };
             plotModel.Legends.Add(legend);
             plotModel.IsLegendVisible = true;
-
             return plotModel;
         }
 
-        public static string getLabel(string label, string stratifier) {
-            if (label.Contains(stratifier)) {
-                var start = label.IndexOf(stratifier, 0);
-                return label[..(start - 2)];
+        internal class PositionLegend : Legend {
+            public double ExtraWidthPadding { get; set; } = 20;
+
+            public override OxySize GetLegendSize(IRenderContext rc, OxySize s) {
+                setDefaults();
+                OxySize baseSize = base.GetLegendSize(rc, s);
+
+                if (baseSize.Width <= 0) {
+                    return baseSize;
+                }
+                var newWidth = baseSize.Width + ExtraWidthPadding;
+                return new OxySize(newWidth, baseSize.Height);
             }
-            return label;
+            private void setDefaults() {
+                this.LegendFontSize = 13;
+                this.LegendLineSpacing = 4;
+            }
+
+            /// <summary>
+            /// Get position of legend, use defaults or shift to the left to avoid cutting off legend text. 
+            /// The shift is applied by multiplying the left position by a factor (e.g., 0.94) to move it slightly to the left.
+            /// </summary>
+            public override OxyRect GetLegendRectangle(OxySize legendSize) {
+                var shift = 0.94;
+                var p = base.GetLegendRectangle(legendSize);
+                var position = new OxyRect(p.Left * shift, p.Top, p.Width, p.Height);
+                return position;
+            }
         }
     }
 }

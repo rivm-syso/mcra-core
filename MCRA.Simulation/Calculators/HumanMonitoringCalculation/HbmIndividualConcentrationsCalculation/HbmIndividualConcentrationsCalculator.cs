@@ -8,16 +8,16 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
 
         public List<HbmIndividualCollection> Calculate(
             ICollection<Compound> substances,
-            ICollection<HbmIndividualDayCollection> hbmIndividualDayConcentrationsCollections
+            ICollection<HbmIndividualDayCollection> hbmIndividualDayCollections
         ) {
             var results = new List<HbmIndividualCollection>();
-            foreach (var collection in hbmIndividualDayConcentrationsCollections) {
+            foreach (var collection in hbmIndividualDayCollections) {
                 var result = collection.HbmIndividualDayConcentrations
                     .GroupBy(r => r.SimulatedIndividual)
                     .Select(r => {
                         var record = new HbmIndividualConcentration() {
                             SimulatedIndividual = r.Key,
-                            NumberOfDays = r.Count(), // TODO: check? Count / number of days in survey?
+                            NumberOfDays = r.Count(),
                         };
 
                         var concentrationsBySubstance = new Dictionary<Compound, HbmSubstanceTargetExposure>();
@@ -50,10 +50,13 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                         return record;
                     })
                     .ToList();
+
                 var hbmCollection = new HbmIndividualCollection() {
                     TargetUnit = collection.TargetUnit,
-                    HbmIndividualConcentrations = result
+                    HbmIndividualConcentrations = result,
+                    TimePointIndividualDayConcentrations = collection.HbmIndividualDayConcentrations
                 };
+
                 results.Add(hbmCollection);
             }
             return results;

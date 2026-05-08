@@ -3,7 +3,7 @@
     /// <summary>
     /// Stores info about individual, the day and the simulated ID
     /// </summary>
-    public sealed class SimulatedIndividualDay : IIndividualDay {
+    public class SimulatedIndividualDay : IIndividualDay {
 
         public SimulatedIndividualDay(SimulatedIndividual simulatedIndividual) {
             SimulatedIndividual = simulatedIndividual;

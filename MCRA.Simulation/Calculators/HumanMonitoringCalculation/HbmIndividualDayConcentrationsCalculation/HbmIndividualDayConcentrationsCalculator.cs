@@ -43,7 +43,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
 
         public static HbmIndividualDayCollection CreateDefaultHbmIndividualDayCollection(
             List<SimulatedIndividualDay> individualDays,
-            ExposureTarget target
+            ExposureTarget target,
+            Dictionary<string, HumanMonitoringTimepoint> timePointLookup
         ) {
             var hbmIndividualDayConcentrations = new List<HbmIndividualDayConcentration>();
             foreach (var individualDay in individualDays) {
@@ -51,6 +52,9 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                     SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId,
                     SimulatedIndividual = individualDay.SimulatedIndividual,
                     Day = individualDay.Day,
+                    TimePoint = timePointLookup != null
+                        ? timePointLookup.TryGetValue(individualDay.Day, out var val) ? val : null
+                        : null,
                     ConcentrationsBySubstance = new Dictionary<Compound, HbmSubstanceTargetExposure>()
                 };
                 hbmIndividualDayConcentrations.Add(individualDayConcentration);

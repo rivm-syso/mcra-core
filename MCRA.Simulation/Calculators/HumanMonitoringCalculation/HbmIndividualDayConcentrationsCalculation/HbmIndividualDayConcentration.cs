@@ -13,6 +13,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
 
         public string Day { get; set; }
 
+        public HumanMonitoringTimepoint TimePoint { get; set; }
+
         public int SimulatedIndividualDayId { get; set; }
 
         /// <summary>
@@ -28,9 +30,11 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         /// Creates a clone.
         /// </summary>
         public new HbmIndividualDayConcentration Clone() {
-            var clone = new HbmIndividualDayConcentration(this);
-            clone.Day = Day;
-            clone.SimulatedIndividualDayId = SimulatedIndividualDayId;
+            var clone = new HbmIndividualDayConcentration(this) {
+                Day = Day,
+                TimePoint = TimePoint,
+                SimulatedIndividualDayId = SimulatedIndividualDayId
+            };
             return clone;
         }
     }

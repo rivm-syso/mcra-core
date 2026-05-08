@@ -10,9 +10,6 @@ namespace MCRA.Simulation.OutputGeneration {
         public string Source { get; set; }
 
         public override string GetLabel() {
-            if (!string.IsNullOrEmpty(Stratification)) {
-                return $"{Source} ({Stratification})";
-            }
             return Source;
         }
 

@@ -6,6 +6,7 @@ using MCRA.Simulation.Actions.HumanMonitoringAnalysis;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
 using MCRA.Simulation.Calculators.KineticConversionFactorModels;
+using MCRA.Simulation.Objects;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.ProgressReporting;
@@ -46,6 +47,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
                 HbmSamplingMethods = [samplingMethod],
                 CorrectedRelativePotencyFactors = rpfs,
+                HbmSurveys = [FakeHbmDataGenerator.FakeHbmSurvey(individualDays)]
             };
 
             var calculator = new HumanMonitoringAnalysisActionCalculator(project);
@@ -83,6 +85,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
                 HbmSamplingMethods = [samplingMethod],
                 CorrectedRelativePotencyFactors = rpfs,
+                HbmSurveys = [FakeHbmDataGenerator.FakeHbmSurvey(individualDays)]
             };
 
             var calculator = new HumanMonitoringAnalysisActionCalculator(project);
@@ -123,7 +126,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ActiveSubstances = substances,
                 CorrectedRelativePotencyFactors = rpfs,
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
-                HbmSamplingMethods = [samplingMethod]
+                HbmSamplingMethods = [samplingMethod],
+                HbmSurveys = [FakeHbmDataGenerator.FakeHbmSurvey(individualDays)]
             };
 
             var calculator = new HumanMonitoringAnalysisActionCalculator(project);
@@ -191,7 +195,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 CorrectedRelativePotencyFactors = rpfs,
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
                 HbmSamplingMethods = [samplingMethodBlood],
-                KineticConversionFactorModels = [kineticConversionFactorModel]
+                KineticConversionFactorModels = [kineticConversionFactorModel],
+                HbmSurveys = [new HumanMonitoringSurvey()]
             };
 
             var calculator = new HumanMonitoringAnalysisActionCalculator(project);
@@ -202,6 +207,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             section.Summarize(
                 data.HbmIndividualCollections,
                 substances,
+                null,
                 2.5,
                 97.5,
                 false
@@ -258,40 +264,41 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             if (hbmConvertToSingleTargetMatrix) {
                 if (missingValueImputationMethod == MissingValueImputationMethod.SetZero) {
                     //for Subst 2 alle missing values are replaced by zero, therefor no positives available
-                    Assert.IsNotEmpty(section.IndividualRecords);
+                    Assert.IsNotEmpty(section.Records);
                 } else {
                     //for Subst 2 all missing values are replaced by data = MV,
                     //therefor all samples are replaced from matrix conversion on the second sampling method
-                    Assert.IsNotEmpty(section.IndividualRecords);
+                    Assert.IsNotEmpty(section.Records);
                 }
             } else {
-                Assert.IsNotEmpty(section.IndividualRecords);
+                Assert.IsNotEmpty(section.Records);
             }
+            section.Records = section.Records.OrderBy(r => r.BiologicalMatrix).ThenBy(c => c.SubstanceCode).ToList();
             if (nonDetectImputationMethod == NonDetectImputationMethod.CensoredLogNormal) {
                 Assert.IsNotNull(hbmResults.HbmConcentrationModels);
                 Assert.IsGreaterThan(0, hbmResults.HbmConcentrationModels.Count(c => c.Value.ModelType == ConcentrationModelType.CensoredLogNormal));
                 Assert.IsGreaterThan(0, hbmResults.HbmConcentrationModels.Count(c => c.Value.ModelType == ConcentrationModelType.Empirical));
                 Assert.IsGreaterThan(0, (hbmResults.HbmConcentrationModels.First().Value as CMCensoredLogNormal).Mu);
                 Assert.IsGreaterThan(0, (hbmResults.HbmConcentrationModels.First().Value as CMCensoredLogNormal).Sigma);
-                Assert.AreEqual(meanSubst1Cens, section.IndividualRecords[1].MeanAll, 1e-3);
+                Assert.AreEqual(meanSubst1Cens, section.Records[1].MeanAll, 1e-3);
 
             } else {
                 Assert.IsNull(hbmResults.HbmConcentrationModels);
                 if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByLODLOQSystem && missingValueImputationMethod == MissingValueImputationMethod.SetZero) {
-                    Assert.AreEqual(meanSubst0LOD, section.IndividualRecords[0].MeanAll, 1e-5);
-                    Assert.AreEqual(meanSubst1LOD, section.IndividualRecords[1].MeanAll, 1e-5);
+                    Assert.AreEqual(meanSubst0LOD, section.Records[0].MeanAll, 1e-5);
+                    Assert.AreEqual(meanSubst1LOD, section.Records[1].MeanAll, 1e-5);
                 } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZeroLOQSystem && missingValueImputationMethod == MissingValueImputationMethod.SetZero) {
-                    Assert.AreEqual(meanSubst0LOD, section.IndividualRecords[0].MeanAll, 1e-5);
-                    Assert.AreEqual(meanSubst1LOD, section.IndividualRecords[1].MeanAll, 1e-5);
+                    Assert.AreEqual(meanSubst0LOD, section.Records[0].MeanAll, 1e-5);
+                    Assert.AreEqual(meanSubst1LOD, section.Records[1].MeanAll, 1e-5);
                 } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZero && missingValueImputationMethod == MissingValueImputationMethod.SetZero) {
-                    Assert.AreEqual(meanSubst0Zero, section.IndividualRecords[0].MeanAll, 1e-5);
-                    Assert.AreEqual(meanSubst1Zero, section.IndividualRecords[1].MeanAll, 1e-5);
+                    Assert.AreEqual(meanSubst0Zero, section.Records[0].MeanAll, 1e-5);
+                    Assert.AreEqual(meanSubst1Zero, section.Records[1].MeanAll, 1e-5);
                 } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByLODLOQSystem && missingValueImputationMethod == MissingValueImputationMethod.ImputeFromData) {
-                    Assert.AreEqual(meanSubst1LOD, section.IndividualRecords[1].MeanAll, 1e-5);
+                    Assert.AreEqual(meanSubst1LOD, section.Records[1].MeanAll, 1e-5);
                 } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZeroLOQSystem && missingValueImputationMethod == MissingValueImputationMethod.ImputeFromData) {
-                    Assert.AreEqual(meanSubst1LOD, section.IndividualRecords[1].MeanAll, 1e-5);
+                    Assert.AreEqual(meanSubst1LOD, section.Records[1].MeanAll, 1e-5);
                 } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZero && missingValueImputationMethod == MissingValueImputationMethod.ImputeFromData) {
-                    Assert.AreEqual(meanSubst1Zero, section.IndividualRecords[1].MeanAll, 1e-5);
+                    Assert.AreEqual(meanSubst1Zero, section.Records[1].MeanAll, 1e-5);
                 }
             }
         }
@@ -368,6 +375,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             section.Summarize(
                 data.HbmIndividualDayCollections,
                 substances,
+                null,
                 2.5,
                 97.5,
                 false
@@ -423,40 +431,41 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             if (hbmConvertToSingleTargetMatrix) {
                 if (missingValueImputationMethod == MissingValueImputationMethod.SetZero) {
                     //for Subst 2 all missing values are replaced by zero, therefor no positives available
-                    Assert.IsNotEmpty(section.IndividualDayRecords);
+                    Assert.IsNotEmpty(section.Records);
                 } else {
                     //for Subst 2 all missing values are replaced by data = MV,
                     //therefor all samples are replaced from matrix conversion on the second sampkling method
-                    Assert.IsNotEmpty(section.IndividualDayRecords);
+                    Assert.IsNotEmpty(section.Records);
                 }
             } else {
-                Assert.IsNotEmpty(section.IndividualDayRecords);
+                Assert.IsNotEmpty(section.Records);
             }
+            section.Records = section.Records.OrderBy(r => r.BiologicalMatrix).ThenBy(c => c.SubstanceCode).ToList();
             if (nonDetectImputationMethod == NonDetectImputationMethod.CensoredLogNormal) {
                 Assert.IsNotNull(result.HbmConcentrationModels);
                 Assert.IsGreaterThan(0, result.HbmConcentrationModels.Count(c => c.Value.ModelType == ConcentrationModelType.CensoredLogNormal));
                 Assert.IsGreaterThan(0, result.HbmConcentrationModels.Count(c => c.Value.ModelType == ConcentrationModelType.Empirical));
                 Assert.IsGreaterThan(0, (result.HbmConcentrationModels.First().Value as CMCensoredLogNormal).Mu);
                 Assert.IsGreaterThan(0, (result.HbmConcentrationModels.First().Value as CMCensoredLogNormal).Sigma);
-                Assert.AreEqual(meanSubst1Cens, section.IndividualDayRecords[1].MeanAll, 1e-3);
+                Assert.AreEqual(meanSubst1Cens, section.Records[1].MeanAll, 1e-3);
 
             } else {
                 Assert.IsNull(result.HbmConcentrationModels);
                 if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByLODLOQSystem && missingValueImputationMethod == MissingValueImputationMethod.SetZero) {
-                    Assert.AreEqual(meanSubst0LOD, section.IndividualDayRecords[0].MeanAll, 1e-5);
-                    Assert.AreEqual(meanSubst1LOD, section.IndividualDayRecords[1].MeanAll, 1e-5);
+                    Assert.AreEqual(meanSubst0LOD, section.Records[0].MeanAll, 1e-5);
+                    Assert.AreEqual(meanSubst1LOD, section.Records[1].MeanAll, 1e-5);
                 } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZeroLOQSystem && missingValueImputationMethod == MissingValueImputationMethod.SetZero) {
-                    Assert.AreEqual(meanSubst0LOD, section.IndividualDayRecords[0].MeanAll, 1e-5);
-                    Assert.AreEqual(meanSubst1LOD, section.IndividualDayRecords[1].MeanAll, 1e-5);
+                    Assert.AreEqual(meanSubst0LOD, section.Records[0].MeanAll, 1e-5);
+                    Assert.AreEqual(meanSubst1LOD, section.Records[1].MeanAll, 1e-5);
                 } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZero && missingValueImputationMethod == MissingValueImputationMethod.SetZero) {
-                    Assert.AreEqual(meanSubst0Zero, section.IndividualDayRecords[0].MeanAll, 1e-5);
-                    Assert.AreEqual(meanSubst1Zero, section.IndividualDayRecords[1].MeanAll, 1e-5);
+                    Assert.AreEqual(meanSubst0Zero, section.Records[0].MeanAll, 1e-5);
+                    Assert.AreEqual(meanSubst1Zero, section.Records[1].MeanAll, 1e-5);
                 } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByLODLOQSystem && missingValueImputationMethod == MissingValueImputationMethod.ImputeFromData) {
-                    Assert.AreEqual(meanSubst1LOD, section.IndividualDayRecords[1].MeanAll, 1e-5);
+                    Assert.AreEqual(meanSubst1LOD, section.Records[1].MeanAll, 1e-5);
                 } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZeroLOQSystem && missingValueImputationMethod == MissingValueImputationMethod.ImputeFromData) {
-                    Assert.AreEqual(meanSubst1LOD, section.IndividualDayRecords[1].MeanAll, 1e-5);
+                    Assert.AreEqual(meanSubst1LOD, section.Records[1].MeanAll, 1e-5);
                 } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZero && missingValueImputationMethod == MissingValueImputationMethod.ImputeFromData) {
-                    Assert.AreEqual(meanSubst1Zero, section.IndividualDayRecords[1].MeanAll, 1e-5);
+                    Assert.AreEqual(meanSubst1Zero, section.Records[1].MeanAll, 1e-5);
                 }
             }
         }
@@ -492,7 +501,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 AllCompounds = substances,
                 ActiveSubstances = substances,
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
-                HbmSamplingMethods = [samplingMethod]
+                HbmSamplingMethods = [samplingMethod],
+                HbmSurveys = [new HumanMonitoringSurvey()]
             };
 
             var calculator = new HumanMonitoringAnalysisActionCalculator(project);
@@ -500,12 +510,12 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var hbmAnalysisActionResult = header.Item2 as HumanMonitoringAnalysisActionResult;
 
-            Assert.IsFalse(hbmAnalysisActionResult.HbmIndividualDayConcentrations.All(c => c.HbmIndividualDayConcentrations.All(v => double.IsNaN(v.SimulatedIndividual.BodyWeight))));
-            Assert.IsFalse(hbmAnalysisActionResult.HbmIndividualConcentrations.All(c => c.HbmIndividualConcentrations.All(v => double.IsNaN(v.SimulatedIndividual.BodyWeight))));
+            Assert.IsFalse(hbmAnalysisActionResult.HbmIndividualDayCollection.All(c => c.HbmIndividualDayConcentrations.All(v => double.IsNaN(v.SimulatedIndividual.BodyWeight))));
+            Assert.IsFalse(hbmAnalysisActionResult.HbmIndividualCollection.All(c => c.HbmIndividualConcentrations.All(v => double.IsNaN(v.SimulatedIndividual.BodyWeight))));
             var avgBwFromIndividuals = individuals
                 .Where(i => !double.IsNaN(i.BodyWeight))
                 .Average(i => i.BodyWeight);
-            var avgBwFromHbmData = hbmAnalysisActionResult.HbmIndividualDayConcentrations
+            var avgBwFromHbmData = hbmAnalysisActionResult.HbmIndividualDayCollection
                 .SelectMany(d => d.HbmIndividualDayConcentrations)
                 .DistinctBy(i => i.SimulatedIndividual)
                 .Average(d => d.SimulatedIndividual.BodyWeight);
@@ -573,7 +583,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 CorrectedRelativePotencyFactors = rpfs,
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
                 HbmSamplingMethods = [samplingMethodBlood],
-                KineticConversionFactorModels = [kineticConversionFactorModel]
+                KineticConversionFactorModels = [kineticConversionFactorModel],
+                HbmSurveys = [new HumanMonitoringSurvey()]
             };
 
             var calculator = new HumanMonitoringAnalysisActionCalculator(project);
@@ -677,7 +688,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 CorrectedRelativePotencyFactors = rpfs,
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
                 HbmSamplingMethods = [samplingMethodBlood],
-                KineticConversionFactorModels = [kineticConversionFactorModel]
+                KineticConversionFactorModels = [kineticConversionFactorModel],
+                HbmSurveys = [new HumanMonitoringSurvey()]
             };
 
             var calculator = new HumanMonitoringAnalysisActionCalculator(project);
@@ -755,7 +767,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 AllCompounds = substances,
                 ActiveSubstances = activeSubstances,
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
-                HbmSamplingMethods = [samplingMethod]
+                HbmSamplingMethods = [samplingMethod],
+                HbmSurveys = [                    FakeHbmDataGenerator.FakeHbmSurvey(individualDays)                ]
             };
 
             var calculator = new HumanMonitoringAnalysisActionCalculator(project);
@@ -764,19 +777,19 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var hbmAnalysisActionResult = header.Item2 as HumanMonitoringAnalysisActionResult;
 
             Assert.IsTrue(hbmAnalysisActionResult
-                .HbmIndividualDayConcentrations
+                .HbmIndividualDayCollection
                 .All(c => c.HbmIndividualDayConcentrations
                     .All(v => v.ConcentrationsBySubstance.All(c => activeSubstances.Contains(c.Key)))));
             Assert.IsFalse(hbmAnalysisActionResult
-               .HbmIndividualDayConcentrations
+               .HbmIndividualDayCollection
                .All(c => c.HbmIndividualDayConcentrations
                    .All(v => v.ConcentrationsBySubstance.All(c => nonActiveSubstances.Contains(c.Key)))));
             Assert.IsTrue(hbmAnalysisActionResult
-               .HbmIndividualConcentrations
+               .HbmIndividualCollection
                .All(c => c.HbmIndividualConcentrations
                    .All(v => v.ConcentrationsBySubstance.All(c => activeSubstances.Contains(c.Key)))));
             Assert.IsFalse(hbmAnalysisActionResult
-                .HbmIndividualConcentrations
+                .HbmIndividualCollection
                 .All(c => c.HbmIndividualConcentrations
                     .All(v => v.ConcentrationsBySubstance.All(c => nonActiveSubstances.Contains(c.Key)))));
         }

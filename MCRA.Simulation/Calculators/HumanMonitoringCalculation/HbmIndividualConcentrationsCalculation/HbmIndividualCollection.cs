@@ -12,7 +12,10 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualCo
                 return TargetUnit.Target;
             }
         }
+
         public ICollection<HbmIndividualConcentration> HbmIndividualConcentrations { get; set; }
+
+        public ICollection<HbmIndividualDayConcentration> TimePointIndividualDayConcentrations { get; set; }
 
     }
 }

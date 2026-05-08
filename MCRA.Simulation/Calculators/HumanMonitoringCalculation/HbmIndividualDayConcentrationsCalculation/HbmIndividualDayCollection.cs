@@ -34,6 +34,5 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDa
         public override string ToString() {
             return TargetUnit.ToString() + $" ({nameof(HbmIndividualDayConcentration)}(s): {HbmIndividualDayConcentrations.Count})";
         }
-
     }
 }

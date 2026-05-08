@@ -23,6 +23,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             foreach (var item in simulatedIndividualDays) {
                 var result = new HbmCumulativeIndividualDayConcentration() {
                     Day = item.Day,
+                    TimePoint = null,
                     SimulatedIndividual = item.SimulatedIndividual,
                     CumulativeConcentration = random.NextDouble() * 100,
                 };

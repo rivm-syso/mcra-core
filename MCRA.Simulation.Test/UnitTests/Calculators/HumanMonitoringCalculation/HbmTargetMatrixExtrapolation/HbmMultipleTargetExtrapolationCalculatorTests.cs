@@ -104,6 +104,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                     individualDays,
                     substances,
                     ExposureType.Chronic,
+                    null,
                     new CompositeProgressState()
                 );
 
@@ -249,6 +250,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                     individualDays,
                     substances,
                     ExposureType.Chronic,
+                    null,
                     new CompositeProgressState()
                 );
 

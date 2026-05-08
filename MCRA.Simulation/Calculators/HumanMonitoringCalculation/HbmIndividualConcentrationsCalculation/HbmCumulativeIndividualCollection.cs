@@ -13,5 +13,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualCo
         /// </summary>
         public ICollection<HbmCumulativeIndividualConcentration> HbmCumulativeIndividualConcentrations { get; set; }
 
+        public ICollection<HbmCumulativeIndividualDayConcentration> TimePointIndividualDayConcentrations { get; set; }
+
     }
 }

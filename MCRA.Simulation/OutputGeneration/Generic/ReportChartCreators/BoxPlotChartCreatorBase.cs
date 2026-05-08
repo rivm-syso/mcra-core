@@ -242,12 +242,17 @@ namespace MCRA.Simulation.OutputGeneration {
             return whiskers;
         }
 
-        protected void updateLogarithmicAxis(LogarithmicAxis logarithmicAxis, double minimum, double maximum) {
+        protected void updateLogarithmicAxis(
+            LogarithmicAxis logarithmicAxis,
+            double minimum,
+            double maximum,
+            double multiplier = 10
+        ) {
             logarithmicAxis.MajorStep = Math.Pow(10, Math.Ceiling(Math.Log10((maximum - minimum) / 5)));
             logarithmicAxis.MajorStep = logarithmicAxis.MajorStep > 0 ? logarithmicAxis.MajorStep : double.NaN;
             logarithmicAxis.Minimum = minimum * .9;
             logarithmicAxis.AbsoluteMinimum = minimum * .9;
-            logarithmicAxis.Maximum = 10 * maximum;
+            logarithmicAxis.Maximum = multiplier * maximum;
         }
     }
 }

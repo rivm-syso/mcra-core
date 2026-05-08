@@ -55,6 +55,10 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 section.SummarizeSetting(SettingsItemType.McrPlotPercentiles, _configuration.McrPlotPercentiles);
                 section.SummarizeSetting(SettingsItemType.McrPlotMinimumPercentage, _configuration.McrPlotMinimumPercentage);
             }
+            section.SummarizeSetting(SettingsItemType.OccupationalExposureAssessment, _configuration.OccupationalExposureAssessment);
+            if (_configuration.OccupationalExposureAssessment) {
+                section.SummarizeSetting(SettingsItemType.ShiftAnalysis, _configuration.ShiftAnalysis);
+            }
             return section;
         }
     }

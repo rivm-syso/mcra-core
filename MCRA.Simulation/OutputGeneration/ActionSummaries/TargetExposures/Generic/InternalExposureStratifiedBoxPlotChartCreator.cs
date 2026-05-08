@@ -44,9 +44,9 @@ namespace MCRA.Simulation.OutputGeneration {
         public override PlotModel Create() {
             var results = _records
                 .OrderBy(c => c.GetLabel())
+                .ThenBy(c => c.Stratification)
                 .Select(c =>  (
                     stratifier: c.Stratification,
-                    descriptor: getLabel(c.GetLabel(), c.Stratification),
                     record: c as BoxPlotChartRecord
                 ))
                 .ToList();

@@ -2,7 +2,8 @@
 using MCRA.Simulation.OutputGeneration.Helpers;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
-    public class HbmIndividualContributionsSectionView : SectionView<HbmIndividualContributionsSection> {
+    public class HbmIndividualContributionsSectionView
+        : SectionView<HbmIndividualContributionsSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             var target = Model.Target;
             sb.Append(TableHelpers.CsvExportLink("IndividualHBMContributionsBoxPlotTable", Model, Model.HbmBoxPlotRecords, ViewBag, true, true));

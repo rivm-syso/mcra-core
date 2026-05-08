@@ -9,9 +9,6 @@ namespace MCRA.Simulation.OutputGeneration {
         public string SubstanceName { get; set; }
 
         public override string GetLabel() {
-            if (!string.IsNullOrEmpty(Stratification)) {
-                return $"{SubstanceName} ({Stratification})";
-            }
             return $"{SubstanceName}";
         }
 

@@ -12,5 +12,6 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         /// The cumulative concentration value.
         /// </summary>
         public double CumulativeConcentration { get; set; }
+
     }
 }

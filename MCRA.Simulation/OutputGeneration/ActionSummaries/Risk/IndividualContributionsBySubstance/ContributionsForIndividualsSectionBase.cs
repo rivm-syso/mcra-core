@@ -1,7 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.RiskCalculation;
-using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 
@@ -58,7 +57,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.Risk.IndividualContri
             var samplingWeights = individualContributions.Select(c => c.samplingWeight).ToList();
             var contributions = individualContributions.Select(c => c.contribution).ToList();
             var meanContribution = individualContributions.Sum(c => c.contribution * c.samplingWeight) / samplingWeights.Sum();
-            var result = new List<HbmConcentrationsPercentilesRecord>();
+            var result = new List<HbmSubstancePercentilesRecord>();
             var percentages = new double[] { 5, 10, 25, 50, 75, 90, 95 };
             var percentiles = contributions
                 .PercentilesWithSamplingWeights(samplingWeights, percentages)

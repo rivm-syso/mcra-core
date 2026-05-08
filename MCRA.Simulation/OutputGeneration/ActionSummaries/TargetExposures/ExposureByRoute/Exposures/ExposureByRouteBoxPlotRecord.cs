@@ -10,9 +10,6 @@ namespace MCRA.Simulation.OutputGeneration {
         public string Route { get; set; }
 
         public override string GetLabel() {
-            if (!string.IsNullOrEmpty(Stratification)) {
-                return $"{Route} ({Stratification})";
-            }
             return Route;
         }
 

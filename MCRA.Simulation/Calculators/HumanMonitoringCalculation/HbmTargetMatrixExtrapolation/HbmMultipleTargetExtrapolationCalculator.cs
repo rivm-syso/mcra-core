@@ -9,12 +9,13 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
     public static class HbmMultipleTargetExtrapolationCalculator {
 
         public static List<HbmIndividualDayCollection> Calculate(
-           List<HbmIndividualDayCollection> hbmIndividualDayCollections,
-           ICollection<IKineticConversionFactorModel> kineticConversionFactorModels,
-           List<SimulatedIndividualDay> simulatedIndividualDays,
-           ICollection<Compound> substances,
-           ExposureType exposureType,
-           CompositeProgressState progressState
+            List<HbmIndividualDayCollection> hbmIndividualDayCollections,
+            ICollection<IKineticConversionFactorModel> kineticConversionFactorModels,
+            List<SimulatedIndividualDay> simulatedIndividualDays,
+            ICollection<Compound> substances,
+            ExposureType exposureType,
+            Dictionary<string, HumanMonitoringTimepoint> timePointLookup,
+            CompositeProgressState progressState
         ) {
             var targetsTo = kineticConversionFactorModels
                 .Select(m => m.TargetTo)
@@ -29,13 +30,14 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
                 kineticConversionFactorModels
             );
             var monitoringOtherIndividualDayCalculator = new HbmIndividualDayMatrixExtrapolationCalculator(
-                matrixConversionCalculator
+                matrixConversionCalculator,
+                timePointLookup
             );
 
             foreach (var targetTo in targetsTo) {
                 var collectionTo = hbmIndividualDayCollections.FirstOrDefault(c => c.Target == targetTo)
                     ?? HbmIndividualDayConcentrationsCalculator
-                        .CreateDefaultHbmIndividualDayCollection(simulatedIndividualDays, targetTo);
+                        .CreateDefaultHbmIndividualDayCollection(simulatedIndividualDays, targetTo, timePointLookup);
 
                 var conversionModelsFrom = kineticConversionFactorModels
                     .Where(m => m.TargetTo == collectionTo.Target)

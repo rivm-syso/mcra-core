@@ -146,4 +146,22 @@
     </Description>
     <ValueType>Boolean</ValueType>
   </SettingsItem>
+  <SettingsItem>
+    <Id>OccupationalExposureAssessment</Id>
+    <Name>Occupational exposure assessment</Name>
+    <Description>
+      Perform an occupational exposure assessment. If unchecked, no additional output will be generated. If
+      checked, the output will contain an additional section with the occupational exposure assessment results.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ShiftAnalysis</Id>
+    <Name>Perform pre-/post shift comparison</Name>
+    <Description>
+      Perform a pre-/post shift comparison. If unchecked, no pre-/post shift comparison is performed. If
+      checked, the output will contain an additional section with the pre-/post shift comparison results.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
 </SettingsItems>

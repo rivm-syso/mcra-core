@@ -10,10 +10,13 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
     public sealed class HbmIndividualDayMatrixExtrapolationCalculator {
 
         private readonly TargetMatrixKineticConversionCalculator _targetMatrixConversionCalculator;
+        private readonly Dictionary<string, HumanMonitoringTimepoint> _timePointLookup;
 
         public HbmIndividualDayMatrixExtrapolationCalculator(
-            TargetMatrixKineticConversionCalculator targetMatrixConversionCalculator
+            TargetMatrixKineticConversionCalculator targetMatrixConversionCalculator,
+            Dictionary<string, HumanMonitoringTimepoint> timePointLookup
         ) {
+            _timePointLookup = timePointLookup;
             _targetMatrixConversionCalculator = targetMatrixConversionCalculator;
         }
 
@@ -153,6 +156,9 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
                         SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId,
                         SimulatedIndividual = individualDay.SimulatedIndividual,
                         Day = individualDay.Day,
+                        TimePoint = _timePointLookup != null
+                            ? _timePointLookup.TryGetValue(individualDay.Day, out var val) ? val : null
+                            : null,
                         ConcentrationsBySubstance = concentrationsBySubstance
                             .ToDictionary(o => o.Key, o => o.Value)
                     };
@@ -197,7 +203,10 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
                     // create it and add it to the individual day concentrations collection
                     mainRecord = new HbmIndividualDayConcentration() {
                         SimulatedIndividual = individualDay.SimulatedIndividual,
-                        Day = individualDay.Day
+                        Day = individualDay.Day,
+                        TimePoint = _timePointLookup != null
+                            ? _timePointLookup.TryGetValue(individualDay.Day, out var val) ? val : null
+                            : null,
                     };
                     individualDayConcentrations[key] = mainRecord;
                 }

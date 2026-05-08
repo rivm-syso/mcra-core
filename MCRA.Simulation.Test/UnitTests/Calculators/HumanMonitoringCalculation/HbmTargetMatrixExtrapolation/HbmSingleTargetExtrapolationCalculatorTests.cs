@@ -122,6 +122,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                     ExposureRoute.Undefined,
                     kineticConversionCalculatorFactory,
                     null,
+                    null,
                     new CompositeProgressState()
                 );
 

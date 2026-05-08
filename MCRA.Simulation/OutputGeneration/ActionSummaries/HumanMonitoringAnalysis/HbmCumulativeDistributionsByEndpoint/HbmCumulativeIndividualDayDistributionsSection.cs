@@ -1,125 +1,110 @@
-﻿using MCRA.General;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
+using MCRA.Simulation.Calculators.Stratification;
 using MCRA.Simulation.Constants;
-using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
-using MCRA.Utils.ExtensionMethods;
-using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class HbmCumulativeIndividualDayDistributionsSection : SummarySection {
-        private readonly double _upperWhisker = 95;
-        public override bool SaveTemporaryData => true;
-
-        public List<HbmIndividualDayDistributionBySubstanceRecord> Records { get; set; } = [];
-        public List<HbmConcentrationsPercentilesRecord> BoxPlotRecords { get; set; }
-        public double? RestrictedUpperPercentile { get; set; }
+    public sealed class HbmCumulativeIndividualDayDistributionsSection
+        : HbmCumulativeDistributionBySubstanceSectionBase<HbmSubstanceContributorKey, HbmConcentrationBySubstanceRecord, HbmSubstancePercentilesRecord> {
 
         public void Summarize(
             HbmCumulativeIndividualDayCollection collection,
+            PopulationStratifier stratifier,
             double lowerPercentage,
             double upperPercentage,
             bool skipPrivacySensitiveOutputs
         ) {
+            ExposureType = ExposureType.Acute;
             if (skipPrivacySensitiveOutputs) {
                 var maxUpperPercentile = SimulationConstants.MaxUpperPercentage(collection.HbmCumulativeIndividualDayConcentrations.Count);
                 if (_upperWhisker > maxUpperPercentile) {
                     RestrictedUpperPercentile = maxUpperPercentile;
                 }
             }
-            var result = new List<HbmIndividualDayDistributionBySubstanceRecord>();
             var percentages = new double[] { lowerPercentage, 50, upperPercentage };
-            var positives = collection
-                .HbmCumulativeIndividualDayConcentrations
-                .Where(c => c.CumulativeConcentration > 0)
-                .ToList();
-            var weights = positives.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
-            var percentiles = positives.Select(c => c.CumulativeConcentration).PercentilesWithSamplingWeights(weights, percentages);
+            var substance = new Compound() { Name = "Cumulative", Code = "Cumulative" };
+            var descriptor = new HbmSubstanceContributorKey() { Substance = substance };
 
-            var weightsAll = collection.HbmCumulativeIndividualDayConcentrations.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
-            var percentilesAll = collection.HbmCumulativeIndividualDayConcentrations
-                .Select(c => c.CumulativeConcentration)
-                .PercentilesWithSamplingWeights(weightsAll, percentages);
-            var record = new HbmIndividualDayDistributionBySubstanceRecord {
-                Unit = collection.TargetUnit.GetShortDisplayName(TargetUnit.DisplayOption.AppendExpressionType),
-                CodeTargetSurface = collection.TargetUnit.Target.Code,
-                BiologicalMatrix = collection.TargetUnit.BiologicalMatrix != BiologicalMatrix.Undefined
-                    ? collection.TargetUnit.BiologicalMatrix.GetDisplayName()
-                    : null,
-                ExposureRoute = collection.TargetUnit.ExposureRoute != ExposureRoute.Undefined
-                    ? collection.TargetUnit.ExposureRoute.GetDisplayName()
-                    : null,
-                SubstanceName = "Cumulative",
-                SubstanceCode = "Cumulative",
-                PercentagePositives = weights.Count / (double)collection.HbmCumulativeIndividualDayConcentrations.Count * 100,
-                MeanPositives = positives.Sum(c => c.CumulativeConcentration * c.SimulatedIndividual.SamplingWeight) / weights.Sum(),
-                LowerPercentilePositives = percentiles[0],
-                Median = percentiles[1],
-                UpperPercentilePositives = percentiles[2],
-                LowerPercentileAll = percentilesAll[0],
-                MedianAll = percentilesAll[1],
-                UpperPercentileAll = percentilesAll[2],
-                NumberOfDays = weights.Count,
-                MedianAllUncertaintyValues = [],
-                MeanAll = collection.HbmCumulativeIndividualDayConcentrations.Sum(c => c.CumulativeConcentration * c.SimulatedIndividual.SamplingWeight) / weights.Sum(),
-            };
-            result.Add(record);
+            var concentrations = getConcentrations(collection, stratifier);
+            var record = CreateSummaryRecord(
+                concentrations,
+                descriptor,
+                collection.TargetUnit,
+                null,
+                percentages
+            );
+            Records.Add(record);
 
-            result = [.. result.Where(r => r.MeanPositives > 0)];
-            Records.AddRange(result);
-            summarizeBoxPot(collection);
-        }
-
-        private void summarizeBoxPot(
-            HbmCumulativeIndividualDayCollection cumulativeIndividualDayCollection
-         ) {
-            var result = new List<HbmConcentrationsPercentilesRecord>();
-            var percentages = new double[] { 5, 10, 25, 50, 75, 90, 95 };
-            if (cumulativeIndividualDayCollection.HbmCumulativeIndividualDayConcentrations.Any(c => c.CumulativeConcentration > 0)) {
-                var weights = cumulativeIndividualDayCollection.HbmCumulativeIndividualDayConcentrations
-                    .Select(c => c.SimulatedIndividual.SamplingWeight)
-                    .ToList();
-                var allExposures = cumulativeIndividualDayCollection.HbmCumulativeIndividualDayConcentrations
-                    .Select(c => c.CumulativeConcentration)
-                    .ToList();
-                var percentiles = allExposures
-                    .PercentilesWithSamplingWeights(weights, percentages)
-                    .ToList();
-                var positives = allExposures.Where(r => r > 0).ToList();
-                var record = new HbmConcentrationsPercentilesRecord() {
-                    MinPositives = positives.Any() ? positives.Min() : 0,
-                    MaxPositives = positives.Any() ? positives.Max() : 0,
-                    SubstanceCode = "Cumulative",
-                    SubstanceName = "Cumulative",
-                    Description = $"Cumulative",
-                    Percentiles = [.. percentiles],
-                    NumberOfPositives = positives.Count,
-                    Percentage = positives.Count * 100d / cumulativeIndividualDayCollection.HbmCumulativeIndividualDayConcentrations.Count,
-                    Unit = cumulativeIndividualDayCollection.TargetUnit?.GetShortDisplayName()
-                };
-                result.Add(record);
+            if (stratifier != null) {
+                var stratifiedRecords = CreateStratifiedSummaryRecords(
+                    concentrations,
+                    descriptor,
+                    collection.TargetUnit,
+                    percentages
+                );
+                Records.AddRange(stratifiedRecords);
             }
-            BoxPlotRecords = result;
+
+            var hbmBoxPlotRecord = CreateBoxPlotRecord(
+                concentrations,
+                null,
+                descriptor,
+                collection.TargetUnit
+            );
+            BoxPlotRecord = (collection.TargetUnit.Target, hbmBoxPlotRecord);
+
+            if (stratifier != null) {
+                var results = CreateStratifiedBoxPlotRecords(
+                    concentrations,
+                    descriptor,
+                    collection.TargetUnit
+                );
+                StratifiedHbmBoxPlotRecords = (collection.TargetUnit.Target, results);
+            }
         }
 
         public void SummarizeUncertainty(
-            HbmCumulativeIndividualDayCollection cumulativeIndividualDayCollections,
+            HbmCumulativeIndividualDayCollection collection,
+            PopulationStratifier stratifier,
             double lowerBound,
             double upperBound
         ) {
-            var weightsAll = cumulativeIndividualDayCollections
-                .HbmCumulativeIndividualDayConcentrations
-                .Select(c => c.SimulatedIndividual.SamplingWeight)
-                .ToList();
-            var medianAll = cumulativeIndividualDayCollections
-                .HbmCumulativeIndividualDayConcentrations
-                .Select(c => c.CumulativeConcentration)
-                .PercentilesWithSamplingWeights(weightsAll, 50);
-            var record = Records.FirstOrDefault();
-            if (record != null) {
-                record.MedianAllUncertaintyValues.Add(medianAll);
-                record.LowerUncertaintyBound = lowerBound;
-                record.UpperUncertaintyBound = upperBound;
+            var substance = new Compound() { Name = "Cumulative", Code = "Cumulative" };
+            var descriptor = new HbmSubstanceContributorKey() { Substance = substance };
+
+            var unstratifiedConcentrations = getConcentrations(collection, null);
+            UpdateRecord(
+                unstratifiedConcentrations,
+                descriptor,
+                null,
+                lowerBound,
+                upperBound
+            );
+
+            if (stratifier != null) {
+                var stratifiedConcentrations = getConcentrations(collection, stratifier);
+                UpdateStratifiedRecords(
+                    stratifiedConcentrations,
+                    descriptor,
+                    lowerBound,
+                    upperBound
+                );
             }
+        }
+
+        private static List<HbmConcentrationsByDescriptor<HbmSubstanceContributorKey>> getConcentrations(
+            HbmCumulativeIndividualDayCollection collection,
+            PopulationStratifier stratifier
+        ) {
+            var concentrations = collection.HbmCumulativeIndividualDayConcentrations
+                .Select(c => new HbmConcentrationsByDescriptor<HbmSubstanceContributorKey> {
+                    SamplingWeight = c.SimulatedIndividual.SamplingWeight,
+                    TotalEndpointExposure = c.CumulativeConcentration,
+                    StratificationLevel = stratifier?.GetLevel(c.SimulatedIndividual)
+                })
+                .ToList();
+            return concentrations;
         }
     }
 }

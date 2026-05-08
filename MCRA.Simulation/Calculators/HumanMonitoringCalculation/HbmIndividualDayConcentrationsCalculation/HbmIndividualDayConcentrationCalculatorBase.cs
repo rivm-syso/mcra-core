@@ -29,7 +29,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualCo
                 if (samplesPerIndividualDay.Contains(key)) {
                     var groupedSample = samplesPerIndividualDay[key];
                     var concentrationsBySubstance = computeConcentrationsBySubstance(
-                        groupedSample.ToList(),
+                        [.. groupedSample],
                         substances,
                         sampleSubstanceCollection.SamplingMethod,
                         sampleSubstanceCollection.ExpressionType,
@@ -40,6 +40,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualCo
                         SimulatedIndividual = simDay.SimulatedIndividual,
                         SimulatedIndividualDayId = simDay.SimulatedIndividualDayId,
                         Day = simDay.Day,
+                        TimePoint = groupedSample.First().HumanMonitoringSample.TimePoint,
                         ConcentrationsBySubstance = concentrationsBySubstance
                             .ToDictionary(o => o.Key, o => o.Value)
                     };

@@ -14,16 +14,21 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                 .HbmIndividualDayConcentrations
                 .Select(c => new HbmCumulativeIndividualDayConcentration() {
                     Day = c.Day,
+                    TimePoint = c.TimePoint,
                     SimulatedIndividual = c.SimulatedIndividual,
                     SimulatedIndividualDayId = c.SimulatedIndividualDayId,
                     CumulativeConcentration = activeSubstances.Sum(
-                        substance => c.AverageEndpointSubstanceExposure(substance) * relativePotencyFactors[substance])
+                        substance => c.AverageEndpointSubstanceExposure(substance) * relativePotencyFactors[substance]
+                    )
+                })
+                .ToList();
 
-                }).ToList();
-            return new HbmCumulativeIndividualDayCollection {
+            var cumulativeCollection =  new HbmCumulativeIndividualDayCollection {
                 TargetUnit = collection.TargetUnit,
                 HbmCumulativeIndividualDayConcentrations = cumulativeConcentrations
             };
+
+            return cumulativeCollection;
         }
     }
 }

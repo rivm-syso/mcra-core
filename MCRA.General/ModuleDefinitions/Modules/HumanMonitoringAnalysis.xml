@@ -27,6 +27,7 @@
     <Input>KineticConversionFactors</Input>
     <Input>ExposureBiomarkerConversions</Input>
     <Input>PbkModels</Input>
+    <Input>OccupationalScenarios</Input>
   </CalculationInputs>
   <UncertaintySources>
     <UncertaintySource>HbmNonDetectImputation</UncertaintySource>
@@ -87,6 +88,8 @@
     <CalculationSetting source="PbkModelSimulations">AllowFallbackSystemic</CalculationSetting>
     <CalculationSetting source="PbkModelSimulations">PbkOutputResolutionTimeUnit</CalculationSetting>
     <CalculationSetting source="PbkModelSimulations">PbkOutputResolutionStepSize</CalculationSetting>
+    <CalculationSetting>OccupationalExposureAssessment</CalculationSetting>
+    <CalculationSetting>ShiftAnalysis</CalculationSetting>
   </CalculationSettings>
   <UncertaintySettings>
     <UncertaintySetting source="Action">UncertaintyLowerBound</UncertaintySetting>

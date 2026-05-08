@@ -1,4 +1,6 @@
-﻿namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
+﻿using MCRA.Data.Compiled.Objects;
+
+namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
     public sealed  class HbmCumulativeIndividualDayConcentration : HbmCumulativeIndividualConcentration {
 
         /// <summary>
@@ -10,5 +12,8 @@
         /// The (survey)day of the exposure.
         /// </summary>
         public string Day { get; set; }
+
+        public HumanMonitoringTimepoint TimePoint { get; set; }
+
     }
 }

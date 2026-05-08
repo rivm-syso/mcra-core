@@ -1,14 +1,15 @@
-﻿using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
-using MCRA.Utils.Charting.OxyPlot;
+﻿using MCRA.Utils.Charting.OxyPlot;
 using OxyPlot;
 using OxyPlot.Axes;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public abstract class HbmConcentrationsBoxPlotChartCreatorBase : BoxPlotChartCreatorBase {
+    public abstract class HbmConcentrationsBoxPlotChartCreatorBase<S, T> : BoxPlotChartCreatorBase 
+        where S : IHbmExposureContributorKey, new()
+        where T : HbmBoxPlotRecordBase<S>, new() {
         public override string Title => $"Lower whiskers: p5, p10; box: p25, p50, p75; upper whiskers: p90 and p95.";
 
         protected PlotModel create(
-            ICollection<HbmConcentrationsPercentilesRecord> records,
+            ICollection<T> records,
             string unit,
             bool showOutLiers,
             bool showLabels = true
@@ -46,7 +47,9 @@ namespace MCRA.Simulation.OutputGeneration {
             var xOrder = 0;
             foreach (var item in recordsReversed) {
                 if (showLabels) {
-                    categoryAxis.Labels.Add(item.Description);
+                    var asterix = item.P95 > 0 ? null : " *";
+                    var label = $"{item.GetLabel()}{asterix}";
+                    categoryAxis.Labels.Add(label);
                 }
                 var whiskers = getWhiskers(item.P5, item.P10, item.P25, item.P50, item.P75, item.P90, item.P95);
                 var percentiles = item.Percentiles.Where(c => !double.IsNaN(c)).ToList();
@@ -55,7 +58,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 series.Items.Add(boxPlotItem);
                 maximum = Math.Max(maximum, double.IsNaN(item.P95) ? maximum : item.P95);
                 xOrder++;
-            };
+            }
+            ;
             updateLogarithmicAxis(logarithmicAxis, minimum, maximum);
             plotModel.Axes.Add(logarithmicAxis);
             plotModel.Axes.Add(categoryAxis);

@@ -10,8 +10,8 @@ using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayCon
 namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
     public class HumanMonitoringAnalysisActionResult : IActionResult {
 
-        public List<HbmIndividualDayCollection> HbmIndividualDayConcentrations { get; set; }
-        public List<HbmIndividualCollection> HbmIndividualConcentrations { get; set; }
+        public List<HbmIndividualDayCollection> HbmIndividualDayCollection { get; set; }
+        public List<HbmIndividualCollection> HbmIndividualCollection { get; set; }
         public HbmCumulativeIndividualCollection HbmCumulativeIndividualCollection { get; set; }
         public HbmCumulativeIndividualDayCollection HbmCumulativeIndividualDayCollection { get; set; }
         public IUncertaintyFactorialResult FactorialResult { get; set; }

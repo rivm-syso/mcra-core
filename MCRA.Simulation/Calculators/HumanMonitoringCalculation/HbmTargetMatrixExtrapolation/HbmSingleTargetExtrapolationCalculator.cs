@@ -9,16 +9,17 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
     public static class HbmSingleTargetExtrapolationCalculator {
 
         public static List<HbmIndividualDayCollection> Calculate(
-           List<SimulatedIndividualDay> simulatedIndividualDays,
-           List<HbmIndividualDayCollection> hbmIndividualDayCollections,
-           ICollection<Compound> substances,
-           ExposureType exposureType,
-           TargetLevelType targetLevelType,
-           BiologicalMatrix targetMatrix,
-           ExposureRoute exposureRoute,
-           Func<TargetMatrixKineticConversionCalculator> matrixConversionCalculatorFactory,
-           IRandom generator,
-           CompositeProgressState progress
+            List<SimulatedIndividualDay> simulatedIndividualDays,
+            List<HbmIndividualDayCollection> hbmIndividualDayCollections,
+            ICollection<Compound> substances,
+            ExposureType exposureType,
+            TargetLevelType targetLevelType,
+            BiologicalMatrix targetMatrix,
+            ExposureRoute exposureRoute,
+            Func<TargetMatrixKineticConversionCalculator> matrixConversionCalculatorFactory,
+            Dictionary<string, HumanMonitoringTimepoint> timePointLookup,
+            IRandom generator,
+            CompositeProgressState progress
         ) {
             // Here we assume that we have selected one matrix to which we want to convert all
             // concentrations. However, notice that we could still end up with multiple target units
@@ -46,7 +47,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
             foreach (var target in targets) {
                 if (!targetHbmIndividualDayCollections.Any(r => r.Target == target)) {
                     var defaultCollection = HbmIndividualDayConcentrationsCalculator
-                        .CreateDefaultHbmIndividualDayCollection(simulatedIndividualDays, target);
+                        .CreateDefaultHbmIndividualDayCollection(simulatedIndividualDays, target, timePointLookup);
                     targetHbmIndividualDayCollections.Add(defaultCollection);
                 }
             }
@@ -60,7 +61,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
 
             foreach (var targetHbmIndividualDayCollection in targetHbmIndividualDayCollections) {
                 var monitoringOtherIndividualDayCalculator = new HbmIndividualDayMatrixExtrapolationCalculator(
-                    matrixConversionCalculator
+                    matrixConversionCalculator,
+                    timePointLookup
                 );
                 collection = monitoringOtherIndividualDayCalculator
                     .Calculate(
