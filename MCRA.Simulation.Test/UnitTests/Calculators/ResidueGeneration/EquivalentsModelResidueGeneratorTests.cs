@@ -9,25 +9,10 @@ using MCRA.Utils.Statistics;
 namespace MCRA.Simulation.Test.UnitTests.Calculators.ResidueGeneration {
 
     [TestClass]
-    public class ResidueGeneratorFactoryTests {
+    public class EquivalentsModelResidueGeneratorTests {
 
         [TestMethod]
-        [DataRow(ExposureType.Chronic, true, true, false, ShorterThanLifetimeResidueGenerationMethod.RandomPerConsumption, typeof(MeanConcentrationResidueGenerator))]
-        [DataRow(ExposureType.Chronic, true, true, true, ShorterThanLifetimeResidueGenerationMethod.UseMeans, typeof(MeanConcentrationResidueGenerator))]
-        [DataRow(ExposureType.Chronic, true, true, true, ShorterThanLifetimeResidueGenerationMethod.RandomPerConsumption, typeof(EquivalentsModelResidueGenerator))]
-        [DataRow(ExposureType.Chronic, true, false, true, ShorterThanLifetimeResidueGenerationMethod.RandomPerConsumption, typeof(SampleBasedResidueGenerator))]
-        [DataRow(ExposureType.Chronic, false, true, true, ShorterThanLifetimeResidueGenerationMethod.RandomPerConsumption, typeof(SubstanceBasedResidueGenerator))]
-        [DataRow(ExposureType.Acute, true, true, false, ShorterThanLifetimeResidueGenerationMethod.RandomPerConsumption, typeof(EquivalentsModelResidueGenerator))]
-        [DataRow(ExposureType.Acute, true, false, false, ShorterThanLifetimeResidueGenerationMethod.RandomPerConsumption, typeof(SampleBasedResidueGenerator))]
-        [DataRow(ExposureType.Acute, false, true, false, ShorterThanLifetimeResidueGenerationMethod.RandomPerConsumption, typeof(SubstanceBasedResidueGenerator))]
-        public void ResidueGeneratorFactory_TestCreate(
-            ExposureType exposureType,
-            bool isSampleBased,
-            bool useEquivalentsModel,
-            bool shorterThanLifetime,
-            ShorterThanLifetimeResidueGenerationMethod shorterThanLifetimeResidueGenerationMethod,
-            Type expectedType
-        ) {
+        public void EquivalentsModelResidueGenerator_TestGenerateResidues() {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
             var foods = FakeFoodsGenerator.Create(4);
@@ -72,26 +57,15 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ResidueGeneration {
                 cumulativeSubstance,
                 ConcentrationUnit.mgPerKg
             );
-
-            var factory = new ResidueGeneratorFactory(
-                useOccurrencePatternsForResidueGeneration: true,
-                treatMissingOccurrencePatternsAsNotOccurring: true,
-                isSampleBased: isSampleBased,
-                useEquivalentsModel: useEquivalentsModel,
-                exposureType: exposureType,
-                shorterThanLifetime: shorterThanLifetime,
-                nonDetectsHandlingMethod: NonDetectsHandlingMethod.ReplaceByLOR,
-                shorterThanLifetimeResidueGenerationMethod: shorterThanLifetimeResidueGenerationMethod
-            );
-
-            var generator = factory.Create(
-                activeSubstanceSampleCollections,
-                concentrationModels,
-                cumulativeConcentrationModels,
+            var generator = new EquivalentsModelResidueGenerator(
                 correctedRelativePotencyFactors,
-                null
+                cumulativeConcentrationModels,
+                activeSubstanceSampleCollections
             );
-            Assert.IsInstanceOfType(generator, expectedType);
+            generator.Initialize(correctedRelativePotencyFactors.Keys, cumulativeConcentrationModels.Keys);
+            var concentrations = generator.GenerateResidues(modelledFoods.First(), substances, random);
+            Assert.HasCount(concentrations.Count, substances);
+            Assert.IsTrue(concentrations.All(r => !double.IsNaN(r.Concentration) && r.Concentration >= 0));
         }
     }
 }

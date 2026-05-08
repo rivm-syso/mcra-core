@@ -5,6 +5,7 @@ using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.DietaryExposures;
 using MCRA.Simulation.Calculators.IntakeModelling.IndividualAmountCalculation;
+using MCRA.Simulation.Calculators.ResidueGeneration;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
@@ -1130,7 +1131,14 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         }
 
         [TestMethod]
-        public void DietaryExposuresActionCalculator_TestShorterThanLifetime() {
+        [DataRow(2, ShorterThanLifetimeResidueGenerationMethod.UseMeans)]
+        [DataRow(2, ShorterThanLifetimeResidueGenerationMethod.RandomPerConsumption)]
+        [DataRow(7, ShorterThanLifetimeResidueGenerationMethod.UseMeans)]
+        [DataRow(7, ShorterThanLifetimeResidueGenerationMethod.RandomPerConsumption)]
+        public void DietaryExposuresActionCalculator_TestShorterThanLifetime(
+            int shorterThanLifetimeNumberOfDays,
+            ShorterThanLifetimeResidueGenerationMethod shorterThanLifetimeResidueGenerationMethod
+        ) {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var properties = FakeIndividualPropertiesGenerator.Create();
@@ -1180,7 +1188,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 Cumulative = true,
                 ExposureType = ExposureType.Chronic,
                 ShorterThanLifetime = true,
-                ShorterThanLifetimeNumberOfDays = 10,
+                ShorterThanLifetimeNumberOfDays = shorterThanLifetimeNumberOfDays,
+                ShorterThanLifetimeResidueGenerationMethod = shorterThanLifetimeResidueGenerationMethod
             };
             var project = new ProjectDto(config);
 
