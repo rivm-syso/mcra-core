@@ -48,8 +48,8 @@ namespace MCRA.Simulation.OutputGeneration {
                             hbmIndividualDayConcentrations,
                             descriptor,
                             collection.TargetUnit,
-                            percentages,
-                            false
+                            null,
+                            percentages
                         );
                         Records.Add(record);
 

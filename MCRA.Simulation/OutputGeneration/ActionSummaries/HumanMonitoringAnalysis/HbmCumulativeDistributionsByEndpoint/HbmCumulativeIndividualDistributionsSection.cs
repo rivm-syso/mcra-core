@@ -6,7 +6,7 @@ using MCRA.Simulation.Constants;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class HbmCumulativeIndividualDistributionsSection
-        : HbmCumulativeDistributionBySubstanceSectionBase<HbmSubstanceContributorKey, HbmConcentrationBySubstanceRecord, HbmSubstancePercentilesRecord> {
+        : HbmConcentrationByDescriptorSectionBase<HbmSubstanceContributorKey, HbmConcentrationBySubstanceRecord, HbmSubstancePercentilesRecord> {
 
         public void Summarize(
             HbmCumulativeIndividualCollection collection,
@@ -26,6 +26,9 @@ namespace MCRA.Simulation.OutputGeneration {
             var substance = new Compound() { Name = "Cumulative", Code = "Cumulative" };
             var descriptor = new HbmSubstanceContributorKey() { Substance = substance };
 
+            var stratifiedHbmBoxPlotRecords = new List<HbmSubstancePercentilesRecord>();
+            var hbmBoxPlotRecords = new List<HbmSubstancePercentilesRecord>();
+
             var concentrations = getConcentrations(collection, stratifier);
             var record = CreateSummaryRecord(
                 concentrations,
@@ -41,28 +44,31 @@ namespace MCRA.Simulation.OutputGeneration {
                     concentrations,
                     descriptor,
                     collection.TargetUnit,
-                    percentages
+                    percentages,
+                    true
                 );
                 Records.AddRange(stratifiedRecords);
             }
 
-            var hbmBoxPlotRecord = CreateBoxPlotRecord(
+            var result = CreateBoxPlotRecord(
                 concentrations,
-                null,
                 descriptor,
+                null,
                 collection.TargetUnit
             );
-            BoxPlotRecord = (collection.TargetUnit.Target, hbmBoxPlotRecord);
+            hbmBoxPlotRecords.Add(result);
 
             if (stratifier != null) {
-                var stratifiedConcentrations = getConcentrations(collection, stratifier);
-                var results = CreateStratifiedBoxPlotRecords(
-                    stratifiedConcentrations,
+                var stratifiedResults = CreateStratifiedBoxPlotRecords(
+                    concentrations,
                     descriptor,
                     collection.TargetUnit
                 );
-                StratifiedHbmBoxPlotRecords = (collection.TargetUnit.Target, results);
+                stratifiedHbmBoxPlotRecords.AddRange(stratifiedResults);
             }
+
+            HbmBoxPlotRecords[collection.TargetUnit.Target] = hbmBoxPlotRecords;
+            StratifiedHbmBoxPlotRecords[collection.TargetUnit.Target] = stratifiedHbmBoxPlotRecords;
         }
 
         public void SummarizeUncertainty(
@@ -73,19 +79,20 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             var substance = new Compound() { Name = "Cumulative", Code = "Cumulative" };
             var descriptor = new HbmSubstanceContributorKey() { Substance = substance };
-            var unstratifiedConcentrations = getConcentrations(collection, null);
+            var hbmConcentrations = getConcentrations(collection, stratifier);
             UpdateRecord(
-                unstratifiedConcentrations,
+                hbmConcentrations,
                 descriptor,
+                collection.TargetUnit.Target,
                 null,
                 lowerBound,
                 upperBound
             );
             if (stratifier != null) {
-                var stratifiedConcentrations = getConcentrations(collection, stratifier);
                 UpdateStratifiedRecords(
-                    stratifiedConcentrations,
+                    hbmConcentrations,
                     descriptor,
+                    collection.TargetUnit.Target,
                     lowerBound,
                     upperBound
                 );
@@ -100,7 +107,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Select(c => new HbmConcentrationsByDescriptor<HbmSubstanceContributorKey> {
                     SamplingWeight = c.SimulatedIndividual.SamplingWeight,
                     TotalEndpointExposure = c.CumulativeConcentration,
-                    StratificationLevel = stratifier?.GetLevel(c.SimulatedIndividual)
+                    StratificationLevel = stratifier?.GetLevel(c.SimulatedIndividual),
+                    SourceSamplingMethods = []
                 })
                 .ToList();
             return concentrations;

@@ -8,12 +8,12 @@ namespace MCRA.Simulation.OutputGeneration {
         where S : IHbmExposureContributorKey, new()
         where T : HbmBoxPlotRecordBase<S>, new() {
 
-        private readonly T _record;
+        private readonly List<T> _records;
         private readonly ExposureType _exposureType;
         private readonly string _sectionId;
 
-        public HbmCumulativeDistributionsBoxPlotChartCreator(T record, ExposureType exposureType, string sectionId) {
-            _record = record;
+        public HbmCumulativeDistributionsBoxPlotChartCreator(List<T> records, ExposureType exposureType, string sectionId) {
+            _records = records;
             _exposureType = exposureType;
             _sectionId = sectionId;
             Width = 500;
@@ -35,8 +35,8 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         public override PlotModel Create() {
-            var unit = _record.Unit;
-            return create([_record], $"Cumulative concentration ({unit})", false);
+            var unit = _records.First().Unit;
+            return create(_records, $"Cumulative concentration ({unit})", false);
         }
     }
 }

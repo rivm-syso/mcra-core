@@ -5,7 +5,7 @@ using MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class HbmCumulativeDistributionsSectionView<S, T1, T2>
-        : SectionView<HbmCumulativeDistributionBySubstanceSectionBase<S, T1, T2>>
+        : SectionView<HbmConcentrationByDescriptorSectionBase<S, T1, T2>>
         where S : IHbmExposureContributorKey, new()
         where T1 : HbmConcentrationDistributionRecordBase<S>, new()
         where T2 : HbmBoxPlotRecordBase<S>, new() {
@@ -22,12 +22,17 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             } else {
                 if (Model.Records.Any()) {
                     var panelBuilder = new HtmlTabPanelBuilder();
-                    var targetCode = Model.BoxPlotRecord.Item1.Code;
-                    var targetName = Model.BoxPlotRecord.Item1.GetDisplayName();
+                    var item = Model.HbmBoxPlotRecords.First();
+                    var targetCode = item.Key.Code;
+                    var targetName = item.Key.GetDisplayName();
                     {
-                        var percentileDataSection = DataSectionHelper
-                            .CreateCsvDataSection("HbmCumulativeConcentrationsPercentiles", Model, [Model.BoxPlotRecord.Item2], ViewBag);
-                        var chartCreator = new HbmCumulativeDistributionsBoxPlotChartCreator<S, T2>(Model.BoxPlotRecord.Item2, Model.ExposureType, Model.SectionId);
+                        var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
+                            "HbmCumulativeConcentrationsPercentiles",
+                            Model,
+                            item.Value,
+                            ViewBag
+                        );
+                        var chartCreator = new HbmCumulativeDistributionsBoxPlotChartCreator<S, T2>(item.Value, Model.ExposureType, Model.SectionId);
                         panelBuilder.AddPanel(
                             id: $"Panel_{targetCode}",
                             title: $"{targetName}",
@@ -43,24 +48,24 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                                 chartData: percentileDataSection
                             ));
                     }
-
-                    if (Model.StratifiedHbmBoxPlotRecords.Item2.Count != 0) {
+                    var targetBoxPlotRecords = Model.StratifiedHbmBoxPlotRecords.First();
+                    if (targetBoxPlotRecords.Value.Count != 0) {
                         var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
                             name: $"HbmConcentrationsBySubstancePercentiles_{targetCode}",
                             section: Model,
-                            items: [Model.StratifiedHbmBoxPlotRecords],
+                            items: [targetBoxPlotRecords],
                             viewBag: ViewBag
                         );
 
                         var chartCreator = new HbmStratifiedBoxPlotChartCreator<S, T2>(
-                            Model.StratifiedHbmBoxPlotRecords.Item2,
-                            Model.StratifiedHbmBoxPlotRecords.Item1,
+                            targetBoxPlotRecords.Value,
+                            targetBoxPlotRecords.Key,
                             Model.SectionId,
-                            Model.StratifiedHbmBoxPlotRecords.Item2.FirstOrDefault()?.Unit ?? string.Empty,
+                            targetBoxPlotRecords.Value.FirstOrDefault()?.Unit ?? string.Empty,
                             Model.ShowOutliers
                         );
 
-                        var warning = Model.StratifiedHbmBoxPlotRecords.Item2.Any(c => c.P95 == 0)
+                        var warning = targetBoxPlotRecords.Value.Any(c => c.P95 == 0)
                             ? "The asterisk indicates substances with positive measurements above an upper whisker of zero."
                             : string.Empty;
                         var figCaption = $"{targetName} individual {day} concentrations cumulative. " + chartCreator.Title + $" {warning}";

@@ -47,8 +47,8 @@ namespace MCRA.Simulation.OutputGeneration {
                                 [.. group],
                                 group.Key,
                                 collection.TargetUnit,
-                                percentages,
-                                false
+                                null,
+                                percentages
                             );
                             Records.Add(record);
 

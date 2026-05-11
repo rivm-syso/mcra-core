@@ -24,28 +24,28 @@ namespace MCRA.Simulation.OutputGeneration {
         public bool ShowOutliers { get; set; }
         public bool DetailsSection { get; set; }
 
-        protected static T1 CreateSummaryRecord(
-            List<HbmConcentrationsByDescriptor<S>> concentrations,
-            S descriptor,
-            TargetUnit targetUnit,
-            double[] percentages,
-            bool stratified
-        ) {
-            if (concentrations != null) {
-                var record = CreateSummaryRecord(
-                    concentrations,
-                    descriptor,
-                    targetUnit,
-                    stratified ? concentrations.FirstOrDefault()?.StratificationLevel : null,
-                    percentages
-                );
-                if (!concentrations.Any()) {
-                    return CreateMissingRecord(targetUnit, descriptor);
-                }
-                return record;
-            }
-            return null;
-        }
+        //protected static T1 CreateSummaryRecord(
+        //    List<HbmConcentrationsByDescriptor<S>> concentrations,
+        //    S descriptor,
+        //    TargetUnit targetUnit,
+        //    double[] percentages,
+        //    bool stratified
+        //) {
+        //    if (concentrations != null) {
+        //        var record = CreateSummaryRecord(
+        //            concentrations,
+        //            descriptor,
+        //            targetUnit,
+        //            stratified ? concentrations.FirstOrDefault()?.StratificationLevel : null,
+        //            percentages
+        //        );
+        //        if (!concentrations.Any()) {
+        //            return CreateMissingRecord(targetUnit, descriptor);
+        //        }
+        //        return record;
+        //    }
+        //    return null;
+        //}
 
         protected static T1 CreateSummaryRecord(
             List<HbmConcentrationsByDescriptor<S>> concentrations,
@@ -54,51 +54,59 @@ namespace MCRA.Simulation.OutputGeneration {
             IStratificationLevel stratificationLevel,
             double[] percentages
         ) {
-            var sourceSamplingMethods = concentrations
-                .SelectMany(c => c.SourceSamplingMethods)
-                .GroupBy(c => c)
-                .Select(c => c.Key.Name)
-                .ToList();
+            if (concentrations != null) {
 
-            var weights = concentrations
-                .Where(c => c.TotalEndpointExposure > 0)
-                .Select(c => c.SamplingWeight)
-                .ToList();
-            var percentiles = concentrations
-                .Where(c => c.TotalEndpointExposure > 0)
-                .Select(c => c.TotalEndpointExposure)
-                .PercentilesWithSamplingWeights(weights, percentages);
+                var sourceSamplingMethodsXX = concentrations
+                    .SelectMany(c => c.SourceSamplingMethods)
+                    .ToList();
+                var sourceSamplingMethods = concentrations
+                    .SelectMany(c => c.SourceSamplingMethods)
+                    .GroupBy(c => c)
+                    .Select(c => c.Key.Name)
+                    .ToList();
 
-            var weightsAll = concentrations.Select(c => c.SamplingWeight).ToList();
-            var percentilesAll = concentrations
-                .Select(c => c.TotalEndpointExposure)
-                .PercentilesWithSamplingWeights(weightsAll, percentages);
-            var record = new T1 {
-                Stratification = stratificationLevel?.Name,
-                CodeTargetSurface = targetUnit.Target.Code,
-                BiologicalMatrix = targetUnit.BiologicalMatrix != BiologicalMatrix.Undefined
-                    ? targetUnit.BiologicalMatrix.GetDisplayName()
-                    : null,
-                ExposureRoute = targetUnit.ExposureRoute != ExposureRoute.Undefined
-                    ? targetUnit.ExposureRoute.GetDisplayName()
-                    : null,
-                Unit = targetUnit.GetShortDisplayName(),
-                ExpressionType = targetUnit?.ExpressionType != ExpressionType.None ? targetUnit?.ExpressionType.GetDisplayName() : "",
-                MeanAll = concentrations.Sum(c => c.TotalEndpointExposure * c.SamplingWeight) / weightsAll.Sum(),
-                PercentagePositives = weights.Count / (double)concentrations.Count * 100,
-                MeanPositives = concentrations.Sum(c => c.TotalEndpointExposure * c.SamplingWeight) / weights.Sum(),
-                LowerPercentilePositives = percentiles[0],
-                Median = percentiles[1],
-                UpperPercentilePositives = percentiles[2],
-                LowerPercentileAll = percentilesAll[0],
-                MedianAll = percentilesAll[1],
-                UpperPercentileAll = percentilesAll[2],
-                NumberOfDays = weights.Count,
-                SourceSamplingMethods = string.Join(", ", sourceSamplingMethods),
-                MedianAllUncertaintyValues = []
-            };
-            record.SetDescriptorValues(descriptor);
-            return record;
+                var weights = concentrations
+                    .Where(c => c.TotalEndpointExposure > 0)
+                    .Select(c => c.SamplingWeight)
+                    .ToList();
+                var percentiles = concentrations
+                    .Where(c => c.TotalEndpointExposure > 0)
+                    .Select(c => c.TotalEndpointExposure)
+                    .PercentilesWithSamplingWeights(weights, percentages);
+
+                var weightsAll = concentrations.Select(c => c.SamplingWeight).ToList();
+                var percentilesAll = concentrations
+                    .Select(c => c.TotalEndpointExposure)
+                    .PercentilesWithSamplingWeights(weightsAll, percentages);
+                var record = new T1 {
+                    Stratification = stratificationLevel?.Name,
+                    CodeTargetSurface = targetUnit.Target.Code,
+                    BiologicalMatrix = targetUnit.BiologicalMatrix != BiologicalMatrix.Undefined
+                        ? targetUnit.BiologicalMatrix.GetDisplayName()
+                        : null,
+                    ExposureRoute = targetUnit.ExposureRoute != ExposureRoute.Undefined
+                        ? targetUnit.ExposureRoute.GetDisplayName()
+                        : null,
+                    Unit = targetUnit.GetShortDisplayName(),
+                    ExpressionType = targetUnit?.ExpressionType != ExpressionType.None ? targetUnit?.ExpressionType.GetDisplayName() : "",
+                    MeanAll = concentrations.Sum(c => c.TotalEndpointExposure * c.SamplingWeight) / weightsAll.Sum(),
+                    PercentagePositives = weights.Count / (double)concentrations.Count * 100,
+                    MeanPositives = concentrations.Sum(c => c.TotalEndpointExposure * c.SamplingWeight) / weights.Sum(),
+                    LowerPercentilePositives = percentiles[0],
+                    Median = percentiles[1],
+                    UpperPercentilePositives = percentiles[2],
+                    LowerPercentileAll = percentilesAll[0],
+                    MedianAll = percentilesAll[1],
+                    UpperPercentileAll = percentilesAll[2],
+                    NumberOfDays = weights.Count,
+                    SourceSamplingMethods = string.Join(", ", sourceSamplingMethods),
+                    MedianAllUncertaintyValues = []
+                };
+                record.SetDescriptorValues(descriptor);
+                return record;
+            } else {
+                return CreateMissingRecord(targetUnit, descriptor);
+            }
         }
 
         protected List<T1> CreateStratifiedSummaryRecords(
