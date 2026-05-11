@@ -197,7 +197,7 @@ namespace MCRA.Utils.DataFileReading {
             }
 
             if (valFieldType == FieldType.AlphaNumeric) {
-                stringVal = val as string;
+                stringVal = (val as string)?.Trim();
                 if (colFieldType == FieldType.Numeric) {
                     return _converters.Convert<double>(stringVal.Replace(',', '.'));
                 }
