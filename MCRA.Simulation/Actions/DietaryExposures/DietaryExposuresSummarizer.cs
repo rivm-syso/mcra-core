@@ -17,6 +17,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
 
     public enum DietaryExposuresSections {
         DailyIntakeDistributionSection,
+        FrequencyAmountSection,
         DetailsSection,
         ExposuresByFoodSection,
         ExposuresBySubstanceSection,
@@ -134,6 +135,15 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                 } else {
                     summarizeDailyIntakesDistribution(result, data, subHeader, subOrder++);
                 }
+            }
+
+            // Frequencies and amounts.
+            if (_configuration.ExposureType == ExposureType.Chronic
+                && result.DietaryIndividualDayIntakes != null
+                && ((data.CorrectedRelativePotencyFactors?.Count > 0) || (substances?.Count == 1))
+                && outputSettings.ShouldSummarize(DietaryExposuresSections.FrequencyAmountSection)
+            ) {
+                summarizeFrequencyAmount(result, data, subHeaderDetails, subOrder++);
             }
 
             // Diagnostics
@@ -803,19 +813,29 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                     _configuration.UncertaintyUpperBound
                 );
                 subHeader.SaveSummarySection(section);
-
-                if (_configuration.ExposureType == ExposureType.Chronic) {
-                    var frequencyAmountSummarySection = new FrequencyAmountSummarySection() { ProgressState = _progressState };
-                    var sub2Header = subHeader.AddSubSectionHeaderFor(frequencyAmountSummarySection, "Frequency, amounts", 6);
-                    frequencyAmountSummarySection.Summarize(
-                        result.DietaryIndividualDayIntakes,
-                        data.CorrectedRelativePotencyFactors,
-                        data.MembershipProbabilities,
-                        _configuration.IsPerPerson
-                    );
-                    sub2Header.SaveSummarySection(frequencyAmountSummarySection);
-                }
             }
+        }
+
+        /// <summary>
+        /// Daily intakes distribution
+        /// </summary>
+        private void summarizeFrequencyAmount(
+            DietaryExposuresActionResult result,
+            ActionData data,
+            SectionHeader header,
+            int order
+        ) {
+
+            var section = new FrequencyAmountSummarySection() { ProgressState = _progressState };
+            var subHeader = header.AddSubSectionHeaderFor(section, "Frequency, amounts", order);
+            section.Summarize(
+                result.DietaryIndividualDayIntakes,
+                data.CorrectedRelativePotencyFactors,
+                data.MembershipProbabilities,
+                _configuration.IsPerPerson
+            );
+            subHeader.SaveSummarySection(section);
+
         }
 
         private void summarizeConditionalUsualIntakeDistribution(
