@@ -1,4 +1,6 @@
-﻿namespace MCRA.Data.Compiled.Objects {
+﻿using MCRA.General;
+
+namespace MCRA.Data.Compiled.Objects {
     public sealed class OccupationalScenario {
         private string _name;
         public string Code { get; set; }
@@ -7,6 +9,8 @@
             set => _name = value;
         }
         public string Description { get; set; }
+
+        public CaseControlType CaseControl { get; set; }
 
         public List<OccupationalScenarioTask> Tasks { get; set; } = [];
     }

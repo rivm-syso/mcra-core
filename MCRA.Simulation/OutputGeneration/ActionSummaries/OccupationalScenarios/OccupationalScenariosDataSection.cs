@@ -1,4 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class OccupationalScenariosDataSection : SummarySection {
@@ -13,6 +14,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         ScenarioCode = c.Code,
                         ScenarioName = c.Name,
                         Description = c.Description,
+                        CaseControl = c.CaseControl.GetDisplayName(),
                         NumTasks = c.Tasks.Count
                     };
                 })];

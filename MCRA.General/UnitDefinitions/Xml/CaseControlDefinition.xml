@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>CaseControlType</Id>
+  <Name>Case control types.</Name>
+  <UndefinedValue Id="Undefined" Name="Undefined">0</UndefinedValue>
+  <UndefinedAliases>
+    <Alias>Undefined</Alias>
+  </UndefinedAliases>
+  <Description>
+    Case control types.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>Control</Id>
+      <Name>Control</Name>
+      <ShortName>Control</ShortName>
+      <Description>
+        Control.
+      </Description>
+      <Aliases>
+        <Alias>Control</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Case</Id>
+      <Name>Case</Name>
+      <ShortName>Case</ShortName>
+      <Description>
+        Case.
+      </Description>
+      <Aliases>
+        <Alias>Case</Alias>
+      </Aliases>
+    </Unit>
+  </Units>
+</UnitDefinition>

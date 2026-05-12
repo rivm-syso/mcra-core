@@ -58,6 +58,10 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             section.SummarizeSetting(SettingsItemType.OccupationalExposureAssessment, _configuration.OccupationalExposureAssessment);
             if (_configuration.OccupationalExposureAssessment) {
                 section.SummarizeSetting(SettingsItemType.ShiftAnalysis, _configuration.ShiftAnalysis);
+                section.SummarizeSetting(SettingsItemType.CaseControlAnalysis, _configuration.CaseControlAnalysis);
+                if (_configuration.CaseControlAnalysis) {
+                    section.SummarizeSetting(SettingsItemType.CaseControlSelection, string.Join(", ", _configuration.CaseControlSelection));
+                }
             }
             return section;
         }

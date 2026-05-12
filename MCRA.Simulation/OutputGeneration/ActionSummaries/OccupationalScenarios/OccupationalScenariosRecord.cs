@@ -15,6 +15,10 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Description")]
         public string Description { get; set; }
 
+        [Description("Case control type ofthe scenario.")]
+        [DisplayName("Case control")]
+        public string CaseControl { get; set; }
+
         [Description("Number of tasks within the scenario.")]
         [DisplayName("Number of tasks")]
         public double NumTasks {  get; set; }

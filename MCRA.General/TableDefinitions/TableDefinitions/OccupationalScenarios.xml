@@ -36,5 +36,12 @@
         <string>Description</string>
       </Aliases>
     </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="CaseControlType">
+      <Id>CaseControl</Id>
+      <Description>Scenario is case or control.</Description>
+      <Aliases>
+        <string>CaseControl</string>
+      </Aliases>
+    </ColumnDefinition>
   </ColumnDefinitions>
 </TableDefinition>

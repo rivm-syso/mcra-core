@@ -55,7 +55,9 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         var occupationalScenario = new OccupationalScenario {
                                             Code = code,
                                             Name = r.GetStringOrNull(RawOccupationalScenarios.Name, fieldMap),
-                                            Description = r.GetStringOrNull(RawOccupationalScenarios.Description, fieldMap)
+                                            Description = r.GetStringOrNull(RawOccupationalScenarios.Description, fieldMap),
+                                            CaseControl = r.GetEnum(RawOccupationalScenarios.CaseControl, fieldMap, CaseControlType.Case),
+
                                         };
                                         allOccupationalscenarios.Add(occupationalScenario.Code, occupationalScenario);
                                     }

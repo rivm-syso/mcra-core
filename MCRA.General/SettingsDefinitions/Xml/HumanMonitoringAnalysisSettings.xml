@@ -164,4 +164,22 @@
     </Description>
     <ValueType>Boolean</ValueType>
   </SettingsItem>
+  <SettingsItem>
+    <Id>CaseControlAnalysis</Id>
+    <Name>Case control analysis</Name>
+    <Description>
+      Perform an occupational case control analysis. If unchecked, no additional output will be generated. If
+      checked, the output will contain an additional section with the occupational case control results.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>CaseControlSelection</Id>
+    <Name>Case control selection</Name>
+    <Description>
+      Specify scenarios for the controls.
+    </Description>
+    <ValueType>AlphaNumeric</ValueType>
+    <IsList>true</IsList>
+  </SettingsItem>
 </SettingsItems>
