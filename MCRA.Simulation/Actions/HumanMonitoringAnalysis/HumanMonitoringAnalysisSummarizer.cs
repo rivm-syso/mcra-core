@@ -10,6 +10,7 @@ using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayCon
 using MCRA.Simulation.Calculators.Stratification;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
+using SQLitePCL;
 
 namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
     public enum HumanMonitoringAnalysisSections {
@@ -41,8 +42,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 return;
             }
 
-            var stratifier = GetPopulationStratifier(data);
-
+            var stratifier = getPopulationStratifier(data);
             var subHeader = header.AddEmptySubSectionHeader(ActionType.GetDisplayName(), order, ActionType.ToString());
             subHeader.Units = CollectUnits(data);
             var subOrder = 0;
@@ -190,7 +190,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
            ActionData data,
            SectionHeader header
         ) {
-            var stratifier = GetPopulationStratifier(data);
+            var stratifier = getPopulationStratifier(data);
 
             if (data.HbmCumulativeIndividualCollection != null || data.HbmCumulativeIndividualDayCollection != null) {
                 summarizeCumulativeConcentrationseUncertainty(
@@ -265,14 +265,19 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     _configuration.UncertaintyUpperBound,
                     header
             );
-
         }
 
-        private PopulationStratifier GetPopulationStratifier(
-            ActionData data
-        ) {
+        private PopulationStratifier getPopulationStratifier(ActionData data) {
             if (_configuration.OccupationalExposureAssessment) {
-                return new OccupationalScenarioStratifier(data.OccupationalScenarios.Values);
+                var outputStratifier = PopulationStratifierFactory
+                    .Create(
+                        _configuration.CaseControlAnalysis
+                            ? OutputStratificationVariable.CaseControl
+                            : OutputStratificationVariable.OccupationalScenario,
+                        scenarios: data.OccupationalScenarios?.Values,
+                        controlScenarioCodes: _configuration.CaseControlSelection
+                    );
+                return outputStratifier;
             }
             return null;
         }

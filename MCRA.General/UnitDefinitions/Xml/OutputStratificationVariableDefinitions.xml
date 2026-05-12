@@ -18,5 +18,11 @@
       <ShortName>Occupational scenario</ShortName>
       <Description>Stratify by occupational scenario.</Description>
     </Unit>
+    <Unit>
+      <Id>CaseControl</Id>
+      <Name>Case control</Name>
+      <ShortName>CaseControl</ShortName>
+      <Description>Stratify by occupational scenario case control.</Description>
+    </Unit>
   </Units>
 </UnitDefinition>
