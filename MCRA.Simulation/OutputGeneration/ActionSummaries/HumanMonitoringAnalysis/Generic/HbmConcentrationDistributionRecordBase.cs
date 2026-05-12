@@ -7,6 +7,7 @@ namespace MCRA.Simulation.OutputGeneration {
     public abstract class HbmConcentrationDistributionRecordBase<T> 
         where T : IHbmExposureContributorKey, new() 
     {
+
         [DisplayName("Stratification")]
         public string Stratification { get; set; }
 

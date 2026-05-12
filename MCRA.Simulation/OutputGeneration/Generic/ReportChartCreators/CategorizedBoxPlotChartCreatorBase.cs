@@ -8,7 +8,7 @@ namespace MCRA.Simulation.OutputGeneration {
     public abstract class CategorizedBoxPlotChartCreatorBase : BoxPlotChartCreatorBase {
 
         protected PlotModel create(
-           ICollection<(string stratifier, BoxPlotChartRecord bps)> records,
+           ICollection<CategorizedBoxPlotChartRecord> records,
            string labelHorizontalAxis,
            bool showOutliers,
            bool showLabels = true,
@@ -16,12 +16,12 @@ namespace MCRA.Simulation.OutputGeneration {
        ) {
             var plotModel = createDefaultPlotModel();
 
-            var recordsReversed = records.Where(c => c.bps.Percentage > 0).Reverse();
-            var minima = records.Where(r => r.bps.MinPositives > 0).Select(r => r.bps.MinPositives).ToList();
+            var recordsReversed = records.Where(c => c.Percentage > 0).Reverse();
+            var minima = records.Where(r => r.MinPositives > 0).Select(r => r.MinPositives).ToList();
             var minimum = minima.Any() ? minima.Min() * 0.9 : 1e-8;
 
-            var stratificationGroups = recordsReversed.GroupBy(r => r.stratifier).ToList();
-            var descriptorValues = recordsReversed.Select(c => c.bps.GetLabel()).ToHashSet();
+            var stratificationGroups = recordsReversed.GroupBy(r => r.Stratification).ToList();
+            var descriptorValues = recordsReversed.Select(c => c.GetLabel()).ToHashSet();
             var descriptorIndexes = descriptorValues
                 .Select((r, ix) => (r, ix))
                 .ToDictionary(r => r.r, r => r.ix);
@@ -42,27 +42,27 @@ namespace MCRA.Simulation.OutputGeneration {
                     WhiskerWidth = 1.1,
 
                 };
-                foreach (var (stratifier, bps) in group) {
-                    var ix = descriptorIndexes[bps.GetLabel()];
+                foreach (var record in group) {
+                    var ix = descriptorIndexes[record.GetLabel()];
                     var outliers = new List<double>();
                     if (showOutliers) {
-                        if (bps.Outliers?.Count > outliersLimit) {
+                        if (record.Outliers?.Count > outliersLimit) {
                             // Restrict the number of outliers to specified limit
-                            outliers = [.. bps.Outliers.Take(outliersLimit - 2)];
+                            outliers = [.. record.Outliers.Take(outliersLimit - 2)];
                             // Including the minimum and maximum of the outliers
-                            outliers.Add(bps.Outliers.Min());
-                            outliers.Add(bps.Outliers.Max());
+                            outliers.Add(record.Outliers.Min());
+                            outliers.Add(record.Outliers.Max());
                         } else {
-                            outliers = bps.Outliers;
+                            outliers = record.Outliers;
                         }
                     }
-                    var whiskers = getWhiskers(bps.P5, bps.P10, bps.P25, bps.P50, bps.P75, bps.P90, bps.P95);
-                    var percentiles = bps.Percentiles.Where(c => !double.IsNaN(c)).ToList();
+                    var whiskers = getWhiskers(record.P5, record.P10, record.P25, record.P50, record.P75, record.P90, record.P95);
+                    var percentiles = record.Percentiles.Where(c => !double.IsNaN(c)).ToList();
                     var replace = percentiles.Any() ? percentiles.Min() : 0;
 
                     var boxPlotItem = createBoxPlotItem(whiskers, outliers, ix, replace, 0, showOutliers);
                     series.Items.Add(boxPlotItem);
-                    maximum = Math.Max(maximum, double.IsNaN(bps.P95) ? maximum : bps.P95);
+                    maximum = Math.Max(maximum, double.IsNaN(record.P95) ? maximum : record.P95);
                 }
                 counter++;
                 plotModel.Series.Add(series);
@@ -77,7 +77,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 MajorGridlineColor = OxyColors.Black,
                 GapWidth = 0.1
             };
-            var categories = recordsReversed.Select(c => c.bps.GetLabel()).ToHashSet();
+            var categories = recordsReversed.Select(c => c.GetLabel()).ToHashSet();
             foreach (var category in categories) {
                 categoryAxis.Labels.Add(category);
             }

@@ -2,11 +2,8 @@
 using MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Generic;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public abstract class HbmBoxPlotRecordBase<T> : BoxPlotChartRecord 
+    public abstract class HbmBoxPlotRecordBase<T> : CategorizedBoxPlotChartRecord
         where T : IExposureContributorKey, new() {
-
-        [DisplayName("Stratification")]
-        public string Stratification { get; set; }
 
         public abstract string GetDescriptorKey();
 

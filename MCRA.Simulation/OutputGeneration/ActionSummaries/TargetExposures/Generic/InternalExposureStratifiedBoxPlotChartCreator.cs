@@ -42,16 +42,12 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         public override PlotModel Create() {
-            var results = _records
-                .OrderBy(c => c.GetLabel())
-                .ThenBy(c => c.Stratification)
-                .Select(c =>  (
-                    stratifier: c.Stratification,
-                    record: c as BoxPlotChartRecord
-                ))
-                .ToList();
             return create(
-                records: results,
+                records: [.. _records
+                    .OrderBy(c => c.GetLabel())
+                    .ThenBy(c => c.Stratification)
+                    .Cast<CategorizedBoxPlotChartRecord>()
+                ],
                 labelHorizontalAxis: $"Exposure ({_unit})",
                 showOutliers: _showOutliers
             );

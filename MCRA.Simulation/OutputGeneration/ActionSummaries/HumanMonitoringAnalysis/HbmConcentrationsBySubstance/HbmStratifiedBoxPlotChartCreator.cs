@@ -36,14 +36,8 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         public override PlotModel Create() {
-            var collection = new List<(string stratifier, BoxPlotChartRecord bps)>();
-            foreach (var record in _records) {
-                var stratifier = record.Stratification;
-                collection.Add((stratifier, record));
-            }
-
             return create(
-                records: collection,
+                records: [.. _records.Cast<CategorizedBoxPlotChartRecord>()],
                 labelHorizontalAxis: $"Concentrations ({_unit})",
                 showOutliers: _showOutliers
             );
