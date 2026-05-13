@@ -47,8 +47,9 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Fitted Model")]
         public ConcentrationModelType Model { get; set; }
 
-        [Display(AutoGenerateField = false)]
-        public ConcentrationUnit Unit { get; set; }
+        [Description("The unit of the concentrations.")]
+        [DisplayName("Unit")]
+        public string Unit { get; set; }
 
         [Description("Estimated mu of the specified distribution (e.g. the lognormal distribution).")]
         [DisplayName("Mu")]
@@ -106,12 +107,12 @@ namespace MCRA.Simulation.OutputGeneration {
         public double? AgriculturalUseFraction { get; set; }
 
         [Description("The Maximum Residue Limit (MRL) for this consumer product/substance combination.")]
-        [DisplayName("MRL (ConcentrationUnit)")]
+        [DisplayName("MRL")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double? MaximumResidueLimit { get; set; }
 
         [Description("Mean concentration according to this model (also includes values according to censored handling method).")]
-        [DisplayName("Mean concentration (ConcentrationUnit)")]
+        [DisplayName("Mean concentration")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double? MeanConcentration { get; set; }
 

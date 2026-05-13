@@ -1,34 +1,37 @@
-﻿using MCRA.Utils.ExtensionMethods;
+﻿using MCRA.General;
+using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
 
 namespace MCRA.Simulation.OutputGeneration {
     public class ConsumerProductConcentrationsBoxPlotChartCreator : BoxPlotChartCreatorBase {
 
         protected ConsumerProductConcentrationsSection _section;
-        protected string _concentrationUnit;
         protected string _dataDescription;
         protected string _substanceCode;
+        private ConcentrationUnitSpec _unit;
 
         public ConsumerProductConcentrationsBoxPlotChartCreator(
             ConsumerProductConcentrationsSection section,
             string substanceCode,
+            ConcentrationUnitSpec unit,
             string dataDescription
         ) {
             _section = section;
             _dataDescription = dataDescription;
             _substanceCode = substanceCode;
+            _unit = unit;
             Width = 500;
-            Height = 80 + Math.Max(section.PercentileRecords.Count * _cellSize, 80);
+            Height = 80 + Math.Max(_section.ChartRecords[_unit].Count * _cellSize, 80);
             BoxColor = OxyColors.Orange;
             StrokeColor = OxyColors.DarkOrange;
         }
 
         public override PlotModel Create() {
             return create(
-                [.. _section.PercentileRecords
+                [.. _section.ChartRecords[_unit]
                     .Where(c => c.SubstanceCode == _substanceCode)
                         .Cast<BoxPlotChartRecord>()],
-                $"Concentration ({_section.ConcentrationUnit.GetShortDisplayName()})",
+                $"Concentration ({_unit.GetShortDisplayName()})",
                 true,
                 true
             );

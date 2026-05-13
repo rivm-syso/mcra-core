@@ -2,6 +2,7 @@
 using MCRA.General;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
+using MCRA.Simulation.Objects.SubstanceConcentrations;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
 
@@ -26,9 +27,8 @@ namespace MCRA.Simulation.Actions.ConsumerProductConcentrations {
             subHeader.Units = collectUnits(data, sectionConfig);
 
             if (outputSettings.ShouldSummarize(ConsumerProductConcentrationsSections.ConsumerProductConcentrationsSection)) {
-                summarizeConsumerProductConcentration(
-                    data.AllConsumerProductConcentrations,
-                    data.ConsumerProductConcentrationUnit,
+                summarizeConsumerProductConcentrations(
+                    data.AllConsumerProductConcentrationsCollections,
                     subHeader,
                     subOrder++
                 );
@@ -38,14 +38,12 @@ namespace MCRA.Simulation.Actions.ConsumerProductConcentrations {
             var result = new List<ActionSummaryUnitRecord> {
                 new("LowerPercentage", $"p{sectionConfig.VariabilityLowerPercentage}"),
                 new("UpperPercentage", $"p{sectionConfig.VariabilityUpperPercentage}"),
-                new("ConcentrationUnit", data.ConsumerProductConcentrationUnit.GetShortDisplayName())
             };
             return result;
         }
 
-        private void summarizeConsumerProductConcentration(
-           ICollection<ConsumerProductConcentration> consumerProductConcentrations,
-           ConcentrationUnit consumerProductConcentrationUnit,
+        private void summarizeConsumerProductConcentrations(
+           ICollection<ConsumerProductSubstanceConcentrationsCollection> consumerProductConcentrations,
            SectionHeader header,
            int order
        ) {
@@ -54,7 +52,6 @@ namespace MCRA.Simulation.Actions.ConsumerProductConcentrations {
             };
             section.Summarize(
                 consumerProductConcentrations,
-                consumerProductConcentrationUnit,
                 _configuration.VariabilityLowerPercentage,
                 _configuration.VariabilityUpperPercentage
             );

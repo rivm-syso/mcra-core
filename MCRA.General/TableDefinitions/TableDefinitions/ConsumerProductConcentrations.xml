@@ -47,10 +47,10 @@
         <string>Value</string>
       </Aliases>
     </ColumnDefinition>
-    <ColumnDefinition FieldType="ConcentrationUnit">
+    <ColumnDefinition FieldType="ConsumerProductConcentrationUnit">
       <Id>Unit</Id>
       <Description>
-        The unit for the substance concentrations. When not specified, then a default unit of ug/kg is assumed.
+        The unit for the substance concentrations. When not specified, then a default unit of mg/kg is assumed or mg when the concentration is expressed per unit or item.
       </Description>
       <Aliases>
         <string>Unit</string>

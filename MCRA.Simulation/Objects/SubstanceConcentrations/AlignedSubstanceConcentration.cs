@@ -10,5 +10,9 @@ namespace MCRA.Simulation.Objects.SubstanceConcentrations {
         public string SampleId { get; init; }
         public Compound Substance { get; init; }
         public double Concentration { get; init; }
+
+        // TODO: this was added for the consumer product concentrations, why only for consumer products and not for soil, dust, etc?
+        public double? SamplingWeight { get; set; }
+
     }
 }

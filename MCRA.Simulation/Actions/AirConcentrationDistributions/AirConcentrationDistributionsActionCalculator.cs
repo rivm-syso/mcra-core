@@ -31,13 +31,13 @@ namespace MCRA.Simulation.Actions.AirConcentrationDistributions {
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
             var concentrationModelsBuilder = new AirConcentrationModelBuilder();
             var targetUnit = new AirConcentrationUnitSpec(SystemUnits.DefaultAirConcentrationUnit);
-            var indoorConcentrationModels = concentrationModelsBuilder.Create(
+            var indoorConcentrationModels = concentrationModelsBuilder.CreateByDistributions(
                 subsetManager.AllIndoorAirConcentrationDistributions,
                 NonDetectsHandlingMethod.ReplaceByZero,
                 0,
                 targetUnit
             );
-            var outdoorConcentrationModels = concentrationModelsBuilder.Create(
+            var outdoorConcentrationModels = concentrationModelsBuilder.CreateByDistributions(
                 subsetManager.AllOutdoorAirConcentrationDistributions,
                 NonDetectsHandlingMethod.ReplaceByZero,
                 0,
@@ -54,16 +54,19 @@ namespace MCRA.Simulation.Actions.AirConcentrationDistributions {
             CompositeProgressState progressReport
         ) {
             var localProgress = progressReport.NewProgressState(100);
+            var targetUnit = new AirConcentrationUnitSpec(SystemUnits.DefaultAirConcentrationUnit);
             var concentrationModelsBuilder = new AirConcentrationModelBuilder();
-            var indoorConcentrationModels = concentrationModelsBuilder.Create(
+            var indoorConcentrationModels = concentrationModelsBuilder.CreateByConcentrations(
                 data.IndoorAirConcentrations,
                 NonDetectsHandlingMethod.ReplaceByZero,
-                0
+                0,
+                targetUnit
             );
-            var outdoorConcentrationModels = concentrationModelsBuilder.Create(
+            var outdoorConcentrationModels = concentrationModelsBuilder.CreateByConcentrations(
                 data.OutdoorAirConcentrations,
                 NonDetectsHandlingMethod.ReplaceByZero,
-                0
+                0,
+                targetUnit
             );
             var result = new AirConcentrationDistributionsActionResult() {
                 IndoorAirConcentrationModels = indoorConcentrationModels,
@@ -100,15 +103,18 @@ namespace MCRA.Simulation.Actions.AirConcentrationDistributions {
         ) {
             var localProgress = progressReport.NewProgressState(100);
             var concentrationModelsBuilder = new AirConcentrationModelBuilder();
-            var indoorConcentrationModels = concentrationModelsBuilder.Create(
+            var targetUnit = new AirConcentrationUnitSpec(SystemUnits.DefaultAirConcentrationUnit);
+            var indoorConcentrationModels = concentrationModelsBuilder.CreateByConcentrations(
                 data.IndoorAirConcentrations,
                 NonDetectsHandlingMethod.ReplaceByZero,
-                0
+                0,
+                targetUnit
             );
-            var outdoorConcentrationModels = concentrationModelsBuilder.Create(
+            var outdoorConcentrationModels = concentrationModelsBuilder.CreateByConcentrations(
                 data.OutdoorAirConcentrations,
                 NonDetectsHandlingMethod.ReplaceByZero,
-                0
+                0,
+                targetUnit
             );
             var result = new AirConcentrationDistributionsActionResult() {
                 IndoorAirConcentrationModels = indoorConcentrationModels,

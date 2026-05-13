@@ -8,9 +8,10 @@
         public static readonly ConcentrationUnit DefaultSingleValueConcentrationUnit = ConcentrationUnit.mgPerKg;
         public static readonly AirConcentrationUnit DefaultAirConcentrationUnit = AirConcentrationUnit.ugPerm3;
 
-        public static readonly ConcentrationUnit DefaultConsumerProductConcentrationUnit = DefaultSingleValueConcentrationUnit;
         public static readonly ConcentrationUnit DefaultDustConcentrationUnit = DefaultConcentrationUnit;
         public static readonly ConcentrationUnit DefaultSoilConcentrationUnit = DefaultConcentrationUnit;
+        public static readonly ConsumerProductConcentrationUnit DefaultConsumerProductConcentrationUnit = ConsumerProductConcentrationUnit.mgPerKg;
+        public static readonly ConsumerProductConcentrationUnit DefaultConsumerProductConcentrationUnitPerUnit = ConsumerProductConcentrationUnit.mgPerUnit;
 
         // Dose units
         public static readonly DoseUnit DefaultExternalHazardDoseUnit = DoseUnit.ugPerKgBWPerDay;

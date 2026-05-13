@@ -72,10 +72,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions.AirExposures {
             var airIndoorFractions = FakeAirIndoorFractionsGenerator.Create(ages, seed);
             var airVentilatoryFlowRates = FakeAirVentilatoryFlowRatesGenerator.Create(sexes, ages, seed);
             var airConcentrationModelBuilder = new AirConcentrationModelBuilder();
-            var concentrationModels = airConcentrationModelBuilder.Create(
+            var concentrationModels = airConcentrationModelBuilder.CreateByConcentrations(
                 indoorAirConcentrations,
                 NonDetectsHandlingMethod.ReplaceByZero,
-                0
+                0,
+                new AirConcentrationUnitSpec(indoorAirConcentrations.FirstOrDefault().Unit)
             );
             var data = new ActionData() {
                 AllCompounds = substances,
@@ -130,10 +131,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions.AirExposures {
             var airIndoorFractions = FakeAirIndoorFractionsGenerator.Create(ages, seed);
             var airVentilatoryFlowRates = FakeAirVentilatoryFlowRatesGenerator.Create(sexes, ages, seed);
             var airConcentrationModelBuilder = new AirConcentrationModelBuilder();
-            var concentrationModels = airConcentrationModelBuilder.Create(
+            var concentrationModels = airConcentrationModelBuilder.CreateByConcentrations(
                 indoorAirConcentrations,
                 NonDetectsHandlingMethod.ReplaceByZero,
-                0
+                0,
+                new AirConcentrationUnitSpec(indoorAirConcentrations.FirstOrDefault().Unit)
             );
             var project = new ProjectDto();
             var config = project.AirExposuresSettings;

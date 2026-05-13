@@ -8,6 +8,7 @@ using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.General.UnitDefinitions.Defaults;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
+using MCRA.Simulation.Objects.SubstanceConcentrations;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.ProgressReporting;
@@ -32,24 +33,34 @@ namespace MCRA.Simulation.Actions.ConsumerProductConcentrations {
             return result;
         }
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
+            var targetUnitPerMass = new ConsumerProductConcentrationUnitSpec(SystemUnits.DefaultConsumerProductConcentrationUnit);
+            var targetUnitPerUnit = new ConsumerProductConcentrationUnitSpec(SystemUnits.DefaultConsumerProductConcentrationUnitPerUnit);
+
+            var collections = new List<ConsumerProductSubstanceConcentrationsCollection>();
             var adjustedConsumerProductConcentrations = subsetManager.AllConsumerProductConcentrations
-                .Select(r => {
-                    var alignmentFactor = r.Unit
-                        .GetConcentrationAlignmentFactor(SystemUnits.DefaultConsumerProductConcentrationUnit, r.Substance.MolecularMass);
-                    var conc = r.Concentration * alignmentFactor;
-                    return new ConsumerProductConcentration {
-                        Product = r.Product,
-                        Substance = r.Substance,
-                        Concentration = conc,
-                        Unit = SystemUnits.DefaultConsumerProductConcentrationUnit,
-                        SamplingWeight = r.SamplingWeight,
+                .GroupBy(c => (c.Product))
+                .Select(g => {
+                    // Here we require that the units of one product belong to one type, either per mass or per unit
+                    var targetUnitSpec = g.First().Unit.IsPerUnit() ? targetUnitPerUnit : targetUnitPerMass;
+                    var alignedConcentrations = g.Select(c => {
+                        var alignmentFactor = c.Unit.GetConcentrationAlignmentFactor(targetUnitSpec.Unit, c.Substance.MolecularMass);
+                        var conc = c.Concentration * alignmentFactor;
+                        return new AlignedSubstanceConcentration {
+                            Substance = c.Substance,
+                            Concentration = conc,
+                            SamplingWeight = c.SamplingWeight,
+                        };
+                    }).ToList();
+
+                    var collection = new ConsumerProductSubstanceConcentrationsCollection(alignedConcentrations, targetUnitSpec) {
+                        Product = g.Key
                     };
+                    return collection;
                 })
                 .OrderBy(c => c.Product.Code)
                 .ToList();
 
-            data.AllConsumerProductConcentrations = adjustedConsumerProductConcentrations;
-            data.ConsumerProductConcentrationUnit = SystemUnits.DefaultConsumerProductConcentrationUnit;
+            data.AllConsumerProductConcentrationsCollections = adjustedConsumerProductConcentrations;
         }
 
         protected override void loadDataUncertain(
@@ -63,17 +74,28 @@ namespace MCRA.Simulation.Actions.ConsumerProductConcentrations {
             if (ModuleConfig.ResampleCPConcentrations) {
                 if (factorialSet.Contains(UncertaintySource.ConsumerProductConcentrations)) {
                     localProgress.Update("Resampling consumer product concentrations");
-                    data.AllConsumerProductConcentrations = [.. data.AllConsumerProductConcentrations
-                        .GroupBy(c => (c.Substance, c.Product))
-                        .SelectMany(c => c.Resample(uncertaintySourceGenerators[UncertaintySource.ConsumerProductConcentrations])
-                            .Select(r => new ConsumerProductConcentration() {
-                                Substance = r.Substance,
-                                Product = r.Product,
-                                Concentration = r.Concentration,
-                                SamplingWeight = r.SamplingWeight,
-                                Unit = r.Unit,
-                            })
-                        )];
+
+                    var resampledCollections = new List<ConsumerProductSubstanceConcentrationsCollection>();
+                    foreach (var collection in data.AllConsumerProductConcentrationsCollections) {
+                        var resampledCollection = collection
+                            .GroupBy(c => c.Substance)
+                            .SelectMany(c => c.Resample(uncertaintySourceGenerators[UncertaintySource.ConsumerProductConcentrations])
+                                .Select(r => new AlignedSubstanceConcentration() {
+                                    Substance = r.Substance,
+                                    Concentration = r.Concentration,
+                                    SamplingWeight = (r as AlignedSubstanceConcentration).SamplingWeight,
+                                })
+                            )
+                            .ToList();
+
+                        var newCollection = new ConsumerProductSubstanceConcentrationsCollection(resampledCollection, collection.Unit) {
+                            Product = collection.Product
+                        };
+
+                        resampledCollections.Add(newCollection);
+                    }
+
+                    data.AllConsumerProductConcentrationsCollections = resampledCollections;
                 }
             }
             localProgress.Update(100);

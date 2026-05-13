@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using MCRA.General;
 using MCRA.Simulation.OutputGeneration.Helpers;
 using MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders;
 using Microsoft.AspNetCore.Html;
@@ -9,46 +10,54 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             var hiddenProperties = new List<string>();
 
-            var substances = Model.Records.Select(r => (r.SubstanceCode, r.SubstanceName)).Distinct();
-            var description = $"Consumer product concentrations for {substances.Count()} substances.";
-            
-            sb.AppendDescriptionParagraph(description);
-            var panelBuilder = new HtmlTabPanelBuilder();
-            foreach (var (substanceCode, substanceName) in substances) {
-                var matrixShortName = substanceCode;
-                var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
-                    $"BoxPlotFullPercentiles{matrixShortName}",
-                    Model,
-                    Model.PercentileRecords.Where(c => c.SubstanceCode == substanceCode).ToList(),
-                    ViewBag
-                );
+            // Chart panels, separate per type of unit
+            foreach (var unit in Model.ChartRecords.Keys) {
 
-                var sbMatrix = new StringBuilder();
-                sbMatrix.Append("<div class=\"figure-container\">");
-                var chartCreator = new ConsumerProductConcentrationsBoxPlotChartCreator(Model, substanceCode, "substance concentrations in consumer products");
-                sbMatrix.AppendChart(
-                    $"ConsumerProductConcentrationsBoxPlotChart{matrixShortName}",
-                    chartCreator,
-                    ChartFileType.Svg,
-                    Model,
-                    ViewBag,
-                    chartCreator.Title,
-                    true,
-                    chartData: percentileDataSection
-                );
-                sbMatrix.Append("</div>");
+                var totalSubstances = Model.Records.Select(r => (r.SubstanceCode, r.SubstanceName)).Distinct();
+                var description = $"Consumer product concentrations (in {unit.GetShortDisplayName()}) for {totalSubstances.Count()} substances.";
 
-                panelBuilder.AddPanel(
-                    id: $"Panel_{substanceName}",
-                    title: $"{substanceName}",
-                    hoverText: substanceName,
-                    content: new HtmlString(sbMatrix.ToString())
-                );
+                sb.AppendDescriptionParagraph(description);
+                var panelBuilder = new HtmlTabPanelBuilder();
+
+                var percentileRecords = Model.ChartRecords[unit];
+                var substances = percentileRecords.Select(r => (r.SubstanceCode, r.SubstanceName)).Distinct();
+
+                foreach (var (substanceCode, substanceName) in substances) {
+                    var matrixShortName = $"{substanceCode}-{unit.ToSanitizedString()}";
+                    var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
+                        $"BoxPlotFullPercentiles{matrixShortName}",
+                        Model,
+                        percentileRecords.Where(c => c.SubstanceCode == substanceCode).ToList(),
+                        ViewBag
+                    );
+
+                    var sbMatrix = new StringBuilder();
+                    sbMatrix.Append("<div class=\"figure-container\">");
+                    var chartCreator = new ConsumerProductConcentrationsBoxPlotChartCreator(Model, substanceCode, unit, "substance concentrations in consumer products");
+                    sbMatrix.AppendChart(
+                        $"ConsumerProductConcentrationsBoxPlotChart{matrixShortName}",
+                        chartCreator,
+                        ChartFileType.Svg,
+                        Model,
+                        ViewBag,
+                        chartCreator.Title,
+                        true,
+                        chartData: percentileDataSection
+                    );
+                    sbMatrix.Append("</div>");
+
+                    panelBuilder.AddPanel(
+                        id: $"Panel_{substanceName}-{unit.ToSanitizedString()}",
+                        title: $"{substanceName}",
+                        hoverText: $"{substanceName}",
+                        content: new HtmlString(sbMatrix.ToString())
+                    );
+                }
+                panelBuilder.RenderPanel(sb);
             }
-            panelBuilder.RenderPanel(sb);
 
+            // Table
             var caption = "Consumer product concentrations per consumer product and substance.";
-
             sb.AppendTable(
                     Model,
                     Model.Records,

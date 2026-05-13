@@ -928,9 +928,9 @@ namespace MCRA.Simulation {
         }
 
         // SoilConcentrations
-        public SubstanceConcentrationsCollection SoilConcentrations {
-            get => GetOrCreateModuleOutputData<SoilConcentrationsOutputData>(ActionType.SoilConcentrations).SoilConcentrationCollection;
-            set => GetOrCreateModuleOutputData<SoilConcentrationsOutputData>(ActionType.SoilConcentrations).SoilConcentrationCollection = value;
+        public SubstanceConcentrationsCollection SoilConcentrationsCollection {
+            get => GetOrCreateModuleOutputData<SoilConcentrationsOutputData>(ActionType.SoilConcentrations).SoilConcentrationsCollection;
+            set => GetOrCreateModuleOutputData<SoilConcentrationsOutputData>(ActionType.SoilConcentrations).SoilConcentrationsCollection = value;
         }
 
         public ConcentrationUnit SoilConcentrationDistributionUnit {
@@ -1068,15 +1068,9 @@ namespace MCRA.Simulation {
             set => GetOrCreateModuleOutputData<ConsumerProductUseFrequenciesOutputData>(ActionType.ConsumerProductUseFrequencies).AllIndividualConsumerProductUseFrequencies = value;
         }
 
-        public ICollection<ConsumerProductConcentration> AllConsumerProductConcentrations {
-            get => GetOrCreateModuleOutputData<ConsumerProductConcentrationsOutputData>(ActionType.ConsumerProductConcentrations).AllConsumerProductConcentrations;
-            set => GetOrCreateModuleOutputData<ConsumerProductConcentrationsOutputData>(ActionType.ConsumerProductConcentrations).AllConsumerProductConcentrations = value;
-        }
-
-
-        public ConcentrationUnit ConsumerProductConcentrationUnit {
-            get => GetOrCreateModuleOutputData<ConsumerProductConcentrationsOutputData>(ActionType.ConsumerProductConcentrations).ConsumerProductConcentrationUnit;
-            set => GetOrCreateModuleOutputData<ConsumerProductConcentrationsOutputData>(ActionType.ConsumerProductConcentrations).ConsumerProductConcentrationUnit = value;
+        public ICollection<ConsumerProductSubstanceConcentrationsCollection> AllConsumerProductConcentrationsCollections {
+            get => GetOrCreateModuleOutputData<ConsumerProductConcentrationsOutputData>(ActionType.ConsumerProductConcentrations).AllConsumerProductConcentrationsCollections;
+            set => GetOrCreateModuleOutputData<ConsumerProductConcentrationsOutputData>(ActionType.ConsumerProductConcentrations).AllConsumerProductConcentrationsCollections = value;
         }
 
         public IList<ConsumerProductExposureFraction> ConsumerProductExposureFractions {

@@ -1,35 +1,18 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation;
 
 namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
 
-    public sealed class ConsumerProductExposurePerSubstance : IIntakePerCompound {
-
+    public sealed record ConsumerProductExposurePerSubstance(
         /// <summary>
         /// The substance for which the exposure is simulated.
         /// </summary>
-        public Compound Compound { get; set; }
-
+        Compound Compound,
         /// <summary>
-        /// The total amount used.
+        /// The total exposure/intake (absolute amount, per person) in ug
         /// </summary>
-        public double UseAmount { get; set; }
-
-        /// <summary>
-        /// The total concentration.
-        /// </summary>
-        public double Concentration { get; set; }
-
-        /// <summary>
-        /// The total exposure/intake (absolute amount).
-        /// </summary>
-        public double Amount {
-            get {
-                var exposure = UseAmount * Concentration;
-                return exposure;
-            }
-        }
+        double Amount
+        ) : IIntakePerCompound {
 
         /// <summary>
         /// The substance intake amount corrected for relative potency and

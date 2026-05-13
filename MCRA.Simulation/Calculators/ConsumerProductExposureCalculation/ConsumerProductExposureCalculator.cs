@@ -80,19 +80,48 @@ namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
                 foreach (var route in routes) {
                     var exposuresPerSubstance = new List<ConsumerProductExposurePerSubstance>();
                     foreach (var substance in substances) {
-                        if (model != null
-                            && _exposureFractions.TryGetValue((useFrequency.Product, substance, route), out var cpFraction)
+                        if (_exposureFractions.TryGetValue((useFrequency.Product, substance, route), out var cpFraction)
                             && _concentrationModels.TryGetValue((useFrequency.Product, substance), out var cpcModel)
                         ) {
+                            ConsumerProductExposurePerSubstance ipc = null;
                             (var concentration, var occurrenceFraction) = getConcentration(substance, cpcModel);
-                            var applicationAmount = model.Draw(random, useFrequency.Individual.Age, useFrequency.Individual.Gender);
-                            var alignmentFactor = cpApplicationAmount.AmountUnit.GetMultiplicationFactor(targetUnit.ConcentrationMassUnit);
-                            var ipc = new ConsumerProductExposurePerSubstance() {
-                                UseAmount = useFrequency.Frequency * (double)applicationAmount * cpFraction,
-                                Concentration = concentration * occurrenceFraction * alignmentFactor,
-                                Compound = substance
-                            };
-                            exposuresPerSubstance.Add(ipc);
+                            var cpUnitSpec = cpcModel.Unit as ConsumerProductConcentrationUnitSpec;
+                            if (cpUnitSpec.IsPerUnit()) {
+                                // example:
+                                // use frequency = 4 cigarattes per day
+                                // product concentration = 0.00139 mg/unit
+                                // target unit = ug/day
+                                // Intake = 4 unit/day * 0.00139 mg/unit * 1000 ug/mg = 5.56 ug/day
+
+                                var alignmentFactor = cpUnitSpec.Unit.GetSubstanceAmountUnit()
+                                    .GetMultiplicationFactor(targetUnit.SubstanceAmountUnit, substance.MolecularMass);
+                                ipc = new ConsumerProductExposurePerSubstance(
+                                    substance,
+                                    Amount: useFrequency.Frequency * concentration * occurrenceFraction
+                                         * cpFraction * alignmentFactor
+                                    );
+                            } else if (model != null) {
+                                // example:
+                                // application amount = 0.00328 g
+                                // substance concentration = 0.482 mg/kg
+                                // target unit = ug/day
+                                // intake = 0.00328 g * 0.001 kg/g * 0.482 mg/kg * 1000 ug/mg = 0.00158 ug
+
+                                var applicationAmount = model.Draw(random, useFrequency.Individual.Age, useFrequency.Individual.Gender);
+                                var alignmentToConcentration = cpApplicationAmount.AmountUnit
+                                    .GetMultiplicationFactor(cpUnitSpec.Unit.GetConcentrationMassUnit());
+                                var alignmentToTargetUnit = cpUnitSpec.Unit.GetSubstanceAmountUnit()
+                                    .GetMultiplicationFactor(targetUnit.SubstanceAmountUnit, substance.MolecularMass);
+                                var alignmentFactor = alignmentToConcentration * alignmentToTargetUnit;
+                                ipc = new ConsumerProductExposurePerSubstance(
+                                    substance,
+                                    Amount: useFrequency.Frequency * (double)applicationAmount * concentration
+                                        * cpFraction * occurrenceFraction * alignmentFactor
+                                    );
+                            }
+                            if (ipc != null) {
+                                exposuresPerSubstance.Add(ipc);
+                            }
                         }
                     }
                     intakesPerRouteSubstance.Add(route, [.. exposuresPerSubstance.Cast<IIntakePerCompound>()]);

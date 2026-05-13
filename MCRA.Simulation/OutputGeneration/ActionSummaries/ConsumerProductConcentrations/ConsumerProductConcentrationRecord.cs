@@ -29,44 +29,50 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Positive measurements")]
         public int NumberOfPositives { get; set; }
 
+        [Description("The unit of the concentrations.")]
+        [DisplayName("Unit")]
+        public string Unit { get; set; }
+
         [Description("The mean of all concentrations.")]
-        [DisplayName("Mean all concentrations (ConcentrationUnit)")]
+        [DisplayName("Mean all concentrations")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double Mean { get; set; }
 
         [Description("The median of all concentrations.")]
-        [DisplayName("Median all concentrations (ConcentrationUnit)")]
+        [DisplayName("Median all concentrations")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double Median { get; set; }
 
         [Description("The lower percentile point of all concentrations.")]
-        [DisplayName("Lower {LowerPercentage} all concentrations (ConcentrationUnit)")]
+        [DisplayName("Lower {LowerPercentage} all concentrations")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double LowerPercentile { get; set; }
 
         [Description("The upper percentile point of all concentrations.")]
-        [DisplayName("Upper {UpperPercentage} all concentrations (ConcentrationUnit)")]
+        [DisplayName("Upper {UpperPercentage} all concentrations")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double UpperPercentile { get; set; }
 
         [Description("The mean of the positive concentrations.")]
-        [DisplayName("Mean positive concentrations (ConcentrationUnit)")]
+        [DisplayName("Mean positive concentrations")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double MeanPositives { get; set; }
 
         [Description("The median of the positive concentrations.")]
-        [DisplayName("Median positive concentrations (ConcentrationUnit)")]
+        [DisplayName("Median positive concentrations")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double MedianPositives { get; set; }
 
         [Description("The lower percentile point of the positive concentrations.")]
-        [DisplayName("Lower {LowerPercentage} positive concentrations (ConcentrationUnit)")]
+        [DisplayName("Lower {LowerPercentage} positive concentrations")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double LowerPercentilePositives { get; set; }
 
         [Description("The upper percentile point of the positive concentrations.")]
-        [DisplayName("Upper {UpperPercentage} positive concentrations (ConcentrationUnit)")]
+        [DisplayName("Upper {UpperPercentage} positive concentrations")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double UpperPercentilePositives { get; set; }
+
+        
     }
 }

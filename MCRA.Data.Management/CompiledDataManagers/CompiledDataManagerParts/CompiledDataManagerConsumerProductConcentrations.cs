@@ -24,7 +24,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                     var valid = CheckLinkSelected(ScopingType.Compounds, idSubstance) && CheckLinkSelected(ScopingType.ConsumerProducts, idProduct);
                                     if (valid) {
                                         var unitString = r.GetStringOrNull(RawConsumerProductConcentrations.Unit, fieldMap);
-                                        var unit = ConcentrationUnitConverter.FromString(unitString, ConcentrationUnit.ugPerKg);
+                                        var unit = ConsumerProductConcentrationUnitConverter.FromString(unitString);
                                         var consumerProductConcentration = new ConsumerProductConcentration {
                                             Product = _data.GetOrAddConsumerProduct(idProduct),
                                             Substance = _data.GetOrAddSubstance(idSubstance),

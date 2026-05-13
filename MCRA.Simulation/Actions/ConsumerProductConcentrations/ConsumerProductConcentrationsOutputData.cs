@@ -1,17 +1,12 @@
-﻿
-using MCRA.Data.Compiled.Objects;
-using MCRA.General;
-using MCRA.Simulation.Action;
+﻿using MCRA.Simulation.Action;
+using MCRA.Simulation.Objects.SubstanceConcentrations;
 
-namespace MCRA.Simulation.Actions.ConsumerProductConcentrations
- {
+namespace MCRA.Simulation.Actions.ConsumerProductConcentrations {
     public class ConsumerProductConcentrationsOutputData : IModuleOutputData {
-        public ICollection<ConsumerProductConcentration> AllConsumerProductConcentrations { get; set; }
-        public ConcentrationUnit ConsumerProductConcentrationUnit { get; set; }
+        public ICollection<ConsumerProductSubstanceConcentrationsCollection> AllConsumerProductConcentrationsCollections { get; set; }
         public IModuleOutputData Copy() {
             return new ConsumerProductConcentrationsOutputData() {
-                AllConsumerProductConcentrations = AllConsumerProductConcentrations,
-                ConsumerProductConcentrationUnit = ConsumerProductConcentrationUnit
+                AllConsumerProductConcentrationsCollections = AllConsumerProductConcentrationsCollections
             };
         }
     }

@@ -13,12 +13,13 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelBuilder {
 
         // For non-dietary sources air, dust, soil, etc., we assume that the occurence frequency is 100%, i.e., all
         // products contain the substance
-        private static double _occurenceFrequency = 1D;
+        private static readonly double _occurenceFrequency = 1D;
 
-        public IDictionary<Compound, ConcentrationModel> Create<T>(
+        public IDictionary<Compound, ConcentrationModel> CreateByConcentrations<T>(
             ICollection<T> concentrations,
             NonDetectsHandlingMethod nonDetectsHandlingMethod,
-            double lorReplacementFactor
+            double lorReplacementFactor,
+            ConcentrationUnitSpec unit
         ) where T : ISubstanceConcentration {
             var concentrationModels = new Dictionary<Compound, ConcentrationModel>();
             var groups = concentrations?
@@ -31,10 +32,55 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelBuilder {
                     nonDetectsHandlingMethod,
                     lorReplacementFactor
                 );
+                concentrationModel.Unit = unit;
                 concentrationModels[group.Key] = concentrationModel;
             }
             return concentrationModels;
         }
+
+        public IDictionary<Compound, ConcentrationModel> CreateByDistributions<T>(
+            ICollection<T> concentrationDistributions,
+            NonDetectsHandlingMethod nonDetectsHandlingMethod,
+            double lorReplacementFactor,
+            ConcentrationUnitSpec unit
+        ) where T : IConcentrationDistribution {
+            var concentrationModels = new Dictionary<Compound, ConcentrationModel>();
+            foreach (var distribution in concentrationDistributions) {
+                var concentrationModel = createConcentrationModel(
+                    distribution,
+                    nonDetectsHandlingMethod,
+                    lorReplacementFactor,
+                    unit
+                );
+                concentrationModels[distribution.Substance] = concentrationModel;
+            }
+            return concentrationModels;
+        }
+
+        public static (double occurenceFraction, double correctedOccurenceFraction) CalculateOccurrenceFractions(
+           double occurrenceFrequency,
+           ResidueCollection residueCollection) {
+            double occurenceFraction;
+            double correctedOccurenceFraction;
+            if (residueCollection.NumberOfResidues > 0) {
+                occurenceFraction = !(double.IsNaN(occurrenceFrequency)) ? occurrenceFrequency : 1D - residueCollection.FractionZeros;
+                correctedOccurenceFraction = occurenceFraction;
+                correctedOccurenceFraction = Math.Max(correctedOccurenceFraction, residueCollection.FractionPositives);
+                correctedOccurenceFraction = Math.Min(correctedOccurenceFraction, 1 - residueCollection.FractionZeros);
+            } else {
+                occurenceFraction = !double.IsNaN(occurrenceFrequency) ? occurrenceFrequency : 1D;
+                correctedOccurenceFraction = occurenceFraction;
+            }
+
+            return (occurenceFraction, correctedOccurenceFraction);
+        }
+
+        protected abstract ConcentrationModel getModel<T>(T distribution);
+
+        protected abstract double getAlignmentFactor<T>(
+            ConcentrationUnitSpec targetUnit,
+            T concentrationDistribution
+        ) where T : IConcentrationDistribution;
 
         private static ConcentrationModel createConcentrationModel<T>(
             Compound substance,
@@ -65,7 +111,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelBuilder {
                 ZerosCount = zerosCount
             };
 
-            var (occurenceFraction, correctedOccurenceFraction) = 
+            var (occurenceFraction, correctedOccurenceFraction) =
                 CalculateOccurrenceFractions(_occurenceFrequency, residueCollection);
             var concentrationModel = new CMEmpirical() {
                 Compound = substance,
@@ -80,50 +126,13 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelBuilder {
             return concentrationModel;
         }
 
-        public IDictionary<Compound, ConcentrationModel> Create<T>(
-            ICollection<T> concentrationDistributions,
+        private ConcentrationModel createConcentrationModel<T>(
+            T distribution,
             NonDetectsHandlingMethod nonDetectsHandlingMethod,
             double lorReplacementFactor,
-            ConcentrationUnitSpec targetUnit
+            ConcentrationUnitSpec unit
         ) where T : IConcentrationDistribution {
-            var concentrationModels = new Dictionary<Compound, ConcentrationModel>();
-            foreach (var distribution in concentrationDistributions) {
-                var concentrationModel = createConcentrationModel(
-                    distribution,
-                    nonDetectsHandlingMethod,
-                    lorReplacementFactor,
-                    targetUnit
-                );
-                concentrationModels[distribution.Substance] = concentrationModel;
-            }
-            return concentrationModels;
-        }
-
-        public static (double occurenceFraction, double correctedOccurenceFraction) CalculateOccurrenceFractions(
-            double occurrenceFrequency,
-            ResidueCollection residueCollection) {
-            double occurenceFraction;
-            double correctedOccurenceFraction;
-            if (residueCollection.NumberOfResidues > 0) {
-                occurenceFraction = !(double.IsNaN(occurrenceFrequency)) ? occurrenceFrequency : 1D - residueCollection.FractionZeros;
-                correctedOccurenceFraction = occurenceFraction;
-                correctedOccurenceFraction = Math.Max(correctedOccurenceFraction, residueCollection.FractionPositives);
-                correctedOccurenceFraction = Math.Min(correctedOccurenceFraction, 1 - residueCollection.FractionZeros);
-            } else {
-                occurenceFraction = !double.IsNaN(occurrenceFrequency) ? occurrenceFrequency : 1D;
-                correctedOccurenceFraction = occurenceFraction;
-            }
-
-            return (occurenceFraction, correctedOccurenceFraction);
-        }
-
-        private ConcentrationModel createConcentrationModel<T>(
-                    T distribution,
-                    NonDetectsHandlingMethod nonDetectsHandlingMethod,
-                    double lorReplacementFactor,
-                    ConcentrationUnitSpec targetUnit
-                ) where T : IConcentrationDistribution {
-            var alignmentFactor = getAlignmentFactor(targetUnit, distribution);
+            var alignmentFactor = getAlignmentFactor(unit, distribution);
             var concentrationDistribution = new ConcentrationDistribution() {
                 Mean = distribution.Mean * alignmentFactor,
                 CV = distribution.CvVariability,
@@ -139,17 +148,10 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelBuilder {
             concentrationModel.OccurenceFraction = occurrenceFraction;
             concentrationModel.CorrectedOccurenceFraction = occurrenceFraction;
             concentrationModel.ConcentrationDistribution = concentrationDistribution;
-            concentrationModel.Unit = targetUnit;
+            concentrationModel.Unit = unit;
 
             concentrationModel.CalculateParameters();
             return concentrationModel;
         }
-
-        protected abstract ConcentrationModel getModel<T>(T distribution);
-
-        protected abstract double getAlignmentFactor<T>(
-            ConcentrationUnitSpec targetUnit,
-            T concentrationDistribution
-        ) where T : IConcentrationDistribution;
     }
 }

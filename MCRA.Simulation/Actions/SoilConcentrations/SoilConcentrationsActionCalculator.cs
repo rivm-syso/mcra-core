@@ -48,7 +48,7 @@ namespace MCRA.Simulation.Actions.SoilConcentrations {
                 .OrderBy(c => c.SampleId)
                 .ToList();
 
-            data.SoilConcentrations = new SubstanceConcentrationsCollection(alignedConcentrations, targetUnit);
+            data.SoilConcentrationsCollection = new SubstanceConcentrationsCollection(alignedConcentrations, targetUnit);
         }
 
         protected override void loadDataUncertain(
@@ -62,17 +62,18 @@ namespace MCRA.Simulation.Actions.SoilConcentrations {
             if (ModuleConfig.ResampleSoilConcentrations) {
                 if (factorialSet.Contains(UncertaintySource.SoilConcentrations)) {
                     localProgress.Update("Resampling soil concentrations");
-                    var unit = data.SoilConcentrations.Unit;
-                    var resampled = data.SoilConcentrations
+                    var unit = data.SoilConcentrationsCollection.Unit;
+                    var resampled = data.SoilConcentrationsCollection
                         .GroupBy(c => c.Substance)
                         .SelectMany(c => c.Resample(uncertaintySourceGenerators[UncertaintySource.SoilConcentrations])
                             .Select(r => new SubstanceConcentration() {
+                                idSample = (r as SubstanceConcentration).idSample,
                                 Substance = r.Substance,
                                 Concentration = r.Concentration,
                             })
                         )
                         .ToList();
-                    data.SoilConcentrations = new(resampled, unit);
+                    data.SoilConcentrationsCollection = new(resampled, unit);
                 }
             }
             localProgress.Update(100);

@@ -21,7 +21,7 @@ namespace MCRA.Simulation.Actions.SoilConcentrationDistributions {
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
             var concentrationModelsBuilder = new SoilConcentrationModelBuilder();
-            var concentrationModels = concentrationModelsBuilder.Create(
+            var concentrationModels = concentrationModelsBuilder.CreateByDistributions(
                 subsetManager.AllSoilConcentrationDistributions,
                 NonDetectsHandlingMethod.ReplaceByZero,
                 0,
@@ -42,10 +42,11 @@ namespace MCRA.Simulation.Actions.SoilConcentrationDistributions {
         private static SoilConcentrationDistributionsActionResult compute(ActionData data, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
             var concentrationModelsBuilder = new SoilConcentrationModelBuilder();
-            var concentrationModels = concentrationModelsBuilder.Create(
-                data.SoilConcentrations,
+            var concentrationModels = concentrationModelsBuilder.CreateByConcentrations(
+                data.SoilConcentrationsCollection,
                 NonDetectsHandlingMethod.ReplaceByZero,
-                0
+                0,
+                data.SoilConcentrationsCollection.Unit
             );
             var result = new SoilConcentrationDistributionsActionResult() {
                 SoilConcentrationModels = concentrationModels,

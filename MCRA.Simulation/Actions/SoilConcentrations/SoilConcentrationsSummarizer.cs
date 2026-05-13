@@ -33,7 +33,7 @@ namespace MCRA.Simulation.Actions.SoilConcentrations {
             subHeader.Units = collectUnits(data, sectionConfig);
             if (outputSettings.ShouldSummarize(SoilConcentrationsSections.ConcentrationsSection)) {
                 section.Summarize(
-                data.SoilConcentrations,
+                data.SoilConcentrationsCollection,
                 sectionConfig.VariabilityLowerPercentage,
                 sectionConfig.VariabilityUpperPercentage
             );
@@ -49,7 +49,7 @@ namespace MCRA.Simulation.Actions.SoilConcentrations {
                 new("UpperPercentage", $"p{sectionConfig.VariabilityUpperPercentage}"),
                 new("LowerBound", $"p{sectionConfig.UncertaintyLowerBound}"),
                 new("UpperBound", $"p{sectionConfig.UncertaintyUpperBound}"),
-                new("ConcentrationUnit", $"{data.SoilConcentrations.Unit.GetShortDisplayName()}")
+                new("ConcentrationUnit", $"{data.SoilConcentrationsCollection.Unit.GetShortDisplayName()}")
             };
             return result;
         }
@@ -65,7 +65,7 @@ namespace MCRA.Simulation.Actions.SoilConcentrations {
             };
             var subHeader = header.AddSubSectionHeaderFor(section, "Percentiles", order++);
             section.Summarize(
-                data.SoilConcentrations,
+                data.SoilConcentrationsCollection,
                 sectionConfig.UncertaintyLowerBound,
                 sectionConfig.UncertaintyUpperBound,
                 sectionConfig.SelectedPercentiles
@@ -83,7 +83,7 @@ namespace MCRA.Simulation.Actions.SoilConcentrations {
             if (subHeader != null) {
                 var section = subHeader.GetSummarySection() as SoilConcentrationPercentilesSection;
                 section.SummarizeUncertainty(
-                    data.SoilConcentrations,
+                    data.SoilConcentrationsCollection,
                     data.ActiveSubstances,
                     _configuration.SelectedPercentiles
                 );

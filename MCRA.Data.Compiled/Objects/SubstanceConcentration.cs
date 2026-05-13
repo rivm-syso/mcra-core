@@ -8,6 +8,5 @@ namespace MCRA.Data.Compiled.Objects {
         public Compound Substance { get; set; }
         public double Concentration { get; set; }
         public ConcentrationUnit Unit { get; set; } = ConcentrationUnit.ugPerg;
-        public string UnitTypeString => Unit.GetShortDisplayName();
     }
 }

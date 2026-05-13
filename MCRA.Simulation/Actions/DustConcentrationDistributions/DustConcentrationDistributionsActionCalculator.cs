@@ -23,15 +23,16 @@ namespace MCRA.Simulation.Actions.DustConcentrationDistributions {
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
             var concentrationModelsBuilder = new DustConcentrationModelBuilder();
-            var concentrationModels = concentrationModelsBuilder.Create(
+            var targetUnit = new StandardConcentrationUnitSpec(SystemUnits.DefaultDustConcentrationUnit);
+            var concentrationModels = concentrationModelsBuilder.CreateByDistributions(
                 subsetManager.AllDustConcentrationDistributions,
                 NonDetectsHandlingMethod.ReplaceByZero,
                 0,
-                new StandardConcentrationUnitSpec(SystemUnits.DefaultDustConcentrationUnit)
+                targetUnit
             );
 
             data.DustConcentrationModels = concentrationModels;
-            data.DustConcentrationDistributionUnit = SystemUnits.DefaultDustConcentrationUnit;
+            data.DustConcentrationDistributionUnit = targetUnit.Unit;
         }
 
         protected override DustConcentrationDistributionsActionResult run(
@@ -40,10 +41,12 @@ namespace MCRA.Simulation.Actions.DustConcentrationDistributions {
         ) {
             var localProgress = progressReport.NewProgressState(100);
             var concentrationModelsBuilder = new DustConcentrationModelBuilder();
-            var concentrationModels = concentrationModelsBuilder.Create(
+            var targetUnit = new StandardConcentrationUnitSpec(SystemUnits.DefaultDustConcentrationUnit);
+            var concentrationModels = concentrationModelsBuilder.CreateByConcentrations(
                 data.DustConcentrations,
                 NonDetectsHandlingMethod.ReplaceByZero,
-                0
+                0,
+                targetUnit
             );
             var result = new DustConcentrationDistributionsActionResult() {
                 DustConcentrationModels = concentrationModels,
@@ -77,11 +80,13 @@ namespace MCRA.Simulation.Actions.DustConcentrationDistributions {
           CompositeProgressState progressReport
         ) {
             var localProgress = progressReport.NewProgressState(100);
+            var targetUnit = new StandardConcentrationUnitSpec(SystemUnits.DefaultDustConcentrationUnit);
             var concentrationModelsBuilder = new DustConcentrationModelBuilder();
-            var concentrationModels = concentrationModelsBuilder.Create(
+            var concentrationModels = concentrationModelsBuilder.CreateByConcentrations(
                 data.DustConcentrations,
                 NonDetectsHandlingMethod.ReplaceByZero,
-                0
+                0,
+                targetUnit
             );
             var result = new DustConcentrationDistributionsActionResult() {
                 DustConcentrationModels = concentrationModels,

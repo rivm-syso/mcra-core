@@ -49,10 +49,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions.SoilExposures {
             selectedPopulation.PopulationIndividualPropertyValues = populationIndividualPropertyValues;
             var soilConcentrations = FakeSoilConcentrationsGenerator.Create(substances, seed);
             var soilConcentrationModelBuilder = new SoilConcentrationModelBuilder();
-            var concentrationModels = soilConcentrationModelBuilder.Create(
+            var concentrationModels = soilConcentrationModelBuilder.CreateByConcentrations(
                 soilConcentrations,
                 NonDetectsHandlingMethod.ReplaceByZero,
-                0
+                0,
+                new StandardConcentrationUnitSpec(soilConcentrations.FirstOrDefault().Unit)
             );
 
             var project = new ProjectDto();
@@ -115,10 +116,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions.SoilExposures {
             var dietaryIndividualDayIntakes = FakeDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);
             var soilConcentrations = FakeSoilConcentrationsGenerator.Create(substances, seed);
             var soilConcentrationModelBuilder = new SoilConcentrationModelBuilder(); 
-            var concentrationModels = soilConcentrationModelBuilder.Create(
+            var concentrationModels = soilConcentrationModelBuilder.CreateByConcentrations(
                 soilConcentrations,
                 NonDetectsHandlingMethod.ReplaceByZero,
-                0
+                0,
+                new StandardConcentrationUnitSpec(soilConcentrations.FirstOrDefault().Unit)
             );
             var project = new ProjectDto();
             var config = project.SoilExposuresSettings;

@@ -52,10 +52,12 @@ namespace MCRA.Simulation.Test.UnitTests.Actions.DustExposures {
             var dustAdherenceAmounts = FakeDustAdherenceAmountsGenerator.Create(seed);
             var dustAvailabilityFractions = FakeDustAvailabilityFractionsGenerator.Create(substances, seed);
             var dustConcentrationModelBuilder = new DustConcentrationModelBuilder();
-            var concentrationModels = dustConcentrationModelBuilder.Create(
+            var concentrationModels = dustConcentrationModelBuilder.CreateByConcentrations(
                 dustConcentrations,
                 NonDetectsHandlingMethod.ReplaceByZero,
-                0);
+                0,
+                new StandardConcentrationUnitSpec(dustConcentrations.FirstOrDefault().Unit)
+                );
 
             var project = new ProjectDto();
             var config = project.DustExposuresSettings;
@@ -131,10 +133,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions.DustExposures {
             var dustAvailabilityFractions = FakeDustAvailabilityFractionsGenerator.Create(substances, seed);
 
             var dustConcentrationModelBuilder = new DustConcentrationModelBuilder();
-            var concentrationModels = dustConcentrationModelBuilder.Create(
+            var concentrationModels = dustConcentrationModelBuilder.CreateByConcentrations(
                 dustConcentrations,
                 NonDetectsHandlingMethod.ReplaceByZero,
-                0);
+                0,
+                new StandardConcentrationUnitSpec(dustConcentrations.FirstOrDefault().Unit));
 
             var project = new ProjectDto();
             var config = project.DustExposuresSettings;

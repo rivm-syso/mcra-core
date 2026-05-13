@@ -51,7 +51,6 @@ namespace MCRA.Simulation.Actions.ConsumerProductConcentrationDistributions {
             var result = new List<ActionSummaryUnitRecord> {
                 new("LowerPercentage", $"p{sectionConfig.VariabilityLowerPercentage}"),
                 new("UpperPercentage", $"p{sectionConfig.VariabilityUpperPercentage}"),
-                new("ConcentrationUnit", data.ConsumerProductConcentrationUnit.GetShortDisplayName())
             };
             return result;
         }

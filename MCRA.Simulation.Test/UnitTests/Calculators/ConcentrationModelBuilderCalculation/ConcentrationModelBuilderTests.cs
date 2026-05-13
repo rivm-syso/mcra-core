@@ -23,7 +23,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.Calculators {
             } };
 
             var concentrationModelsBuilder = new DustConcentrationModelBuilder();
-            var concentrationModels = concentrationModelsBuilder.Create(
+            var concentrationModels = concentrationModelsBuilder.CreateByDistributions(
                 concentrationDistributions,
                 NonDetectsHandlingMethod.ReplaceByZero,
                 0,
