@@ -1,5 +1,20 @@
 # Change Log
 
+## Version 10.2.20 (2026-05-13)
+
+### Added
+
+- Update HBM timepoint data format and reader with (occupational) shift type and link with occupational scenarios (#2355)
+- Excel and CSV download options in combined output results (#2444)
+- Overview table in combined output of SRA and other loop actions for MOET at p99.9 with confidence interval (#2447)
+- Implement shorter than lifetime dietary exposure assessment (#2449)
+
+### Fixed
+
+- Improved numeric presentation and layout of percentiles in combined outputs
+- CheckedDataTableReader fails when numeric string is not trimmed
+- Replaced non-line breaking spaces (&nbsp) with normal spaces in combined custom html because pdf rendering fails on &nbsp
+
 ## Version 10.2.19 (2026-04-24)
 
 ### Changed
