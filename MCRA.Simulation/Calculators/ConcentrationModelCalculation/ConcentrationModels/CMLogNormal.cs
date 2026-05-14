@@ -1,4 +1,5 @@
 ﻿using MCRA.General;
+using MCRA.General.UnitDefinitions.Defaults;
 using MCRA.Simulation.Objects;
 using MCRA.Utils;
 using MCRA.Utils.Statistics;
@@ -19,7 +20,10 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
                 FractionPositives = CorrectedOccurenceFraction;
                 FractionCensored = FractionNonDetects = FractionNonQuantifications = 0D;
                 FractionTrueZeros = 1 - CorrectedOccurenceFraction;
-                var alignmentFactor = ConcentrationDistribution.ConcentrationUnit.GetConcentrationUnitMultiplier(ConcentrationUnit);
+                var modelUnit = Unit is StandardConcentrationUnit stdUnit
+                    ? stdUnit.Unit
+                    : SystemUnits.DefaultConcentrationUnit;
+                var alignmentFactor = ConcentrationDistribution.ConcentrationUnit.GetConcentrationUnitMultiplier(modelUnit);
                 LogNormalDistribution = LogNormalDistribution.FromMeanAndCv(ConcentrationDistribution.Mean * alignmentFactor, (double)ConcentrationDistribution.CV);
             } else {
                 return false;

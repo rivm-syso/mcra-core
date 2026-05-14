@@ -101,10 +101,10 @@ namespace MCRA.Simulation.Calculators.ConsumerProductConcentrationModelCalculati
             ConsumerProductConcentrationDistribution distribution,
             NonDetectsHandlingMethod nonDetectsHandlingMethod,
             double lorReplacementFactor,
-            ConcentrationUnit targetConcentrationUnit
+            ConcentrationUnit targetUnit
         ) {
             var alignmentFactor = distribution.Unit
-                        .GetConcentrationAlignmentFactor(targetConcentrationUnit, distribution.Substance.MolecularMass);
+                        .GetConcentrationAlignmentFactor(targetUnit, distribution.Substance.MolecularMass);
             var concentrationDistribution = new ConcentrationDistribution() {
                 Mean = distribution.Mean * alignmentFactor,
                 CV = distribution.CvVariability,
@@ -128,7 +128,7 @@ namespace MCRA.Simulation.Calculators.ConsumerProductConcentrationModelCalculati
                 Mean = distribution.Mean,
                 CV = distribution.CvVariability,
             };
-            concentrationModel.ConcentrationUnit = targetConcentrationUnit;
+            concentrationModel.Unit = new StandardConcentrationUnit(targetUnit);
 
             concentrationModel.CalculateParameters();
             return concentrationModel;

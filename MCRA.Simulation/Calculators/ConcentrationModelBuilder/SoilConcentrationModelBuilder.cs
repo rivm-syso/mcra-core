@@ -3,12 +3,10 @@ using MCRA.General;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
 
 namespace MCRA.Simulation.Calculators.ConcentrationModelBuilder {
-
     /// <summary>
     /// Builder class for Soil concentration models.
     /// </summary>
-    public class SoilConcentrationModelBuilder : ConcentrationModelBuilderBase{
-
+    public class SoilConcentrationModelBuilder : ConcentrationModelBuilderBase {
 
         protected override ConcentrationModel getModel<T>(T concentrationDistribution) {
             var distribution = concentrationDistribution as SoilConcentrationDistribution;
@@ -20,10 +18,18 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelBuilder {
             return concentrationModel;
         }
 
-        protected override double getAlignmentFactor<T>(ConcentrationUnit targetConcentrationUnit, T concentrationDistribution) {
+        protected override double getAlignmentFactor<T>(
+            ConcentrationUnitSpec targetUnit,
+            T concentrationDistribution
+        ) {
+            if (targetUnit is not StandardConcentrationUnit stdUnit) {
+                throw new InvalidOperationException(
+                    $"Expected a standard concentration unit but received {targetUnit?.GetType().Name}."
+                );
+            }
             var distribution = concentrationDistribution as SoilConcentrationDistribution;
             var alignmentFactor = distribution.Unit
-                .GetConcentrationAlignmentFactor(targetConcentrationUnit, distribution.Substance.MolecularMass);
+                .GetConcentrationAlignmentFactor(stdUnit.Unit, distribution.Substance.MolecularMass);
             return alignmentFactor;
         }
     }

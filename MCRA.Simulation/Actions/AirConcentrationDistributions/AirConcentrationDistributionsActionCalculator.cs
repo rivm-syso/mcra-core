@@ -30,17 +30,18 @@ namespace MCRA.Simulation.Actions.AirConcentrationDistributions {
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
             var concentrationModelsBuilder = new AirConcentrationModelBuilder();
+            var targetUnit = new AirConcentrationUnitSpec(SystemUnits.DefaultAirConcentrationUnit);
             var indoorConcentrationModels = concentrationModelsBuilder.Create(
                 subsetManager.AllIndoorAirConcentrationDistributions,
                 NonDetectsHandlingMethod.ReplaceByZero,
                 0,
-                SystemUnits.DefaultAirConcentrationUnit
+                targetUnit
             );
             var outdoorConcentrationModels = concentrationModelsBuilder.Create(
                 subsetManager.AllOutdoorAirConcentrationDistributions,
                 NonDetectsHandlingMethod.ReplaceByZero,
                 0,
-                SystemUnits.DefaultAirConcentrationUnit
+                targetUnit
             );
 
             data.IndoorAirConcentrationModels = indoorConcentrationModels;

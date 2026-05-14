@@ -23,7 +23,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.ConsumerProductConcen
                 ConsumerProductName = product.Name,
                 Model = concentrationModel.ModelType,
                 DesiredModel = concentrationModel.DesiredModelType,
-                Unit = concentrationModel.ConcentrationUnit,
+                Unit = concentrationModel.Unit is StandardConcentrationUnit stdUnit ? stdUnit.Unit : default,
                 FractionTrueZeros = 1D - concentrationModel.CorrectedOccurenceFraction,
                 FractionCensored = concentrationModel.FractionCensored,
                 FractionNonQuantifications = concentrationModel.FractionNonQuantifications,

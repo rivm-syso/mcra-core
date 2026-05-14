@@ -27,7 +27,7 @@ namespace MCRA.Simulation.Actions.DustConcentrationDistributions {
                 subsetManager.AllDustConcentrationDistributions,
                 NonDetectsHandlingMethod.ReplaceByZero,
                 0,
-                SystemUnits.DefaultDustConcentrationUnit
+                new StandardConcentrationUnit(SystemUnits.DefaultDustConcentrationUnit)
             );
 
             data.DustConcentrationModels = concentrationModels;

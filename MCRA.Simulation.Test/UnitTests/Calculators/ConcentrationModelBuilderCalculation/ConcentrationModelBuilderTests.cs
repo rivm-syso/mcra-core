@@ -27,7 +27,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.Calculators {
                 concentrationDistributions,
                 NonDetectsHandlingMethod.ReplaceByZero,
                 0,
-                SystemUnits.DefaultDustConcentrationUnit
+                new StandardConcentrationUnit(SystemUnits.DefaultDustConcentrationUnit)
             );
             var draw = concentrationModels.First().Value.DrawFromDistribution(random, NonDetectsHandlingMethod.ReplaceByZero);
             var name = concentrationModels.FirstOrDefault().Value.GetType().Name;

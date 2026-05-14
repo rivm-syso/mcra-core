@@ -215,7 +215,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
             Model = modelTypeFitted;
             DesiredModel = modelTypeDesired;
-            Unit = concentrationModel.ConcentrationUnit;
+            Unit = concentrationModel.Unit is StandardConcentrationUnit stdUnit ? stdUnit.Unit : default;
             FractionTrueZeros = 1D - concentrationModel.CorrectedOccurenceFraction;
             FractionCensored = concentrationModel.FractionCensored;
             FractionNonQuantifications = concentrationModel.FractionNonQuantifications;
