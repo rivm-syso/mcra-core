@@ -128,7 +128,7 @@ namespace MCRA.Simulation.Calculators.ConsumerProductConcentrationModelCalculati
                 Mean = distribution.Mean,
                 CV = distribution.CvVariability,
             };
-            concentrationModel.Unit = new StandardConcentrationUnit(targetUnit);
+            concentrationModel.Unit = new StandardConcentrationUnitSpec(targetUnit);
 
             concentrationModel.CalculateParameters();
             return concentrationModel;

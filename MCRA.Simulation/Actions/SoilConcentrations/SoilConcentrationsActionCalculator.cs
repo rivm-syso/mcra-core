@@ -1,4 +1,5 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Interfaces;
+using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Management;
 using MCRA.Data.Management.CompiledDataManagers.DataReadingSummary;
 using MCRA.General;
@@ -8,6 +9,8 @@ using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.General.UnitDefinitions.Defaults;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
+using MCRA.Simulation.Objects;
+using MCRA.Simulation.Objects.SubstanceConcentrations;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.ProgressReporting;
@@ -28,25 +31,26 @@ namespace MCRA.Simulation.Actions.SoilConcentrations {
             }
             return result;
         }
+
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
+            var targetUnit = new StandardConcentrationUnitSpec(SystemUnits.DefaultSoilConcentrationUnit);
             var alignedConcentrations = subsetManager.AllSoilConcentrations
                 .Select(r => {
                     var alignmentFactor = r.Unit
-                        .GetConcentrationAlignmentFactor(SystemUnits.DefaultSoilConcentrationUnit, r.Substance.MolecularMass);
+                        .GetConcentrationAlignmentFactor(targetUnit.Unit, r.Substance.MolecularMass);
                     var conc = r.Concentration * alignmentFactor;
-                    return new SubstanceConcentration {
-                        idSample = r.idSample,
+                    return new AlignedSubstanceConcentration {
+                        SampleId = r.idSample,
                         Substance = r.Substance,
-                        Concentration = conc,
-                        Unit = SystemUnits.DefaultSoilConcentrationUnit
+                        Concentration = conc
                     };
                 })
-                .OrderBy(c => c.idSample)
+                .OrderBy(c => c.SampleId)
                 .ToList();
 
-            data.SoilConcentrations = alignedConcentrations;
-            data.SoilConcentrationUnit = SystemUnits.DefaultSoilConcentrationUnit;
+            data.SoilConcentrations = new SubstanceConcentrationsCollection(alignedConcentrations, targetUnit);
         }
+
         protected override void loadDataUncertain(
            ActionData data,
            UncertaintyFactorialSet factorialSet,
@@ -58,16 +62,17 @@ namespace MCRA.Simulation.Actions.SoilConcentrations {
             if (ModuleConfig.ResampleSoilConcentrations) {
                 if (factorialSet.Contains(UncertaintySource.SoilConcentrations)) {
                     localProgress.Update("Resampling soil concentrations");
-                    data.SoilConcentrations = [.. data.SoilConcentrations
+                    var unit = data.SoilConcentrations.Unit;
+                    var resampled = data.SoilConcentrations
                         .GroupBy(c => c.Substance)
                         .SelectMany(c => c.Resample(uncertaintySourceGenerators[UncertaintySource.SoilConcentrations])
                             .Select(r => new SubstanceConcentration() {
                                 Substance = r.Substance,
                                 Concentration = r.Concentration,
-                                idSample = r.idSample,
-                                Unit = r.Unit,
                             })
-                        )];
+                        )
+                        .ToList();
+                    data.SoilConcentrations = new(resampled, unit);
                 }
             }
             localProgress.Update(100);

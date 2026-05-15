@@ -22,7 +22,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelBuilder {
             ConcentrationUnitSpec targetUnit,
             T concentrationDistribution
         ) {
-            if (targetUnit is not StandardConcentrationUnit stdUnit) {
+            if (targetUnit is not StandardConcentrationUnitSpec stdUnit) {
                 throw new InvalidOperationException(
                     $"Expected a standard concentration unit but received {targetUnit?.GetType().Name}."
                 );

@@ -47,7 +47,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 SubstanceName = substance.Name,
                 Model = concentrationModel.ModelType,
                 DesiredModel = concentrationModel.DesiredModelType,
-                Unit = concentrationModel.Unit is StandardConcentrationUnit stdUnit ? stdUnit.Unit : default,
+                Unit = concentrationModel.Unit is StandardConcentrationUnitSpec stdUnit ? stdUnit.Unit : default,
                 FractionTrueZeros = 1D - concentrationModel.CorrectedOccurenceFraction,
                 FractionCensored = concentrationModel.FractionCensored,
                 FractionNonQuantifications = concentrationModel.FractionNonQuantifications,

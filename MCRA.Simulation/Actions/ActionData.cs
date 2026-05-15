@@ -117,6 +117,7 @@ using MCRA.Simulation.Calculators.SingleValueRisksCalculation;
 using MCRA.Simulation.Calculators.SoilExposureCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.Objects;
+using MCRA.Simulation.Objects.SubstanceConcentrations;
 
 namespace MCRA.Simulation {
     public class ActionData {
@@ -927,14 +928,9 @@ namespace MCRA.Simulation {
         }
 
         // SoilConcentrations
-        public IList<SubstanceConcentration> SoilConcentrations {
-            get => GetOrCreateModuleOutputData<SoilConcentrationsOutputData>(ActionType.SoilConcentrations).SoilConcentrations;
-            set => GetOrCreateModuleOutputData<SoilConcentrationsOutputData>(ActionType.SoilConcentrations).SoilConcentrations = value;
-        }
-
-        public ConcentrationUnit SoilConcentrationUnit {
-            get => GetOrCreateModuleOutputData<SoilConcentrationsOutputData>(ActionType.SoilConcentrations).SoilConcentrationUnit;
-            set => GetOrCreateModuleOutputData<SoilConcentrationsOutputData>(ActionType.SoilConcentrations).SoilConcentrationUnit = value;
+        public SubstanceConcentrationsCollection SoilConcentrations {
+            get => GetOrCreateModuleOutputData<SoilConcentrationsOutputData>(ActionType.SoilConcentrations).SoilConcentrationCollection;
+            set => GetOrCreateModuleOutputData<SoilConcentrationsOutputData>(ActionType.SoilConcentrations).SoilConcentrationCollection = value;
         }
 
         public ConcentrationUnit SoilConcentrationDistributionUnit {

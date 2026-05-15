@@ -34,7 +34,6 @@ namespace MCRA.Simulation.Actions.SoilConcentrations {
             if (outputSettings.ShouldSummarize(SoilConcentrationsSections.ConcentrationsSection)) {
                 section.Summarize(
                 data.SoilConcentrations,
-                data.SoilConcentrationUnit.GetShortDisplayName(),
                 sectionConfig.VariabilityLowerPercentage,
                 sectionConfig.VariabilityUpperPercentage
             );
@@ -50,7 +49,7 @@ namespace MCRA.Simulation.Actions.SoilConcentrations {
                 new("UpperPercentage", $"p{sectionConfig.VariabilityUpperPercentage}"),
                 new("LowerBound", $"p{sectionConfig.UncertaintyLowerBound}"),
                 new("UpperBound", $"p{sectionConfig.UncertaintyUpperBound}"),
-                new("ConcentrationUnit", $"{data.SoilConcentrationUnit.GetShortDisplayName()}")
+                new("ConcentrationUnit", $"{data.SoilConcentrations.Unit.GetShortDisplayName()}")
             };
             return result;
         }

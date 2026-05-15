@@ -1,15 +1,14 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Action;
+using MCRA.Simulation.Objects.SubstanceConcentrations;
 
 namespace MCRA.Simulation.Actions.SoilConcentrations {
     public class SoilConcentrationsOutputData : IModuleOutputData {
-        public IList<SubstanceConcentration> SoilConcentrations { get; set; }
-        public ConcentrationUnit SoilConcentrationUnit { get; set; }
+        public SubstanceConcentrationsCollection SoilConcentrationCollection { get; set; }
         public IModuleOutputData Copy() {
             return new SoilConcentrationsOutputData() {
-                SoilConcentrations = SoilConcentrations,
-                SoilConcentrationUnit = SoilConcentrationUnit
+                SoilConcentrationCollection = SoilConcentrationCollection
             };
         }
     }

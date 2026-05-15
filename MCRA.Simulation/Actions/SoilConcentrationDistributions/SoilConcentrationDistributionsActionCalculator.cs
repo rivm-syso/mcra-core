@@ -25,7 +25,7 @@ namespace MCRA.Simulation.Actions.SoilConcentrationDistributions {
                 subsetManager.AllSoilConcentrationDistributions,
                 NonDetectsHandlingMethod.ReplaceByZero,
                 0,
-                new StandardConcentrationUnit(SystemUnits.DefaultSoilConcentrationUnit)
+                new StandardConcentrationUnitSpec(SystemUnits.DefaultSoilConcentrationUnit)
             );
 
             data.SoilConcentrationModels = concentrationModels;

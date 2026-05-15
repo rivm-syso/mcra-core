@@ -33,7 +33,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
                 FractionNonDetects = 0D;
                 FractionNonQuantifications = 0D;
                 FractionTrueZeros = 1 - CorrectedOccurenceFraction;
-                var modelUnit = Unit is StandardConcentrationUnit stdUnit
+                var modelUnit = Unit is StandardConcentrationUnitSpec stdUnit
                     ? stdUnit.Unit
                     : SystemUnits.DefaultConcentrationUnit;
                 var unitCorrection = ConcentrationDistribution.ConcentrationUnit.GetConcentrationUnitMultiplier(modelUnit);

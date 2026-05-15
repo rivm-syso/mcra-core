@@ -1,5 +1,6 @@
 ﻿using MCRA.Data.Compiled.Interfaces;
 using MCRA.General;
+using MCRA.Simulation.Objects.SubstanceConcentrations;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
@@ -7,6 +8,44 @@ namespace MCRA.Simulation.OutputGeneration {
         public string UnitDisplayName { get; private set; }
         public List<SubstanceConcentrationsSummaryRecord> Records { get; set; }
         public List<SubstanceConcentrationsPercentilesRecord> PercentileRecords { get; set; }
+
+        public void Summarize(
+            SubstanceConcentrationsCollection concentrationsCollection,
+            double lowerPercentage,
+            double upperPercentage
+        ) {
+            UnitDisplayName = concentrationsCollection.Unit.GetShortDisplayName();
+            var percentages = new double[] { lowerPercentage, 50, upperPercentage };
+            var records = new List<SubstanceConcentrationsSummaryRecord>();
+            var substances = concentrationsCollection.Select(c => c.Substance).ToHashSet();
+            foreach (var substance in substances) {
+                var samples = concentrationsCollection
+                    .Where(r => r.Substance.Code.Equals(substance.Code, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+
+                var positives = samples.Where(r => r.Concentration > 0)
+                    .Select(c => c.Concentration)
+                    .ToList();
+                var percentilesSampleConcentrations = positives.Any()
+                    ? positives.Percentiles(percentages)
+                    : [.. percentages.Select(r => double.NaN)];
+
+                var record = new SubstanceConcentrationsSummaryRecord() {
+                    Unit = UnitDisplayName,
+                    SubstanceCode = substance.Code,
+                    SubstanceName = substance.Name,
+                    SamplesTotal = samples.Count,
+                    MeanPositives = positives.Any() ? positives.Average() : double.NaN,
+                    LowerPercentilePositives = percentilesSampleConcentrations[0],
+                    MedianPositives = percentilesSampleConcentrations[1],
+                    UpperPercentilePositives = percentilesSampleConcentrations[2],
+                    PositiveMeasurements = positives.Count(),
+                };
+                records.Add(record);
+            }
+            Records = records;
+            PercentileRecords = summarizeBoxPlotRecords(concentrationsCollection);
+        }
 
         public void Summarize<T>(
             ICollection<T> concentrations,
