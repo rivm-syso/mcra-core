@@ -177,7 +177,7 @@
     <Id>CaseControlSelection</Id>
     <Name>Case control selection</Name>
     <Description>
-      Specify scenarios for the controls.
+      Specify which scenarios to use for the controls (at least one scenario must be selected).
     </Description>
     <ValueType>AlphaNumeric</ValueType>
     <IsList>true</IsList>
