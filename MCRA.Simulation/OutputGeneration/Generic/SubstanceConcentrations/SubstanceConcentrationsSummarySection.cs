@@ -31,7 +31,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     : [.. percentages.Select(r => double.NaN)];
 
                 var record = new SubstanceConcentrationsSummaryRecord() {
-                    Unit = samples.First().UnitTypeString,
+                    Unit = unitDisplayName,
                     SubstanceCode = substance.Code,
                     SubstanceName = substance.Name,
                     SamplesTotal = samples.Count,
