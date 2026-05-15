@@ -16,12 +16,12 @@ namespace MCRA.Simulation.OutputGeneration {
        ) {
             var plotModel = createDefaultPlotModel();
 
-            var recordsReversed = records.Where(c => c.Percentage > 0).Reverse();
+            records = [.. records.Where(c => c.Percentage > 0)];
             var minima = records.Where(r => r.MinPositives > 0).Select(r => r.MinPositives).ToList();
             var minimum = minima.Any() ? minima.Min() * 0.9 : 1e-8;
 
-            var stratificationGroups = recordsReversed.GroupBy(r => r.Stratification).ToList();
-            var descriptorValues = recordsReversed.Select(c => c.GetLabel()).ToHashSet();
+            var stratificationGroups = records.GroupBy(r => r.Stratification).ToList();
+            var descriptorValues = records.Select(c => c.GetLabel()).ToHashSet();
             var descriptorIndexes = descriptorValues
                 .Select((r, ix) => (r, ix))
                 .ToDictionary(r => r.r, r => r.ix);
@@ -31,7 +31,6 @@ namespace MCRA.Simulation.OutputGeneration {
 
             var maximum = double.NegativeInfinity;
             foreach (var group in stratificationGroups) {
-
                 // Create boxplot series
                 var series = new MultipleWhiskerHorizontalBoxPlotSeries() {
                     Title = group.Key,
@@ -77,7 +76,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 MajorGridlineColor = OxyColors.Black,
                 GapWidth = 0.1
             };
-            var categories = recordsReversed.Select(c => c.GetLabel()).ToHashSet();
+            var categories = records.Select(c => c.GetLabel()).ToHashSet();
             foreach (var category in categories) {
                 categoryAxis.Labels.Add(category);
             }
@@ -103,6 +102,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 LegendOrientation = LegendOrientation.Vertical,
                 LegendPlacement = LegendPlacement.Outside,
                 LegendPosition = LegendPosition.RightTop,
+                LegendItemOrder = LegendItemOrder.Reverse,
             };
             plotModel.Legends.Add(legend);
             plotModel.IsLegendVisible = true;
