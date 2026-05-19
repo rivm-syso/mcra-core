@@ -53,12 +53,12 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelBuilder {
                 .ToList();
 
             var zerosCount = concentrations
-                .Where(c => c.Concentration == 0)
-                .Count();
+                .Count(c => c.Concentration == 0);
 
             var residueCollection = new ResidueCollection() {
                 Positives = positiveResidues,
-                CensoredValuesCollection = censoredValues
+                CensoredValuesCollection = censoredValues,
+                ZerosCount = zerosCount
             };
 
             var concentrationModel = new CMEmpirical() {

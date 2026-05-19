@@ -48,24 +48,29 @@ namespace MCRA.Simulation.Calculators.ConsumerProductConcentrationModelCalculati
                 .ToList();
 
             var censoredValues = concentrations
-                .Where(c => c.Concentration == 0)
+                .Where(c => c.Concentration < 0)
                 .Select(c => new CensoredValue() {
                     LOD = double.NaN,
-                    LOQ = double.NaN,
+                    LOQ = Math.Abs(c.Concentration),
                     ResType = ResType.LOQ
                 })
                 .ToList();
 
+            var zerosCount = concentrations
+                .Count(c => c.Concentration == 0);
+
             var residueCollection = new ResidueCollection() {
                 Positives = positiveResidues,
-                CensoredValuesCollection = censoredValues
+                CensoredValuesCollection = censoredValues,
+                ZerosCount = zerosCount
             };
 
             var concentrationModel = new CMEmpirical() {
                 NonDetectsHandlingMethod = nonDetectsHandlingMethod,
                 Residues = residueCollection,
                 FractionOfLor = lorReplacementFactor,
-                CorrectedOccurenceFraction = 1
+                CorrectedOccurenceFraction = 1,
+                FractionTrueZeros = (double)concentrations.Count() / zerosCount
             };
             concentrationModel.CalculateParameters();
 
