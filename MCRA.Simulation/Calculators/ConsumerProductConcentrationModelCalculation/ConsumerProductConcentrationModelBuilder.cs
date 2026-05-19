@@ -1,6 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation;
+using MCRA.Simulation.Calculators.ConcentrationModelBuilder;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
 
@@ -10,6 +11,9 @@ namespace MCRA.Simulation.Calculators.ConsumerProductConcentrationModelCalculati
     /// Builder class for consumer product concentration models.
     /// </summary>
     public class ConsumerProductConcentrationModelBuilder {
+
+        // For consumer products, we assume that the occurence frequency is 100%, i.e., all products contain the substance
+        private static double _occurenceFrequency = 1D;
 
         /// <summary>
         /// Creates concentration models for consumer product concentrations.
@@ -65,12 +69,14 @@ namespace MCRA.Simulation.Calculators.ConsumerProductConcentrationModelCalculati
                 ZerosCount = zerosCount
             };
 
+            var (occurenceFraction, correctedOccurenceFraction) = ConcentrationModelBuilderBase
+                .CalculateOccurrenceFractions(_occurenceFrequency, residueCollection);
             var concentrationModel = new CMEmpirical() {
                 NonDetectsHandlingMethod = nonDetectsHandlingMethod,
                 Residues = residueCollection,
                 FractionOfLor = lorReplacementFactor,
-                CorrectedOccurenceFraction = 1,
-                FractionTrueZeros = (double)concentrations.Count() / zerosCount
+                OccurenceFraction = occurenceFraction,
+                CorrectedOccurenceFraction = correctedOccurenceFraction,
             };
             concentrationModel.CalculateParameters();
 

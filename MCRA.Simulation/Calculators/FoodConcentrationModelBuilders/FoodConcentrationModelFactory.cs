@@ -2,6 +2,7 @@
 using MCRA.General;
 using MCRA.General.ModuleDefinitions.Interfaces;
 using MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation;
+using MCRA.Simulation.Calculators.ConcentrationModelBuilder;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
 
 namespace MCRA.Simulation.Calculators.FoodConcentrationModelBuilders {
@@ -51,15 +52,10 @@ namespace MCRA.Simulation.Calculators.FoodConcentrationModelBuilders {
                 }
                 model.FractionOfMrl = _settings.IsFallbackMrl ? _settings.FractionOfMrl : double.NaN;
 
-                if (compoundResidueCollection.NumberOfResidues > 0) {
-                    model.OccurenceFraction = !(double.IsNaN(occurrenceFrequency)) ? occurrenceFrequency : 1D - compoundResidueCollection.FractionZeros;
-                    model.CorrectedOccurenceFraction = model.OccurenceFraction;
-                    model.CorrectedOccurenceFraction = Math.Max(model.CorrectedOccurenceFraction, compoundResidueCollection.FractionPositives);
-                    model.CorrectedOccurenceFraction = Math.Min(model.CorrectedOccurenceFraction, 1 - compoundResidueCollection.FractionZeros);
-                } else {
-                    model.OccurenceFraction = !double.IsNaN(occurrenceFrequency) ? occurrenceFrequency : 1D;
-                    model.CorrectedOccurenceFraction = model.OccurenceFraction;
-                }
+                var (occurenceFraction, correctedOccurenceFraction) = ConcentrationModelBuilderBase
+                    .CalculateOccurrenceFractions(occurrenceFrequency, compoundResidueCollection);
+                model.OccurenceFraction = occurenceFraction;
+                model.CorrectedOccurenceFraction = correctedOccurenceFraction;
 
                 parametersCalculated = model.CalculateParameters();
                 if (!parametersCalculated) {
