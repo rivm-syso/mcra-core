@@ -8,11 +8,11 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<ConcentrationPercentileRecord> Records { get; set; } = [];
         public void Summarize<T>(
             ICollection<T> concentrations,
-            ICollection<Compound> substances,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
             List<double> percentages
         ) where T : ISubstanceConcentration {
+            var substances = concentrations.Select(c => c.Substance).ToHashSet();
             foreach (var substance in substances) {
                 if (concentrations.Where(c => c.Substance.Code == substance.Code).Any(c => c.Concentration > 0)) {
                     var percentiles = concentrations

@@ -60,7 +60,6 @@ namespace MCRA.Simulation.Actions.DustConcentrations {
             var subHeader = header.AddSubSectionHeaderFor(section, "Percentiles", order++);
             section.Summarize(
                 data.DustConcentrations,
-                data.ActiveSubstances,
                 sectionConfig.UncertaintyLowerBound,
                 sectionConfig.UncertaintyUpperBound,
                 sectionConfig.SelectedPercentiles

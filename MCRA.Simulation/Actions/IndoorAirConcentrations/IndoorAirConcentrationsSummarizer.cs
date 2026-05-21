@@ -60,7 +60,6 @@ namespace MCRA.Simulation.Actions.IndoorAirConcentrations {
             var subHeader = header.AddSubSectionHeaderFor(section, "Percentiles", order++);
             section.Summarize(
                 data.IndoorAirConcentrations,
-                data.ActiveSubstances,
                 sectionConfig.UncertaintyLowerBound,
                 sectionConfig.UncertaintyUpperBound,
                 sectionConfig.SelectedPercentiles
