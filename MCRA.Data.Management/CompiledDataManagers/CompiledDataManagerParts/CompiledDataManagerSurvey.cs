@@ -125,12 +125,16 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         }
 
                                         var facetString = r.GetStringOrNull(RawFoodConsumptions.Facets, fieldMap);
-                                        if (!string.IsNullOrEmpty(facetString) && FoodCodeUtilities.IsFoodEx2FacetString(facetString)) {
-                                            var facetCodes = FoodCodeUtilities.ParseFacetString(facetString);
-                                            if (facetCodes.Any()) {
-                                                var facetFoodCode = $"{idFood}#{string.Join("$", facetCodes)}";
-                                                var consumedFood = getOrAddFood(facetFoodCode, resolveFoodEx2: true);
-                                                food = consumedFood;
+                                        if (!string.IsNullOrEmpty(facetString)) {
+                                            if (FoodCodeUtilities.IsFoodEx2FacetString(facetString)) {
+                                                var facetCodes = FoodCodeUtilities.ParseFacetString(facetString);
+                                                if (facetCodes.Any()) {
+                                                    var facetFoodCode = $"{idFood}#{string.Join("$", facetCodes)}";
+                                                    var consumedFood = getOrAddFood(facetFoodCode, resolveFoodEx2: true);
+                                                    food = consumedFood;
+                                                }
+                                            } else {
+                                                throw new Exception($"Consumption record with incorrect FoodEx2 facet string [{facetString}].");
                                             }
                                         }
                                         var consumption = new FoodConsumption {
