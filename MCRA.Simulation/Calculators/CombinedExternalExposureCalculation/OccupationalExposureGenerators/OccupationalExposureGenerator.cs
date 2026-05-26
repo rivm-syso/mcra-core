@@ -74,6 +74,9 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.Occupa
             }
             var scenario = individualDay.SimulatedIndividual.OccupationalScenario;
             var exposures = occupationalScenarioExposures[scenario];
+            if (exposures.Any(r => !r.Unit.IsSystemicDose())) {
+                throw new NotImplementedException("Internal exposures calculation based on occupational scenario emissions not implemented.");
+            }
             var exposuresPerPath = occupationalScenarioExposures[scenario]
                 .GroupBy(r => r.Route)
                 .ToDictionary(
