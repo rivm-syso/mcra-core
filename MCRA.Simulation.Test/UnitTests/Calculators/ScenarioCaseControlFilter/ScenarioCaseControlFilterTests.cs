@@ -21,20 +21,13 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ScenarioCaseControlFilter {
             var controls = new List<string> { "Scenario1Control", "Scenario2Control" };
 
             foreach (var scenario in scenarios) {
-                var isControl = caseControl_Filter(scenario, p => _controlScenarios.Contains(p.Code));
+                var isControl = _controlScenarios.Contains(scenario.Code);
                 if (isControl) {
                     Assert.Contains(scenario.Name, controls);
                 } else {
                     Assert.DoesNotContain(scenario.Name, controls);
                 }
             }
-        }
-
-        /// <summary>
-        /// Evaluates the specified occupational scenario against the provided filter predicate.
-        /// </summary>
-        private static bool caseControl_Filter(OccupationalScenario scenario, Predicate<OccupationalScenario> filter) {
-            return filter(scenario);
         }
 
         [TestMethod]
@@ -60,28 +53,21 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ScenarioCaseControlFilter {
                 id++;
             }
 
-            // Create stratifiers and combine them in composite stratifier
-            // Note: the order of the stratifiers in the list matters for the resulting composite stratification levels
-            var stratifiers = new List<PopulationStratifier>() {
-                new SimpleOccupationalScenarioStratifier(scenarios),
+            var stratifier = new PopulationStratifier([
+                new OccupationalScenarioStratifier(scenarios),
                 new GenderStratifier(),
-                new OccupationalScenarioCaseControlStratifier(scenarios, controlScenarioCodes)
-            };
-            var compositeStratifier = new CompositeStratifier(stratifiers);
-            var dummies = simulatedIndividuals
-                .Select(c => new {
-                    compositeStratificationLevel = compositeStratifier.GetLevel(c) as ICompositeStratificationLevel
-                })
-                .ToList();
+                new OccupationalCaseControlStratifier(scenarios, controlScenarioCodes)
+            ]);
 
-            var groups = dummies.GroupBy(g => g.compositeStratificationLevel.Parts)
+            var groups = simulatedIndividuals
+                .GroupBy(stratifier.GetLevel)
                 .Select(g => new {
                     StratificationLevel = g.Key,
                     Number = g.Count(),
                 })
                 .ToList();
 
-            Assert.IsTrue(groups.Count == 6);
+            Assert.AreEqual(6, groups.Count);
         }
     }
 }

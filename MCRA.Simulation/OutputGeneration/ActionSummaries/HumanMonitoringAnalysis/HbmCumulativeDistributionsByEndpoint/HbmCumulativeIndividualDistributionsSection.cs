@@ -16,12 +16,14 @@ namespace MCRA.Simulation.OutputGeneration {
             bool skipPrivacySensitiveOutputs
         ) {
             ExposureType = ExposureType.Chronic;
+            StratificationVariables = stratifier?.GetStratificationVariables();
             if (skipPrivacySensitiveOutputs) {
                 var maxUpperPercentile = SimulationConstants.MaxUpperPercentage(collection.HbmCumulativeIndividualConcentrations.Count);
                 if (_upperWhisker > maxUpperPercentile) {
                     RestrictedUpperPercentile = maxUpperPercentile;
                 }
             }
+
             var percentages = new double[] { lowerPercentage, 50, upperPercentage };
             var substance = new Compound() { Name = "Cumulative", Code = "Cumulative" };
             var descriptor = new HbmSubstanceContributorKey() { Substance = substance };
@@ -71,6 +73,8 @@ namespace MCRA.Simulation.OutputGeneration {
             StratifiedHbmBoxPlotRecords[collection.TargetUnit.Target] = stratifiedHbmBoxPlotRecords;
         }
 
+
+
         public void SummarizeUncertainty(
             HbmCumulativeIndividualCollection collection,
             PopulationStratifier stratifier,
@@ -104,12 +108,13 @@ namespace MCRA.Simulation.OutputGeneration {
             PopulationStratifier stratifier
         ) {
             var concentrations = collection.HbmCumulativeIndividualConcentrations
-                .Select(c => new HbmConcentrationsByDescriptor<HbmSubstanceContributorKey> {
-                    SamplingWeight = c.SimulatedIndividual.SamplingWeight,
-                    TotalEndpointExposure = c.CumulativeConcentration,
-                    StratificationLevel = stratifier?.GetLevel(c.SimulatedIndividual),
-                    SourceSamplingMethods = []
-                })
+                .Select(c =>
+                     new HbmConcentrationsByDescriptor<HbmSubstanceContributorKey> {
+                         SamplingWeight = c.SimulatedIndividual.SamplingWeight,
+                         TotalEndpointExposure = c.CumulativeConcentration,
+                         StratificationLevel = stratifier?.GetLevel(c.SimulatedIndividual),
+                         SourceSamplingMethods = []
+                     })
                 .ToList();
             return concentrations;
         }

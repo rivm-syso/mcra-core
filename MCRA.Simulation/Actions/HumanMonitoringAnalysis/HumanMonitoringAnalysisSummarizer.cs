@@ -1,4 +1,5 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
@@ -43,6 +44,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             }
 
             var stratifier = getPopulationStratifier(data);
+
             var subHeader = header.AddEmptySubSectionHeader(ActionType.GetDisplayName(), order, ActionType.ToString());
             subHeader.Units = CollectUnits(data);
             var subOrder = 0;
@@ -190,11 +192,12 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
            ActionData data,
            SectionHeader header
         ) {
-            var stratifier = getPopulationStratifier(data);
+
+            var populationStratifier = getPopulationStratifier(data);
 
             if (data.HbmCumulativeIndividualCollection != null || data.HbmCumulativeIndividualDayCollection != null) {
                 summarizeCumulativeConcentrationseUncertainty(
-                    stratifier,
+                    populationStratifier,
                     data.HbmCumulativeIndividualDayCollection,
                     data.HbmCumulativeIndividualCollection,
                     _configuration.ExposureType,
@@ -220,7 +223,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             }
 
             summarizeHbmConcentrationsByTargetSubstanceUncertainty(
-                stratifier,
+                populationStratifier,
                 data.HbmIndividualDayCollections,
                 data.HbmIndividualCollections,
                 data.ActiveSubstances,
@@ -233,7 +236,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             );
 
             summarizeHbmConcentrationsBySubstanceTimePointUncertainty(
-                stratifier,
+                populationStratifier,
                 data.HbmIndividualDayCollections,
                 data.ActiveSubstances,
                 _configuration.UncertaintyLowerBound,
@@ -243,7 +246,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
 
             if (result.HbmMeasuredMatrixIndividualDayCollections?.Count > 0) {
                 summarizeHbmConcentrationsByTargetSubstanceDetailsUncertainty(
-                    stratifier,
+                    populationStratifier,
                     result.HbmMeasuredMatrixIndividualDayCollections,
                     result.HbmMeasuredMatrixIndividualCollections,
                     data.ActiveSubstances,
@@ -265,21 +268,6 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     _configuration.UncertaintyUpperBound,
                     header
             );
-        }
-
-        private PopulationStratifier getPopulationStratifier(ActionData data) {
-            if (_configuration.OccupationalExposureAssessment) {
-                var outputStratifier = PopulationStratifierFactory
-                    .Create(
-                        _configuration.CaseControlAnalysis
-                            ? OutputStratificationVariable.CaseControl
-                            : OutputStratificationVariable.OccupationalScenario,
-                        scenarios: data.OccupationalScenarios?.Values,
-                        controlScenarioCodes: _configuration.CaseControlSelection
-                    );
-                return outputStratifier;
-            }
-            return null;
         }
 
         private List<ActionSummaryUnitRecord> CollectUnits(ActionData data) {
@@ -308,6 +296,29 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 actionSummaryUnitRecords.Add(new ActionSummaryUnitRecord("IndividualDayUnit", "individual days"));
             }
             return actionSummaryUnitRecords;
+        }
+
+        private PopulationStratifier getPopulationStratifier(ActionData data) {
+            var outputStratifiers = new List<ISimplePopulationStratifier>();
+            if (_configuration.OccupationalExposureAssessment) {
+                var outputStratifier = PopulationStratifierFactory
+                    .Create(
+                        _configuration.CaseControlAnalysis
+                            ? OutputStratificationVariable.CaseControl
+                            : OutputStratificationVariable.OccupationalScenario,
+                        scenarios: data.OccupationalScenarios?.Values,
+                        controlScenarioCodes: _configuration.CaseControlSelection
+                    );
+                outputStratifiers.Add(outputStratifier);
+                // The CaseControl stratifier returns only 'Case' or 'Control',
+                // therefore also add a second stratifier with scenarios
+                if (_configuration.CaseControlAnalysis) {
+                    var scenarioStratifier = new OccupationalScenarioStratifier(data.OccupationalScenarios?.Values);
+                    outputStratifiers.Add(scenarioStratifier);
+                }
+                return new PopulationStratifier(outputStratifiers);
+            }
+            return null;
         }
 
         private void summarizeHbmConcentrationsByTargetSubstance(

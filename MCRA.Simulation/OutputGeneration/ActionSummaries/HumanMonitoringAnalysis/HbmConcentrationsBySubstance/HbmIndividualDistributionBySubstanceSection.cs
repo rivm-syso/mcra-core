@@ -18,6 +18,7 @@ namespace MCRA.Simulation.OutputGeneration {
             bool detailsSection = false
         ) {
             ExposureType = ExposureType.Chronic;
+            StratificationVariables = stratifier?.GetStratificationVariables();
             DetailsSection = detailsSection;
             if (skipPrivacySensitiveOutputs) {
                 foreach (var collection in collections) {
@@ -28,6 +29,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     }
                 }
             }
+
             ShowOutliers = !skipPrivacySensitiveOutputs;
             var concentrationsAvailable = collections
                 .SelectMany(c => c.HbmIndividualConcentrations)
@@ -130,7 +132,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     TotalEndpointExposure = c.ConcentrationsBySubstance[substance].Exposure,
                     SourceSamplingMethods = c.ConcentrationsBySubstance
                         .TryGetValue(substance, out var record) ? record.SourceSamplingMethods : null,
-                    StratificationLevel = stratifier?.GetLevel(c.SimulatedIndividual)
+                    StratificationLevel = stratifier?.GetLevel(c.SimulatedIndividual),
                 })
                 .ToList();
             return concentrations;

@@ -6,9 +6,6 @@ using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.TargetExposures {
 
-    /// <summary>
-    /// OutputGeneration, ActionSummaries, TargetExposures, boxplot by source, stratified and original
-    /// </summary>
     [TestClass]
     public class InternalExposureStratifiedBoxPlotChartCreatorTests : ChartCreatorTestBase {
 
@@ -55,7 +52,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 .Cast<ExposureSource>()
                 .Where(r => r != ExposureSource.Undefined)
                 .ToList();
-            var stratification = Enumerable.Range(1, numLevels).Select(r => $"Group {r}").ToArray();
+            var stratification = Enumerable.Range(1, numLevels).Select(r => $"Scenario {r}").ToArray();
             var records = new List<ExposureBySourceBoxPlotRecord>();
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
             for (var i = 0; i < sources.Count * stratification.Length; i++) {
@@ -66,6 +63,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 var record = new ExposureBySourceBoxPlotRecord {
                     Source = sources[i / stratification.Length].GetDisplayName(),
                     Stratification = stratification[i % stratification.Length],
+                    StratificationLevelCode = stratification[i % stratification.Length],
+                    StratificationSubLevelCodes = [stratification[i % stratification.Length]],
+                    StratificationSubLevelNames = [stratification[i % stratification.Length]],
                     Percentiles = [.. percentiles.OrderBy(c => c)],
                     MinPositives = percentiles.Min() * 0.5,
                     MaxPositives = percentiles.Max() * 2,
@@ -76,8 +76,13 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     records.Add(record);
                 }
             }
-            var section = new ExposureBySourceSection { BoxPlotRecords = records };
-            var chart = new InternalExposureStratifiedBoxPlotChartCreator<SourceContributorKey, ExposureBySourceBoxPlotRecord>("Source", records, targetUnit, true, false);
+            var chart = new InternalExposureStratifiedBoxPlotChartCreator<SourceContributorKey, ExposureBySourceBoxPlotRecord>(
+                descriptorName: "Source",
+                records: records,
+                unit: targetUnit,
+                showOutliers: true,
+                stratificationVariables: [OutputStratificationVariable.OccupationalScenario]
+            );
             RenderChart(chart, $"TestStratified_{numLevels}");
         }
     }

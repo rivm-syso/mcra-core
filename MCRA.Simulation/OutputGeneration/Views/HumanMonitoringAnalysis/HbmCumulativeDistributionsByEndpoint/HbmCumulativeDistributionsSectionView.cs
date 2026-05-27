@@ -62,7 +62,8 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                             targetBoxPlotRecords.Key,
                             Model.SectionId,
                             targetBoxPlotRecords.Value.FirstOrDefault()?.Unit ?? string.Empty,
-                            Model.ShowOutliers
+                            Model.ShowOutliers,
+                            Model.StratificationVariables
                         );
 
                         var warning = targetBoxPlotRecords.Value.Any(c => c.P95 == 0)

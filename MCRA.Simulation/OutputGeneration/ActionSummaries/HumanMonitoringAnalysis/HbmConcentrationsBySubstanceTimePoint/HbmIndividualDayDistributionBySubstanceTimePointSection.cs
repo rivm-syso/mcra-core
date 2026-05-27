@@ -18,6 +18,7 @@ namespace MCRA.Simulation.OutputGeneration {
             bool detailsSection = false
         ) {
             ExposureType = ExposureType.Acute;
+            StratificationVariables = stratifier?.GetStratificationVariables();
             DetailsSection = detailsSection;
             if (skipPrivacySensitiveOutputs) {
                 foreach (var collection in collections) {
@@ -97,11 +98,11 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             foreach (var substance in substances) {
                 foreach (var collection in collections) {
-                    var hbmConcentrations = getConcentrations(collection, substance, stratifier);
-                    var timePointGroups = hbmConcentrations.GroupBy(r => r.Descriptor);
+                    var concentrations = getConcentrations(collection, substance, stratifier);
+                    var timePointGroups = concentrations.GroupBy(r => r.Descriptor);
                     foreach (var group in timePointGroups) {
                         UpdateRecord(
-                            hbmConcentrations,
+                            concentrations,
                             group.Key,
                             collection.Target,
                             null,
@@ -110,7 +111,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         );
                         if (stratifier != null) {
                             UpdateStratifiedRecords(
-                                hbmConcentrations,
+                                concentrations,
                                 group.Key,
                                 collection.Target,
                                 lowerBound,
@@ -125,7 +126,7 @@ namespace MCRA.Simulation.OutputGeneration {
         private static List<HbmConcentrationsByDescriptor<HbmSubstanceTimePointContributorKey>> getConcentrations(
             HbmIndividualDayCollection collection,
             Compound substance,
-            PopulationStratifier stratifier
+            PopulationStratifier populationStratifier
         ) {
             var result = new List<HbmConcentrationsByDescriptor<HbmSubstanceTimePointContributorKey>>();
             var individualDaysByTimePoint = collection.HbmIndividualDayConcentrations
@@ -141,7 +142,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     TotalEndpointExposure = c.AverageEndpointSubstanceExposure(substance),
                     SourceSamplingMethods = c.ConcentrationsBySubstance
                         .TryGetValue(substance, out var record) ? record.SourceSamplingMethods : null,
-                    StratificationLevel = stratifier?.GetLevel(c.SimulatedIndividual),
+                    StratificationLevel = populationStratifier?.GetLevel(c.SimulatedIndividual),
                     Descriptor = descriptor
                 }));
             }

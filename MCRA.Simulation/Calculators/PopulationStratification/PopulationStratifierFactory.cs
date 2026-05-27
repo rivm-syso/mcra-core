@@ -5,18 +5,18 @@ namespace MCRA.Simulation.Calculators.Stratification {
     public class PopulationStratifierFactory {
 
         /// <summary>
-        /// Creates a <see cref="PopulationStratifier"/> instance based on the specified stratification variable, 
+        /// Creates a <see cref="IPopulationStratifier"/> instance based on the specified stratification variable, 
         /// possibly using the provided additional data and/or selected scenarios for case control analysis.
         /// </summary>
-        public static PopulationStratifier Create(
+        public static ISimplePopulationStratifier Create(
             OutputStratificationVariable stratificationVariable,
             ICollection<OccupationalScenario> scenarios,
             ICollection<string> controlScenarioCodes = null
         ) {
-            PopulationStratifier result = stratificationVariable switch {
+            ISimplePopulationStratifier result = stratificationVariable switch {
                 OutputStratificationVariable.Sex => new GenderStratifier(),
-                OutputStratificationVariable.OccupationalScenario => new SimpleOccupationalScenarioStratifier(scenarios),
-                OutputStratificationVariable.CaseControl => new OccupationalScenarioCaseControlStratifier(scenarios, controlScenarioCodes),
+                OutputStratificationVariable.OccupationalScenario => new OccupationalScenarioStratifier(scenarios),
+                OutputStratificationVariable.CaseControl => new OccupationalCaseControlStratifier(scenarios, controlScenarioCodes),
                 _ => throw new NotImplementedException($"Stratification variable {stratificationVariable} is not implemented."),
             };
             return result;

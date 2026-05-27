@@ -20,32 +20,10 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<T1> Records { get; set; } = [];
         public SerializableDictionary<ExposureTarget, List<T2>> HbmBoxPlotRecords { get; set; } = [];
         public SerializableDictionary<ExposureTarget, List<T2>> StratifiedHbmBoxPlotRecords { get; set; } = [];
+        public List<OutputStratificationVariable> StratificationVariables = [];
         public double? RestrictedUpperPercentile { get; set; }
         public bool ShowOutliers { get; set; }
         public bool DetailsSection { get; set; }
-
-        //protected static T1 CreateSummaryRecord(
-        //    List<HbmConcentrationsByDescriptor<S>> concentrations,
-        //    S descriptor,
-        //    TargetUnit targetUnit,
-        //    double[] percentages,
-        //    bool stratified
-        //) {
-        //    if (concentrations != null) {
-        //        var record = CreateSummaryRecord(
-        //            concentrations,
-        //            descriptor,
-        //            targetUnit,
-        //            stratified ? concentrations.FirstOrDefault()?.StratificationLevel : null,
-        //            percentages
-        //        );
-        //        if (!concentrations.Any()) {
-        //            return CreateMissingRecord(targetUnit, descriptor);
-        //        }
-        //        return record;
-        //    }
-        //    return null;
-        //}
 
         protected static T1 CreateSummaryRecord(
             List<HbmConcentrationsByDescriptor<S>> concentrations,
@@ -55,10 +33,6 @@ namespace MCRA.Simulation.OutputGeneration {
             double[] percentages
         ) {
             if (concentrations != null) {
-
-                var sourceSamplingMethodsXX = concentrations
-                    .SelectMany(c => c.SourceSamplingMethods)
-                    .ToList();
                 var sourceSamplingMethods = concentrations
                     .SelectMany(c => c.SourceSamplingMethods)
                     .GroupBy(c => c)
@@ -80,6 +54,9 @@ namespace MCRA.Simulation.OutputGeneration {
                     .PercentilesWithSamplingWeights(weightsAll, percentages);
                 var record = new T1 {
                     Stratification = stratificationLevel?.Name,
+                    StratificationLevelCode = stratificationLevel?.Code,
+                    StratificationSubLevelCodes = (stratificationLevel as CompositeStratificationLevel)?.Parts.Select(c => c.Code).ToList() ?? [stratificationLevel?.Code],
+                    StratificationSubLevelNames = (stratificationLevel as CompositeStratificationLevel)?.Parts.Select(c => c.Name).ToList() ?? [stratificationLevel?.Name],
                     CodeTargetSurface = targetUnit.Target.Code,
                     BiologicalMatrix = targetUnit.BiologicalMatrix != BiologicalMatrix.Undefined
                         ? targetUnit.BiologicalMatrix.GetDisplayName()
@@ -119,6 +96,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var results = new List<T1>();
             var groups = concentrations
                 .GroupBy(c => stratify ? c.StratificationLevel : null);
+
             foreach (var group in groups) {
                 var record = CreateSummaryRecord(
                     [.. group],
@@ -181,6 +159,9 @@ namespace MCRA.Simulation.OutputGeneration {
                     .ToList();
                 var record = new T2() {
                     Stratification = stratificationLevel?.Name,
+                    StratificationLevelCode = stratificationLevel?.Code,
+                    StratificationSubLevelCodes = (stratificationLevel as CompositeStratificationLevel)?.Parts.Select(c => c.Code).ToList() ?? [stratificationLevel?.Code],
+                    StratificationSubLevelNames = (stratificationLevel as CompositeStratificationLevel)?.Parts.Select(c => c.Name).ToList() ?? [stratificationLevel?.Name],
                     MinPositives = positives.Any() ? positives.Min() : 0,
                     MaxPositives = positives.Any() ? positives.Max() : 0,
                     Percentiles = percentiles.ToList(),
@@ -202,8 +183,7 @@ namespace MCRA.Simulation.OutputGeneration {
             TargetUnit targetUnit
         ) {
             var result = new List<T2>();
-            var groups = concentrations
-                .GroupBy(c => c.StratificationLevel);
+            var groups = concentrations.GroupBy(c => c.StratificationLevel);
             foreach (var group in groups) {
                 var results = CreateBoxPlotRecord(
                     [.. group],
@@ -220,14 +200,14 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<HbmConcentrationsByDescriptor<S>> concentrations,
             S descriptor,
             ExposureTarget target,
-            string stratifier,
+            IStratificationLevel stratificationLevel,
             double lowerBound,
             double upperBound
         ) {
             var record = Records
                 .SingleOrDefault(c => c.GetDescriptorKey() == descriptor.GetKey()
                     && c.CodeTargetSurface == target.Code
-                    && c.Stratification == stratifier
+                    && c.StratificationLevelCode == stratificationLevel?.Code
                 );
             var weightsAll = concentrations.Select(c => c.SamplingWeight).ToList();
             var medianAll = concentrations
@@ -253,7 +233,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     [.. group],
                     descriptor,
                     target,
-                    group.Key.Name,
+                    group.Key,
                     lowerBound,
                     upperBound
                 );
@@ -261,4 +241,3 @@ namespace MCRA.Simulation.OutputGeneration {
         }
     }
 }
-

@@ -1,4 +1,5 @@
-﻿using MCRA.Utils.Charting.OxyPlot;
+﻿using MCRA.General;
+using MCRA.Utils.Charting.OxyPlot;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Legends;
@@ -12,37 +13,72 @@ namespace MCRA.Simulation.OutputGeneration {
            string labelHorizontalAxis,
            bool showOutliers,
            bool showLabels = true,
-           int outliersLimit = 100
+           int outliersLimit = 100,
+           List<OutputStratificationVariable> stratificationVariables = null
        ) {
             var plotModel = createDefaultPlotModel();
-
             records = [.. records.Where(c => c.Percentage > 0)];
             var minima = records.Where(r => r.MinPositives > 0).Select(r => r.MinPositives).ToList();
             var minimum = minima.Any() ? minima.Min() * 0.9 : 1e-8;
 
-            var stratificationGroups = records.GroupBy(r => r.Stratification).ToList();
-            var descriptorValues = records.Select(c => c.GetLabel()).ToHashSet();
+            records = [.. records.OrderByDescending(c => c.Stratification)];
+
+            var stratificationDimensions = stratificationVariables?.Count ?? 0;
+            var descriptorStratificationIndexes = GetDescriptorStratificationIndices(stratificationVariables);
+            var categoryStratificationIndexes = Enumerable
+                .Range(0, stratificationDimensions)
+                .Except(descriptorStratificationIndexes ?? [])
+                .ToList();
+
+            var stratificationGroups = records
+                .GroupBy(r => stratificationDimensions > 0
+                    ? string.Join("_", categoryStratificationIndexes.Select(ix => r.StratificationSubLevelCodes[ix]))
+                    : string.Empty
+                ).ToList();
+
+            var descriptorValues = records
+                .Select(r => {
+                    var descriptorStratificationLevelCodes = stratificationDimensions > 0
+                        ? descriptorStratificationIndexes?.Select(ix => r.StratificationSubLevelCodes[ix]).ToList()
+                        : [];
+                    var descriptorStratificationLevelNames = stratificationDimensions > 0
+                        ? descriptorStratificationIndexes?.Select(ix => r.StratificationSubLevelNames[ix]).ToList()
+                        : [];
+                    return (
+                        code: getLabelDescriptorString(r, descriptorStratificationLevelCodes),
+                        name: getLabelDescriptorString(r, descriptorStratificationLevelNames)
+                    );
+                })
+                .ToHashSet();
+
             var descriptorIndexes = descriptorValues
                 .Select((r, ix) => (r, ix))
-                .ToDictionary(r => r.r, r => r.ix);
+                .ToDictionary(r => r.r.code, r => (index: r.ix, label: r.r.name));
 
             var palette = CustomPalettes.DistinctTone(stratificationGroups.Count);
             var counter = 0;
 
             var maximum = double.NegativeInfinity;
             foreach (var group in stratificationGroups) {
-                // Create boxplot series
+                // Create boxplot series for category
+                var title = stratificationDimensions > 0
+                    ? string.Join(", ", categoryStratificationIndexes.Select(ix => group.First().StratificationSubLevelNames[ix]))
+                    : string.Empty;
+
                 var series = new MultipleWhiskerHorizontalBoxPlotSeries() {
-                    Title = group.Key,
+                    Title = title,
                     Fill = OxyColor.FromAColor(200, palette.Colors[counter]),
                     StrokeThickness = .50,
                     Stroke = OxyColors.Black,
                     BoxWidth = 0.8,
                     WhiskerWidth = 1.1,
-
                 };
                 foreach (var record in group) {
-                    var ix = descriptorIndexes[record.GetLabel()];
+                    var descriptorStratificationLevelCodes = stratificationDimensions > 0
+                        ? descriptorStratificationIndexes?.Select(ix => record.StratificationSubLevelCodes[ix]).ToList()
+                        : [];
+                    var descriptorLabelCode = getLabelDescriptorString(record, descriptorStratificationLevelCodes);
+                    var ix = descriptorIndexes[descriptorLabelCode].index;
                     var outliers = new List<double>();
                     if (showOutliers) {
                         if (record.Outliers?.Count > outliersLimit) {
@@ -76,9 +112,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 MajorGridlineColor = OxyColors.Black,
                 GapWidth = 0.1
             };
-            var categories = records.Select(c => c.GetLabel()).ToHashSet();
-            foreach (var category in categories) {
-                categoryAxis.Labels.Add(category);
+            foreach (var category in descriptorValues) {
+                categoryAxis.Labels.Add(category.name);
             }
             plotModel.Axes.Add(categoryAxis);
 
@@ -107,6 +142,34 @@ namespace MCRA.Simulation.OutputGeneration {
             plotModel.Legends.Add(legend);
             plotModel.IsLegendVisible = true;
             return plotModel;
+        }
+
+        private static string getLabelDescriptorString(
+            CategorizedBoxPlotChartRecord c,
+            List<string> descriptorStratificationLevels
+        ) {
+            if (descriptorStratificationLevels != null && descriptorStratificationLevels.Count != 0) {
+                var descriptorString = string.Join(", ", descriptorStratificationLevels);
+                return $"{c.GetLabel()} {descriptorString}";
+            }
+            return c.GetLabel();
+        }
+
+        private static int[] GetDescriptorStratificationIndices(
+            List<OutputStratificationVariable> stratificationVariables
+        ) {
+            if (stratificationVariables?.Any(r => r == OutputStratificationVariable.OccupationalScenario) ?? false) {
+                var indices = stratificationVariables
+                    .Select((r, ix) => (r, ix))
+                    .Where(r => r.r != OutputStratificationVariable.OccupationalScenario
+                        && r.r != OutputStratificationVariable.CaseControl
+                    )
+                    .Select(r => r.ix)
+                    .ToArray();
+                return indices;
+            } else {
+                return [];
+            }
         }
 
         internal class PositionLegend : Legend {

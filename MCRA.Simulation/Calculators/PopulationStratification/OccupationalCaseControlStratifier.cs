@@ -5,14 +5,15 @@ using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.Calculators.Stratification {
 
-    public class OccupationalScenarioCaseControlStratificationLevel : IStratificationLevel {
+    public class OccupationalCaseControlStratificationLevel : IStratificationLevel {
 
         public OccupationalScenario Scenario { get; private set; }
         public CaseControlType CaseControl { get; private set; }
-        public string Code => Scenario.Code;
-        public string Name => $"{Scenario.Name} {CaseControl.GetDisplayName()}";
 
-        public OccupationalScenarioCaseControlStratificationLevel(
+        public string Code => CaseControl.ToString();
+        public string Name => CaseControl.GetDisplayName();
+
+        public OccupationalCaseControlStratificationLevel(
             OccupationalScenario scenario,
             ICollection<string> controlScenarioCodes
         ) {
@@ -27,11 +28,13 @@ namespace MCRA.Simulation.Calculators.Stratification {
     /// Stratifier for stratification based on the occupation scenario assigned
     /// to the individuals.
     /// </summary>
-    public class OccupationalScenarioCaseControlStratifier : PopulationStratifier {
+    public class OccupationalCaseControlStratifier : ISimplePopulationStratifier {
 
         private readonly Dictionary<OccupationalScenario, IStratificationLevel> _stratificationLevels;
 
-        public OccupationalScenarioCaseControlStratifier(
+        public OutputStratificationVariable StratificationVariable => OutputStratificationVariable.CaseControl;
+
+        public OccupationalCaseControlStratifier(
             IEnumerable<OccupationalScenario> scenarios,
             ICollection<string> controlScenarioCodes
         ) {
@@ -44,7 +47,7 @@ namespace MCRA.Simulation.Calculators.Stratification {
         /// <summary>
         /// Gets the stratification level of the individual.
         /// </summary>
-        public override IStratificationLevel GetLevel(SimulatedIndividual individual) {
+        public IStratificationLevel GetLevel(SimulatedIndividual individual) {
             if (individual.OccupationalScenario != null) {
                 return _stratificationLevels.TryGetValue(individual.OccupationalScenario, out var val) ? val : null;
             }
@@ -59,9 +62,9 @@ namespace MCRA.Simulation.Calculators.Stratification {
             ICollection<string> controlScenarioCodes
         ) {
             return scenarios.ToDictionary(
-                    r => r,
-                    r => new OccupationalScenarioCaseControlStratificationLevel(r, controlScenarioCodes) as IStratificationLevel
-                );
+                r => r,
+                r => new OccupationalCaseControlStratificationLevel(r, controlScenarioCodes) as IStratificationLevel
+            );
         }
     }
 }

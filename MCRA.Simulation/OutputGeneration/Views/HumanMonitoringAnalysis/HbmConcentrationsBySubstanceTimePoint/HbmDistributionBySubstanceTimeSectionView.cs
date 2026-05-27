@@ -99,7 +99,8 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                                 targetBoxPlotRecords.Key,
                                 Model.SectionId,
                                 Model.StratifiedHbmBoxPlotRecords[targetBoxPlotRecords.Key].FirstOrDefault()?.Unit ?? string.Empty,
-                                Model.ShowOutliers
+                                Model.ShowOutliers,
+                                Model.StratificationVariables
                             );
 
                             var numberOfRecords = targetBoxPlotRecords.Value.Count;

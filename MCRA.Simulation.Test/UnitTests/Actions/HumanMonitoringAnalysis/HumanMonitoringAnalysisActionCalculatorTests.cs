@@ -18,6 +18,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
     /// </summary>
     [TestClass]
     public class HumanMonitoringAnalysisActionCalculatorTests : ActionCalculatorTestsBase {
+
         /// <summary>
         /// Runs the HumanMonitoringAnalysis action:
         /// config.ExposureType = ExposureType.Acute;

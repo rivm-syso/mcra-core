@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Generic;
+﻿using MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Generic;
 
 namespace MCRA.Simulation.OutputGeneration {
     public abstract class HbmBoxPlotRecordBase<T> : CategorizedBoxPlotChartRecord

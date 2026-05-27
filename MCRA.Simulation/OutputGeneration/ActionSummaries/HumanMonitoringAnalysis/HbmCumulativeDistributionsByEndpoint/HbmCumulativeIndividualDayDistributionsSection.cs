@@ -16,6 +16,7 @@ namespace MCRA.Simulation.OutputGeneration {
             bool skipPrivacySensitiveOutputs
         ) {
             ExposureType = ExposureType.Acute;
+            StratificationVariables = stratifier?.GetStratificationVariables();
             if (skipPrivacySensitiveOutputs) {
                 var maxUpperPercentile = SimulationConstants.MaxUpperPercentage(collection.HbmCumulativeIndividualDayConcentrations.Count);
                 if (_upperWhisker > maxUpperPercentile) {
@@ -80,20 +81,18 @@ namespace MCRA.Simulation.OutputGeneration {
             var substance = new Compound() { Name = "Cumulative", Code = "Cumulative" };
             var descriptor = new HbmSubstanceContributorKey() { Substance = substance };
 
-            var unstratifiedConcentrations = getConcentrations(collection, null);
+            var hbmConcentrations = getConcentrations(collection, stratifier);
             UpdateRecord(
-                unstratifiedConcentrations,
+                hbmConcentrations,
                 descriptor,
                 collection.TargetUnit.Target,
                 null,
                 lowerBound,
                 upperBound
             );
-
             if (stratifier != null) {
-                var stratifiedConcentrations = getConcentrations(collection, stratifier);
                 UpdateStratifiedRecords(
-                    stratifiedConcentrations,
+                    hbmConcentrations,
                     descriptor,
                     collection.TargetUnit.Target,
                     lowerBound,

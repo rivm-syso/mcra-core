@@ -46,7 +46,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         Model.StratifiedBoxPlotRecords,
                         Model.TargetUnit,
                         Model.ShowOutliers,
-                        true
+                        Model.StratificationVariables
                     );
 
                     var percentileDataSection = DataSectionHelper.CreateCsvDataSection(

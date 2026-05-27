@@ -1297,19 +1297,13 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         /// </summary>
         private PopulationStratifier getOutputStratifier(TargetExposuresActionResult result, ActionData data) {
             if (_configuration.StratifyOutputs) {
-                if (result.AggregateIndividualExposures != null) {
-                    return PopulationStratifierFactory
-                        .Create(
-                            _configuration.OutputStratificationVariable,
-                            data.OccupationalScenarios?.Values
-                        );
-                } else if (result.AggregateIndividualDayExposures != null) {
-                    return PopulationStratifierFactory
-                        .Create(
-                            _configuration.OutputStratificationVariable,
-                            data.OccupationalScenarios?.Values
-                        );
-                }
+                var stratifiers = new List<ISimplePopulationStratifier> {
+                    PopulationStratifierFactory.Create(
+                        _configuration.OutputStratificationVariable,
+                        data.OccupationalScenarios?.Values
+                    )
+                };
+                return new PopulationStratifier(stratifiers);
             }
             return null;
         }

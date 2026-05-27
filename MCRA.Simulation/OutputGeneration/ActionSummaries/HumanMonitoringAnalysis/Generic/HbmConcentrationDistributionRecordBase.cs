@@ -7,9 +7,17 @@ namespace MCRA.Simulation.OutputGeneration {
     public abstract class HbmConcentrationDistributionRecordBase<T> 
         where T : IHbmExposureContributorKey, new() 
     {
+        [Display(AutoGenerateField = false)]
+        public List<string> StratificationSubLevelCodes { get; set; }
+
+        [Display(AutoGenerateField = false)]
+        public List<string> StratificationSubLevelNames { get; set; }
 
         [DisplayName("Stratification")]
         public string Stratification { get; set; }
+
+        [Display(AutoGenerateField = false)]
+        public string StratificationLevelCode { get; set; }
 
         [Display(AutoGenerateField = false)]
         public string CodeTargetSurface { get; set; }

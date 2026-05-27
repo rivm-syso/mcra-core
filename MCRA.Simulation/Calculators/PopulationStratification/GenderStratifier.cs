@@ -16,9 +16,11 @@ namespace MCRA.Simulation.Calculators.Stratification {
     /// <summary>
     /// Stratifier for stratification based on the gender/sex of the individuals.
     /// </summary>
-    public class GenderStratifier : PopulationStratifier {
+    public class GenderStratifier : ISimplePopulationStratifier {
 
         private readonly Dictionary<GenderType, IStratificationLevel> _stratificationLevels;
+
+        public OutputStratificationVariable StratificationVariable => OutputStratificationVariable.Sex;
 
         public GenderStratifier() {
             _stratificationLevels = CreateLevels();
@@ -27,7 +29,7 @@ namespace MCRA.Simulation.Calculators.Stratification {
         /// <summary>
         /// Gets the stratification level of the individual.
         /// </summary>
-        public override IStratificationLevel GetLevel(SimulatedIndividual individual) {
+        public IStratificationLevel GetLevel(SimulatedIndividual individual) {
             var gender = individual.Gender != 0 ? individual.Gender : GenderType.Undefined;
             return _stratificationLevels.TryGetValue(gender, out var val) ? val : null;
         }

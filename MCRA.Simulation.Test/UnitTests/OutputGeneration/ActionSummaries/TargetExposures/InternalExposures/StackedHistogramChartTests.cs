@@ -48,7 +48,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
 
             var section = new InternalDistributionTotalSection();
 
-            PopulationStratifier stratifier = new GenderStratifier();
+            var stratifier = new PopulationStratifier([new GenderStratifier()]);
             section.SummarizeStratifiedBinsGraph(
                 aggregateIndividualExposures,
                 rpfs,

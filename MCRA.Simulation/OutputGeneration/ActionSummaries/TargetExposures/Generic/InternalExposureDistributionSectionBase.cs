@@ -10,13 +10,15 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Gener
         where T1 : InternalExposureDistributionRecordBase<S>, new()
         where T2 : InternalExposureBoxPlotRecordBase<S>, new() {
 
-        private readonly double[] _percentages = [5, 10, 25, 50, 75, 90, 95];
-
-        private static readonly double _upperWhisker = 95;
         public override bool SaveTemporaryData => true;
+
+        private readonly double[] _percentages = [5, 10, 25, 50, 75, 90, 95];
+        private static readonly double _upperWhisker = 95;
+
         public List<T1> Records { get; set; }
         public List<T2> BoxPlotRecords { get; set; }
         public List<T2> StratifiedBoxPlotRecords { get; set; }
+        public List<OutputStratificationVariable> StratificationVariables = [];
         public double? RestrictedUpperPercentile { get; set; }
         public bool ShowOutliers { get; set; }
         public TargetUnit TargetUnit { get; set; }
@@ -147,6 +149,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Gener
 
             if (outputStratifier != null) {
                 StratifiedBoxPlotRecords = summarizeStratifiedBoxPlots(exposureCollection, targetUnit, outputStratifier);
+                StratificationVariables = outputStratifier.GetStratificationVariables();
             }
         }
 
@@ -154,7 +157,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Gener
         private static T1 getExposureRecord(
             InternalExposuresByDescriptor<S> collection,
             double[] percentages,
-            IStratificationLevel stratification = null
+            IStratificationLevel stratificationLevel = null
         ) {
             var weights = collection.Exposures
                 .Where(c => c.Exposure > 0)
@@ -172,7 +175,9 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Gener
                 .PercentilesWithSamplingWeights(weightsAll, percentages);
             var total = collection.Exposures.Sum(c => c.Exposure * c.SimulatedIndividual.SamplingWeight);
             var record = new T1() {
-                Stratification = stratification?.Name,
+                Stratification = stratificationLevel?.Name,
+                StratificationSubLevelCodes = (stratificationLevel as CompositeStratificationLevel)?.Parts.Select(c => c.Code).ToList() ?? [stratificationLevel?.Code],
+                StratificationSubLevelNames = (stratificationLevel as CompositeStratificationLevel)?.Parts.Select(c => c.Name).ToList() ?? [stratificationLevel?.Name],
                 Percentage = weights.Count / (double)collection.Exposures.Count * 100,
                 MeanAll = total / weightsAll.Sum(),
                 Mean = total / weights.Sum(),
@@ -191,7 +196,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Gener
         private T2 getBoxPlotRecord(
             InternalExposuresByDescriptor<S> collection,
             TargetUnit targetUnit,
-            IStratificationLevel stratification
+            IStratificationLevel stratificationLevel
         ) {
             var weights = collection.Exposures
                 .Select(c => c.SimulatedIndividual.SamplingWeight)
@@ -212,7 +217,10 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Gener
                 .ToList();
 
             var record = new T2() {
-                Stratification = stratification?.Name,
+                Stratification = stratificationLevel?.Name,
+                StratificationLevelCode = stratificationLevel?.Code,
+                StratificationSubLevelCodes = (stratificationLevel as CompositeStratificationLevel)?.Parts.Select(c => c.Code).ToList() ?? [stratificationLevel?.Code],
+                StratificationSubLevelNames = (stratificationLevel as CompositeStratificationLevel)?.Parts.Select(c => c.Name).ToList() ?? [stratificationLevel?.Name],
                 MinPositives = positives.Any() ? positives.Min() : 0,
                 MaxPositives = positives.Any() ? positives.Max() : 0,
                 Percentiles = percentiles,

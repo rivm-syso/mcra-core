@@ -11,21 +11,21 @@ namespace MCRA.Simulation.OutputGeneration {
         private readonly List<T> _records;
         private readonly string _unit;
         private readonly string _descriptorName;
+        private readonly List<OutputStratificationVariable> _stratificationVariables;
         private readonly bool _showOutliers;
-        private readonly bool _stratified;
 
         public InternalExposureStratifiedBoxPlotChartCreator(
-            string sectionName,
+            string descriptorName,
             List<T> records,
             TargetUnit unit,
             bool showOutliers,
-            bool stratified
+            List<OutputStratificationVariable> stratificationVariables
         ) {
             _records = records;
             _unit = unit.GetShortDisplayName();
-            _stratified = stratified;
             _showOutliers = showOutliers;
-            _descriptorName = sectionName;
+            _descriptorName = descriptorName;
+            _stratificationVariables = stratificationVariables;
             Width = 600;
             Height = 80 + Math.Max(_records.Count * _cellSize, 80);
         }
@@ -34,9 +34,11 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public override string ChartId {
             get {
-                var pictureId = "e317ef0e-beee-4cff-b635-00fa4114c283";
+                var baseId = "e317ef0e-beee-4cff-b635-00fa4114c283";
+                var stratificationId = _stratificationVariables?.Count > 0
+                    ? string.Join("_", _stratificationVariables) : string.Empty;
                 return StringExtensions.CreateFingerprint(
-                    _descriptorName + pictureId + _stratified.ToString()
+                    baseId + _descriptorName + stratificationId
                 );
             }
         }
@@ -49,7 +51,8 @@ namespace MCRA.Simulation.OutputGeneration {
                     .Cast<CategorizedBoxPlotChartRecord>()
                 ],
                 labelHorizontalAxis: $"Exposure ({_unit})",
-                showOutliers: _showOutliers
+                showOutliers: _showOutliers,
+                stratificationVariables: _stratificationVariables
             );
         }
     }

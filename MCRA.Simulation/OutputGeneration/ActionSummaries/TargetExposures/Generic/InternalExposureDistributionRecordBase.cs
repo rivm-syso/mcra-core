@@ -7,8 +7,17 @@ namespace MCRA.Simulation.OutputGeneration {
         where T : IExposureContributorKey, new() 
     {
 
+        [Display(AutoGenerateField = false)]
+        public List<string> StratificationSubLevelCodes { get; set; }
+
+        [Display(AutoGenerateField = false)]
+        public List<string> StratificationSubLevelNames { get; set; }
+
         [DisplayName("Stratification")]
         public string Stratification { get; set; }
+
+        [Display(AutoGenerateField = false)]
+        public string StratificationLevelCode { get; set; }
 
         [Description("Number of days for acute or number of individuals for chronic with exposure > 0.")]
         [DisplayName("{IndividualDayUnit} with exposure")]

@@ -1,34 +1,36 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 using MCRA.Simulation.Objects;
 
 namespace MCRA.Simulation.Calculators.Stratification {
 
-    public class SimpleOccupationalScenarioStratificationLevel : IStratificationLevel {
+    public class OccupationalScenarioStratificationLevel : IStratificationLevel {
         public OccupationalScenario Scenario { get; private set; }
         public string Code => Scenario.Code;
         public string Name => Scenario.Name;
-        public SimpleOccupationalScenarioStratificationLevel(OccupationalScenario scenario) {
+        public OccupationalScenarioStratificationLevel(OccupationalScenario scenario) {
             Scenario = scenario;
         }
     }
-
 
     /// <summary>
     /// Stratifier for stratification based on the occupation scenario assigned
     /// to the individuals.
     /// </summary>
-    public class SimpleOccupationalScenarioStratifier : PopulationStratifier {
+    public class OccupationalScenarioStratifier : ISimplePopulationStratifier {
 
         private readonly Dictionary<OccupationalScenario, IStratificationLevel> _stratificationLevels;
 
-        public SimpleOccupationalScenarioStratifier(IEnumerable<OccupationalScenario> scenarios) {
+        public OutputStratificationVariable StratificationVariable => OutputStratificationVariable.OccupationalScenario;
+
+        public OccupationalScenarioStratifier(IEnumerable<OccupationalScenario> scenarios) {
             _stratificationLevels = CreateLevels(scenarios);
         }
 
         /// <summary>
         /// Gets the stratification level of the individual.
         /// </summary>
-        public override IStratificationLevel GetLevel(SimulatedIndividual individual) {
+        public IStratificationLevel GetLevel(SimulatedIndividual individual) {
             if (individual.OccupationalScenario != null) {
                 return _stratificationLevels.TryGetValue(individual.OccupationalScenario, out var val) ? val : null;
             }
@@ -42,10 +44,9 @@ namespace MCRA.Simulation.Calculators.Stratification {
             IEnumerable<OccupationalScenario> scenarios
         ) {
             return scenarios.ToDictionary(
-                    r => r,
-                    r => new SimpleOccupationalScenarioStratificationLevel(r) as IStratificationLevel
-                );
-
+                r => r,
+                r => new OccupationalScenarioStratificationLevel(r) as IStratificationLevel
+            );
         }
     }
 }
