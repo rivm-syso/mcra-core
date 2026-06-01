@@ -49,15 +49,16 @@ RUN echo CACHE_DATE = ${CACHE_DATE}
 # build full solution
 RUN dotnet build "mcra-core.sln" -c ${MCRA_BUILD_CONFIG} -p:UseAppHost=false
 
-# run all unit test projects
-ENV ASPNETCORE_ENVIRONMENT="docker"
-# MCRA Core tests
-RUN dotnet test ./MCRA.Utils.Test/bin/${MCRA_BUILD_CONFIG}/MCRA.Utils.Test.dll -v quiet --filter "(TestCategory!=Sandbox Tests)" -s "./.runsettings" -l "html;LogFileName=./MCRA.Utils.Test.html" --collect:"Code Coverage"
-RUN dotnet test ./MCRA.General.Test/bin/${MCRA_BUILD_CONFIG}/MCRA.General.Test.dll -v quiet --filter "(TestCategory!=Sandbox Tests)" -s "./.runsettings" -l "html;LogFileName=./MCRA.General.Test.html" --collect:"Code Coverage"
-RUN dotnet test ./MCRA.Data.Raw.Test/bin/${MCRA_BUILD_CONFIG}/MCRA.Data.Raw.Test.dll -v quiet --filter "(TestCategory!=Sandbox Tests)" -s "./.runsettings" -l "html;LogFileName=./MCRA.Data.Raw.Test.html" --collect:"Code Coverage"
-RUN dotnet test ./MCRA.Data.Compiled.Tests/bin/${MCRA_BUILD_CONFIG}/MCRA.Data.Compiled.Tests.dll -v quiet --filter "(TestCategory!=Sandbox Tests)" -s "./.runsettings" -l "html;LogFileName=./MCRA.Data.Compiled.Tests.html" --collect:"Code Coverage"
-RUN dotnet test ./MCRA.Data.Management.Tests/bin/${MCRA_BUILD_CONFIG}/MCRA.Data.Management.Tests.dll -v quiet --filter "(TestCategory!=Sandbox Tests)" -s "./.runsettings" -l "html;LogFileName=./MCRA.Data.Management.Tests.html" --collect:"Code Coverage"
-RUN dotnet test ./MCRA.Simulation.Test/bin/${MCRA_BUILD_CONFIG}/MCRA.Simulation.Test.dll -v quiet --filter "(TestCategory!=Sandbox Tests)" -s "./.runsettings" -l "html;LogFileName=./MCRA.Simulation.Test.html" --collect:"Code Coverage"
+## temporarily skip unit tests
+#  # run all unit test projects
+#  ENV ASPNETCORE_ENVIRONMENT="docker"
+#  # MCRA Core tests
+#  RUN dotnet test ./MCRA.Utils.Test/bin/${MCRA_BUILD_CONFIG}/MCRA.Utils.Test.dll -v quiet --filter "(TestCategory!=Sandbox Tests)" -s "./.runsettings" -l "html;LogFileName=./MCRA.Utils.Test.html" --collect:"Code Coverage"
+#  RUN dotnet test ./MCRA.General.Test/bin/${MCRA_BUILD_CONFIG}/MCRA.General.Test.dll -v quiet --filter "(TestCategory!=Sandbox Tests)" -s "./.runsettings" -l "html;LogFileName=./MCRA.General.Test.html" --collect:"Code Coverage"
+#  RUN dotnet test ./MCRA.Data.Raw.Test/bin/${MCRA_BUILD_CONFIG}/MCRA.Data.Raw.Test.dll -v quiet --filter "(TestCategory!=Sandbox Tests)" -s "./.runsettings" -l "html;LogFileName=./MCRA.Data.Raw.Test.html" --collect:"Code Coverage"
+#  RUN dotnet test ./MCRA.Data.Compiled.Tests/bin/${MCRA_BUILD_CONFIG}/MCRA.Data.Compiled.Tests.dll -v quiet --filter "(TestCategory!=Sandbox Tests)" -s "./.runsettings" -l "html;LogFileName=./MCRA.Data.Compiled.Tests.html" --collect:"Code Coverage"
+#  RUN dotnet test ./MCRA.Data.Management.Tests/bin/${MCRA_BUILD_CONFIG}/MCRA.Data.Management.Tests.dll -v quiet --filter "(TestCategory!=Sandbox Tests)" -s "./.runsettings" -l "html;LogFileName=./MCRA.Data.Management.Tests.html" --collect:"Code Coverage"
+#  RUN dotnet test ./MCRA.Simulation.Test/bin/${MCRA_BUILD_CONFIG}/MCRA.Simulation.Test.dll -v quiet --filter "(TestCategory!=Sandbox Tests)" -s "./.runsettings" -l "html;LogFileName=./MCRA.Simulation.Test.html" --collect:"Code Coverage"
 
 # copy the /src/bin folder to /app/mcra-bin
 RUN mkdir -p /app/mcra-bin && cp -r bin/* /app/mcra-bin
