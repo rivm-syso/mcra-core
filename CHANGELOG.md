@@ -1,5 +1,20 @@
 # Change Log
 
+## Version 10.2.21 (2026-06-01)
+
+### Added
+
+- Support consumer products with a per-unit concentration (#2432)
+- Implement case control comparison for occupational HBM analysis (#2455)
+
+### Changed
+
+- Move up frequency amount subsection in summary (#2456)
+
+### Fixed
+
+- Throw exception when loading consumptions with incorrect FoodEx2 facet strings (#2462)
+
 ## Version 10.2.20 (2026-05-13)
 
 ### Added
