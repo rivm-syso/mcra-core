@@ -41,7 +41,7 @@ PushImages:
   #~ image: $BUILD_IMAGE
   script:
     # Log in to gitlab
-    - podman login -u "gitlab-ci-token" -p "$CI_JOB_TOKEN" $CI_REGISTRY
+    - podman login -u "$CI_DEPLOY_TOKEN" -p "$CI_DEPLOY_PASSWORD" $CI_REGISTRY
     # push images to registry
     - podman push "${CI_REGISTRY_IMAGE}:${MCRA_IMAGE_TAG}" "${CI_REGISTRY_IMAGE}:${MCRA_IMAGE_TAG}"
     - podman push "${CI_REGISTRY_IMAGE}/mcra-cli:${MCRA_IMAGE_TAG}" "${CI_REGISTRY_IMAGE}/mcra-cli:${MCRA_IMAGE_TAG}"
