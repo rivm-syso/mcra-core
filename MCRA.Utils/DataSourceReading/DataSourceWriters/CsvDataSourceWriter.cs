@@ -108,7 +108,7 @@ namespace MCRA.Utils.DataFileReading {
                         if (mappings[i] > -1) {
                             newRow[i] = sourceTableReader.IsDBNull(mappings[i])
                                 ? DBNull.Value
-                                : sourceTableReader.GetValue(mappings[i]);
+                                : sourceTableReader.GetValue(mappings[i]) ?? DBNull.Value;
                         }
                     }
                     destinationTable.Rows.Add(newRow);
