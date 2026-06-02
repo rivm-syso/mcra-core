@@ -246,19 +246,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
             var subOrder = 1;
             // Each toc has a subtoc Exposures total distributions and Contributions, total, upper (for single substance)
-            // Toc: Exposures by source
-            if (result.ExternalExposureCollections.Count > 0
-                && (data.ActiveSubstances.Count == 1 || data.CorrectedRelativePotencyFactors?.Count > 0)
-                && outputSettings.ShouldSummarize(TargetExposuresSections.ExternalExposuresBySourceSection)
-            ) {
-                summarizeExternalExposureBySource(
-                    result,
-                    data,
-                    subHeader,
-                    subOrder++
-                );
-            }
-
             // Toc: Exposures by route
             if (result.ExternalExposureCollections.Count > 0
                 && (data.ActiveSubstances.Count == 1 || data.CorrectedRelativePotencyFactors?.Count > 0)
@@ -269,6 +256,19 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     data,
                     subHeader,
                     subOrder
+                );
+            }
+
+            // Toc: Exposures by source
+            if (result.ExternalExposureCollections.Count > 0
+                && (data.ActiveSubstances.Count == 1 || data.CorrectedRelativePotencyFactors?.Count > 0)
+                && outputSettings.ShouldSummarize(TargetExposuresSections.ExternalExposuresBySourceSection)
+            ) {
+                summarizeExternalExposureBySource(
+                    result,
+                    data,
+                    subHeader,
+                    subOrder++
                 );
             }
 
