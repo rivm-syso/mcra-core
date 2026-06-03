@@ -22,7 +22,6 @@
     <CalculationSetting source="HazardCharacterisations">ExposureRoutes</CalculationSetting>
     <CalculationSetting source="ActiveSubstances">FilterByAvailableHazardCharacterisation</CalculationSetting>
     <CalculationSetting>OralAbsorptionFactor</CalculationSetting>
-    <CalculationSetting>OralAbsorptionFactorForDietaryExposure</CalculationSetting>
     <CalculationSetting>DermalAbsorptionFactor</CalculationSetting>
     <CalculationSetting>InhalationAbsorptionFactor</CalculationSetting>
   </CalculationSettings>

@@ -9,12 +9,10 @@ namespace MCRA.Simulation.Calculators.KineticConversionCalculation.AbsorptionFac
             _configuration = config;
         }
 
-        public double DefaultFactorDietary => _configuration.OralAbsorptionFactorForDietaryExposure;
+        public double DefaultFactorOral => _configuration.OralAbsorptionFactor;
 
-        public double DefaultFactorDermalNonDietary => _configuration.DermalAbsorptionFactor;
+        public double DefaultFactorDermal => _configuration.DermalAbsorptionFactor;
 
-        public double DefaultFactorOralNonDietary => _configuration.OralAbsorptionFactor;
-
-        public double DefaultFactorInhalationNonDietary => _configuration.InhalationAbsorptionFactor;
+        public double DefaultFactorInhalation => _configuration.InhalationAbsorptionFactor;
     }
 }

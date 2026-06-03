@@ -16,7 +16,6 @@ namespace MCRA.Simulation.Actions.KineticModels {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
             section.SummarizeSetting(SettingsItemType.ExposureRoutes, _configuration.ExposureRoutes);
             if (_configuration.ExposureRoutes.Contains(ExposureRoute.Oral)) {
-                section.SummarizeSetting(SettingsItemType.OralAbsorptionFactorForDietaryExposure, _configuration.OralAbsorptionFactorForDietaryExposure);
                 section.SummarizeSetting(SettingsItemType.OralAbsorptionFactor, _configuration.OralAbsorptionFactor);
             }
             if (_configuration.ExposureRoutes.Contains(ExposureRoute.Dermal)) {

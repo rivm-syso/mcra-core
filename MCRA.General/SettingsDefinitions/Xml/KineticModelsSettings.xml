@@ -3,23 +3,13 @@
   <!-- Kinetic models settings  -->
   <SettingsItem>
     <Id>OralAbsorptionFactor</Id>
-    <Name>Default oral absorption factor for non-dietary exposure</Name>
+    <Name>Default oral absorption factor</Name>
     <Description>
-      When there is no kinetic model and absorption factors are not specified in file, non-dietary oral
+      When there is no kinetic model and absorption factors are not specified in file, oral
       exposures (external doses) are multiplied by this factor to determine the absorbed (internal) dose.
     </Description>
     <ValueType>Numeric</ValueType>
     <DefaultValue>0.1</DefaultValue>
-  </SettingsItem>
-  <SettingsItem>
-    <Id>OralAbsorptionFactorForDietaryExposure</Id>
-    <Name>Default oral absorption factor for dietary exposure</Name>
-    <Description>
-      When there is no kinetic model and absorption factors are not specified in file, dietary exposures
-      (external doses) are multiplied by this factor to determine the absorbed (internal) dose .
-    </Description>
-    <ValueType>Numeric</ValueType>
-    <DefaultValue>1</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>DermalAbsorptionFactor</Id>

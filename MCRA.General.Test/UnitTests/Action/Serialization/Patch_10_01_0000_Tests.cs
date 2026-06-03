@@ -795,7 +795,8 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             // Assert.IsTrue(modSettings.Aggregate);
             Assert.IsTrue(modSettings.FilterByAvailableHazardCharacterisation);
             Assert.AreEqual(1.2345D, modSettings.OralAbsorptionFactor);
-            Assert.AreEqual(2.3456D, modSettings.OralAbsorptionFactorForDietaryExposure);
+            // Setting removed in version 10.2.21
+            //Assert.AreEqual(2.3456D, modSettings.OralAbsorptionFactorForDietaryExposure);
             Assert.AreEqual(3.4567D, modSettings.DermalAbsorptionFactor);
             Assert.AreEqual(4.5678D, modSettings.InhalationAbsorptionFactor);
         }

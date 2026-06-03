@@ -24,15 +24,15 @@ namespace MCRA.Simulation.Calculators.KineticConversionCalculation.AbsorptionFac
             var kineticAbsorptionFactors = new List<SimpleAbsorptionFactor>() {
                 new () {
                     ExposurePathType = ExposurePathType.Oral,
-                    AbsorptionFactor = _settings.DefaultFactorDietary 
+                    AbsorptionFactor = _settings.DefaultFactorOral 
                 },
                 new () { 
                     ExposurePathType = ExposurePathType.Dermal,
-                    AbsorptionFactor = _settings.DefaultFactorDermalNonDietary
+                    AbsorptionFactor = _settings.DefaultFactorDermal
                 },
                 new () { 
                     ExposurePathType = ExposurePathType.Inhalation,
-                    AbsorptionFactor = _settings.DefaultFactorInhalationNonDietary
+                    AbsorptionFactor = _settings.DefaultFactorInhalation
                 }
             };
 
