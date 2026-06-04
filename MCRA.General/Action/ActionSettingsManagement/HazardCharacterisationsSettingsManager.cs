@@ -14,6 +14,10 @@ namespace MCRA.General.Action.ActionSettingsManagement {
             if (config.ApplyKineticConversions) {
                 config.HazardCharacterisationsConvertToSingleTargetMatrix = true;
             }
+            if (config.ExposureRoutes.Count == 0
+                && config.TargetDoseLevelType == TargetLevelType.External) {
+                config.ExposureRoutes.Add(ExposureRoute.Oral);
+            }
         }
 
         public static List<HazardDoseImputationMethodType> AvailableHazardDoseImputationMethodTypes(bool hasHazardData) {
