@@ -56,7 +56,7 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                 { "ADI", ("BodyFat", string.Empty) },
                 { "AF", ("AmnioticFluid", string.Empty) },
                 { "AS", ("AirSamples", string.Empty) },
-                { "IAIR", ("IndoorAir", string.Empty) },
+                { "IAIR", ("Air", string.Empty) },
                 { "ATN", ("ToeNails", string.Empty) }, // Deprecated since v2.4
                 { "BWB", ("Blood", "Whole blood") },
                 { "BWBG", ("WholeBlood", "Whole blood") }, // Deprecated since v2.4
@@ -85,7 +85,7 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
         };
 
         private readonly HashSet<string> _ignoreMatrices = new(StringComparer.OrdinalIgnoreCase) {
-            "DW", "AS", "IAIR", "EBC"
+            "DW", "AS", "EBC"
         };
 
         private readonly List<string> _substancesIgnoreListCodeBook2_2 = [
@@ -1079,7 +1079,7 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
             HashSet<string> ugPercm2Matrices = new(StringComparer.OrdinalIgnoreCase) {
                 "DW"
             };
-            HashSet<string> ugPerm3Matrices = new(StringComparer.OrdinalIgnoreCase) {
+            HashSet<string> ugPerm3MatricesEquivalent = new(StringComparer.OrdinalIgnoreCase) {
                 "AS", "IAIR"
             };
 
@@ -1091,8 +1091,11 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                 return "ng/g";
             } else if (ugPercm2Matrices.Contains(matrix)) {
                 return "µg/cm2";
-            } else if (ugPerm3Matrices.Contains(matrix)) {
-                return "µg/m3";
+            } else if (ugPerm3MatricesEquivalent.Contains(matrix)) {
+                // "µg/m3" is not in the ConcentrationUnits list and it is risky to add this unit because it is also
+                // used for concentrations on food. Note that 1 µg/m3 = 1 ng/L, so we use ng/L as equivalent unit
+                // for these matrices (AS and IAIR) for now.
+                return "ng/L";
             }
             throw new ArgumentException($"Unknown matrix {matrix}.");
         }

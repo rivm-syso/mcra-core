@@ -518,5 +518,14 @@
         <Alias>Poop</Alias>
       </Aliases>
     </Unit>
+    <Unit>
+      <Id>Air</Id>
+      <Name>Air</Name>
+      <ShortName>Air</ShortName>
+      <Description>Inhaled or alveolar air.</Description>
+      <Aliases>
+        <Alias>Air</Alias>
+      </Aliases>
+    </Unit>
   </Units>
 </UnitDefinition>

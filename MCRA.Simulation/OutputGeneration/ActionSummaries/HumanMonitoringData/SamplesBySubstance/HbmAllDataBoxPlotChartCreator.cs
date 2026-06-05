@@ -33,7 +33,8 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public override string Title {
             get {
-                var description = $"Boxplots of (all) HBM substance concentration measurements in {_samplingMethod.BiologicalMatrix.GetDisplayName(true)} ({_samplingMethod.SampleTypeCode?.ToLower()})";
+                var sampingMethodName = string.IsNullOrEmpty(_samplingMethod.SampleTypeCode) ? string.Empty : $" ({_samplingMethod.SampleTypeCode.ToLower()})";
+                var description = $"Boxplots of (all) HBM substance concentration measurements in {_samplingMethod.BiologicalMatrix.GetDisplayName(true)}{sampingMethodName}";
                 if (_section.Records.Count == 1) {
                     description += $" (n={_section.Records.First().SamplesTotal - _section.Records.First().MissingValueMeasurementsTotal})";
                 }
