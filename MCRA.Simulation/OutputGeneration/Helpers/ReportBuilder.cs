@@ -760,10 +760,10 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
                     sb.Append(sectionHtml);
                 }
             } catch (Exception ex) {
-                sb.Append($"<p>Failed to render the view of section {header.SummarySectionName}.</p>");
+                sb.AppendParagraph($"Failed to render the view of section {header.SummarySectionName}.");
                 if (System.Diagnostics.Debugger.IsAttached) {
-                    sb.Append($"<p>Error: {ex.Message}</p>");
-                    sb.Append($"<p>Error: {ex.StackTrace}</p>");
+                    sb.AppendParagraph($"Error: {ex.Message}");
+                    sb.AppendParagraph($"Error: {ex.StackTrace}");
                 }
             }
         }

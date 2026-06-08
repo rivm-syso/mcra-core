@@ -27,7 +27,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [Description("The type of the experiment (single substance / non-mixture multi-substance / mixture).")]
         public string ExperimentType {
             get {
-                if (DoseResponseSets.Count > 1) {
+                if (DoseResponseSets?.Count > 1) {
                     return IsMixture ? "Mixture" : "Non-mixture multi-substance";
                 }
                 return "Single substance";

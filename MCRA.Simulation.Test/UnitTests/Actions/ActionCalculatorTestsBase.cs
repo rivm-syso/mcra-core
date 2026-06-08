@@ -220,24 +220,15 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         }
 
         /// <summary>
-        /// Note properties: ResultsSummarized = false, SimulationDataUpdated = false
+        /// Test running, updating and summarizing of the action calculator for an uncertainty run.
         /// </summary>
-        /// <param name="calculator"></param>
-        /// <param name="data"></param>
-        /// <param name="header"></param>
-        /// <param name="random"></param>
-        /// <param name="factorialSet"></param>
-        /// <param name="uncertaintySources"></param>
-        /// <param name="idBootstrap"></param>
-        /// <param name="reportFileName"></param>
         protected void TestRunUpdateSummarizeUncertainty(
             IActionCalculator calculator,
             ActionData data,
-            SectionHeader header,
+            SummaryToc header,
             IRandom random,
             UncertaintyFactorialSet factorialSet = null,
             Dictionary<UncertaintySource, IRandom> uncertaintySources = null,
-            int idBootstrap = 1,
             string reportFileName = null
         ) {
             uncertaintySources = uncertaintySources ?? createUncertaintySourceGenerators(random);
@@ -263,13 +254,14 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                     result,
                     Path.GetFileNameWithoutExtension(reportFileName)
                 );
-                WriteReport((SummaryToc)header, reportFileName);
+                WriteReport(header, reportFileName);
             }
         }
 
         protected void WriteReport(SummaryToc toc, string filename) {
             var reportBuilder = new ReportBuilder(toc);
             var html = reportBuilder.RenderReport(null, false, null);
+            Assert.DoesNotContain("Failed to render the view of section", html, StringComparison.OrdinalIgnoreCase);
             if (!string.IsNullOrEmpty(filename)) {
                 filename = Path.HasExtension(filename) ? filename : $"{filename}.html";
                 var outputPath = Path.Combine(_reportOutputPath, GetType().Name);

@@ -63,7 +63,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties: hiddenProperties
             );
 
-            if (Model.DoseResponseSets.Any()) {
+            if (Model.DoseResponseSets?.Any() ?? false) {
                 var width = Model.DoseResponseSets.Count > 1 ? 600 : 500;
                 var chartCreator = new DoseResponseFitChartCreator(Model, width, 350, false);
                 sb.AppendChart(
