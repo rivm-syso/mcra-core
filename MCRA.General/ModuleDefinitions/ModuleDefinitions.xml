@@ -27,6 +27,11 @@
       <xi:include href="Modules/SingleValueConsumptions.xml" />
       <xi:include href="Modules/MarketShares.xml" />
       <xi:include href="Modules/FoodRecipes.xml" />
+      <xi:include href="Modules/DustExposureDeterminants.xml" />
+      <xi:include href="Modules/SoilExposureDeterminants.xml" />
+      <xi:include href="Modules/AirExposureDeterminants.xml" />
+      <xi:include href="Modules/ConsumerProductExposureDeterminants.xml" />
+      <xi:include href="Modules/ConsumerProductUseFrequencies.xml" />
     </Modules>
   </ModuleGroupDefinition>
   <ModuleGroupDefinition>
@@ -39,6 +44,13 @@
     <Modules>
       <xi:include href="Modules/Concentrations.xml" />
       <xi:include href="Modules/ConcentrationDistributions.xml" />
+      <xi:include href="Modules/DustConcentrations.xml" />
+      <xi:include href="Modules/DustConcentrationDistributions.xml" />
+      <xi:include href="Modules/SoilConcentrations.xml" />
+      <xi:include href="Modules/SoilConcentrationDistributions.xml" />
+      <xi:include href="Modules/AirConcentrationDistributions.xml" />
+      <xi:include href="Modules/IndoorAirConcentrations.xml" />
+      <xi:include href="Modules/OutdoorAirConcentrations.xml" />
       <xi:include href="Modules/SingleValueConcentrations.xml" />
       <xi:include href="Modules/ProcessingFactors.xml" />
       <xi:include href="Modules/UnitVariabilityFactors.xml" />
@@ -54,7 +66,6 @@
       <xi:include href="Modules/FocalFoodConcentrations.xml" />
       <xi:include href="Modules/TotalDietStudyCompositions.xml" />
       <xi:include href="Modules/FoodExtrapolations.xml" />
-      <xi:include href="Modules/ExposureBiomarkerConversions.xml" />
       <xi:include href="Modules/ConsumerProductConcentrations.xml" />
       <xi:include href="Modules/ConsumerProductConcentrationDistributions.xml" />
     </Modules>
@@ -76,27 +87,16 @@
       <xi:include href="Modules/HumanMonitoringData.xml" />
       <xi:include href="Modules/HumanMonitoringAnalysis.xml" />
       <xi:include href="Modules/BiologicalMatrixConcentrationComparisons.xml" />
-      <xi:include href="Modules/DustConcentrations.xml" />
-      <xi:include href="Modules/DustConcentrationDistributions.xml" />
-      <xi:include href="Modules/DustExposureDeterminants.xml" />
       <xi:include href="Modules/DustExposures.xml" />
-      <xi:include href="Modules/SoilConcentrations.xml" />
-      <xi:include href="Modules/SoilConcentrationDistributions.xml" />
-      <xi:include href="Modules/SoilExposureDeterminants.xml" />
       <xi:include href="Modules/SoilExposures.xml" />
-      <xi:include href="Modules/AirConcentrationDistributions.xml" />
-      <xi:include href="Modules/IndoorAirConcentrations.xml" />
-      <xi:include href="Modules/OutdoorAirConcentrations.xml" />
-      <xi:include href="Modules/AirExposureDeterminants.xml" />
       <xi:include href="Modules/AirExposures.xml" />
       <xi:include href="Modules/Individuals.xml" />
-      <xi:include href="Modules/ConsumerProductUseFrequencies.xml" />
-      <xi:include href="Modules/ConsumerProductExposureDeterminants.xml" />
       <xi:include href="Modules/ConsumerProductExposures.xml" />
       <xi:include href="Modules/HbmSingleValueExposures.xml" />
       <xi:include href="Modules/OccupationalTaskExposures.xml" />
       <xi:include href="Modules/OccupationalExposures.xml" />
       <xi:include href="Modules/OccupationalScenarios.xml" />
+      <xi:include href="Modules/ExposureBiomarkerConversions.xml" />
     </Modules>
   </ModuleGroupDefinition>
   <ModuleGroupDefinition>
