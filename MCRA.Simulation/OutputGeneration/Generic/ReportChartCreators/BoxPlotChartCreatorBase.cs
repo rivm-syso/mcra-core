@@ -254,5 +254,31 @@ namespace MCRA.Simulation.OutputGeneration {
             logarithmicAxis.AbsoluteMinimum = minimum * .9;
             logarithmicAxis.Maximum = multiplier * maximum;
         }
+
+        protected void setSmartAxis(LinearAxis axis, double minimum, double maximum) {
+            // Calculate the step size for the major ticks on the linear axis,
+            // ensuring that there are approximately 4 major ticks between the minimum and maximum values.
+            var stepSize = (maximum - minimum) / 4;
+            var proxy = Math.Pow(10, Math.Floor(Math.Log10(stepSize)));
+            var normalizedStepSize = stepSize / proxy;
+            double result;
+            if (normalizedStepSize <= 1.0) {
+                result = 1.0 * proxy;
+            } else if (normalizedStepSize <= 2.0) {
+                result = 2.0 * proxy;
+            } else if (normalizedStepSize <= 5.0) {
+                result = 5.0 * proxy;
+            } else {
+                result = 10.0 * proxy;
+            }
+            axis.MajorStep = result > 0 ? result : double.NaN;
+            minimum = Math.Floor(minimum / result) * result;
+            axis.Minimum = minimum;
+            double asMaximum = minimum;
+            while (asMaximum < maximum) {
+                asMaximum += result;
+            }
+            axis.Maximum = asMaximum;
+        }
     }
 }

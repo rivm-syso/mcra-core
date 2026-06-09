@@ -11,7 +11,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
         /// <summary>
         /// Scaling constant for envelope and percentiles.
         /// </summary>
-        private const double _scale = 0.3;
+        private const double Scale = 0.3;
 
         /// <summary>
         /// Create logarithmic default axis for horizontal (default) violin plots
@@ -39,14 +39,8 @@ namespace MCRA.Utils.Charting.OxyPlot {
         /// <param name="showOutliers">If true, outliers are shown as points outside the wiskers. If false, outliers are hidden.</param>
         /// <returns></returns>
         protected BoxPlotDataPoint asBoxPlotDataPoint(IEnumerable<double> source, WiskerType wiskerType = WiskerType.ExtremePercentiles, double lowerBound = 2.5, double upperBound = 97.5, bool showOutliers = true, double interQuartileRangeFactor = 1.5) {
-            var lowerBox = source.Percentile(25);
-            var upperBox = source.Percentile(75);
-            if (upperBound < 75) {
-                upperBox = source.Percentile(upperBound);
-            }
-            if (lowerBound > 25) {
-                lowerBox = source.Percentile(lowerBound);
-            }
+            var lowerBox = lowerBound > 25 ? source.Percentile(lowerBound) : source.Percentile(25);
+            var upperBox = upperBound < 75 ? source.Percentile(upperBound) : source.Percentile(75);
             double lowerWisker = 0d;
             double upperWisker = 0d;
 
@@ -71,13 +65,12 @@ namespace MCRA.Utils.Charting.OxyPlot {
                 LowerBox = lowerBox,
                 UpperBox = upperBox,
                 Median = source.Percentile(50),
-                Outliers = showOutliers ? source.Where(v => v > upperWisker || v < lowerWisker).ToList() : [],
+                Outliers = showOutliers ? [.. source.Where(v => v > upperWisker || v < lowerWisker)] : [],
             };
             return boxPlotdataPoint;
         }
 
-        protected (Dictionary<string, List<double>>, Dictionary<string, List<double>>, double, double) ComputeKernel(IDictionary<string, (List<double> x, bool skip)> data) {
-            var maximumY = double.NegativeInfinity;
+        protected (Dictionary<string, List<double>>, Dictionary<string, List<double>>, double) ComputeKernel(IDictionary<string, (List<double> x, bool skip)> data) {
             var numberOfValuesRef = double.MinValue;
             var yKernel = new Dictionary<string, List<double>>();
             var xKernel = new Dictionary<string, List<double>>();
@@ -96,7 +89,6 @@ namespace MCRA.Utils.Charting.OxyPlot {
                                 var logValues = R.EvaluateNumericVector("kernel$x");
                                 xKernel[item.Key] = logValues.Select(c => Math.Exp(c)).ToList();
                                 yKernel[item.Key] = R.EvaluateNumericVector("kernel$y");
-                                maximumY = Math.Max(maximumY, yKernel[item.Key].Max());
                                 numberOfValuesRef = Math.Max(numberOfValuesRef, item.Value.x.Count);
                             }
                         } finally {
@@ -104,7 +96,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
                     }
                 }
             }
-            return (yKernel, xKernel, maximumY, numberOfValuesRef);
+            return (yKernel, xKernel, numberOfValuesRef);
         }
 
         /// <summary>
@@ -116,7 +108,6 @@ namespace MCRA.Utils.Charting.OxyPlot {
         /// <param name="yKernel"></param>
         /// <param name="paletteColor"></param>
         /// <param name="counter"></param>
-        /// <param name="maximumY"></param>
         /// <param name="numberOfValuesRef"></param>
         /// <param name="horizontal"></param>
         /// <returns></returns>
@@ -127,12 +118,11 @@ namespace MCRA.Utils.Charting.OxyPlot {
             Dictionary<string, List<double>> xKernel,
             OxyColor paletteColor,
             int counter,
-            double maximumY,
             double numberOfValuesRef,
             bool horizontal,
             bool equalSize
         ) {
-            var scaling = equalSize ? _scale : values.Count / numberOfValuesRef / yKernel[name].Max() * _scale;
+            var scaling = equalSize ? Scale : values.Count / numberOfValuesRef / yKernel[name].Max() * Scale;
             var areaSeries = new AreaSeries() {
                 Color = paletteColor,
                 MarkerType = MarkerType.None,
@@ -154,62 +144,6 @@ namespace MCRA.Utils.Charting.OxyPlot {
             return areaSeries;
         }
 
-        /// <summary>
-        /// Create HorizontalBoxPlotSeries
-        /// </summary>
-        /// <param name="counter"></param>
-        /// <param name="paletteColor"></param>
-        /// <param name="values"></param>
-        /// <param name="lowerBound"></param>
-        /// <param name="upperBound"></param>
-        /// <returns></returns>
-        protected HorizontalBoxPlotSeries CreateHorizontalBoxPlotSerie(
-            int counter,
-            OxyColor paletteColor,
-            List<double> values,
-            double lowerBound = 5,
-            double upperBound = 95
-        ) {
-            var series = new HorizontalBoxPlotSeries() {
-                Fill = OxyColor.FromAColor(100, paletteColor),
-                StrokeThickness = .5,
-                Stroke = OxyColors.Black,
-                WhiskerWidth = .05,
-                BoxWidth = .05,
-            };
-            var boxPlotItem = createBoxPlotItem(counter, values, lowerBound, upperBound);
-            series.Items.Add(boxPlotItem);
-            return series;
-        }
-
-        /// <summary>
-        /// Create vertical BoxPlotSeries
-        /// </summary>
-        /// <param name="counter"></param>
-        /// <param name="paletteColor"></param>
-        /// <param name="values"></param>
-        /// <param name="lowerBound"></param>
-        /// <param name="upperBound"></param>
-        /// <returns></returns>
-        protected BoxPlotSeries CreateBoxPlotSerie(
-            int counter,
-            OxyColor paletteColor,
-            List<double> values,
-            double lowerBound = 5,
-            double upperBound = 95
-        ) {
-            var series = new BoxPlotSeries() {
-                Fill = OxyColor.FromAColor(100, paletteColor),
-                StrokeThickness = .5,
-                Stroke = OxyColors.Black,
-                WhiskerWidth = .05,
-                BoxWidth = .05,
-            };
-            var boxPlotItem = createBoxPlotItem(counter, values, lowerBound, upperBound);
-            series.Items.Add(boxPlotItem);
-            return series;
-        }
-
         private BoxPlotItem createBoxPlotItem(int counter, List<double> values, double lowerBound, double upperBound) {
             var dp = asBoxPlotDataPoint(values, lowerBound: lowerBound, upperBound: upperBound, showOutliers: false);
             var boxPlotItem = new BoxPlotItem(counter, dp.LowerWisker, dp.LowerBox, dp.Median, dp.UpperBox, dp.UpperWisker) {
@@ -224,34 +158,26 @@ namespace MCRA.Utils.Charting.OxyPlot {
         /// </summary>
         /// <param name="values"></param>
         /// <param name="paletteColor"></param>
-        /// <param name="axis"></param>
         /// <param name="counter"></param>
         /// <param name="lowerBound"></param>
         /// <param name="upperBound"></param>
-        /// <param name="minimum"></param>
-        /// <param name="maximum"></param>
         /// <returns></returns>
         protected BoxPlotSeries CreateBoxPlotItem(
             List<double> values,
             OxyColor paletteColor,
-            LogarithmicAxis axis,
             int counter,
             double lowerBound,
-            double upperBound,
-            double minimum,
-            double maximum
+            double upperBound
         ) {
-            var series = CreateBoxPlotSerie(
-                counter,
-                paletteColor,
-                values,
-                lowerBound,
-                upperBound
-            );
-            minimum = Math.Min(minimum, series.Items.First().LowerWhisker);
-            maximum = Math.Max(maximum, series.Items.First().UpperWhisker);
-            axis.MajorStep = Math.Pow(10, Math.Ceiling(Math.Log10((maximum - minimum) / 5)));
-            axis.MajorStep = axis.MajorStep > 0 ? axis.MajorStep : double.NaN;
+            var series = new BoxPlotSeries() {
+                Fill = OxyColor.FromAColor(100, paletteColor),
+                StrokeThickness = .5,
+                Stroke = OxyColors.Black,
+                WhiskerWidth = .05,
+                BoxWidth = .05,
+            };
+            var boxPlotItem = createBoxPlotItem(counter, values, lowerBound, upperBound);
+            series.Items.Add(boxPlotItem);
             return series;
         }
 
@@ -260,34 +186,26 @@ namespace MCRA.Utils.Charting.OxyPlot {
         /// </summary>
         /// <param name="values"></param>
         /// <param name="paletteColor"></param>
-        /// <param name="axis"></param>
         /// <param name="counter"></param>
         /// <param name="lowerBound"></param>
         /// <param name="upperBound"></param>
-        /// <param name="minimum"></param>
-        /// <param name="maximum"></param>
         /// <returns></returns>
         protected HorizontalBoxPlotSeries CreateHorizontalBoxPlotItem(
             List<double> values,
             OxyColor paletteColor,
-            LogarithmicAxis axis,
             int counter,
             double lowerBound,
-            double upperBound,
-            double minimum,
-            double maximum
+            double upperBound
         ) {
-            var series = CreateHorizontalBoxPlotSerie(
-                counter,
-                paletteColor,
-                values,
-                lowerBound,
-                upperBound
-            );
-            minimum = Math.Min(minimum, series.Items.First().LowerWhisker);
-            maximum = Math.Max(maximum, series.Items.First().UpperWhisker);
-            axis.MajorStep = Math.Pow(10, Math.Ceiling(Math.Log10((maximum - minimum) / 5)));
-            axis.MajorStep = axis.MajorStep > 0 ? axis.MajorStep : double.NaN;
+            var series = new HorizontalBoxPlotSeries() {
+                Fill = OxyColor.FromAColor(100, paletteColor),
+                StrokeThickness = .5,
+                Stroke = OxyColors.Black,
+                WhiskerWidth = .05,
+                BoxWidth = .05,
+            };
+            var boxPlotItem = createBoxPlotItem(counter, values, lowerBound, upperBound);
+            series.Items.Add(boxPlotItem);
             return series;
         }
 
@@ -317,43 +235,31 @@ namespace MCRA.Utils.Charting.OxyPlot {
         /// </summary>
         /// <param name="yKernel"></param>
         /// <param name="xKernel"></param>
-        /// <param name="maximumY"></param>
         /// <param name="numberOfValuesRef"></param>
         /// <param name="counter"></param>
         /// <param name="values"></param>
         /// <param name="percentage"></param>
         /// <param name="horizontal"></param>
         /// <param name="equalSize"></param>
-        /// <param name="axis"></param>
-        /// <param name="minimum"></param>
-        /// <param name="maximum"></param>
         /// <returns></returns>
         protected LineSeries CreatePercentileSeries(
             List<double> yKernel,
             List<double> xKernel,
-            double maximumY,
             double numberOfValuesRef,
             int counter,
             List<double> values,
             double percentage,
             bool horizontal,
-            bool equalSize,
-            LogarithmicAxis axis,
-            double minimum,
-            double maximum
+            bool equalSize
         ) {
             var percentile = values.Percentile(percentage);
 
-            var scaling = equalSize ? _scale : values.Count / numberOfValuesRef / yKernel.Max() * _scale;
+            var scaling = equalSize ? Scale : values.Count / numberOfValuesRef / yKernel.Max() * Scale;
             var lineSeries = new LineSeries() {
                 Color = OxyColors.Black,
                 MarkerType = MarkerType.None,
                 StrokeThickness = .5
             };
-            minimum = Math.Min(minimum, percentile);
-            maximum = Math.Max(maximum, percentile);
-            axis.MajorStep = Math.Pow(10, Math.Ceiling(Math.Log10((maximum - minimum) / 5)));
-            axis.MajorStep = axis.MajorStep > 0 ? axis.MajorStep : double.NaN;
             var ix = xKernel.Count(c => c <= percentile);
             if (horizontal) {
                 lineSeries.Points.Add(new DataPoint(percentile, yKernel[ix] * scaling + counter));
@@ -364,6 +270,31 @@ namespace MCRA.Utils.Charting.OxyPlot {
                 lineSeries.Points.Add(new DataPoint(-yKernel[ix] * scaling + counter, percentile));
                 return lineSeries;
             }
+        }
+        protected static void setSmartAxis(LogarithmicAxis axis, double minimum, double maximum) {
+            // Calculate the step size for the major ticks on the logarithmic axis,
+            // ensuring that there are approximately 4 major ticks between the minimum and maximum values.
+            var stepSize = (maximum - minimum)/9;
+            var proxy = Math.Pow(10, Math.Floor(Math.Log10(stepSize)));
+            var normalizedStepSize = stepSize / proxy;
+            double result;
+            if (normalizedStepSize <= 1.0) {
+                result = 1.0 * proxy;
+            } else if (normalizedStepSize <= 2.0) {
+                result = 2.0 * proxy;
+            } else if (normalizedStepSize <= 5.0) {
+                result = 5.0 * proxy;
+            } else {
+                result = 10.0 * proxy;
+            }
+            axis.MajorStep = result > 0 ? result : double.NaN;
+            var axisMinimum = Math.Floor(minimum / result) * result;
+            axis.Minimum = axisMinimum > 0 ? axisMinimum : minimum;
+            double asMaximum = minimum;
+            while (asMaximum < maximum) {
+                asMaximum += result;
+            }
+            axis.Maximum = asMaximum;
         }
     }
 }

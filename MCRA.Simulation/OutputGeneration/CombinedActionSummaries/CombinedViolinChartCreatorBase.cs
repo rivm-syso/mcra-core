@@ -8,8 +8,6 @@ namespace MCRA.Simulation.OutputGeneration {
         private readonly bool _horizontal;
         private readonly bool _boxPlotItem;
         private readonly bool _equalSize;
-        private readonly double _minimum = double.PositiveInfinity;
-        private readonly double _maximum = double.NegativeInfinity;
 
         protected readonly double _lowerBound = 5;
         protected readonly double _upperBound = 95;
@@ -75,7 +73,9 @@ namespace MCRA.Simulation.OutputGeneration {
                 }
 
                 //Do this for all distributions using a dictionary, otherwise RDotNetEngine should be initialized each time
-                var (yKernel, xKernel, maximumY, numberOfValuesRef) = ComputeKernel(data);
+                var (yKernel, xKernel, numberOfValuesRef) = ComputeKernel(data);
+                var maximum = xKernel.Max(k => k.Value.Max());
+                var minimum = xKernel.Min(k => k.Value.Min());
                 var counter = 0;
                 if (yKernel.Any()) {
                     foreach (var item in data) {
@@ -87,7 +87,6 @@ namespace MCRA.Simulation.OutputGeneration {
                                 xKernel,
                                 palette.Colors[paletteNr],
                                 counter,
-                                maximumY,
                                 numberOfValuesRef,
                                 _horizontal,
                                 _equalSize
@@ -104,23 +103,17 @@ namespace MCRA.Simulation.OutputGeneration {
                                 plotModel.Series.Add(CreateHorizontalBoxPlotItem(
                                     item.Value.x,
                                     palette.Colors[paletteNr],
-                                    axis,
                                     counter,
                                     _lowerBound,
-                                    _upperBound,
-                                    _minimum,
-                                    _maximum
+                                    _upperBound
                                 ));
                             } else {
                                 plotModel.Series.Add(CreateBoxPlotItem(
                                     item.Value.x,
                                     palette.Colors[paletteNr],
-                                    axis,
                                     counter,
                                     _lowerBound,
-                                    _upperBound,
-                                    _minimum,
-                                    _maximum
+                                    _upperBound
                                 ));
                             }
                         } else {
@@ -135,16 +128,12 @@ namespace MCRA.Simulation.OutputGeneration {
                                     plotModel.Series.Add(CreatePercentileSeries(
                                         yKernel[item.Key],
                                         xKernel[item.Key],
-                                        maximumY,
                                         numberOfValuesRef,
                                         counter,
                                         item.Value.x,
                                         percentage,
                                         _horizontal,
-                                        _equalSize,
-                                        axis,
-                                        _minimum,
-                                        _maximum
+                                        _equalSize
                                     ));
                                 }
                             }
@@ -153,6 +142,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         counter++;
                     }
                 }
+                setSmartAxis(axis, minimum, maximum);
             }
             plotModel.Axes.Add(axis);
             plotModel.Axes.Add(categoryAxis);

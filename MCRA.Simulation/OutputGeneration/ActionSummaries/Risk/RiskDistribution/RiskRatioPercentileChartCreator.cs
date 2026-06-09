@@ -63,8 +63,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 maximum = Math.Max(maximum, dp.UpperWisker);
                 counter++;
             };
-            linearAxis2.MajorStep = Math.Pow(10, Math.Ceiling(Math.Log10((maximum - minimum) / 5)));
-            linearAxis2.MajorStep = linearAxis2.MajorStep > 0 ? linearAxis2.MajorStep : double.NaN;
+            setSmartAxis(linearAxis2, minimum, maximum);
             plotModel.Axes.Add(linearAxis2);
             plotModel.Axes.Add(categoryAxis1);
 

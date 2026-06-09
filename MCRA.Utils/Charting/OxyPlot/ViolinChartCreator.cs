@@ -8,15 +8,13 @@ namespace MCRA.Utils.Charting.OxyPlot {
     /// </summary>
     public class ViolinCreator : ViolinChartCreatorBase {
 
-        private IDictionary<string, (List<double> x, bool skip)> _data;
-        private bool _horizontal;
-        private bool _boxPlotItem;
-        private bool _equalSize;
-        private string _title;
-        private double _lowerBound = 5;
-        private double _upperBound = 95;
-        private double _minimum = double.PositiveInfinity;
-        private double _maximum = double.NegativeInfinity;
+        private readonly Dictionary<string, (List<double> x, bool skip)> _data;
+        private readonly bool _horizontal;
+        private readonly bool _boxPlotItem;
+        private readonly bool _equalSize;
+        private readonly string _title;
+        private readonly double _lowerBound = 5;
+        private readonly double _upperBound = 95;
 
         public void CreateToFile(PlotModel plotModel, string filename) {
             plotModel.Background = OxyColors.White;
@@ -50,8 +48,9 @@ namespace MCRA.Utils.Charting.OxyPlot {
             };
             var axis = CreateLogarithmicAxis(_horizontal);
             var palette = CustomPalettes.DistinctTone(_data.Count);
-            var (yKernel, xKernel, maximumY, numberOfValuesRef) = ComputeKernel(_data);
-
+            var (yKernel, xKernel, numberOfValuesRef) = ComputeKernel(_data);
+            var maximum = xKernel.Max(k => k.Value.Max());
+            var minimum = xKernel.Min(k => k.Value.Min());
             var counter = 0;
             foreach (var item in _data) {
                 var areaSeries = CreateEnvelope(
@@ -61,7 +60,6 @@ namespace MCRA.Utils.Charting.OxyPlot {
                     xKernel,
                     palette.Colors[counter],
                     counter,
-                    maximumY,
                     numberOfValuesRef,
                     _horizontal,
                     _equalSize
@@ -83,23 +81,17 @@ namespace MCRA.Utils.Charting.OxyPlot {
                         plotModel.Series.Add(CreateHorizontalBoxPlotItem(
                             item.Value.x,
                             palette.Colors[counter],
-                            axis,
                             counter,
                             _lowerBound,
-                            _upperBound,
-                            _minimum,
-                            _maximum
+                            _upperBound
                         ));
                     } else {
                         plotModel.Series.Add(CreateBoxPlotItem(
                             item.Value.x,
                             palette.Colors[counter],
-                            axis,
                             counter,
                             _lowerBound,
-                            _upperBound,
-                            _minimum,
-                            _maximum
+                            _upperBound
                         ));
                     }
                 } else {
@@ -113,22 +105,20 @@ namespace MCRA.Utils.Charting.OxyPlot {
                         plotModel.Series.Add(CreatePercentileSeries(
                             yKernel[item.Key],
                             xKernel[item.Key],
-                            maximumY,
                             numberOfValuesRef,
                             counter,
                             item.Value.x,
                             percentage,
                             _horizontal,
-                            _equalSize,
-                            axis,
-                            _minimum,
-                            _maximum
+                            _equalSize
                         ));
                     }
                 }
                 categoryAxis.Labels.Add(item.Key);
                 counter++;
             }
+
+            setSmartAxis(axis, minimum, maximum);
             plotModel.Axes.Add(axis);
             plotModel.Axes.Add(categoryAxis);
             return plotModel;

@@ -61,8 +61,6 @@ namespace MCRA.Simulation.OutputGeneration {
             var linearAxis2 = createLinearLeftAxis($"Exposure ({_intakeUnit})");
             linearAxis2.MajorGridlineStyle = LineStyle.Dash;
             linearAxis2.MajorTickSize = 2;
-            linearAxis2.Maximum = _maximum;
-            linearAxis2.Minimum = _minimum;
 
             var categoryAxis1 = new CategoryAxis() {
                 MinorStep = 1,
@@ -87,7 +85,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 series.Items.Add(boxPlotItem);
                 counter++;
             }
-            linearAxis2.MajorStep = double.NaN;
+            setSmartAxis(linearAxis2, _minimum, _maximum);
             plotModel.Axes.Add(linearAxis2);
             plotModel.Axes.Add(categoryAxis1);
             plotModel.Series.Add(series);

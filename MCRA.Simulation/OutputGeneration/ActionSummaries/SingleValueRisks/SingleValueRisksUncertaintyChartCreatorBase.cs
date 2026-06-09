@@ -70,9 +70,7 @@ namespace MCRA.Simulation.OutputGeneration {
             (minimum, maximum) = getBoxPlot(_unAdjusted, categoryAxis1, seriesUnadjusted, _uncertaintyLowerLimit, _uncertaintyUpperLimit, minimum, maximum, 0);
             (minimum, maximum) = getBoxPlot(_adjusted, categoryAxis1, seriesAdjusted, _uncertaintyLowerLimit, _uncertaintyUpperLimit, minimum, maximum, 1, true);
 
-            linearAxis2.MajorStep = Math.Pow(10, Math.Ceiling(Math.Log10((maximum - minimum) / 5)));
-            linearAxis2.MajorStep = linearAxis2.MajorStep > 0 ? linearAxis2.MajorStep : double.NaN;
-            linearAxis2.Minimum = 0;
+            setSmartAxis(linearAxis2, minimum, maximum);
             plotModel.Axes.Add(linearAxis2);
             plotModel.Axes.Add(categoryAxis1);
             plotModel.Series.Add(seriesUnadjusted);

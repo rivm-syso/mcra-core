@@ -14,30 +14,26 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
         /// Create chart
         /// </summary>
         [TestMethod]
-        public void IntakePercentageChart_TestUncertainty() {
+        [DataRow(5.5, 1.1)]
+        [DataRow(0.5, 0.1)]
+        [DataRow(0.05, 0.01)]
+        public void IntakePercentageChart_TestUncertainty(double mu, double sigma) {
             var section = new IntakePercentageSection() {
-                Percentages = Mock(100),
+                Percentages = mock(100, mu, sigma),
             };
             var chart = new IntakePercentageChartCreator(section, "mg/kg");
-            chart.CreateToSvg(TestUtilities.ConcatWithOutputPath("IntakePercentage_TestUncertainty.svg"));
+            chart.CreateToSvg(TestUtilities.ConcatWithOutputPath($"IntakePercentage_TestUncertainty_{mu}_{sigma}.svg"));
         }
 
-        /// <summary>
-        /// Mock random
-        /// </summary>
-        /// <param name="numberOfSamples"></param>
-        /// <returns></returns>
-        public UncertainDataPointCollection<double> Mock(int numberOfSamples) {
-            var percentages = new List<double>(){50, 90, 95, 99, 99.5, 99.9};
-            var mu = 110.5;
-            var sigma = 5;
-            var draw = NormalDistribution.NormalSamples(numberOfSamples, mu, sigma).ToList();
+        private UncertainDataPointCollection<double> mock(int numberOfSamples, double mu, double sigma) {
+            var percentages = new List<double>() { 50, 90, 95, 99, 99.5, 99.9 };
+            var draw = LogNormalDistribution.LogNormalSamples(numberOfSamples, mu, sigma).ToList();
             var collection = new UncertainDataPointCollection<double>() {
                 XValues = percentages,
                 ReferenceValues = draw.Percentiles(percentages),
             };
             for (int i = 0; i < 10; ++i) {
-                draw = NormalDistribution.NormalSamples(numberOfSamples, mu, sigma).ToList();
+                draw = LogNormalDistribution.LogNormalSamples(numberOfSamples, mu, sigma).ToList();
                 collection.AddUncertaintyValues(draw.Percentiles(percentages));
             }
             return collection;

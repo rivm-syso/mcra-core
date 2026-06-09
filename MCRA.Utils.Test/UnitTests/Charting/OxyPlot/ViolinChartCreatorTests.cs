@@ -10,16 +10,14 @@ namespace MCRA.Utils.Test.UnitTests {
         /// Violin
         /// </summary>
         [TestMethod]
-        public void ViolinChart_Test() {
+        [DataRow(true, true, false, "HorizontalBoxPlot")]
+        [DataRow(true, false, false, "HorizontalPercentiles")]
+        [DataRow(false, true, false, "VerticalBoxPlot")]
+        [DataRow(false, false, false, "VerticalPercentiles")]
+        public void ViolinChart_Test(bool horizontal, bool item, bool equal, string chartName) {
             var data = fakeData(100, 200, 300, 400, 500);
-            var chart = new ViolinCreator(data, "violinplot", true, true, false);
-            WritePng(chart, $"violinplotHorizontalBoxPlot");
-            chart = new ViolinCreator(data, "violinplot", true, false, false);
-            WritePng(chart, $"violinplotHorizontalPercentiles");
-            chart = new ViolinCreator(data, "violinplot", false, true, false);
-            WritePng(chart, $"violinplotVerticalBoxPlot");
-            chart = new ViolinCreator(data, "violinplot", false, false, false);
-            WritePng(chart, $"violinplotVerticalPercentiles1");
+            var chart = new ViolinCreator(data, "violinplot", horizontal, item, equal);
+            WritePng(chart, $"violinplot{chartName}");
         }
 
         /// <summary>
