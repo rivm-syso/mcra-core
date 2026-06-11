@@ -175,7 +175,7 @@ namespace MCRA.Simulation {
             set => GetOrCreateModuleOutputData<AOPNetworksOutputData>(ActionType.AOPNetworks).RelevantEffects = value;
         }
 
-        // BiologicalMatrixConcentrationComparisons
+        // BiologicalMatrixConcentrationComparisons/ExposureComparisons
         // ConcentrationDistributions
         public IDictionary<(Food Food, Compound Substance), ConcentrationDistribution> ConcentrationDistributions {
             get => GetOrCreateModuleOutputData<ConcentrationDistributionsOutputData>(ActionType.ConcentrationDistributions).ConcentrationDistributions;

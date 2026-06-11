@@ -156,7 +156,7 @@ namespace MCRA.General {
         [Description("Obsolete: Concentrations distributions")]
         [Display(Name = "Food concentration distributions")]
         ConcentrationDistributions = 52,
-        [Display(Name = "Biological matrix concentration comparisons")]
+        [Display(Name = "Exposure comparisons")]
         BiologicalMatrixConcentrationComparisons = 53,
         [Display(Name = "Non-dietary exposure sources")]
         NonDietaryExposureSources = 54,
