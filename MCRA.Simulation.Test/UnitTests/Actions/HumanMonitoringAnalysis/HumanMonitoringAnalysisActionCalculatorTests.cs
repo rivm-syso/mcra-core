@@ -590,7 +590,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var calculator = new HumanMonitoringAnalysisActionCalculator(project);
             var result = calculator.Run(data, new CompositeProgressState()) as HumanMonitoringAnalysisActionResult;
-            var actualCumulative = result.HbmCumulativeIndividualDayCollection.HbmCumulativeIndividualDayConcentrations.Sum(c => c.CumulativeConcentration);
+            var actualCumulative = result.HbmCumulativeIndividualDayCollection.IndividualDayConcentrations.Sum(c => c.CumulativeConcentration);
 
             var targetSamples = hbmSampleSubstanceCollections
                 .SingleOrDefault(c => c.SamplingMethod == samplingMethodBlood)
@@ -695,7 +695,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var calculator = new HumanMonitoringAnalysisActionCalculator(project);
             var result = calculator.Run(data, new CompositeProgressState()) as HumanMonitoringAnalysisActionResult;
-            var actualCumulative = result.HbmCumulativeIndividualDayCollection.HbmCumulativeIndividualDayConcentrations.Sum(c => c.CumulativeConcentration);
+            var actualCumulative = result.HbmCumulativeIndividualDayCollection.IndividualDayConcentrations.Sum(c => c.CumulativeConcentration);
 
             var targetSamples = hbmSampleSubstanceCollections
                 .SingleOrDefault(c => c.SamplingMethod == samplingMethodBlood)

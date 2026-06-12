@@ -1,4 +1,6 @@
-﻿using MCRA.Simulation.OutputGeneration;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
+using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.UnitTests.OutputGeneration;
 using MCRA.Utils.Statistics;
 
@@ -25,9 +27,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var section = new IndividualConcentrationCorrelationsCumulativeSection();
-            var substance = "substance";
+            var substance = new Compound() {Code = "substance"};
             var mainRecord = new DayConcentrationCorrelationsBySubstanceRecord() {
-                SubstanceCode = substance,
+                SubstanceCode = substance.Code,
+                SubstanceName = substance.Name,
                 MonitoringVersusModelExposureRecords = []
             };
             for (var i = 0; i < 10; i++) {
@@ -39,11 +42,12 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 };
                 mainRecord.MonitoringVersusModelExposureRecords.Add(record);
             }
+            var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.mgPerg, BiologicalMatrix.Blood);
             section.Records = [mainRecord];
             var chart = new IndividualConcentrationCorrelationCumulativeChartCreator(
                 section,
-                substance,
-                "mg/g",
+                substance.Code,
+                targetUnit,
                 "mg/g",
                 2.5,
                 97.5,

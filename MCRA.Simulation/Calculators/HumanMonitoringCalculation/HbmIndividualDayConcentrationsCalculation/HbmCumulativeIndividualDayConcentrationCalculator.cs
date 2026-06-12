@@ -25,7 +25,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
 
             var cumulativeCollection =  new HbmCumulativeIndividualDayCollection {
                 TargetUnit = collection.TargetUnit,
-                HbmCumulativeIndividualDayConcentrations = cumulativeConcentrations
+                IndividualDayConcentrations = cumulativeConcentrations
             };
 
             return cumulativeCollection;

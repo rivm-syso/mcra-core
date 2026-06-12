@@ -18,7 +18,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ExposureType = ExposureType.Acute;
             StratificationVariables = stratifier?.GetStratificationVariables();
             if (skipPrivacySensitiveOutputs) {
-                var maxUpperPercentile = SimulationConstants.MaxUpperPercentage(collection.HbmCumulativeIndividualDayConcentrations.Count);
+                var maxUpperPercentile = SimulationConstants.MaxUpperPercentage(collection.IndividualDayConcentrations.Count);
                 if (_upperWhisker > maxUpperPercentile) {
                     RestrictedUpperPercentile = maxUpperPercentile;
                 }
@@ -105,7 +105,7 @@ namespace MCRA.Simulation.OutputGeneration {
             HbmCumulativeIndividualDayCollection collection,
             PopulationStratifier stratifier
         ) {
-            var concentrations = collection.HbmCumulativeIndividualDayConcentrations
+            var concentrations = collection.IndividualDayConcentrations
                 .Select(c => new HbmConcentrationsByDescriptor<HbmSubstanceContributorKey> {
                     SamplingWeight = c.SimulatedIndividual.SamplingWeight,
                     TotalEndpointExposure = c.CumulativeConcentration,

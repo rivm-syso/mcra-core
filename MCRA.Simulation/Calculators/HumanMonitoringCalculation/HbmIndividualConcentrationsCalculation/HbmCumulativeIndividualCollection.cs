@@ -1,19 +1,11 @@
-﻿using MCRA.General;
+﻿using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation {
-    public sealed class HbmCumulativeIndividualCollection {
-
-        /// <summary>
-        /// The target and unit.
-        /// </summary>
-        public TargetUnit TargetUnit { get; set; }
+    public sealed class HbmCumulativeIndividualCollection : HbmCumulativeIndividualDayCollection {
 
         /// <summary>
         /// The HBM individual concentrations.
         /// </summary>
         public ICollection<HbmCumulativeIndividualConcentration> HbmCumulativeIndividualConcentrations { get; set; }
-
-        public ICollection<HbmCumulativeIndividualDayConcentration> TimePointIndividualDayConcentrations { get; set; }
-
     }
 }

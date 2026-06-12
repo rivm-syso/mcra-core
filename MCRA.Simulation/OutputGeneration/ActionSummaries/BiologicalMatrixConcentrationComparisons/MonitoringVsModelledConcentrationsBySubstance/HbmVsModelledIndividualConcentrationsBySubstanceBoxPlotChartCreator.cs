@@ -11,7 +11,7 @@ namespace MCRA.Simulation.OutputGeneration {
             _section = section;
             _unit = unit;
             Width = 500;
-            Height = 80 + Math.Max(_section.HbmBoxPlotRecords.Count * _cellSize, 80);
+            Height = 80 + Math.Max(_section.Records.Count * _cellSize, 80);
         }
 
         public override string ChartId {
@@ -24,7 +24,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public override string Title => "Lower whiskers: p5, p10; box: p25, p50, p75; upper whiskers: p90, p95; monitoring (blue) vs modelled (green)";
 
         public override PlotModel Create() {
-            return create(_section.HbmBoxPlotRecords, _unit);
+            return create(_section.Records, _unit);
         }
     }
 }

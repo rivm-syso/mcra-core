@@ -282,7 +282,9 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.NonDie
                     routes,
                     generator
                 );
-                results.Add(externalIndividualDayExposure);
+                if (externalIndividualDayExposure != null) {
+                    results.Add(externalIndividualDayExposure);
+                }
             }
 
             //aggregate all exposures for multiple surveys, do this on a per day basis

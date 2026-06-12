@@ -22,12 +22,12 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     sb.Append("<tr>");
                     foreach (var record in Model.Records.Skip(i * take).Take(take)) {
                         sb.Append("<td>");
-                        if (record.MonitoringVersusModelExposureRecords.Any(r => r.BothPositive)) {
+                        if (record.MonitoringVersusModelExposureRecords.Any(r => r.BothPositive())) {
                             var chartCreator = new IndividualConcentrationCorrelationChartCreator(
                                     Model,
                                     record.SubstanceCode,
+                                    Model.TargetUnit,
                                     ViewBag.GetUnit("ModelledExposureUnit"),
-                                    Model.ExposureTarget,
                                     Model.LowerPercentage,
                                     Model.UpperPercentage,
                                     375, 300

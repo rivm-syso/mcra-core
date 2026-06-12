@@ -26,8 +26,8 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                             var chartCreator = new DayConcentrationCorrelationsCumulativeChartCreator(
                                 Model,
                                 record.SubstanceCode,
+                                Model.TargetUnit,
                                 ViewBag.GetUnit("ModelledExposureUnit"),
-                                Model.ExposureTarget,
                                 Model.LowerPercentage,
                                 Model.UpperPercentage,
                                 375,

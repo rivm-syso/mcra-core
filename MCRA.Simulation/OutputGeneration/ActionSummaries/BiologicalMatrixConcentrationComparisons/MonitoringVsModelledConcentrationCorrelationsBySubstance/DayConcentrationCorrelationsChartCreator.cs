@@ -1,4 +1,5 @@
-﻿using MCRA.Utils.ExtensionMethods;
+﻿using MCRA.General;
+using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 using OxyPlot;
 
@@ -7,7 +8,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         protected DayConcentrationCorrelationsBySubstanceSection _section;
         protected string _codeSubstance;
-        protected string _modelledExposureUnit;
+        protected TargetUnit _targetUnit;
         protected string _monitoringConcentrationUnit;
         protected double _lowerPercentage;
         protected double _upperPercentage;
@@ -17,7 +18,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public DayConcentrationCorrelationsChartCreator(
             DayConcentrationCorrelationsBySubstanceSection section,
             string codeSubstance,
-            string modelledExposureUnit,
+            TargetUnit targetUnit,
             string monitoringExposureUnit,
             double lowerPercentage,
             double upperPercentage,
@@ -26,7 +27,7 @@ namespace MCRA.Simulation.OutputGeneration {
         ) : base(width, height) {
             _section = section;
             _codeSubstance = codeSubstance;
-            _modelledExposureUnit = modelledExposureUnit;
+            _targetUnit = targetUnit;
             _monitoringConcentrationUnit = monitoringExposureUnit;
             _lowerPercentage = lowerPercentage;
             _upperPercentage = upperPercentage;
@@ -41,10 +42,10 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         public override PlotModel Create() {
-            return createPlotModel(_section, _codeSubstance, _modelledExposureUnit, _monitoringConcentrationUnit);
+            return createPlotModel(_section, _codeSubstance, _targetUnit, _monitoringConcentrationUnit);
         }
 
-        protected virtual PlotModel createPlotModel(DayConcentrationCorrelationsBySubstanceSection section, string codeSubstance, string modelledExposureUnit, string monitoringConcentrationUnit) {
+        protected virtual PlotModel createPlotModel(DayConcentrationCorrelationsBySubstanceSection section, string codeSubstance, TargetUnit targetUnit, string monitoringConcentrationUnit) {
             var record = section.Records.First(r => r.SubstanceCode == codeSubstance);
 
             var percentages = new double[] { _lowerPercentage, 50, _upperPercentage };
@@ -68,7 +69,7 @@ namespace MCRA.Simulation.OutputGeneration {
                             : [double.NaN, modelled.First(), double.NaN]
                     );
                 });
-            var plotModel = CreateChart(modelledExposureUnit, monitoringConcentrationUnit, groupedExposures);
+            var plotModel = CreateChart(targetUnit, monitoringConcentrationUnit, groupedExposures);
             return plotModel;
         }
     }

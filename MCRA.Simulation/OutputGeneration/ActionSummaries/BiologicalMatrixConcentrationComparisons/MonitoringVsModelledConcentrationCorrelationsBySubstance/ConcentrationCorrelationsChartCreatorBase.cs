@@ -1,4 +1,5 @@
-﻿using MCRA.Utils.Charting.OxyPlot;
+﻿using MCRA.General;
+using MCRA.Utils.Charting.OxyPlot;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
@@ -38,7 +39,7 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         protected PlotModel CreateChart(
-            string modelledExposureUnit,
+            TargetUnit targetUnit,
             string monitoringConcentrationUnit,
             IEnumerable<(int NumRecords, bool BothPositive, bool BothZero, bool ZeroMonitoring, bool ZeroModelled,
                 double Monitoring, double ModelledMedian, double[] ModelledPercentiles)> groupedExposures
@@ -70,7 +71,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var plotModel = createDefaultPlotModel();
 
             var horizontalAxis = new LogarithmicAxis() {
-                Title = $"Modelled ({modelledExposureUnit})",
+                Title = $"Modelled ({targetUnit.ExposureUnit.GetShortDisplayName()})",
                 MajorGridlineStyle = LineStyle.Dash,
                 MinorGridlineStyle = LineStyle.None,
                 Position = AxisPosition.Bottom,

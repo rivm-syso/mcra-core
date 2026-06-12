@@ -5,20 +5,20 @@ namespace MCRA.Simulation.OutputGeneration.Views {
     public class HbmVsModelledIndividualDayConcentrationsBySubstanceSectionView : SectionView<HbmVsModelledIndividualDayConcentrationsBySubstanceSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>();
-            if (Model.HbmBoxPlotRecords.All(r => string.IsNullOrEmpty(r.BiologicalMatrix))) {
+            if (Model.Records.All(r => string.IsNullOrEmpty(r.BiologicalMatrix))) {
                 hiddenProperties.Add("BiologicalMatrix");
             }
-            if (Model.HbmBoxPlotRecords.All(r => string.IsNullOrEmpty(r.ExposureRoute))) {
+            if (Model.Records.All(r => string.IsNullOrEmpty(r.ExposureRoute))) {
                 hiddenProperties.Add("ExposureRoute");
             }
 
             var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
                 "HbmVsModelledConcentrationsBySubstancePercentiles",
                 Model,
-                Model.HbmBoxPlotRecords,
+                Model.Records,
                 ViewBag
             );
-            var unitString = $"Monitoring concentration ({Model.ExposureTarget}) vs modelled concentration ({ViewBag.GetUnit("ModelledExposureUnit")})";
+            var unitString = $"Monitoring concentration ({Model.TargetUnit.GetShortDisplayName()}) vs modelled concentration ({ViewBag.GetUnit("ModelledExposureUnit")})";
             var boxPlotChartCreator = new HbmVsModelledIndividualDayConcentrationBySubstanceBoxPlotChartCreator(Model, unitString);
             sb.AppendChart(
                 "HbmVsModelledConcentrationsBySubstanceBoxPlot",
@@ -33,7 +33,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             sb.AppendTable(
                 Model,
-                Model.HbmBoxPlotRecords,
+                Model.Records,
                 "HbmVsModelledConcentrationsBySubstance",
                 ViewBag,
                 caption: "Cumulative monitoring and modelled day concentrations.",

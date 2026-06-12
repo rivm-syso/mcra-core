@@ -34,7 +34,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                         new ExposureTarget(BiologicalMatrix.Blood),
                         new ExposureUnitTriple(SubstanceAmountUnit.Micrograms, ConcentrationMassUnit.Liter, TimeScaleUnit.Peak)
                     ),
-                HbmCumulativeIndividualDayConcentrations = hbmCumulativeIndividualDayConcentrations
+                IndividualDayConcentrations = hbmCumulativeIndividualDayConcentrations
             };
         }
     }

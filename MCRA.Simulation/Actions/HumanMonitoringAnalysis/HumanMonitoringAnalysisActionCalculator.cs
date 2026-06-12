@@ -368,7 +368,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                                 data.ActiveSubstances,
                                 data.CorrectedRelativePotencyFactors
                             );
-                        cumulativeIndividualCollection.TimePointIndividualDayConcentrations = cumulativeIndividualDayCollection.HbmCumulativeIndividualDayConcentrations;
+                        cumulativeIndividualCollection.IndividualDayConcentrations = cumulativeIndividualDayCollection.IndividualDayConcentrations;
                         result.HbmCumulativeIndividualCollection = cumulativeIndividualCollection;
                     }
                 }

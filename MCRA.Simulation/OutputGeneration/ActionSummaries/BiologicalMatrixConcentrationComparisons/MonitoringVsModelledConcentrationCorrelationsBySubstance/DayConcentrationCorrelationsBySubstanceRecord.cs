@@ -57,6 +57,5 @@ namespace MCRA.Simulation.OutputGeneration {
         [Description("Spearman rank correlation modelled versus monitoring of modelled and observed exposures.")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double Spearman { get; set; }
-
     }
 }

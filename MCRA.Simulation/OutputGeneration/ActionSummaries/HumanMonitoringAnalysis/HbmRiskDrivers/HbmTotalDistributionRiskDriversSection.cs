@@ -148,7 +148,7 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             var collection = hbmIndividualDayCollections.FirstOrDefault();
             var totalConcentration = hbmCumulativeIndividualDayCollection
-                .HbmCumulativeIndividualDayConcentrations
+                .IndividualDayConcentrations
                 .Sum(c => c.CumulativeConcentration);
 
             Records = activeSubstances.Select(substance => {

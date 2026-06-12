@@ -736,7 +736,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             double upperBound,
             SectionHeader header
         ) {
-            if (exposureType == ExposureType.Acute && hbmCumulativeIndividualDayCollection.HbmCumulativeIndividualDayConcentrations.Any()) {
+            if (exposureType == ExposureType.Acute && hbmCumulativeIndividualDayCollection.IndividualDayConcentrations.Any()) {
                 var subHeader = header.GetSubSectionHeader<HbmCumulativeIndividualDayDistributionsSection>();
                 if (subHeader != null) {
                     var section = subHeader.GetSummarySection() as HbmCumulativeIndividualDayDistributionsSection;
