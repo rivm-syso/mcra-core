@@ -24,6 +24,7 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         public override string Title => "Uncertainty of limits (percentages)";
+
         public override PlotModel Create() {
             return create(_section, _intakeUnit);
         }
@@ -71,5 +72,3 @@ namespace MCRA.Simulation.OutputGeneration {
         }
     }
 }
-
-

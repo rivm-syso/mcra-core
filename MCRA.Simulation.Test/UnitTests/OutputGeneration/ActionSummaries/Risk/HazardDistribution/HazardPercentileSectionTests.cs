@@ -1,15 +1,12 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.RiskCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
-    /// <summary>
-    /// OutputGeneration, ActionSummaries, Risk, HazardDistribution
-    /// </summary>
+
     [TestClass]
     public class HazardPercentileSectionTests : SectionTestBase {
 

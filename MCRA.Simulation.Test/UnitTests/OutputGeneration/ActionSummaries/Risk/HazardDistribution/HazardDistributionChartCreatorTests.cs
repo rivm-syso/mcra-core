@@ -1,15 +1,14 @@
-﻿using MCRA.Utils;
-using MCRA.Utils.Statistics;
-using MCRA.Utils.Statistics.Histograms;
+﻿using MCRA.General;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Mock;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MCRA.General;
+using MCRA.Utils;
+using MCRA.Utils.Statistics;
+using MCRA.Utils.Statistics.Histograms;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
 
     [TestClass]
-    public class HazardDistributionChartTests : ChartCreatorTestBase {
+    public class HazardDistributionChartCreatorTests : ChartCreatorTestBase {
         private static int _numberOfSamples = 5000;
 
         private List<HistogramBin> simulateBins() {
@@ -23,7 +22,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
         /// Create charts and test HazardDistributionSection view without uncertainty
         /// </summary>
         [TestMethod]
-        public void HazardDistributionChart_TestWithoutUncertainty() {
+        public void HazardDistributionChartCreator_TestCreateNominal() {
             var section = new HazardDistributionSection() {
                 TargetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
                 CEDDistributionBins = simulateBins(),
@@ -38,7 +37,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
         ///  Creates charts and test HazardDistributionSection view with uncertainty
         /// </summary>
         [TestMethod]
-        public void HazardDistributionChart_TestWithUncertainty() {
+        public void HazardDistributionChartCreator_TestCreateUncertainty() {
             var section = new HazardDistributionSection() {
                 TargetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
                 CEDDistributionBins = simulateBins(),

@@ -93,5 +93,3 @@ namespace MCRA.Simulation.OutputGeneration {
         }
     }
 }
-
-

@@ -1,10 +1,9 @@
-﻿using MCRA.Utils;
-using MCRA.Utils.Statistics;
-using MCRA.Utils.Statistics.Histograms;
+﻿using MCRA.General;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Mock;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MCRA.General;
+using MCRA.Utils;
+using MCRA.Utils.Statistics;
+using MCRA.Utils.Statistics.Histograms;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
 
@@ -12,7 +11,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
     /// OutputGeneration, ActionSummaries, Risk, HazardDistribution
     /// </summary>
     [TestClass]
-    public class HazardDistributionCumulativeChartTest : ChartCreatorTestBase {
+    public class HazardDistributionCumulativeChartCreatorTest : ChartCreatorTestBase {
 
         private readonly int _numberOfSamples = 5000;
 
@@ -27,7 +26,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
         /// Create chart and test view for nominal run.
         /// </summary>
         [TestMethod]
-        public void HazardDistributionCumulativeChart_TestNominal() {
+        public void HazardDistributionCumulativeChartCreator_TestCreateNominal() {
             var section = new HazardDistributionSection() {
                 CEDDistributionBins = simulateBins(),
                 PercentageZeroIntake = 0,
@@ -43,7 +42,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
         /// Create chart and test view for uncertainty results.
         /// </summary>
         [TestMethod]
-        public void HazardDistributionCumulativeChart_TestUncertainty() {
+        public void HazardDistributionCumulativeChartCreator_TestCreateUncertainty() {
             var section = new HazardDistributionSection() {
                 CEDDistributionBins = simulateBins(),
                 PercentageZeroIntake = 0,
