@@ -43,7 +43,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 if (Model.UpperPercentage.HasValue) {
                     sb.AppendNotification("No positive exposures.");
                 } else {
-                    sb.AppendParagraph("Upper distribution can not be determined because no relative potency factors are available.");
+                    sb.AppendParagraph("Upper distribution can not be determined.");
                 }
             }
         }

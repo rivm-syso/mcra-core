@@ -2240,22 +2240,24 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 );
                 subSubHeader.SaveSummarySection(totalSection);
 
-                var upperSection = new ExternalExposureUpperDistributionRouteSubstanceSection();
-                subSubHeader = subHeader.AddSubSectionHeaderFor(upperSection, "Contributions to upper distribution", 2);
-                upperSection.Summarize(
-                    data.ActiveSubstances,
-                    externalExposureCollection,
-                    data.CorrectedRelativePotencyFactors,
-                    data.MembershipProbabilities,
-                    _configuration.ExposureType,
-                    _configuration.VariabilityLowerPercentage,
-                    _configuration.VariabilityUpperPercentage,
-                    _configuration.VariabilityUpperTailPercentage,
-                    _configuration.UncertaintyLowerBound,
-                    _configuration.UncertaintyUpperBound,
-                    _configuration.IsPerPerson
-                );
-                subSubHeader.SaveSummarySection(upperSection);
+                if (data.CorrectedRelativePotencyFactors != null) {
+                    var upperSection = new ExternalExposureUpperDistributionRouteSubstanceSection();
+                    subSubHeader = subHeader.AddSubSectionHeaderFor(upperSection, "Contributions to upper distribution", 2);
+                    upperSection.Summarize(
+                        data.ActiveSubstances,
+                        externalExposureCollection,
+                        data.CorrectedRelativePotencyFactors,
+                        data.MembershipProbabilities,
+                        _configuration.ExposureType,
+                        _configuration.VariabilityLowerPercentage,
+                        _configuration.VariabilityUpperPercentage,
+                        _configuration.VariabilityUpperTailPercentage,
+                        _configuration.UncertaintyLowerBound,
+                        _configuration.UncertaintyUpperBound,
+                        _configuration.IsPerPerson
+                    );
+                    subSubHeader.SaveSummarySection(upperSection);
+                }
             }
         }
 
