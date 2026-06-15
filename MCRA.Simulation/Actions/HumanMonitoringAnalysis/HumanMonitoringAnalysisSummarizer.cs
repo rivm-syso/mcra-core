@@ -316,6 +316,12 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     var scenarioStratifier = new OccupationalScenarioStratifier(data.OccupationalScenarios?.Values);
                     outputStratifiers.Add(scenarioStratifier);
                 }
+                if (_configuration.StratifyOutputs) {
+                    if (_configuration.OutputStratificationVariable == OutputStratificationVariable.Sex) {
+                        var genderStratifier = new GenderStratifier();
+                        outputStratifiers.Add(genderStratifier);
+                    }
+                }
                 return new PopulationStratifier(outputStratifiers);
             }
             return null;

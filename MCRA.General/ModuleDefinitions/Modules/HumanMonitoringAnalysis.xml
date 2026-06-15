@@ -104,6 +104,8 @@
     <OutputSetting source="Action">VariabilityLowerPercentage</OutputSetting>
     <OutputSetting source="Action">VariabilityUpperPercentage</OutputSetting>
     <OutputSetting source="Action">VariabilityUpperTailPercentage</OutputSetting>
+    <OutputSetting source="Action">StratifyOutputs</OutputSetting>
+    <OutputSetting source="Action">OutputStratificationVariable</OutputSetting>
     <OutputSetting>StoreIndividualDayIntakes</OutputSetting>
   </OutputSettings>
 </Module>

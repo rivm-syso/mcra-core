@@ -1296,16 +1296,18 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         /// Creates a population stratifier if output stratification is enabled.
         /// </summary>
         private PopulationStratifier getOutputStratifier(TargetExposuresActionResult result, ActionData data) {
-            if (_configuration.StratifyOutputs) {
-                var stratifiers = new List<ISimplePopulationStratifier> {
-                    PopulationStratifierFactory.Create(
-                        _configuration.OutputStratificationVariable,
-                        data.OccupationalScenarios?.Values
-                    )
-                };
-                return new PopulationStratifier(stratifiers);
+            var outputStratifiers = new List<ISimplePopulationStratifier>();
+            if (_configuration.ExposureSources.Contains(ExposureSource.Occupational)) {
+                var scenarioStratifier = new OccupationalScenarioStratifier(data.OccupationalScenarios?.Values);
+                outputStratifiers.Add(scenarioStratifier);
             }
-            return null;
+            if (_configuration.StratifyOutputs) {
+                if (_configuration.OutputStratificationVariable == OutputStratificationVariable.Sex) {
+                    var genderStratifier = new GenderStratifier();
+                    outputStratifiers.Add(genderStratifier);
+                }
+            }
+            return new PopulationStratifier(outputStratifiers);
         }
 
         /// <summary>
@@ -1441,7 +1443,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     data.MembershipProbabilities,
                     result.KineticConversionFactorsByRouteSubstance,
                     outputStratifier
-,
+        ,
                     _configuration.UncertaintyLowerBound,
                     _configuration.UncertaintyUpperBound,
                     _configuration.SelectedPercentiles,
@@ -1750,7 +1752,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
            ActionData data,
            SectionHeader header,
            int order
-       ) {
+        ) {
             var outputStratifier = getOutputStratifier(result, data);
             var subHeader = header.AddEmptySubSectionHeader(
                 "Exposures by source, route and substance",
@@ -1781,7 +1783,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     data.ActiveSubstances,
                     result.KineticConversionFactorsByRouteSubstance,
                     outputStratifier
-,
+        ,
                     _configuration.UncertaintyLowerBound,
                     _configuration.UncertaintyUpperBound,
                     _configuration.SelectedPercentiles,

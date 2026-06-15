@@ -52,9 +52,11 @@ namespace MCRA.Utils.ExtensionMethods {
         /// <param name="length"></param>
         /// <returns></returns>
         public static string LimitTo(this string str, int length) {
-            return (str == null || str.Length < length)
-              ? str
-              : $"{str[..Math.Min(str.Length - 3, length)]}...";
+            if (str == null || str.Length <= length) {
+                return str;
+            }
+            int cutoff = Math.Max(0, length - 3);
+            return $"{str[..cutoff]}...";
         }
 
         public static string ReplaceCaseInsensitive(this string str, string old, string @new, StringComparison comparison) {

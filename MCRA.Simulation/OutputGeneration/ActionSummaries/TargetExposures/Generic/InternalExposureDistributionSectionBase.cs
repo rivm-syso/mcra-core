@@ -147,7 +147,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Gener
 
             BoxPlotRecords = summarizeBoxPlotsRecords(exposureCollection, targetUnit);
 
-            if (outputStratifier != null) {
+            if (outputStratifier != null && outputStratifier.GetStratificationVariables().Count > 0) {
                 StratifiedBoxPlotRecords = summarizeStratifiedBoxPlots(exposureCollection, targetUnit, outputStratifier);
                 StratificationVariables = outputStratifier.GetStratificationVariables();
             }
