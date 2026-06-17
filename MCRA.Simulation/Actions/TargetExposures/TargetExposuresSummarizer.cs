@@ -1306,6 +1306,10 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     var genderStratifier = new GenderStratifier();
                     outputStratifiers.Add(genderStratifier);
                 }
+                if (_configuration.OutputStratificationVariable == OutputStratificationVariable.Age) {
+                    var ageStratifier = new AgeStratifier([.. _configuration.AgeStratificationBoundaries]);
+                    outputStratifiers.Add(ageStratifier);
+                }
             }
             return new PopulationStratifier(outputStratifiers);
         }

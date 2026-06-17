@@ -301,30 +301,27 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
         private PopulationStratifier getPopulationStratifier(ActionData data) {
             var outputStratifiers = new List<ISimplePopulationStratifier>();
             if (_configuration.OccupationalExposureAssessment) {
-                var outputStratifier = PopulationStratifierFactory
-                    .Create(
-                        _configuration.CaseControlAnalysis
-                            ? OutputStratificationVariable.CaseControl
-                            : OutputStratificationVariable.OccupationalScenario,
-                        scenarios: data.OccupationalScenarios?.Values,
-                        controlScenarioCodes: _configuration.CaseControlSelection
-                    );
+                var outputStratifier = new OccupationalScenarioStratifier(data.OccupationalScenarios?.Values);
                 outputStratifiers.Add(outputStratifier);
+
                 // The CaseControl stratifier returns only 'Case' or 'Control',
                 // therefore also add a second stratifier with scenarios
                 if (_configuration.CaseControlAnalysis) {
                     var scenarioStratifier = new OccupationalScenarioStratifier(data.OccupationalScenarios?.Values);
                     outputStratifiers.Add(scenarioStratifier);
                 }
-                if (_configuration.StratifyOutputs) {
-                    if (_configuration.OutputStratificationVariable == OutputStratificationVariable.Sex) {
-                        var genderStratifier = new GenderStratifier();
-                        outputStratifiers.Add(genderStratifier);
-                    }
-                }
-                return new PopulationStratifier(outputStratifiers);
             }
-            return null;
+            if (_configuration.StratifyOutputs) {
+                if (_configuration.OutputStratificationVariable == OutputStratificationVariable.Sex) {
+                    var genderStratifier = new GenderStratifier();
+                    outputStratifiers.Add(genderStratifier);
+                }
+                if (_configuration.OutputStratificationVariable == OutputStratificationVariable.Age) {
+                    var ageStratifier = new AgeStratifier([.. _configuration.AgeStratificationBoundaries]);
+                    outputStratifiers.Add(ageStratifier);
+                }
+            }
+            return new PopulationStratifier(outputStratifiers);
         }
 
         private void summarizeHbmConcentrationsByTargetSubstance(

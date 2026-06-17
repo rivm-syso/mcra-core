@@ -39,5 +39,6 @@
     <SelectionSetting>VariabilityLowerPercentage</SelectionSetting>
     <SelectionSetting>VariabilityUpperPercentage</SelectionSetting>
     <SelectionSetting>VariabilityUpperTailPercentage</SelectionSetting>
+    <SelectionSetting>AgeStratificationBoundaries</SelectionSetting>
   </SelectionSettings>
 </Module>

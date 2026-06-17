@@ -129,6 +129,7 @@
     <OutputSetting source="Action">StratifyOutputs</OutputSetting>
     <OutputSetting source="Action">CoExposure</OutputSetting>
     <OutputSetting source="Action">OutputStratificationVariable</OutputSetting>
+    <OutputSetting source="Action">AgeStratificationBoundaries</OutputSetting>
     <OutputSetting source="Action">SkipPrivacySensitiveOutputs</OutputSetting>
     <OutputSetting source="DietaryExposures">IsDetailedOutput</OutputSetting>
     <OutputSetting>StoreIndividualDayIntakes</OutputSetting>

@@ -106,6 +106,7 @@
     <OutputSetting source="Action">VariabilityUpperTailPercentage</OutputSetting>
     <OutputSetting source="Action">StratifyOutputs</OutputSetting>
     <OutputSetting source="Action">OutputStratificationVariable</OutputSetting>
+    <OutputSetting source="Action">AgeStratificationBoundaries</OutputSetting>
     <OutputSetting>StoreIndividualDayIntakes</OutputSetting>
   </OutputSettings>
 </Module>

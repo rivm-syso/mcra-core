@@ -33,5 +33,11 @@
         <Alias>CaseControl</Alias>
       </Aliases>
     </Unit>
+    <Unit>
+      <Id>Age</Id>
+      <Name>Age</Name>
+      <ShortName>Age</ShortName>
+      <Description>Stratify individuals by age group.</Description>
+    </Unit>
   </Units>
 </UnitDefinition>

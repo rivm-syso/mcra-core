@@ -63,6 +63,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     section.SummarizeSetting(SettingsItemType.CaseControlSelection, string.Join(", ", _configuration.CaseControlSelection));
                 }
             }
+
             return section;
         }
     }

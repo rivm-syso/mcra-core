@@ -182,4 +182,12 @@
     <Description>Show co-exposure in output.</Description>
     <ValueType>Boolean</ValueType>
   </SettingsItem>
+  <SettingsItem>
+    <Id>AgeStratificationBoundaries</Id>
+    <Name>Age stratification boundaries</Name>
+    <Description>Give specific age boundaries (years), e.g. 18 40 65 (space separated).</Description>
+    <ValueType>Numeric</ValueType>
+    <IsList>true</IsList>
+    <DefaultValue>18, 40, 65</DefaultValue>
+  </SettingsItem>
 </SettingsItems>

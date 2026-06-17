@@ -1,4 +1,5 @@
-﻿using MCRA.General;
+﻿using System.Text.RegularExpressions;
+using MCRA.General;
 using MCRA.Utils.Charting.OxyPlot;
 using OxyPlot;
 using OxyPlot.Axes;
@@ -50,6 +51,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     );
                 })
                 .ToHashSet();
+            descriptorValues = [.. descriptorValues.OrderByDescending(r => getSortKey(r.name))];
 
             var descriptorIndexes = descriptorValues
                 .Select((r, ix) => (r, ix))
@@ -170,6 +172,36 @@ namespace MCRA.Simulation.OutputGeneration {
             } else {
                 return [];
             }
+        }
+
+        /// <summary>
+        /// Get a sort key for a label based on the first number found or character in the string.
+        /// </summary>
+        /// <param name="label"></param>
+        /// <returns></returns>
+        private static (double sortKey, string originalLabel) getSortKey(string label) {
+            // Zoek naar het allereerste getal in de string
+            //Match match = Regex.Match(label, @"\d+");
+            Match match = Regex.Match(label, @"([<>=-]*\s*\d+)");
+
+            if (!match.Success) {
+                return (0d, label);
+            }
+
+            var regexKey = Regex.Match(match.Value, @"\d+").Value;
+            var key = double.Parse(regexKey);
+
+            var score = key;
+            // if the label contains '<', it should fall just below that number (e.g., 69.9 for <70)
+            if (label.Contains('<')) {
+                score = key - 0.1;
+            }
+            // if the label contains '>', it should fall just above that number (e.g., 70.1 for >70)
+            if (label.Contains('>')) {
+                score = key + 0.1;
+            }
+            // otherwise, return the number as is
+            return (score, string.Empty);
         }
 
         internal class PositionLegend : Legend {

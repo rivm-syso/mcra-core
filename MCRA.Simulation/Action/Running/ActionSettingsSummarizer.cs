@@ -113,6 +113,13 @@ namespace MCRA.Simulation.Action {
             section.SummarizeSetting(SettingsItemType.VariabilityLowerPercentage, actionConfig.VariabilityLowerPercentage);
             section.SummarizeSetting(SettingsItemType.VariabilityUpperPercentage, actionConfig.VariabilityUpperPercentage);
             section.SummarizeSetting(SettingsItemType.IsPerPerson, dietaryConfig.IsPerPerson);
+            if (actionConfig.StratifyOutputs) {
+                section.SummarizeSetting(SettingsItemType.StratifyOutputs, actionConfig.StratifyOutputs);
+                section.SummarizeSetting(SettingsItemType.OutputStratificationVariable, actionConfig.OutputStratificationVariable);
+                if (actionConfig.OutputStratificationVariable == OutputStratificationVariable.Age) {
+                    section.SummarizeSetting(SettingsItemType.AgeStratificationBoundaries, actionConfig.AgeStratificationBoundaries);
+                }
+            }
             return section;
         }
 

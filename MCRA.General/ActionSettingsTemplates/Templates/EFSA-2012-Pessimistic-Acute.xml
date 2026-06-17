@@ -16,6 +16,7 @@
         <Setting id="ExposureType">Acute</Setting>
       </Settings>
       <ExcludedSettings>
+        <Setting id="AgeStratificationBoundaries" />
         <Setting id="CoExposure" />
         <Setting id="DoUncertaintyAnalysis" />
         <Setting id="DoUncertaintyFactorial" />
