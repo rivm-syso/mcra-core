@@ -5,6 +5,7 @@
   <Description>
     Accepted Mean value correction types.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Id>Unbiased</Id>

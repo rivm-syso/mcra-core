@@ -14,8 +14,8 @@
       <ShortName>BP</ShortName>
       <Description>Bath plating</Description>
       <Aliases>
-        <Alias>BathPlating</Alias>
         <Alias>BP</Alias>
+        <Alias>BathPlating</Alias>
       </Aliases>
     </Unit>
     <Unit>
@@ -25,8 +25,8 @@
       <ShortName>CPA</ShortName>
       <Description>Chrome paint applications</Description>
       <Aliases>
-        <Alias>ChromePaintApplications</Alias>
         <Alias>CPA</Alias>
+        <Alias>ChromePaintApplications</Alias>
       </Aliases>
     </Unit>
     <Unit>
@@ -36,8 +36,8 @@
       <ShortName>MA</ShortName>
       <Description>Machining</Description>
       <Aliases>
-        <Alias>Machining</Alias>
         <Alias>MA</Alias>
+        <Alias>Machining</Alias>
       </Aliases>
     </Unit>
     <Unit>
@@ -47,8 +47,8 @@
       <ShortName>WE</ShortName>
       <Description>Welding</Description>
       <Aliases>
-        <Alias>Welding</Alias>
         <Alias>WE</Alias>
+        <Alias>Welding</Alias>
       </Aliases>
     </Unit>
     <Unit>
@@ -58,8 +58,8 @@
       <ShortName>TS</ShortName>
       <Description>Thermal spraying</Description>
       <Aliases>
-        <Alias>ThermalSpraying</Alias>
         <Alias>TS</Alias>
+        <Alias>ThermalSpraying</Alias>
       </Aliases>
     </Unit>
     <Unit>
@@ -69,8 +69,8 @@
       <ShortName>SP</ShortName>
       <Description>Steel production</Description>
       <Aliases>
-        <Alias>SteelProduction</Alias>
         <Alias>SP</Alias>
+        <Alias>SteelProduction</Alias>
       </Aliases>
     </Unit>
     <Unit>
@@ -80,8 +80,8 @@
       <ShortName>MALW</ShortName>
       <Description>Maintenance and laboratory workers</Description>
       <Aliases>
-        <Alias>MaintenanceAndLaboratoryWorkers</Alias>
         <Alias>MALW</Alias>
+        <Alias>MaintenanceAndLaboratoryWorkers</Alias>
       </Aliases>
     </Unit>
   </Units>

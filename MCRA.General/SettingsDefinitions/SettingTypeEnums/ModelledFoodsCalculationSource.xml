@@ -5,6 +5,7 @@
   <Description>
     Accepted Modelled foods calculation source types.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Order>1</Order>

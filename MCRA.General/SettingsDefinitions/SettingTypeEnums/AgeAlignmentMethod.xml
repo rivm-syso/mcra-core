@@ -5,6 +5,7 @@
   <Description>
     Age alignment method used for the selected exposure source.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Id>FitClosest</Id>

@@ -5,6 +5,7 @@
   <Description>
     Accepted Single value dietary exposures calculation method types.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Order>1</Order>

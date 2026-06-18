@@ -5,6 +5,7 @@
   <Description>
     Accepted cluster method types.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Id>NoClustering</Id>

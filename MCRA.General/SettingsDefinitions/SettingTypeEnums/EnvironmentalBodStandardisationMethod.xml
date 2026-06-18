@@ -5,6 +5,7 @@
   <Description>
     Accepted environmental burden of disease standardisation types.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Id>PER10K</Id>

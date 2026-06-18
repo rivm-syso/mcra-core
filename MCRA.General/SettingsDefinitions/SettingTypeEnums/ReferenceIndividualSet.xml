@@ -6,6 +6,7 @@
   <Description>
     Reference individual set.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Id>Diet</Id>

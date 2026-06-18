@@ -5,6 +5,7 @@
   <Description>
     Methods for obtaining individuals for calculating soil exposures.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Id>Simulate</Id>

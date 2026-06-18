@@ -5,6 +5,7 @@
   <Description>
     Accepted Transform types.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Id>Logarithmic</Id>

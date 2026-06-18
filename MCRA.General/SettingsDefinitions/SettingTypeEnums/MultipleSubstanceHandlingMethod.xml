@@ -5,6 +5,7 @@
   <Description>
     Accepted Multiple substance handling method types.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Id>Cumulate</Id>

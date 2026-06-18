@@ -5,6 +5,7 @@
   <Description>
     Calculation method types for computing hazard characterisations.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Id>InVivoPods</Id>

@@ -5,6 +5,7 @@
   <Description>
     PBK simulation methods.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Id>Standard</Id>

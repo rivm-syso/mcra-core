@@ -5,6 +5,7 @@
   <Description>
     Accepted Health effect types.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Id>Risk</Id>

@@ -5,6 +5,7 @@
   <Description>
     Accepted Point of departure types.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Id>FromReference</Id>

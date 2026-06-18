@@ -8,6 +8,7 @@
   <Description>
     Accepted justment factor distribution method types.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Id>None</Id>

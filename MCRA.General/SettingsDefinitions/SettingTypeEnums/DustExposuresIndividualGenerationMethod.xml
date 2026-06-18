@@ -5,6 +5,7 @@
   <Description>
     Methods for obtaining individuals for calculating dust exposures.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Id>Simulate</Id>

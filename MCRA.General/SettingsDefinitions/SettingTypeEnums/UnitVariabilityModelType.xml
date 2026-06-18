@@ -5,6 +5,7 @@
   <Description>
     Accepted Unit variability model types.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Id>BetaDistribution</Id>

@@ -11,6 +11,9 @@
       <Id>Other</Id>
       <EnumValue>999</EnumValue>
       <Name>Other</Name>
+      <Aliases>
+        <Alias>Other</Alias>
+      </Aliases>
     </Unit>
     <Unit>
       <Id>Physiological</Id>
@@ -18,6 +21,9 @@
       <URIs>
         <URI>http://purl.obolibrary.org/obo/PBPKO_00007</URI>
       </URIs>
+      <Aliases>
+        <Alias>Physiological</Alias>
+      </Aliases>
     </Unit>
     <Unit>
       <Id>Sex</Id>
@@ -26,6 +32,10 @@
       <URIs>
         <URI>http://purl.obolibrary.org/obo/PBPKO_00125</URI>
       </URIs>
+      <Aliases>
+        <Alias>Sex</Alias>
+        <Alias>Gender</Alias>
+      </Aliases>
     </Unit>
     <Unit>
       <Id>Age</Id>
@@ -35,12 +45,18 @@
       <URIs>
         <URI>http://purl.obolibrary.org/obo/PBPKO_00521</URI>
       </URIs>
+      <Aliases>
+        <Alias>Age</Alias>
+      </Aliases>
     </Unit>
     <Unit>
       <Id>AgeInit</Id>
       <Name>age</Name>
       <Description>(Initial) age of individual (i.e. at start of simulation).</Description>
       <ParentId>Physiological</ParentId>
+      <Aliases>
+        <Alias>AgeInit</Alias>
+      </Aliases>
     </Unit>
     <Unit>
       <Id>AgeRef</Id>
@@ -58,6 +74,10 @@
       <URIs>
         <URI>http://purl.obolibrary.org/obo/PBPKO_00008</URI>
       </URIs>
+      <Aliases>
+        <Alias>BodyWeight</Alias>
+        <Alias>BW</Alias>
+      </Aliases>
     </Unit>
     <Unit>
       <Id>BodyWeightRef</Id>
@@ -65,6 +85,7 @@
       <Description>Reference body weight of individual measured at a certain age.</Description>
       <ParentId>Physiological</ParentId>
       <Aliases>
+        <Alias>BodyWeightRef</Alias>
         <Alias>BWRef</Alias>
       </Aliases>
     </Unit>
@@ -75,6 +96,10 @@
       <URIs>
         <URI>http://purl.obolibrary.org/obo/PBPKO_00010</URI>
       </URIs>
+      <Aliases>
+        <Alias>BodySurfaceArea</Alias>
+        <Alias>BSA</Alias>
+      </Aliases>
     </Unit>
     <Unit>
       <Id>BodyMassIndex</Id>
@@ -83,6 +108,10 @@
       <URIs>
         <URI>http://purl.obolibrary.org/obo/PBPKO_00007</URI>
       </URIs>
+      <Aliases>
+        <Alias>BodyMassIndex</Alias>
+        <Alias>BMI</Alias>
+      </Aliases>
     </Unit>
     <Unit>
       <Id>Height</Id>
@@ -91,10 +120,16 @@
       <URIs>
         <URI>http://purl.obolibrary.org/obo/PBPKO_00009</URI>
       </URIs>
+      <Aliases>
+        <Alias>Height</Alias>
+      </Aliases>
     </Unit>
     <Unit>
       <Id>Physicochemical</Id>
       <Name>physicochemical parameter</Name>
+      <Aliases>
+        <Alias>Physicochemical</Alias>
+      </Aliases>
     </Unit>
     <Unit>
       <Id>MolecularWeight</Id>
@@ -103,16 +138,27 @@
       <URIs>
         <URI>http://purl.obolibrary.org/obo/PBPKO_00127</URI>
       </URIs>
+      <Aliases>
+        <Alias>MolecularWeight</Alias>
+        <Alias>MW</Alias>
+      </Aliases>
     </Unit>
     <Unit>
       <Id>Metabolic</Id>
       <Name>metabolic parameter</Name>
       <ParentId>Physicochemical</ParentId>
+      <Aliases>
+        <Alias>Metabolic</Alias>
+      </Aliases>
     </Unit>
     <Unit>
       <Id>PartitionCoefficient</Id>
       <Name>partition coefficient</Name>
       <ParentId>Physicochemical</ParentId>
+      <Aliases>
+        <Alias>PartitionCoefficient</Alias>
+        <Alias>PC</Alias>
+      </Aliases>
     </Unit>
   </Units>
 </UnitDefinition>

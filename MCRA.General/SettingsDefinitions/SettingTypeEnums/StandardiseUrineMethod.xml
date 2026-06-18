@@ -5,6 +5,7 @@
   <Description>
     Accepted Standardise urine concentration methods based on creatinine.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Id>SpecificGravity</Id>

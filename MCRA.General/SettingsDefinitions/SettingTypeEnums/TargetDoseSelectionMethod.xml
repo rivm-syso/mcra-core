@@ -5,6 +5,7 @@
   <Description>
     Accepted Target dose selection method types.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Id>MostToxic</Id>

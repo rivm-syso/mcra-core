@@ -5,6 +5,7 @@
   <Description>
     Accepted Exposure approach types.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Id>RiskBased</Id>

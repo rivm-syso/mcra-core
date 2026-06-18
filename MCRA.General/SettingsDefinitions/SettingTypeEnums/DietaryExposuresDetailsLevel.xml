@@ -5,6 +5,7 @@
   <Description>
     Accepted ietary exposures details level types.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Id>Full</Id>

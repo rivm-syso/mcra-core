@@ -178,6 +178,7 @@
       <Name>LVM Exp m2</Name>
       <ShortName>LVM Exp m2</ShortName>
       <Aliases>
+        <Alias>LVM_Exp_M2</Alias>
         <Alias>LVM Exp m2</Alias>
       </Aliases>
     </Unit>
@@ -187,6 +188,7 @@
       <ShortName>LVM Exp m3</ShortName>
       <Aliases>
         <Alias>LVM_Exp_M3</Alias>
+        <Alias>LVM Exp M3</Alias>
       </Aliases>
     </Unit>
     <Unit>
@@ -195,6 +197,7 @@
       <ShortName>LVM Exp m4</ShortName>
       <Aliases>
         <Alias>LVM_Exp_M4</Alias>
+        <Alias>LVM Exp M4</Alias>
       </Aliases>
     </Unit>
     <Unit>
@@ -203,6 +206,7 @@
       <ShortName>LVM Exp m5</ShortName>
       <Aliases>
         <Alias>LVM_Exp_M5</Alias>
+        <Alias>LVM Exp M5</Alias>
       </Aliases>
     </Unit>
     <Unit>
@@ -210,6 +214,7 @@
       <Name>LVM Hill m2</Name>
       <ShortName>LVM Hill m2</ShortName>
       <Aliases>
+        <Alias>LVM_Hill_M2</Alias>
         <Alias>LVM Hill m2</Alias>
       </Aliases>
     </Unit>
@@ -219,6 +224,7 @@
       <ShortName>LVM Hill m3</ShortName>
       <Aliases>
         <Alias>LVM_Hill_M3</Alias>
+        <Alias>LVM Hill M3</Alias>
       </Aliases>
     </Unit>
     <Unit>
@@ -227,6 +233,7 @@
       <ShortName>LVM Hill m4</ShortName>
       <Aliases>
         <Alias>LVM_Hill_M4</Alias>
+        <Alias>LVM Hill M4</Alias>
       </Aliases>
     </Unit>
     <Unit>
@@ -234,6 +241,7 @@
       <Name>LVM Hill m5</Name>
       <ShortName>LVM Hill m5</ShortName>
       <Aliases>
+        <Alias>LVM_Hill_M5</Alias>
         <Alias>LVM Hill m5</Alias>
       </Aliases>
     </Unit>

@@ -5,6 +5,7 @@
   <Description>
     Selected exposure routes for inclusion in exposure calculations.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Id>Dermal</Id>

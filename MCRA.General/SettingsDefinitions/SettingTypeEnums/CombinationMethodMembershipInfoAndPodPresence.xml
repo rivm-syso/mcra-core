@@ -5,6 +5,7 @@
   <Description>
     Accepted Combination method membership info and PoD presence types.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Id>Intersection</Id>

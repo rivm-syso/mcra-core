@@ -5,6 +5,7 @@
   <Description>
     Methodologial approach used for estimating the burden of disease attributable to a chemical exposure.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Id>TopDown</Id>

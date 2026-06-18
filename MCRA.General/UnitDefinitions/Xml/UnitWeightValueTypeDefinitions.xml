@@ -12,8 +12,9 @@
       <ShortName>RAC</ShortName>
       <Description>Unit weight raw agricultural commodity (RAC).</Description>
       <Aliases>
-        <Alias>RAC</Alias>
+        <Alias>UnitWeightRac</Alias>
         <Alias>UnitWeightRAC</Alias>
+        <Alias>RAC</Alias>
         <Alias>UnitWeightRawAgriculturalCommodity</Alias>
       </Aliases>
     </Unit>
@@ -23,6 +24,7 @@
       <ShortName>EP</ShortName>
       <Description>Unit weight edible portion (EP).</Description>
       <Aliases>
+        <Alias>UnitWeightEp</Alias>
         <Alias>EP</Alias>
         <Alias>UnitWeightEP</Alias>
         <Alias>UnitWeightEdiblePortion</Alias>

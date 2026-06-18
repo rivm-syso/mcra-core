@@ -5,6 +5,7 @@
   <Description>
     Accepted Substance group selection method types.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Id>IncludeAll</Id>

@@ -40,8 +40,8 @@
       <ShortName>Organ</ShortName>
       <Description>Organ level</Description>
       <Aliases>
-        <Alias>Organelle</Alias>
         <Alias>Organ</Alias>
+        <Alias>Organelle</Alias>
       </Aliases>
     </Unit>
     <Unit>

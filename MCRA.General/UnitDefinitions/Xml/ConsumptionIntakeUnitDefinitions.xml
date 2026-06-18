@@ -11,6 +11,7 @@
       <Name>gram/kilogram bodyweight/day</Name>
       <ShortName>g/kg bw/day</ShortName>
       <Aliases>
+        <Alias>gPerKgBWPerDay</Alias>
         <Alias>g/kg bw</Alias>
         <Alias>gram/kg bw</Alias>
         <Alias>g/kg bw/day</Alias>
@@ -24,9 +25,9 @@
       <Name>gram/day</Name>
       <ShortName>g/day</ShortName>
       <Aliases>
+        <Alias>gPerDay</Alias>
         <Alias>gram</Alias>
         <Alias>grams</Alias>
-        <Alias>g/day</Alias>
         <Alias>g/day</Alias>
         <Alias>gram/day</Alias>
         <Alias>gr/day</Alias>

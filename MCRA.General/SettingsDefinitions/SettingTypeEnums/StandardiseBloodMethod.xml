@@ -5,6 +5,7 @@
   <Description>
     Accepted Standardise blood methods.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Id>GravimetricAnalysis</Id>

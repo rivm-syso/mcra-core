@@ -5,6 +5,7 @@
   <Description>
     Accepted Exposure approach method types.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Id>Modelled</Id>

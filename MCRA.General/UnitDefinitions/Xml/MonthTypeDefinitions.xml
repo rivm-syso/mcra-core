@@ -13,6 +13,7 @@
       <Name>January</Name>
       <ShortName>Jan</ShortName>
       <Aliases>
+        <Alias>January</Alias>
         <Alias>Jan</Alias>
         <Alias>Januari</Alias>
         <Alias>1</Alias>
@@ -23,6 +24,7 @@
       <Name>February</Name>
       <ShortName>Feb</ShortName>
       <Aliases>
+        <Alias>February</Alias>
         <Alias>Feb</Alias>
         <Alias>Februari</Alias>
         <Alias>2</Alias>
@@ -33,6 +35,7 @@
       <Name>March</Name>
       <ShortName>Mar</ShortName>
       <Aliases>
+        <Alias>March</Alias>
         <Alias>Mar</Alias>
         <Alias>3</Alias>
       </Aliases>
@@ -42,6 +45,7 @@
       <Name>April</Name>
       <ShortName>Apr</ShortName>
       <Aliases>
+        <Alias>April</Alias>
         <Alias>Apr</Alias>
         <Alias>4</Alias>
       </Aliases>
@@ -60,8 +64,8 @@
       <Name>June</Name>
       <ShortName>Jun</ShortName>
       <Aliases>
-        <Alias>Jun</Alias>
         <Alias>June</Alias>
+        <Alias>Jun</Alias>
         <Alias>6</Alias>
       </Aliases>
     </Unit>
@@ -70,8 +74,8 @@
       <Name>July</Name>
       <ShortName>Jul</ShortName>
       <Aliases>
-        <Alias>Jul</Alias>
         <Alias>July</Alias>
+        <Alias>Jul</Alias>
         <Alias>7</Alias>
       </Aliases>
     </Unit>
@@ -80,6 +84,7 @@
       <Name>August</Name>
       <ShortName>Aug</ShortName>
       <Aliases>
+        <Alias>August</Alias>
         <Alias>Aug</Alias>
         <Alias>8</Alias>
       </Aliases>
@@ -89,6 +94,7 @@
       <Name>September</Name>
       <ShortName>Sep</ShortName>
       <Aliases>
+        <Alias>September</Alias>
         <Alias>Sep</Alias>
         <Alias>Sept</Alias>
         <Alias>9</Alias>
@@ -99,6 +105,7 @@
       <Name>October</Name>
       <ShortName>Oct</ShortName>
       <Aliases>
+        <Alias>October</Alias>
         <Alias>Oct</Alias>
         <Alias>10</Alias>
       </Aliases>
@@ -108,6 +115,7 @@
       <Name>November</Name>
       <ShortName>Nov</ShortName>
       <Aliases>
+        <Alias>November</Alias>
         <Alias>Nov</Alias>
         <Alias>11</Alias>
       </Aliases>
@@ -117,6 +125,7 @@
       <Name>December</Name>
       <ShortName>Dec</ShortName>
       <Aliases>
+        <Alias>December</Alias>
         <Alias>Dec</Alias>
         <Alias>12</Alias>
       </Aliases>

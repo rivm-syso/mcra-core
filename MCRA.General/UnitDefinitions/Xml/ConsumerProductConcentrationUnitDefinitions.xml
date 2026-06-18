@@ -11,6 +11,7 @@
       <Name>microgram/gram</Name>
       <ShortName>µg/g</ShortName>
       <Aliases>
+        <Alias>ugPerg</Alias>
         <Alias>µg/g</Alias>
         <Alias>µgram/gram</Alias>
         <Alias>µg/gr</Alias>
@@ -24,6 +25,7 @@
       <Name>nanogram/gram</Name>
       <ShortName>ng/g</ShortName>
       <Aliases>
+        <Alias>ngPerg</Alias>
         <Alias>ng/g</Alias>
         <Alias>ngram/gram</Alias>
         <Alias>ngr/gr</Alias>
@@ -34,6 +36,7 @@
       <Name>gram/kilogram</Name>
       <ShortName>g/kg</ShortName>
       <Aliases>
+        <Alias>gPerKg</Alias>
         <Alias>g/kg</Alias>
         <Alias>gram/kilogram</Alias>
         <Alias>gram/kg</Alias>
@@ -49,6 +52,7 @@
       <Name>milligram/kilogram</Name>
       <ShortName>mg/kg</ShortName>
       <Aliases>
+        <Alias>mgPerKg</Alias>
         <Alias>mg/kg</Alias>
         <Alias>milligram/kilogram</Alias>
         <Alias>milligram/kg</Alias>
@@ -63,6 +67,7 @@
       <Name>microgram/kilogram</Name>
       <ShortName>µg/kg</ShortName>
       <Aliases>
+        <Alias>ugPerKg</Alias>
         <Alias>µg/kg</Alias>
         <Alias>ug/kg</Alias>
         <Alias>microgram/kilogram</Alias>
@@ -78,6 +83,7 @@
       <Name>nanogram/kilogram</Name>
       <ShortName>ng/kg</ShortName>
       <Aliases>
+        <Alias>ngPerKg</Alias>
         <Alias>ng/kg</Alias>
         <Alias>nanogram/kilogram</Alias>
         <Alias>nanogram/kg</Alias>
@@ -92,6 +98,7 @@
       <Name>picogram/kilogram</Name>
       <ShortName>pg/kg</ShortName>
       <Aliases>
+        <Alias>pgPerKg</Alias>
         <Alias>pg/kg</Alias>
         <Alias>picogram/kilogram</Alias>
         <Alias>picogram/kg</Alias>
@@ -105,6 +112,7 @@
       <Name>gram/liter</Name>
       <ShortName>g/L</ShortName>
       <Aliases>
+        <Alias>gPerL</Alias>
         <Alias>g/l</Alias>
         <Alias>g/L</Alias>
         <Alias>gram/liter</Alias>
@@ -119,6 +127,7 @@
       <Name>milligram/liter</Name>
       <ShortName>mg/L</ShortName>
       <Aliases>
+        <Alias>mgPerL</Alias>
         <Alias>mg/l</Alias>
         <Alias>mg/L</Alias>
         <Alias>milligram/liter</Alias>
@@ -134,6 +143,7 @@
       <Name>microgram/liter</Name>
       <ShortName>µg/L</ShortName>
       <Aliases>
+        <Alias>ugPerL</Alias>
         <Alias>µg/l</Alias>
         <Alias>ug/L</Alias>
         <Alias>microgram/liter</Alias>
@@ -149,6 +159,7 @@
       <Name>nanogram/liter</Name>
       <ShortName>ng/L</ShortName>
       <Aliases>
+        <Alias>ngPerL</Alias>
         <Alias>ng/l</Alias>
         <Alias>ng/L</Alias>
         <Alias>nanogram/liter</Alias>
@@ -163,6 +174,7 @@
       <Name>picogram/liter</Name>
       <ShortName>pg/L</ShortName>
       <Aliases>
+        <Alias>pgPerL</Alias>
         <Alias>pg/l</Alias>
         <Alias>pg/L</Alias>
         <Alias>picogram/liter</Alias>
@@ -176,6 +188,7 @@
       <Name>microgram/milliliter</Name>
       <ShortName>µg/mL</ShortName>
       <Aliases>
+        <Alias>ugPermL</Alias>
         <Alias>µg/ml</Alias>
         <Alias>ug/mL</Alias>
         <Alias>microgram/milliliter</Alias>
@@ -189,6 +202,7 @@
       <Name>nanogram/milliliter</Name>
       <ShortName>ng/mL</ShortName>
       <Aliases>
+        <Alias>ngPermL</Alias>
         <Alias>ng/ml</Alias>
         <Alias>ng/mL</Alias>
         <Alias>nanogram/milliliter</Alias>
@@ -202,6 +216,7 @@
       <Name>milligram/deciliter</Name>
       <ShortName>mg/dL</ShortName>
       <Aliases>
+        <Alias>mgPerdL</Alias>
         <Alias>mg/dl</Alias>
         <Alias>milligram/deciliter</Alias>
         <Alias>milligr/dL</Alias>
@@ -213,6 +228,7 @@
       <Name>gram per unit</Name>
       <ShortName>g/unit</ShortName>
       <Aliases>
+        <Alias>gPerUnit</Alias>
         <Alias>g/unit</Alias>
         <Alias>gram/unit</Alias>
         <Alias>gr/unit</Alias>
@@ -226,6 +242,7 @@
       <Name>milligram per unit</Name>
       <ShortName>mg/unit</ShortName>
       <Aliases>
+        <Alias>mgPerUnit</Alias>
         <Alias>mg/unit</Alias>
         <Alias>milligram/unit</Alias>
         <Alias>milligr/unit</Alias>
@@ -239,6 +256,7 @@
       <Name>microgram per unit</Name>
       <ShortName>µg/unit</ShortName>
       <Aliases>
+        <Alias>ugPerUnit</Alias>
         <Alias>µg/unit</Alias>
         <Alias>ug/unit</Alias>
         <Alias>microgram/unit</Alias>
@@ -254,6 +272,7 @@
       <Name>nanogram per unit</Name>
       <ShortName>ng/unit</ShortName>
       <Aliases>
+        <Alias>ngPerUnit</Alias>
         <Alias>ng/unit</Alias>
         <Alias>ngram/unit</Alias>
         <Alias>ngr/unit</Alias>

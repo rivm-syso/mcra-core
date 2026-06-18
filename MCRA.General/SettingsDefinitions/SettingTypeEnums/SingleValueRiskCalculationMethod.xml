@@ -5,6 +5,7 @@
   <Description>
     Accepted Single value risk calculation method types.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Id>FromSingleValues</Id>

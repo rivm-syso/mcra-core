@@ -5,6 +5,7 @@
   <Description>
     Methods for generating residues for shorter than lifetime exposure calculations.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Id>UseMeans</Id>

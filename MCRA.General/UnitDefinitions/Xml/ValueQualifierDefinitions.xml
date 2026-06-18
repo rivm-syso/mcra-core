@@ -11,8 +11,8 @@
       <Name>=</Name>
       <ShortName>=</ShortName>
       <Aliases>
-        <Alias>=</Alias>
         <Alias>Equals</Alias>
+        <Alias>=</Alias>
       </Aliases>
     </Unit>
     <Unit>
@@ -20,8 +20,8 @@
       <Name>&#60;</Name>
       <ShortName>&#60;</ShortName>
       <Aliases>
-        <Alias>lt</Alias>
         <Alias>LessThan</Alias>
+        <Alias>lt</Alias>
         <Alias>&#60;</Alias>
       </Aliases>
     </Unit>

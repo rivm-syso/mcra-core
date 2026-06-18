@@ -11,6 +11,9 @@
       <Id>Other</Id>
       <EnumValue>999</EnumValue>
       <Name>Other</Name>
+      <Aliases>
+        <Alias>Other</Alias>
+      </Aliases>
     </Unit>
     <Unit>
       <Id>AlveolarAir</Id>
@@ -18,6 +21,9 @@
       <URIs>
         <URI>http://purl.obolibrary.org/obo/PBPKO_00448</URI>
       </URIs>
+      <Aliases>
+        <Alias>AlveolarAir</Alias>
+      </Aliases>
     </Unit>
     <Unit>
       <Id>ArterialBlood</Id>
@@ -25,6 +31,9 @@
       <URIs>
         <URI>http://purl.obolibrary.org/obo/PBPKO_00552</URI>
       </URIs>
+      <Aliases>
+        <Alias>ArterialBlood</Alias>
+      </Aliases>
     </Unit>
     <Unit>
       <Id>ArterialPlasma</Id>
@@ -32,6 +41,9 @@
       <URIs>
         <URI>http://purl.obolibrary.org/obo/PBPKO_00451</URI>
       </URIs>
+      <Aliases>
+        <Alias>ArterialPlasma</Alias>
+      </Aliases>
     </Unit>
     <Unit>
       <Id>Blood</Id>
@@ -39,6 +51,9 @@
       <URIs>
         <URI>http://purl.obolibrary.org/obo/PBPKO_00464</URI>
       </URIs>
+      <Aliases>
+        <Alias>Blood</Alias>
+      </Aliases>
     </Unit>
     <Unit>
       <Id>BloodPlasma</Id>
@@ -46,6 +61,9 @@
       <URIs>
         <URI>http://purl.obolibrary.org/obo/PBPKO_00488</URI>
       </URIs>
+      <Aliases>
+        <Alias>BloodPlasma</Alias>
+      </Aliases>
     </Unit>
     <Unit>
       <Id>Fat</Id>
@@ -53,6 +71,9 @@
       <URIs>
         <URI>http://purl.obolibrary.org/obo/PBPKO_00460</URI>
       </URIs>
+      <Aliases>
+        <Alias>Fat</Alias>
+      </Aliases>
     </Unit>
     <Unit>
       <Id>Feces</Id>
@@ -60,6 +81,9 @@
       <URIs>
         <URI>http://purl.obolibrary.org/obo/PBPKO_00555</URI>
       </URIs>
+      <Aliases>
+        <Alias>Feces</Alias>
+      </Aliases>
     </Unit>
     <Unit>
       <Id>Gut</Id>
@@ -67,6 +91,9 @@
       <URIs>
         <URI>http://purl.obolibrary.org/obo/PBPKO_00477</URI>
       </URIs>
+      <Aliases>
+        <Alias>Gut</Alias>
+      </Aliases>
     </Unit>
     <Unit>
       <Id>Gonads</Id>
@@ -74,6 +101,9 @@
       <URIs>
         <URI>http://purl.obolibrary.org/obo/UBERON_0000991</URI>
       </URIs>
+      <Aliases>
+        <Alias>Gonads</Alias>
+      </Aliases>
     </Unit>
     <Unit>
       <Id>Heart</Id>
@@ -81,6 +111,9 @@
       <URIs>
         <URI>http://purl.obolibrary.org/obo/PBPKO_00480</URI>
       </URIs>
+      <Aliases>
+        <Alias>Heart</Alias>
+      </Aliases>
     </Unit>
     <Unit>
       <Id>Kidney</Id>
@@ -88,6 +121,9 @@
       <URIs>
         <URI>http://purl.obolibrary.org/obo/PBPKO_00557</URI>
       </URIs>
+      <Aliases>
+        <Alias>Kidney</Alias>
+      </Aliases>
     </Unit>
     <Unit>
       <Id>Liver</Id>
@@ -95,6 +131,9 @@
       <URIs>
         <URI>http://purl.obolibrary.org/obo/PBPKO_00558</URI>
       </URIs>
+      <Aliases>
+        <Alias>Liver</Alias>
+      </Aliases>
     </Unit>
     <Unit>
       <Id>Lung</Id>
@@ -102,6 +141,9 @@
       <URIs>
         <URI>http://purl.obolibrary.org/obo/PBPKO_00559</URI>
       </URIs>
+      <Aliases>
+        <Alias>Lung</Alias>
+      </Aliases>
     </Unit>
     <Unit>
       <Id>PoorlyPerfusedTissue</Id>
@@ -109,6 +151,9 @@
       <URIs>
         <URI>http://purl.obolibrary.org/obo/PBPKO_00454</URI>
       </URIs>
+      <Aliases>
+        <Alias>PoorlyPerfusedTissue</Alias>
+      </Aliases>
     </Unit>
     <Unit>
       <Id>RestOfBody</Id>
@@ -116,6 +161,9 @@
       <URIs>
         <URI>http://purl.obolibrary.org/obo/PBPKO_00450</URI>
       </URIs>
+      <Aliases>
+        <Alias>RestOfBody</Alias>
+      </Aliases>
     </Unit>
     <Unit>
       <Id>RichlyPerfusedTissue</Id>
@@ -123,6 +171,9 @@
       <URIs>
         <URI>http://purl.obolibrary.org/obo/PBPKO_00453</URI>
       </URIs>
+      <Aliases>
+        <Alias>RichlyPerfusedTissue</Alias>
+      </Aliases>
     </Unit>
     <Unit>
       <Id>Skin</Id>
@@ -130,6 +181,9 @@
       <URIs>
         <URI>http://purl.obolibrary.org/obo/PBPKO_00470</URI>
       </URIs>
+      <Aliases>
+        <Alias>Skin</Alias>
+      </Aliases>
     </Unit>
     <Unit>
       <Id>ExposedSkin</Id>
@@ -138,6 +192,9 @@
       <URIs>
         <URI>http://purl.obolibrary.org/obo/PBPKO_00625</URI>
       </URIs>
+      <Aliases>
+        <Alias>ExposedSkin</Alias>
+      </Aliases>
     </Unit>
     <Unit>
       <Id>UnexposedSkin</Id>
@@ -146,6 +203,9 @@
       <URIs>
         <URI>http://purl.obolibrary.org/obo/PBPKO_00626</URI>
       </URIs>
+      <Aliases>
+        <Alias>UnexposedSkin</Alias>
+      </Aliases>
     </Unit>
     <Unit>
       <Id>StratumCorneumExposedSkin</Id>
@@ -154,6 +214,9 @@
       <URIs>
         <URI>http://purl.obolibrary.org/obo/PBPKO_00458</URI>
       </URIs>
+      <Aliases>
+        <Alias>StratumCorneumExposedSkin</Alias>
+      </Aliases>
     </Unit>
     <Unit>
       <Id>StratumCorneumUnexposedSkin</Id>
@@ -162,6 +225,9 @@
       <URIs>
         <URI>http://purl.obolibrary.org/obo/PBPKO_00457</URI>
       </URIs>
+      <Aliases>
+        <Alias>StratumCorneumUnexposedSkin</Alias>
+      </Aliases>
     </Unit>
     <Unit>
       <Id>Urine</Id>
@@ -169,6 +235,9 @@
       <URIs>
         <URI>http://purl.obolibrary.org/obo/PBPKO_00556</URI>
       </URIs>
+      <Aliases>
+        <Alias>Urine</Alias>
+      </Aliases>
     </Unit>
     <Unit>
       <Id>Uterus</Id>
@@ -176,6 +245,9 @@
       <URIs>
         <URI>http://purl.obolibrary.org/obo/UBERON_0000995</URI>
       </URIs>
+      <Aliases>
+        <Alias>Uterus</Alias>
+      </Aliases>
     </Unit>
     <Unit>
       <Id>VenousBlood</Id>
@@ -183,6 +255,9 @@
       <URIs>
         <URI>http://purl.obolibrary.org/obo/PBPKO_00561</URI>
       </URIs>
+      <Aliases>
+        <Alias>VenousBlood</Alias>
+      </Aliases>
     </Unit>
     <Unit>
       <Id>VenousPlasma</Id>
@@ -190,6 +265,9 @@
       <URIs>
         <URI>http://purl.obolibrary.org/obo/PBPKO_00452</URI>
       </URIs>
+      <Aliases>
+        <Alias>VenousPlasma</Alias>
+      </Aliases>
     </Unit>
     <Unit>
       <Id>ViableEpidermisExposedSkin</Id>
@@ -198,6 +276,9 @@
       <URIs>
         <URI>http://purl.obolibrary.org/obo/PBPKO_00456</URI>
       </URIs>
+      <Aliases>
+        <Alias>ViableEpidermisExposedSkin</Alias>
+      </Aliases>
     </Unit>
     <Unit>
       <Id>ViableEpidermisUnexposedSkin</Id>
@@ -206,6 +287,9 @@
       <URIs>
         <URI>http://purl.obolibrary.org/obo/PBPKO_00455</URI>
       </URIs>
+      <Aliases>
+        <Alias>ViableEpidermisUnexposedSkin</Alias>
+      </Aliases>
     </Unit>
   </Units>
 </UnitDefinition>

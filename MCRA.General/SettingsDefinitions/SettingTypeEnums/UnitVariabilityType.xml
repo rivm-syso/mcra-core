@@ -5,6 +5,7 @@
   <Description>
     Accepted Unit variability types.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Id>VariationCoefficient</Id>

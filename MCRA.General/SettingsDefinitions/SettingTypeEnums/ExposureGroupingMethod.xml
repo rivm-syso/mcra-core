@@ -5,6 +5,7 @@
   <Description>
     Method used for grouping exposures in bins.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Id>CustomBins</Id>

@@ -5,6 +5,7 @@
   <Description>
     Accepted Concentration model types.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Id>Empirical</Id>

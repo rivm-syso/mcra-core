@@ -5,6 +5,7 @@
   <Description>
     Accepted nondetect imputation method types.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Id>ReplaceByLimit</Id>

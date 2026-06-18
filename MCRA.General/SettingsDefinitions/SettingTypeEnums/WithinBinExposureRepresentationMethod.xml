@@ -5,6 +5,7 @@
   <Description>
     Method used for selecting the value within a bin that should represent the exposure for the bin.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Id>MinimumInBin</Id>

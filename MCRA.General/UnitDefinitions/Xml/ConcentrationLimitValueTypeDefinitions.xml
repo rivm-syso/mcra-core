@@ -12,8 +12,8 @@
       <Name>Maximum residue limit</Name>
       <ShortName>MRL</ShortName>
       <Aliases>
-        <Alias>MRL</Alias>
         <Alias>MaximumResidueLimit</Alias>
+        <Alias>MRL</Alias>
       </Aliases>
     </Unit>
     <Unit>
@@ -21,8 +21,8 @@
       <Name>Proposed maximum residue limit</Name>
       <ShortName>Proposed-MRL</ShortName>
       <Aliases>
-        <Alias>ProposedMrl</Alias>
         <Alias>ProposedMaximumResidueLimit</Alias>
+        <Alias>ProposedMrl</Alias>
       </Aliases>
     </Unit>
   </Units>

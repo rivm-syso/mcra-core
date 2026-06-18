@@ -5,6 +5,7 @@
   <Description>
     Accepted Covariate model types.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Id>Constant</Id>

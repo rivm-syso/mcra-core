@@ -366,7 +366,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers.DoseResponseModels {
             switch (cesType) {
                 case 1:
                     riskType = RiskType.Ed50;
-                    benchmarkResponseType = BenchmarkResponseType.Ed50;
+                    benchmarkResponseType = BenchmarkResponseType.ED50;
                     break;
                 case 2:
                     benchmarkResponseType = BenchmarkResponseType.AdditionalRisk;

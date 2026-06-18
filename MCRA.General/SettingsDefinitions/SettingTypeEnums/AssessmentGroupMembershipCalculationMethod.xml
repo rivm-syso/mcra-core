@@ -5,6 +5,7 @@
   <Description>
     Accepted Assessment group membership calculation methods.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Id>CrispMax</Id>

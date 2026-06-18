@@ -5,6 +5,7 @@
   <Description>
     Accepted Function types.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Id>Polynomial</Id>

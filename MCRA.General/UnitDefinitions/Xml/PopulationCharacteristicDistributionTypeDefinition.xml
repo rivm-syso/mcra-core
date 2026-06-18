@@ -15,7 +15,7 @@
         Normal distribution parameterised by a mean and a coefficient of variation.
       </Description>
       <Aliases>
-        <Alias>LogNormal</Alias>
+        <Alias>Normal</Alias>
       </Aliases>
     </Unit>
     <Unit>

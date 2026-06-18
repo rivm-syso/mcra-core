@@ -5,6 +5,7 @@
   <Description>
     Accepted Network analysis types.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Id>NoNetworkAnalysis</Id>

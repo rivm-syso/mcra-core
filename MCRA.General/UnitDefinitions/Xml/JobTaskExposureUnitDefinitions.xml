@@ -12,6 +12,7 @@
       <ShortName>µg/cm2/day</ShortName>
       <Description>Exposure expressed in micrograms per square centimeter (µg/cm2) per day.</Description>
       <Aliases>
+        <Alias>ugPerCm2PerDay</Alias>
         <Alias>µg/cm2/day</Alias>
         <Alias>ug/cm2/day</Alias>
       </Aliases>
@@ -22,7 +23,7 @@
       <ShortName>mg/cm2/day</ShortName>
       <Description>Exposure expressed in milligrams per square centimeter (mg/cm2) per day.</Description>
       <Aliases>
-        <Alias>mg/cm2/day</Alias>
+        <Alias>mgPerCm2PerDay</Alias>
         <Alias>mg/cm2/day</Alias>
       </Aliases>
     </Unit>
@@ -32,6 +33,7 @@
       <ShortName>µg/m3</ShortName>
       <Description>Exposure expressed in micrograms per cubic meters (µg/m3).</Description>
       <Aliases>
+        <Alias>ugPerM3</Alias>
         <Alias>µg/m3</Alias>
       </Aliases>
     </Unit>
@@ -41,6 +43,7 @@
       <ShortName>mg/m3</ShortName>
       <Description>Exposure expressed in milligrams per cubic meters (mg/m3).</Description>
       <Aliases>
+        <Alias>mgPerM3</Alias>
         <Alias>mg/m3</Alias>
       </Aliases>
     </Unit>
@@ -50,6 +53,7 @@
       <ShortName>µg/day</ShortName>
       <Description>Exposure expressed in micrograms per day (µg/day).</Description>
       <Aliases>
+        <Alias>ugPerDay</Alias>
         <Alias>µg/day</Alias>
         <Alias>ug/day</Alias>
         <Alias>µg/d</Alias>
@@ -62,6 +66,7 @@
       <ShortName>mg/day</ShortName>
       <Description>Exposure expressed in milligrams per day (mg/day).</Description>
       <Aliases>
+        <Alias>mgPerDay</Alias>
         <Alias>mg/day</Alias>
         <Alias>mg/d</Alias>
       </Aliases>

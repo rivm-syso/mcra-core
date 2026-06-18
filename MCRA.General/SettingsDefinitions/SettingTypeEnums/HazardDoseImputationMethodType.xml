@@ -5,6 +5,7 @@
   <Description>
     Accepted Hazard dose imputation method types.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Id>MunroP5</Id>

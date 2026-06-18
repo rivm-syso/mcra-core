@@ -5,6 +5,7 @@
   <Description>
     The form of the ratio for expressing risk based on an exposure estimate and a hazard threshold value. This can be either exposure/hazard or hazard/exposure.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Id>HazardExposureRatio</Id>

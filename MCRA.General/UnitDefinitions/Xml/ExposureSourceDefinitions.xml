@@ -71,6 +71,7 @@
         Other non-dietary exposure sources.
       </Description>
       <Aliases>
+        <Alias>OtherNonDiet</Alias>
         <Alias>Other non-dietary</Alias>
       </Aliases>
     </Unit>

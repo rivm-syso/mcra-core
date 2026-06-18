@@ -43,7 +43,7 @@
           <ShortName>d</ShortName>
           <Description>days</Description>
           <Aliases>
-              <Alias>days</Alias>
+              <Alias>Days</Alias>
               <Alias>d</Alias>
           </Aliases>
       </Unit>

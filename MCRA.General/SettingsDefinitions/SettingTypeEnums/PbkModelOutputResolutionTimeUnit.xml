@@ -5,6 +5,7 @@
   <Description>
     Time unit for specification of the evaluation/output resolution of PBK model simulations.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Id>ModelTimeUnit</Id>

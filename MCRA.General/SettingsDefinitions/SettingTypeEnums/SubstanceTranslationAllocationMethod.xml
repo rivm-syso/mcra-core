@@ -5,6 +5,7 @@
   <Description>
     Accepted Substance translation allocation method types.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Id>DrawRandom</Id>

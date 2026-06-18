@@ -5,6 +5,7 @@
   <Description>
     Available methods for calculating modelled occupational exposures.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Id>SingleIndividual</Id>

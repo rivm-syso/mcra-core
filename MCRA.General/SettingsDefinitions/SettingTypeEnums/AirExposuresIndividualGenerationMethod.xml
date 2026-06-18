@@ -5,6 +5,7 @@
   <Description>
     Methods for obtaining individuals for calculating air exposures.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Id>Simulate</Id>

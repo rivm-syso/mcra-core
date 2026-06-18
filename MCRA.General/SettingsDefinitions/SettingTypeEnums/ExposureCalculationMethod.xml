@@ -5,6 +5,7 @@
   <Description>
     Method types for obtaining exposure estimates.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Id>ModelledConcentration</Id>

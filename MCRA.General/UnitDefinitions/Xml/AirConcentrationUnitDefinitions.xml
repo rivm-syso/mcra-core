@@ -11,6 +11,7 @@
       <Name>microgram/cubimeter</Name>
       <ShortName>ug/m3</ShortName>
       <Aliases>
+        <Alias>ugPerm3</Alias>
         <Alias>ug/m3</Alias>
         <Alias>ugram/m3</Alias>
         <Alias>ugr/m3</Alias>
@@ -21,6 +22,7 @@
         <Name>microgram/liter</Name>
         <ShortName>ug/L</ShortName>
         <Aliases>
+          <Alias>ugPerL</Alias>
           <Alias>ug/L</Alias>
           <Alias>ugram/L</Alias>
           <Alias>ugr/L</Alias>

@@ -14,8 +14,8 @@
       <ShortName>ECE</ShortName>
       <Description>Early childhood education</Description>
       <Aliases>
-        <Alias>EarlyChildhoodEducation</Alias>
         <Alias>ECE</Alias>
+        <Alias>EarlyChildhoodEducation</Alias>
       </Aliases>
     </Unit>
     <Unit>
@@ -25,8 +25,8 @@
       <ShortName>PE</ShortName>
       <Description>Primary education</Description>
       <Aliases>
-        <Alias>PrimaryEducation</Alias>
         <Alias>PE</Alias>
+        <Alias>PrimaryEducation</Alias>
       </Aliases>
     </Unit>
     <Unit>
@@ -36,8 +36,8 @@
       <ShortName>LSE</ShortName>
       <Description>Lower secondary education</Description>
       <Aliases>
-        <Alias>LowerSecondaryEducation</Alias>
         <Alias>LSE</Alias>
+        <Alias>LowerSecondaryEducation</Alias>
       </Aliases>
     </Unit>
     <Unit>
@@ -47,8 +47,8 @@
       <ShortName>USE</ShortName>
       <Description>Upper secondary education</Description>
       <Aliases>
-        <Alias>UpperSecondaryEducation</Alias>
         <Alias>USE</Alias>
+        <Alias>UpperSecondaryEducation</Alias>
       </Aliases>
     </Unit>
     <Unit>
@@ -58,8 +58,8 @@
       <ShortName>PSNTE</ShortName>
       <Description>Post-secondary non-tertiary education</Description>
       <Aliases>
-        <Alias>PostSecondaryNonTertiaryEducation</Alias>
         <Alias>PSNTE</Alias>
+        <Alias>PostSecondaryNonTertiaryEducation</Alias>
       </Aliases>
     </Unit>
     <Unit>
@@ -69,8 +69,8 @@
       <ShortName>SCTE</ShortName>
       <Description>Short-cycle tertiary education</Description>
       <Aliases>
-        <Alias>ShortCycleTertiaryEducation</Alias>
         <Alias>SCTE</Alias>
+        <Alias>ShortCycleTertiaryEducation</Alias>
       </Aliases>
     </Unit>
     <Unit>
@@ -80,8 +80,8 @@
       <ShortName>BOEL</ShortName>
       <Description>Bachelor's or equivalent level</Description>
       <Aliases>
-        <Alias>BachelorsOrEquivalentLevel</Alias>
         <Alias>BOEL</Alias>
+        <Alias>BachelorsOrEquivalentLevel</Alias>
       </Aliases>
     </Unit>
     <Unit>
@@ -91,8 +91,8 @@
       <ShortName>MOEL</ShortName>
       <Description>Master's or equivalent level</Description>
       <Aliases>
-        <Alias>MastersOrEquivalentLevel</Alias>
         <Alias>MOEL</Alias>
+        <Alias>MastersOrEquivalentLevel</Alias>
       </Aliases>
     </Unit>
     <Unit>
@@ -102,8 +102,8 @@
       <ShortName>DOEL</ShortName>
       <Description>Docteral or equivalent level</Description>
       <Aliases>
-        <Alias>DocteralOrEquivalentLevel</Alias>
         <Alias>DOEL</Alias>
+        <Alias>DocteralOrEquivalentLevel</Alias>
       </Aliases>
     </Unit>
   </Units>

@@ -279,7 +279,7 @@ namespace MCRA.Simulation.Calculators.DoseResponseModelCalculation {
                 case BenchmarkResponseType.AdditionalRisk:
                     riskType = 2;
                     break;
-                case BenchmarkResponseType.Ed50:
+                case BenchmarkResponseType.ED50:
                     riskType = 1;
                     break;
                 default:
@@ -304,7 +304,7 @@ namespace MCRA.Simulation.Calculators.DoseResponseModelCalculation {
                 case BenchmarkResponseType.Difference:
                 case BenchmarkResponseType.ExtraRisk:
                 case BenchmarkResponseType.AdditionalRisk:
-                case BenchmarkResponseType.Ed50:
+                case BenchmarkResponseType.ED50:
                 default:
                     throw new NotImplementedException($"Benchmark response type {benchmarkResponseType.GetDisplayName()} not implemented for continuous multiplicative responses");
             }
@@ -315,7 +315,7 @@ namespace MCRA.Simulation.Calculators.DoseResponseModelCalculation {
                 case BenchmarkResponseType.ExtraRisk:
                 case BenchmarkResponseType.AdditionalRisk:
                     return benchmarkResponse;
-                case BenchmarkResponseType.Ed50:
+                case BenchmarkResponseType.ED50:
                     return 0.05;
                 case BenchmarkResponseType.Factor:
                 case BenchmarkResponseType.Percentage:

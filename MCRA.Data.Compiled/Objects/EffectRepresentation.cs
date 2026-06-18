@@ -17,7 +17,7 @@ namespace MCRA.Data.Compiled.Objects {
         public bool HasBenchmarkResponse() {
             return HasBenchmarkResponseType()
                 && (BenchmarkResponse.HasValue && !double.IsNaN(BenchmarkResponse.Value)
-                || BenchmarkResponseType == BenchmarkResponseType.Ed50);
+                || BenchmarkResponseType == BenchmarkResponseType.ED50);
         }
 
         public bool HasBenchmarkResponseValue() {

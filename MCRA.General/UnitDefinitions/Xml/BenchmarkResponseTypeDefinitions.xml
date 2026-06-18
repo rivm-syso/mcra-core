@@ -92,7 +92,7 @@
       </Aliases>
     </Unit>
     <Unit>
-      <Id>Ed50</Id>
+      <Id>ED50</Id>
       <EnumValue>6</EnumValue>
       <Name>ED50</Name>
       <ShortName>ED50</ShortName>
@@ -102,6 +102,7 @@
       </Description>
       <Aliases>
         <Alias>ED50</Alias>
+        <Alias>Ed50</Alias>
       </Aliases>
     </Unit>
     <Unit>

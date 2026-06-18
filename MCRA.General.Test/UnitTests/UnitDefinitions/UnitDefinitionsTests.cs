@@ -82,5 +82,75 @@ namespace MCRA.General.Test.UnitTests.UnitDefinitions {
                 }
             }
         }
+
+        /// <summary>
+        /// Check whether Id is also in the list of aliases. This is a consistency check to ensure that the Id is always 
+        /// present in the list of aliases.
+        /// </summary>
+        [TestMethod]
+        public void UnitDefinitions_TestAliases() {
+            var definitionsInstance = McraUnitDefinitions.Instance;
+            var unitDefinitions = definitionsInstance.UnitDefinitions
+                .Where(c => !c.Value.IsInternalEnum)
+                .ToDictionary(c => c.Key, c => c.Value);
+            var definitionKeys = new List<string>();
+            foreach (var definition in unitDefinitions) {
+                var units = definition.Value.Units;
+                foreach (var unit in units) {
+                    if (!unit.Aliases.Contains(unit.Id)) {
+                        definitionKeys.Add(definition.Key);
+                    }
+                }
+            }
+            var definitions = definitionKeys.ToHashSet();
+            if (definitions.Count > 0) {
+                Assert.Fail($"Ids are not in the list of aliases.");
+            }
+        }
+
+        /// <summary>
+        /// Check whether aliases are unique for each unit.
+        /// </summary>
+        [TestMethod]
+        public void UnitDefinitions_TestDoubleAliases() {
+            var definitionsInstance = McraUnitDefinitions.Instance;
+            var unitDefinitions = definitionsInstance.UnitDefinitions
+                .Where(c => !c.Value.IsInternalEnum)
+                .ToDictionary(c => c.Key, c => c.Value);
+            foreach (var definition in unitDefinitions) {
+                var units = definition.Value.Units;
+                foreach (var unit in units) {
+                    var aliasCount = unit.Aliases.Count();
+                    var uniqueAliasCount = unit.Aliases.ToHashSet().Count();
+                    Assert.AreEqual(aliasCount, uniqueAliasCount);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Check whether the first alias is equal to the Id of the unit.
+        /// This is a consistency check to ensure that the first alias is always equal to the Id of the unit.
+        /// </summary>
+        [TestMethod]
+        public void UnitDefinitions_TestFirstAliasId() {
+            var definitionsInstance = McraUnitDefinitions.Instance;
+            var unitDefinitions = definitionsInstance.UnitDefinitions
+                .Where(c => !c.Value.IsInternalEnum)
+                .ToDictionary(c => c.Key, c => c.Value);
+            var results = new List<string>();
+            foreach (var definition in unitDefinitions) {
+                var units = definition.Value.Units;
+                foreach (var unit in units) {
+                    var firstAlias = unit.Aliases.First();
+                    var id = unit.Id;
+                    if (firstAlias != id) {
+                        results.Add(firstAlias);
+                    }
+                }
+            }
+            if (results.Count > 0) {
+                Assert.Fail($"Id is not the first alias.");
+            }
+        }
     }
 }

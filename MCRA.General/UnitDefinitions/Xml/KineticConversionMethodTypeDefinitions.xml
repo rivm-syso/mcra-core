@@ -22,6 +22,7 @@
       <ShortName>PBK</ShortName>
       <Description>Use (high-tier) PBK models.</Description>
       <Aliases>
+        <Alias>PbkModel</Alias>
         <Alias>PBKModelOnly</Alias>
         <Alias>PBKOnly</Alias>
       </Aliases>
@@ -32,6 +33,7 @@
       <ShortName>PBK with fallback</ShortName>
       <Description>Use (high-tier) PBK models with fallback on (low-tier) kinetic conversion factors.</Description>
       <Aliases>
+        <Alias>PbkWithFallback</Alias>
         <Alias>PBKModel</Alias>
         <Alias>PBK</Alias>
       </Aliases>

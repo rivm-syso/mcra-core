@@ -5,6 +5,7 @@
   <Description>
     Accepted Estimates nature types.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Id>Realistic</Id>

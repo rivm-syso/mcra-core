@@ -12,8 +12,8 @@
       <Name>Large portion</Name>
       <ShortName>LP</ShortName>
       <Aliases>
-        <Alias>LP</Alias>
         <Alias>LargePortion</Alias>
+        <Alias>LP</Alias>
       </Aliases>
     </Unit>
     <Unit>
@@ -21,8 +21,8 @@
       <Name>Mean consumption</Name>
       <ShortName>MC</ShortName>
       <Aliases>
-        <Alias>MC</Alias>
         <Alias>MeanConsumption</Alias>
+        <Alias>MC</Alias>
       </Aliases>
     </Unit>
     <Unit>

@@ -5,6 +5,7 @@
   <Description>
     Exposure model types for occupational exposures.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Id>Percentile</Id>

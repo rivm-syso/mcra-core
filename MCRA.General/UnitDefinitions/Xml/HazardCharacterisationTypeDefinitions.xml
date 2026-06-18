@@ -13,6 +13,7 @@
       <Name>Benchmark dose</Name>
       <ShortName>BMD</ShortName>
       <Aliases>
+        <Alias>Bmd</Alias>
         <Alias>BMD</Alias>
       </Aliases>
     </Unit>
@@ -22,6 +23,7 @@
       <Name>No observed adverse effect level</Name>
       <ShortName>NOAEL</ShortName>
       <Aliases>
+        <Alias>Noael</Alias>
         <Alias>NOAEL</Alias>
       </Aliases>
     </Unit>
@@ -31,6 +33,7 @@
       <Name>Lowest observed adverse effect level</Name>
       <ShortName>LOAEL</ShortName>
       <Aliases>
+        <Alias>Loael</Alias>
         <Alias>LOAEL</Alias>
       </Aliases>
     </Unit>
@@ -40,6 +43,7 @@
       <Name>Acceptable daily intake</Name>
       <ShortName>ADI</ShortName>
       <Aliases>
+        <Alias>Adi</Alias>
         <Alias>ADI</Alias>
       </Aliases>
     </Unit>
@@ -49,6 +53,7 @@
       <Name>Acute reference dose</Name>
       <ShortName>ARfD</ShortName>
       <Aliases>
+        <Alias>Arfd</Alias>
         <Alias>ARfD</Alias>
         <Alias>ARfD (from ADI)</Alias>
       </Aliases>
@@ -59,6 +64,7 @@
       <Name>No observed effect level</Name>
       <ShortName>NOEL</ShortName>
       <Aliases>
+        <Alias>Noel</Alias>
         <Alias>NOEL</Alias>
       </Aliases>
     </Unit>
@@ -68,6 +74,7 @@
       <Name>Tolerable daily intake</Name>
       <ShortName>TDI</ShortName>
       <Aliases>
+        <Alias>Tdi</Alias>
         <Alias>TDI</Alias>
       </Aliases>
     </Unit>
@@ -77,6 +84,7 @@
       <Name>Tolerable weekly intake</Name>
       <ShortName>TWI</ShortName>
       <Aliases>
+        <Alias>Twi</Alias>
         <Alias>TWI</Alias>
       </Aliases>
     </Unit>
@@ -86,6 +94,7 @@
       <Name>Benchmark dose lower confidence limit of 1%</Name>
       <ShortName>BMDL01</ShortName>
       <Aliases>
+        <Alias>Bmdl01</Alias>
         <Alias>BMDL01</Alias>
       </Aliases>
     </Unit>
@@ -95,6 +104,7 @@
       <Name>Benchmark dose lower confidence limit of 10%</Name>
       <ShortName>BMDL10</ShortName>
       <Aliases>
+        <Alias>Bmdl10</Alias>
         <Alias>BMDL10</Alias>
       </Aliases>
     </Unit>
@@ -104,6 +114,7 @@
       <Name>Human biomonitoring guidance values</Name>
       <ShortName>HBMGV</ShortName>
       <Aliases>
+        <Alias>Hbmgv</Alias>
         <Alias>HBMGV</Alias>
       </Aliases>
     </Unit>

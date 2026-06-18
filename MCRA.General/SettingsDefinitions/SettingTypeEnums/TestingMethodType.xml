@@ -3,8 +3,9 @@
   <Id>TestingMethodType</Id>
   <Name>Testing method types</Name>
   <Description>
-    Accepted xxx types.
+    Accepted testing method types.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Id>Backward</Id>

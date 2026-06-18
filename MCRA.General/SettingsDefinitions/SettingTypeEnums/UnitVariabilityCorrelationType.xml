@@ -5,6 +5,7 @@
   <Description>
     Accepted Unit variability correlation types.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Id>NoCorrelation</Id>

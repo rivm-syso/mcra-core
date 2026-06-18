@@ -13,9 +13,9 @@
       <ShortName>Whole body</ShortName>
       <Description>Use whole body when the results apply to the whole body.</Description>
       <Aliases>
+        <Alias>WholeBody</Alias>
         <Alias>Body</Alias>
         <Alias>Whole body</Alias>
-        <Alias>WholeBody</Alias>
         <Alias>CTotal</Alias>
       </Aliases>
     </Unit>
@@ -40,8 +40,8 @@
       <ShortName>Serum</ShortName>
       <Description>The portion of blood plasma that excludes clotting factors.</Description>
       <Aliases>
-        <Alias>Serum</Alias>
         <Alias>BloodSerum</Alias>
+        <Alias>Serum</Alias>
         <Alias>Blood serum</Alias>
         <Alias>BS</Alias>
       </Aliases>
@@ -52,8 +52,8 @@
       <ShortName>Plasma</ShortName>
       <Description>The liquid component of blood, in which erythrocytes are suspended.</Description>
       <Aliases>
-        <Alias>Plasma</Alias>
         <Alias>BloodPlasma</Alias>
+        <Alias>Plasma</Alias>
         <Alias>Blood plasma</Alias>
         <Alias>O_CP</Alias>
         <Alias>BP</Alias>
@@ -217,10 +217,10 @@
       <ShortName>Body fat</ShortName>
       <Description>Adipose tissue, body fat, or simply fat is the main reservoir of fat in the body beneath the skin.</Description>
       <Aliases>
+        <Alias>BodyFat</Alias>
         <Alias>AdiposeTissue</Alias>
         <Alias>Adipose Tissue</Alias>
         <Alias>Body fat</Alias>
-        <Alias>BodyFat</Alias>
         <Alias>FatTissue</Alias>
         <Alias>Fat</Alias>
         <Alias>CFat</Alias>
@@ -278,8 +278,8 @@
       <ShortName>Placenta</ShortName>
       <Description>The tissues which support fetal development.</Description>
       <Aliases>
-        <Alias>Placenta</Alias>
         <Alias>PlacentaTissue</Alias>
+        <Alias>Placenta</Alias>
       </Aliases>
     </Unit>
     <Unit>
@@ -318,9 +318,9 @@
       <ShortName>Muscle tissue</ShortName>
       <Description>Perfused (muscle) tissue.</Description>
       <Aliases>
+        <Alias>MuscleTissue</Alias>
         <Alias>Muscle</Alias>
         <Alias>Muscles</Alias>
-        <Alias>MuscleTissue</Alias>
         <Alias>CPoor</Alias>
         <Alias>O_CM</Alias>
       </Aliases>
@@ -374,8 +374,8 @@
       <ShortName>Stratum corneum of exposed skin</ShortName>
       <Description>The outermost layer of the epidermis, exposed to the open air.</Description>
       <Aliases>
-        <Alias>StratumCorneumExposed</Alias>
         <Alias>StratumCorneumExposedSkin</Alias>
+        <Alias>StratumCorneumExposed</Alias>
         <Alias>CSkin_sc_e</Alias>
       </Aliases>
     </Unit>
@@ -385,8 +385,8 @@
       <ShortName>Stratum corneum of unexposed skin</ShortName>
       <Description>The outermost layer of the epidermis, not exposed to the open air.</Description>
       <Aliases>
-        <Alias>StratumCorneumUnexposed</Alias>
         <Alias>StratumCorneumUnexposedSkin</Alias>
+        <Alias>StratumCorneumUnexposed</Alias>
         <Alias>CSkin_sc_u</Alias>
       </Aliases>
     </Unit>
@@ -466,8 +466,8 @@
       <ShortName>Eyes</ShortName>
       <Description>The eyes as biological matix.</Description>
       <Aliases>
-        <Alias>Eye</Alias>
         <Alias>Eyes</Alias>
+        <Alias>Eye</Alias>
         <Alias>Ocular</Alias>
       </Aliases>
     </Unit>
@@ -513,6 +513,7 @@
       <ShortName>Feces</ShortName>
       <Description>Bodily waste discharged through the anus.</Description>
       <Aliases>
+        <Alias>Feces</Alias>
         <Alias>Excrement</Alias>
         <Alias>Poop</Alias>
       </Aliases>

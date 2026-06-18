@@ -5,6 +5,7 @@
   <Description>
     Accepted Intake model types.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Order>1</Order>

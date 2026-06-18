@@ -5,6 +5,7 @@
   <Description>
     Accepted Exposure method types.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Id>Manual</Id>

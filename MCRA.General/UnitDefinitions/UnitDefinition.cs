@@ -7,6 +7,12 @@ namespace MCRA.General {
 
         public string Name { get; set; }
 
+        /// <summary>
+        /// Indicates whether this unit definition is for an internal enum that is not used in any table format.
+        /// </summary>
+        public bool IsInternalEnum { get; set; }
+
+
         [XmlArrayItem("Unit")]
         public List<UnitValueDefinition> Units { get; set; }
 

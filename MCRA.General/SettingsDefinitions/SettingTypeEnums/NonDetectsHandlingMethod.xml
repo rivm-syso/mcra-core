@@ -5,6 +5,7 @@
   <Description>
     Methods for handling left-censored data (i.e., imputation/substitution).
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Id>ReplaceByZero</Id>

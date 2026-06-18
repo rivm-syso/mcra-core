@@ -5,6 +5,7 @@
   <Description>
     Methods for selecting/matching survey individuals with a specified/scoped population.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <EnumValue>1</EnumValue>
