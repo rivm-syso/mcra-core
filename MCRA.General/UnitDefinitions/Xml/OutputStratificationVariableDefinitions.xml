@@ -5,33 +5,25 @@
   <Description>
     Supported variables to categorise individuals into distinct subgroups for stratified presentation outputs.
   </Description>
+  <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
       <Id>Sex</Id>
       <Name>Sex</Name>
       <ShortName>Sex</ShortName>
       <Description>Stratify individuals by sex.</Description>
-      <Aliases>
-        <Alias>Sex</Alias>
-      </Aliases>
     </Unit>
     <Unit>
       <Id>OccupationalScenario</Id>
       <Name>Occupational scenario</Name>
       <ShortName>Occupational scenario</ShortName>
       <Description>Stratify by occupational scenario.</Description>
-      <Aliases>
-        <Alias>OccupationalScenario</Alias>
-      </Aliases>
     </Unit>
     <Unit>
       <Id>CaseControl</Id>
       <Name>Case control</Name>
       <ShortName>CaseControl</ShortName>
       <Description>Stratify by occupational scenario case control.</Description>
-      <Aliases>
-        <Alias>CaseControl</Alias>
-      </Aliases>
     </Unit>
     <Unit>
       <Id>Age</Id>
