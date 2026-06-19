@@ -38,7 +38,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Gener
                     records.Add(record);
                 }
             }
-            if (outputStratifier != null) {
+            if (outputStratifier != null && outputStratifier.GetStratificationVariables().Count > 0) {
                 var groups = exposureCollection
                     .SelectMany(c => c.Exposures.Select(e => (
                         Exposure: e.Exposure,

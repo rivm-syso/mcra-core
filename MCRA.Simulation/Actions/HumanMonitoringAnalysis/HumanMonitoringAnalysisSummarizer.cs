@@ -301,15 +301,16 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
         private PopulationStratifier getPopulationStratifier(ActionData data) {
             var outputStratifiers = new List<ISimplePopulationStratifier>();
             if (_configuration.OccupationalExposureAssessment) {
-                var outputStratifier = new OccupationalScenarioStratifier(data.OccupationalScenarios?.Values);
-                outputStratifiers.Add(outputStratifier);
-
                 // The CaseControl stratifier returns only 'Case' or 'Control',
-                // therefore also add a second stratifier with scenarios
                 if (_configuration.CaseControlAnalysis) {
-                    var scenarioStratifier = new OccupationalScenarioStratifier(data.OccupationalScenarios?.Values);
-                    outputStratifiers.Add(scenarioStratifier);
+                    var caseControlScenarioStratifier = new OccupationalCaseControlStratifier(
+                        data.OccupationalScenarios?.Values,
+                        _configuration.CaseControlSelection
+                    );
+                    outputStratifiers.Add(caseControlScenarioStratifier);
                 }
+                var scenarioStratifier = new OccupationalScenarioStratifier(data.OccupationalScenarios?.Values);
+                outputStratifiers.Add(scenarioStratifier);
             }
             if (_configuration.StratifyOutputs) {
                 if (_configuration.OutputStratificationVariable == OutputStratificationVariable.Sex) {

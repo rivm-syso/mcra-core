@@ -23,7 +23,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Gener
                 percentages
             );
 
-            if (outputStratifier != null) {
+            if (outputStratifier != null && outputStratifier.GetStratificationVariables().Count > 0) {
                 var stratifiedRecords = computePercentileRecords(
                     exposureCollection,
                     uncertaintyLowerBound,
@@ -42,7 +42,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Gener
         ) {
             updatePercentileRecords(exposureCollection, percentages);
 
-            if (outputStratifier != null) {
+            if (outputStratifier != null && outputStratifier.GetStratificationVariables().Count > 0) {
                 updatePercentileRecords(exposureCollection, percentages, outputStratifier);
             }
         }

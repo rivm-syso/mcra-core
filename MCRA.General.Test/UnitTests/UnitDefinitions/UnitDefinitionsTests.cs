@@ -104,7 +104,7 @@ namespace MCRA.General.Test.UnitTests.UnitDefinitions {
             }
             var definitions = definitionKeys.ToHashSet();
             if (definitions.Count > 0) {
-                Assert.Fail($"Ids are not in the list of aliases.");
+                Assert.Fail($"Ids are not in the list of aliases. Add IsInternalEnum tag to xml");
             }
         }
 

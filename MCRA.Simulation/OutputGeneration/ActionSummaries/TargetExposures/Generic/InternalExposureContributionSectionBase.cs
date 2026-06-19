@@ -27,7 +27,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var rescale = result.Sum(c => c.Contribution);
             result.ForEach(c => c.Contribution = c.Contribution / rescale);
 
-            if (outputStratifier != null) {
+            if (outputStratifier != null && outputStratifier.GetStratificationVariables().Count > 0) {
                 var groups = exposureCollection
                     .SelectMany(c => c.Exposures.Select(e => (
                         Exposure: e.Exposure,
@@ -109,7 +109,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var rescale = result.Sum(c => c.Contribution);
             result.ForEach(c => c.Contribution = c.Contribution / rescale);
 
-            if (outputStratifier != null) {
+            if (outputStratifier != null && outputStratifier.GetStratificationVariables().Count > 0) {
                 var groups = exposureCollection
                     .SelectMany(c => c.Exposures.Select(e => (
                         Exposure: e.Exposure,

@@ -40,7 +40,7 @@ namespace MCRA.Simulation.OutputGeneration {
             );
             Records.Add(record);
 
-            if (stratifier != null) {
+            if (stratifier != null && stratifier.GetStratificationVariables().Count > 0) {
                 var stratifiedRecords = CreateStratifiedSummaryRecords(
                     concentrations,
                     descriptor,
@@ -59,7 +59,7 @@ namespace MCRA.Simulation.OutputGeneration {
             );
             hbmBoxPlotRecords.Add(result);
 
-            if (stratifier != null) {
+            if (stratifier != null && stratifier.GetStratificationVariables().Count > 0) {
                 var stratifiedResults = CreateStratifiedBoxPlotRecords(
                     concentrations,
                     descriptor,
@@ -90,7 +90,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 lowerBound,
                 upperBound
             );
-            if (stratifier != null) {
+            if (stratifier != null && stratifier.GetStratificationVariables().Count > 0) {
                 UpdateStratifiedRecords(
                     hbmConcentrations,
                     descriptor,

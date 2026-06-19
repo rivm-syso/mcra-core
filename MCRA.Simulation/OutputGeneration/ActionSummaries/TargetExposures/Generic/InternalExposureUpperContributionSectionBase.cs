@@ -27,7 +27,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 isNominal
             );
 
-            if (outputStratifier != null) {
+            if (outputStratifier != null && outputStratifier.GetStratificationVariables().Count > 0) {
                 var groups = exposureCollection
                     .SelectMany(c => c.Exposures.Select(e => (
                         Exposure: e.Exposure,
@@ -91,7 +91,7 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             var results = summarizeUpperTailUncertainty(exposureCollection, null, percentageForUpperTail);
 
-            if (outputStratifier != null) {
+            if (outputStratifier != null && outputStratifier.GetStratificationVariables().Count > 0) {
                 var groups = exposureCollection
                     .SelectMany(c => c.Exposures.Select(e => (
                         Exposure: e.Exposure,

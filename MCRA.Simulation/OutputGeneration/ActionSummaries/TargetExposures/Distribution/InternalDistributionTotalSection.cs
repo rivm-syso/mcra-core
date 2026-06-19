@@ -85,7 +85,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 percentages
             );
 
-            if (outputStratifier != null) {
+            if (outputStratifier != null && outputStratifier.GetStratificationVariables().Count > 0) {
                 var groups = exposures
                     .GroupBy(r => outputStratifier.GetLevel(r.SimulatedIndividual));
                 var groupRecords = groups
@@ -112,21 +112,21 @@ namespace MCRA.Simulation.OutputGeneration {
             UncertaintyLowerLimit = uncertaintyLowerBound;
             UncertaintyUpperLimit = uncertaintyUpperBound;
             {
-            var exposures = aggregateExposures
-                    .Select(c => (
-                        Exposure: c.GetTotalExposureAtTarget(
-                            targetUnit.Target,
-                            rpfs,
-                            memberships
-                        ),
-                        SimulatedIndividual: c.SimulatedIndividual
-                    ));
+                var exposures = aggregateExposures
+                        .Select(c => (
+                            Exposure: c.GetTotalExposureAtTarget(
+                                targetUnit.Target,
+                                rpfs,
+                                memberships
+                            ),
+                            SimulatedIndividual: c.SimulatedIndividual
+                        ));
 
-            var weights = exposures
-                .Select(c => c.SimulatedIndividual.SamplingWeight)
-                .ToList();
-            _percentiles.AddUncertaintyValues(exposures.Select(c => c.Exposure).PercentilesWithSamplingWeights(weights, [.. _percentiles.XValues]));
-                }
+                var weights = exposures
+                    .Select(c => c.SimulatedIndividual.SamplingWeight)
+                    .ToList();
+                _percentiles.AddUncertaintyValues(exposures.Select(c => c.Exposure).PercentilesWithSamplingWeights(weights, [.. _percentiles.XValues]));
+            }
             if (populationStratifier != null) {
                 var exposures = aggregateExposures
                     .Select(c => (
@@ -152,7 +152,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         collection.AddUncertaintyValues(percentiles);
                     }
                 }
-            } 
+            }
         }
 
         public List<ExposureDistributionRecord> summarizeExposureRecords(

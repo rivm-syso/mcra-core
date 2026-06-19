@@ -52,7 +52,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 targetUnit
              );
 
-            if (outputStratifier != null) {
+            if (outputStratifier != null && outputStratifier.GetStratificationVariables().Count > 0) {
                 Stratify = true;
                 var stratifiedRecords = computePercentileRecords(
                     aggregates,
@@ -142,7 +142,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 percentages
             );
 
-            if (outputStratifier != null) {
+            if (outputStratifier != null && outputStratifier.GetStratificationVariables().Count > 0) {
                 updatePercentileRecords(
                     aggregates,
                     relativePotencyFactors,

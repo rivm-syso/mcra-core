@@ -74,7 +74,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     );
                 }
 
-                if ((Model.StratifiedIntakeDistributionBins?.Count ?? 0) > 1) {
+                if (Model.StratifiedExposureBoxPlotRecords?.Count > 1) {
                     var histChartCreator = new StratifiedStackedHistogramChartCreator(Model, ViewBag.GetUnit("IntakeUnit"));
                     var histogramChart = ChartHelpers
                         .Chart(
