@@ -11,7 +11,6 @@ namespace MCRA.Simulation.OutputGeneration {
         private readonly string _sectionId;
         private readonly List<T> _records;
         private readonly string _unit;
-        private readonly string _descriptorName;
         private readonly List<OutputStratificationVariable> _stratificationVariables;
         private readonly bool _showOutliers;
 
@@ -38,7 +37,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 var stratificationId = _stratificationVariables?.Count > 0
                     ? string.Join("_", _stratificationVariables) : string.Empty;
                 return StringExtensions.CreateFingerprint(
-                    baseId + _sectionId + _descriptorName + stratificationId
+                    baseId + _sectionId + stratificationId
                 );
             }
         }
