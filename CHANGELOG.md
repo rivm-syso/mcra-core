@@ -1,5 +1,20 @@
 # Change Log
 
+## Version 10.2.22 (2026-06-26)
+
+### Added
+
+- Implement stratification on sex for HBM analysis module and internal exposures module (#2451)
+- Implement stratification on age for HBM analysis and internal exposures module (#2452)
+- Implement biological matrix Air in Vito CodeBook (#2464)
+
+### Fixed
+
+- Aliases of unit definitions not always include the Id name (#2375)
+- Exposure percentiles boxplot: Labels on Y axis missing (#2409)
+- MCRA crashes because of missing StartDate field in Surveys (#2465)
+- Exposure route undefined in Hazard characterisations for a new Risks action based on external dietary exposure (#2467)
+
 ## Version 10.2.21 (2026-06-01)
 
 ### Added
