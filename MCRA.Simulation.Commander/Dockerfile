@@ -11,7 +11,7 @@ FROM ${MCRA_DEV_REGISTRY}/mcra-base:main AS runtime
 # we need: git, libgdiplus (png rendering) and dotnet SDK
 RUN add-apt-repository -y "ppa:dotnet/backports" \
   && apt-get update -qq\
-  && apt-get install -y --no-install-recommends aspnetcore-runtime-9.0\
+  && apt-get install -y --no-install-recommends aspnetcore-runtime-10.0\
   && rm -rf /var/lib/apt/lists/* \
   && ln -s /usr/lib/x86_64-linux-gnu/libdl.so.2 /usr/lib/x86_64-linux-gnu/libdl.so
 

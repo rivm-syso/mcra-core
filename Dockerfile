@@ -1,7 +1,9 @@
 ARG MCRA_DEV_REGISTRY="localhost"
 ARG DOCKER_IO_REPO="docker.io"
+ARG MCRA_RUNTIME="linux-x64"
 
 FROM ${MCRA_DEV_REGISTRY}/mcra-base:main AS build
+ARG MCRA_RUNTIME
 
 # install dotnet sdk and dependencies in separate step
 # we need: git, libgdiplus (png rendering) and dotnet SDK
@@ -9,7 +11,7 @@ RUN add-apt-repository -y "ppa:dotnet/backports" \
   && apt-get update -qq\
   && apt-get install -y --no-install-recommends\
     git-core\
-    dotnet-sdk-9.0\
+    dotnet-sdk-10.0\
   && rm -rf /var/lib/apt/lists/* \
   && ln -s /usr/lib/x86_64-linux-gnu/libdl.so.2 /usr/lib/x86_64-linux-gnu/libdl.so
 
@@ -34,10 +36,11 @@ COPY ["**/*.csproj", "mcra-core.sln", "."]
 # move csproj files to their respective subfolders based on file name
 RUN for f in *.csproj; do mkdir "${f%.csproj}" && cp "$f" "${f%.csproj}" && rm "$f"; done
 # Restore the solution
-RUN dotnet restore "mcra-core.sln"
+RUN dotnet restore "mcra-core.sln" -r ${MCRA_RUNTIME}
 
-# /src is a mounted folder from the host containing the source code
+# copy full source tree for build
 WORKDIR /src
+COPY . .
 
 ARG MCRA_BUILD_CONFIG="Release"
 ENV R_HOME=/usr/lib/R
@@ -47,7 +50,8 @@ ARG CACHE_DATE=empty_date_value
 RUN echo CACHE_DATE = ${CACHE_DATE}
 
 # build full solution
-RUN dotnet build "mcra-core.sln" -c ${MCRA_BUILD_CONFIG} -p:UseAppHost=false
+#RUN dotnet build "mcra-core.sln" -c ${MCRA_BUILD_CONFIG} -p:UseAppHost=false
+RUN dotnet build "MCRA.Simulation.Commander/MCRA.Simulation.Commander.csproj" -c "Release" -r ${MCRA_RUNTIME} -p:UseAppHost=false --self-contained false
 
 ## temporarily skip unit tests
 #  # run all unit test projects
@@ -65,20 +69,23 @@ RUN mkdir -p /app/mcra-bin && cp -r bin/* /app/mcra-bin
 
 # Publish stage
 FROM build as publish
+ARG MCRA_RUNTIME
 ARG MCRA_BUILD_CONFIG="Release"
 RUN dotnet publish "MCRA.Simulation.Commander/MCRA.Simulation.Commander.csproj" \
   -c ${MCRA_BUILD_CONFIG}\
+  -r ${MCRA_RUNTIME}\
   -o /app/publish\
   -p:UseAppHost=false\
+  --self-contained false\
   --no-build --no-restore
 
 # final stage/image
 # use a very small image for storing the build output files
 # which doesn't need to run anything
 FROM ${DOCKER_IO_REPO}/busybox as appstore
-
+ARG MCRA_RUNTIME
 WORKDIR /apps
 # Copy the MCRA binaries that are referenced in the web apps
-COPY --from=build /app/mcra-bin ./mcra-bin/
+COPY --from=build /app/mcra-bin/${MCRA_RUNTIME} ./mcra-bin/
 # Copy the MCRA command line interface files (CLI)
 COPY --from=publish /app/publish ./mcra-cli/
