@@ -89,25 +89,25 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         foreach (var targetBoxPlotRecords in Model.StratifiedHbmBoxPlotRecords) {
                             var targetCode = targetBoxPlotRecords.Key.Code;
                             var targetName = targetBoxPlotRecords.Key.GetDisplayName();
+                            var records = targetBoxPlotRecords.Value.Where(r => r != null).ToList();
 
                             var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
                                 name: $"HbmConcentrationsBySubstance{details}Percentiles_{targetCode}",
                                 section: Model,
-                                items: targetBoxPlotRecords.Value,
+                                items: records,
                                 viewBag: ViewBag
                             );
 
                             var chartCreator = new HbmStratifiedBoxPlotChartCreator<S, T2>(
-                                Model.StratifiedHbmBoxPlotRecords[targetBoxPlotRecords.Key],
+                                records,
                                 targetBoxPlotRecords.Key,
                                 Model.SectionId,
-                                Model.StratifiedHbmBoxPlotRecords[targetBoxPlotRecords.Key].FirstOrDefault()?.Unit ?? string.Empty,
+                                records.FirstOrDefault()?.Unit ?? string.Empty,
                                 Model.ShowOutliers,
                                 Model.StratificationVariables
                             );
 
-                            var numberOfRecords = targetBoxPlotRecords.Value.Count;
-                            var warning = Model.StratifiedHbmBoxPlotRecords[targetBoxPlotRecords.Key].Any(c => c.P95 == 0)
+                            var warning = records.Any(c => c.P95 == 0)
                                 ? "The asterisk indicates substances with positive measurements above an upper whisker of zero."
                                 : string.Empty;
                             var figCaption = Model.DetailsSection
