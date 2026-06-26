@@ -24,9 +24,11 @@ RUN dotnet tool install -g dotnet-t4
 RUN dotnet tool install -g dotnet-coverage
 RUN dotnet tool install -g dotnet-reportgenerator-globaltool
 
-# command to build:
+# example command to build locally:
 # podman build -f UnitTest.Dockerfile -v "$(pwd):/src" --build-arg "CACHE_DATE=$(date +%Y-%m-%d:%H:%M:%S)" -t mcra-core:unittest .
-# run restore of csproj files in a separate folder within the container
+
+# run restore of csproj files in a separate folder WITHIN the container
+# because the /src folder is mounted from the underlying file system
 WORKDIR /restr
 # Create file GitInfo.ThisAssembly.cs, contents will be overwritten later
 # RUN touch "GitInfo.ThisAssembly.cs"
@@ -38,9 +40,11 @@ RUN for f in *.csproj; do mkdir "${f%.csproj}" && cp "$f" "${f%.csproj}" && rm "
 # Restore the solution
 RUN dotnet restore "mcra-core.sln" -r ${MCRA_RUNTIME}
 
-# copy full source tree for build
+# NOTE: /src is mounted from the underlying file system
+# this is VITAL because the solution needs access to the .git repository
+# for the GitInfo tool to be able to generate the assembly version
+# using the latest Git label (e.g. v10.3.0)
 WORKDIR /src
-COPY . .
 
 ARG MCRA_BUILD_CONFIG="Release"
 ENV R_HOME=/usr/lib/R
