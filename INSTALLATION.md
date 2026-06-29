@@ -17,7 +17,7 @@ The following software is needed to successfully compile the software. Install t
 |Software                   |Version      |Purpose                                           |Download URLs                                                                      |Required?   |
 |---------------------------|-------------|--------------------------------------------------|-----------------------------------------------------------------------------------|------------|
 |.NET SDK                   | 9.0         |Tools to build and run C# .NET applications       |[Website Microsoft](https://dotnet.microsoft.com/en-us/download/dotnet/9.0)        |Required    |
-|R                          | R-4.5.1     |Statistical Analysis                              |[R Project site](https://cran.r-project.org/bin/windows/base/old/4.5.1/)           |Required    |
+|R                          | R-4.6.1     |Statistical Analysis                              |[R Project site](https://cran.r-project.org/bin/windows/base/old/4.6.1/)           |Required    |
 |RTools                     | 4.5         |To build R PBK model binaries                     |[RTools site](https://cran.r-project.org/bin/windows/Rtools/)                      |Required    |
 |Python (and libRoadRunner) | 3.12        |To run PBK models based on SBML                   |[Python downloads site](https://www.python.org/downloads/)                         |Required    |
 |Access Database Engine     | 2010        |To read MS Access database files                  |[Microsoft website](https://www.microsoft.com/en-us/download/details.aspx?id=13255)|Optional <sup>1</sup>|
@@ -38,7 +38,7 @@ The following software is needed to successfully compile the software. Install t
 
 ### R
 
-* Download the R-4.5.1 installer from the [R Project site](https://cran.r-project.org/bin/windows/base/old/4.5.1/).
+* Download the R-4.6.1 installer from the [R Project site](https://cran.r-project.org/bin/windows/base/old/4.6.1/).
 * Run the installer and accept all defaults.
   * In PowerShell console, running as Administrator, browse to folder `.\Installation\R` and run the command:
   ```powershell
