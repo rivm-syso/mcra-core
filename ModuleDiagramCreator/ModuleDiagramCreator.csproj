@@ -1,11 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\Shared\MCRA.Shared.Build.targets" />
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <OutputPath>..\bin\Diagramcreator</OutputPath>
-  </PropertyGroup>
-
   <ItemGroup>
     <None Remove="Resources\ModuleDiagramDefinitions.xml" />
   </ItemGroup>
