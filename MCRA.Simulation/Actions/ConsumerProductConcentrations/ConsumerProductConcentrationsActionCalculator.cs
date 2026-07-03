@@ -34,14 +34,19 @@ namespace MCRA.Simulation.Actions.ConsumerProductConcentrations {
         }
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
             var targetUnitPerMass = new ConsumerProductConcentrationUnitSpec(SystemUnits.DefaultConsumerProductConcentrationUnit);
+            var targetUnitPerVolume = new ConsumerProductConcentrationUnitSpec(SystemUnits.DefaultConsumerProductConcentrationUnitPerVolume);
             var targetUnitPerUnit = new ConsumerProductConcentrationUnitSpec(SystemUnits.DefaultConsumerProductConcentrationUnitPerUnit);
 
             var collections = new List<ConsumerProductSubstanceConcentrationsCollection>();
             var adjustedConsumerProductConcentrations = subsetManager.AllConsumerProductConcentrations
                 .GroupBy(c => (c.Product))
                 .Select(g => {
-                    // Here we require that the units of one product belong to one type, either per mass or per unit
-                    var targetUnitSpec = g.First().Unit.IsPerUnit() ? targetUnitPerUnit : targetUnitPerMass;
+                    // Here we require that the units of one product belong to one type.
+                    var targetUnitSpec = g.First().Unit.IsPerUnit()
+                        ? targetUnitPerUnit
+                        : g.First().Unit.IsPerVolume()
+                            ? targetUnitPerVolume
+                            : targetUnitPerMass;
                     var alignedConcentrations = g.Select(c => {
                         var alignmentFactor = c.Unit.GetConcentrationAlignmentFactor(targetUnitSpec.Unit, c.Substance.MolecularMass);
                         var conc = c.Concentration * alignmentFactor;

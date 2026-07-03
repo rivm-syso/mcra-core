@@ -24,6 +24,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConsumerProductExposureCalc
         [DataRow(0.5, ApplicationAmountUnit.g, 10.0, ConsumerProductConcentrationUnit.mgPerUnit, SubstanceAmountUnit.Micrograms, 2.0, 0.8, 16000)]
         [DataRow(0.5, ApplicationAmountUnit.mg, 10.0, ConsumerProductConcentrationUnit.ugPerUnit, SubstanceAmountUnit.Nanograms, 2.0, 0.8, 16000)]
         [DataRow(0.5, ApplicationAmountUnit.g, 10.0, ConsumerProductConcentrationUnit.gPerUnit, SubstanceAmountUnit.Micrograms, 2.0, 0.8, 16000000)]
+        [DataRow(0.5, ApplicationAmountUnit.mL, 10.0, ConsumerProductConcentrationUnit.ugPerL, SubstanceAmountUnit.Micrograms, 2.0, 0.8, 0.008)]
+        [DataRow(0.5, ApplicationAmountUnit.cL, 10.0, ConsumerProductConcentrationUnit.ugPerL, SubstanceAmountUnit.Micrograms, 2.0, 0.8, 0.08)]
+        [DataRow(0.5, ApplicationAmountUnit.cL, 10.0, ConsumerProductConcentrationUnit.mgPerdL, SubstanceAmountUnit.Milligrams, 2.0, 0.8, 0.8)]
+        [DataRow(0.5, ApplicationAmountUnit.dL, 10.0, ConsumerProductConcentrationUnit.ugPermL, SubstanceAmountUnit.Milligrams, 2.0, 0.8, 0.8)]
+        [DataRow(0.5, ApplicationAmountUnit.mL, 10.0, ConsumerProductConcentrationUnit.gPerL, SubstanceAmountUnit.Micrograms, 2.0, 0.8, 8000)]
         public void ConsumerProductExposureCalculator_DifferentUnits_ShouldAlignCorrectlyToTargetUnit(
             double applicationAmount,
             ApplicationAmountUnit amountUnit,

@@ -1103,11 +1103,6 @@ namespace MCRA.Simulation {
             set => GetOrCreateModuleOutputData<ConsumerProductExposuresOutputData>(ActionType.ConsumerProductExposures).ConsumerProductIndividualExposures = value;
         }
 
-        public ApplicationAmountUnit CPApplicationAmountUnit {
-            get => GetOrCreateModuleOutputData<ConsumerProductExposureDeterminantsOutputData>(ActionType.ConsumerProductExposureDeterminants).CPApplicationAmountUnit;
-            set => GetOrCreateModuleOutputData<ConsumerProductExposureDeterminantsOutputData>(ActionType.ConsumerProductExposureDeterminants).CPApplicationAmountUnit = value;
-        }
-
         public ICollection<ConsumerProductConcentrationDistribution> AllConsumerProductConcentrationDistributions {
             get => GetOrCreateModuleOutputData<ConsumerProductConcentrationDistributionsOutputData>(ActionType.ConsumerProductConcentrationDistributions).AllConsumerProductConcentrationDistributions;
             set => GetOrCreateModuleOutputData<ConsumerProductConcentrationDistributionsOutputData>(ActionType.ConsumerProductConcentrationDistributions).AllConsumerProductConcentrationDistributions = value;

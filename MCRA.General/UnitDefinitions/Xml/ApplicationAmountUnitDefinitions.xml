@@ -39,5 +39,65 @@
         <Alias>milligram</Alias>
       </Aliases>
     </Unit>
+    <Unit>
+      <Id>L</Id>
+      <Name>liter</Name>
+      <ShortName>L</ShortName>
+      <Aliases>
+        <Alias>L</Alias>
+        <Alias>liter</Alias>
+        <Alias>liters</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>dL</Id>
+      <Name>deciliter</Name>
+      <ShortName>dL</ShortName>
+      <Aliases>
+        <Alias>dL</Alias>
+        <Alias>deciliter</Alias>
+        <Alias>deciliters</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>cL</Id>
+      <Name>centiliter</Name>
+      <ShortName>cL</ShortName>
+      <Aliases>
+        <Alias>cL</Alias>
+        <Alias>centiliter</Alias>
+        <Alias>centiliters</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>mL</Id>
+      <Name>milliliter</Name>
+      <ShortName>mL</ShortName>
+      <Aliases>
+        <Alias>mL</Alias>
+        <Alias>milliliter</Alias>
+        <Alias>milliliters</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>uL</Id>
+      <Name>microliter</Name>
+      <ShortName>uL</ShortName>
+      <Aliases>
+        <Alias>uL</Alias>
+        <Alias>microliter</Alias>
+        <Alias>microliters</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>nL</Id>
+      <Name>nanoliter</Name>
+      <ShortName>nL</ShortName>
+      <Aliases>
+        <Alias>nL</Alias>
+        <Alias>nanoliter</Alias>
+        <Alias>nanoliters</Alias>
+      </Aliases>
+    </Unit>
   </Units>
 </UnitDefinition>

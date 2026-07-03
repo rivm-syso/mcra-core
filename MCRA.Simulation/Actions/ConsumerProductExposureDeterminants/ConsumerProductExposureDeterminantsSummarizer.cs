@@ -63,7 +63,6 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposureDeterminants {
 
         private static List<ActionSummaryUnitRecord> collectUnits(ActionData data, ActionModuleConfig sectionConfig) {
             var result = new List<ActionSummaryUnitRecord> {
-                new("ApplicationAmountUnit", data.CPApplicationAmountUnit.GetShortDisplayName()),
             };
             return result;
         }

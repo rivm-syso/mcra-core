@@ -11,7 +11,11 @@
         public static readonly ConcentrationUnit DefaultDustConcentrationUnit = DefaultConcentrationUnit;
         public static readonly ConcentrationUnit DefaultSoilConcentrationUnit = DefaultConcentrationUnit;
         public static readonly ConsumerProductConcentrationUnit DefaultConsumerProductConcentrationUnit = ConsumerProductConcentrationUnit.mgPerKg;
+        public static readonly ConsumerProductConcentrationUnit DefaultConsumerProductConcentrationUnitPerVolume = ConsumerProductConcentrationUnit.ugPermL;
         public static readonly ConsumerProductConcentrationUnit DefaultConsumerProductConcentrationUnitPerUnit = ConsumerProductConcentrationUnit.mgPerUnit;
+
+        public static readonly ApplicationAmountUnit DefaultApplicationAmountUnit= ApplicationAmountUnit.g;
+        public static readonly ApplicationAmountUnit DefaultApplicationAmountUnitVolume = ApplicationAmountUnit.mL;
 
         // Dose units
         public static readonly DoseUnit DefaultExternalHazardDoseUnit = DoseUnit.ugPerKgBWPerDay;

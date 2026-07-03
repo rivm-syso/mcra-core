@@ -21,6 +21,10 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Sex")]
         public string Sex { get; set; }
 
+        [Description("The unit of the applied amount.")]
+        [DisplayName("Unit")]
+        public string Unit { get; set; }
+
         [Description("Either the mean value of the distribution if a distribution is specified. Otherwise the constant value of the parameter")]
         [DisplayName("Mean (ApplicationAmountUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]

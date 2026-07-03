@@ -1,5 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class ConsumerProductApplicationAmountsDataSection : SummarySection {
@@ -16,6 +17,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         ParentName = c.Product.Parent?.Code,
                         AgeLower = c.AgeLower,
                         Sex = c.Sex != GenderType.Undefined ? c.Sex.ToString() : null,
+                        Unit = c.Unit.GetShortDisplayName(),
                         Amount = c.Amount,
                         DistributionType = c.DistributionType != ApplicationAmountDistributionType.Constant ? c.DistributionType.ToString() : null,
                         CvVariability = c.CvVariability

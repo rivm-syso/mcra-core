@@ -16,6 +16,20 @@
         }
 
 
+        public static bool IsPerVolume(this ConsumerProductConcentrationUnit unit) {
+            return unit switch {
+                ConsumerProductConcentrationUnit.gPerL => true,
+                ConsumerProductConcentrationUnit.mgPerL => true,
+                ConsumerProductConcentrationUnit.ugPerL => true,
+                ConsumerProductConcentrationUnit.ngPerL => true,
+                ConsumerProductConcentrationUnit.pgPerL => true,
+                ConsumerProductConcentrationUnit.ugPermL => true,
+                ConsumerProductConcentrationUnit.ngPermL => true,
+                ConsumerProductConcentrationUnit.mgPerdL => true,
+                _ => false
+            };
+        }
+
         public static bool IsPerUnit(this ConsumerProductConcentrationUnit unit) {
             return unit.GetConcentrationMassUnit() == ConcentrationMassUnit.PerUnit;
         }

@@ -13,11 +13,15 @@ namespace MCRA.General {
         MilliGrams,
         [Display(ShortName = "L", Name = "liter")]
         Liter,
-        [Display(ShortName = "mL", Name = "milliliter")]
-        Milliliter,
         [Display(ShortName = "dL", Name = "deciliter")]
         Deciliter,
         [Display(ShortName = "cL", Name = "centiliter")]
         Centiliter,
+        [Display(ShortName = "mL", Name = "milliliter")]
+        Milliliter,
+        [Display(ShortName = "uL", Name = "microliter")]
+        Microliter,
+        [Display(ShortName = "nL", Name = "nanoliter")]
+        Nanoliter,
     };
 }
