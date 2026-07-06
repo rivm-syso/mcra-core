@@ -4,31 +4,34 @@ using OxyPlot;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class HbmUpperDistributionRiskDriversPieChartCreator : ReportPieChartCreatorBase {
+    public abstract class HbmRiskDriverContributionsPieChartCreatorBase<S, T> : ReportPieChartCreatorBase
+        where S : IHbmExposureContributorKey, new()
+        where T : HbmContributionRecordBase<S>, new() {
 
-        private HbmUpperDistributionRiskDriversSection _section;
-        private bool _isUncertainty;
+        private readonly string _sectionId;
+        private readonly bool _isUncertainty;
+        private readonly List<T> _records;
 
-        public HbmUpperDistributionRiskDriversPieChartCreator(HbmUpperDistributionRiskDriversSection section, bool isUncertainty) {
+        public HbmRiskDriverContributionsPieChartCreatorBase(string sectionId, List<T> records, bool isUncertainty) {
             Width = 500;
             Height = 350;
-            _section = section;
+            _sectionId = sectionId;
+            _records = records;
             _isUncertainty = isUncertainty;
         }
 
         public override string ChartId {
             get {
                 var pictureId = "4c761248-fd8a-4ed5-b616-c65f8f084b95";
-                return StringExtensions.CreateFingerprint(_section.SectionId + pictureId);
+                return StringExtensions.CreateFingerprint(_sectionId + pictureId);
             }
         }
 
-        public override string Title => $"Contribution of substances to the upper tail {_section.UpperPercentage:F1}% of the distribution.";
-
         public override PlotModel Create() {
-            var pieSlices = _section.Records.Select(
-                r => (
-                    r.SubstanceName,
+            var pieSlices = _records
+                .Where(c => string.IsNullOrEmpty(c.Stratification))
+                .Select(r => (
+                    SubstanceName: r.GetDescriptorKey(),
                     Contribution: _isUncertainty ? r.MeanContribution : r.Contribution
                 ))
                 .Where(r => r.Contribution > 0)
@@ -38,11 +41,6 @@ namespace MCRA.Simulation.OutputGeneration {
             return create(pieSlices);
         }
 
-        /// <summary>
-        /// To add a legenda, set plotmodel IsLegendVisible = true, and add an empty Title for the series, see custom model
-        /// </summary>
-        /// <param name="pieSlices"></param>
-        /// <returns></returns>
         private PlotModel create(List<PieSlice> pieSlices) {
             var noSlices = getNumberOfSlices(pieSlices);
             var palette = CustomPalettes.GorgeousTone(noSlices);

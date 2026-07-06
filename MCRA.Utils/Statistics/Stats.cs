@@ -254,6 +254,27 @@ namespace MCRA.Utils.Statistics {
         /// Computes percentiles with additional zeros.
         /// </summary>
         /// <param name="xValues"></param>
+        /// <param name="percentages"></param>
+        /// <param name="sumWeightZeros"></param>
+        /// <returns></returns>
+        public static double[] PercentilesAdditionalZeros(
+            this IEnumerable<double> xValues,
+            double[] percentages,
+            double sumWeightZeros
+        ) {
+            var weights = xValues.Select(r => 1D).ToList();
+            return PercentilesAdditionalZeros(
+                xValues,
+                weights,
+                percentages,
+                sumWeightZeros
+            );
+        }
+
+        /// <summary>
+        /// Computes percentiles with additional zeros.
+        /// </summary>
+        /// <param name="xValues"></param>
         /// <param name="weights"></param>
         /// <param name="percentages"></param>
         /// <param name="sumWeightZeros"></param>
@@ -273,7 +294,7 @@ namespace MCRA.Utils.Statistics {
                 return x.PercentilesWithSamplingWeights(w, percentages.AsEnumerable());
             } else {
                 var x = xValues.Concat(Enumerable.Repeat(0D, 2));
-                var w = weights.Concat(new List<double>() { sumWeightZeros - 1D, 1D }).ToList();
+                var w = weights.Concat([sumWeightZeros - 1D, 1D]).ToList();
                 return x.PercentilesWithSamplingWeights(w, percentages.AsEnumerable());
             }
         }

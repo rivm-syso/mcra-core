@@ -21,6 +21,7 @@ namespace MCRA.Simulation.Test.Mock {
             }
             return collection;
         }
+
         /// <summary>
         /// Creates a fake uncertain data point collection.
         /// </summary>

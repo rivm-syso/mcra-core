@@ -31,6 +31,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = FakeSubstancesGenerator.Create(3);
             var rpfs = substances.ToDictionary(c => c, c => 1d);
+            var memberships = substances.ToDictionary(c => c, c => 1d);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
             var targetUnit = ConcentrationUnit.ugPerL;
             var hbmSampleSubstanceCollections = FakeHbmDataGenerator.FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod, targetUnit);
@@ -48,6 +49,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
                 HbmSamplingMethods = [samplingMethod],
                 CorrectedRelativePotencyFactors = rpfs,
+                MembershipProbabilities = memberships,
                 HbmSurveys = [FakeHbmDataGenerator.FakeHbmSurvey(individualDays)]
             };
 
@@ -69,6 +71,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(sims);
             var substances = FakeSubstancesGenerator.Create(3);
             var rpfs = substances.ToDictionary(c => c, c => 1d);
+            var memberships = substances.ToDictionary(c => c, c => 1d);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
             var targetUnit = ConcentrationUnit.ugPerL;
             var hbmSampleSubstanceCollections = FakeHbmDataGenerator
@@ -86,6 +89,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
                 HbmSamplingMethods = [samplingMethod],
                 CorrectedRelativePotencyFactors = rpfs,
+                MembershipProbabilities = memberships,
                 HbmSurveys = [FakeHbmDataGenerator.FakeHbmSurvey(individualDays)]
             };
 
@@ -108,6 +112,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = FakeSubstancesGenerator.Create(3);
             var rpfs = substances.ToDictionary(c => c, c => 1d);
+            var memberships = substances.ToDictionary(c => c, c => 1d);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
             var targetUnit = ConcentrationUnit.ugPerL;
             var hbmSampleSubstanceCollections = FakeHbmDataGenerator
@@ -126,6 +131,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 AllCompounds = substances,
                 ActiveSubstances = substances,
                 CorrectedRelativePotencyFactors = rpfs,
+                MembershipProbabilities = memberships,
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
                 HbmSamplingMethods = [samplingMethod],
                 HbmSurveys = [FakeHbmDataGenerator.FakeHbmSurvey(individualDays)]

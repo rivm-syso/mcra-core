@@ -48,7 +48,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
                     Title = group.Key,
                     LabelFormatString = "{0:0.0}%",
                     LabelPlacement = LabelPlacement.Middle,
-                    TextColor = OxyColors.White,
+                    TextColor = OxyColors.Black,
                 };
                 foreach (var category in allCategories) {
                     var item = group.FirstOrDefault(g => g.Category == category);

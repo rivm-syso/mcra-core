@@ -1,5 +1,4 @@
-﻿using DocumentFormat.OpenXml.Spreadsheet;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
@@ -11,7 +10,6 @@ using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayCon
 using MCRA.Simulation.Calculators.Stratification;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
-using SQLitePCL;
 
 namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
     public enum HumanMonitoringAnalysisSections {
@@ -126,12 +124,14 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 && data.ActiveSubstances.Count > 1
             ) {
                 summarizeContributionsBySubstance(
+                    stratifier,
                     data.HbmIndividualDayCollections,
                     data.HbmIndividualCollections,
                     data.HbmCumulativeIndividualDayCollection,
                     data.HbmCumulativeIndividualCollection,
                     data.ActiveSubstances,
                     data.CorrectedRelativePotencyFactors,
+                    data.MembershipProbabilities,
                     subHeader,
                     subOrder++
                 );
@@ -193,11 +193,11 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
            SectionHeader header
         ) {
 
-            var populationStratifier = getPopulationStratifier(data);
+            var stratifier = getPopulationStratifier(data);
 
             if (data.HbmCumulativeIndividualCollection != null || data.HbmCumulativeIndividualDayCollection != null) {
                 summarizeCumulativeConcentrationseUncertainty(
-                    populationStratifier,
+                    stratifier,
                     data.HbmCumulativeIndividualDayCollection,
                     data.HbmCumulativeIndividualCollection,
                     _configuration.ExposureType,
@@ -207,23 +207,26 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 );
 
                 summarizeRiskDriversUncertainty(
+                    stratifier,
                     data.HbmIndividualDayCollections,
                     data.HbmIndividualCollections,
                     data.HbmCumulativeIndividualDayCollection,
                     data.HbmCumulativeIndividualCollection,
                     data.ActiveSubstances,
                     data.CorrectedRelativePotencyFactors,
+                    data.MembershipProbabilities,
                     _configuration.ExposureType,
                     _configuration.VariabilityUpperTailPercentage,
                     _configuration.UncertaintyLowerBound,
                     _configuration.UncertaintyUpperBound,
+                    _configuration.UncertaintyAnalysisCycles,
                     header
                 );
 
             }
 
             summarizeHbmConcentrationsByTargetSubstanceUncertainty(
-                populationStratifier,
+                stratifier,
                 data.HbmIndividualDayCollections,
                 data.HbmIndividualCollections,
                 data.ActiveSubstances,
@@ -236,7 +239,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             );
 
             summarizeHbmConcentrationsBySubstanceTimePointUncertainty(
-                populationStratifier,
+                stratifier,
                 data.HbmIndividualDayCollections,
                 data.ActiveSubstances,
                 _configuration.UncertaintyLowerBound,
@@ -246,7 +249,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
 
             if (result.HbmMeasuredMatrixIndividualDayCollections?.Count > 0) {
                 summarizeHbmConcentrationsByTargetSubstanceDetailsUncertainty(
-                    populationStratifier,
+                    stratifier,
                     result.HbmMeasuredMatrixIndividualDayCollections,
                     result.HbmMeasuredMatrixIndividualCollections,
                     data.ActiveSubstances,
@@ -275,7 +278,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 new("LowerPercentage", $"p{_configuration.VariabilityLowerPercentage}"),
                 new("UpperPercentage", $"p{_configuration.VariabilityUpperPercentage}"),
                 new("LowerBound", $"p{_configuration.UncertaintyLowerBound}"),
-                new("UpperBound", $"p{_configuration.UncertaintyUpperBound}")
+                new("UpperBound", $"p{_configuration.UncertaintyUpperBound}"),
             };
 
             // TODO: check whether this is still used/needed. Remove if possible.
@@ -465,56 +468,62 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
         }
 
         private void summarizeContributionsBySubstance(
+            PopulationStratifier stratifier,
             ICollection<HbmIndividualDayCollection> hbmIndividualDayCollections,
             ICollection<HbmIndividualCollection> hbmIndividualCollections,
             HbmCumulativeIndividualDayCollection hbmCumulativeIndividualDayConcentrations,
             HbmCumulativeIndividualCollection hbmCumulativeIndividualConcentrations,
             ICollection<Compound> activeSubstances,
             IDictionary<Compound, double> relativePotencyFactors,
+            IDictionary<Compound, double> assessmentGroupMemberships,
             SectionHeader header,
             int order
         ) {
-            var section = new HbmRiskDriverSection() {
-                SectionLabel = getSectionLabel(HumanMonitoringAnalysisSections.CumulativeRiskDriversSections)
-            };
-            var subHeader = header.AddSubSectionHeaderFor(
-                section,
+            var subHeader = header.AddEmptySubSectionHeader(
                 "Contributions by substance",
-                order
+                order,
+                getSectionLabel(HumanMonitoringAnalysisSections.CumulativeRiskDriversSections)
             );
 
-            // Contributions total
-            if (hbmIndividualCollections != null || hbmIndividualDayCollections != null) {
-                var section1 = new HbmTotalDistributionRiskDriversSection();
-                var subHeader2 = subHeader.AddSubSectionHeaderFor(section1, "Contributions to cumulative concentrations for total distribution", order++);
-                section1.Summarize(
-                    hbmIndividualDayCollections,
-                    hbmIndividualCollections,
-                    hbmCumulativeIndividualDayConcentrations,
-                    hbmCumulativeIndividualConcentrations,
-                    activeSubstances,
-                    relativePotencyFactors,
-                    _configuration.ExposureType
-                );
-
-                subHeader2.SaveSummarySection(section1);
+            {
+                // Contributions total
+                if (hbmIndividualCollections != null || hbmIndividualDayCollections != null) {
+                    var subSection = new HbmContributionsBySubstanceTotalSection();
+                    var subSubHeader = subHeader.AddSubSectionHeaderFor(subSection, "Contributions to cumulative concentrations for total distribution", order++);
+                    subSection.Summarize(
+                        stratifier,
+                        hbmIndividualDayCollections,
+                        hbmIndividualCollections,
+                        hbmCumulativeIndividualDayConcentrations,
+                        hbmCumulativeIndividualConcentrations,
+                        activeSubstances,
+                        relativePotencyFactors,
+                        assessmentGroupMemberships,
+                        _configuration.ExposureType
+                    );
+                    subSubHeader.SaveSummarySection(subSection);
+                }
             }
 
-            // Contributions upper
-            if (hbmIndividualCollections != null || hbmIndividualDayCollections != null) {
-                var section1 = new HbmUpperDistributionRiskDriversSection();
-                var subHeader2 = subHeader.AddSubSectionHeaderFor(section1, "Contributions to cumulative concentrations for upper distribution", order++);
-                section1.Summarize(
-                    hbmIndividualDayCollections,
-                    hbmIndividualCollections,
-                    hbmCumulativeIndividualDayConcentrations,
-                    hbmCumulativeIndividualConcentrations,
-                    activeSubstances,
-                    relativePotencyFactors,
-                    _configuration.ExposureType,
-                    _configuration.VariabilityUpperTailPercentage
-                );
-                subHeader2.SaveSummarySection(section1);
+            {
+                // Contributions upper
+                if (hbmIndividualCollections != null || hbmIndividualDayCollections != null) {
+                    var subSection = new HbmContributionsBySubstanceUpperSection();
+                    var subSubHeader = subHeader.AddSubSectionHeaderFor(subSection, "Contributions to cumulative concentrations for upper distribution", order++);
+                    subSection.Summarize(
+                        stratifier,
+                        hbmIndividualDayCollections,
+                        hbmIndividualCollections,
+                        hbmCumulativeIndividualDayConcentrations,
+                        hbmCumulativeIndividualConcentrations,
+                        activeSubstances,
+                        relativePotencyFactors,
+                        assessmentGroupMemberships,
+                        _configuration.ExposureType,
+                        _configuration.VariabilityUpperTailPercentage
+                    );
+                    subSubHeader.SaveSummarySection(subSection);
+                }
             }
 
             // Individuals contributions
@@ -529,7 +538,6 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     order
                 );
             }
-            subHeader.SaveSummarySection(section);
         }
 
         private void summarizeIndividualContributions(
@@ -764,49 +772,58 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
         }
 
         private void summarizeRiskDriversUncertainty(
+            PopulationStratifier stratifier,
             ICollection<HbmIndividualDayCollection> hbmIndividualDayCollections,
             ICollection<HbmIndividualCollection> hbmIndividualCollections,
             HbmCumulativeIndividualDayCollection hbmCumulativeIndividualDayCollection,
             HbmCumulativeIndividualCollection hbmCumulativeIndividualCollection,
             ICollection<Compound> activeSubstances,
             IDictionary<Compound, double> relativePotencyFactors,
+            IDictionary<Compound, double> assessmentGroupMemberships,
             ExposureType exposureType,
             double upperPercentage,
             double lowerBound,
             double upperBound,
+            int uncertaintyAnalysisCycles,
             SectionHeader header
         ) {
-            var subHeader = header.GetSubSectionHeader<HbmTotalDistributionRiskDriversSection>();
+            var subHeader = header.GetSubSectionHeader<HbmContributionsBySubstanceTotalSection>();
             if (subHeader != null) {
-                var section = subHeader.GetSummarySection() as HbmTotalDistributionRiskDriversSection;
+                var section = subHeader.GetSummarySection() as HbmContributionsBySubstanceTotalSection;
                 section.SummarizeUncertainty(
+                    stratifier,
                     hbmIndividualDayCollections,
                     hbmIndividualCollections,
                     hbmCumulativeIndividualDayCollection,
                     hbmCumulativeIndividualCollection,
                     activeSubstances,
                     relativePotencyFactors,
+                    assessmentGroupMemberships,
                     exposureType,
                     lowerBound,
-                    upperBound
+                    upperBound,
+                    uncertaintyAnalysisCycles
                 );
                 subHeader.SaveSummarySection(section);
             }
 
-            subHeader = header.GetSubSectionHeader<HbmUpperDistributionRiskDriversSection>();
+            subHeader = header.GetSubSectionHeader<HbmContributionsBySubstanceUpperSection>();
             if (subHeader != null) {
-                var section = subHeader.GetSummarySection() as HbmUpperDistributionRiskDriversSection;
+                var section = subHeader.GetSummarySection() as HbmContributionsBySubstanceUpperSection;
                 section.SummarizeUncertainty(
+                    stratifier,
                     hbmIndividualDayCollections,
                     hbmIndividualCollections,
                     hbmCumulativeIndividualDayCollection,
                     hbmCumulativeIndividualCollection,
                     activeSubstances,
                     relativePotencyFactors,
+                    assessmentGroupMemberships,
                     exposureType,
                     upperPercentage,
                     lowerBound,
-                    upperBound
+                    upperBound,
+                    uncertaintyAnalysisCycles
                 );
                 subHeader.SaveSummarySection(section);
             }

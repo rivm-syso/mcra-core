@@ -76,7 +76,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
             return ConcentrationsBySubstance.ContainsKey(substance)
                 ? ConcentrationsBySubstance[substance]
                     .EquivalentSubstanceExposure(relativePotencyFactors[substance], membershipProbabilities[substance])
-                : double.NaN;
+                : 0D;
         }
 
         /// <summary>
