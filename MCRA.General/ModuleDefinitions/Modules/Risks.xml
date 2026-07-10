@@ -60,6 +60,10 @@
     <CalculationSetting source="HazardCharacterisations">UseIntraSpeciesConversionFactors</CalculationSetting>
     <CalculationSetting source="HumanMonitoringData">CodesHumanMonitoringSamplingMethods</CalculationSetting>
     <CalculationSetting source="HazardCharacterisations">HCSubgroupDependent</CalculationSetting>
+    <CalculationSetting source="HumanMonitoringAnalysis">OccupationalExposureAssessment</CalculationSetting>
+    <CalculationSetting source="HumanMonitoringAnalysis">ShiftAnalysis</CalculationSetting>
+    <CalculationSetting source="HumanMonitoringAnalysis">CaseControlAnalysis</CalculationSetting>
+    <CalculationSetting source="HumanMonitoringAnalysis">CaseControlSelection</CalculationSetting>
   </CalculationSettings>
   <OutputSettings>
     <OutputSetting>LeftMargin</OutputSetting>
@@ -77,6 +81,9 @@
     <OutputSetting source="Action">VariabilityLowerPercentage</OutputSetting>
     <OutputSetting source="Action">VariabilityUpperPercentage</OutputSetting>
     <OutputSetting source="DietaryExposures">IsPerPerson</OutputSetting>
+    <OutputSetting source="Action">StratifyOutputs</OutputSetting>
+    <OutputSetting source="Action">OutputStratificationVariable</OutputSetting>
+    <OutputSetting source="Action">AgeStratificationBoundaries</OutputSetting>
   </OutputSettings>
   <UncertaintySettings>
     <UncertaintySetting source="Action">UncertaintyLowerBound</UncertaintySetting>

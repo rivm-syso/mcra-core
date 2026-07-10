@@ -133,7 +133,8 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                         CriticalEffectDose = criticalEffectDose,
                         Exposure = exposure,
                         HazardExposureRatio = hazardExposureRatio(HealthEffectType.Risk, criticalEffectDose, exposure),
-                        ExposureHazardRatio = exposureHazardRatio(HealthEffectType.Risk, criticalEffectDose, exposure)
+                        ExposureHazardRatio = exposureHazardRatio(HealthEffectType.Risk, criticalEffectDose, exposure),
+                        IsPositive = exposure >  0
                     };
                 })
                 .ToList();

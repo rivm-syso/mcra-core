@@ -157,7 +157,7 @@ namespace MCRA.Simulation.OutputGeneration {
             return c.GetLabel();
         }
 
-        private static int[] GetDescriptorStratificationIndices(
+        public static int[] GetDescriptorStratificationIndices(
             List<OutputStratificationVariable> stratificationVariables
         ) {
             if (stratificationVariables?.Any(r => r == OutputStratificationVariable.OccupationalScenario) ?? false) {
@@ -175,37 +175,55 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         /// <summary>
-        /// Get a sort key for a label based on the first number found or character in the string.
+        /// Gets a sort key for a label based on the first number or character found in the string.
         /// </summary>
-        /// <param name="label"></param>
-        /// <returns></returns>
-        private static (double sortKey, string originalLabel) getSortKey(string label) {
-            // Zoek naar het allereerste getal in de string
-            //Match match = Regex.Match(label, @"\d+");
+        /// <param name="label">The input string to extract a sorting key from.</param>
+        /// <returns>A tuple containing the calculated sort key and the original label if no number was found.</returns>
+        public static (double sortKey, string originalLabel) getSortKey(string label) {
+            // 1. Extract letters (as a string) from the label (e.g., "A", "B", "AA")
+            Match characterMatch = Regex.Match(label, @"[A-Za-z]+");
+            string characterString = characterMatch.Success ? characterMatch.Value.ToUpper() : "";
+
+            // Calculate an alphabetical value for the string (e.g., A = 1, B = 2, AA = 1.01)
+            double penalty = 0.0;
+            if (!string.IsNullOrEmpty(characterString)) {
+                // The first letter carries the most weight
+                penalty += (characterString[0] - 'A' + 1);
+
+                // If there is a second letter, it carries less weight (e.g., for "AA" or "AB")
+                if (characterString.Length > 1) {
+                    penalty += (characterString[1] - 'A' + 1) * 0.01;
+                }
+                // Convert to a small fraction so it does not disrupt the main score (divide by 100)
+                penalty = penalty * 0.01;
+            }
+
+            // 2. Search for the number (original logic)
             Match match = Regex.Match(label, @"([<>=-]*\s*\d+)");
 
             if (!match.Success) {
-                return (0d, label);
+                return (0d + penalty, label);
             }
 
             var regexKey = Regex.Match(match.Value, @"\d+").Value;
             var key = double.Parse(regexKey);
 
             var score = key;
-            // if the label contains '<', it should fall just below that number (e.g., 69.9 for <70)
+            // If the label contains '<', it falls just below that number
             if (label.Contains('<')) {
-                score = key - 0.1;
+                score = key - 0.5; // Leaves room for the letter bonuses
             }
-            // if the label contains '>', it should fall just above that number (e.g., 70.1 for >70)
+            // If the label contains '>', it falls just above that number
             if (label.Contains('>')) {
-                score = key + 0.1;
+                score = key + 0.5;
             }
-            // otherwise, return the number as is
-            return (score, string.Empty);
+
+            // Add the letterBonus to the score for fine-grained sorting within the number range
+            return (score + penalty, string.Empty);
         }
 
         internal class PositionLegend : Legend {
-            public double ExtraWidthPadding { get; set; } = 20;
+            public double ExtraWidthPadding { get; set; } = 25;
 
             public override OxySize GetLegendSize(IRenderContext rc, OxySize s) {
                 setDefaults();
@@ -227,7 +245,7 @@ namespace MCRA.Simulation.OutputGeneration {
             /// The shift is applied by multiplying the left position by a factor (e.g., 0.94) to move it slightly to the left.
             /// </summary>
             public override OxyRect GetLegendRectangle(OxySize legendSize) {
-                var shift = 0.94;
+                var shift = 0.96;
                 var p = base.GetLegendRectangle(legendSize);
                 var position = new OxyRect(p.Left * shift, p.Top, p.Width, p.Height);
                 return position;

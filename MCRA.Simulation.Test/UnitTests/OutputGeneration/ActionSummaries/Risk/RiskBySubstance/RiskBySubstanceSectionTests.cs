@@ -6,9 +6,7 @@ using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
-    /// <summary>
-    ///  OutputGeneration, ActionSummaries, Risk, RiskBySubstance
-    /// </summary>
+
     [TestClass]
     public class RiskBySubstanceSectionTests : ChartCreatorTestBase {
 

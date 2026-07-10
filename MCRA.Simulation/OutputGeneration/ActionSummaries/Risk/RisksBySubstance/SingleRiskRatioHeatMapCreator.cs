@@ -31,68 +31,62 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public override PlotModel Create() {
             var threshold = _section.Threshold;
-            var xlow = _section.LeftMargin;
-            var xhigh = _section.RightMargin;
-            var riskRecord = _section.RiskRecord;
-            double p1;
-            if (_section.RiskMetricType == RiskMetricType.HazardExposureRatio) {
-                p1 = _isUncertainty
-                   ? riskRecord.PLowerRiskUncP50
-                   : riskRecord.PLowerRiskNom;
-            } else {
-                p1 = _isUncertainty
-                ? (riskRecord.PLowerRiskUncP50 != 0 ? riskRecord.PLowerRiskUncP50 : 1 / SimulationConstants.MOE_eps)
-                : (riskRecord.PLowerRiskNom != 0 ? riskRecord.PLowerRiskNom : 1 / SimulationConstants.MOE_eps);
-            }
-            var p99 = _isUncertainty
+            var riskRecord = _section.SingleRiskRecord;
+            var boxLow = _isUncertainty
+                ? riskRecord.PLowerRiskUncP50
+                : riskRecord.PLowerRiskNom;
+            var boxHigh = _isUncertainty
                 ? riskRecord.PUpperRiskUncP50
                 : riskRecord.PUpperRiskNom;
-            var p1_lower95 = p1;
-            var p99_upper95 = p99;
-            var p50 = (!double.IsNaN(riskRecord.RiskP50UncP50)) ? riskRecord.RiskP50UncP50 :riskRecord.RiskP50Nom;
+            var wiskerLow = boxLow;
+            var wiskerHigh = boxHigh;
+            var p50 = !double.IsNaN(riskRecord.RiskP50UncP50)
+                ? riskRecord.RiskP50UncP50
+                : riskRecord.RiskP50Nom;
+
             if (_isUncertainty) {
-                if (_section.RiskMetricType == RiskMetricType.HazardExposureRatio) {
-                    p1_lower95 = riskRecord.PLowerRiskUncLower;
-                    p99_upper95 = riskRecord.PUpperRiskUncUpper;
-                } else {
-                    p1_lower95 = riskRecord.PLowerRiskUncLower != 0 ? riskRecord.PLowerRiskUncLower : 1 / SimulationConstants.MOE_eps;
-                    p99_upper95 = riskRecord.PUpperRiskUncUpper;
-                }
+                wiskerLow = riskRecord.PLowerRiskUncLower;
+                wiskerHigh = riskRecord.PUpperRiskUncUpper;
             }
-            if (_section.RiskMetricType == RiskMetricType.HazardExposureRatio) {
-                if (p99 > xhigh) {
-                    var xx = Math.Floor(Math.Log10(p99) + 0);
-                    xhigh = Math.Exp(xx * Math.Log(10));
-                }
-                if (p1 < xlow && !_isUncertainty) {
-                    var xx = Math.Floor(Math.Log10(p1) - 1);
+            var maximum = SimulationConstants.MOE_eps;
+            p50 = !double.IsInfinity(p50) ? p50 : maximum;
+            boxLow = !double.IsInfinity(boxLow) ? boxLow : maximum;
+            wiskerLow = !double.IsInfinity(wiskerLow) ? wiskerLow : maximum;
+            boxHigh = !double.IsInfinity(boxHigh) ? boxHigh : maximum;
+            wiskerHigh = !double.IsInfinity(wiskerHigh) ? wiskerHigh : maximum;
+
+            var xlow = _section.LeftMargin;
+            var xhigh = _section.RightMargin;
+            if (_section.RiskMetric == RiskMetricType.HazardExposureRatio) {
+                if (boxLow < xlow && !_isUncertainty) {
+                    var xx = Math.Floor(Math.Log10(boxLow) - 1);
                     xlow = Math.Pow(10, xx);
                 }
-                if (p1_lower95 < xlow && _isUncertainty) {
-                    var xx = Math.Floor(Math.Log10(p1_lower95) - 1);
+                if (wiskerLow < xlow && _isUncertainty) {
+                    var xx = Math.Floor(Math.Log10(wiskerLow) - 1);
                     xlow = Math.Pow(10, xx);
                 }
             } else {
-                if (p99 > xhigh && !_isUncertainty) {
-                    var xx = Math.Floor(Math.Log10(p99) + 1);
+                if (boxHigh > xhigh && !_isUncertainty) {
+                    var xx = Math.Floor(Math.Log10(boxHigh) + 1);
                     xhigh = Math.Pow(10, xx);
                 }
-                if (p99_upper95 > xhigh && _isUncertainty) {
-                    var xx = Math.Floor(Math.Log10(p99_upper95) + 1);
+                if (wiskerHigh > xhigh && _isUncertainty) {
+                    var xx = Math.Floor(Math.Log10(wiskerHigh) + 1);
                     xhigh = Math.Pow(10, xx);
                 }
             }
             return create(
-                _section.RiskRecord.SubstanceName,
+                _section.SingleRiskRecord?.SubstanceName,
                 xlow,
                 xhigh,
                 p50,
-                p1,
-                p99,
-                p1_lower95,
-                p99_upper95,
+                boxLow,
+                boxHigh,
+                wiskerLow,
+                wiskerHigh,
                 threshold,
-                _section.RiskMetricType,
+                _section.RiskMetric,
                 _section.ReferenceDose,
                 _section.TargetUnit?.GetShortDisplayName(),
                 true
@@ -111,7 +105,7 @@ namespace MCRA.Simulation.OutputGeneration {
             double xNeutral,
             RiskMetricType riskMetric,
             double referenceDose,
-            string intakeUnit,
+            string exposureUnit,
             bool setExposuresAxis
         ) {
             var ymin = -.5;
@@ -164,13 +158,7 @@ namespace MCRA.Simulation.OutputGeneration {
             lineSeriesOne.Points.Add(new DataPoint(1D, ymin));
             lineSeriesOne.Points.Add(new DataPoint(1D, yMax));
             plotModel.Series.Add(lineSeriesOne);
-            var boxPlotSeries = new HorizontalBoxPlotSeries() {
-                Fill = OxyColors.Gray,
-            };
 
-            plotModel.Series.Add(boxPlotSeries);
-            //Nuget package update "OxyPlot.Core Version=2.1.2" to "OxyPlot.Core Version="2.2.0"
-            //Fix category axis bug by plotting the substance name (otherwise a default number is plotted)
             var categoryAxis = new CategoryAxis() {
                 MinorStep = 1,
                 GapWidth = 0.1,
@@ -206,7 +194,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         Base = 10,
                         Position = AxisPosition.Top,
                         UseSuperExponentialFormat = false,
-                        Title = $"Exposure ({intakeUnit})"
+                        Title = $"Exposure ({exposureUnit})"
                     };
                     plotModel.Axes.Add(horizontalUpperAxis);
                 } else {
@@ -217,14 +205,20 @@ namespace MCRA.Simulation.OutputGeneration {
                         Base = 10,
                         Position = AxisPosition.Top,
                         UseSuperExponentialFormat = false,
-                        Title = $"Exposure ({intakeUnit})"
+                        Title = $"Exposure ({exposureUnit})"
                     };
                     plotModel.Axes.Add(horizontalUpperAxis);
                 }
             }
 
+            var boxPlotSeries = new HorizontalBoxPlotSeries() {
+                Fill = OxyColors.Gray,
+            };
+
             var item = new BoxPlotItem(0, wiskerLow, boxLow, median, boxHigh, wiskerHigh);
             boxPlotSeries.Items.Add(item);
+
+            plotModel.Series.Add(boxPlotSeries);
 
             return plotModel;
         }

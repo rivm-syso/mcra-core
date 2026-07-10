@@ -1,24 +1,22 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.RiskCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
 
-    /// <summary>
-    ///  OutputGeneration, ActionSummaries, Risk, MultipleThresholdExposureRatio
-    /// </summary>
     [TestClass]
-    public class MultipleHazardExposureRatioSectionTests : SectionTestBase {
+    public class MultipleRiskRatioSectionTests : SectionTestBase {
 
         /// <summary>
         /// Summarize (uncertainty), test MultipleThresholdExposureRatioSection view
         /// </summary>
         [TestMethod]
-        public void MultipleHazardExposureRatioSection_TestSummarize() {
+        [DataRow(RiskMetricType.ExposureHazardRatio)]
+        [DataRow(RiskMetricType.HazardExposureRatio)]
+        public void MultipleHazardExposureRatioSection_TestSummarize(RiskMetricType riskMetric) {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
             var individuals = FakeIndividualsGenerator.CreateSimulated(100, 1, random);
@@ -42,21 +40,23 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var individualEffectsBySubstanceCollections = new List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> IndividualEffects)> {
                 (targetUnit.Target, individualEffectsBySubstance)
             };
-            var section = new MultipleHazardExposureRatioSection() { };
+            var section = new MultipleRiskRatioSection();
             section.Summarize(
-                [targetUnit],
-                individualEffectsBySubstanceCollections,
                 individualEffects,
+                individualEffectsBySubstanceCollections,
+                [targetUnit],
                 substances,
                 null,
-                1,
                 90,
-                RiskMetricType.HazardExposureRatio,
+                1,
+                riskMetric,
                 RiskMetricCalculationType.RPFWeighted,
+                null,
                 5,
                 10,
                 false,
                 true,
+                null,
                 skipPrivacySensitiveOutputs: false
             );
             section.SummarizeUncertain(
@@ -68,15 +68,16 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 false,
                 2.5,
                 97.5,
-                true
+                true,
+                stratifier: null
             );
 
-            Assert.AreEqual(11, section.RiskRecords.SelectMany(c => c.Records).Count());
-            Assert.IsFalse(double.IsNaN(section.RiskRecords[0].Records.First().RiskP50UncP50));
-            Assert.IsFalse(double.IsNaN(section.RiskRecords[0].Records.First().PLowerRiskUncP50));
-            Assert.IsFalse(double.IsNaN(section.RiskRecords[0].Records.First().PUpperRiskUncP50));
-            Assert.IsFalse(double.IsNaN(section.RiskRecords[0].Records.First().PLowerRiskUncLower));
-            Assert.IsFalse(double.IsNaN(section.RiskRecords[0].Records.First().PUpperRiskUncUpper));
+            Assert.AreEqual(11, section.MultipleRiskRecords.SelectMany(c => c.Records).Count());
+            Assert.IsFalse(double.IsNaN(section.MultipleRiskRecords[0].Records.First().RiskP50UncP50));
+            Assert.IsFalse(double.IsNaN(section.MultipleRiskRecords[0].Records.First().PLowerRiskUncP50));
+            Assert.IsFalse(double.IsNaN(section.MultipleRiskRecords[0].Records.First().PUpperRiskUncP50));
+            Assert.IsFalse(double.IsNaN(section.MultipleRiskRecords[0].Records.First().PLowerRiskUncLower));
+            Assert.IsFalse(double.IsNaN(section.MultipleRiskRecords[0].Records.First().PUpperRiskUncUpper));
             AssertIsValidView(section);
         }
     }
