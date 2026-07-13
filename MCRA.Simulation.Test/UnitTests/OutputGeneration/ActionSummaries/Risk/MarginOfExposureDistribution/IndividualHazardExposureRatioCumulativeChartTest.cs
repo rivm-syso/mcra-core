@@ -1,16 +1,15 @@
-﻿using MCRA.Utils;
+﻿using MCRA.Simulation.OutputGeneration;
+using MCRA.Simulation.Test.Mock;
+using MCRA.Utils;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.Histograms;
-using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Mock;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
 
     [TestClass]
     public class IndividualHazardExposureRatioCumulativeChartTest : ChartCreatorTestBase {
 
-        private int _numberOfSamples = 5000;
+        private readonly int _numberOfSamples = 5000;
 
         private List<HistogramBin> simulateBins(List<double> data) {
             var weights = Enumerable.Repeat(1D, _numberOfSamples).ToList();
@@ -48,11 +47,35 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var section = new RiskRatioDistributionSection() {
                 RiskDistributionBins = bins,
                 PercentageZeros = 0,
-                PercentilesGrid = MockUncertaintyDataPointCollection.Create(_numberOfSamples, true)
+                PercentilesGrid = MockUncertaintyDataPointCollection.Create(_numberOfSamples, true),
+                UncertaintyLowerLimit = 5,
+                UncertaintyUpperLimit = 95
             };
 
             var chart = new RiskRatioCumulativeChartCreator(section);
-            RenderChart(chart, $"TestCreate");
+            RenderChart(chart, $"TestCreateUnc");
+            AssertIsValidView(section);
+        }
+
+        /// <summary>
+        /// Create chart with uncertainty
+        /// </summary>
+        [TestMethod]
+        public void HazardExposureRatioCumulativeChartCreator_TestUncertaintyLogNormal() {
+            var mu = 2;
+            var sigma = 1.75;
+            var logData = LogNormalDistribution.LogNormalSamples(_numberOfSamples, mu, sigma).Select(c => c > 50 ? 100000 : c).ToList();
+            var bins = simulateBins(logData);
+
+            var section = new RiskRatioDistributionSection() {
+                RiskDistributionBins = bins,
+                PercentageZeros = 0,
+                PercentilesGrid = MockUncertaintyDataPointCollection.Create(_numberOfSamples, mu, sigma, true),
+                UncertaintyLowerLimit = 5,
+                UncertaintyUpperLimit = 95
+            };
+            var chart = new RiskRatioCumulativeChartCreator(section);
+            RenderChart(chart, $"TestCreateUncLogNormal");
             AssertIsValidView(section);
         }
     }

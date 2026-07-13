@@ -1,4 +1,5 @@
-﻿using MCRA.Utils.Charting.OxyPlot;
+﻿using MCRA.Simulation.Constants;
+using MCRA.Utils.Charting.OxyPlot;
 using MCRA.Utils.Statistics;
 using OxyPlot;
 using OxyPlot.Legends;
@@ -23,7 +24,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     .Where(c => c.XValue > 1 && c.ReferenceValue > 0)
                     .Select(c => c.ReferenceValue * 0.9)
                     .MinOrDefault(minimum);
-                maximum = percentiles.Max(c => c.ReferenceValue * 1.1);
+                maximum = Math.Min(percentiles.Max(c => c.ReferenceValue * 1.1), SimulationConstants.MOE_eps);
             }
             // Create axes
             var horizontalAxis = createLogarithmicAxis(xtitle, minimum, maximum);
@@ -52,7 +53,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 areaSeries.Points.AddRange(percentiles
                     .Select(r => new DataPoint(r.Percentile(uncertaintyLowerLimit), r.XValue / 100D))
                 );
-                
+
                 //Add extra datapoint to get correct uncertainty area in plot (aligned to right vertical axes)
                 areaSeries.Points.Add(new DataPoint(maximum, percentiles.XValues.Last() / 100d));
                 areaSeries.Points2.AddRange(percentiles
