@@ -477,8 +477,12 @@ namespace MCRA.Utils.Statistics {
                 first = interpolatingPoints.ElementAt(ix - 1);
                 last = interpolatingPoints.ElementAt(ix);
             }
-            var dx = (fraction - first.Percentile) / (last.Percentile - first.Percentile);
-            return first.Value + dx * (last.Value - first.Value);
+            if (double.IsPositiveInfinity(last.Value)) {
+                return double.PositiveInfinity;
+            } else {
+                var dx = (fraction - first.Percentile) / (last.Percentile - first.Percentile);
+                return first.Value + dx * (last.Value - first.Value);
+            }
         }
 
         /// <summary>

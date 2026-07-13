@@ -149,6 +149,35 @@ namespace MCRA.Utils.Test.UnitTests {
         /// Without zeros
         /// </summary>
         [TestMethod]
+        public void Percentiles_TestPercentilesInfinities() {
+            var equalityComparer = new DoubleAsFloatEqualityComparer();
+            var percentages = new double[] { 2.5, 50, 97.5 };
+            var values = new double[] { 1, double.PositiveInfinity, double.PositiveInfinity };
+            var result = values.Percentiles(percentages);
+            Assert.IsTrue(result[0] < 1);
+            Assert.IsTrue(double.IsPositiveInfinity(result[1]));
+            Assert.IsTrue(double.IsPositiveInfinity(result[2]));
+        }
+
+        /// <summary>
+        /// Without zeros
+        /// </summary>
+        [TestMethod]
+        public void Percentiles_TestPercentilesWithSamplingWeightsInfinities() {
+            var equalityComparer = new DoubleAsFloatEqualityComparer();
+            var percentages = new double[] { 2.5, 50, 97.5 };
+            var values = new double[] { 1, double.PositiveInfinity, double.PositiveInfinity };
+            var weights = new double[] { 1.1, 1.2, 1.3 }.ToList();
+            var result = values.PercentilesWithSamplingWeights(weights, percentages);
+            Assert.IsTrue(result[0] < 1);
+            Assert.IsTrue(double.IsPositiveInfinity(result[1]));
+            Assert.IsTrue(double.IsPositiveInfinity(result[2]));
+        }
+
+        /// <summary>
+        /// Without zeros
+        /// </summary>
+        [TestMethod]
         public void Percentiles_TestPercentilesWithSamplingWeightsNoZeros() {
             var equalityComparer = new DoubleAsFloatEqualityComparer();
             var percentages = GriddingFunctions.GetPlotPercentages();

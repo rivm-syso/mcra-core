@@ -132,30 +132,13 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                         SimulatedIndividual = r,
                         CriticalEffectDose = criticalEffectDose,
                         Exposure = exposure,
-                        HazardExposureRatio = hazardExposureRatio(HealthEffectType.Risk, criticalEffectDose, exposure),
-                        ExposureHazardRatio = exposureHazardRatio(HealthEffectType.Risk, criticalEffectDose, exposure),
+                        HazardExposureRatio = criticalEffectDose / exposure,
+                        ExposureHazardRatio = exposure / criticalEffectDose,
                         IsPositive = exposure >  0
                     };
                 })
                 .ToList();
             return result;
-        }
-        private static double hazardExposureRatio(HealthEffectType healthEffectType, double CriticalEffectDose, double ExposureConcentration) {
-            var iced = CriticalEffectDose;
-            var iexp = ExposureConcentration;
-            if (healthEffectType == HealthEffectType.Benefit) {
-                return iced > iexp / SimulationConstants.MOE_eps ? iexp / iced : SimulationConstants.MOE_eps;
-            } else {
-                return iexp > iced / SimulationConstants.MOE_eps ? iced / iexp : SimulationConstants.MOE_eps;
-            }
-        }
-
-        private static double exposureHazardRatio(HealthEffectType healthEffectType, double CriticalEffectDose, double ExposureConcentration) {
-            if (healthEffectType == HealthEffectType.Benefit) {
-                return CriticalEffectDose / ExposureConcentration;
-            } else {
-                return ExposureConcentration / CriticalEffectDose;
-            }
         }
     }
 }
