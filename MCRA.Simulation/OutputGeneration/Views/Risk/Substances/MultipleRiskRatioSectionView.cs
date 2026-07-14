@@ -35,6 +35,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     hiddenProperties.Add("PUpperRiskNom");
                     hiddenProperties.Add("ProbabilityOfCriticalEffect");
                 }
+
                 if (riskRecords.All(r => string.IsNullOrEmpty(r.BiologicalMatrix))) {
                     hiddenProperties.Add("BiologicalMatrix");
                     hiddenProperties.Add("ExpressionType");
@@ -42,12 +43,14 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     hiddenProperties.Add("ExpressionType");
                 }
 
+                var unstratifiedHiddenProperties = new List<string>(hiddenProperties) { "Stratification" };
                 var panelBuilder = new HtmlTabPanelBuilder();
                 foreach (var targetUnit in Model.TargetUnits) {
                     var target = targetUnit?.Target;
                     var targetCode = target?.Code;
                     var targetName = target?.GetDisplayName() ?? "Overall";
-                    var plotRecords = Model.MultipleRiskRecords.SingleOrDefault(c => c.Target == target).Records
+                    var plotRecords = Model.MultipleRiskRecords
+                        .SingleOrDefault(c => c.Target == target).Records
                         .OrderBy(c => c.BiologicalMatrix)
                         .ThenBy(c => c.ExpressionType)
                         .ThenByDescending(c => c.ProbabilityOfCriticalEffect)
@@ -83,7 +86,6 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         .ThenByDescending(c => isUncertainty ? c.PUpperRiskUncUpper : c.PUpperRiskNom)
                         .ToList();
 
-                    var unstratifiedHiddenProperties = new List<string>(hiddenProperties) { "Stratification" };
                     var panelSb = new StringBuilder();
 
                     var chartCreator = new MultipleRiskRatioHeatMapCreator(Model, targetUnit, isUncertainty);
@@ -98,12 +100,11 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         caption: caption,
                         chartData: percentileDataSection
                     );
+
                     panelSb.AppendTable(
                         Model,
                         records.Where(c => c.PercentagePositives > 0).ToList(),
-                        Model.RiskMetric == RiskMetricType.ExposureHazardRatio
-                            ? "HazardIndexBySubstanceTable"
-                            : "MOEBySubstanceTable",
+                        $"RiskBySubstanceTable{targetCode}",
                         ViewBag,
                         caption: $"Risk statistics by substance.",
                         saveCsv: true,
@@ -112,7 +113,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     );
 
                     panelBuilder.AddPanel(
-                        id: $"Panel_{targetCode}",
+                        id: $"PanelRiskBySubstance{targetCode}",
                         title: targetName,
                         hoverText: targetName,
                         content: new HtmlString(panelSb.ToString())
@@ -149,13 +150,32 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                             hiddenProperties: hiddenProperties
                         );
                         panelBuilder.AddPanel(
-                            id: $"Panel_stratified{targetCode}",
+                            id: $"PanelRiskBySubstanceStratified{targetCode}",
                             title: $"{targetName} stratified ",
                             hoverText: $"{targetName} stratified",
                             content: new HtmlString(panelSb.ToString())
                         );
                     }
                 }
+
+                // Render unstratified table for all targets
+                // Kept for backward compatibility, but not used in the current report
+                var allRecords = Model.MultipleRiskRecords
+                    .SelectMany(c => c.Records)
+                    .OrderByDescending(c => c.IsCumulativeRecord)
+                    .ThenByDescending(c => isUncertainty ? c.PUpperRiskUncUpper : c.PUpperRiskNom)
+                    .Where(c => string.IsNullOrEmpty(c.Stratification)
+                        && c.PercentagePositives > 0)
+                    .ToList();
+                var combinedRiskBySubstanceDataSection = DataSectionHelper
+                .CreateCsvDataSection(
+                    Model.RiskMetric == RiskMetricType.ExposureHazardRatio
+                        ? "HazardIndexBySubstanceTable" : "MOEBySubstanceTable",
+                    Model,
+                    allRecords,
+                    ViewBag,
+                    hiddenProperties: unstratifiedHiddenProperties
+                );
                 panelBuilder.RenderPanel(sb, collapseSingleTab: true);
             }
         }

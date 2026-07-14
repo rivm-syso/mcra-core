@@ -104,7 +104,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
             var effects = getIndividualEffects(individualEffects, stratifier);
             var uncertaintyRecord = createSingleRiskRecords(
-                TargetUnit.Target,
+                TargetUnit?.Target,
                 substance,
                 effects,
                 riskMetricCalculationType,
@@ -119,7 +119,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
             if (stratifier != null && stratifier.GetStratificationVariables().Count > 0) {
                 var stratifiedRecords = createSingleRiskRecords(
-                    TargetUnit.Target,
+                    TargetUnit?.Target,
                     substance,
                     effects,
                     riskMetricCalculationType,

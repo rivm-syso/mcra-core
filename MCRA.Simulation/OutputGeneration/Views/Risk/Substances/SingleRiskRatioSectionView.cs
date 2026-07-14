@@ -65,12 +65,11 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         "Stratification"
                     };
                     var panelSb = new StringBuilder();
+
                     panelSb.AppendTable(
                         Model,
                         [riskRecord],
-                        Model.RiskMetric == RiskMetricType.ExposureHazardRatio
-                            ? "HazardIndexBySubstanceTable"
-                            : "MOEBySubstanceTable",
+                        "RiskDistributionTable",
                         ViewBag,
                         caption: descriptionString,
                         saveCsv: true,
@@ -78,51 +77,48 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         rotate: true,
                         hiddenProperties: unstratifiedHiddenProperties
                     );
-                    var chartCreator = new SingleRiskRatioHeatMapCreator(Model, isUncertainty);
-                    var chart = ChartHelpers.Chart(
-                            name: $"RiskBySubstance",
-                            section: Model,
-                            viewBag: ViewBag,
-                            chartCreator: chartCreator,
-                            fileType: ChartFileType.Svg,
-                            saveChartFile: true,
-                            caption: caption
-                        );
 
-                    var contentPanel = new HtmlString(
-                        "<div class=\"figure-container\">"
-                        + chart
-                        + "</div>"
-                        + panelSb.ToString()
+                    var chartCreator = new SingleRiskRatioHeatMapCreator(Model, isUncertainty);
+                    panelSb.AppendChart(
+                        name: "RiskDistributionSafetyChart",
+                        section: Model,
+                        viewBag: ViewBag,
+                        chartCreator: chartCreator,
+                        fileType: ChartFileType.Svg,
+                        saveChartFile: true,
+                        caption: caption
                     );
+
                     panelBuilder.AddPanel(
-                        id: $"Panel_unstratified",
-                        title: "Cumulative",
-                        hoverText: "Cumulative",
-                        content: contentPanel
+                        id: $"PanelRiskDistribution",
+                        title: "Risk distribution",
+                        hoverText: "Risk distribution",
+                        content: new HtmlString(panelSb.ToString())
                     );
                 }
 
-
-                var stratifiedRecords = Model.StratifiedSingleRiskRecords.Where(c => !string.IsNullOrEmpty(c.Stratification)).ToList();
-                if (stratifiedRecords.Any()) {
+                var stratifiedRecords = Model.StratifiedSingleRiskRecords
+                    .Where(c => !string.IsNullOrEmpty(c.Stratification)).ToList();
+                if (stratifiedRecords.Count != 0) {
                     var chartCreator = new SingleStratifiedRiskRatioHeatMapCreator(
                         Model, null, isUncertainty
                     );
+
                     var panelSb = new StringBuilder();
-                    var chart = ChartHelpers.Chart(
-                            name: $"RiskBySubstanceStratified",
-                            section: Model,
-                            viewBag: ViewBag,
-                            chartCreator: chartCreator,
-                            fileType: ChartFileType.Svg,
-                            saveChartFile: true,
-                            caption: caption
-                        );
+                    panelSb.AppendChart(
+                        name: $"RiskDistributionStratifiedSafetyChart",
+                        section: Model,
+                        viewBag: ViewBag,
+                        chartCreator: chartCreator,
+                        fileType: ChartFileType.Svg,
+                        saveChartFile: true,
+                        caption: caption
+                    );
+
                     panelSb.AppendTable(
                         Model,
                         Model.StratifiedSingleRiskRecords,
-                        "RiskStratifiedSubstanceTable",
+                        "RiskDistributionStratifiedTable",
                         ViewBag,
                         caption: descriptionString,
                         saveCsv: true,
@@ -130,17 +126,12 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         rotate: false,
                         hiddenProperties: hiddenProperties
                     );
-                    var contentPanel = new HtmlString(
-                        "<div class=\"figure-container\">"
-                        + chart
-                        + "</div>"
-                        + panelSb.ToString()
-                    );
+
                     panelBuilder.AddPanel(
-                        id: $"Panel_stratified",
-                        title: "Cumulative stratified",
-                        hoverText: "Cumulative stratified",
-                        content: contentPanel
+                        id: $"PanelRiskDistributionStratified",
+                        title: "Stratified",
+                        hoverText: "Stratified",
+                        content: new HtmlString(panelSb.ToString())
                     );
                 }
                 panelBuilder.RenderPanel(sb, collapseSingleTab: true);

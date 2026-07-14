@@ -16,7 +16,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public override string ChartId {
             get {
                 var pictureId = "6f72093c-a9ef-410b-9ba4-561cd1c88321";
-                return StringExtensions.CreateFingerprint(_section.SectionId + pictureId + _targetUnit.BiologicalMatrix.ToString());
+                return StringExtensions.CreateFingerprint(_section.SectionId + pictureId + _targetUnit?.BiologicalMatrix.ToString());
             }
         }
 
