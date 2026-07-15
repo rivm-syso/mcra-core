@@ -16,15 +16,20 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             var plotModel = createDefaultPlotModel();
 
-            // Determine minimum and maximum
+            // Determine minimum and maximum1
             var minimum = double.MaxValue;
             var maximum = double.MinValue;
             if (percentiles.Any()) {
-                minimum = percentiles
-                    .Where(c => c.XValue > 1 && c.ReferenceValue > 0)
-                    .Select(c => c.ReferenceValue * 0.9)
-                    .MinOrDefault(minimum);
-                maximum = Math.Min(percentiles.Max(c => c.ReferenceValue * 1.1), SimulationConstants.MOE_eps);
+                //Ignore percentage < 1% end > 99%
+                var localMax = percentiles
+                    .Where(c => c.XValue < 99 && c.ReferenceValue < SimulationConstants.MOE_eps)
+                    .Last().ReferenceValue;
+                var localMin = percentiles
+                    .Where(c => c.XValue > 1 && c.ReferenceValue > 1 / SimulationConstants.MOE_eps)
+                    .First().ReferenceValue;
+
+                minimum = Math.Max(localMin, 1 / SimulationConstants.MOE_eps);
+                maximum = Math.Min(localMax, SimulationConstants.MOE_eps);
             }
             // Create axes
             var horizontalAxis = createLogarithmicAxis(xtitle, minimum, maximum);
@@ -59,7 +64,6 @@ namespace MCRA.Simulation.OutputGeneration {
                 areaSeries.Points2.AddRange(percentiles
                     .Select(r => new DataPoint(r.Percentile(uncertaintyUpperLimit), r.XValue / 100D))
                 );
-
                 plotModel.Series.Add(areaSeries);
             }
             return plotModel;
