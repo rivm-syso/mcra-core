@@ -151,12 +151,13 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
                 order
             );
             section.Summarize(
-                actionResult.ExposureResponseResults
+                actionResult.ExposureResponseResults,
+                _configuration.ExposureGroupingMethod
             );
             subHeader.SaveSummarySection(section);
         }
 
-        private static void summarizeExposureResponseFunctionUncertainty(
+        private void summarizeExposureResponseFunctionUncertainty(
             EnvironmentalBurdenOfDiseaseActionResult actionResult,
             double lowerBound,
             double upperBound,
@@ -167,6 +168,7 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
                 var section = subHeader.GetSummarySection() as ExposureResponseFunctionSummarySection;
                 section.SummarizeUncertainty(
                     actionResult.ExposureResponseResults,
+                    _configuration.ExposureGroupingMethod,
                     lowerBound,
                     upperBound
                 );

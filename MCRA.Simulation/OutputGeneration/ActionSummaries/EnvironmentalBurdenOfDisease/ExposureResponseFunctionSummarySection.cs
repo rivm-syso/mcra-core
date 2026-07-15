@@ -13,12 +13,15 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<ErfSummaryRecord> ErfSummaryRecords { get; set; }
 
         public void Summarize(
-            ICollection<ExposureResponseResult> exposureResponseResults
+            ICollection<ExposureResponseResult> exposureResponseResults,
+            ExposureGroupingMethod exposureGroupingMethod
         ) {
             var erfSummaryRecords = new List<ErfSummaryRecord>();
             foreach (var exposureResponseResult in exposureResponseResults) {
                 var erf = exposureResponseResult.ExposureResponseFunctionModel;
                 var targetUnit = erf.TargetUnit;
+                var useErfBins = erf.HasErfSubGroups &&
+                    exposureGroupingMethod == ExposureGroupingMethod.ErfDefinedBins;
                 var doseUnitAlignmentFactor = exposureResponseResult.ErfDoseUnitAlignmentFactor;
                 var dataPoints = exposureResponseResult
                     .ExposureResponseResultRecords
@@ -36,7 +39,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 );
                 var YValues = XValues
                     .Select(r => exposureResponseResult.ExposureResponseFunctionModel
-                        .Compute(r * doseUnitAlignmentFactor, false)
+                        .Compute(r * doseUnitAlignmentFactor, useErfBins)
                     );
                 exposureResponseGridDataPoints.XValues = XValues;
                 exposureResponseGridDataPoints.ReferenceValues = YValues;
@@ -84,17 +87,20 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public void SummarizeUncertainty(
             ICollection<ExposureResponseResult> exposureResponseResults,
+            ExposureGroupingMethod exposureGroupingMethod,
             double lowerBound,
             double upperBound
         ) {
             foreach (var resultRecord in exposureResponseResults) {
+                var useErfBins = resultRecord.ExposureResponseFunctionModel.ExposureResponseFunction.HasErfSubGroups &&
+                    exposureGroupingMethod == ExposureGroupingMethod.ErfDefinedBins;
                 var doseUnitAlignmentFactor = resultRecord.ErfDoseUnitAlignmentFactor;
                 var XValues = ErfSummaryRecords
                     .Single(r => r.ErfCode == resultRecord.ExposureResponseFunctionModel.Code)
                     .ExposureResponseGridDataPoints.XValues;
                 var YValues = XValues
                     .Select(r => resultRecord.ExposureResponseFunctionModel
-                        .Compute(r * doseUnitAlignmentFactor, false)
+                        .Compute(r * doseUnitAlignmentFactor, useErfBins)
                     );
                 ErfSummaryRecords
                     .Single(r => r.ErfCode == resultRecord.ExposureResponseFunctionModel.Code)
