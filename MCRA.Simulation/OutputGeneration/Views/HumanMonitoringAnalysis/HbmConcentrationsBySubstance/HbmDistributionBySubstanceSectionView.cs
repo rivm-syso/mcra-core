@@ -6,7 +6,7 @@ using MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders;
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class HbmDistributionBySubstanceSectionView<S, T, T2>
         : SectionView<HbmConcentrationByDescriptorSectionBase<S, T, T2>>
-        where S : IHbmExposureContributorKey, new()
+        where S : IExposureContributorKey, new()
         where T : HbmConcentrationDistributionRecordBase<S>, new()
         where T2 : HbmBoxPlotRecordBase<S>, new() {
 

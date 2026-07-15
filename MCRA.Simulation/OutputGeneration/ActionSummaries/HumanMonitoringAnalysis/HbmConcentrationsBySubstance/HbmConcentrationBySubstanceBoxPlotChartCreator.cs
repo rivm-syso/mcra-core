@@ -4,7 +4,7 @@ using OxyPlot;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class HbmConcentrationBySubstanceBoxPlotChartCreator<S, T> : HbmConcentrationsBoxPlotChartCreatorBase<S, T> 
-        where S : IHbmExposureContributorKey, new()
+        where S : IExposureContributorKey, new()
         where T : HbmBoxPlotRecordBase<S>, new() {
 
         private readonly List<T> _records;

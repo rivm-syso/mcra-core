@@ -5,7 +5,7 @@ using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
     public abstract class RiskDistributionRecordBase<T> 
-        where T : IExposureContributorKey, new() {
+        where T : IContributorKey, new() {
 
         [Display(AutoGenerateField = false)]
         public List<string> StratificationSubLevelCodes { get; set; }

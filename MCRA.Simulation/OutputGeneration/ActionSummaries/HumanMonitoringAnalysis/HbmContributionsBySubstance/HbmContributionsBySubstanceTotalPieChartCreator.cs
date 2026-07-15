@@ -1,6 +1,6 @@
 ﻿namespace MCRA.Simulation.OutputGeneration {
     public sealed class HbmContributionsBySubstanceTotalPieChartCreator
-        : HbmRiskDriverContributionsPieChartCreatorBase<HbmSubstanceContributorKey, HbmContributionBySubstanceRecord> {
+        : HbmRiskDriverContributionsPieChartCreatorBase<SubstanceContributorKey, HbmContributionBySubstanceRecord> {
 
         public HbmContributionsBySubstanceTotalPieChartCreator(
             string sectionId,

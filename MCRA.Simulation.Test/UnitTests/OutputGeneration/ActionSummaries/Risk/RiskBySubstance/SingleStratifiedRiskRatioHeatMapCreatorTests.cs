@@ -21,7 +21,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay, ExposureRoute.Oral);
-            var records = new List<RiskDistributionRecordBase<HbmSubstanceContributorKey>>();
+            var records = new List<RiskDistributionRecordBase<SubstanceContributorKey>>();
             var section = fakeMultipleHazardExposureRatioSection(riskMetric, false, false, random);
             var chart = new SingleStratifiedRiskRatioHeatMapCreator(section, targetUnit, false);
             RenderChart(chart, $"TestCreateSingleNominal_{riskMetric}");
@@ -34,7 +34,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay, ExposureRoute.Oral);
-            var records = new List<RiskDistributionRecordBase<HbmSubstanceContributorKey>>();
+            var records = new List<RiskDistributionRecordBase<SubstanceContributorKey>>();
             var section = fakeMultipleHazardExposureRatioSection(riskMetric, false, true, random);
             var chart = new SingleStratifiedRiskRatioHeatMapCreator(section, targetUnit, true);
             RenderChart(chart, $"TestCreateSingleUnc_{riskMetric}");

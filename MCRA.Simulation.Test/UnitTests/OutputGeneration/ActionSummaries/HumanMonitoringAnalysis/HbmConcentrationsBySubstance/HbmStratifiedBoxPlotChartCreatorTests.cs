@@ -30,7 +30,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
             section.Summarize(collection, stratifier, 5, 95, false);
             var exposureTarget = new ExposureTarget(BiologicalMatrix.Blood);
             var records = section.StratifiedHbmBoxPlotRecords[exposureTarget];
-            var chartCreator = new HbmStratifiedBoxPlotChartCreator<HbmSubstanceContributorKey, HbmSubstancePercentilesRecord>(
+            var chartCreator = new HbmStratifiedBoxPlotChartCreator<SubstanceContributorKey, HbmSubstancePercentilesRecord>(
                 records,
                 exposureTarget,
                 section.SectionId,
@@ -53,7 +53,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
             section.Summarize(collection, stratifier, 5, 95, false);
             var exposureTarget = new ExposureTarget(BiologicalMatrix.Blood);
             var records = section.StratifiedHbmBoxPlotRecords[exposureTarget];
-            var chartCreator = new HbmStratifiedBoxPlotChartCreator<HbmSubstanceContributorKey, HbmSubstancePercentilesRecord>(
+            var chartCreator = new HbmStratifiedBoxPlotChartCreator<SubstanceContributorKey, HbmSubstancePercentilesRecord>(
                 records,
                 exposureTarget,
                 section.SectionId,
@@ -76,7 +76,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
             section.Summarize(collection, stratifier, 5, 95, false);
             var exposureTarget = new ExposureTarget(BiologicalMatrix.Blood);
             var records = section.StratifiedHbmBoxPlotRecords[exposureTarget];
-            var chartCreator = new HbmStratifiedBoxPlotChartCreator<HbmSubstanceContributorKey, HbmSubstancePercentilesRecord>(
+            var chartCreator = new HbmStratifiedBoxPlotChartCreator<SubstanceContributorKey, HbmSubstancePercentilesRecord>(
                 records,
                 exposureTarget,
                 section.SectionId,

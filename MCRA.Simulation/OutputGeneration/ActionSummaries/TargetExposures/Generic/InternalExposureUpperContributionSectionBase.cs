@@ -4,7 +4,7 @@ using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
     public abstract class InternalExposureUpperContributionSectionBase<S, T> : InternalExposureContributionSectionBase<S, T>
-        where S : IExposureContributorKey, new()
+        where S : IContributorKey, new()
         where T : InternalExposureContributionRecordBase<S>, new() {
         public double CalculatedUpperPercentage { get; set; }
         public double LowPercentileValue { get; set; }

@@ -140,7 +140,7 @@ namespace MCRA.Simulation.OutputGeneration {
             CalculatedUpperPercentage = upperIntakes.Sum(c => c.SimulatedIndividual.SamplingWeight)
                 / hbmCumulativeIndividualCollection.HbmCumulativeIndividualConcentrations.Sum(c => c.SimulatedIndividual.SamplingWeight) * 100;
             foreach (var substance in substances) {
-                var descriptor = new HbmSubstanceContributorKey() { Substance = substance };
+                var descriptor = new SubstanceContributorKey() { Substance = substance };
                 var concentrations = getConcentrations(
                     stratifier,
                     relativePotencyFactors,
@@ -201,7 +201,7 @@ namespace MCRA.Simulation.OutputGeneration {
             UpperPercentage = 100 - percentageForUpperTail;
             CalculatedUpperPercentage = upperIntakes.Sum(c => c.SimulatedIndividual.SamplingWeight) / hbmCumulativeIndividualCollection.HbmCumulativeIndividualConcentrations.Sum(c => c.SimulatedIndividual.SamplingWeight) * 100;
             foreach (var substance in activeSubstances) {
-                var descriptor = new HbmSubstanceContributorKey() { Substance = substance };
+                var descriptor = new SubstanceContributorKey() { Substance = substance };
                 var concentrations = getConcentrations(
                     stratifier,
                     relativePotencyFactors,
@@ -264,7 +264,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
             CalculatedUpperPercentage = upperIntakes.Sum(c => c.SimulatedIndividual.SamplingWeight) / hbmCumulativeIndividualDayCollection.IndividualDayConcentrations.Sum(c => c.SimulatedIndividual.SamplingWeight) * 100;
             foreach (var substance in activeSubstances) {
-                var descriptor = new HbmSubstanceContributorKey() { Substance = substance };
+                var descriptor = new SubstanceContributorKey() { Substance = substance };
                 var concentrations = getConcentrations(
                     stratifier,
                     relativePotencyFactors,
@@ -329,7 +329,7 @@ namespace MCRA.Simulation.OutputGeneration {
             CalculatedUpperPercentage = upperIntakes.Sum(c => c.SimulatedIndividual.SamplingWeight) / hbmCumulativeIndividualDayCollection.IndividualDayConcentrations.Sum(c => c.SimulatedIndividual.SamplingWeight) * 100;
 
             foreach (var substance in activeSubstances) {
-                var descriptor = new HbmSubstanceContributorKey() { Substance = substance };
+                var descriptor = new SubstanceContributorKey() { Substance = substance };
                 var concentrations = getConcentrations(
                     stratifier,
                     relativePotencyFactors,

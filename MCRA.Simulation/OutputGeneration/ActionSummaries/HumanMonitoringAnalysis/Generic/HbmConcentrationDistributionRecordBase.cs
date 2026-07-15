@@ -5,7 +5,7 @@ using MCRA.Utils.Statistics;
 namespace MCRA.Simulation.OutputGeneration {
 
     public abstract class HbmConcentrationDistributionRecordBase<T> 
-        where T : IHbmExposureContributorKey, new() 
+        where T : IExposureContributorKey, new() 
     {
         [Display(AutoGenerateField = false)]
         public List<string> StratificationSubLevelCodes { get; set; }

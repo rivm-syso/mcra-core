@@ -3,7 +3,7 @@ using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Generic {
     public abstract class InternalExposurePercentileSectionBase<S, T> : InternalExposuresByDescriptorSection<S>
-        where S : IExposureContributorKey, new()
+        where S : IContributorKey, new()
         where T : InternalExposurePercentileRecordBase<S>, new() {
 
         public override bool SaveTemporaryData => true;

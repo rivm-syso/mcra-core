@@ -1,6 +1,6 @@
 ﻿namespace MCRA.Simulation.OutputGeneration {
     public sealed class HbmContributionsBySubstanceUpperPieChartCreator
-        : HbmRiskDriverContributionsPieChartCreatorBase<HbmSubstanceContributorKey, HbmContributionBySubstanceRecord> {
+        : HbmRiskDriverContributionsPieChartCreatorBase<SubstanceContributorKey, HbmContributionBySubstanceRecord> {
 
         private readonly double _upperPercentage;
 

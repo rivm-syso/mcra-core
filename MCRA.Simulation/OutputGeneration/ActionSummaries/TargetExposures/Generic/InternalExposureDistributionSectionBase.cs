@@ -6,7 +6,7 @@ using static MCRA.General.TargetUnit;
 
 namespace MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Generic {
     public abstract class InternalExposureDistributionSectionBase<S, T1, T2> : InternalExposuresByDescriptorSection<S>
-        where S : IExposureContributorKey, new()
+        where S : IContributorKey, new()
         where T1 : InternalExposureDistributionRecordBase<S>, new()
         where T2 : InternalExposureBoxPlotRecordBase<S>, new() {
 

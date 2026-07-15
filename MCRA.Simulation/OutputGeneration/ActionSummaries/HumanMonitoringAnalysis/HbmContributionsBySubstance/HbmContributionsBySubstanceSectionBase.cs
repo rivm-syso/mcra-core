@@ -5,22 +5,22 @@ using MCRA.Simulation.Calculators.Stratification;
 
 namespace MCRA.Simulation.OutputGeneration {
     public abstract class HbmContributionsBySubstanceSectionBase
-        : HbmContributionsSectionBase<HbmSubstanceContributorKey, HbmContributionBySubstanceRecord> {
+        : HbmContributionsSectionBase<SubstanceContributorKey, HbmContributionBySubstanceRecord> {
 
         /// <summary>
         /// Acute concentrations by substance.
         /// </summary>
-        protected static List<HbmConcentrationsByDescriptor<HbmSubstanceContributorKey>> getConcentrations(
+        protected static List<HbmConcentrationsByDescriptor<SubstanceContributorKey>> getConcentrations(
             PopulationStratifier stratifier,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> assessmentGroupMemberships,
             HbmIndividualDayCollection collection,
-            HbmSubstanceContributorKey descriptor,
+            SubstanceContributorKey descriptor,
             HashSet<int> upperIndividuals = null
         ) {
             return [.. collection.HbmIndividualDayConcentrations
                 .Where(c => upperIndividuals?.Contains(c.SimulatedIndividualDayId) ?? true)
-                .Select(c => new HbmConcentrationsByDescriptor<HbmSubstanceContributorKey> {
+                .Select(c => new HbmConcentrationsByDescriptor<SubstanceContributorKey> {
                     SamplingWeight = c.SimulatedIndividual.SamplingWeight,
                     TotalEndpointExposure = c.GetSubstanceExposure(descriptor.Substance, relativePotencyFactors, assessmentGroupMemberships),
                     TotalExposure = c.GetCumulativeExposure(relativePotencyFactors, assessmentGroupMemberships),
@@ -31,17 +31,17 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <summary>
         /// Chronic concentrations by substance.
         /// </summary>
-        protected static List<HbmConcentrationsByDescriptor<HbmSubstanceContributorKey>> getConcentrations(
+        protected static List<HbmConcentrationsByDescriptor<SubstanceContributorKey>> getConcentrations(
             PopulationStratifier stratifier,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> assessmentGroupMemberships,
             HbmIndividualCollection collection,
-            HbmSubstanceContributorKey descriptor,
+            SubstanceContributorKey descriptor,
             HashSet<int> upperIndividuals = null
         ) {
             return [..collection.HbmIndividualConcentrations
                 .Where(c => upperIndividuals?.Contains(c.SimulatedIndividual.Id) ?? true)
-                .Select(c => new HbmConcentrationsByDescriptor<HbmSubstanceContributorKey> {
+                .Select(c => new HbmConcentrationsByDescriptor<SubstanceContributorKey> {
                     SamplingWeight = c.SimulatedIndividual.SamplingWeight,
                     TotalEndpointExposure = c.GetSubstanceExposure(descriptor.Substance, relativePotencyFactors, assessmentGroupMemberships),
                     TotalExposure = c.GetCumulativeExposure(relativePotencyFactors, assessmentGroupMemberships),

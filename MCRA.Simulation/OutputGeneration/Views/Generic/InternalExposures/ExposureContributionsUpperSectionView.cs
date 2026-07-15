@@ -7,7 +7,7 @@ using MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders;
 namespace MCRA.Simulation.OutputGeneration.Views {
 
     public class ExposureContributionsUpperSectionView<S, T> : SectionView<InternalExposureUpperContributionSectionBase<S, T>>
-        where S : IExposureContributorKey, new()
+        where S : IContributorKey, new()
         where T : InternalExposureContributionRecordBase<S>, new() {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>();

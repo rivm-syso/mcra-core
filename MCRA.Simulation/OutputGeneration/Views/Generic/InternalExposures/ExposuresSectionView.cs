@@ -6,7 +6,7 @@ using MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders;
 namespace MCRA.Simulation.OutputGeneration.Views {
 
     public class ExposuresSectionView<S, T1, T2> : SectionView<InternalExposureDistributionSectionBase<S, T1, T2>>
-        where S : IExposureContributorKey, new()
+        where S : IContributorKey, new()
         where T1 : InternalExposureDistributionRecordBase<S>, new()
         where T2 : InternalExposureBoxPlotRecordBase<S>, new() {
         public override void RenderSectionHtml(StringBuilder sb) {

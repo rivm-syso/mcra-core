@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class HbmSubstancePercentilesRecord : HbmBoxPlotRecordBase<HbmSubstanceContributorKey> {
+    public sealed class HbmSubstancePercentilesRecord : HbmBoxPlotRecordBase<SubstanceContributorKey> {
 
         [Description("Substance name")]
         [DisplayName("Substance name")]
@@ -19,7 +19,7 @@ namespace MCRA.Simulation.OutputGeneration {
             return SubstanceName;
         }
 
-        public override void SetDescriptorValues(HbmSubstanceContributorKey key) {
+        public override void SetDescriptorValues(SubstanceContributorKey key) {
             SubstanceCode = key.Substance.Code;
             SubstanceName = key.Substance.Name;
         }

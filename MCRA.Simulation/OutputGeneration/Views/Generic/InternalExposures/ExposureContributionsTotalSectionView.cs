@@ -1,12 +1,11 @@
 ﻿using System.Text;
-using MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Generic;
 using MCRA.Simulation.OutputGeneration.Helpers;
 using MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
 
     public class ExposureContributionsTotalSectionView<S, T> : SectionView<InternalExposureContributionSectionBase<S, T>>
-        where S : IExposureContributorKey, new()
+        where S : IContributorKey, new()
         where T : InternalExposureContributionRecordBase<S>, new()
     {
 

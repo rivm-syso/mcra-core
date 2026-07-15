@@ -2,7 +2,7 @@
 
 namespace MCRA.Simulation.OutputGeneration {
     public abstract class InternalExposureBoxPlotRecordBase<T> : CategorizedBoxPlotChartRecord
-        where T : IExposureContributorKey, new() {
+        where T : IContributorKey, new() {
 
         public abstract string GetKey();
 

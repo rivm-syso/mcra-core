@@ -4,7 +4,7 @@ using MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Generic;
 
 namespace MCRA.Simulation.OutputGeneration {
     public abstract class InternalExposureDistributionRecordBase<T>
-        where T : IExposureContributorKey, new() 
+        where T : IContributorKey, new() 
     {
 
         [Display(AutoGenerateField = false)]

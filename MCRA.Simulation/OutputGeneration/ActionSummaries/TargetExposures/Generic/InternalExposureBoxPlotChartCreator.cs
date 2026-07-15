@@ -5,7 +5,7 @@ using OxyPlot;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class InternalExposureBoxPlotChartCreator<S, T> : BoxPlotChartCreatorBase 
-        where S : IExposureContributorKey, new()
+        where S : IContributorKey, new()
         where T : InternalExposureBoxPlotRecordBase<S>, new() {
 
         private readonly List<T> _records;

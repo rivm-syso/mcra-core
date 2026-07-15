@@ -6,7 +6,7 @@ using MCRA.Simulation.Constants;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class HbmCumulativeIndividualDayDistributionsSection
-        : HbmConcentrationByDescriptorSectionBase<HbmSubstanceContributorKey, HbmConcentrationBySubstanceRecord, HbmSubstancePercentilesRecord> {
+        : HbmConcentrationByDescriptorSectionBase<SubstanceContributorKey, HbmConcentrationBySubstanceRecord, HbmSubstancePercentilesRecord> {
 
         public void Summarize(
             HbmCumulativeIndividualDayCollection collection,
@@ -25,7 +25,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
             var percentages = new double[] { lowerPercentage, 50, upperPercentage };
             var substance = new Compound() { Name = "Cumulative", Code = "Cumulative" };
-            var descriptor = new HbmSubstanceContributorKey() { Substance = substance };
+            var descriptor = new SubstanceContributorKey() { Substance = substance };
 
             var stratifiedHbmBoxPlotRecords = new List<HbmSubstancePercentilesRecord>();
             var hbmBoxPlotRecords = new List<HbmSubstancePercentilesRecord>();
@@ -79,7 +79,7 @@ namespace MCRA.Simulation.OutputGeneration {
             double upperBound
         ) {
             var substance = new Compound() { Name = "Cumulative", Code = "Cumulative" };
-            var descriptor = new HbmSubstanceContributorKey() { Substance = substance };
+            var descriptor = new SubstanceContributorKey() { Substance = substance };
 
             var hbmConcentrations = getConcentrations(collection, stratifier);
             UpdateRecord(
@@ -101,12 +101,12 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        private static List<HbmConcentrationsByDescriptor<HbmSubstanceContributorKey>> getConcentrations(
+        private static List<HbmConcentrationsByDescriptor<SubstanceContributorKey>> getConcentrations(
             HbmCumulativeIndividualDayCollection collection,
             PopulationStratifier stratifier
         ) {
             var concentrations = collection.IndividualDayConcentrations
-                .Select(c => new HbmConcentrationsByDescriptor<HbmSubstanceContributorKey> {
+                .Select(c => new HbmConcentrationsByDescriptor<SubstanceContributorKey> {
                     SamplingWeight = c.SimulatedIndividual.SamplingWeight,
                     TotalEndpointExposure = c.CumulativeConcentration,
                     StratificationLevel = stratifier?.GetLevel(c.SimulatedIndividual),

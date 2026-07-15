@@ -4,7 +4,7 @@ using MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Generic;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public abstract class InternalExposurePercentileRecordBase<T> where T : IExposureContributorKey, new() {
+    public abstract class InternalExposurePercentileRecordBase<T> where T : IContributorKey, new() {
 
         [Display(AutoGenerateField = false)]
         public double XValue { get; set; }

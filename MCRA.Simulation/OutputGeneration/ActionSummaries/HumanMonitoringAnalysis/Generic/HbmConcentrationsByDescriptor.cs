@@ -2,7 +2,7 @@
 using MCRA.Simulation.Calculators.Stratification;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public class HbmConcentrationsByDescriptor<T> where T : IHbmExposureContributorKey {
+    public class HbmConcentrationsByDescriptor<T> where T : IExposureContributorKey {
         public double SamplingWeight { get; set; }
         public double TotalExposure { get; set; }
         public double TotalEndpointExposure { get; set; }

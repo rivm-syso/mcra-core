@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public class HbmContributionBySubstanceRecord : HbmContributionRecordBase<HbmSubstanceContributorKey> {
+    public class HbmContributionBySubstanceRecord : HbmContributionRecordBase<SubstanceContributorKey> {
 
         [Description("Substance name")]
         [DisplayName("Substance name")]
@@ -15,7 +15,7 @@ namespace MCRA.Simulation.OutputGeneration {
             return $"{SubstanceCode}";
         }
 
-        public override void SetDescriptorValues(HbmSubstanceContributorKey key) {
+        public override void SetDescriptorValues(SubstanceContributorKey key) {
             SubstanceCode = key.Substance.Code;
             SubstanceName = key.Substance.Name;
         }

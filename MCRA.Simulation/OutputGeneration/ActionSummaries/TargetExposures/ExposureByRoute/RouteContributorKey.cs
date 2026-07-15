@@ -1,7 +1,7 @@
 ﻿using MCRA.General;
 
 namespace MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Generic {
-    public class RouteContributorKey : IExposureContributorKey {
+    public class RouteContributorKey : IContributorKey {
         public ExposureRoute Route { get; set; }
     }
 }

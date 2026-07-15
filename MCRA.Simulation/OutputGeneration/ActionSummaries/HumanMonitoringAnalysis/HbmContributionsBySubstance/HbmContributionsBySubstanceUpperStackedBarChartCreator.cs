@@ -1,6 +1,6 @@
 ﻿namespace MCRA.Simulation.OutputGeneration {
     public class HbmContributionsBySubstanceUpperStackedBarChartCreator
-        : HbmStackedBarChartCreatorBase<HbmSubstanceContributorKey, HbmContributionBySubstanceRecord> {
+        : HbmStackedBarChartCreatorBase<SubstanceContributorKey, HbmContributionBySubstanceRecord> {
 
         public HbmContributionsBySubstanceUpperStackedBarChartCreator(
             string sectionId,

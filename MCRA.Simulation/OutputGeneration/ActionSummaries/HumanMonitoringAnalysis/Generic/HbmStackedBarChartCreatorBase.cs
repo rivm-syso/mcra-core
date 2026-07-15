@@ -4,7 +4,7 @@ using OxyPlot;
 
 namespace MCRA.Simulation.OutputGeneration {
     public abstract class HbmStackedBarChartCreatorBase<S, T> : ReportStackedBarChartCreatorBase
-        where S : IHbmExposureContributorKey, new()
+        where S : IExposureContributorKey, new()
         where T : HbmContributionRecordBase<S>, new() {
 
         private string _sectionId;

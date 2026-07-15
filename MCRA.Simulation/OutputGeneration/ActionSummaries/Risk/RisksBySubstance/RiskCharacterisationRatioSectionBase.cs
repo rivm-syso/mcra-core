@@ -8,7 +8,7 @@ using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
     public abstract class RiskCharacterisationRatioSectionBase<S, T1> : SummarySection
-        where S : IExposureContributorKey, new()
+        where S : IContributorKey, new()
         where T1 : RiskDistributionRecordBase<S>, new() {
 
         public override bool SaveTemporaryData => true;

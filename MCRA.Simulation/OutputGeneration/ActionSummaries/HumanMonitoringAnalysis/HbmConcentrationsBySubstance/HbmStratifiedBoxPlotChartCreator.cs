@@ -1,11 +1,10 @@
 ﻿using MCRA.General;
-using MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Generic;
 using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class HbmStratifiedBoxPlotChartCreator<S, T> : CategorizedBoxPlotChartCreatorBase
-        where S : IExposureContributorKey, new()
+        where S : IContributorKey, new()
         where T : HbmBoxPlotRecordBase<S>, new() {
 
         private readonly string _sectionId;

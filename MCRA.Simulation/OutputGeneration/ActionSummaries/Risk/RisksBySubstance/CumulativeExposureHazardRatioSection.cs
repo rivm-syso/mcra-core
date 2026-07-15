@@ -4,7 +4,7 @@ using MCRA.Simulation.Calculators.RiskCalculation;
 using MCRA.Simulation.Constants;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class CumulativeExposureHazardRatioSection : ExposureHazardRatioSectionBase<RiskSubstanceContributorKey, SubstanceRiskDistributionRecord> {
+    public sealed class CumulativeExposureHazardRatioSection : ExposureHazardRatioSectionBase<SubstanceContributorKey, SubstanceRiskDistributionRecord> {
         public double UpperBoundConficenceInterval { get; set; }
 
         public List<TargetUnit> TargetUnits { get; set; }
@@ -67,7 +67,7 @@ namespace MCRA.Simulation.OutputGeneration {
             foreach (var target in selectedTargets) {
                 var records = new List<SubstanceRiskDistributionRecord>();
                 if (substances.Count > 1 && individualEffects != null && isCumulative) {
-                    var descriptor = new RiskSubstanceContributorKey() {
+                    var descriptor = new SubstanceContributorKey() {
                         Substance = getRiskReference(RiskMetricCalculationType)
                     };
                     var effects = getIndividualEffects(individualEffects, null);
@@ -78,7 +78,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     .SingleOrDefault(c => c.Target == target?.Target).IndividualEffects;
                 if (individualEffectsDict?.Count > 0) {
                     foreach (var substance in substances) {
-                        var descriptor = new RiskSubstanceContributorKey() {
+                        var descriptor = new SubstanceContributorKey() {
                             Substance = substance
                         };
                         if (individualEffectsDict.TryGetValue(substance, out var results)) {
@@ -117,7 +117,7 @@ namespace MCRA.Simulation.OutputGeneration {
             foreach (var target in targets) {
                 var records = new List<SubstanceRiskDistributionRecord>();
                 if (substances.Count > 1 && individualEffects != null && isCumulative) {
-                    var descriptor = new RiskSubstanceContributorKey() {
+                    var descriptor = new SubstanceContributorKey() {
                         Substance = getRiskReference(RiskMetricCalculationType)
                     };
                     var effects = getIndividualEffects(individualEffects, null);
@@ -128,7 +128,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     .SingleOrDefault(c => c.Target == target).IndividualEffects;
                 if (individualEffectsDict?.Count > 0) {
                     foreach (var substance in substances) {
-                        var descriptor = new RiskSubstanceContributorKey() {
+                        var descriptor = new SubstanceContributorKey() {
                             Substance = substance
                         };
                         if (individualEffectsDict.TryGetValue(substance, out var results)) {

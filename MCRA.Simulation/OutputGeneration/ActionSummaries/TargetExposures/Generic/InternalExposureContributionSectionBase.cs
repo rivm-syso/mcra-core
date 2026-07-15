@@ -1,10 +1,9 @@
 ﻿using MCRA.Simulation.Calculators.Stratification;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Generic;
-using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
     public abstract class InternalExposureContributionSectionBase<S, T> : InternalExposuresByDescriptorSection<S>
-        where S : IExposureContributorKey, new()
+        where S : IContributorKey, new()
         where T : InternalExposureContributionRecordBase<S>, new() {
 
         public override bool SaveTemporaryData => true;
@@ -64,33 +63,6 @@ namespace MCRA.Simulation.OutputGeneration {
             return [.. result.OrderBy(c => c.Stratification).ThenBy(c => c.GetKey())]; ;
         }
 
-        protected static T getContributionRecord(
-            InternalExposuresByDescriptor<S> collection,
-            double uncertaintyLowerBound,
-            double uncertaintyUpperBound,
-            IStratificationLevel stratification = null
-        ) {
-            var weightsAll = collection.Exposures
-                .Select(c => c.SimulatedIndividual.SamplingWeight)
-                .ToList();
-            var weights = collection.Exposures
-                .Where(c => c.Exposure > 0)
-                .Select(c => c.SimulatedIndividual.SamplingWeight)
-                .ToList();
-            var total = collection.Exposures.Sum(c => c.Exposure * c.SimulatedIndividual.SamplingWeight);
-            var record = new T {
-                Stratification = stratification?.Name,
-                Contribution = total,
-                Percentage = weights.Count / (double)collection.Exposures.Count * 100,
-                Mean = total / weightsAll.Sum(),
-                NumberOfDays = weights.Count,
-                Contributions = [],
-                UncertaintyLowerBound = uncertaintyLowerBound,
-                UncertaintyUpperBound = uncertaintyUpperBound
-            };
-            record.SetDescriptorValues(collection.Descriptor);
-            return record;
-        }
         protected virtual List<T> summarizeUncertainty(
             List<InternalExposuresByDescriptor<S>> exposureCollection,
             PopulationStratifier outputStratifier = null
@@ -145,6 +117,34 @@ namespace MCRA.Simulation.OutputGeneration {
                 }
             }
             return [.. result.OrderBy(c => c.Stratification).ThenBy(c => c.GetKey())];
+        }
+
+        protected static T getContributionRecord(
+            InternalExposuresByDescriptor<S> collection,
+            double uncertaintyLowerBound,
+            double uncertaintyUpperBound,
+            IStratificationLevel stratification = null
+        ) {
+            var weightsAll = collection.Exposures
+                .Select(c => c.SimulatedIndividual.SamplingWeight)
+                .ToList();
+            var weights = collection.Exposures
+                .Where(c => c.Exposure > 0)
+                .Select(c => c.SimulatedIndividual.SamplingWeight)
+                .ToList();
+            var total = collection.Exposures.Sum(c => c.Exposure * c.SimulatedIndividual.SamplingWeight);
+            var record = new T {
+                Stratification = stratification?.Name,
+                Contribution = total,
+                Percentage = weights.Count / (double)collection.Exposures.Count * 100,
+                Mean = total / weightsAll.Sum(),
+                NumberOfDays = weights.Count,
+                Contributions = [],
+                UncertaintyLowerBound = uncertaintyLowerBound,
+                UncertaintyUpperBound = uncertaintyUpperBound
+            };
+            record.SetDescriptorValues(collection.Descriptor);
+            return record;
         }
 
         protected static void updateContributions(List<T> updateRecords, List<T> records) {

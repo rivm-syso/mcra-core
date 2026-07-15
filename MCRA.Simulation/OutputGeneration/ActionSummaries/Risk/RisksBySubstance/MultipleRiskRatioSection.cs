@@ -6,7 +6,7 @@ using MCRA.Simulation.Calculators.Stratification;
 using MCRA.Simulation.Constants;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class MultipleRiskRatioSection : RiskCharacterisationRatioSectionBase<RiskSubstanceContributorKey, SubstanceRiskDistributionRecord> {
+    public sealed class MultipleRiskRatioSection : RiskCharacterisationRatioSectionBase<SubstanceContributorKey, SubstanceRiskDistributionRecord> {
 
         public List<TargetUnit> TargetUnits { get; set; }
 
@@ -187,7 +187,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
             if (substances.Count > 1 && individualEffects != null && isCumulative) {
                 var riskReference = getRiskReference(riskMetricCalculationType);
-                var descriptor = new RiskSubstanceContributorKey() {
+                var descriptor = new SubstanceContributorKey() {
                     Substance = riskReference
                 };
                 var records = getRiskRecords(
@@ -204,7 +204,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
             if (individualEffectsBySubstance?.Count > 0) {
                 foreach (var substance in substances) {
-                    var descriptor = new RiskSubstanceContributorKey() {
+                    var descriptor = new SubstanceContributorKey() {
                         Substance = substance
                     };
                     if (individualEffectsBySubstance.TryGetValue(substance, out var result)) {
@@ -231,7 +231,7 @@ namespace MCRA.Simulation.OutputGeneration {
             bool isInverseDistribution,
             bool isCumulative,
             PopulationStratifier stratifier,
-            RiskSubstanceContributorKey descriptor,
+            SubstanceContributorKey descriptor,
             bool stratify
         ) {
             var results = new List<SubstanceRiskDistributionRecord>();

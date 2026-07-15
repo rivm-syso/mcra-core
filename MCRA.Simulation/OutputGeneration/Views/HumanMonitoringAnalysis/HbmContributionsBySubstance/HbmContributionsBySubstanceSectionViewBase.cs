@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Html;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
     public abstract class HbmContributionsBySubstanceSectionViewBase 
-        : SectionView<HbmContributionsSectionBase<HbmSubstanceContributorKey, HbmContributionBySubstanceRecord>> {
+        : SectionView<HbmContributionsSectionBase<SubstanceContributorKey, HbmContributionBySubstanceRecord>> {
 
         public override void RenderSectionHtml(StringBuilder sb) {
             var results = new List<HbmContributionBySubstanceRecord>();
@@ -37,7 +37,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 var pieChartString = string.Empty;
                 var distributionString = string.Empty;
                 var description = string.Empty;
-                HbmRiskDriverContributionsPieChartCreatorBase<HbmSubstanceContributorKey, HbmContributionBySubstanceRecord> chartCreator = null;
+                HbmRiskDriverContributionsPieChartCreatorBase<SubstanceContributorKey, HbmContributionBySubstanceRecord> chartCreator = null;
                 if (Model is HbmContributionsBySubstanceUpperSection) {
                     var upperSection = Model as HbmContributionsBySubstanceUpperSection;
                     pieChartString = "Upper";
@@ -95,7 +95,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 if (stratifiedRecords.Count > 0) {
                     // Render stratified records
                     var panelSb = new StringBuilder();
-                    HbmStackedBarChartCreatorBase<HbmSubstanceContributorKey, HbmContributionBySubstanceRecord> barChartCreator = new HbmContributionsBySubstanceTotalStackedBarChartCreator(Model.SectionId, stratifiedRecords, isUncertainty);
+                    HbmStackedBarChartCreatorBase<SubstanceContributorKey, HbmContributionBySubstanceRecord> barChartCreator = new HbmContributionsBySubstanceTotalStackedBarChartCreator(Model.SectionId, stratifiedRecords, isUncertainty);
 
                     panelSb.AppendChart(
                         name: $"Hbm{pieChartString}DistributionStratifiedRiskDriversChart",

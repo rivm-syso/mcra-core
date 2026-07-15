@@ -2,7 +2,7 @@
 
 namespace MCRA.Simulation.OutputGeneration {
     public class SubstanceRiskDistributionRecord
-        : RiskDistributionRecordBase<RiskSubstanceContributorKey> {
+        : RiskDistributionRecordBase<SubstanceContributorKey> {
 
         [Description("Substance name")]
         [DisplayName("Substance name")]
@@ -12,7 +12,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Substance code")]
         public string SubstanceCode { get; set; }
 
-        public override void SetDescriptorValues(RiskSubstanceContributorKey key) {
+        public override void SetDescriptorValues(SubstanceContributorKey key) {
             SubstanceName = key.Substance.Name;
             SubstanceCode = key.Substance.Code;
         }

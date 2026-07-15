@@ -6,7 +6,7 @@ using MCRA.Simulation.Calculators.Stratification;
 using MCRA.Simulation.Constants;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class SingleRiskRatioSection : RiskCharacterisationRatioSectionBase<RiskSubstanceContributorKey, SubstanceRiskDistributionRecord> {
+    public sealed class SingleRiskRatioSection : RiskCharacterisationRatioSectionBase<SubstanceContributorKey, SubstanceRiskDistributionRecord> {
 
         public TargetUnit TargetUnit { get; set; }
 
@@ -153,7 +153,7 @@ namespace MCRA.Simulation.OutputGeneration {
             bool stratify
         ) {
             var results = new List<SubstanceRiskDistributionRecord>();
-            var descriptor = new RiskSubstanceContributorKey() {
+            var descriptor = new SubstanceContributorKey() {
                 Substance = isCumulative ? getRiskReference(riskMetricCalculationType) : substance
             };
             var groups = individualEffects

@@ -106,7 +106,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Sum(c => c.CumulativeConcentration);
 
             foreach (var substance in substances) {
-                var descriptor = new HbmSubstanceContributorKey() { Substance = substance };
+                var descriptor = new SubstanceContributorKey() { Substance = substance };
                 var concentrations = getConcentrations(
                     stratifier,
                     relativePotencyFactors,
@@ -148,7 +148,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .IndividualDayConcentrations
                 .Sum(c => c.CumulativeConcentration);
             foreach (var substance in activeSubstances) {
-                var descriptor = new HbmSubstanceContributorKey() { Substance = substance };
+                var descriptor = new SubstanceContributorKey() { Substance = substance };
                 var concentrations = getConcentrations(
                     stratifier,
                     relativePotencyFactors,
@@ -194,7 +194,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Sum(c => c.CumulativeConcentration);
 
             foreach (var substance in activeSubstances) {
-                var descriptor = new HbmSubstanceContributorKey() { Substance = substance };
+                var descriptor = new SubstanceContributorKey() { Substance = substance };
                 var concentrations = getConcentrations(
                     stratifier,
                     relativePotencyFactors,
@@ -243,7 +243,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .IndividualDayConcentrations
                 .Sum(c => c.CumulativeConcentration);
             foreach (var substance in substances) {
-                var descriptor = new HbmSubstanceContributorKey() { Substance = substance };
+                var descriptor = new SubstanceContributorKey() { Substance = substance };
                 var concentrations = getConcentrations(
                     stratifier,
                     relativePotencyFactors,

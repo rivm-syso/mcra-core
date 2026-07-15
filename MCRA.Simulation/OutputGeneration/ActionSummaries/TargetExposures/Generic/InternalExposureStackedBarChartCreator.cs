@@ -5,7 +5,7 @@ using OxyPlot;
 
 namespace MCRA.Simulation.OutputGeneration {
     public class InternalExposureStackedBarChartCreator<S, T> : ReportStackedBarChartCreatorBase 
-        where S : IExposureContributorKey, new()
+        where S : IContributorKey, new()
         where T : InternalExposureContributionRecordBase<S>, new() {
 
         protected readonly List<T> _records;

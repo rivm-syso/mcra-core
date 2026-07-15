@@ -4,7 +4,7 @@ using OxyPlot.Axes;
 
 namespace MCRA.Simulation.OutputGeneration {
     public abstract class HbmConcentrationsBoxPlotChartCreatorBase<S, T> : BoxPlotChartCreatorBase 
-        where S : IHbmExposureContributorKey, new()
+        where S : IExposureContributorKey, new()
         where T : HbmBoxPlotRecordBase<S>, new() {
         public override string Title => $"Lower whiskers: p5, p10; box: p25, p50, p75; upper whiskers: p90 and p95.";
 

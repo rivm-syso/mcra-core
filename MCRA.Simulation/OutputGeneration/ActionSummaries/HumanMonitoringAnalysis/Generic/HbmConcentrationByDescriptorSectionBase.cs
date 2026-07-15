@@ -7,7 +7,7 @@ using static MCRA.General.TargetUnit;
 
 namespace MCRA.Simulation.OutputGeneration {
     public abstract class HbmConcentrationByDescriptorSectionBase<S, T1, T2> : SummarySection
-        where S : IHbmExposureContributorKey, new()
+        where S : IExposureContributorKey, new()
         where T1 : HbmConcentrationDistributionRecordBase<S>, new()
         where T2 : HbmBoxPlotRecordBase<S>, new() {
 

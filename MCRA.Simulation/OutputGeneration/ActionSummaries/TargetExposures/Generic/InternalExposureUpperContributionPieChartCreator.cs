@@ -6,7 +6,7 @@ using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class InternalExposureUpperContributionPieChartCreator<S, T> : InternalExposureContributionPieChartCreator<S, T>
-        where S : IExposureContributorKey, new()
+        where S : IContributorKey, new()
         where T : InternalExposureContributionRecordBase<S>, new() {
 
         public InternalExposureUpperContributionPieChartCreator(

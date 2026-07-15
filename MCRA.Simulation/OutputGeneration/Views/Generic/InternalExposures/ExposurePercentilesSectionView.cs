@@ -5,7 +5,7 @@ using MCRA.Simulation.OutputGeneration.Helpers;
 namespace MCRA.Simulation.OutputGeneration.Views {
 
     public class ExposurePercentilesSectionView<S, T> : SectionView<InternalExposurePercentileSectionBase<S, T>>
-        where S : IExposureContributorKey, new()
+        where S : IContributorKey, new()
         where T : InternalExposurePercentileRecordBase<S>, new()
     {
         public override void RenderSectionHtml(StringBuilder sb) {

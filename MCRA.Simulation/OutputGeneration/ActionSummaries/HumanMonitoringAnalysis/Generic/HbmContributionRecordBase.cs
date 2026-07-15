@@ -5,7 +5,7 @@ using MCRA.Utils.Statistics;
 namespace MCRA.Simulation.OutputGeneration {
 
     public abstract class HbmContributionRecordBase<T>
-        where T : IHbmExposureContributorKey, new() {
+        where T : IExposureContributorKey, new() {
 
         [Display(AutoGenerateField = false)]
         public int UncertaintyCycles { get; set; }

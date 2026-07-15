@@ -2,7 +2,7 @@
 using MCRA.General;
 
 namespace MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Generic {
-    public class SourceSubstanceContributorKey : IExposureContributorKey {
+    public class SourceSubstanceContributorKey : IContributorKey {
         public ExposureSource Source { get; set; }
         public Compound Substance { get; set; }
     }

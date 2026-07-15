@@ -6,7 +6,7 @@ using MCRA.Simulation.Constants;
 
 namespace MCRA.Simulation.OutputGeneration {
     public class HbmIndividualDistributionBySubstanceSection
-        : HbmConcentrationByDescriptorSectionBase<HbmSubstanceContributorKey, HbmConcentrationBySubstanceRecord, HbmSubstancePercentilesRecord> {
+        : HbmConcentrationByDescriptorSectionBase<SubstanceContributorKey, HbmConcentrationBySubstanceRecord, HbmSubstancePercentilesRecord> {
 
         public void Summarize(
             ICollection<HbmIndividualCollection> collections,
@@ -42,7 +42,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     var stratifiedHbmBoxPlotRecords = new List<HbmSubstancePercentilesRecord>();
                     var hbmBoxPlotRecords = new List<HbmSubstancePercentilesRecord>();
                     foreach (var substance in substances) {
-                        var descriptor = new HbmSubstanceContributorKey() { Substance = substance };
+                        var descriptor = new SubstanceContributorKey() { Substance = substance };
                         var hbmIndividualConcentrations = getConcentrations(collection, substance, stratifier);
 
                         var record = CreateSummaryRecord(
@@ -97,7 +97,7 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             foreach (var substance in substances) {
                 foreach (var collection in collections) {
-                    var descriptor = new HbmSubstanceContributorKey() { Substance = substance };
+                    var descriptor = new SubstanceContributorKey() { Substance = substance };
                     var hbmConcentrations = getConcentrations(collection, substance, stratifier);
                     UpdateRecord(
                         hbmConcentrations,
@@ -120,14 +120,14 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        private static List<HbmConcentrationsByDescriptor<HbmSubstanceContributorKey>> getConcentrations(
+        private static List<HbmConcentrationsByDescriptor<SubstanceContributorKey>> getConcentrations(
             HbmIndividualCollection collection,
             Compound substance,
             PopulationStratifier stratifier
         ) {
             var concentrations = collection.HbmIndividualConcentrations
                 .Where(r => r.ConcentrationsBySubstance.ContainsKey(substance))
-                .Select(c => new HbmConcentrationsByDescriptor<HbmSubstanceContributorKey> {
+                .Select(c => new HbmConcentrationsByDescriptor<SubstanceContributorKey> {
                     SamplingWeight = c.SimulatedIndividual.SamplingWeight,
                     TotalEndpointExposure = c.ConcentrationsBySubstance[substance].Exposure,
                     SourceSamplingMethods = c.ConcentrationsBySubstance

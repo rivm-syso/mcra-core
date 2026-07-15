@@ -1,7 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public class HbmSubstanceTimePointContributorKey : IHbmExposureContributorKey {
+    public class HbmSubstanceTimePointContributorKey : IExposureContributorKey {
         public Compound Substance { get; set; }
         public HumanMonitoringTimepoint TimePoint { get; set; }
 

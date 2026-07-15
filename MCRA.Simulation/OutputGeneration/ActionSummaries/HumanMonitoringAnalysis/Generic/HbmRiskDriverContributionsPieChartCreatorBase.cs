@@ -5,7 +5,7 @@ using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
     public abstract class HbmRiskDriverContributionsPieChartCreatorBase<S, T> : ReportPieChartCreatorBase
-        where S : IHbmExposureContributorKey, new()
+        where S : IExposureContributorKey, new()
         where T : HbmContributionRecordBase<S>, new() {
 
         private readonly string _sectionId;

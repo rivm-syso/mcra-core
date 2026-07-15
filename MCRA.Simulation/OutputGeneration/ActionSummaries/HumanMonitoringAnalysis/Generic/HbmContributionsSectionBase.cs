@@ -2,7 +2,7 @@
 
 namespace MCRA.Simulation.OutputGeneration {
     public abstract class HbmContributionsSectionBase<S, T1> : SummarySection
-        where S : IHbmExposureContributorKey, new()
+        where S : IExposureContributorKey, new()
         where T1 : HbmContributionRecordBase<S>, new() {
 
         public List<T1> Records { get; set; } = [];

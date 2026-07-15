@@ -5,7 +5,7 @@ using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
     public abstract class InternalExposureContributionRecordBase<T>
-        where T : IExposureContributorKey, new() 
+        where T : IContributorKey, new() 
     {
         [DisplayName("Stratification")]
         public string Stratification { get; set; }
