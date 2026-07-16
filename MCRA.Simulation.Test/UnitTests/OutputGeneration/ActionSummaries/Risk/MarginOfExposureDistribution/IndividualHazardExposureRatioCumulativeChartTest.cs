@@ -1,4 +1,5 @@
-﻿using MCRA.Simulation.OutputGeneration;
+﻿using MCRA.Simulation.Constants;
+using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Mock;
 using MCRA.Utils;
 using MCRA.Utils.Statistics;
@@ -12,7 +13,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
         private readonly int _numberOfSamples = 5000;
 
         private List<HistogramBin> simulateBins(List<double> data) {
-            var weights = Enumerable.Repeat(1D, _numberOfSamples).ToList();
+            var weights = Enumerable.Repeat(1D, data.Count).ToList();
             int numberOfBins = Math.Sqrt(data.Count) < 100 ? BMath.Ceiling(Math.Sqrt(data.Count)) : 100;
             return data.MakeHistogramBins(weights, numberOfBins, data.Min(), data.Max());
         }
@@ -62,21 +63,49 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
         /// </summary>
         [TestMethod]
         public void HazardExposureRatioCumulativeChartCreator_TestUncertaintyLogNormal() {
-            var mu = 2;
-            var sigma = 1.75;
-            var logData = LogNormalDistribution.LogNormalSamples(_numberOfSamples, mu, sigma).Select(c => c > 50 ? 100000 : c).ToList();
-            var bins = simulateBins(logData);
+            var mu = 10e5;
+            var upper = 15e5;
+            var seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var percentageZeros = 20d;
+            var distribution = LogNormalDistribution.FromMeanAndUpper(mu, upper);
+            var logData = distribution.Draws(random, _numberOfSamples);
+            var shift = SimulationConstants.MOE_eps - logData.Percentile(75);
+            var shifted = new List<double>();
+            foreach (var item in logData) {
+                shifted.Add(Math.Log10(item + shift));
+            }
+            var zeros = Enumerable.Repeat(0D, (int)(_numberOfSamples * percentageZeros / 100)).ToList();
 
-            var section = new RiskRatioDistributionSection() {
-                RiskDistributionBins = bins,
-                PercentageZeros = 0,
-                PercentilesGrid = MockUncertaintyDataPointCollection.Create(_numberOfSamples, mu, sigma, true),
-                UncertaintyLowerLimit = 5,
-                UncertaintyUpperLimit = 95
-            };
-            var chart = new RiskRatioCumulativeChartCreator(section);
-            RenderChart(chart, $"TestCreateUncLogNormal");
-            AssertIsValidView(section);
+            var bins = simulateBins(shifted);
+            {
+                var section = new RiskRatioDistributionSection() {
+                    RiskDistributionBins = bins,
+                    PercentageZeros = percentageZeros,
+                };
+                var chart = new RiskRatioChartCreator(section);
+                RenderChart(chart, "TestHistogramLogNormal");
+            }
+            shifted.AddRange(zeros);
+            {
+                var section = new RiskRatioDistributionSection() {
+                    RiskDistributionBins = bins,
+                    PercentageZeros = 0,
+                    PercentilesGrid = MockUncertaintyDataPointCollection.Create(
+                        _numberOfSamples,
+                        mu,
+                        upper,
+                        shift,
+                        percentageZeros,
+                        true
+                    ),
+                    UncertaintyLowerLimit = 5,
+                    UncertaintyUpperLimit = 95
+                };
+                var chart = new RiskRatioCumulativeChartCreator(section);
+                RenderChart(chart, $"TestCumulativeLogNormalUnc");
+            }
+
         }
     }
 }
