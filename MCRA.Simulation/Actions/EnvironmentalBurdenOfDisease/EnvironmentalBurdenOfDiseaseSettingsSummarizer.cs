@@ -24,7 +24,9 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
             );
             section.SummarizeSetting(SettingsItemType.BodApproach, _configuration.BodApproach);
             section.SummarizeSetting(SettingsItemType.ExposureGroupingMethod, _configuration.ExposureGroupingMethod);
-            section.SummarizeSetting(SettingsItemType.BinBoundaries, _configuration.BinBoundaries);
+            if (_configuration.ExposureGroupingMethod == ExposureGroupingMethod.CustomBins) {
+                section.SummarizeSetting(SettingsItemType.BinBoundaries, _configuration.BinBoundaries);
+            }
             section.SummarizeSetting(SettingsItemType.EbdStandardisation, _configuration.EbdStandardisation);
             if (_configuration.ExposureCalculationMethod == ExposureCalculationMethod.MonitoringConcentration) {
                 section.SummarizeSetting(SettingsItemType.UsePointEstimates, _configuration.UsePointEstimates);

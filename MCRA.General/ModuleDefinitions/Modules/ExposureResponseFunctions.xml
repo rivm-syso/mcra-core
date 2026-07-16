@@ -19,6 +19,7 @@
   </Entities>
   <CalculationSettings>
     <CalculationSetting source="Action">RandomSeed</CalculationSetting>
+    <CalculationSetting>ExposureGroupingMethod</CalculationSetting>
   </CalculationSettings>
   <UncertaintySources>
     <UncertaintySource>ExposureResponseFunctions</UncertaintySource>

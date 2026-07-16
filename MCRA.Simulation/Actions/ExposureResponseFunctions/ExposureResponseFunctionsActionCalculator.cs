@@ -86,7 +86,8 @@ namespace MCRA.Simulation.Actions.ExposureResponseFunctions {
                     if (factorialSet.Contains(UncertaintySource.ExposureResponseFunctions)) {
                         localProgress.Update("Resampling exposure response functions.");
                         var random = uncertaintySourceGenerators[UncertaintySource.ExposureResponseFunctions];
-                        model.ResampleExposureResponseFunction(random);
+                        var useErfBins = ModuleConfig.ExposureGroupingMethod == ExposureGroupingMethod.ErfDefinedBins;
+                        model.ResampleExposureResponseFunction(random, useErfBins);
                     }
                 }
             }

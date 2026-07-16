@@ -36,7 +36,7 @@ namespace MCRA.Simulation.Calculators.ExposureResponseFunctions {
 
         List<double> SubGroupLevels { get; }
 
-        void ResampleExposureResponseFunction(IRandom random);
+        void ResampleExposureResponseFunction(IRandom random, bool useErfBins);
 
         void ResampleCounterFactualValue(IRandom random);
     }

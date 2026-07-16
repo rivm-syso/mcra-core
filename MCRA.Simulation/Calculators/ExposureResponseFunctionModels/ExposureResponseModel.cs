@@ -99,13 +99,15 @@ namespace MCRA.Simulation.Calculators.ExposureResponseFunctions {
             CounterFactualValueModel.ResampleModelParameters(random);
         }
 
-        public void ResampleExposureResponseFunction(IRandom random) {
+        public void ResampleExposureResponseFunction(IRandom random, bool useErfBins) {
             var seed = random.Next();
             var rnd = new McraRandomGenerator(seed);
-            ErfModel.Resample(rnd);
-            foreach (var sgModel in ErfSubGroupModels) {
-                random.Reset();
-                sgModel.ErfModel.Resample(random);
+            if (HasErfSubGroups && useErfBins) {
+                foreach (var sgModel in ErfSubGroupModels) {
+                    sgModel.ErfModel.Resample(rnd);
+                }
+            } else {
+                ErfModel.Resample(rnd);
             }
         }
     }

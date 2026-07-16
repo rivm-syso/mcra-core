@@ -15,15 +15,6 @@
     <ValueType>BodApproach</ValueType>
   </SettingsItem>
   <SettingsItem>
-    <Id>ExposureGroupingMethod</Id>
-    <Name>Exposure grouping method</Name>
-    <Description>Specify the method by which the exposures are grouped in bins. For 'Custom bins', the 
-      specified bins are used for all exposure response functions. For 'ERF-defined bins', the bins defined 
-      for subgroups are used and for exposure response functions without subgroups, the specified custom bins are used.
-    </Description>
-    <ValueType>ExposureGroupingMethod</ValueType>
-  </SettingsItem>
-  <SettingsItem>
     <Id>BinBoundaries</Id>
     <Name>Bin boundaries</Name>
     <Description>

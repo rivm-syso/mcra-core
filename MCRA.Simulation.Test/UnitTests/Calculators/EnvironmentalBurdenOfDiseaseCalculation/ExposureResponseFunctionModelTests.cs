@@ -34,7 +34,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.EnvironmentalBurdenOfDiseas
             Assert.AreEqual(6, erfModel.Compute(2, true));
 
             var random = new McraRandomGenerator();
-            erfModel.ResampleExposureResponseFunction(random);
+            erfModel.ResampleExposureResponseFunction(random, false);
             Assert.AreNotEqual(3, erfModel.Compute(2, true));
             Assert.IsGreaterThan(2, erfModel.Compute(1, true));
             Assert.IsLessThan(4, erfModel.Compute(1, true));
@@ -48,7 +48,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.EnvironmentalBurdenOfDiseas
             var erf = new ExposureResponseFunction() {
                 ExposureResponseType = ExposureResponseType.Constant,
                 ExposureResponseSpecification = new NCalc.Expression("5.01"),
-                CounterFactualValue = 1, 
+                ExposureResponseSpecificationLower = new NCalc.Expression("4.01"),
+                ExposureResponseSpecificationUpper = new NCalc.Expression("6.01"),
+                ERFUncertaintyDistribution = ExposureResponseSpecificationDistributionType.Normal,
+                CounterFactualValue = 1,
                 ErfSubgroups = [
                     new ErfSubgroup() {
                         ExposureResponseSpecification = new NCalc.Expression("6.01"),
@@ -66,9 +69,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.EnvironmentalBurdenOfDiseas
             Assert.AreEqual(5.01, erfModel.Compute(2, false));
             Assert.AreEqual(5.01, erfModel.Compute(2.5, false));
 
-            erfModel.ResampleExposureResponseFunction(random);
-            Assert.AreEqual(6.01, erfModel.Compute(2, true));
-            Assert.AreEqual(7.01, erfModel.Compute(2.5, true));
+            erfModel.ResampleExposureResponseFunction(random, false);
+            Assert.IsGreaterThan(4, erfModel.Compute(2, false));
+            Assert.IsGreaterThan(4, erfModel.Compute(2.5, false));
         }
 
         [TestMethod]
@@ -96,7 +99,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.EnvironmentalBurdenOfDiseas
             Assert.AreEqual(5, erfModel.Compute(2, true));
             Assert.AreEqual(5, erfModel.Compute(2.5, true));
 
-            erfModel.ResampleExposureResponseFunction(random);
+            erfModel.ResampleExposureResponseFunction(random, false);
             Assert.AreEqual(erfModel.Compute(2, true), erfModel.Compute(2.5, true));
         }
     }

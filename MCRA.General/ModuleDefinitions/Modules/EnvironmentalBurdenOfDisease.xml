@@ -46,7 +46,7 @@
     <CalculationSetting>EbdCumulative</CalculationSetting>
     <CalculationSetting>BodIndicators</CalculationSetting>
     <CalculationSetting>BodApproach</CalculationSetting>
-    <CalculationSetting>ExposureGroupingMethod</CalculationSetting>
+    <CalculationSetting source="ExposureResponseFunctions">ExposureGroupingMethod</CalculationSetting>
     <CalculationSetting>BinBoundaries</CalculationSetting>
     <CalculationSetting>EbdStandardisation</CalculationSetting>
     <CalculationSetting>UsePointEstimates</CalculationSetting>

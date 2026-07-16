@@ -32,7 +32,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     )
                 );
             }
-            panelBuilder.RenderPanel(sb);
+            panelBuilder.RenderPanel(sb, collapseSingleTab: true);
 
             var hiddenProperties = new List<string>();
             if (Model.ErfSummaryRecords.All(r => string.IsNullOrEmpty(r.ExposureRoute))) {

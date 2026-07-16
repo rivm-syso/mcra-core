@@ -159,7 +159,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     );
                 }
             }
-            panelBuilder.RenderPanel(sb);
+            panelBuilder.RenderPanel(sb, collapseSingleTab: true);
         }
     }
 }
