@@ -80,11 +80,6 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                             + $" lower {Model.UncertaintyLowerLimit:F1}% limit of {pLower}, the right whisker is the"
                             + $" upper {Model.UncertaintyUpperLimit:F1}% limit of {pUpper}.";
                     }
-                    var records = plotRecords
-                        .Where(c => string.IsNullOrEmpty(c.Stratification))
-                        .OrderByDescending(c => c.IsCumulativeRecord)
-                        .ThenByDescending(c => isUncertainty ? c.PUpperRiskUncUpper : c.PUpperRiskNom)
-                        .ToList();
 
                     var panelSb = new StringBuilder();
 
@@ -101,9 +96,16 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         chartData: percentileDataSection
                     );
 
+                    var records = plotRecords
+                        .Where(c => string.IsNullOrEmpty(c.Stratification))
+                        .Where(c => c.PercentagePositives > 0)
+                        .OrderByDescending(c => c.IsCumulativeRecord)
+                        .ThenByDescending(c => isUncertainty ? c.MedianProbabilityOfCriticalEffect : c.ProbabilityOfCriticalEffect)
+                        .ToList();
+
                     panelSb.AppendTable(
                         Model,
-                        records.Where(c => c.PercentagePositives > 0).ToList(),
+                        records,
                         $"RiskBySubstanceTable{targetCode}",
                         ViewBag,
                         caption: $"Risk statistics by substance.",
@@ -120,11 +122,6 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     );
 
                     if (Model.StratifiedMultipleRiskRecords.Count > 0) {
-                        var stratifiedRecords = Model.StratifiedMultipleRiskRecords.SingleOrDefault(c => c.Target == target).Records
-                            .Where(c => !string.IsNullOrEmpty(c.Stratification))
-                            .OrderByDescending(c => c.IsCumulativeRecord)
-                            .ThenByDescending(c => isUncertainty ? c.PUpperRiskUncUpper : c.PUpperRiskNom)
-                            .ToList();
                         var stratifiedChartCreator = new MultipleStratifiedRiskRatioHeatMapCreator(
                             Model, targetUnit, isUncertainty
                         );
@@ -138,6 +135,13 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                             saveChartFile: true,
                             caption: caption
                         );
+
+                        var stratifiedRecords = Model.StratifiedMultipleRiskRecords.SingleOrDefault(c => c.Target == target).Records
+                            .Where(c => !string.IsNullOrEmpty(c.Stratification))
+                            .OrderBy(c => c.GetLabel())
+                            .ThenByDescending(c => c.IsCumulativeRecord)
+                            .ThenByDescending(c => isUncertainty ? c.MedianProbabilityOfCriticalEffect : c.ProbabilityOfCriticalEffect)
+                            .ToList();
                         panelSb.AppendTable(
                             Model,
                             stratifiedRecords.Where(c => c.PercentagePositives > 0).ToList(),
@@ -149,6 +153,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                             rotate: false,
                             hiddenProperties: hiddenProperties
                         );
+
                         panelBuilder.AddPanel(
                             id: $"PanelRiskBySubstanceStratified{targetCode}",
                             title: $"{targetName} stratified ",
