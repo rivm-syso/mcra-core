@@ -1,9 +1,6 @@
 ﻿using MCRA.General;
-using MCRA.Utils.Charting.OxyPlot;
 using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
-using OxyPlot.Axes;
-using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class MultipleRiskRatioHeatMapCreator : RiskRatioHeatMapCreatorBase {

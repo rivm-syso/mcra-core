@@ -12,27 +12,30 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             }
 
             sb.Append("<div class=\"figure-container\">");
-            var chartCreator = new RiskRatioChartCreator(Model);
-            sb.AppendChart(
-                "RiskDistributionChart",
-                chartCreator,
-                ChartFileType.Svg,
-                Model,
-                ViewBag,
-                chartCreator.Title,
-                true
-            );
-
-            var chartCreator1 = new RiskRatioCumulativeChartCreator(Model);
-            sb.AppendChart(
-                "RiskCumulativeChart",
-                chartCreator1,
-                ChartFileType.Svg,
-                Model,
-                ViewBag,
-                chartCreator1.Title,
-                true
-            );
+            {
+                var chartCreator = new RiskRatioChartCreator(Model);
+                sb.AppendChart(
+                    "RiskDistributionChart",
+                    chartCreator,
+                    ChartFileType.Svg,
+                    Model,
+                    ViewBag,
+                    chartCreator.Title,
+                    true
+                );
+            }
+            {
+                var chartCreator = new RiskRatioCumulativeChartCreator(Model);
+                sb.AppendChart(
+                    "RiskCumulativeDistributionChart",
+                    chartCreator,
+                    ChartFileType.Svg,
+                    Model,
+                    ViewBag,
+                    chartCreator.Title,
+                    true
+                );
+            }
             sb.Append("</div>");
         }
     }

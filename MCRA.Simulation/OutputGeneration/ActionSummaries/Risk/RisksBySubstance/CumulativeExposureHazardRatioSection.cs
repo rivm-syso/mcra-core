@@ -9,23 +9,6 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public List<TargetUnit> TargetUnits { get; set; }
 
-        /// <summary>
-        /// Summarizes risks by substance.
-        /// </summary>
-        /// <param name="targetUnits"></param>
-        /// <param name="individualEffectsBySubstanceCollections"></param>
-        /// <param name="individualEffects"></param>
-        /// <param name="substances"></param>
-        /// <param name="focalEffect"></param>
-        /// <param name="riskMetricCalculationType"></param>
-        /// <param name="riskMetricType"></param>
-        /// <param name="confidenceInterval"></param>
-        /// <param name="threshold"></param>
-        /// <param name="leftMargin"></param>
-        /// <param name="rightMargin"></param>
-        /// <param name="isInverseDistribution"></param>
-        /// <param name="isCumulative"></param>
-        ///
         public void Summarize(
             List<TargetUnit> targetUnits,
             List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> IndividualEffects)> individualEffectsBySubstanceCollections,
@@ -92,16 +75,6 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        /// <summary>
-        /// Summarizes uncertainty for risk safety charts.
-        /// </summary>
-        /// <param name="substances"></param>
-        /// <param name="individualEffectsBySubstance"></param>
-        /// <param name="individualEffects"></param>
-        /// <param name="isInverseDistribution"></param>
-        /// <param name="uncertaintyLowerBound"></param>
-        /// <param name="uncertaintyUpperBound"></param>
-        /// <param name="isCumulative"></param>
         public void SummarizeUncertain(
             ICollection<ExposureTarget> targets,
             ICollection<Compound> substances,

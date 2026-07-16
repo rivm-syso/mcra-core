@@ -89,7 +89,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     var panelSb = new StringBuilder();
 
                     var chartCreator = new MultipleRiskRatioHeatMapCreator(Model, targetUnit, isUncertainty);
-                    var chartName = Model.TargetUnits.Count == 1 ? "MarginOfExposureBySubstanceChart" : $"MarginOfExposureBySubstance{targetCode}Chart";
+                    var chartName = Model.TargetUnits.Count == 1 ? "RiskBySubstanceChart" : $"RiskBySubstance{targetCode}Chart";
                     panelSb.AppendChart(
                         name: chartName,
                         section: Model,
