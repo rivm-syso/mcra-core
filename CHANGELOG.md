@@ -1,5 +1,25 @@
 # Change Log
 
+## Version 10.3.0 (2026-07-17)
+
+### Added
+
+- Implement stratification in Risks module (#2454)
+- Consumer product concentrations support for units per volume, e.g., ul, ml, L (#2461)
+- Add stratification for contributions of substances in module HBM analysis (#2476)
+
+### Changed
+
+- Rename biological matrix comparisons module to "Exposure comparisons" (#2352)
+- Update R version for MCRA to 4.6.1 (#2479)
+- Update .NET target framework to .NET 10.0
+
+### Fixed
+
+- Keep NaN in last position when sorting exposure levels in ebd
+- Uncertainty for exposure response functions is not applied correctly
+- Correct horizontal axis cumulative distribution plots
+
 ## Version 10.2.22 (2026-06-26)
 
 ### Added
