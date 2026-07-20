@@ -29,10 +29,12 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                 .Cast<EffectMetric>()
                 .Except([EffectMetric.Undefined])
                 .ToList();
+            var hasUncertainty = true;
             foreach (var effect in effects) {
                 foreach (var substance in substances) {
                     var erfType = erfTypes.DrawRandom(random);
                     var effectMetric = effectMetricTypes.DrawRandom(random);
+                    var (erfString, erfStringLower, erfStringUpper) = FakeExposureResponseFunctionString(random, erfType, hasUncertainty);
                     var erf = FakeExposureResponseFunction(
                         $"ERF_{effect.Code}_{substance.Code}_{erfType.GetShortDisplayName()}",
                         substance,
@@ -40,9 +42,11 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                         target,
                         unit,
                         erfType,
+                        erfString,
+                        erfStringLower,
+                        erfStringUpper,
                         effectMetric,
                         2,
-                        true,
                         random
                     );
                     result.Add(erf);
@@ -63,12 +67,13 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             ExposureTarget target,
             ExposureUnitTriple unit,
             ExposureResponseType erfType,
+            string erfString,
+            string erfStringLower,
+            string erfStringUpper,
             EffectMetric metric,
             double counterfactualValue,
-            bool hasUncertainty,
             IRandom random
         ) {
-            var (erfString, erfStringLower, erfStringUpper) = fakeErfString(random, erfType, hasUncertainty);
             var result = new ExposureResponseFunction() {
                 Code = code,
                 Substance = substance,
@@ -116,7 +121,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             return result;
         }
 
-        private static (string, string, string) fakeErfString(
+        public static (string, string, string) FakeExposureResponseFunctionString(
             IRandom random,
             ExposureResponseType erfType,
             bool hasUncertainty

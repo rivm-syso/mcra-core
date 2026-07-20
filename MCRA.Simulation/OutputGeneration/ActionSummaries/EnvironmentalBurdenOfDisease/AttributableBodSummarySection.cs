@@ -1,5 +1,4 @@
 ﻿using MCRA.General;
-using MCRA.Simulation.Calculators.BodIndicatorModels;
 using MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation;
 using MCRA.Utils.ExtensionMethods;
 
@@ -36,7 +35,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 record.ResponseValues.Add(resultSummaryRecord.ResponseValue);
                 record.AttributableFractions.Add(resultSummaryRecord.AttributableFraction);
                 record.AttributableBods.Add(resultSummaryRecord.AttributableBod);
-                record.AttributableBodsStandardised.Add(resultSummaryRecord.AttributableBod/resultSummaryRecord.PopulationSize);
+                record.AttributableBodsStandardised.Add(resultSummaryRecord.AttributableBod / resultSummaryRecord.PopulationSize);
                 record.BinPercentages.Add(resultSummaryRecord.BinPercentage);
                 record.TotalBods.Add(resultSummaryRecord.TotalBod);
                 record.CumulativeAttributableBods.Add(resultSummaryRecord.CumulativeAttributableBod);
@@ -62,7 +61,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     EffectCode = ebdResultRecord.Effect.Code,
                     EffectName = ebdResultRecord.Effect.Name,
                     BodIndicator = ebdResultRecord.BodIndicator.GetShortDisplayName(),
-                    SourceIndicatorList = (ebdResultRecord.SourceIndicatorList.Count > 0 )
+                    SourceIndicatorList = (ebdResultRecord.SourceIndicatorList.Count > 0)
                         ? [.. ebdResultRecord.SourceIndicatorList.Select(r => r)]
                         : [],
                     ErfCode = ebdResultRecord.ExposureResponseModel.Code,
