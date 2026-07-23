@@ -131,6 +131,10 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 .OrderBy(r => r.TargetUnit.BiologicalMatrix)
                 .ThenBy(r => r.TargetUnit.ExpressionType)
                 .ToList();
+
+            if (data.HazardCharacterisationModelsCollections.Count == 0) {
+                throw new Exception("No valid hazard characterisations were loaded.");
+            }
         }
 
         protected override void loadDataUncertain(
