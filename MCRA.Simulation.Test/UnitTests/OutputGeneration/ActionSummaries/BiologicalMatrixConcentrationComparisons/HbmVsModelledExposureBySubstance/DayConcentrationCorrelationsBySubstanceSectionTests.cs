@@ -49,7 +49,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
                         random
                     );
                     var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
-                    var monitoringExposures = FakeHbmDataGenerator.MockHumanMonitoringIndividualDayConcentrations(individualDays, substances, samplingMethod, monitoringZeroFraction, seed: seed + 1);
+                    var monitoringExposures = FakeHbmDataGenerator.FakeHbmIndividualDayConcentrations(individualDays, substances, samplingMethod, monitoringZeroFraction, seed: seed + 1);
                     var section = new DayConcentrationCorrelationsBySubstanceSection();
                     section.Summarize(
                         targetExposures: targetExposures,
@@ -108,7 +108,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
                         random
                     );
                     var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
-                    var monitoringExposures = FakeHbmDataGenerator.MockHumanMonitoringIndividualDayConcentrations(
+                    var monitoringExposures = FakeHbmDataGenerator.FakeHbmIndividualDayConcentrations(
                         monitoringIndividualDays,
                         substances,
                         samplingMethod,

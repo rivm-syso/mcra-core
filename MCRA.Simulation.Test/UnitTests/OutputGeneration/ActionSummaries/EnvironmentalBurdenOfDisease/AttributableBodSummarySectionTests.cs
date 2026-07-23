@@ -61,7 +61,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Enviro
                 .FakeBodIndicatorValueModel(burdenOfDiseases, population);
 
             var hbmIndividualConcentrations = FakeHbmDataGenerator
-                .MockHumanMonitoringIndividualConcentrations(individuals, substances);
+                .FakeHbmIndividualConcentrations(individuals, substances);
             var hbmIndividualCollections = new Dictionary<ExposureTarget, (List<ITargetIndividualExposure> Exposures, TargetUnit Unit)> {
                 { targetUnit.Target, (hbmIndividualConcentrations.Cast<ITargetIndividualExposure>().ToList(), targetUnit) }
             };

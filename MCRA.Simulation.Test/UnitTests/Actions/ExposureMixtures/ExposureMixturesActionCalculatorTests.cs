@@ -132,8 +132,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Blood);
 
-            var monitoringExposures = FakeHbmDataGenerator.MockHumanMonitoringIndividualConcentrations(individuals, substances);
-            var monitoringDayConcentrations = FakeHbmDataGenerator.MockHumanMonitoringIndividualDayConcentrations(individualDays, substances, samplingMethod);
+            var monitoringExposures = FakeHbmDataGenerator.FakeHbmIndividualConcentrations(individuals, substances);
+            var monitoringDayConcentrations = FakeHbmDataGenerator.FakeHbmIndividualDayConcentrations(individualDays, substances, samplingMethod);
 
             var data = new ActionData() {
                 CorrectedRelativePotencyFactors = rpfs,

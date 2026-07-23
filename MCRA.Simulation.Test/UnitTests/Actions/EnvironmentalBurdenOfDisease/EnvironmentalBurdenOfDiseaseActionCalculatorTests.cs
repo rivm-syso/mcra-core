@@ -69,7 +69,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var substances = FakeSubstancesGenerator.Create(5);
             var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             var hbmIndividualConcentrations = FakeHbmDataGenerator
-                .MockHumanMonitoringIndividualConcentrations(individuals, substances);
+                .FakeHbmIndividualConcentrations(individuals, substances);
             var exposureResponseFunctionModels = FakeExposureResponseFunctionsGenerator
                 .FakeExposureResponseFunctionModel(
                     substances,

@@ -54,7 +54,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Enviro
                 .Cast<IExposureResponseModel>();
 
             var hbmIndividualConcentrations = FakeHbmDataGenerator
-                .MockHumanMonitoringIndividualConcentrations(individuals, [substance]);
+                .FakeHbmIndividualConcentrations(individuals, [substance]);
             var hbmIndividualCollections = new Dictionary<ExposureTarget, (List<ITargetIndividualExposure> Exposures, TargetUnit Unit)> {
                 { targetUnit.Target, (hbmIndividualConcentrations.Cast<ITargetIndividualExposure>().ToList(), targetUnit) }
             };

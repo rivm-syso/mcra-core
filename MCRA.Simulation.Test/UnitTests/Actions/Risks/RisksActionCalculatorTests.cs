@@ -470,8 +470,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             // HBM
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
-            var hbmIndividualConcentrations = FakeHbmDataGenerator.MockHumanMonitoringIndividualConcentrations(individuals, substances);
-            var hbmIndividualDayConcentrations = FakeHbmDataGenerator.MockHumanMonitoringIndividualDayConcentrations(individualDays, substances, samplingMethod);
+            var hbmIndividualConcentrations = FakeHbmDataGenerator.FakeHbmIndividualConcentrations(individuals, substances);
+            var hbmIndividualDayConcentrations = FakeHbmDataGenerator.FakeHbmIndividualDayConcentrations(individualDays, substances, samplingMethod);
 
             var data = new ActionData() {
                 ActiveSubstances = substances,
@@ -562,8 +562,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             // HBM
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
-            var hbmIndividualConcentrations = FakeHbmDataGenerator.MockHumanMonitoringIndividualConcentrations(individuals, substances);
-            var hbmIndividualDayConcentrations = FakeHbmDataGenerator.MockHumanMonitoringIndividualDayConcentrations(individualDays, substances, samplingMethod);
+            var hbmIndividualConcentrations = FakeHbmDataGenerator.FakeHbmIndividualConcentrations(individuals, substances);
+            var hbmIndividualDayConcentrations = FakeHbmDataGenerator.FakeHbmIndividualDayConcentrations(individualDays, substances, samplingMethod);
 
             var data = new ActionData() {
                 ActiveSubstances = substances,

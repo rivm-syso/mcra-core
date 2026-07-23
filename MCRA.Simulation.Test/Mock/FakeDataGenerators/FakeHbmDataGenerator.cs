@@ -104,7 +104,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         /// <summary>
         /// Generates human monitoring individual day concentrations.
         /// </summary>
-        public static ICollection<HbmIndividualDayConcentration> MockHumanMonitoringIndividualDayConcentrations(
+        public static ICollection<HbmIndividualDayConcentration> FakeHbmIndividualDayConcentrations(
             ICollection<SimulatedIndividualDay> individualDays,
             ICollection<Compound> substances,
             HumanMonitoringSamplingMethod samplingMethod,
@@ -192,7 +192,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         /// <summary>
         /// Generates human monitoring individual day concentrations.
         /// </summary>
-        public static ICollection<HbmIndividualConcentration> MockHumanMonitoringIndividualConcentrations(
+        public static ICollection<HbmIndividualConcentration> FakeHbmIndividualConcentrations(
             ICollection<Individual> individuals,
             ICollection<Compound> compounds,
             double fractionZero = .5,
