@@ -44,7 +44,6 @@ namespace MCRA.Simulation.Calculators.RiskPercentilesCalculation {
             var criticalEffects = individualRisks
                 .Select(c => c.CriticalEffectDose)
                 .ToList();
-            var isHazardCharacterisationDistribution = criticalEffects.Distinct().Count() > 1;
             var exposureHazardRatios = individualRisks
                 .Select(c => c.ExposureHazardRatio)
                 .ToList();
@@ -55,7 +54,6 @@ namespace MCRA.Simulation.Calculators.RiskPercentilesCalculation {
             var exposureHazardRatio = double.NaN;
             var risk = double.NaN;
             var exposure = double.NaN;
-            var criticalEffect = double.NaN;
 
             foreach (var selectedPercentage in Percentages) {
                 var percentage = selectedPercentage;
@@ -77,14 +75,16 @@ namespace MCRA.Simulation.Calculators.RiskPercentilesCalculation {
                     }
                 }
 
+                // If we have multiple (distribution) or no (empty collection) hazard characterisations then set it to NaN
+                var hazardCharacterisation = criticalEffects.Distinct().Count() == 1
+                    ? criticalEffects[0]
+                    : double.NaN;
                 var singleValueRiskCalculationResult = new RiskDistributionPercentileRecord() {
                     HazardExposureRatio = risk,
                     HazardQuotient = exposureHazardRatio,
                     Exposure = exposure,
                     Percentage = percentage,
-                    HazardCharacterisation = isHazardCharacterisationDistribution
-                        ? criticalEffect
-                        : criticalEffects[0]
+                    HazardCharacterisation = hazardCharacterisation
                 };
                 result.Add(singleValueRiskCalculationResult);
             }

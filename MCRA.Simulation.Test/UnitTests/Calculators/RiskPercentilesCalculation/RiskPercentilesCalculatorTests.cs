@@ -1,4 +1,5 @@
 ﻿using MCRA.General;
+using MCRA.Simulation.Calculators.RiskCalculation;
 using MCRA.Simulation.Calculators.RiskPercentilesCalculation;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
@@ -7,6 +8,19 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SingleValueConcentrationsCa
 
     [TestClass]
     public class RiskPercentilesCalculatorTests {
+
+        [TestMethod]
+        public void IndividualSingleValueRisksCalculator_TestComputeEmpty() {
+            var individualEffects = new List<IndividualEffect>();
+            var calculator = new RiskDistributionPercentilesCalculator(
+                HealthEffectType.Risk,
+                RiskMetricType.ExposureHazardRatio,
+                [99D],
+                true
+            );
+            var result = calculator.Compute(individualEffects);
+            Assert.HasCount(1, result);
+        }
 
         /// <summary>
         /// Tests compute single value risks from risk single value concentrations
