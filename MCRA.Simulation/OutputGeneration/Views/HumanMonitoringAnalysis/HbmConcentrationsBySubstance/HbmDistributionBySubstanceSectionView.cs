@@ -57,7 +57,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                             boxPlotRecords,
                             item.Key,
                             Model.SectionId,
-                            Model.HbmBoxPlotRecords[item.Key].FirstOrDefault()?.Unit ?? string.Empty,
+                            boxPlotRecords.FirstOrDefault()?.Unit ?? string.Empty,
                             Model.ShowOutliers
                         );
 
