@@ -24,7 +24,7 @@ namespace MCRA.Utils.PerformanceReporting {
             GC.WaitForPendingFinalizers();
             foreach (var order in orders) {
                 if (bytes > max) {
-                    return $"----- Memory usage: {Decimal.Divide(bytes, max):##.##} {order}";
+                    return $"----- Memory usage: {decimal.Divide(bytes, max):##.##} {order}";
                 }
                 max /= scale;
             }
@@ -56,30 +56,36 @@ namespace MCRA.Utils.PerformanceReporting {
 
         public static ulong GetTotalMemory() => GetMemoryMetrics().Total;
 
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+        private class MemoryStatusEx {
+            public uint dwLength;
+            public uint dwMemoryLoad;
+            public ulong ullTotalPhys;
+            public ulong ullAvailPhys;
+            public ulong ullTotalPageFile;
+            public ulong ullAvailPageFile;
+            public ulong ullTotalVirtual;
+            public ulong ullAvailVirtual;
+            public ulong ullAvailExtendedVirtual;
+
+            public MemoryStatusEx() {
+                dwLength = (uint)Marshal.SizeOf<MemoryStatusEx>();
+            }
+        }
+
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool GlobalMemoryStatusEx([In, Out] MemoryStatusEx lpBuffer);
+
         private static MemoryMetrics getWindowsMetrics() {
-            var output = "";
-
-            var info = new ProcessStartInfo {
-                FileName = "wmic",
-                Arguments = "OS get FreePhysicalMemory,TotalVisibleMemorySize /Value",
-                RedirectStandardOutput = true
-            };
-
-            using (var process = Process.Start(info)) {
-                if(process == null) {
-                    return new MemoryMetrics();
-                }
-                process.WaitForExit();
-                output = process.StandardOutput.ReadToEnd();
+            var status = new MemoryStatusEx();
+            if (!GlobalMemoryStatusEx(status)) {
+                return new MemoryMetrics();
             }
 
-            var lines = output.Trim().Split("\n");
-            var freeMemoryParts = lines[0].Split("=", StringSplitOptions.RemoveEmptyEntries);
-            var totalMemoryParts = lines[1].Split("=", StringSplitOptions.RemoveEmptyEntries);
-
             var metrics = new MemoryMetrics {
-                Total = ulong.Parse(totalMemoryParts[1]) / 1024,
-                Free = ulong.Parse(freeMemoryParts[1]) / 1024
+                Total = status.ullTotalPhys / 1024 / 1024,
+                Free = status.ullAvailPhys / 1024 / 1024
             };
             metrics.Used = metrics.Total - metrics.Free;
 
