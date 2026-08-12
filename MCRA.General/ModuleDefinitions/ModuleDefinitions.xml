@@ -85,6 +85,7 @@
       <xi:include href="Modules/TargetExposures.xml" />
       <xi:include href="Modules/ExposureMixtures.xml" />
       <xi:include href="Modules/HumanMonitoringData.xml" />
+      <xi:include href="Modules/ConsumerProductExposureEstimates.xml" />
       <xi:include href="Modules/HumanMonitoringAnalysis.xml" />
       <xi:include href="Modules/BiologicalMatrixConcentrationComparisons.xml" />
       <xi:include href="Modules/DustExposures.xml" />

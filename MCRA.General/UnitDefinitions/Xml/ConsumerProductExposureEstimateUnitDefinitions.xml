@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>ConsumerProductExposureEstimateUnit</Id>
+  <Name>Consumer product exposure estimate unit</Name>
+  <Description>
+    Accepted units for job exposure activities.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>ugPerCm2PerDay</Id>
+      <Name>µg/cm2/day</Name>
+      <ShortName>µg/cm2/day</ShortName>
+      <Description>Exposure expressed in micrograms per square centimeter (µg/cm2) per day.</Description>
+      <Aliases>
+        <Alias>ugPerCm2PerDay</Alias>
+        <Alias>µg/cm2/day</Alias>
+        <Alias>ug/cm2/day</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>mgPerCm2PerDay</Id>
+      <Name>mg/cm2/day</Name>
+      <ShortName>mg/cm2/day</ShortName>
+      <Description>Exposure expressed in milligrams per square centimeter (mg/cm2) per day.</Description>
+      <Aliases>
+        <Alias>mgPerCm2PerDay</Alias>
+        <Alias>mg/cm2/day</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>mgPerKgBWPerDay</Id>
+      <Name>milligram/kilogram bodyweight/day</Name>
+      <ShortName>mg/kg bw/day</ShortName>
+      <Aliases>
+        <Alias>mgPerKgBWPerDay</Alias>
+        <Alias>mg/kg bw/day</Alias>
+        <Alias>mg/kg/day</Alias>
+        <Alias>milligram/kg bw/day</Alias>
+        <Alias>milligr/kg bw/day</Alias>
+        <Alias>G211A</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>ugPerKgBWPerDay</Id>
+      <Name>microgram/kilogram bodyweight/day</Name>
+      <ShortName>µg/kg bw/day</ShortName>
+      <Aliases>
+        <Alias>ugPerKgBWPerDay</Alias>
+        <Alias>µg/kg bw/day</Alias>
+        <Alias>µg/kg/day</Alias>
+        <Alias>microgram/kg bw/day</Alias>
+        <Alias>microgr/kg bw/day</Alias>
+        <Alias>G210A</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>ngPerKgBWPerDay</Id>
+      <Name>nanogram/kilogram bodyweight/day</Name>
+      <ShortName>ng/kg bw/day</ShortName>
+      <Aliases>
+        <Alias>ngPerKgBWPerDay</Alias>
+        <Alias>ng/kg bw/day</Alias>
+        <Alias>ng/kg/day</Alias>
+        <Alias>nanogram/kg bw/day</Alias>
+        <Alias>nanogr/kg bw/day</Alias>
+        <Alias>G214A</Alias>
+      </Aliases>
+    </Unit>
+  </Units>
+</UnitDefinition>

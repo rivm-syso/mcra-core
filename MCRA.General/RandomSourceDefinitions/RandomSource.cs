@@ -86,5 +86,7 @@
         OE_DrawOccupationalExposures = 43,
         // Kinetic conversion factors: PBK model simulation
         KCF_PbkModelSimulation = 44,
+        // Consumer product exposures: draw consumer product exposure estimates
+        CPE_ConsumerProductExposureEstimates = 45,
     }
 }

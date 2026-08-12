@@ -46,4 +46,23 @@
     <ValueType>Boolean</ValueType>
     <DefaultValue>false</DefaultValue>
   </SettingsItem>
+  <!-- Consumer product exposure settings  -->
+  <SettingsItem>
+    <Id>ConsumerProductExposureCalculationMethod</Id>
+    <Name>Consumer product exposure calculation method</Name>
+    <Description>
+      Method types for consumer product exposure calculation.
+    </Description>
+    <ValueType>ConsumerProductExposureCalculationMethod</ValueType>
+    <DefaultValue>FromUsesAndConcentrations</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ConsumerProductAssessmentMatchingMethod</Id>
+    <Name>Consumer product assessment filter method</Name>
+    <Description>
+      Method types for consumer product assessment filtering based on gender and age ranges.
+    </Description>
+    <ValueType>ConsumerProductAssessmentMatchingMethod</ValueType>
+    <DefaultValue>AtRandom</DefaultValue>
+  </SettingsItem>
 </SettingsItems>

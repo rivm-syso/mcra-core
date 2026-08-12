@@ -15,6 +15,7 @@ using MCRA.Simulation.Actions.Concentrations;
 using MCRA.Simulation.Actions.ConsumerProductConcentrationDistributions;
 using MCRA.Simulation.Actions.ConsumerProductConcentrations;
 using MCRA.Simulation.Actions.ConsumerProductExposureDeterminants;
+using MCRA.Simulation.Actions.ConsumerProductExposureEstimates;
 using MCRA.Simulation.Actions.ConsumerProductExposures;
 using MCRA.Simulation.Actions.ConsumerProducts;
 using MCRA.Simulation.Actions.ConsumerProductUseFrequencies;
@@ -1139,6 +1140,12 @@ namespace MCRA.Simulation {
         public ICollection<OccupationalScenarioExposure> OccupationalScenarioExposures {
             get => GetOrCreateModuleOutputData<OccupationalExposuresOutputData>(ActionType.OccupationalExposures).OccupationalScenarioExposures;
             set => GetOrCreateModuleOutputData<OccupationalExposuresOutputData>(ActionType.OccupationalExposures).OccupationalScenarioExposures = value;
+        }
+
+        //Consumer product exposure data
+        public IDictionary<string, ConsumerProductExposureAssessment> ConsumerProductExposureAssessments {
+            get => GetOrCreateModuleOutputData<ConsumerProductExposureEstimatesOutputData>(ActionType.ConsumerProductExposureEstimates).ConsumerProductExposureAssessments;
+            set => GetOrCreateModuleOutputData<ConsumerProductExposureEstimatesOutputData>(ActionType.ConsumerProductExposureEstimates).ConsumerProductExposureAssessments = value;
         }
 
         /// <summary>

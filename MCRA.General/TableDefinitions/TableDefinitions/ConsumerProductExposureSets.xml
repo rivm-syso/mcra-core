@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition IsStrongEntity="true">
+  <Id>ConsumerProductExposureSets</Id>
+  <Name>Consumer product exposure sets</Name>
+  <Description>
+    Describes the exposure sets in the study.
+  </Description>
+  <Aliases>
+    <string>ConsumerProductExposureSets</string> 
+    <string>CPExposureSets</string>
+  </Aliases>
+  <PreferredAlias>CPExposureSets</PreferredAlias>
+  <HiddenAliases>
+    <string>RawConsumerProductExposureSets</string>
+  </HiddenAliases>
+  <TargetDataTable>RawConsumerProductExposureSets</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition IsPrimaryKey="true" Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idExposureSet</Id>
+      <Description>Exposure set identification code.</Description>
+      <Aliases>
+        <string>idExposureSet</string>
+        <string>Set</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idAssessment</Id>
+      <Description>Name of the exposure assessment.</Description>
+      <Aliases>
+        <string>idAssessment</string>
+        <string>Assessment</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>ConsumerProductExposureAssessments</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idSubstance</Id>
+      <Name>idSubstance</Name>
+      <Description>
+        The unique identification code of the substance.
+        This code may be from an existing coding system, such as CAS-codes or Param codes of EFSA, or it may be a user-defined code.
+      </Description>
+      <Aliases>
+        <string>idSubstance</string>
+        <string>Substance</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Compounds</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="200">
+      <Id>idProducts</Id>
+      <Description>The consumer products associated with the assessment, separated by a pipe (|) character.</Description>
+      <Aliases>
+        <string>idProducts</string>
+        <string>Products</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="ConsumerProductExposureEstimateType">
+      <Id>EstimateType</Id>
+      <Description>The estimate type associated with the assessment.</Description>
+      <Aliases>
+        <string>EstimateType</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="200">
+      <Id>ExposureRoutes</Id>
+      <Description>The exposure routes associated with the assessment, separated by a pipe (|) character.</Description>
+      <Aliases>
+        <string>ExposureRoutes</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric">
+      <Id>PercentageZeros</Id>
+      <Description>The percentage of zeros associated with the assessment.</Description>
+      <Aliases>
+        <string>PercentageZeros</string>
+        <string>PercentageZeroes</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="ConsumerProductExposureEstimateUnit">
+      <Id>Unit</Id>
+      <Description>
+        Unit for the exposure. This is typically a dose unit, such as mg/cm2/day (DermalLoad) or mg/kg bw/day (SystemicDose).
+      </Description>
+      <Aliases>
+        <string>Unit</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

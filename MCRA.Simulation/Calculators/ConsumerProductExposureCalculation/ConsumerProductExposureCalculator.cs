@@ -10,9 +10,13 @@ using MCRA.Utils.Statistics.RandomGenerators;
 namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
 
     public sealed class ConsumerProductExposureCalculator {
+        private static readonly ConsumerProduct _sumOfConsumerProducts = new() { Code = "Sum", Name = "Sum of consumer products" };
+
         private readonly IDictionary<(ConsumerProduct, Compound), ConcentrationModel> _concentrationModels;
         private readonly Dictionary<(ConsumerProduct, Compound, ExposureRoute), double> _exposureFractions;
         private readonly Dictionary<ConsumerProduct, ConsumerProductApplicationAmountSGs> _applicationAmounts;
+
+        public ConsumerProductExposureCalculator() { }
 
         public ConsumerProductExposureCalculator(
             ICollection<ConsumerProductExposureFraction> cpExposureFractions,
@@ -41,6 +45,9 @@ namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
                  .ToDictionary(c => c.Product);
         }
 
+        /// <summary>
+        /// Compute individual exposures based on uses and concentrations.
+        /// </summary>
         public List<ConsumerProductIndividualExposure> Compute(
             ICollection<SimulatedIndividual> individuals,
             ICollection<IndividualConsumerProductUseFrequency> cpUseFrequencies,
@@ -60,6 +67,34 @@ namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
                 ))
                 .ToList();
             return cpIndividualDayExposures;
+        }
+
+        /// <summary>
+        /// Compute exposure based on distributions.
+        /// </summary>
+        public List<ConsumerProductIndividualExposure> Compute(
+            ICollection<SimulatedIndividual> individuals,
+            ICollection<ConsumerProductExposureDistribution> models,
+            ICollection<ExposureRoute> routes,
+            ConsumerProductAssessmentMatchingMethod filterMethod,
+            ICollection<Compound> substances,
+            ExposureUnitTriple targetUnit,
+            IRandom random
+        ) {
+            var lookup = models.ToLookup(c => (c.ExposureRoute, c.Substance));
+            var seed = random.Next();
+            var exposures = individuals
+                .Select(si => computeFromExposureDistributionModels(
+                    si,
+                    routes,
+                    substances,
+                    lookup,
+                    filterMethod,
+                    targetUnit,
+                    new McraRandomGenerator(RandomUtils.CreateSeed(seed, si.Id))
+                ))
+                .ToList();
+            return exposures;
         }
 
         private ConsumerProductIndividualExposure calculateIndividualDayExposure(
@@ -84,7 +119,7 @@ namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
                             && _concentrationModels.TryGetValue((useFrequency.Product, substance), out var cpcModel)
                         ) {
                             ConsumerProductExposurePerSubstance ipc = null;
-                            (var concentration, var occurrenceFraction) = getConcentration(substance, cpcModel);
+                            (var concentration, var occurrenceFraction) = getConcentration(cpcModel);
                             var cpUnitSpec = cpcModel.Unit as ConsumerProductConcentrationUnitSpec;
                             if (cpUnitSpec.IsPerUnit()) {
                                 // example:
@@ -140,10 +175,85 @@ namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
             return consumerProductIndividualDayIntake;
         }
 
-        private static (double, double) getConcentration(Compound substance, ConcentrationModel model) {
+        /// <summary>
+        /// Computes/draws the CP exposure for the specified routes and substances from
+        /// exposure distribution models.
+        /// <returns></returns>
+        private ConsumerProductIndividualExposure computeFromExposureDistributionModels(
+            SimulatedIndividual individual,
+            ICollection<ExposureRoute> routes,
+            ICollection<Compound> substances,
+            ILookup<(ExposureRoute route, Compound substance), ConsumerProductExposureDistribution> models,
+            ConsumerProductAssessmentMatchingMethod filterMethod,
+            ExposureUnitTriple targetUnit,
+            IRandom random
+        ) {
+            var intakesPerConsumerProduct = new List<IIntakePerConsumerProduct>();
+            var intakesPerRouteSubstance = new Dictionary<ExposureRoute, List<IIntakePerCompound>>();
+
+            foreach (var route in routes) {
+                var exposuresPerSubstance = new List<ConsumerProductExposurePerSubstance>();
+                foreach (var substance in substances) {
+                    var model = match(individual, route, substance, models, filterMethod);
+                    if (model != null) {
+                        var alignmentFactor = model.Unit.GetSubstanceAmountUnit()
+                            .GetMultiplicationFactor(targetUnit.SubstanceAmountUnit, substance.MolecularMass);
+                        var concentration = model.Draw(random);
+                        var ipc = new ConsumerProductExposurePerSubstance(
+                            substance,
+                            Amount: concentration * alignmentFactor
+                        );
+                        if (ipc != null) {
+                            exposuresPerSubstance.Add(ipc);
+                        }
+                    }
+                }
+                intakesPerRouteSubstance.Add(route, [.. exposuresPerSubstance.Cast<IIntakePerCompound>()]);
+            }
+            var intakePerProduct = new IntakePerConsumerProduct() {
+                Product = _sumOfConsumerProducts,
+                IntakesPerSubstance = intakesPerRouteSubstance,
+            };
+            intakesPerConsumerProduct.Add(intakePerProduct);
+            var consumerProductIndividualDayIntake = new ConsumerProductIndividualExposure() {
+                SimulatedIndividual = individual,
+                IntakesPerProduct = [.. intakesPerConsumerProduct.Cast<IIntakePerConsumerProduct>()],
+            };
+            return consumerProductIndividualDayIntake;
+        }
+
+        private static (double, double) getConcentration(ConcentrationModel model) {
             var concentration = model.GetDistributionMean(NonDetectsHandlingMethod.ReplaceByZero);
             var occurrencePercentage = model.CorrectedOccurenceFraction;
             return (concentration, occurrencePercentage);
+        }
+
+        private static ConsumerProductExposureDistribution match(
+            SimulatedIndividual individual,
+            ExposureRoute route,
+            Compound substance,
+            ILookup<(ExposureRoute route, Compound substance), ConsumerProductExposureDistribution> models,
+            ConsumerProductAssessmentMatchingMethod matchingMethod
+        ) {
+            if (models.Contains((route, substance))) {
+                var candidates = models[(route, substance)];
+                var result = candidates
+                    .Where(model => {
+                        bool matchesAgeMin = model.AgeMin.HasValue && individual.Age.HasValue && individual.Age >= model.AgeMin.Value;
+                        bool matchesAgeMax = model.AgeMax.HasValue && individual.Age.HasValue && individual.Age <= model.AgeMax.Value;
+                        bool ageMatches = matchesAgeMin && matchesAgeMax;
+                        bool genderMatches = model.Gender == individual.Gender;
+                        return matchingMethod switch {
+                            ConsumerProductAssessmentMatchingMethod.MatchOnGender => genderMatches,
+                            ConsumerProductAssessmentMatchingMethod.MatchOnAge => ageMatches,
+                            ConsumerProductAssessmentMatchingMethod.MatchOnAgeAndGender => genderMatches && ageMatches,
+                            ConsumerProductAssessmentMatchingMethod.AtRandom => true,
+                            _ => false
+                        };
+                    });
+                return result.FirstOrDefault();
+            }
+            return null;
         }
     }
 }

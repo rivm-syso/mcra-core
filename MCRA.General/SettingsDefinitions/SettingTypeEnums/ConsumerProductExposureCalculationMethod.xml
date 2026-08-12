@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>ConsumerProductExposureCalculationMethod</Id>
+  <Name>Consumer product exposure calculation method</Name>
+  <Description>
+    Method types for consumer product exposure calculation.
+  </Description>
+  <IsInternalEnum>true</IsInternalEnum>
+  <Units>
+    <Unit>
+      <Id>FromUsesAndConcentrations</Id>
+      <Name>Use consumer product uses and concentration data</Name>
+      <ShortName>Consumer product uses and concentrations</ShortName>
+      <Description>
+        Compute exposure based on combining consumer product use data with product concentration data.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>FromExposureEstimates</Id>
+      <Name>Use consumer product exposure estimates</Name>
+      <ShortName>Consumer product exposures</ShortName>
+      <Description>
+        Compute exposure based on exposure estimates data.
+      </Description>
+    </Unit>
+  </Units>
+</UnitDefinition>

@@ -2319,4 +2319,44 @@
       </ParentScopeReference>
     </ParentScopeReferences>
   </ScopingTypeDefinition>
+
+  <ScopingTypeDefinition>
+    <Id>ConsumerProductExposureAssessments</Id>
+    <Name>Consumer product exposure assessments</Name>
+    <RawTableId>ConsumerProductExposureAssessments</RawTableId>
+    <Description>-</Description>
+    <TableGroup>ConsumerProductExposureEstimates</TableGroup>
+    <IsStrongEntity>true</IsStrongEntity>
+  </ScopingTypeDefinition>
+  <ScopingTypeDefinition>
+    <Id>ConsumerProductExposureSets</Id>
+    <Name>Consumer product exposure sets</Name>
+    <RawTableId>ConsumerProductExposureSets</RawTableId>
+    <Description>-</Description>
+    <TableGroup>ConsumerProductExposureEstimates</TableGroup>
+    <IsStrongEntity>true</IsStrongEntity>
+    <ParentScopeReferences>
+      <ParentScopeReference>
+        <IdField>idSubstance</IdField>
+        <ReferencedScope>Compounds</ReferencedScope>
+      </ParentScopeReference>
+      <ParentScopeReference>
+        <IdField>idAssessment</IdField>
+        <ReferencedScope>ConsumerProductExposureAssessments</ReferencedScope>
+      </ParentScopeReference>
+    </ParentScopeReferences>
+  </ScopingTypeDefinition>
+  <ScopingTypeDefinition>
+    <Id>ConsumerProductExposurePercentiles</Id>
+    <Name>Consumer product exposure percentiles</Name>
+    <RawTableId>ConsumerProductExposurePercentiles</RawTableId>
+    <Description>-</Description>
+    <TableGroup>ConsumerProductExposureEstimates</TableGroup>
+    <ParentScopeReferences>
+      <ParentScopeReference>
+        <IdField>idExposureSet</IdField>
+        <ReferencedScope>ConsumerProductExposureSets</ReferencedScope>
+      </ParentScopeReference>
+    </ParentScopeReferences>
+  </ScopingTypeDefinition>
 </ScopingTypeDefinitions>

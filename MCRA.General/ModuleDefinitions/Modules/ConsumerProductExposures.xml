@@ -30,6 +30,8 @@
   <CalculationSettings>
     <CalculationSetting>SelectedExposureRoutes</CalculationSetting>
     <CalculationSetting source="Action">RandomSeed</CalculationSetting>
+    <CalculationSetting>ConsumerProductExposureCalculationMethod</CalculationSetting>
+    <CalculationSetting>ConsumerProductAssessmentMatchingMethod</CalculationSetting>
   </CalculationSettings>
   <OutputSettings>
     <OutputSetting source="Action">SelectedPercentiles</OutputSetting>
@@ -45,5 +47,7 @@
     <Input>ConsumerProductConcentrationDistributions</Input>
     <Input>ConsumerProductUseFrequencies</Input>
     <Input>ConsumerProductExposureDeterminants</Input>
+    <Input>Individuals</Input>
+    <Input>ConsumerProductExposureEstimates</Input>
   </CalculationInputs>
 </Module>

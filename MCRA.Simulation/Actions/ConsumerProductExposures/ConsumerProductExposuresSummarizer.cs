@@ -8,11 +8,12 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
     public enum ConsumerProductExposuresSections {
         ConsumerProductExposuresByRouteSubstanceSection,
         ConsumerProductExposuresByRouteSection,
-        ConsumerProductsSection
+        ConsumerProductExposuresByProductSection
     }
 
     public sealed class ConsumerProductExposuresSummarizer(ConsumerProductExposuresModuleConfig config)
         : ActionModuleResultsSummarizer<ConsumerProductExposuresModuleConfig, ConsumerProductExposuresActionResult>(config) {
+
         public override ActionType ActionType => ActionType.ConsumerProductExposures;
 
         public override void Summarize(
@@ -59,7 +60,7 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
             }
 
             // Exposures by consumer products: contributions, summary and boxplot
-            if (outputSettings.ShouldSummarize(ConsumerProductExposuresSections.ConsumerProductsSection)) {
+            if (outputSettings.ShouldSummarize(ConsumerProductExposuresSections.ConsumerProductExposuresByProductSection)) {
                 summarizeConsumerProducts(
                     actionResult,
                     data,
@@ -212,7 +213,7 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
             int order
         ) {
             var section = new ConsumerProductExposuresTotalDistributionSection() {
-                SectionLabel = getSectionLabel(ConsumerProductExposuresSections.ConsumerProductsSection)
+                SectionLabel = getSectionLabel(ConsumerProductExposuresSections.ConsumerProductExposuresByProductSection)
             };
             var subHeader = header.AddSubSectionHeaderFor(
             section,

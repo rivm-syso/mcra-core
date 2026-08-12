@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition IsStrongEntity="true">
+  <Id>ConsumerProductExposureAssessments</Id>
+  <Name>Consumer product exposure assessments</Name>
+  <Description>
+    Describes the exposure assessments in the study.
+  </Description>
+  <Aliases>
+    <string>ConsumerProductExposureAssessments</string> 
+    <string>CPExposureAssessments</string>
+  </Aliases>
+  <PreferredAlias>CPExposureAssessments</PreferredAlias>
+  <HiddenAliases>
+    <string>RawConsumerProductExposureAssessments</string>
+  </HiddenAliases>
+  <TargetDataTable>RawConsumerProductExposureAssessments</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition IsPrimaryKey="true" Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idAssessment</Id>
+      <Description>Exposure assessment identification code.</Description>
+      <Aliases>
+        <string>id</string>
+        <string>idAssessment</string>
+        <string>Assessment</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="100" IsNameColumn="true">
+      <Id>Name</Id>
+      <Description>Name of the exposure assessment.</Description>
+      <Aliases>
+        <string>name</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
+      <Id>Description</Id>
+      <Description>Exposure assessment description.</Description>
+      <Aliases>
+        <string>Description</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="ExposureType">
+      <Id>ExposureType</Id>
+      <Name>ExposureType</Name>
+      <Description>The exposure type associated with the assessment (i.e., chronic or acute).</Description>
+      <Aliases>
+        <string>ExposureType</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldSize="50" FieldType="AlphaNumeric">
+      <Id>Location</Id>
+      <Description>
+        The location or country where survey is held. It is recommended to use ISO Alpha-2 country codes.
+      </Description>
+      <Aliases>
+        <string>Location</string>
+        <string>Country</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric" FieldSize="50">
+      <Id>AgeMin</Id>
+      <Description>
+        Specifies the minimum age (in years) of the assessment group.
+      </Description>
+      <Aliases>
+        <string>AgeMin</string>
+        <string>MinAge</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric" FieldSize="50">
+      <Id>AgeMax</Id>
+      <Description>
+        Specifies the maximum age (in years) of the assessment group.
+      </Description>
+      <Aliases>
+        <string>AgeMax</string>
+        <string>MaxAge</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="GenderType">
+      <Id>Gender</Id>
+      <Description>The gender of the assessment group.</Description>
+      <Aliases>
+        <string>Gender</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
+      <Id>Reference</Id>
+      <Description>
+        Reference(s) to PACEM assessments.
+      </Description>
+      <Aliases>
+        <string>References</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

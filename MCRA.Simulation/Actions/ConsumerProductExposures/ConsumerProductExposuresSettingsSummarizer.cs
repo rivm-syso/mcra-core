@@ -7,18 +7,18 @@ using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.Actions.ConsumerProductExposures {
 
-    public sealed class ConsumerProductExposuresSettingsSummarizer(ConsumerProductExposuresModuleConfig config) 
+    public sealed class ConsumerProductExposuresSettingsSummarizer(ConsumerProductExposuresModuleConfig config)
         : ActionModuleSettingsSummarizer<ConsumerProductExposuresModuleConfig>(config) {
 
         public override ActionType ActionType => ActionType.ConsumerProductExposures;
 
         public override ActionSettingsSummary Summarize(ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
-            section.SummarizeSetting(
-                SettingsItemType.SelectedExposureRoutes,
-                string.Join(", ", _configuration.SelectedExposureRoutes),
-                _configuration.SelectedExposureRoutes.Count > 0
-            );
+            section.SummarizeSetting(SettingsItemType.SelectedExposureRoutes, string.Join(", ", _configuration.SelectedExposureRoutes), _configuration.SelectedExposureRoutes.Count > 0);
+            section.SummarizeSetting(SettingsItemType.ConsumerProductExposureCalculationMethod, _configuration.ConsumerProductExposureCalculationMethod);
+            if (_configuration.ConsumerProductExposureCalculationMethod == ConsumerProductExposureCalculationMethod.FromExposureEstimates) {
+                section.SummarizeSetting(SettingsItemType.ConsumerProductAssessmentMatchingMethod, _configuration.ConsumerProductAssessmentMatchingMethod.GetDisplayName());
+            }
             return section;
         }
     }

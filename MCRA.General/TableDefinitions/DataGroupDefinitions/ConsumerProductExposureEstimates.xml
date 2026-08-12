@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>ConsumerProductExposureEstimates</Id>
+  <Name>Consumer product exposure estimates</Name>
+  <SourceTableGroup>ConsumerProductExposureEstimates</SourceTableGroup>
+  <Description>
+    Consumer product exposure data.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>ConsumerProductExposurePercentiles</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>ConsumerProductExposureAssessments</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>ConsumerProductExposureSets</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

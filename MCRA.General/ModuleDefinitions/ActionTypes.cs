@@ -227,5 +227,7 @@ namespace MCRA.General {
         SoilConcentrationDistributions = 86,
         [Display(Name = "Air concentration distributions")]
         AirConcentrationDistributions = 87,
+        [Display(Name = "Consumer product exposure estimates")]
+        ConsumerProductExposureEstimates = 88,
     }
 }

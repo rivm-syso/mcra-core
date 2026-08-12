@@ -408,5 +408,8 @@ namespace MCRA.Simulation.Test.Mock {
         public ICollection<OccupationalTaskExposure> GetAllOccupationalTaskExposures() {
             return _data.AllOccupationalTaskExposures;
         }
+        public IDictionary<string, ConsumerProductExposureAssessment> GetAllConsumerProductExposureAssessments() {
+            return _data.AllConsumerProductExposureAssessments;
+        }
     }
 }

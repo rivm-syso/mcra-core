@@ -162,5 +162,8 @@
         IndoorAirDistributions = 165,
         OutdoorAirDistributions = 166,
         AirBodyExposureFractions = 167,
+        ConsumerProductExposurePercentiles = 168,
+        ConsumerProductExposureAssessments = 169,
+        ConsumerProductExposureSets = 170,
     }
 }

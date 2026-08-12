@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>ConsumerProductExposurePercentiles</Id>
+  <Name>Consumer product exposure percentiles</Name>
+  <Description>
+    Describes the exposure percentiles in the study.
+  </Description>
+  <Aliases>
+    <string>ConsumerProductExposurePercentiles</string> 
+    <string>CPExposurePercentiles</string>
+  </Aliases>
+  <PreferredAlias>CPExposurePercentiles</PreferredAlias>
+  <HiddenAliases>
+    <string>RawConsumerProductExposurePercentiles</string>
+  </HiddenAliases>
+  <TargetDataTable>RawConsumerProductExposurePercentiles</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idExposureSet</Id>
+      <Description>Exposure set identification code.</Description>
+      <Aliases>
+        <string>idExposureSet</string>
+        <string>ExposureSet</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>ConsumerProductExposureSets</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition  Required="true" FieldType="Numeric">
+      <Id>Percentage</Id>
+      <Description>Percentage value of the exposure percentile.</Description>
+      <Aliases>
+        <string>Percentage</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>Value</Id>
+      <Description>Value of the exposure percentile.</Description>
+      <Aliases>
+        <string>Value</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

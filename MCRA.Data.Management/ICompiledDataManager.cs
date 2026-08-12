@@ -113,5 +113,6 @@ namespace MCRA.Data.Management {
         IDictionary<string, OccupationalTask> GetAllOccupationalTasks();
         IDictionary<string, OccupationalScenario> GetAllOccupationalScenarios();
         ICollection<OccupationalTaskExposure> GetAllOccupationalTaskExposures();
+        IDictionary<string, ConsumerProductExposureAssessment> GetAllConsumerProductExposureAssessments();
     }
 }

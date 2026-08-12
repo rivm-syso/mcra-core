@@ -18,6 +18,17 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
         private ConsumerProductExposuresModuleConfig ModuleConfig => (ConsumerProductExposuresModuleConfig)_moduleSettings;
 
         protected override void verify() {
+            var requireConsumerProductExposureEstimates = ModuleConfig.ConsumerProductExposureCalculationMethod == ConsumerProductExposureCalculationMethod.FromExposureEstimates;
+            _actionInputRequirements[ActionType.ConsumerProductExposureEstimates].IsRequired = requireConsumerProductExposureEstimates;
+            _actionInputRequirements[ActionType.ConsumerProductExposureEstimates].IsVisible = requireConsumerProductExposureEstimates;
+            _actionInputRequirements[ActionType.Individuals].IsRequired = requireConsumerProductExposureEstimates;
+            _actionInputRequirements[ActionType.Individuals].IsVisible = requireConsumerProductExposureEstimates;
+            _actionInputRequirements[ActionType.ConsumerProductConcentrationDistributions].IsRequired = !requireConsumerProductExposureEstimates;
+            _actionInputRequirements[ActionType.ConsumerProductConcentrationDistributions].IsVisible = !requireConsumerProductExposureEstimates;
+            _actionInputRequirements[ActionType.ConsumerProductExposureDeterminants].IsRequired = !requireConsumerProductExposureEstimates;
+            _actionInputRequirements[ActionType.ConsumerProductExposureDeterminants].IsVisible = !requireConsumerProductExposureEstimates;
+            _actionInputRequirements[ActionType.ConsumerProductUseFrequencies].IsRequired = !requireConsumerProductExposureEstimates;
+            _actionInputRequirements[ActionType.ConsumerProductUseFrequencies].IsVisible = !requireConsumerProductExposureEstimates;
         }
 
         protected override ActionSettingsSummary summarizeSettings() {
@@ -30,14 +41,10 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
             CompositeProgressState progressReport
         ) {
             var localProgress = progressReport.NewProgressState(100);
-
-            var determinantsRandomGenerator = new McraRandomGenerator(
-                RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.CPE_ConsumerProductExposureDeterminants)
-            );
-
             return compute(
                 data,
-                localProgress);
+                localProgress
+            );
         }
 
         protected override ConsumerProductExposuresActionResult runUncertain(
@@ -67,28 +74,51 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
         ) {
             var result = new ConsumerProductExposuresActionResult();
 
-            // Create individual days
-            localProgress.Update("Generating individual days", 30);
-
-            var simulatedIndividuals = data.ConsumerProductIndividuals
-                .Select((ind, ix) => new SimulatedIndividual(ind, ix))
-                .ToList();
-
-            var exposureCalculator = new ConsumerProductExposureCalculator(
-                data.ConsumerProductExposureFractions,
-                data.ConsumerProductApplicationAmounts,
-                data.ConsumerProductConcentrationModels
-            );
-
-            // For now, we assume consumer product exposures to be expressed in
+            // For now, we express consumer product exposures in:
             // - ug/day when output is expressed per person
             // - ug/kg bw/day when output is expressed per kilogram bodyweight
             var targetUnit = ModuleConfig.IsPerPerson
                 ? ExposureUnitTriple.FromExternalExposureUnit(ExternalExposureUnit.ugPerDay)
                 : ExposureUnitTriple.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
 
-            var consumerProductIndividualDayIntakes = exposureCalculator
-                .Compute(
+            if (ModuleConfig.ConsumerProductExposureCalculationMethod == ConsumerProductExposureCalculationMethod.FromExposureEstimates) {
+                var exposureDsitributionCalculator = new ConsumerProductExposureDistributionCalculator();
+                var models = exposureDsitributionCalculator.Compute([.. data.ConsumerProductExposureAssessments.Values]);
+
+                var simulatedIndividuals = data.Individuals
+                    .Select(r => r.SimulatedIndividual)
+                    .Distinct()
+                    .ToList();
+
+                // Generate exposures for each individual
+                var generator = new McraRandomGenerator(RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.CPE_ConsumerProductExposureEstimates));
+                var calculator = new ConsumerProductExposureCalculator();
+                var consumerProductIndividualDayIntakes = calculator.Compute(
+                    simulatedIndividuals,
+                    models,
+                    ModuleConfig.SelectedExposureRoutes,
+                    ModuleConfig.ConsumerProductAssessmentMatchingMethod,
+                    data.ActiveSubstances,
+                    targetUnit,
+                    generator
+                );
+
+                result.ConsumerProductIndividualExposures = consumerProductIndividualDayIntakes;
+            } else {
+                // Create individual days
+                localProgress.Update("Generating individual days", 30);
+
+                var simulatedIndividuals = data.ConsumerProductIndividuals
+                    .Select((ind, ix) => new SimulatedIndividual(ind, ix))
+                    .ToList();
+
+                var exposureCalculator = new ConsumerProductExposureCalculator(
+                    data.ConsumerProductExposureFractions,
+                    data.ConsumerProductApplicationAmounts,
+                    data.ConsumerProductConcentrationModels
+                );
+
+                var consumerProductIndividualDayIntakes = exposureCalculator.Compute(
                     simulatedIndividuals,
                     data.AllIndividualConsumerProductUseFrequencies,
                     ModuleConfig.SelectedExposureRoutes,
@@ -96,8 +126,9 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
                     targetUnit
                 );
 
+                result.ConsumerProductIndividualExposures = consumerProductIndividualDayIntakes;
+            }
             result.ConsumerProductExposureUnit = targetUnit;
-            result.ConsumerProductIndividualExposures = consumerProductIndividualDayIntakes;
             localProgress.Update(100);
             return result;
         }

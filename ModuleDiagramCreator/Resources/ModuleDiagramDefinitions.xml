@@ -65,8 +65,9 @@
     <GraphDefinition ActionType="ConsumerProductUseFrequencies" X="18" Y="48" Linebreaks="1"/>
     <GraphDefinition ActionType="ConsumerProductConcentrations" X="20" Y="48" Linebreaks="1"/>
     <GraphDefinition ActionType="ConsumerProductExposureDeterminants" X="22" Y="48" Linebreaks="1"/>
-    <GraphDefinition ActionType="ConsumerProductExposures" X="24" Y="48" Linebreaks="1"/>
     <GraphDefinition ActionType="ConsumerProductConcentrationDistributions" X="26" Y="48" Linebreaks="1"/>
+    <GraphDefinition ActionType="ConsumerProductExposureEstimates" X="24" Y="48" Linebreaks="1"/>
+    <GraphDefinition ActionType="ConsumerProductExposures" X="24" Y="48" Linebreaks="1"/>
 
     <GraphDefinition ActionType="OccupationalTaskExposures" X="14" Y="48" Linebreaks="1"/>
     <GraphDefinition ActionType="OccupationalExposures" X="16" Y="48" Linebreaks="1"/>

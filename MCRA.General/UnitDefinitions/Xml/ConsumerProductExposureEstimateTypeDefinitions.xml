@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>ConsumerProductExposureEstimateType</Id>
+  <Name>Consumer product exposure estimate type</Name>
+  <UndefinedValue>-1</UndefinedValue>
+  <UndefinedAliases>
+    <Alias>Unknown</Alias>
+  </UndefinedAliases>
+  <Description>
+    Accepted estimate types for consumer product exposure.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>Systemic</Id>
+      <Name>Internal (systemic) dose</Name>
+      <ShortName>Systemic</ShortName>
+      <Description>The absorbed dose is the amount of chemical that is systemically available and can be regarded as the fraction of the external dose that is absorbed and enters the general circulation.</Description>
+      <Aliases>
+        <Alias>Systemic</Alias>
+        <Alias>InternalDose</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>DermalLoad</Id>
+      <Name>DermalLoad</Name>
+      <ShortName>DermalLoad</ShortName>
+      <Description>The quantitative amount of a chemical substance in direct contact with a specific area of the skin (measured as mass per unit area.</Description>
+      <Aliases>
+        <Alias>DermalLoad</Alias>
+      </Aliases>
+    </Unit>
+  </Units>
+</UnitDefinition>

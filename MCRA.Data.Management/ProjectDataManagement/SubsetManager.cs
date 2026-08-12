@@ -613,6 +613,6 @@ namespace MCRA.Data.Management {
         public IDictionary<string, OccupationalTask> AllOccupationalTasks => _dataManager.GetAllOccupationalTasks();
         public IDictionary<string, OccupationalScenario> AllOccupationalScenarios => _dataManager.GetAllOccupationalScenarios();
         public ICollection<OccupationalTaskExposure> AllOccupationalTaskExposures => _dataManager.GetAllOccupationalTaskExposures();
-
+        public IDictionary<string, ConsumerProductExposureAssessment> AllConsumerProductExposureAssessments  => _dataManager.GetAllConsumerProductExposureAssessments ();
     }
 }

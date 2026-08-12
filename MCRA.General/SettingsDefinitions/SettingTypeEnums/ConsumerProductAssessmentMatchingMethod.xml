@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>ConsumerProductAssessmentMatchingMethod</Id>
+  <Name>Consumer product assessment matching method</Name>
+  <Description>
+    Method types for consumer product assessment matching based on gender and age ranges.
+  </Description>
+  <IsInternalEnum>true</IsInternalEnum>
+  <Units>
+    <Unit>
+      <Id>AtRandom</Id>
+      <Name>At random</Name>
+      <ShortName>At random</ShortName>
+      <Description>
+         Match at random.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>MatchOnGender</Id>
+      <Name>Match on gender</Name>
+      <ShortName>Match on gender</ShortName>
+      <Description>
+        Match individuals to assessments based on gender.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>MatchOnAge</Id>
+      <Name>Match on age</Name>
+      <ShortName>Match on age</ShortName>
+      <Description>
+        Match individuals to assessments based on age ranges.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>MatchOnAgeAndGender</Id>
+      <Name>Match on gender and age</Name>
+      <ShortName>Match on gender and age</ShortName>
+      <Description>
+        Match individuals to assessments based on gender and age ranges.
+      </Description>
+    </Unit>
+  </Units>
+</UnitDefinition>
