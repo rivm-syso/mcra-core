@@ -117,8 +117,12 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
             var hbmIndividualDayConcentrationsLookup = collection.HbmIndividualDayConcentrations
                 .ToDictionary(r => r.SimulatedIndividualDayId);
 
-            // Initialise progress logger
-            var progressTracker = ProgressTracker.CreateAndStart(individualDays.Count);
+            ProgressTracker progressTracker = null;
+
+            #if DEBUG
+                // Initialise progress tracker
+                progressTracker = ProgressTracker.CreateAndStart(individualDays.Count);
+            #endif
 
             for (int i = 0; i < individualDays.Count; i++) {
                 var individualDay = individualDays.ElementAt(i);
@@ -165,7 +169,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
                     result.Add(individualDay, individualDayConcentration);
 
                     // Update progress
-                    progressTracker.Update(localProgress, i);
+                    progressTracker?.Update(localProgress, i);
+
                 }
             }
 
@@ -265,20 +270,15 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
             public void Update(ProgressState progressState, int ix) {
                 _sw.Stop();
                 var progress = (double)(ix+1) / _totalCount;
-#if DEBUG
-                var debugMode = true;
-                if (debugMode) {
-                    var expectedTotalSeconds = (int)(_sw.Elapsed.TotalSeconds / progress);
-                    var expectedRemainingSeconds = (int)(expectedTotalSeconds - _sw.Elapsed.TotalSeconds);
-                    var expectedRemaining = TimeSpan.FromSeconds(expectedRemainingSeconds);
-                    var expectedTotal = TimeSpan.FromSeconds(expectedTotalSeconds);
-                    var message = $"Kinetic conversion modeling. Done processing individual {ix + 1} (out of {_totalCount}). "
-                        + $"Expected total processing time: {expectedTotal:c}. "
-                        + $"Expected time to finish: {expectedRemaining:c}.";
-                    progressState.Update(message);
-                    Debug.WriteLine(message);
-                }
-#endif
+                var expectedTotalSeconds = (int)(_sw.Elapsed.TotalSeconds / progress);
+                var expectedRemainingSeconds = (int)(expectedTotalSeconds - _sw.Elapsed.TotalSeconds);
+                var expectedRemaining = TimeSpan.FromSeconds(expectedRemainingSeconds);
+                var expectedTotal = TimeSpan.FromSeconds(expectedTotalSeconds);
+                var message = $"Kinetic conversion modeling. Done processing individual {ix + 1} (out of {_totalCount}). "
+                    + $"Expected total processing time: {expectedTotal:c}. "
+                    + $"Expected time to finish: {expectedRemaining:c}.";
+                progressState.Update(message);
+                Debug.WriteLine(message);
                 progressState.Update(progress * 100D);
                 _sw.Start();
             }
