@@ -1,5 +1,15 @@
 # Change Log
 
+## Version 10.3.1 (2026-08-14)
+
+### Fixed
+
+- Correct sorting of risks by substance table
+- Account for empty individual effects collection in risk distribution percentiles calculator
+- Correct summary of uncertainty for HBM concentrations by substance before conversion section (#2496)
+- Total system memory calculation fails in Windows 11/Server 2025
+- Updated 3rd party NuGet package dependencies
+
 ## Version 10.3.0 (2026-07-17)
 
 ### Added
