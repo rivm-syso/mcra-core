@@ -183,7 +183,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 exposureResponseSpecification = new Expression(
                     exposureResponseSpecificationString,
                     ExpressionOptions.IgnoreCaseAtBuiltInFunctions,
-                    CultureInfo.InvariantCulture
+                    cultureInfo: CultureInfo.InvariantCulture
                 );
             } else {
                 // Not so nice hack for excel: here we expect a double value
@@ -195,7 +195,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 exposureResponseSpecification = new Expression(
                     erfValue.ToString(CultureInfo.InvariantCulture),
                     ExpressionOptions.IgnoreCaseAtBuiltInFunctions,
-                    CultureInfo.InvariantCulture
+                    cultureInfo: CultureInfo.InvariantCulture
                 );
             }
 
