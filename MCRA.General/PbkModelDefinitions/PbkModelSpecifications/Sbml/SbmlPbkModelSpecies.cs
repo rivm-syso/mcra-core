@@ -35,7 +35,7 @@ namespace MCRA.General.PbkModelDefinitions.PbkModelSpecifications.Sbml {
 
         public bool IsMetaboliteSpecies() {
             var result = SbmlModelSpecies.BqbIsResources?
-                .Any(r => r.EndsWith(@"CHEBI:25212", StringComparison.OrdinalIgnoreCase)) ?? false;
+                .Any(r => r.Contains(@"CHEBI", StringComparison.OrdinalIgnoreCase) && r.EndsWith(@"25212", StringComparison.OrdinalIgnoreCase)) ?? false;
             return result;
         }
 
