@@ -19,7 +19,7 @@ namespace MCRA.Simulation.Calculators.UpperIntakesCalculation {
             IDictionary<Compound, double> membershipProbabilities,
             double percentageForUpperTail,
             TargetUnit targetUnit
-        ) where T : AggregateIndividualExposure {
+        ) where T : AggregateIndividualExposureBase {
             var aggregateExposures = targetExposures
                 .Select(c => (
                     SimulatedIndividualId: c.SimulatedIndividual.Id,

@@ -11,7 +11,8 @@ namespace MCRA.Simulation.Calculators.ExternalExposureCalculation {
         Dictionary<ExposurePath, List<IIntakePerCompound>> ExposuresPerPath { get; }
 
         /// <summary>
-        /// Returns true if this individual exposure contains one or more positive amounts for a route and substance.
+        /// Returns true if this individual exposure contains one or more positive
+        /// amounts for a route and substance.
         /// </summary>
         bool HasPositives(ExposureRoute route, Compound substance);
 
@@ -20,5 +21,6 @@ namespace MCRA.Simulation.Calculators.ExternalExposureCalculation {
         double GetExposure(ExposurePath path, Compound substance, bool isPerPerson);
 
         List<IExternalIndividualDayExposure> ExternalIndividualDayExposures { get; set; }
+
     }
 }

@@ -8,7 +8,9 @@ using MCRA.Utils.Statistics.Histograms;
 
 namespace MCRA.Simulation.OutputGeneration {
     public abstract class InternalDistributionSectionBase : SummarySection {
+
         public override bool SaveTemporaryData => true;
+
         public List<HistogramBin> IntakeDistributionBins { get; set; }
         public List<CategorizedHistogramBin<string>> StratifiedIntakeDistributionBins { get; set; }
         public List<HistogramBin> IntakeDistributionBinsCoExposure { get; set; }
@@ -32,16 +34,14 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <summary>
         /// Summarize intakes, calculates distribution and cumulative distribution
         /// </summary>
-        /// <param name="exposures"></param>
-        /// <param name="isTotalDistribution"></param>
-        public void SummarizeUnstratifiedBinsGraph(
-            ICollection<AggregateIndividualExposure> aggregates,
+        public void SummarizeUnstratifiedBinsGraph<T>(
+            ICollection<T> aggregates,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             PopulationStratifier populationStratifier,
             TargetUnit targetUnit,
             List<int> coExposureIds = null
-        ) {
+        ) where T : AggregateIndividualExposureBase {
             var exposures = aggregates
                 .Select(c => (
                     Exposure: c.GetTotalExposureAtTarget(
@@ -96,13 +96,13 @@ namespace MCRA.Simulation.OutputGeneration {
             );
         }
 
-        private List<HistogramBin> getCoExposureBins(
-            ICollection<AggregateIndividualExposure> aggregrates,
+        private List<HistogramBin> getCoExposureBins<T>(
+            ICollection<T> aggregrates,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             TargetUnit targetUnit,
             List<int> coExposureIds
-        ) {
+        ) where T : AggregateIndividualExposureBase {
             if (coExposureIds?.Count > 0) {
                 var coExposureLookup = coExposureIds.ToHashSet();
                 //cache data for multiple passes
@@ -164,14 +164,13 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        public void SummarizeStratifiedBinsGraph(
-            ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
+        public void SummarizeStratifiedBinsGraph<T>(
+            ICollection<T> aggregateIndividualExposures,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             PopulationStratifier populationStratifier,
             TargetUnit targetUnit
-        ) {
-
+        ) where T : AggregateIndividualExposureBase {
             if (populationStratifier != null) {
                 {
                     var positiveExposures = aggregateIndividualExposures

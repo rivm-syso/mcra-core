@@ -1,7 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Calculators.KineticConversionCalculation;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.KineticConversionFactorCalculation {
@@ -22,7 +22,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.KineticConversi
         public List<KineticConversionFactorResultRecord> ComputeKineticConversionFactors(
             ICollection<Compound> substances,
             ICollection<ExposureRoute> exposureRoutes,
-            ICollection<IExternalIndividualDayExposure> externalIndividualDayExposures,
+            ICollection<AggregateIndividualDayExposure> individualDayExposures,
             ExposureUnitTriple exposureUnit,
             TargetUnit targetUnit,
             IRandom generator
@@ -31,8 +31,10 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.KineticConversi
             foreach (var substance in substances) {
                 var instanceCalculator = _kineticConversionCalculatorCalculatorProvider
                     .GetKineticConversionCalculator(substance);
+                var externalIndividualDayExposures = individualDayExposures
+                    .Select(r => r.ExternalIndividualDayExposure).ToList();
                 var derivedConversionFactors = instanceCalculator
-                    .ComputeAbsorptionFactors(
+                    .ComputeKineticConversionFactors(
                         externalIndividualDayExposures,
                         exposureRoutes,
                         exposureUnit,
@@ -53,7 +55,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.KineticConversi
         public List<KineticConversionFactorResultRecord> ComputeKineticConversionFactors(
             ICollection<Compound> substances,
             ICollection<ExposureRoute> exposureRoutes,
-            ICollection<IExternalIndividualExposure> externalIndividualExposures,
+            ICollection<AggregateIndividualExposure> individualExposures,
             ExposureUnitTriple exposureUnit,
             TargetUnit targetUnit,
             IRandom generator
@@ -63,8 +65,10 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.KineticConversi
                 var instanceCalculator = _kineticConversionCalculatorCalculatorProvider
                     .GetKineticConversionCalculator(substance);
                 var derivedConversionFactors = instanceCalculator
-                    .ComputeAbsorptionFactors(
-                        externalIndividualExposures,
+                    .ComputeKineticConversionFactors(
+                        individualExposures
+                            .Select(r => r.ExternalIndividualExposure)
+                            .ToList(),
                         exposureRoutes,
                         exposureUnit,
                         targetUnit,

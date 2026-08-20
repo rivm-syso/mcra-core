@@ -2,31 +2,28 @@
 using MCRA.General;
 using MCRA.Simulation.Calculators.PbkModelCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
-using MCRA.Utils;
 using MCRA.Utils.ExtensionMethods;
-using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
     public class PbkModelTimeCourseSection : SummarySection {
 
         public PbkModelSummaryRecord PbkModelSummaryRecord { get; set; }
 
-        private static readonly int _specifiedTakeNumer = 9;
         public List<PbkModelTimeCourseDrilldownRecord> InternalTargetSystemExposures { get; set; }
         public bool IsLifetime { get; set; }
         public int NumberOfDaysSkipped { get; set; }
         public double Maximum { get; set; }
 
-        public void Summarize(
+        public void Summarize<T>(
             KineticModelInstance kineticModelInstance,
-           ICollection<AggregateIndividualExposure> targetExposures,
-           ICollection<ExposureRoute> routes,
-           Compound substance,
-           ICollection<TargetUnit> targetUnits,
-           ExposureUnitTriple externalExposureUnit,
-           bool isLifetime,
-           int nonStationaryPeriod
-       ) {
+            ICollection<T> targetExposures,
+            ICollection<ExposureRoute> routes,
+            Compound substance,
+            ICollection<TargetUnit> targetUnits,
+            ExposureUnitTriple externalExposureUnit,
+            bool isLifetime,
+            int nonStationaryPeriod
+       ) where T : AggregateIndividualExposureBase {
             if (targetUnits.Count > 1) {
                 throw new NotImplementedException();
             }
@@ -61,7 +58,7 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         private List<PbkModelTimeCourseDrilldownRecord> getDrillDownSubstanceExposure(
-            AggregateIndividualExposure aggregateExposure,
+            AggregateIndividualExposureBase aggregateExposure,
             Compound substance,
             ICollection<ExposureRoute> routes,
             ICollection<TargetUnit> targetUnits,
@@ -118,45 +115,6 @@ namespace MCRA.Simulation.OutputGeneration {
                 results.Add(record);
             }
             return results;
-        }
-
-        /// <summary>
-        /// Select the nine individual ids according to specified drilldown percentage.
-        /// This is done for one compartment under the assumption that the order of individuals is not different between compartments
-        /// </summary>
-        public static HashSet<int> GetDrilldownIndividualIds<T>(
-           ICollection<T> exposures,
-           ICollection<Compound> substances,
-           IDictionary<Compound, double> relativePotencyFactors,
-           IDictionary<Compound, double> membershipProbabilities,
-           double percentageForDrilldown,
-           TargetUnit targetUnit
-        ) where T : AggregateIndividualExposure {
-            relativePotencyFactors = relativePotencyFactors ?? substances.ToDictionary(r => r, r => 1D);
-            var intakes = exposures
-                .Select(c => c.GetTotalExposureAtTarget(
-                    targetUnit.Target,
-                    relativePotencyFactors,
-                    membershipProbabilities
-                ));
-            var weights = exposures.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
-            var weightedPercentileValue = intakes.PercentilesWithSamplingWeights(weights, percentageForDrilldown);
-            var referenceIndividualIndex = intakes.Count(c => c < weightedPercentileValue);
-            var lowerExtremePerson = _specifiedTakeNumer - 1;
-            if (percentageForDrilldown != 100) {
-                lowerExtremePerson = BMath.Floor(_specifiedTakeNumer / 2);
-            }
-            var simulatedIndividualIds = exposures
-                .OrderBy(c => c.GetTotalExposureAtTarget(
-                    targetUnit.Target,
-                    relativePotencyFactors,
-                    membershipProbabilities
-                ))
-                .Skip(referenceIndividualIndex - lowerExtremePerson)
-                .Take(_specifiedTakeNumer)
-                .Select(c => c.SimulatedIndividual.Id)
-                .ToHashSet();
-            return simulatedIndividualIds;
         }
     }
 }

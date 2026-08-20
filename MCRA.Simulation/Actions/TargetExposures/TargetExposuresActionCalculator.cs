@@ -649,7 +649,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     .ComputeKineticConversionFactors(
                         data.ActiveSubstances,
                         ModuleConfig.ExposureRoutes,
-                        combinedExternalIndividualDayExposures,
+                        aggregateIndividualDayExposures,
                         externalExposureUnit,
                         targetUnit,
                         kineticConversionRandomGenerator
@@ -677,7 +677,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     .ComputeKineticConversionFactors(
                         data.ActiveSubstances,
                         ModuleConfig.ExposureRoutes,
-                        externalIndividualExposures,
+                        aggregateIndividualExposures,
                         externalExposureUnit,
                         targetUnit,
                         kineticConversionRandomGenerator

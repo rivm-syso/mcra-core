@@ -10,8 +10,8 @@ namespace MCRA.Simulation.OutputGeneration {
         public override string DescriptorKey => ExposureBySubstanceCalculator.DescriptorKey;
         public override string DescriptorName => ExposureBySubstanceCalculator.DescriptorName;
 
-        public void Summarize(
-            ICollection<AggregateIndividualExposure> aggregates,
+        public void Summarize<T>(
+            ICollection<T> aggregates,
             ICollection<Compound> activeSubstances,
             IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
             PopulationStratifier outputStratifier,
@@ -20,7 +20,7 @@ namespace MCRA.Simulation.OutputGeneration {
             double upperPercentage,
             bool isPerPerson,
             bool skipPrivacySensitiveOutputs
-        ) {
+        ) where T : AggregateIndividualExposureBase {
             // The relative potency factors and membership probabilities are not relevant for this summary,
             // so we can pass in dummy values for those parameters.
             var exposureCollection = ExposureBySubstanceCalculator.CalculateExposures(

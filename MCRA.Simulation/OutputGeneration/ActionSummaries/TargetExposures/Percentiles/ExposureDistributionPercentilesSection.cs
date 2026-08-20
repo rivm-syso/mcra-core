@@ -10,21 +10,17 @@ namespace MCRA.Simulation.OutputGeneration {
     public sealed class ExposureDistributionPercentilesSection : PercentileBootstrapSectionBase<IntakePercentileExposureBootstrapRecord> {
 
         public override bool SaveTemporaryData => true;
+
         public double UncertaintyLowerLimit { get; set; } = 2.5;
         public double UncertaintyUpperLimit { get; set; } = 97.5;
         public List<TargetExposurePercentileRecord> Records { get; set; } = [];
-
         public bool Stratify { get; set; }
 
         /// <summary>
         /// Percentiles (output) from specified percentages (input).
         /// </summary>
-        /// <param name="intakes"></param>
-        /// <param name="weights"></param>
-        /// <param name="referenceSubstance"></param>
-        /// <param name="percentages"></param>
-        public void Summarize(
-            ICollection<AggregateIndividualExposure> aggregates,
+        public void Summarize<T>(
+            ICollection<T> aggregates,
             ICollection<Compound> substances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
@@ -34,7 +30,7 @@ namespace MCRA.Simulation.OutputGeneration {
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
             double[] percentages
-        ) {
+        ) where T : AggregateIndividualExposureBase {
             if (substances.Count == 1) {
                 relativePotencyFactors = relativePotencyFactors
                     ?? substances.ToDictionary(r => r, r => 1D);
@@ -68,8 +64,8 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        private List<TargetExposurePercentileRecord> computePercentileRecords(
-            ICollection<AggregateIndividualExposure> aggregates,
+        private List<TargetExposurePercentileRecord> computePercentileRecords<T>(
+            ICollection<T> aggregates,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             double uncertaintyLowerBound,
@@ -77,7 +73,7 @@ namespace MCRA.Simulation.OutputGeneration {
             double[] percentages,
             TargetUnit targetUnit,
             PopulationStratifier outputStratifier = null
-        ) {
+        ) where T : AggregateIndividualExposureBase {
             UncertaintyLowerLimit = uncertaintyLowerBound;
             UncertaintyUpperLimit = uncertaintyUpperBound;
 
@@ -122,15 +118,15 @@ namespace MCRA.Simulation.OutputGeneration {
             return result;
         }
 
-        public void SummarizeUncertainty(
-            ICollection<AggregateIndividualExposure> aggregates,
+        public void SummarizeUncertainty<T>(
+            ICollection<T> aggregates,
             ICollection<Compound> substances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             List<double> percentages,
             TargetUnit targetUnit,
             PopulationStratifier outputStratifier
-        ) {
+        ) where T : AggregateIndividualExposureBase {
             relativePotencyFactors = relativePotencyFactors ?? substances.ToDictionary(r => r, r => 1D);
             membershipProbabilities = membershipProbabilities ?? substances.ToDictionary(r => r, r => 1D);
 
@@ -154,14 +150,14 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        private void updatePercentileRecords(
-            ICollection<AggregateIndividualExposure> aggregates,
+        private void updatePercentileRecords<T>(
+            ICollection<T> aggregates,
             IDictionary<Compound, double> rpfs,
             IDictionary<Compound, double> membershipProbabilities,
             TargetUnit targetUnit,
             List<double> percentages,
             PopulationStratifier outputStratifier = null
-        ) {
+        ) where T : AggregateIndividualExposureBase {
             var exposuresGroups = aggregates
                 .Select(c => (
                     SamplingWeight: c.SimulatedIndividual.SamplingWeight,

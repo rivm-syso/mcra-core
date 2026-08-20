@@ -2,15 +2,14 @@
 using MCRA.General;
 using MCRA.Simulation.Calculators.Stratification;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
-using MCRA.Simulation.OutputGeneration.ActionSummaries.TargetExposures.Generic;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class ContributionBySubstanceTotalSection : InternalExposureContributionSectionBase<SubstanceContributorKey, ContributionBySubstanceRecord> {
         public override string DescriptorKey => ExposureBySubstanceCalculator.DescriptorKey;
         public override string DescriptorName => ExposureBySubstanceCalculator.DescriptorName;
 
-        public void Summarize(
-            ICollection<AggregateIndividualExposure> aggregates,
+        public void Summarize<T>(
+            ICollection<T> aggregates,
             ICollection<Compound> activeSubstances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
@@ -19,7 +18,7 @@ namespace MCRA.Simulation.OutputGeneration {
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
             bool isPerPerson
-        ) {
+        ) where T: AggregateIndividualExposureBase {
             var exposureCollection = ExposureBySubstanceCalculator.CalculateExposures(
                 aggregates,
                 activeSubstances,
@@ -37,15 +36,15 @@ namespace MCRA.Simulation.OutputGeneration {
             );
         }
 
-        public void SummarizeUncertainty(
-            ICollection<AggregateIndividualExposure> aggregates,
+        public void SummarizeUncertainty<T>(
+            ICollection<T> aggregates,
             ICollection<Compound> activeSubstances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
             PopulationStratifier outputStratifier,
             bool isPerPerson
-        ) {
+        ) where T : AggregateIndividualExposureBase {
             var exposureCollection = ExposureBySubstanceCalculator.CalculateExposures(
                 aggregates,
                 activeSubstances,

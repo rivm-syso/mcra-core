@@ -63,13 +63,13 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 .Create(
                     individualDays,
                     substances,
-                    [targetUnit],
+                    targetUnit,
                     random
-                ).Cast<AggregateIndividualExposure>();
+                );
 
             var section = new ExposureBySubstanceSection();
             section.Summarize(
-                [ ..aggregates],
+                aggregates,
                 substances,
                 kineticConversionFactors,
                 outputStratifier: null,

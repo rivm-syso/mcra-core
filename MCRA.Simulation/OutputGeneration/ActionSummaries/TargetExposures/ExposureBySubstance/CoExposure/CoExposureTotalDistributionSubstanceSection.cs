@@ -4,11 +4,11 @@ using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class CoExposureTotalDistributionSubstanceSection : CoExposureDistributionSubstanceSectionBase {
-        public void SummarizeCoExposure(
-            ICollection<AggregateIndividualExposure> aggregateExposures,
+        public void SummarizeCoExposure<T>(
+            ICollection<T> aggregateExposures,
             ICollection<Compound> substances,
             TargetUnit targetUnit
-        ) {
+        ) where T : AggregateIndividualExposureBase {
             summarize(aggregateExposures, substances, targetUnit);
         }
     }

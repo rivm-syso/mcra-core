@@ -67,7 +67,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     substances,
                     [targetUnit],
                     random
-                ).Cast<AggregateIndividualExposure>(); ;
+                );
             var section = new CoExposureUpperDistributionSubstanceSection();
             section.SummarizeCoExposure([..exposures], substances, rpfs, memberships, kineticConversionFactors, 97.5, targetUnit);
             Assert.IsNotNull(section.AggregatedExposureRecords);

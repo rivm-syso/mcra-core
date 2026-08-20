@@ -8,8 +8,11 @@ namespace MCRA.Simulation.Calculators.ExternalExposureCalculation {
         SimulatedIndividual individual,
         Dictionary<ExposurePath, List<IIntakePerCompound>> exposuresPerPath
     ) : IExternalIndividualExposure {
+
         public SimulatedIndividual SimulatedIndividual { get; } = individual;
+
         public Dictionary<ExposurePath, List<IIntakePerCompound>> ExposuresPerPath { get; } = exposuresPerPath;
+
         public List<IExternalIndividualDayExposure> ExternalIndividualDayExposures { get; set; }
 
         /// <summary>
@@ -57,6 +60,12 @@ namespace MCRA.Simulation.Calculators.ExternalExposureCalculation {
                 return isPerPerson ? totalAmount : totalAmount / SimulatedIndividual.BodyWeight;
             }
             return 0;
+        }
+
+        public static ExternalIndividualExposure FromIndividualDayExposure(ExternalIndividualDayExposure exposure) {
+            return new ExternalIndividualExposure(exposure.SimulatedIndividual, exposure.ExposuresPerPath) {
+                ExternalIndividualDayExposures = [exposure]
+            };
         }
     }
 }

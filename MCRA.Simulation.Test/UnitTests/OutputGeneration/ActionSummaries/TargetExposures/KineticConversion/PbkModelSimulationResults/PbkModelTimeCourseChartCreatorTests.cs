@@ -127,7 +127,6 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     new ProgressState()
                 );
             var drillDownRecords = targetExposures
-                .Cast<AggregateIndividualExposure>()
                 .OrderByDescending(r => r.GetSubstanceExposure(targetUnit.Target, substance))
                 .Take(9)
                 .ToList();
@@ -209,13 +208,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     new ProgressState()
                 );
 
-            var drillDownRecords = targetExposures
-                .Cast<AggregateIndividualExposure>()
-                .ToList();
             var section = new PbkModelTimeCourseSection();
             section.Summarize(
                 modelInstance,
-                drillDownRecords,
+                targetExposures,
                 routes,
                 substance,
                 [targetUnit],

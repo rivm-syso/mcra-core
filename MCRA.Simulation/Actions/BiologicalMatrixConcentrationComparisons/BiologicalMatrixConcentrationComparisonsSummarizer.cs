@@ -108,8 +108,6 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
                     "Comparison cumulative",
                     order
                 );
-                var aggregates = data.AggregateIndividualExposures ?? [.. data.AggregateIndividualDayExposures.Cast<AggregateIndividualExposure>()];
-
                 section.Summarize(
                     data.AggregateIndividualDayExposures,
                     data.HbmCumulativeIndividualDayCollection,

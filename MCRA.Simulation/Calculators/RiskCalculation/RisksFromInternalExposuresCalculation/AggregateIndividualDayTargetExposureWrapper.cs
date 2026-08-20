@@ -4,8 +4,7 @@ using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 
 namespace MCRA.Simulation.Calculators.RiskCalculation {
     public sealed class AggregateIndividualDayTargetExposureWrapper
-        : AggregateIndividualTargetExposureWrapperBase<AggregateIndividualDayExposure>
-          , ITargetIndividualDayExposure
+        : AggregateIndividualTargetExposureWrapperBase<AggregateIndividualDayExposure>, ITargetIndividualDayExposure
     {
         public AggregateIndividualDayTargetExposureWrapper(
             AggregateIndividualDayExposure aggregateIndividualDayExposure,

@@ -10,8 +10,8 @@ namespace MCRA.Simulation.OutputGeneration {
         public override string DescriptorKey => ExposureBySubstanceCalculator.DescriptorKey;
         public override string DescriptorName => ExposureBySubstanceCalculator.DescriptorName;
 
-        public void Summarize(
-            ICollection<AggregateIndividualExposure> aggregates,
+        public void Summarize<T>(
+            ICollection<T> aggregates,
             ICollection<Compound> activeSubstances,
             IDictionary<(ExposureRoute route, Compound substance), double> kineticConversionFactors,
             PopulationStratifier outputStratifier,
@@ -19,7 +19,7 @@ namespace MCRA.Simulation.OutputGeneration {
             double uncertaintyUpperBound,
             List<double> percentages,
             bool isPerPerson
-        ) {
+        ) where T : AggregateIndividualExposureBase {
             var exposureCollection = ExposureBySubstanceCalculator.CalculateExposures(
                 aggregates,
                 activeSubstances,
@@ -31,14 +31,14 @@ namespace MCRA.Simulation.OutputGeneration {
             summarize(exposureCollection, uncertaintyLowerBound, uncertaintyUpperBound, outputStratifier, percentages);
         }
 
-        public void SummarizeUncertainty(
-            ICollection<AggregateIndividualExposure> aggregates,
+        public void SummarizeUncertainty<T>(
+            ICollection<T> aggregates,
             ICollection<Compound> activeSubstances,
             IDictionary<(ExposureRoute route, Compound substance), double> kineticConversionFactors,
             PopulationStratifier outputStratifier,
             List<double> percentages,
             bool isPerPerson
-        ) {
+        ) where T : AggregateIndividualExposureBase {
             var exposureCollection = ExposureBySubstanceCalculator.CalculateExposures(
                 aggregates,
                 activeSubstances,

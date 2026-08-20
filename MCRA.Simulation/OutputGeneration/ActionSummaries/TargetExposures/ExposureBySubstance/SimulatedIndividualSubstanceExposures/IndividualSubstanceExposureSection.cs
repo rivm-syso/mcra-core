@@ -5,12 +5,14 @@ using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 namespace MCRA.Simulation.OutputGeneration {
 
     /// <summary>
-    /// Summarizes an exposure matrix for chronic risk assessment (OIM) per substance including nondietary exposure if relevant.
+    /// Summarizes an exposure matrix for chronic risk assessment (OIM)
+    /// per substance including nondietary exposure if relevant.
     /// This table can be downloaded (limited to approx. 100,000 records).
     /// </summary>
     public sealed class IndividualSubstanceExposureSection : SummarySection {
 
         public int TruncatedIndividualsCount { get; set; }
+
         public List<IndividualSubstanceExposureRecord> Records { get; set; }
 
         public void Summarize(

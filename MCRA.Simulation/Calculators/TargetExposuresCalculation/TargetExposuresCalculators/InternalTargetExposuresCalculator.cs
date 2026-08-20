@@ -33,7 +33,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
                         SimulatedIndividual = r.SimulatedIndividual,
                         SimulatedIndividualDayId = r.SimulatedIndividualDayId,
                         Day = r.Day,
-                        ExternalIndividualDayExposures = [r],
+                        ExternalIndividualDayExposure = r,
                     }
                 );
 
@@ -106,7 +106,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
                     r => r.SimulatedIndividual.Id,
                     r => new AggregateIndividualExposure() {
                         SimulatedIndividual = r.SimulatedIndividual,
-                        ExternalIndividualDayExposures = r.ExternalIndividualDayExposures,
+                        ExternalIndividualExposure = r,
                     }
                 );
 

@@ -23,8 +23,8 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<ExposureDistributionPercentileRecord> BoxPlotRecords { get; set; }
         public List<ExposureDistributionPercentileRecord> StratifiedExposureBoxPlotRecords { get; set; }
 
-        public void Summarize(
-            ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
+        public void Summarize<T>(
+            ICollection<T> aggregateIndividualExposures,
             ICollection<Compound> substances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
@@ -34,8 +34,7 @@ namespace MCRA.Simulation.OutputGeneration {
             double upperPercentage,
             bool skipPrivacySensitiveOutputs,
             List<int> coExposureIds = null
-
-        ) {
+        ) where T : AggregateIndividualExposureBase {
             if (substances.Count == 1) {
                 relativePotencyFactors = relativePotencyFactors
                     ?? substances.ToDictionary(r => r, r => 1D);
@@ -100,27 +99,27 @@ namespace MCRA.Simulation.OutputGeneration {
             );
         }
 
-        public void SummarizeUncertainty(
-            ICollection<AggregateIndividualExposure> aggregateExposures,
+        public void SummarizeUncertainty<T>(
+            ICollection<T> aggregateExposures,
             IDictionary<Compound, double> rpfs,
             IDictionary<Compound, double> memberships,
             TargetUnit targetUnit,
             PopulationStratifier populationStratifier,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound
-        ) {
+        ) where T : AggregateIndividualExposureBase {
             UncertaintyLowerLimit = uncertaintyLowerBound;
             UncertaintyUpperLimit = uncertaintyUpperBound;
             {
                 var exposures = aggregateExposures
-                        .Select(c => (
-                            Exposure: c.GetTotalExposureAtTarget(
-                                targetUnit.Target,
-                                rpfs,
-                                memberships
-                            ),
-                            SimulatedIndividual: c.SimulatedIndividual
-                        ));
+                    .Select(c => (
+                        Exposure: c.GetTotalExposureAtTarget(
+                            targetUnit.Target,
+                            rpfs,
+                            memberships
+                        ),
+                        SimulatedIndividual: c.SimulatedIndividual
+                    ));
 
                 var weights = exposures
                     .Select(c => c.SimulatedIndividual.SamplingWeight)

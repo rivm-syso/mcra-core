@@ -79,18 +79,23 @@ namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
         );
 
         /// <summary>
-        /// Computes absorption factors for the different exposure routes.
+        /// Computes kinetic conversion factors for acute individual day exposures
+        /// for the different exposure routes.
         /// </summary>
-        List<KineticConversionFactorResultRecord> ComputeAbsorptionFactors(
-            ICollection<IExternalIndividualExposure> externalIndividualExposures,
+        List<KineticConversionFactorResultRecord> ComputeKineticConversionFactors(
+            ICollection<IExternalIndividualDayExposure> externalIndividualDayExposures,
             ICollection<ExposureRoute> routes,
             ExposureUnitTriple exposureUnit,
             TargetUnit targetUnit,
             IRandom generator
         );
 
-        List<KineticConversionFactorResultRecord> ComputeAbsorptionFactors(
-            ICollection<IExternalIndividualDayExposure> externalIndividualDayExposures,
+        /// <summary>
+        /// Computes kinetic conversion factors for chronic individual exposures
+        /// for the different exposure routes.
+        /// </summary>
+        List<KineticConversionFactorResultRecord> ComputeKineticConversionFactors(
+            ICollection<IExternalIndividualExposure> externalIndividualExposures,
             ICollection<ExposureRoute> routes,
             ExposureUnitTriple exposureUnit,
             TargetUnit targetUnit,

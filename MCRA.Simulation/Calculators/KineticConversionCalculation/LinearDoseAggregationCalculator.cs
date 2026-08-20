@@ -54,9 +54,7 @@ namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
                     SimulatedIndividual = individualDayExposure.SimulatedIndividual,
                     Day = individualDayExposure.Day,
                     InternalTargetExposures = [],
-                    ExternalIndividualDayExposures = [
-                        individualDayExposure
-                    ],
+                    ExternalIndividualDayExposure = individualDayExposure,
                 };
                 foreach (var target in targetUnits) {
                     var substanceTargetExposures = new Dictionary<Compound, ISubstanceTargetExposure>();
@@ -95,7 +93,7 @@ namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
                 var internalIndividualDayExposure = new AggregateIndividualExposure() {
                     SimulatedIndividual = externalIndividualExposure.SimulatedIndividual,
                     InternalTargetExposures = [],
-                    ExternalIndividualDayExposures = externalIndividualExposure.ExternalIndividualDayExposures
+                    ExternalIndividualExposure = externalIndividualExposure
                 };
                 foreach (var target in targetUnits) {
                     var substanceTargetExposures = new Dictionary<Compound, ISubstanceTargetExposure>();
@@ -233,7 +231,7 @@ namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
             throw new Exception($"No absorption factor found for exposure route {route}.");
         }
 
-        public List<KineticConversionFactorResultRecord> ComputeAbsorptionFactors(
+        public List<KineticConversionFactorResultRecord> ComputeKineticConversionFactors(
             ICollection<IExternalIndividualExposure> externalIndividualExposures,
             ICollection<ExposureRoute> routes,
             ExposureUnitTriple exposureUnit,
@@ -257,7 +255,7 @@ namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
             return result;
         }
 
-        public List<KineticConversionFactorResultRecord> ComputeAbsorptionFactors(
+        public List<KineticConversionFactorResultRecord> ComputeKineticConversionFactors(
             ICollection<IExternalIndividualDayExposure> externalIndividualDayExposures,
             ICollection<ExposureRoute> routes,
             ExposureUnitTriple exposureUnit,

@@ -30,7 +30,6 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation {
             _idBodyWeightParameter = _pbkModelSpecification
                 .GetParameterDefinitionByType(PbkModelParameterType.BodyWeight)?.Id;
 
-
             // Initialize python and acquire GIL for the lifetime of the runner
             if (!PythonEngine.IsInitialized) {
                 PythonEngine.Initialize();
@@ -89,7 +88,6 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation {
                     _model.__setattr__(parameter.Key, parameter.Value);
                 }
             }
-
 
             // Create model exposure events
             setExposuresEvents(

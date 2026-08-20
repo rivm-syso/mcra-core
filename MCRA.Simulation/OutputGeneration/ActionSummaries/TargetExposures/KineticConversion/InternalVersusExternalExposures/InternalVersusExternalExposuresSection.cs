@@ -15,12 +15,12 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public string SubstanceName { get; set; }
 
-        public void Summarize(
+        public void Summarize<T>(
             Compound substance,
-            ICollection<AggregateIndividualExposure> targetExposures,
+            ICollection<T> targetExposures,
             List<TargetUnit> targets,
             ExposureUnitTriple externalExposureUnit
-        ) {
+        ) where T : AggregateIndividualExposureBase {
             SubstanceName = substance.Name;
             ExternalExposureUnit = externalExposureUnit;
             TargetUnits = targets;

@@ -9,14 +9,14 @@ namespace MCRA.Simulation.OutputGeneration {
         public static string DescriptorKey => "Substance";
         public static string DescriptorName => "substance";
 
-        public static List<InternalExposuresByDescriptor<SubstanceContributorKey>> CalculateExposures(
-            ICollection<AggregateIndividualExposure> aggregateExposures,
+        public static List<InternalExposuresByDescriptor<SubstanceContributorKey>> CalculateExposures<T>(
+            ICollection<T> aggregateExposures,
             ICollection<Compound> activeSubstances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
             bool isPerPerson
-        ) {
+        ) where T : AggregateIndividualExposureBase {
             relativePotencyFactors = activeSubstances.Count > 1
                 ? relativePotencyFactors : activeSubstances.ToDictionary(r => r, r => 1D);
             membershipProbabilities = activeSubstances.Count > 1

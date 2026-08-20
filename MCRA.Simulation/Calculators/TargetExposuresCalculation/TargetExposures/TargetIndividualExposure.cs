@@ -54,9 +54,9 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
             IDictionary<Compound, double> membershipProbabilities
         ) {
             return TargetExposuresBySubstance.ContainsKey(substance)
-                 ? TargetExposuresBySubstance[substance]
-                    .EquivalentSubstanceExposure(relativePotencyFactors[substance], membershipProbabilities[substance])
-                 : 0D;
+                ? TargetExposuresBySubstance[substance]
+                .EquivalentSubstanceExposure(relativePotencyFactors[substance], membershipProbabilities[substance])
+                : 0D;
         }
 
         public ISubstanceTargetExposure GetSubstanceTargetExposure(

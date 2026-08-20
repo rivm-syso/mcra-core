@@ -6,11 +6,11 @@ using MCRA.Utils.Collections;
 namespace MCRA.Simulation.OutputGeneration {
     public class CoExposureDistributionSubstanceSectionBase : CoExposureSectionBase {
 
-        protected void summarize(
-            ICollection<AggregateIndividualExposure> targetExposures,
+        protected void summarize<T>(
+            ICollection<T> targetExposures,
             ICollection<Compound> substances,
             TargetUnit targetUnit
-        ) {
+        ) where T : AggregateIndividualExposureBase {
             var cancelToken = ProgressState?.CancellationToken ?? new();
             var substancesArray = substances.OrderBy(g => g.Code, StringComparer.OrdinalIgnoreCase).ToArray();
 

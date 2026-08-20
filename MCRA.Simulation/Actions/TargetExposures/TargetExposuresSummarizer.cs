@@ -333,7 +333,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         ) {
             var outputStratifier = getOutputStratifier(result, data);
             var subHeader = header.AddEmptySubSectionHeader($"Distribution", subOrder++);
-            var aggregates = data.AggregateIndividualExposures ?? data.AggregateIndividualDayExposures.Cast<AggregateIndividualExposure>().ToList();
+            var aggregates = data.AggregateIndividualExposures?.Cast<AggregateIndividualExposureBase>().ToList()
+                ?? [.. data.AggregateIndividualDayExposures.Cast<AggregateIndividualExposureBase>()];
             {
                 var coExposureIds = _configuration.CoExposure
                     ? aggregates?
@@ -381,12 +382,13 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
             if (_configuration.StoreIndividualDayIntakes
                 && !_configuration.SkipPrivacySensitiveOutputs
+                && data.AggregateIndividualExposures?.Count > 0
             ) {
                 var individualDaysection = new IndividualSubstanceExposureSection();
                 var sub2Header = subHeader.AddSubSectionHeaderFor(individualDaysection, "Simulated individual exposures", 10);
                 individualDaysection
                     .Summarize(
-                        aggregates,
+                        data.AggregateIndividualExposures,
                         data.ActiveSubstances,
                         data.CorrectedRelativePotencyFactors,
                         data.MembershipProbabilities,
@@ -428,7 +430,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             if (outputSummary == null) {
                 return;
             }
-            var aggregateExposures = actionResult.AggregateIndividualExposures ?? [.. data.AggregateIndividualDayExposures.Cast<AggregateIndividualExposure>()];
+            var aggregateExposures = actionResult.AggregateIndividualExposures?.Cast<AggregateIndividualExposureBase>().ToList()
+                ?? [.. data.AggregateIndividualDayExposures.Cast<AggregateIndividualExposureBase>()];
             if (substances.Count == 1 || rpfs != null) {
                 rpfs = rpfs ?? substances.ToDictionary(r => r, r => 1D);
                 memberships = memberships ?? substances.ToDictionary(r => r, r => 1D);
@@ -772,7 +775,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             ActionData data
         ) {
             var outputStratifier = getOutputStratifier(actionResult, data);
-            var aggregates = actionResult.AggregateIndividualExposures ?? [.. actionResult.AggregateIndividualDayExposures.Cast<AggregateIndividualExposure>()];
+            var aggregates = actionResult.AggregateIndividualExposures?.Cast<AggregateIndividualExposureBase>().ToList()
+                ?? [.. actionResult.AggregateIndividualDayExposures.Cast<AggregateIndividualExposureBase>()];
             var subHeader = header.GetSubSectionHeader<TargetExposuresSummarySection>();
             if (subHeader != null) {
                 var subSubHeader = subHeader.GetSubSectionHeader<ExposureBySubstancePercentilesSection>();
@@ -898,9 +902,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             if (subHeader != null) {
                 var subSubHeader = subHeader.GetSubSectionHeader<ExposureDistributionPercentilesSection>();
                 if (subSubHeader != null) {
-                    var aggregates = data.AggregateIndividualExposures != null
-                        ? data.AggregateIndividualExposures
-                        : data.AggregateIndividualDayExposures.Cast<AggregateIndividualExposure>().ToList();
+                    var aggregates = data.AggregateIndividualExposures?.Cast<AggregateIndividualExposureBase>().ToList()
+                        ?? [.. data.AggregateIndividualDayExposures.Cast<AggregateIndividualExposureBase>()];
                     var section = subSubHeader.GetSummarySection() as ExposureDistributionPercentilesSection;
                     section.SummarizeUncertainty(
                         aggregates,
@@ -1155,7 +1158,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             int order
         ) {
             var outputStratifier = getOutputStratifier(result, data);
-            var aggregates = result.AggregateIndividualExposures ?? [.. result.AggregateIndividualDayExposures.Cast<AggregateIndividualExposure>()];
+            var aggregates = result.AggregateIndividualExposures?.Cast<AggregateIndividualExposureBase>().ToList()
+                ?? [.. result.AggregateIndividualDayExposures.Cast<AggregateIndividualExposureBase>()];
             var subHeader = header.AddEmptySubSectionHeader(
                 "Exposures by substance",
                 order++,
@@ -2317,10 +2321,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             var substances = data.ActiveSubstances;
 
             var allTargetExposures = _configuration.ExposureType == ExposureType.Acute
-                ? result.AggregateIndividualDayExposures
-                    .Cast<AggregateIndividualExposure>()
-                    .ToList()
-                : [.. result.AggregateIndividualExposures];
+                ? result.AggregateIndividualDayExposures.Cast<AggregateIndividualExposureBase>().ToList()
+                : result.AggregateIndividualExposures.Cast<AggregateIndividualExposureBase>().ToList();
 
             if (substances.Count == 1) {
                 // Single substance
@@ -2374,11 +2376,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
             var subOder = 0;
             var allTargetExposures = _configuration.ExposureType == ExposureType.Acute
-                ? result.AggregateIndividualDayExposures
-                    .Cast<AggregateIndividualExposure>()
-                    .ToList()
-                : [.. result.AggregateIndividualExposures];
-
+                ? result.AggregateIndividualDayExposures.Cast<AggregateIndividualExposureBase>().ToList()
+                : result.AggregateIndividualExposures.Cast<AggregateIndividualExposureBase>().ToList();
             foreach (var substance in data.ActiveSubstances.OrderBy(r => r.Name)) {
                 var section = new InternalVersusExternalExposuresSection();
                 var subSubHeader = subHeader.AddSubSectionHeaderFor(
@@ -2400,7 +2399,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             ICollection<ExposureRoute> routes,
             KineticModelInstance kineticModelInstance,
             Compound substance,
-            ICollection<AggregateIndividualExposure> targetExposures,
+            ICollection<AggregateIndividualExposureBase> targetExposures,
             TargetUnit targetUnit,
             ExposureUnitTriple externalExposureUnit,
             SectionHeader header,
@@ -2431,6 +2430,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             );
             subHeader.SaveSummarySection(section);
         }
+
         /// <summary>
         /// Summarize kinetic conversion factors
         /// </summary>

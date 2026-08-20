@@ -87,14 +87,14 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                 var aggregateIndividualExposure = new AggregateIndividualExposure() {
                     SimulatedIndividual = simIndividual,
                     InternalTargetExposures = new Dictionary<ExposureTarget, Dictionary<Compound, ISubstanceTargetExposure>>() {
-                            {
-                                internalDoseUnit.Target,
-                                new Dictionary<Compound, ISubstanceTargetExposure>() {
-                                    { model.Substance, substanceTargetExposure }
-                                }
+                        {
+                            internalDoseUnit.Target,
+                            new Dictionary<Compound, ISubstanceTargetExposure>() {
+                                { model.Substance, substanceTargetExposure }
                             }
-                        },
-                    ExternalIndividualDayExposures = [exposure]
+                        }
+                    },
+                    ExternalIndividualExposure = ExternalIndividualExposure.FromIndividualDayExposure(exposure)
                 };
                 var record = new HazardDosePbkTimeCourse() {
                     AggregateIndividualExposure = aggregateIndividualExposure,

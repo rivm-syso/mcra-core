@@ -6,7 +6,7 @@ using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 
 namespace MCRA.Simulation.Calculators.RiskCalculation {
     public abstract class AggregateIndividualTargetExposureWrapperBase<T> : ITargetIndividualExposure
-        where T : AggregateIndividualExposure {
+        where T : AggregateIndividualExposureBase {
 
         protected readonly T _aggregateIndividualExposure;
 

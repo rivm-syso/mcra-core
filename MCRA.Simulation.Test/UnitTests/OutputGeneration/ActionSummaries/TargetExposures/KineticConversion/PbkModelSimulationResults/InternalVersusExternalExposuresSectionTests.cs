@@ -124,7 +124,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var section = new InternalVersusExternalExposuresSection();
             section.Summarize(
                 substance,
-                targetIndividualExposures.Cast<AggregateIndividualExposure>().ToList(),
+                targetIndividualExposures,
                 [targetUnit],
                 exposureUnit);
 
