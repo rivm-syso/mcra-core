@@ -4,7 +4,7 @@ using MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders;
 using Microsoft.AspNetCore.Html;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
-    public abstract class HbmContributionsBySubstanceSectionViewBase 
+    public abstract class HbmContributionsBySubstanceSectionViewBase
         : SectionView<HbmContributionsSectionBase<SubstanceContributorKey, HbmContributionBySubstanceRecord>> {
 
         public override void RenderSectionHtml(StringBuilder sb) {

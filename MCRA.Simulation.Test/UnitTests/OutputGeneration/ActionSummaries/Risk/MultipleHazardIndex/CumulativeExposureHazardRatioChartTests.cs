@@ -48,7 +48,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             section.Summarize(
                 [targetUnit],
                 individualEffectsBySubstanceCollections: [(targetUnit.Target, individualEffects)],
-                individualEffects: null,
+                cumulativeIndividualRisks: null,
                 substances: substances,
                 focalEffect: null,
                 riskMetricCalculationType: RiskMetricCalculationType.RPFWeighted,

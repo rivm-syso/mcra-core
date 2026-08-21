@@ -1,6 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.RiskCalculation;
+using MCRA.Simulation.Calculators.Stratification;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class RiskContributionsBySubstanceSection : RiskContributionsBySubstanceSectionBase {
@@ -9,53 +10,72 @@ namespace MCRA.Simulation.OutputGeneration {
         /// Summarize risk substances total distribution.
         /// </summary>
         public void Summarize(
+            PopulationStratifier stratifier,
             List<IndividualEffect> cumulativeIndividualRisks,
             List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> SubstanceIndividualEffects)> individualEffectsBySubstance,
+            RiskMetricType riskMetricType,
             double lowerPercentage,
             double upperPercentage,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
             bool isInverseDistribution,
-            RiskMetricType riskMetricType
+            int uncertaintyCycles
         ) {
-            _lowerPercentage = lowerPercentage;
-            _upperPercentage = upperPercentage;
-            _riskPercentages = [_lowerPercentage, 50, _upperPercentage];
+            _lowerBound = uncertaintyLowerBound;
+            _upperBound = uncertaintyUpperBound;
+            _uncertaintyCycles = uncertaintyCycles;
+            _riskPercentages = [lowerPercentage, 50, upperPercentage];
             _isInverseDistribution = isInverseDistribution;
+            var individualEffects = getIndividualEffects(individualEffectsBySubstance, stratifier);
 
-            var totalExposureHazard = CalculateExposureHazardWeightedTotal(cumulativeIndividualRisks);
-
-            Records = individualEffectsBySubstance
-                .SelectMany(r => r.SubstanceIndividualEffects)
+            ContributionRecords = individualEffects.SelectMany(c => 
+                c.Effects,
+                    (c, dict) => (c.Target, dict.Key, dict.Value)
+                )
                 .AsParallel()
-                .Select(kvp => createSubstanceSummaryRecord(
-                    kvp.Value,
-                    kvp.Key,
-                    totalExposureHazard,
-                    riskMetricType
-                ))
-                .OrderByDescending(c => c.Contribution)
-                .ThenBy(c => c.SubstanceName)
-                .ThenBy(c => c.SubstanceCode)
-                .ToList();
+                .Select(kvp => createContributionRecord(
+                        individualEffects.First().Target,
+                        kvp.Value,
+                        kvp.Key,
+                        riskMetricType,
+                        null
+                    ))
+                    .OrderByDescending(c => c.Contribution)
+                    .ThenBy(c => c.SubstanceName)
+                    .ThenBy(c => c.SubstanceCode)
+                    .ToList();
 
-            setUncertaintyBounds(uncertaintyLowerBound, uncertaintyUpperBound);
+            if (stratifier != null && stratifier.GetStratificationVariables().Count > 0) {
+                var stratifiedRecords = individualEffects.SelectMany(c => 
+                    c.Effects, 
+                        (c, dict) => (c.Target, dict.Key, dict.Value)
+                    )
+                    .AsParallel()
+                    .SelectMany(kvp => createContributionRecords(
+                        individualEffects.First().Target,
+                        kvp.Value,
+                        kvp.Key,
+                        riskMetricType,
+                        true
+                    ))
+                    .OrderByDescending(c => c.Contribution)
+                    .ThenBy(c => c.SubstanceName)
+                    .ThenBy(c => c.SubstanceCode)
+                    .ToList();
+                ContributionRecords.AddRange(stratifiedRecords);
+            }
         }
 
         public void SummarizeUncertain(
-            List<IndividualEffect> individualEffects,
+            PopulationStratifier stratifier,
             List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> SubstanceIndividualEffects)> individualEffectsBySubstance
         ) {
-            var totalExposure = CalculateExposureHazardWeightedTotal(individualEffects);
-            var records = individualEffectsBySubstance
-                .SelectMany(r => r.SubstanceIndividualEffects)
-                .AsParallel()
-                .Select(r => new RiskBySubstanceRecord() {
-                    SubstanceCode = r.Key.Code,
-                    Contribution = CalculateExposureHazardWeightedTotal(r.Value) / totalExposure
-                })
-                .ToList();
-            updateContributions(records);
+            var individualEffects = getIndividualEffects(individualEffectsBySubstance, stratifier);
+            updateRecords(individualEffects);
+
+            if (stratifier != null && stratifier.GetStratificationVariables().Count > 0) {
+                updateStratifiedRecords(individualEffects);
+            }
         }
     }
 }

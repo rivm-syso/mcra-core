@@ -6,10 +6,10 @@ using MCRA.Utils.Statistics;
 namespace MCRA.Simulation.OutputGeneration {
     public class AtRiskSectionBase : SummarySection {
 
-        public HealthEffectType HealthEffectType;
-        public double Threshold;
-        public double[] _riskPercentages;
-        public bool _isInverseDistribution;
+        public HealthEffectType HealthEffectType { get; set; }
+        public double Threshold { get; set; }
+        protected double[] _riskPercentages {  get; set; }
+        protected bool _isInverseDistribution { get; set; }
 
         /// </summary>
         /// Calculate percentages at risk. For single foods no background is available, calculate only foreground at risk.
@@ -164,25 +164,21 @@ namespace MCRA.Simulation.OutputGeneration {
                 var complementPercentages = _riskPercentages.Select(c => 100 - c);
                 var risksAll = individualEffects
                     .Select(c => c.ExposureHazardRatio);
-                percentilesAll = risksAll.PercentilesWithSamplingWeights(allWeights, complementPercentages)
-                    .Select(c => c == 0 ? SimulationConstants.MOE_eps : 1 / c)
-                    .ToList();
+                percentilesAll = [.. risksAll.PercentilesWithSamplingWeights(allWeights,
+                    complementPercentages).Select(c => c == 0 ? SimulationConstants.MOE_eps : 1 / c)];
                 var risks = individualEffects
                     .Where(c => c.IsPositive)
                     .Select(c => c.ExposureHazardRatio);
-                percentiles = risks.PercentilesWithSamplingWeights(weights, complementPercentages)
-                    .Select(c => c == 0 ? SimulationConstants.MOE_eps : 1 / c)
-                    .ToList();
+                percentiles = [.. risks.PercentilesWithSamplingWeights(weights, complementPercentages)
+                    .Select(c => c == 0 ? SimulationConstants.MOE_eps : 1 / c)];
             } else {
-                percentilesAll = individualEffects
+                percentilesAll = [.. individualEffects
                     .Select(c => c.HazardExposureRatio)
-                    .PercentilesWithSamplingWeights(allWeights, _riskPercentages)
-                    .ToList();
-                percentiles = individualEffects
+                    .PercentilesWithSamplingWeights(allWeights, _riskPercentages)];
+                percentiles = [.. individualEffects
                     .Where(c => c.IsPositive)
                     .Select(c => c.HazardExposureRatio)
-                    .PercentilesWithSamplingWeights(weights, _riskPercentages)
-                    .ToList();
+                    .PercentilesWithSamplingWeights(weights, _riskPercentages)];
             }
             return (percentiles, percentilesAll, weights, allWeights, total, sumSamplingWeights);
         }
@@ -207,25 +203,19 @@ namespace MCRA.Simulation.OutputGeneration {
                 var complementPercentages = _riskPercentages.Select(c => 100 - c).ToList();
                 var risksAll = individualEffects
                     .Select(c => c.HazardExposureRatio);
-                percentilesAll = risksAll.PercentilesWithSamplingWeights(allWeights, complementPercentages)
-                    .Select(c => 1 / c)
-                    .ToList();
+                percentilesAll = [.. risksAll.PercentilesWithSamplingWeights(allWeights, complementPercentages).Select(c => 1 / c)];
                 var risks = individualEffects
                     .Where(c => c.IsPositive)
                     .Select(c => c.HazardExposureRatio);
-                percentiles = risks.PercentilesWithSamplingWeights(weights, complementPercentages)
-                    .Select(c => 1 / c)
-                    .ToList();
+                percentiles = [.. risks.PercentilesWithSamplingWeights(weights, complementPercentages).Select(c => 1 / c)];
             } else {
-                percentilesAll = individualEffects
+                percentilesAll = [.. individualEffects
                     .Select(c => c.ExposureHazardRatio)
-                    .PercentilesWithSamplingWeights(allWeights, _riskPercentages)
-                    .ToList();
-                percentiles = individualEffects
+                    .PercentilesWithSamplingWeights(allWeights, _riskPercentages)];
+                percentiles = [.. individualEffects
                     .Where(c => c.IsPositive)
                     .Select(c => c.ExposureHazardRatio)
-                    .PercentilesWithSamplingWeights(weights, _riskPercentages)
-                    .ToList();
+                    .PercentilesWithSamplingWeights(weights, _riskPercentages)];
             }
             return (percentiles, percentilesAll, weights, allWeights, total, sumSamplingWeights);
         }

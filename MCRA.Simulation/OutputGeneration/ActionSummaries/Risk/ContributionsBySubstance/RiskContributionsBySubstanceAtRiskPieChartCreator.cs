@@ -1,10 +1,10 @@
 ﻿namespace MCRA.Simulation.OutputGeneration {
     public sealed class RiskContributionsBySubstanceAtRiskPieChartCreator(
-        RiskContributionsBySubstanceSectionBase section,
+        string sectionId,
+        List<RiskContributionBySubstanceRecord> records,
         bool isUncertainty
-    ) : RiskContributionsBySubstancePieChartCreatorBase(section, isUncertainty) {
+    ) : RiskContributionsBySubstancePieChartCreatorBase(sectionId, records, isUncertainty) {
 
         public override string Title => $"Substance contributions to the upper distribution exceeding the risk threshold.";
-
     }
 }

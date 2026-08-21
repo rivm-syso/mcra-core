@@ -4,22 +4,23 @@ using System.Text;
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class RiskContributionsBySubstanceAtRiskSectionView : SectionView<RiskContributionsBySubstanceAtRiskSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
-            if (!Model.Records.All(c => double.IsNaN(c.Contribution))) {
+            if (!Model.ContributionRecords.All(c => double.IsNaN(c.Contribution))) {
                 var hiddenProperties = new List<string>();
 
-                var isUncertainty = Model.Records.FirstOrDefault()?.Contributions.Any() ?? false;
+                var isUncertainty = Model.ContributionRecords.FirstOrDefault()?.Contributions.Any() ?? false;
                 if (!isUncertainty) {
-                    hiddenProperties.Add(nameof(RiskBySubstanceRecord.LowerContributionPercentage));
-                    hiddenProperties.Add(nameof(RiskBySubstanceRecord.UpperContributionPercentage));
-                    hiddenProperties.Add(nameof(RiskBySubstanceRecord.MeanContribution));
+                    hiddenProperties.Add(nameof(RiskContributionBySubstanceRecord.LowerContributionPercentage));
+                    hiddenProperties.Add(nameof(RiskContributionBySubstanceRecord.UpperContributionPercentage));
+                    hiddenProperties.Add(nameof(RiskContributionBySubstanceRecord.MeanContribution));
                 } else {
-                    hiddenProperties.Add(nameof(RiskBySubstanceRecord.ContributionPercentage));
+                    hiddenProperties.Add(nameof(RiskContributionBySubstanceRecord.Contribution));
                 }
-                hiddenProperties.Add(nameof(RiskBySubstanceRecord.MeanAll));
+                hiddenProperties.Add(nameof(RiskContributionBySubstanceRecord.MeanAll));
+                hiddenProperties.Add(nameof(RiskContributionBySubstanceRecord.Stratification));
 
                 //Render HTML
-                if (Model.Records.Any()) {
-                    var chartCreator = new RiskContributionsBySubstanceAtRiskPieChartCreator(Model, isUncertainty);
+                if (Model.ContributionRecords.Any()) {
+                    var chartCreator = new RiskContributionsBySubstanceAtRiskPieChartCreator(Model.SectionId, Model.ContributionRecords, isUncertainty);
                     sb.AppendChart(
                         "RiskContributionsBySubstanceUpperAtRiskChart",
                         chartCreator,
@@ -33,10 +34,10 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         ? Model.PercentagesAtRisk.MedianContribution
                         : Model.PercentagesAtRisk.Percentage;
 
-                    sb.AppendDescriptionParagraph($"Upper distribution {Model.Records.Count} substances.");
+                    sb.AppendDescriptionParagraph($"Upper distribution {Model.ContributionRecords.Count} substances.");
                     sb.AppendTable(
                         Model,
-                        Model.Records,
+                        Model.ContributionRecords,
                         "RiskContributionsBySubstanceUpperAtRiskTable",
                         ViewBag,
                         caption: $"Risk contributions by substance of the upper {percentageAtRisk:F1}% of the distribution exceeding the threshold.",

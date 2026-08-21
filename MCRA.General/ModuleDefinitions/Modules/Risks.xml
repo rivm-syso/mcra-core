@@ -88,6 +88,7 @@
   <UncertaintySettings>
     <UncertaintySetting source="Action">UncertaintyLowerBound</UncertaintySetting>
     <UncertaintySetting source="Action">UncertaintyUpperBound</UncertaintySetting>
+    <UncertaintySetting source="Action">UncertaintyAnalysisCycles</UncertaintySetting>
   </UncertaintySettings>
   <TierSelectionSetting>SelectedTier</TierSelectionSetting>
 </Module>

@@ -1,13 +1,26 @@
-﻿using MCRA.Utils.Statistics;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
 
-    /// <summary>
-    /// Helper class for substances, relative contribution to the risk distribution.
-    /// </summary>
-    public sealed class RiskBySubstanceRecord {
+    public abstract class RiskContributionRecordBase<T>
+        where T : IExposureContributorKey, new() {
+
+        [Display(AutoGenerateField = false)]
+        public int UncertaintyCycles { get; set; }
+
+        [Display(AutoGenerateField = false)]
+        public List<string> StratificationSubLevelCodes { get; set; }
+
+        [Display(AutoGenerateField = false)]
+        public List<string> StratificationSubLevelNames { get; set; }
+
+        [DisplayName("Stratification")]
+        public string Stratification { get; set; }
+
+        [Display(AutoGenerateField = false)]
+        public string StratificationLevelCode { get; set; }
 
         [Display(AutoGenerateField = false)]
         public double UncertaintyLowerBound { get; set; }
@@ -15,26 +28,19 @@ namespace MCRA.Simulation.OutputGeneration {
         [Display(AutoGenerateField = false)]
         public double UncertaintyUpperBound { get; set; }
 
-        [DisplayName("Substance name")]
-        [Description("Name of the substance.")]
-        public string SubstanceName { get; set; }
-
-        [DisplayName("Substance code")]
-        [Description("Code of the substance.")]
-        public string SubstanceCode { get; set; }
-
-        [Display(AutoGenerateField = false)]
-        public double Contribution { get; set; }
+        [Description("Code of the biological matrix.")]
+        [DisplayName("Biological matrix code")]
+        public string BiologicalMatrix{ get; set; }
 
         [Description("Relative contribution of a substance to the risk.")]
         [DisplayName("Contribution (%)")]
         [DisplayFormat(DataFormatString = "{0:F1}")]
-        public double ContributionPercentage { get { return Contribution * 100; } }
+        public double Contribution { get; set; }
 
         [Description("Mean relative contribution of a substance to the risk.")]
         [DisplayName("Contribution (%) mean")]
         [DisplayFormat(DataFormatString = "{0:F1}")]
-        public double MeanContribution { get { return Contributions.Any() ? Contributions.Average() : double.NaN; } }
+        public double MeanContribution { get { return Contributions.Any() ? Contributions.Sum() / UncertaintyCycles : 0D; } }
 
         [Display(AutoGenerateField = false)]
         public List<double> Contributions { get; set; }
@@ -42,12 +48,12 @@ namespace MCRA.Simulation.OutputGeneration {
         [Description("Lower uncertainty bound relative contribution of a substance to the risk.")]
         [DisplayName("Contribution (%) lower bound (LowerBound)")]
         [DisplayFormat(DataFormatString = "{0:F1}")]
-        public double LowerContributionPercentage { get { return Contributions.Percentile(UncertaintyLowerBound); } }
+        public double LowerContributionPercentage { get { return Contributions.PercentilesAdditionalZeros([UncertaintyLowerBound], UncertaintyCycles - Contributions.Count)[0]; } }
 
         [Description("Upper uncertainty bound relative contribution of a substance to the risk.")]
         [DisplayName("Contribution (%) upper bound (UpperBound)")]
         [DisplayFormat(DataFormatString = "{0:F1}")]
-        public double UpperContributionPercentage { get { return Contributions.Percentile(UncertaintyUpperBound); } }
+        public double UpperContributionPercentage { get { return Contributions.PercentilesAdditionalZeros([UncertaintyUpperBound], UncertaintyCycles - Contributions.Count)[0]; } }
 
         [Description("Number of {IndividualDayUnit} with exposure.")]
         [DisplayName("{IndividualDayUnit} with exposure")]
@@ -66,5 +72,9 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Percentage {IndividualDayUnit} with exposure")]
         [DisplayFormat(DataFormatString = "{0:F1}")]
         public double PercentagePositives { get { return FractionPositives * 100; } }
+
+        public abstract string GetDescriptorKey();
+
+        public abstract void SetDescriptorValues(T descriptor);
     }
 }

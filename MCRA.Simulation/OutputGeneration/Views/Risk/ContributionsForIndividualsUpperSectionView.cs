@@ -5,9 +5,19 @@ namespace MCRA.Simulation.OutputGeneration.Views {
     public class ContributionsForIndividualsUpperSectionView : SectionView<ContributionsForIndividualsUpperSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             if (!Model.IndividualContributionRecords.All(c => double.IsNaN(c.Contribution))) {
-                var isUncertainty = false;
-                if (Model.IndividualContributionRecords.All(c => c.Contributions.Any())) {
-                    isUncertainty = true;
+                var isUncertainty = Model.IndividualContributionRecords.FirstOrDefault()?.Contributions.Any() ?? false;
+                var hiddenProperties = new List<string>() {
+                    nameof(RiskContributionBySubstanceRecord.PositivesCount),
+                    nameof(RiskContributionBySubstanceRecord.PercentagePositives),
+                    nameof(RiskContributionBySubstanceRecord.MeanAll),
+                    nameof(RiskContributionBySubstanceRecord.Stratification),
+                };
+                if (Model.IndividualContributionRecords.All(c => double.IsNaN(c.LowerContributionPercentage))) {
+                    hiddenProperties.Add(nameof(RiskContributionBySubstanceRecord.LowerContributionPercentage));
+                    hiddenProperties.Add(nameof(RiskContributionBySubstanceRecord.UpperContributionPercentage));
+                    hiddenProperties.Add(nameof(RiskContributionBySubstanceRecord.MeanContribution));
+                } else {
+                    hiddenProperties.Add(nameof(RiskContributionBySubstanceRecord.Contribution));
                 }
 
                 sb.Append(TableHelpers.CsvExportLink(
@@ -40,24 +50,6 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 );
                 sb.Append("</div>");
 
-                var hiddenProperties = new List<string>();
-                if (Model.IndividualContributionRecords.All(c => double.IsNaN(c.LowerContributionPercentage))) {
-                    hiddenProperties.Add("LowerContributionPercentage");
-                    hiddenProperties.Add("UpperContributionPercentage");
-                    hiddenProperties.Add("MeanContribution");
-                } else {
-                    hiddenProperties.Add("Contribution");
-                    isUncertainty = true;
-                }
-                if (Model.IndividualContributionRecords.All(r => string.IsNullOrEmpty(r.ExposureRoute))) {
-                    hiddenProperties.Add("ExposureRoute");
-                }
-                if (Model.IndividualContributionRecords.All(r => string.IsNullOrEmpty(r.BiologicalMatrix))) {
-                    hiddenProperties.Add("BiologicalMatrix");
-                }
-                if (Model.IndividualContributionRecords.All(r => string.IsNullOrEmpty(r.ExpressionType))) {
-                    hiddenProperties.Add("ExpressionType");
-                }
                 var percentageAtRisk = Model.PercentagesAtRisk.Percentages.Any()
                     ? Model.PercentagesAtRisk.MedianContribution
                     : Model.PercentagesAtRisk.Percentage;

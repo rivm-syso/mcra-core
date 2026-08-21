@@ -12,7 +12,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public void Summarize(
             List<TargetUnit> targetUnits,
             List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> IndividualEffects)> individualEffectsBySubstanceCollections,
-            List<IndividualEffect> individualEffects,
+            List<IndividualEffect> cumulativeIndividualRisks,
             ICollection<Compound> substances,
             Effect focalEffect,
             RiskMetricCalculationType riskMetricCalculationType,
@@ -40,7 +40,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
             var pUpper = 100 - pLower;
             if (skipPrivacySensitiveOutputs) {
-                var maxUpperPercentile = SimulationConstants.MaxUpperPercentage(individualEffects.Count);
+                var maxUpperPercentile = SimulationConstants.MaxUpperPercentage(cumulativeIndividualRisks.Count);
                 if (pUpper > maxUpperPercentile) {
                     RestrictedUpperPercentile = maxUpperPercentile;
                 }
@@ -49,11 +49,11 @@ namespace MCRA.Simulation.OutputGeneration {
             var selectedTargets = targetUnits.Where(c => c != null).ToList();
             foreach (var target in selectedTargets) {
                 var records = new List<SubstanceRiskDistributionRecord>();
-                if (substances.Count > 1 && individualEffects != null && isCumulative) {
+                if (substances.Count > 1 && cumulativeIndividualRisks != null && isCumulative) {
                     var descriptor = new SubstanceContributorKey() {
                         Substance = getRiskReference(RiskMetricCalculationType)
                     };
-                    var effects = getIndividualEffects(individualEffects, null);
+                    var effects = getIndividualEffects(cumulativeIndividualRisks, null);
                     var record = createSubstanceRiskRecord(target?.Target, effects, true, isInverseDistribution, descriptor, null);
                     records.Add(record);
                 }
@@ -79,7 +79,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<ExposureTarget> targets,
             ICollection<Compound> substances,
             List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> IndividualEffects)> collections,
-            List<IndividualEffect> individualEffects,
+            List<IndividualEffect> cumulativeIndividualRisks,
             bool isInverseDistribution,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
@@ -89,11 +89,11 @@ namespace MCRA.Simulation.OutputGeneration {
             UncertaintyUpperLimit = uncertaintyUpperBound;
             foreach (var target in targets) {
                 var records = new List<SubstanceRiskDistributionRecord>();
-                if (substances.Count > 1 && individualEffects != null && isCumulative) {
+                if (substances.Count > 1 && cumulativeIndividualRisks != null && isCumulative) {
                     var descriptor = new SubstanceContributorKey() {
                         Substance = getRiskReference(RiskMetricCalculationType)
                     };
-                    var effects = getIndividualEffects(individualEffects, null);
+                    var effects = getIndividualEffects(cumulativeIndividualRisks, null);
                     var record = createSubstanceRiskRecord(target, effects, true, isInverseDistribution, descriptor, null);
                     records.Add(record);
                 }
@@ -120,7 +120,6 @@ namespace MCRA.Simulation.OutputGeneration {
                     record.RiskPercentiles.AddUncertaintyValues(new List<double> { item.PLowerRiskNom, item.RiskP50Nom, item.PUpperRiskNom });
                     record.ProbabilityOfCriticalEffects.AddUncertaintyValues(new List<double> { item.ProbabilityOfCriticalEffect });
                 }
-
             }
         }
     }

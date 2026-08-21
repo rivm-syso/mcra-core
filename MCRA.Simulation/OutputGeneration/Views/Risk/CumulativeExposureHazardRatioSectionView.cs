@@ -24,7 +24,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
                 var isUncertainty = riskRecords
                     .Any(c => c.RiskPercentiles[0].UncertainValues?.Count > 0);
-                var hiddenProperties = new List<string>();
+                var hiddenProperties = new List<string>() { "Stratification"};
                 if (isUncertainty) {
                     hiddenProperties.Add("PLowerRiskNom");
                     hiddenProperties.Add("RiskP50Nom");

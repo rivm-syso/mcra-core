@@ -6,16 +6,19 @@ using OxyPlot.Series;
 namespace MCRA.Simulation.OutputGeneration {
     public abstract class RiskContributionsBySubstancePieChartCreatorBase : ReportPieChartCreatorBase {
 
-        private readonly RiskContributionsBySubstanceSectionBase _section;
+        private readonly List<RiskContributionBySubstanceRecord> _records;
+        private readonly string _sectionId;
         private readonly bool _isUncertainty;
 
         public RiskContributionsBySubstancePieChartCreatorBase(
-            RiskContributionsBySubstanceSectionBase section,
+            string sectionId,
+            List<RiskContributionBySubstanceRecord> records,
             bool isUncertainty
         ) {
             Width = 500;
             Height = 350;
-            _section = section;
+            _records = records;
+            _sectionId = sectionId;
             _isUncertainty = isUncertainty;
         }
 
@@ -23,15 +26,14 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public override string ChartId {
             get {
-                var sectionId = _section.SectionId;
+                var sectionId = _sectionId;
                 var pictureId = "476ef9eb-a25b-44a5-bd8d-7cfd574b5f7a";
                 return StringExtensions.CreateFingerprint(sectionId + pictureId);
             }
         }
 
         public override PlotModel Create() {
-            var records = _section.Records;
-            var pieSlices = records
+            var pieSlices = _records
                 .Select(r => (
                     Substance: r.SubstanceName,
                     Contribution: _isUncertainty ? r.MeanContribution : r.Contribution

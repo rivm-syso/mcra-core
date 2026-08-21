@@ -3,53 +3,51 @@ using MCRA.General;
 using MCRA.Simulation.Calculators.RiskCalculation;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class RiskContributionsBySubstanceAtRiskSection
-        : RiskContributionsBySubstanceUpperSection {
+    public sealed class RiskContributionsBySubstanceAtRiskSection : RiskContributionsBySubstanceUpperSection {
 
         public void SummarizeUpperAtRisk(
-            List<IndividualEffect> individualEffects,
+            List<IndividualEffect> cumulativeIndividualRisks,
             List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> SubstanceIndividualEffects)> individualEffectsBySubstance,
-            double lowerPercentage,
-            double upperPercentage,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
             bool isInverseDistribution,
             RiskMetricType riskMetricType,
-            double threshold
+            double threshold,
+            double percentageForUpperTail,
+            int uncertaintyCycles
         ) {
+            _lowerBound = uncertaintyLowerBound;
+            _upperBound = uncertaintyUpperBound;
+            _uncertaintyCycles = uncertaintyCycles;
             summarizeUpperAtRisk(
-                individualEffects,
+                cumulativeIndividualRisks,
                 individualEffectsBySubstance,
-                lowerPercentage,
-                upperPercentage,
-                uncertaintyLowerBound,
-                uncertaintyUpperBound,
                 isInverseDistribution,
                 riskMetricType,
-                null,
+                percentageForUpperTail,
                 threshold
             );
         }
 
         public void SummarizeUpperAtRiskUncertain(
-            List<IndividualEffect> individualEffects,
+            List<IndividualEffect> cumulativeIndividualRisks,
             List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> SubstanceIndividualEffects)> individualEffectsBySubstance,
             RiskMetricType riskMetricType,
             double threshold
         ) {
             var sumWeightsCriticalEffect = riskMetricType == RiskMetricType.HazardExposureRatio
-                ? individualEffects.Where(c => c.HazardExposureRatio < threshold)
+                ? cumulativeIndividualRisks.Where(c => c.HazardExposureRatio < threshold)
                     .Sum(c => c.SimulatedIndividual.SamplingWeight)
-                : individualEffects.Where(c => c.ExposureHazardRatio > threshold)
+                : cumulativeIndividualRisks.Where(c => c.ExposureHazardRatio > threshold)
                     .Sum(c => c.SimulatedIndividual.SamplingWeight);
-            var sumAllWeights = individualEffects
+            var sumAllWeights = cumulativeIndividualRisks
                 .Sum(c => c.SimulatedIndividual.SamplingWeight);
             var percentageForUpperTail = (100 - 100d * sumWeightsCriticalEffect / sumAllWeights);
             //Occasionally very small percentages occur, round them to zero
             if (percentageForUpperTail < 0) {
                 percentageForUpperTail = 0;
             }
-            summarizeUpperUncertainty(individualEffects, individualEffectsBySubstance, percentageForUpperTail);
+            summarizeUpperUncertainty(cumulativeIndividualRisks, individualEffectsBySubstance, percentageForUpperTail);
         }
     }
 }

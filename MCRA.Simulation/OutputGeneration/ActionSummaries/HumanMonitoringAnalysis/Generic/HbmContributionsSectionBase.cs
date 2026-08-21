@@ -66,7 +66,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     .Where(r => r.StratificationLevel == stratificationLevel)
                     .ToList();
             }
-            var contribution = concentrations.Sum(c => c.TotalEndpointExposure) 
+            var contribution = concentrations.Sum(c => c.TotalEndpointExposure)
                 / concentrations.Sum(c => c.TotalExposure) * 100;
 
             var record = Records

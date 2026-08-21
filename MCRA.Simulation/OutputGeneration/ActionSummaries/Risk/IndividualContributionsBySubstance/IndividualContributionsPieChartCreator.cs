@@ -1,4 +1,5 @@
-﻿using MCRA.Utils.Charting.OxyPlot;
+﻿using MCRA.Simulation.OutputGeneration.ActionSummaries.Risk;
+using MCRA.Utils.Charting.OxyPlot;
 using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
 using OxyPlot.Series;
@@ -6,30 +7,33 @@ using OxyPlot.Series;
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class IndividualContributionsPieChartCreator : ReportPieChartCreatorBase {
 
-        private ContributionsForIndividualsSection _section;
-        private bool _isUncertainty;
+        private readonly List<RiskContributionBySubstanceRecord> _records;
+        private readonly string _sectionId;
+        private readonly bool _isUncertainty;
 
         public IndividualContributionsPieChartCreator(
-            ContributionsForIndividualsSection section,
+            string sectionId,
+            List<RiskContributionBySubstanceRecord> records,
             bool isUncertainty
         ) {
             Width = 500;
             Height = 350;
-            _section = section;
+            _records = records;
+            _sectionId = sectionId;
             _isUncertainty = isUncertainty;
         }
 
         public override string ChartId {
             get {
                 var pictureId = "476ef9eb-a25b-44a5-bd8d-7cfd574b5f7a";
-                return StringExtensions.CreateFingerprint(_section.SectionId + pictureId);
+                return StringExtensions.CreateFingerprint(_sectionId + pictureId);
             }
         }
 
         public override string Title => $"Mean contribution to risks for individuals.";
 
         public override PlotModel Create() {
-            var pieSlices = _section.IndividualContributionRecords.Select(
+            var pieSlices = _records.Select(
                 r => (
                     r.SubstanceName,
                     Contribution: _isUncertainty ? r.MeanContribution : r.Contribution
