@@ -66,6 +66,14 @@ namespace MCRA.Utils.Statistics {
             return x.ToList();
         }
 
+        public override double CDF(double x) {
+            return CDF(Mu, Sigma, x);
+        }
+
+        public double InvCDF(double p) {
+            return InvCDF(Mu, Sigma, p);
+        }
+
         /// <summary>
         /// Creates a <see cref="LogNormalDistribution"/> instance based on a provided mean
         /// and upper (p95) percentile.
@@ -91,12 +99,43 @@ namespace MCRA.Utils.Statistics {
             return distribution;
         }
 
-        public override double CDF(double x) {
-            return CDF(Mu, Sigma, x);
-        }
+        /// <summary>
+        /// Fits a <see cref="LogNormalDistribution"/> from a list of percentile points,
+        /// specified as a list of (percentage, value) value tuples.
+        /// </summary>
+        public static LogNormalDistribution FitFromPercentiles(List<(double Percentage, double Value)> points) {
+            if (points.Count < 2) {
+                throw new ArgumentException("Cannot compute lognormal distribution from fewer than 2 percentile points.");
+            }
+            if (points.Any(r => r.Percentage <= 0 || r.Percentage >= 100)) {
+                throw new ArgumentException("Cannot compute lognormal distribution from percentile points: percentiles should be between 0 and 100.");
+            }
+            if (points.All(r => r.Value <= 0)) {
+                throw new ArgumentException("Cannot compute lognormal distribution from percentile points with values <= 0.");
+            }
 
-        public double InvCDF(double p) {
-            return InvCDF(Mu, Sigma, p);
+            // Transform to (z, y) = (probit(p/100), ln(value)) and fit y = mu + sigma * z.
+            var z = points.Select(p => Normal.InvCDF(0, 1, p.Percentage / 100.0)).ToArray();
+            var y = points.Select(p => Math.Log(p.Value)).ToArray();
+
+            // Ordinary least squares fit of y = a + b * x, returning (a, b).
+            // For exactly two points this reduces to the exact line through them.
+            var n = z.Length;
+            var meanX = z.Average();
+            var meanY = y.Average();
+
+            double num = 0, den = 0;
+            for (var i = 0; i < n; i++) {
+                num += (z[i] - meanX) * (y[i] - meanY);
+                den += (z[i] - meanX) * (z[i] - meanX);
+            }
+
+            // Set mu is intercept and sigma is slope
+            var sigma = num / den;
+            var mu = meanY - sigma * meanX;
+
+            var distribution = new LogNormalDistribution(mu, sigma);
+            return distribution;
         }
     }
 }

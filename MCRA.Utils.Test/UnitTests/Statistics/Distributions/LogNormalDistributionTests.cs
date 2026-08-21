@@ -91,5 +91,48 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.Distributions {
             Assert.AreEqual(expectedMu, distribution.Mu, 0.01);
             Assert.AreEqual(expectedSigma, distribution.Sigma, 0.01);
         }
+
+        [TestMethod]
+        [DataRow(2, 3, new[] { 50D, 95D })]
+        [DataRow(4, 5, new[] { 50D, 75D, 95D })]
+        [DataRow(4, 5, new[] { 5D, 95D })]
+        [DataRow(4, 5, new[] { 5D, 50D })]
+        public void LogNormalDistribution_TestFitFromPercentilesExact(
+            double mean,
+            double upper,
+            double[] percentages
+        ) {
+            var distributionExpected = LogNormalDistribution.FromMeanAndUpper(mean, upper);
+            var percentiles = percentages
+                .Select(p => (p, distributionExpected.InvCDF(p / 100)))
+                .ToList();
+            var distribution = LogNormalDistribution.FitFromPercentiles(percentiles);
+            Assert.AreEqual(distributionExpected.Mu, distribution.Mu, 0.01);
+            Assert.AreEqual(distributionExpected.Sigma, distribution.Sigma, 0.01);
+        }
+
+        [TestMethod]
+        [DataRow(2, 3, new[] { 50D, 95D }, 100)]
+        [DataRow(4, 5, new[] { 50D, 75D, 95D }, 100)]
+        [DataRow(4, 5, new[] { 5D, 95D }, 100)]
+        [DataRow(4, 5, new[] { 5D, 50D }, 100)]
+        public void LogNormalDistribution_TestFitFromPercentilesSamples(
+            double mean,
+            double upper,
+            double[] percentages,
+            int n
+        ) {
+            var seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var distributionExpected = LogNormalDistribution.FromMeanAndUpper(mean, upper);
+            var samples = distributionExpected.Draws(random, n);
+            var percentiles = samples
+                .Percentiles(percentages)
+                .Select(p => (p, distributionExpected.InvCDF(p / 100)))
+                .ToList();
+            var distribution = LogNormalDistribution.FitFromPercentiles(percentiles);
+            Assert.AreEqual(distributionExpected.Mu, distribution.Mu, .1/n);
+            Assert.AreEqual(distributionExpected.Sigma, distribution.Sigma, .1/n);
+        }
     }
 }
