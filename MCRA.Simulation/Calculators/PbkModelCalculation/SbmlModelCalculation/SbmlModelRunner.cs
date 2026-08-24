@@ -9,6 +9,8 @@ using Python.Runtime;
 namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation {
     public class SbmlModelRunner : IDisposable {
 
+        public static bool ReuseEvents = true;
+
         private bool _disposed = false;
 
         private readonly string _modelFileName;
@@ -18,6 +20,7 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation {
 
         private dynamic _rr = null;
         private dynamic _model = null;
+        private readonly Dictionary<string, string> _eventCache = [];
 
         public SbmlModelRunner(
             ISbmlPbkModelSpecification pbkModelSpecification,
@@ -25,7 +28,6 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation {
         ) {
             _pbkModelSpecification = pbkModelSpecification;
             _modelFileName = modelInstance.KineticModelDefinition.FileName;
-
             // Body weight parameter
             _idBodyWeightParameter = _pbkModelSpecification
                 .GetParameterDefinitionByType(PbkModelParameterType.BodyWeight)?.Id;
@@ -56,16 +58,9 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation {
                     _model.setBoundary(input, false);
                 }
             } else {
-                // TODO: find a way to really reset the model (including deletion of events).
-                // The resetToOrigin/resetAll methods do not seem to work.
-                _model.resetAll();
                 _model.resetToOrigin();
+                _model.resetAll();
                 _model.integrator.maximum_num_steps = 1000000;
-                // Remove events
-                var eventIds = _model.model.getEventIds();
-                foreach (var eventId in eventIds) {
-                    _model.removeEvent(eventId, false);
-                }
             }
         }
 
@@ -82,22 +77,24 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation {
             // (Re)initialize model
             initializeModel(routeInputMappings);
 
+            // Create model exposure events
+            var eventsChanged = setExposureEvents(
+                routeInputMappings,
+                exposureEvents,
+                applyBodyWeightScaling
+            );
+
+            // Regenerate model only if events changed or not reusing
+            if (eventsChanged) {
+                _model.regenerateModel(true, true);
+            }
+
             // Set model parameters
             if (parameters != null) {
                 foreach (var parameter in parameters) {
                     _model.__setattr__(parameter.Key, parameter.Value);
                 }
             }
-
-            // Create model exposure events
-            setExposuresEvents(
-                routeInputMappings,
-                exposureEvents,
-                applyBodyWeightScaling
-            );
-
-            // Regenerate model
-            _model.regenerateModel(true, true);
 
             // Specify selected output for roadrunner, including time
             var outputSelection = new List<string>() { "time" }.Union(outputTimeSeriesSelection).ToArray();
@@ -123,55 +120,93 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation {
             foreach (var item in outputStatesSelection) {
                 result.OutputStates.Add(item, (double)_model[item]);
             }
-
             return result;
         }
 
-        private void setExposuresEvents(
+        private bool setExposureEvents(
             Dictionary<ExposureRoute, string> routeInputMappings,
             List<IExposureEvent> exposureEvents,
             bool applyBodyweightScaling
         ) {
-            // Set exposure events
-            var eidCounter = 1;
+            var changed = false;
             var bodyweightMultiplication = applyBodyweightScaling
                 ? $"*{_idBodyWeightParameter}" : string.Empty;
+
+            static string getFingerprint(IExposureEvent e) {
+                return e is SingleExposureEvent
+                    ? $"S_{e.Route}_{e.Time.ToString(CultureInfo.InvariantCulture)}"
+                    : $"R_{e.Route}_{e.Time.ToString(CultureInfo.InvariantCulture)}";
+            }
+
+            var clearEvents = !ReuseEvents;
+            if (ReuseEvents && _eventCache != null) {
+                // Check if events match cache
+                var eventFingerprints = exposureEvents.Select(getFingerprint).ToHashSet();
+                clearEvents = eventFingerprints.Count != _eventCache.Count
+                    || !eventFingerprints.SetEquals(_eventCache.Keys);
+            }
+
+            if (clearEvents) {
+                // Clear cache and remove old events
+                var eventIds = _model.model.getEventIds();
+                foreach (var eventId in eventIds) {
+                    _model.removeEvent(eventId, false);
+                }
+                _eventCache?.Clear();
+                changed = true;
+            }
+
+            // Create events table dictionary with (target, time) as key and assignment as value
+            var eidCounter = 1;
             foreach (var exposureEvent in exposureEvents) {
-                // Create an event for each exposure event
+                var speciesId = routeInputMappings[exposureEvent.Route];
+
+                string trigger;
                 if (exposureEvent.GetType() == typeof(SingleExposureEvent)) {
                     var singleEvent = (SingleExposureEvent)exposureEvent;
-                    var speciesId = routeInputMappings[exposureEvent.Route];
-                    var eid = $"ev_{eidCounter++}";
-                    _model.addEvent(
-                        eid,
-                    false,
-                        $"time > {singleEvent.Time.ToString(CultureInfo.InvariantCulture)}",
-                        false
-                    );
-                    _model.addEventAssignment(
-                        eid,
-                        speciesId,
-                        $"{speciesId} + {singleEvent.Value.ToString(CultureInfo.InvariantCulture)}{bodyweightMultiplication}",
-                        false
-                    );
+                    trigger = $"time > {singleEvent.Time.ToString(CultureInfo.InvariantCulture)}";
                 } else {
                     var repetitiveEvent = (RepeatingExposureEvent)exposureEvent;
-                    var speciesId = routeInputMappings[exposureEvent.Route];
-                    var eid = $"ev_{eidCounter++}";
-                    _model.addEvent(
-                        eid,
-                        false,
-                        $"time % {repetitiveEvent.Interval.ToString(CultureInfo.InvariantCulture)} == 0",
-                        false
-                    );
-                    _model.addEventAssignment(
-                        eid,
-                        speciesId,
-                        $"{speciesId} + {repetitiveEvent.Value.ToString(CultureInfo.InvariantCulture)}{bodyweightMultiplication}",
-                        false
-                    );
+                    trigger = $"time % {repetitiveEvent.Interval.ToString(CultureInfo.InvariantCulture)} == 0";
+                }
+                if (ReuseEvents) {
+                    var doseParamId = string.Empty;
+                    // Try to reuse events. SUCCESS: No recompilation.
+                    // Instant C++ backend update via __setattr__
+                    var fingerprint = getFingerprint(exposureEvent);
+                    if (_eventCache.TryGetValue(fingerprint, out var eventId)) {
+                        // Set dose parameter value of the event
+                        // --- INDIVIDUAL 2+ (Or Cached Path) ---
+                        doseParamId = $"dose_{eventId}";
+                    } else {
+                        // Event not found; create event and add to cache
+                        eventId = $"ev_{eidCounter++}";
+                        doseParamId = $"dose_{eventId}";
+                        var assignment = $"{speciesId} + {doseParamId}{bodyweightMultiplication}";
+                        // Set up model structure without intermediate recompilation (forceRegenerate = false)
+                        _model.addParameter(doseParamId, 0, false);
+                        _model.setConstant(doseParamId, false);
+                        _model.addEvent(eventId, false, trigger, false);
+                        _model.addEventAssignment(eventId, speciesId, assignment, false);
+                        _eventCache.Add(fingerprint, eventId);
+                        changed = true;
+                    }
+                    // CRITICAL: Explicitly set the initial value metadata so it survives the reset lifecycle
+                    _model.setValue($"init({doseParamId})", exposureEvent.Value);
+                    // Set the live tracking variable value for immediate time execution
+                    _model.__setattr__(doseParamId, exposureEvent.Value);
+                } else {
+                    // Legacy fallback: Hardcodes the string value, forcing a recompile every single time
+                    var value = exposureEvent.Value.ToString(CultureInfo.InvariantCulture);
+                    var assignment = $"{speciesId} + {value}{bodyweightMultiplication}";
+                    var eventId = $"ev_{eidCounter++}";
+                    _model.addEvent(eventId, false, trigger, false);
+                    _model.addEventAssignment(eventId, speciesId, assignment, false);
+                    changed = true;
                 }
             }
+            // Events changed or newly created
+            return changed;
         }
 
         public void Dispose() {

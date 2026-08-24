@@ -1,9 +1,13 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using System.Diagnostics;
+using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.PbkModelDefinitions.PbkModelSpecifications.Sbml;
+using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation;
+using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Calculators.KineticConversionCalculation;
 using MCRA.Simulation.Calculators.PbkModelCalculation;
 using MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation;
+using MCRA.Simulation.Objects;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
@@ -79,11 +83,168 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.SbmlMod
             testForwardChronic(route);
         }
 
+        [TestMethod]
+        [DataRow(10, 10, ExposureEventsGenerationMethod.RandomDailyEvents, false)]
+        [DataRow(10, 10, ExposureEventsGenerationMethod.RandomDailyEvents, true)]
+        [DataRow(10, 10, ExposureEventsGenerationMethod.DailyAverageEvents, false)]
+        [DataRow(10, 50, ExposureEventsGenerationMethod.DailyAverageEvents, false)]
+        [DataRow(100, 50, ExposureEventsGenerationMethod.DailyAverageEvents, false)]
+        [DataRow(10, 10, ExposureEventsGenerationMethod.DailyAverageEvents, true)]
+        [DataRow(10, 100, ExposureEventsGenerationMethod.DailyAverageEvents, true)]
+        [DataRow(100, 50, ExposureEventsGenerationMethod.DailyAverageEvents, true)]
+        [DataRow(100, 51, ExposureEventsGenerationMethod.DailyAverageEvents, true)]
+        public void SbmlPbkModelCalculator_TestCalculate(
+            int numIndividuals,
+            int numSimulatedDays,
+            ExposureEventsGenerationMethod exposureEventsGenerationMethod,
+            bool bodyweightAdjusted
+        ) {
+            var seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var substances = FakeSubstancesGenerator.Create(1);
+            var substance = substances.First();
+            var routes = new[] { ExposureRoute.Oral, ExposureRoute.Dermal, ExposureRoute.Inhalation };
+            var paths = FakeExposurePathGenerator.Create(routes);
+            var individuals = FakeIndividualsGenerator.Create(numIndividuals, 2, random, useSamplingWeights: true);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var individualDayExposures = FakeExternalExposureGenerator.CreateExternalIndividualDayExposures(individualDays, substances, paths, seed);
+            var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
+            var reuse = numSimulatedDays == 51;
+            var instance = createFakeModelInstance(substance);
+            var simulationSettings = new PbkSimulationSettings() {
+                BodyWeightCorrected = bodyweightAdjusted,
+                ExposureEventsGenerationMethod = exposureEventsGenerationMethod,
+                NumberOfSimulatedDays = numSimulatedDays
+            };
+            var model = new SbmlPbkModelCalculator(instance, simulationSettings);
+
+            var sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+            var externalIndividualExposures = individualDayExposures
+                .Select(r => (r.SimulatedIndividual, new List<IExternalIndividualDayExposure> { r }))
+                .ToList();
+
+            var output = model.Calculate(
+                externalIndividualExposures,
+                ExposureUnitTriple.FromExternalExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay),
+                routes,
+                [targetUnit],
+                random,
+                new ProgressState()
+            );
+            sw.Stop();
+            Debug.WriteLine($"Time re-use = {reuse}: {sw.Elapsed.TotalSeconds} seconds");
+
+            for (int i = 0; i < externalIndividualExposures.Count; i++) {
+                if (individualDayExposures[i].ExposuresPerPath
+                    .Any(eprc => eprc.Value.Any(ipc => ipc.Amount > 0))
+                ) {
+                    Assert.HasCount(numSimulatedDays * 24 + 1, output[i].SubstanceTargetLevelTimeSeries.First().Exposures);
+                }
+            }
+        }
+
+        [TestMethod]
+        public void SbmlPbkModelCalculator_TestEqualCalculate() {
+            var seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var substances = FakeSubstancesGenerator.Create(1);
+            var substance = substances.First();
+            var routes = new[] { ExposureRoute.Oral, ExposureRoute.Dermal, ExposureRoute.Inhalation };
+            var paths = FakeExposurePathGenerator.Create(routes);
+            var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
+
+            var instance = createFakeModelInstance(substance);
+            var simulationSettings = new PbkSimulationSettings() {
+                BodyWeightCorrected = true,
+                ExposureEventsGenerationMethod = ExposureEventsGenerationMethod.DailyAverageEvents,
+                NumberOfSimulatedDays = 50,
+            };
+            SbmlModelRunner.ReuseEvents = false;
+            // Create exposures with a small dose for each path and substance.This is the dose used in an event,
+            // the actual dose is calculated by multiplying the event dose with the molecular mass of the substance.
+            var eventDose = 0.01;
+            var intakes1 = paths
+                .ToDictionary(
+                    r => r,
+                    r => substances
+                        .Select(s => new AggregateIntakePerCompound() { Compound = s, Amount = eventDose * s.MolecularMass, })
+                        .Cast<IIntakePerCompound>()
+                        .ToList()
+                    );
+            var intakes2 = paths
+                .ToDictionary(
+                    r => r,
+                    r => substances
+                        .Select(s => new AggregateIntakePerCompound() { Compound = s, Amount = 3 * eventDose * s.MolecularMass, })
+                        .Cast<IIntakePerCompound>()
+                        .ToList()
+                    );
+
+            var individual = new Individual(0) {
+                BodyWeight = 70,
+                SamplingWeight = 1
+            };
+            var individualDayExposures = new List<ExternalIndividualDayExposure> {
+                new(intakes1) { SimulatedIndividual = new SimulatedIndividual(individual, 0) },
+                new(intakes2) { SimulatedIndividual = new SimulatedIndividual(individual, 1) },
+            };
+
+            var externalIndividualExposures = individualDayExposures
+                .Select(r => (r.SimulatedIndividual, new List<IExternalIndividualDayExposure> { r }))
+                .ToList();
+
+            var sw = new Stopwatch();
+            sw.Start();
+            var model = new SbmlPbkModelCalculator(instance, simulationSettings);
+            var output1 = model.Calculate(
+                externalIndividualExposures,
+                ExposureUnitTriple.FromExternalExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay),
+                routes,
+                [targetUnit],
+                random,
+                new ProgressState()
+            );
+            sw.Stop();
+            Debug.WriteLine($"Time re-use = false: {sw.Elapsed.TotalSeconds} seconds");
+            sw.Reset();
+            sw.Start();
+            SbmlModelRunner.ReuseEvents = true;
+            model = new SbmlPbkModelCalculator(instance, simulationSettings);
+
+            var output2 = model.Calculate(
+                externalIndividualExposures,
+                ExposureUnitTriple.FromExternalExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay),
+                routes,
+                [targetUnit],
+                random,
+                new ProgressState()
+            );
+            sw.Stop();
+            Debug.WriteLine($"Time re-use = true: {sw.Elapsed.TotalSeconds} seconds");
+            var exposuresFalse = output1.Select(c => c.SubstanceTargetLevelTimeSeries.SelectMany(c => c.Exposures.Select(e => e.Exposure)).ToList()).ToList();
+            var exposuresTrue = output2.Select(c => c.SubstanceTargetLevelTimeSeries.SelectMany(c => c.Exposures.Select(e => e.Exposure)).ToList()).ToList();
+            var count = exposuresFalse[0].Count;
+            var differences = new List<double>();
+            for (int i = 0; i < externalIndividualExposures.Count; i++) {
+                for (int j = 0; j < count; j++) {
+                    var difference = exposuresFalse[i][j] - exposuresTrue[i][j];
+                    differences.Add(difference);
+                }
+            }
+            Assert.AreEqual(0, differences.Sum());
+        }
+
         /// <summary>
-        /// SBML ModelCalculator: calculates individual day target exposures, Euromix SBML, acute
+        /// SBML ModelCalculator: calculates individual day target exposures, Euromix SBML, acute.
         /// </summary>
         [TestMethod]
-        public void SbmlPbkModelCalculator_TestCalculateIndividualDayTargetExposuresEuromix() {
+        [DataRow(true)]
+        [DataRow(false)]
+        public void SbmlPbkModelCalculator_TestCalculateAcute(
+            bool bodyweightAdjusted
+        ) {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var substances = FakeSubstancesGenerator.Create(1);
@@ -97,6 +258,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.SbmlMod
 
             var instance = createFakeModelInstance(substance);
             var simulationSettings = new PbkSimulationSettings() {
+                BodyWeightCorrected = bodyweightAdjusted,
                 NumberOfSimulatedDays = 10,
                 NumberOfOralDosesPerDay = 1,
                 SpecifyEvents = true,
