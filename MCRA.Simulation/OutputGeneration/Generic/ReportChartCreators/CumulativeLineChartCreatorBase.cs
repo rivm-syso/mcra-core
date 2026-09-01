@@ -23,10 +23,10 @@ namespace MCRA.Simulation.OutputGeneration {
                 //Ignore percentage < 1% end > 99%
                 var localMax = percentiles
                     .Where(c => c.XValue < 99 && c.ReferenceValue < SimulationConstants.MOE_eps)
-                    .Last().ReferenceValue;
+                    .LastOrDefault()?.ReferenceValue ?? SimulationConstants.MOE_eps;
                 var localMin = percentiles
                     .Where(c => c.XValue > 1 && c.ReferenceValue > 1 / SimulationConstants.MOE_eps)
-                    .First().ReferenceValue;
+                    ?.FirstOrDefault()?.ReferenceValue ?? 0;
 
                 minimum = Math.Max(localMin, 1 / SimulationConstants.MOE_eps);
                 maximum = Math.Min(localMax, SimulationConstants.MOE_eps);
