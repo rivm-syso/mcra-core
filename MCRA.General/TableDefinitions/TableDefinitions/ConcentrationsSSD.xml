@@ -24,6 +24,7 @@
       <Description>Code of the laboratory sample. MCRA will use the combination of labSampCode and labSubSampCode as unique code for a sample.</Description>
       <Aliases>
         <string>labSampCode</string>
+        <string>sampId</string>
       </Aliases>
     </ColumnDefinition>
     <ColumnDefinition FieldType="AlphaNumeric" FieldSize="4">
@@ -52,6 +53,7 @@
       <Description>Code identifying the modelled food. Should be equal to a code idFood in the Foods table.</Description>
       <Aliases>
         <string>prodCode</string>
+        <string>sampMatCode</string>
       </Aliases>
     </ColumnDefinition>
     <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50">
