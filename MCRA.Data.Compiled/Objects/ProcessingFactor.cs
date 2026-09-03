@@ -1,4 +1,4 @@
-namespace MCRA.Data.Compiled.Objects {
+﻿namespace MCRA.Data.Compiled.Objects {
     public sealed class ProcessingFactor {
         public double Nominal { get; set; }
         public double? Upper { get; set; }
@@ -9,5 +9,10 @@ namespace MCRA.Data.Compiled.Objects {
         public Food FoodProcessed { get; set; }
         public Food FoodUnprocessed { get; set; }
         public ProcessingType ProcessingType { get; set; }
+        public string Hash {
+            get {
+                return $"{Compound?.Code ?? ""},{FoodProcessed?.Code ?? ""},{FoodUnprocessed?.Code ?? ""},{ProcessingType?.Code ?? ""}";
+            }
+        }
     }
 }

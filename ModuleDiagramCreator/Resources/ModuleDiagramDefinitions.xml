@@ -11,7 +11,8 @@
 		<GraphDefinition ActionType="Concentrations" X="23" Y="15" Linebreaks="0"/>
 		<GraphDefinition ActionType="ConcentrationDistributions" X="3" Y="15" Linebreaks="1"/>
 		<GraphDefinition ActionType="SingleValueConcentrations" X="23" Y="23" Linebreaks="0"/>
-		<GraphDefinition ActionType="ProcessingFactors" X="3" Y="46" Linebreaks="1"/>
+    <GraphDefinition ActionType="ProcessingFactors" X="3" Y="46" Linebreaks="1"/>
+    <GraphDefinition ActionType="FocalProcessingFactors" X="3" Y="47" Linebreaks="1"/>
 		<GraphDefinition ActionType="UnitVariabilityFactors" X="3" Y="38" Linebreaks="1"/>
 		<GraphDefinition ActionType="OccurrencePatterns" X="31" Y="30" Linebreaks="0"/>
 		<GraphDefinition ActionType="OccurrenceFrequencies" X="27" Y="42" Linebreaks="0"/>

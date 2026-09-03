@@ -53,6 +53,7 @@
       <xi:include href="Modules/OutdoorAirConcentrations.xml" />
       <xi:include href="Modules/SingleValueConcentrations.xml" />
       <xi:include href="Modules/ProcessingFactors.xml" />
+      <xi:include href="Modules/FocalProcessingFactors.xml" />
       <xi:include href="Modules/UnitVariabilityFactors.xml" />
       <xi:include href="Modules/OccurrencePatterns.xml" />
       <xi:include href="Modules/OccurrenceFrequencies.xml" />

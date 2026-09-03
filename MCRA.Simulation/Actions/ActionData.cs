@@ -35,6 +35,7 @@ using MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease;
 using MCRA.Simulation.Actions.ExposureBiomarkerConversions;
 using MCRA.Simulation.Actions.ExposureResponseFunctions;
 using MCRA.Simulation.Actions.FocalFoodConcentrations;
+using MCRA.Simulation.Actions.FocalProcessingFactors;
 using MCRA.Simulation.Actions.FoodConversions;
 using MCRA.Simulation.Actions.FoodExtrapolations;
 using MCRA.Simulation.Actions.FoodRecipes;
@@ -826,6 +827,11 @@ namespace MCRA.Simulation {
         public ICollection<ProcessingFactorModel> ProcessingFactorModels {
             get => GetOrCreateModuleOutputData<ProcessingFactorsOutputData>(ActionType.ProcessingFactors).ProcessingFactorModels;
             set => GetOrCreateModuleOutputData<ProcessingFactorsOutputData>(ActionType.ProcessingFactors).ProcessingFactorModels = value;
+        }
+        // FocalProcessingFactors
+        public ICollection<ProcessingFactor> FocalProcessingFactors {
+            get => GetOrCreateModuleOutputData<FocalProcessingFactorsOutputData>(ActionType.FocalProcessingFactors).FocalProcessingFactors;
+            set => GetOrCreateModuleOutputData<FocalProcessingFactorsOutputData>(ActionType.FocalProcessingFactors).FocalProcessingFactors = value;
         }
 
         // QsarMembershipModels

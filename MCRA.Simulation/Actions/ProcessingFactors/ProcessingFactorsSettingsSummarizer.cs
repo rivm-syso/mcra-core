@@ -15,6 +15,7 @@ namespace MCRA.Simulation.Actions.ProcessingFactors {
             section.SummarizeSetting(SettingsItemType.IsDistribution, _configuration.IsDistribution, isVisible: false);
             section.SummarizeSetting(SettingsItemType.AllowHigherThanOne, _configuration.AllowHigherThanOne, isVisible: false);
             section.SummarizeSetting(SettingsItemType.DefaultMissingProcessingFactor, _configuration.DefaultMissingProcessingFactor, isVisible: false);
+            section.SummarizeSetting(SettingsItemType.UseFocalProcessingFactors, _configuration.UseFocalProcessingFactors, isVisible: false);
             return section;
         }
     }

@@ -229,5 +229,7 @@ namespace MCRA.General {
         AirConcentrationDistributions = 87,
         [Display(Name = "Consumer product exposure estimates")]
         ConsumerProductExposureEstimates = 88,
+        [Display(Name = "Focal processing factors")]
+        FocalProcessingFactors = 89,
     }
 }

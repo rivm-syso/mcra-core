@@ -16,6 +16,9 @@
   <DataDescription>
     Specify for a combination of processing type, food and substance the processing factor (nominal, upper).
   </DataDescription>
+  <SelectionInputs>
+    <Input>FocalProcessingFactors</Input>
+  </SelectionInputs>
   <CalculationSettings>
     <CalculationSetting source="Action">SelectedTier</CalculationSetting>
     <CalculationSetting>IsProcessing</CalculationSetting>
@@ -23,6 +26,7 @@
     <CalculationSetting>AllowHigherThanOne</CalculationSetting>
     <CalculationSetting>UseDefaultMissingProcessingFactor</CalculationSetting>
     <CalculationSetting>DefaultMissingProcessingFactor</CalculationSetting>
+    <CalculationSetting>UseFocalProcessingFactors</CalculationSetting>
   </CalculationSettings>
   <UncertaintySettings>
     <UncertaintySetting>ResampleProcessingFactors</UncertaintySetting>

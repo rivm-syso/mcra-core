@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>FocalProcessingFactors</Id>
+  <Name>Focal processing factors</Name>
+  <ModuleType>DataModule</ModuleType>
+  <ActionType>FocalProcessingFactors</ActionType>
+  <TableGroup>FocalProcessing</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Focal processing factors are multiplication factors to derive the concentration in a processed food from the concentration in an unprocessed food and can be specified for identified processing types (e.g., cooking, washing, drying).
+    Focal processing factors are primarily used in dietary exposure assessments to correct for the effect of processing on substance concentrations in dietary exposure calculations.
+  </Description>
+  <ShortDescription>
+    Focal processing factors are multiplication factors to derive the concentration in a processed food from the concentration in an unprocessed food and can be specified for identified processing types (e.g., cooking, washing, drying).
+  </ShortDescription>
+  <DataDescription>
+    Specify for a combination of processing type, food and substance the focal processing factor (nominal, upper).
+  </DataDescription>
+  <Entities>
+    <Entity>Foods</Entity>
+    <Entity>Substances</Entity>
+  </Entities>
+</Module>

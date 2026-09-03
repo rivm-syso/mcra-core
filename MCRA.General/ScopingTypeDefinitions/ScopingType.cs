@@ -167,5 +167,6 @@
         ConsumerProductExposureSets = 170,
         DustBioaccessibilityFractions = 171,
         SoilBioaccessibilityFractions = 172,
+        FocalProcessingFactors = 173,
     }
 }

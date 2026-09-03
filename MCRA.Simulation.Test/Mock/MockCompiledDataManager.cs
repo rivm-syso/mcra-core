@@ -160,6 +160,9 @@ namespace MCRA.Simulation.Test.Mock {
         public IList<ProcessingFactor> GetAllProcessingFactors() {
             return _data.AllProcessingFactors;
         }
+        public IList<ProcessingFactor> GetAllFocalProcessingFactors() {
+            return _data.AllFocalProcessingFactors;
+        }
 
         public IDictionary<string, ProcessingType> GetAllProcessingTypes() {
             return _data.AllProcessingTypes;

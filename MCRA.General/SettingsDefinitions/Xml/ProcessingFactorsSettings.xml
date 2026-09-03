@@ -50,4 +50,10 @@
     <Description>Specifies whether processing factors are resampled from a parametric uncertainty distribution.</Description>
     <ValueType>Boolean</ValueType>
   </SettingsItem>
+    <SettingsItem>
+    <Id>UseFocalProcessingFactors</Id>
+    <Name>Use focal processing factors</Name>
+    <Description>Specifies whether to use focal processing factors.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
 </SettingsItems>

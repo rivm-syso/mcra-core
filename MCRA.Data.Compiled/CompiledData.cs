@@ -50,6 +50,7 @@ namespace MCRA.Data.Compiled {
         public IDictionary<string, List<RelativePotencyFactor>> AllRelativePotencyFactors { get; set; }
         public IDictionary<string, ProcessingType> AllProcessingTypes { get; set; }
         public IList<ProcessingFactor> AllProcessingFactors { get; set; }
+        public IList<ProcessingFactor> AllFocalProcessingFactors { get; set; }
         public IList<ProcessingFactor> DefaultProcessingFactors { get; set; }
         public IDictionary<string, NonDietaryExposureSource> AllNonDietaryExposureSources { get; set; }
         public IList<NonDietaryExposureSet> NonDietaryExposureSets { get; set; }

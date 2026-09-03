@@ -25,6 +25,7 @@ namespace MCRA.Data.Management {
         IList<SubstanceConversion> GetAllSubstanceConversions();
         IList<DeterministicSubstanceConversionFactor> GetAllDeterministicSubstanceConversionFactors();
         IList<ProcessingFactor> GetAllProcessingFactors();
+        IList<ProcessingFactor> GetAllFocalProcessingFactors();
         IDictionary<string, ProcessingType> GetAllProcessingTypes();
         IDictionary<Food, ICollection<Food>> GetAllFoodExtrapolations();
         IDictionary<string, FoodSample> GetAllFoodSamples();

@@ -98,6 +98,7 @@
         <Setting id="UseDefaultMissingProcessingFactor" />
         <Setting id="DefaultMissingProcessingFactor" />
         <Setting id="ResampleProcessingFactors" />
+        <Setting id="UseFocalProcessingFactors" />
       </ExcludedSettings>
     </ModuleConfiguration>
     <ModuleConfiguration module="UnitVariabilityFactors">

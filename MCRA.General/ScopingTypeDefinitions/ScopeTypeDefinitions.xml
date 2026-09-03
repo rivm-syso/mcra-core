@@ -1341,6 +1341,34 @@
       </ParentScopeReference>
     </ParentScopeReferences>
   </ScopingTypeDefinition>
+
+  <ScopingTypeDefinition>
+    <Id>FocalProcessingFactors</Id>
+    <Name>Focal processing factors</Name>
+    <RawTableId>ProcessingFactors</RawTableId>
+    <Description>-</Description>
+    <TableGroup>FocalProcessing</TableGroup>
+    <IsStrongEntity>false</IsStrongEntity>
+    <ParentScopeReferences>
+      <ParentScopeReference>
+        <IdField>idProcessingType</IdField>
+        <ReferencedScope>ProcessingTypes</ReferencedScope>
+      </ParentScopeReference>
+      <ParentScopeReference>
+        <IdField>idFoodProcessed</IdField>
+        <ReferencedScope>Foods</ReferencedScope>
+      </ParentScopeReference>
+      <ParentScopeReference>
+        <IdField>idFoodUnprocessed</IdField>
+        <ReferencedScope>Foods</ReferencedScope>
+      </ParentScopeReference>
+      <ParentScopeReference>
+        <IdField>idCompound</IdField>
+        <ReferencedScope>Compounds</ReferencedScope>
+      </ParentScopeReference>
+    </ParentScopeReferences>
+  </ScopingTypeDefinition>
+
   <ScopingTypeDefinition>
     <Id>ProcessingTypes</Id>
     <Name>Processing types</Name>

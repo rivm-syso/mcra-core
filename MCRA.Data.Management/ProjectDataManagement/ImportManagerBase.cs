@@ -303,7 +303,6 @@ namespace MCRA.Data.Management {
                 var projectSettings = ProjectSettingsSerializer.ImportFromXmlString(settingsXml, dsConfigNew, oldStyle, out _);
 
                 localProgress.Update("Done!", 100);
-
                 return (projectSettings, dsConfigNew);
             } catch (Exception) {
                 throw;

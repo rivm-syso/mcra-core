@@ -325,6 +325,10 @@ namespace MCRA.Data.Management {
         /// Returns all non-compound-specific processing factors.
         /// </summary>
         public ICollection<ProcessingFactor> AllProcessingFactors => _dataManager.GetAllProcessingFactors();
+        /// <summary>
+        /// Returns all non-compound-specific focalprocessing factors.
+        /// </summary>
+        public ICollection<ProcessingFactor> AllFocalProcessingFactors => _dataManager.GetAllFocalProcessingFactors();
 
         /// <summary>
         /// Gets all agricultural uses.

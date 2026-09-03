@@ -299,7 +299,12 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 _ => throw new NotImplementedException()
             };
 
-
+        protected ICollection<ProcessingFactor> GetAllFocalProcessingFactors(ManagerType managerType) =>
+            managerType switch {
+                ManagerType.CompiledDataManager => CompiledDataManager.GetAllFocalProcessingFactors(),
+                ManagerType.SubsetManager => [.. SubsetManager.AllFocalProcessingFactors],
+                _ => throw new NotImplementedException()
+            };
         protected IDictionary<string, QsarMembershipModel> GetAllQsarMembershipModels(ManagerType managerType) =>
             managerType switch {
                 ManagerType.CompiledDataManager => CompiledDataManager.GetAllQsarMembershipModels(),

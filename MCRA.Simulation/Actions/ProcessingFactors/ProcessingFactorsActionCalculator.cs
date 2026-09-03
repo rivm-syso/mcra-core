@@ -24,6 +24,9 @@ namespace MCRA.Simulation.Actions.ProcessingFactors {
             _actionDataLinkRequirements[ScopingType.ProcessingFactors][ScopingType.ProcessingTypes].AlertTypeMissingData = AlertType.Notification;
             _actionDataLinkRequirements[ScopingType.ProcessingFactors][ScopingType.Foods].AlertTypeMissingData = AlertType.Notification;
             _actionDataLinkRequirements[ScopingType.ProcessingFactors][ScopingType.Compounds].AlertTypeMissingData = AlertType.Notification;
+            var requireFocalProcessingFactors = ModuleConfig.UseFocalProcessingFactors;
+            _actionInputRequirements[ActionType.FocalProcessingFactors].IsRequired = requireFocalProcessingFactors;
+            _actionInputRequirements[ActionType.FocalProcessingFactors].IsVisible = requireFocalProcessingFactors;
         }
 
         public override ICollection<UncertaintySource> GetRandomSources() {
@@ -42,6 +45,15 @@ namespace MCRA.Simulation.Actions.ProcessingFactors {
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
             data.ProcessingFactors = subsetManager.AllProcessingFactors;
+            if (ModuleConfig.UseFocalProcessingFactors && data.FocalProcessingFactors != null) {
+                foreach (var fpf in data.FocalProcessingFactors) {
+                    var removeProcFact = data.ProcessingFactors.FirstOrDefault(item => item.Hash == fpf.Hash);
+                    if (removeProcFact != null) {
+                        data.ProcessingFactors.Remove(removeProcFact);
+                    }
+                    data.ProcessingFactors.Add(fpf);
+                }
+            }
             var processingFactorModelsBuilder = new ProcessingFactorModelCollectionBuilder();
             data.ProcessingFactorModels = processingFactorModelsBuilder
                 .Create(
