@@ -2,6 +2,7 @@
 using MCRA.General;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
 using MCRA.Simulation.Calculators.ConsumerProductApplicationAmountCalculation;
+using MCRA.Simulation.Calculators.ConsumerProductExposureFractionCalculation;
 using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Objects;
 using MCRA.Utils.Statistics;
@@ -13,7 +14,7 @@ namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
         private static readonly ConsumerProduct _sumOfConsumerProducts = new() { Code = "Sum", Name = "Sum of consumer products" };
 
         private readonly IDictionary<(ConsumerProduct, Compound), ConcentrationModel> _concentrationModels;
-        private readonly Dictionary<(ConsumerProduct, Compound, ExposureRoute), double> _exposureFractions;
+        private readonly Dictionary<(ConsumerProduct, Compound, ExposureRoute), ConsumerProductExposureFractionSGs> _exposureFractions;
         private readonly Dictionary<ConsumerProduct, ConsumerProductApplicationAmountSGs> _applicationAmounts;
 
         public ConsumerProductExposureCalculator() { }
@@ -24,7 +25,22 @@ namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
             IDictionary<(ConsumerProduct, Compound), ConcentrationModel> cpConcentrationModels
         ) {
             _concentrationModels = cpConcentrationModels;
-            _exposureFractions = cpExposureFractions.ToDictionary(c => (c.Product, c.Substance, c.Route), c => c.ExposureFraction);
+            _exposureFractions = cpExposureFractions
+                .GroupBy(c => (p: c.Product, s: c.Substance, r: c.Route))
+                .Select(c => {
+                    var subgroups = c.Where(r => r.AgeLower.HasValue || r.Sex != GenderType.Undefined).ToList();
+                    var fallbackApplicationAmount = c.FirstOrDefault(r => !r.AgeLower.HasValue && r.Sex == GenderType.Undefined);
+                    return new ConsumerProductExposureFractionSGs() {
+                        Product = c.Key.p,
+                        Substance = c.Key.s,
+                        Route = c.Key.r,
+                        ExposureFraction = fallbackApplicationAmount?.ExposureFraction,
+                        CPEFSubgroups = subgroups
+                    };
+                })
+                .ToDictionary(c => (c.Product, c.Substance, c.Route));
+
+
             _applicationAmounts = cpApplicationAmounts
                  .GroupBy(c => c.Product)
                  .Select(c => {
@@ -115,9 +131,10 @@ namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
                 foreach (var route in routes) {
                     var exposuresPerSubstance = new List<ConsumerProductExposurePerSubstance>();
                     foreach (var substance in substances) {
-                        if (_exposureFractions.TryGetValue((useFrequency.Product, substance, route), out var cpFraction)
+                        if (_exposureFractions.TryGetValue((useFrequency.Product, substance, route), out var cpExposureFraction)
                             && _concentrationModels.TryGetValue((useFrequency.Product, substance), out var cpcModel)
                         ) {
+                            var exposureFractionModel = new ConsumerProductExposureFractionResolver(cpExposureFraction);
                             ConsumerProductExposurePerSubstance ipc = null;
                             (var concentration, var occurrenceFraction) = getConcentration(cpcModel);
                             var cpUnitSpec = cpcModel.Unit as ConsumerProductConcentrationUnitSpec;
@@ -127,13 +144,13 @@ namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
                                 // product concentration = 0.00139 mg/unit
                                 // target unit = ug/day
                                 // Intake = 4 unit/day * 0.00139 mg/unit * 1000 ug/mg = 5.56 ug/day
-
+                                var exposureFraction = exposureFractionModel.ExposureFraction.ExposureFraction.Value;
                                 var alignmentFactor = cpUnitSpec.Unit.GetSubstanceAmountUnit()
                                     .GetMultiplicationFactor(targetUnit.SubstanceAmountUnit, substance.MolecularMass);
                                 ipc = new ConsumerProductExposurePerSubstance(
                                     substance,
                                     Amount: useFrequency.Frequency * concentration * occurrenceFraction
-                                         * cpFraction * alignmentFactor
+                                         * exposureFraction * alignmentFactor
                                     );
                             } else if (model != null) {
                                 // example:
@@ -141,7 +158,7 @@ namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
                                 // substance concentration = 0.482 mg/kg
                                 // target unit = ug/day
                                 // intake = 0.00328 g * 0.001 kg/g * 0.482 mg/kg * 1000 ug/mg = 0.00158 ug
-
+                                var exposureFraction = exposureFractionModel.GetExposureFraction(useFrequency.Individual.Age, useFrequency.Individual.Gender);
                                 var applicationAmount = model.Draw(random, useFrequency.Individual.Age, useFrequency.Individual.Gender);
                                 var alignmentToConcentration = cpApplicationAmount.AmountUnit
                                     .GetMultiplicationFactor(cpUnitSpec.Unit.GetConcentrationMassUnit());
@@ -151,7 +168,7 @@ namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
                                 ipc = new ConsumerProductExposurePerSubstance(
                                     substance,
                                     Amount: useFrequency.Frequency * (double)applicationAmount * concentration
-                                        * cpFraction * occurrenceFraction * alignmentFactor
+                                        * exposureFraction * occurrenceFraction * alignmentFactor
                                     );
                             }
                             if (ipc != null) {

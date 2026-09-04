@@ -135,7 +135,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
             Records.AddRange(records);
 
-            _ = Records.OrderBy(c => c.Contribution).ToList();
+            Records = Records.OrderByDescending(c => c.Contribution).ToList();
 
             HierarchicalNodes = getHierarchicalRecords(
                 allConsumerProducts,

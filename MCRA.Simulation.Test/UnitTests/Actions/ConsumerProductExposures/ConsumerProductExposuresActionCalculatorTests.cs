@@ -45,7 +45,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions.ConsumerProductExposures {
                 IndividualProperty = FakeIndividualPropertiesGenerator.CreateFake(
                     "BSA",
                     IndividualPropertyType.Nonnegative
-                    )
+                )
             };
             populationIndividualPropertyValues["BSA"] = propertyValueBsa;
 

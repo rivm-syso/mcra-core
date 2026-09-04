@@ -10,6 +10,9 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Product name")]
         public string ProductName { get; set; }
 
+        [DisplayName("Parent")]
+        public string ParentName { get; set; }
+
         [DisplayName("Substance code")]
         public string SubstanceCode { get; set; }
 
@@ -17,6 +20,14 @@ namespace MCRA.Simulation.OutputGeneration {
         public string SubstanceName { get; set; }
 
         public string Route { get; set; }
+
+        [Description("The lower bound of the age group.")]
+        [DisplayName("Age lower")]
+        public double? AgeLower { get; set; }
+
+        [Description("The sex group.")]
+        [DisplayName("Sex")]
+        public string Sex { get; set; }
 
         [Description("The exposure fraction.")]
         [DisplayName("Fraction")]

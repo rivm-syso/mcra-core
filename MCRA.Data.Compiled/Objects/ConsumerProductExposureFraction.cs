@@ -6,5 +6,7 @@ namespace MCRA.Data.Compiled.Objects {
         public Compound Substance { get; set; }
         public ExposureRoute Route { get; set; }
         public double ExposureFraction { get; set; }
+        public double? AgeLower { get; set; }
+        public GenderType Sex { get; set; } = GenderType.Undefined;
     }
 }

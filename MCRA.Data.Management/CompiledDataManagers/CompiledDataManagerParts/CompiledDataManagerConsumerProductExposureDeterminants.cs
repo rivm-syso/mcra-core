@@ -28,6 +28,8 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             Substance = _data.GetOrAddSubstance(idSubstance),
                                             Route = r.GetEnum(RawConsumerProductExposureFractions.ExposureRoute, fieldMap, ExposureRoute.Undefined),
                                             ExposureFraction = r.GetDouble(RawConsumerProductExposureFractions.ExposureFraction, fieldMap),
+                                            AgeLower = r.GetDoubleOrNull(RawConsumerProductExposureFractions.AgeLower, fieldMap),
+                                            Sex = r.GetEnum(RawConsumerProductExposureFractions.Sex, fieldMap, GenderType.Undefined),
                                         };
                                         allExposureFractions.Add(exposureFraction);
                                     }

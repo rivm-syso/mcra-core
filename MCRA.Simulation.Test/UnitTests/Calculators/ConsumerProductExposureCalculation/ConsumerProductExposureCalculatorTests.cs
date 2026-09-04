@@ -54,6 +54,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConsumerProductExposureCalc
                 Substance = substance,
                 Route = ExposureRoute.Oral,
                 ExposureFraction = exposureFractionValue,
+                Sex = GenderType.Undefined
             };
 
             var appAmount = new ConsumerProductApplicationAmount {
