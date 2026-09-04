@@ -23,6 +23,7 @@ namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
                     
                         var distribution = LogNormalDistribution.FitFromPercentiles(percentiles);
                         return new ConsumerProductExposureDistribution {
+                            ExposureSetCode = c.e.IdExposureSet,
                             ExposureRoute = c.e.ExposureRoutes.First(),
                             Substance = c.e.Substance,
                             AgeMin = c.a.AgeMin,

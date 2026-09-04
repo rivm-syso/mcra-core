@@ -5,6 +5,7 @@ using MCRA.Utils.Statistics;
 namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
 
     public class ConsumerProductExposureDistribution {
+        public string ExposureSetCode { get; set; }
         public ExposureRoute ExposureRoute { get; set; }
         public Compound Substance { get; set; }
         public double? AgeMin { get; set; }

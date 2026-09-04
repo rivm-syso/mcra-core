@@ -5,11 +5,12 @@ namespace MCRA.Simulation.OutputGeneration {
     public sealed class ConsumerProductExposureSetSummarySection : SummarySection {
 
         public List<ConsumerProductExposureSetRecord> Records { get; set; }
+        public List<PercentileRecord> PercentileRecords { get; set; }
 
         public void Summarize(
             ICollection<ConsumerProductExposureAssessment> exposureAssessments
         ) {
-            Records = exposureAssessments
+            Records = [.. exposureAssessments
                 .SelectMany(c => c.ExposureSets, (cpA, cpS) => (cpA, cpS))
                 .Select(c => {
                     var allZeros = c.cpS.ExposurePercentiles.All(c => c.Value == 0);
@@ -33,8 +34,21 @@ namespace MCRA.Simulation.OutputGeneration {
                         PercentageOfZeros = c.cpS.PercentageZeros ?? 0,
                         Unit = c.cpS.ConsumerProductExposureEstimateUnit.GetShortDisplayName(),
                     };
-                })
-                .ToList();
+                })];
+
+            PercentileRecords = [.. exposureAssessments
+                .SelectMany(c => c.ExposureSets, (cpA, cpS) => (cpA, cpS))
+                .Where(c => !c.cpS.ExposurePercentiles.All(p => p.Value == 0))
+                .Select(c => {
+                    return new PercentileRecord() {
+                        AssessmentName = c.cpA.IdAssessment,
+                        ExposureSetCode = c.cpS.IdExposureSet,
+                        SubstanceName = c.cpS.Substance.Name,
+                        Route = string.Join(", ",   c.cpS.ExposureRoutes.Select(r => r.GetShortDisplayName())),
+                        Unit = c.cpS.ConsumerProductExposureEstimateUnit.GetShortDisplayName(),
+                        Percentiles = [.. c.cpS.ExposurePercentiles.Select(c => (c.Value, c.Percentage))],
+                    };
+                })];
         }
     }
 }

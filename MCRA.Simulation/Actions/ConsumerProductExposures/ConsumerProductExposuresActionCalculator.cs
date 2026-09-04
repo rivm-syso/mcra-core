@@ -104,6 +104,7 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
                 );
 
                 result.ConsumerProductIndividualExposures = consumerProductIndividualDayIntakes;
+                result.ConsumerProductExposureDistributionModels = models;
             } else {
                 // Create individual days
                 localProgress.Update("Generating individual days", 30);

@@ -8,5 +8,6 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
         public ExposureUnitTriple ConsumerProductExposureUnit { get; set; }
         public ICollection<ConsumerProductIndividualExposure> ConsumerProductIndividualExposures { get; set; }
         public IUncertaintyFactorialResult FactorialResult { get; set; }
+        public List<ConsumerProductExposureDistribution> ConsumerProductExposureDistributionModels { get; set; }
     }
 }

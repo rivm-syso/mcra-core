@@ -8,7 +8,8 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
     public enum ConsumerProductExposuresSections {
         ConsumerProductExposuresByRouteSubstanceSection,
         ConsumerProductExposuresByRouteSection,
-        ConsumerProductExposuresByProductSection
+        ConsumerProductExposuresByProductSection,
+        ConsumerProductExposuresDistributionSection,
     }
 
     public sealed class ConsumerProductExposuresSummarizer(ConsumerProductExposuresModuleConfig config)
@@ -62,6 +63,17 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
             // Exposures by consumer products: contributions, summary and boxplot
             if (outputSettings.ShouldSummarize(ConsumerProductExposuresSections.ConsumerProductExposuresByProductSection)) {
                 summarizeConsumerProducts(
+                    actionResult,
+                    data,
+                    subHeader,
+                    order++
+                );
+            }
+
+            // Summarize distributions
+            if (outputSettings.ShouldSummarize(ConsumerProductExposuresSections.ConsumerProductExposuresDistributionSection)
+                 && _configuration.ConsumerProductExposureCalculationMethod == ConsumerProductExposureCalculationMethod.FromExposureEstimates) {
+                summarizeConsumerProductsDistributions(
                     actionResult,
                     data,
                     subHeader,
@@ -233,6 +245,27 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
                 _configuration.UncertaintyLowerBound,
                 _configuration.UncertaintyUpperBound,
                 _configuration.IsPerPerson
+            );
+            subHeader.SaveSummarySection(section);
+        }
+
+        private void summarizeConsumerProductsDistributions(
+            ConsumerProductExposuresActionResult actionResult,
+            ActionData data,
+            SectionHeader header,
+            int order
+        ) {
+            var section = new ConsumerProductExposureDistributionSection() {
+                SectionLabel = getSectionLabel(ConsumerProductExposuresSections.ConsumerProductExposuresDistributionSection)
+            };
+            var subHeader = header.AddSubSectionHeaderFor(
+            section,
+                "Consumer product distributions",
+                order
+            );
+            section.Summarize(
+                actionResult.ConsumerProductExposureDistributionModels,
+                data.ConsumerProductExposureAssessments
             );
             subHeader.SaveSummarySection(section);
         }

@@ -1,5 +1,8 @@
-﻿using MCRA.Simulation.OutputGeneration.Helpers;
-using System.Text;
+﻿using System.Text;
+using DocumentFormat.OpenXml.Wordprocessing;
+using MCRA.Simulation.OutputGeneration.Helpers;
+using MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders;
+using Microsoft.AspNetCore.Html;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class ConsumerProductExposureSetSummarySectionView : SectionView<ConsumerProductExposureSetSummarySection> {
@@ -9,19 +12,28 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add(nameof(ConsumerProductExposureSetRecord.Minimum));
                 hiddenProperties.Add(nameof(ConsumerProductExposureSetRecord.Maximum));
             }
+            var panelBuilder = new HtmlTabPanelBuilder();
+            foreach (var record in Model.PercentileRecords) {
+                var panelSb = new StringBuilder();
+                var chartCreator = new ConsumerProductPercentilesDataChartCreator(Model.SectionId, record, record.Unit);
+                panelSb.AppendChart(
+                     $"{record.ExposureSetCode}DistributionChart",
+                     chartCreator,
+                     ChartFileType.Svg,
+                     Model,
+                     ViewBag,
+                     $"{record.ExposureSetCode}: {record.SubstanceName}, {record.Route}",
+                     true
+                 );
 
-            //Render HTML
-            sb.AppendTable(
-               Model,
-               Model.Records,
-               "ConsumerProductExposureSetTable",
-               ViewBag,
-               caption: "Consumer product exposure set summary.",
-               saveCsv: true,
-               header: true,
-               displayLimit: 20,
-               hiddenProperties: hiddenProperties
-            );
+                panelBuilder.AddPanel(
+                     id: $"Panel_{record.ExposureSetCode}",
+                     title: record.ExposureSetCode,
+                     hoverText: record.ExposureSetCode,
+                     content: new HtmlString(panelSb.ToString())
+                 );
+            }
+            panelBuilder.RenderPanel(sb, collapseSingleTab: true);
         }
     }
 }
