@@ -9,14 +9,14 @@ namespace MCRA.Simulation.Calculators.IndividualsSubsetCalculation {
             ICollection<Individual> allIndividuals,
             IDictionary<string, IndividualProperty> allIndividualProperties,
             Population selectedPopulation,
-            string surveyCode,
+            List<string> surveyCodes,
             IndividualSubsetType matchIndividualSubsetWithPopulation,
             List<string> selectedSurveySubsetProperties,
             bool useSamplingWeights
         ) {
             // Get individuals
             var availableIndividuals = allIndividuals
-                .Where(r => r.CodeFoodSurvey.Equals(surveyCode, StringComparison.OrdinalIgnoreCase))
+                .Where(r => surveyCodes.Contains(r.CodeFoodSurvey, StringComparer.OrdinalIgnoreCase))
                 .ToList();
 
             // Create individual (subset) filters

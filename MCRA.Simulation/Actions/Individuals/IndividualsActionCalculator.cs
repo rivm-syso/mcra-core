@@ -57,7 +57,7 @@ namespace MCRA.Simulation.Actions.Individuals {
                 subsetManager.AllIndividualSetIndividuals,
                 subsetManager.AllIndividualSetIndividualProperties,
                 data.SelectedPopulation,
-                individualSet.Code,
+                [individualSet.Code],
                 IndividualSubsetType.IgnorePopulationDefinition,
                 null,
                 false

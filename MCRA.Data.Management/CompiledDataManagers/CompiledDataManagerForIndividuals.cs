@@ -34,7 +34,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                 if (valid) {
                                     var collection = getOrAddIndividualCollection(collectionCode, "");
                                     var idIndividual = r.GetString(RawIndividuals.IdIndividual, fieldMap);
-                                    var collectionNumberOfDays = collectionNumberOfDaysInSurveys != null && 
+                                    var collectionNumberOfDays = collectionNumberOfDaysInSurveys != null &&
                                         collectionNumberOfDaysInSurveys.TryGetValue(collectionCode, out int defDays)
                                         ? defDays
                                         : 1;
@@ -42,12 +42,15 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         Code = idIndividual,
                                         BodyWeight = r.GetDoubleOrNull(RawIndividuals.BodyWeight, fieldMap) ?? double.NaN,
                                         SamplingWeight = r.GetDoubleOrNull(RawIndividuals.SamplingWeight, fieldMap) ?? 1D,
-                                        NumberOfDaysInSurvey = r.GetIntOrNull(RawIndividuals.NumberOfSurveyDays, fieldMap) 
+                                        NumberOfDaysInSurvey = r.GetIntOrNull(RawIndividuals.NumberOfSurveyDays, fieldMap)
                                             ?? collectionNumberOfDays,
                                         CodeFoodSurvey = collectionCode,
                                     };
-                                    allIndividuals.Add(individual.Code, individual);
-                                    collection.Individuals.Add(individual);
+
+                                    if (!allIndividuals.TryGetValue(individual.Code, out _)) {
+                                        allIndividuals.Add(individual.Code, individual);
+                                        collection.Individuals.Add(individual);
+                                    }
                                 }
                             }
                         }

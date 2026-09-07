@@ -89,7 +89,7 @@ namespace MCRA.Simulation.Actions.Consumptions {
                 subsetManager.AllIndividuals.Values,
                 subsetManager.AllIndividualProperties,
                 data.SelectedPopulation,
-                selectedFoodSurvey.Code,
+                [selectedFoodSurvey.Code],
                 ModuleConfig.MatchIndividualSubsetWithPopulation,
                 ModuleConfig.SelectedFoodSurveySubsetProperties,
                 !ModuleConfig.IsDefaultSamplingWeight

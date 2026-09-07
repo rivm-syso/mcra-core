@@ -83,7 +83,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
                 subsetManager.AllHumanMonitoringIndividuals,
                 subsetManager.AllHumanMonitoringIndividualProperties,
                 data.SelectedPopulation,
-                survey.Code,
+                [survey.Code],
                 ModuleConfig.MatchHbmIndividualSubsetWithPopulation,
                 ModuleConfig.SelectedHbmSurveySubsetProperties,
                 ModuleConfig.UseHbmSamplingWeights

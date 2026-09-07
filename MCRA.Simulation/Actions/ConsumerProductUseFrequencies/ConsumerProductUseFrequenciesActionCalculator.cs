@@ -42,7 +42,7 @@ namespace MCRA.Simulation.Actions.ConsumerProductUseFrequencies {
                 subsetManager.AllConsumerProductIndividuals,
                 subsetManager.AllConsumerProductIndividualProperties,
                 data.SelectedPopulation,
-                data.ConsumerProductSurveys.First().Code,
+                [.. data.ConsumerProductSurveys.Select(c => c.Code)],
                 ModuleConfig.MatchCPIndividualSubsetWithPopulation,
                 ModuleConfig.SelectedCPSurveySubsetProperties,
                 true

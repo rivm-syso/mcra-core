@@ -56,6 +56,9 @@ namespace MCRA.Data.Compiled.Objects {
         });
 
         public void SetPropertyValue(IndividualPropertyValue value) {
+            if (_individualPropertyValues.Contains(value)) {
+                return;
+            }
             _individualPropertyValues.Add(value);
             var property = value.IndividualProperty;
             if (property.IsAgeProperty) {
