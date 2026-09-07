@@ -6,6 +6,7 @@
   <ActionType>Concentrations</ActionType>
   <TableGroup>Concentrations</TableGroup>
   <IsAdvancedActionType>true</IsAdvancedActionType>
+  <AllowMultipleDataSources>true</AllowMultipleDataSources>
   <Description>
     Food concentrations data are analytical measurements of chemical substances occurring in food samples.
     In their simplest form, food concentration data can just be used as provided by datasets.

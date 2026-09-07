@@ -129,20 +129,22 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                             var valid = CheckLinkSelected(ScopingType.Foods, idFood);
                             if (valid) {
                                 var food = getOrAddFood(idFood);
-                                foodSamples.Add(
-                                    r.GetString(RawFoodSamples.IdFoodSample, fieldMap),
-                                    new FoodSample {
-                                        Code = idFoodSample,
-                                        Food = food,
-                                        Location = r.GetStringOrNull(RawFoodSamples.Location, fieldMap),
-                                        Region = r.GetStringOrNull(RawFoodSamples.Region, fieldMap),
-                                        DateSampling = r.GetDateTimeOrNull(RawFoodSamples.DateSampling, fieldMap),
-                                        ProductionMethod = r.GetStringOrNull(RawFoodSamples.ProductionMethod, fieldMap),
-                                        Name = r.GetStringOrNull(RawFoodSamples.Name, fieldMap),
-                                        Description = r.GetStringOrNull(RawFoodSamples.Description, fieldMap),
-                                        SampleAnalyses = [],
-                                    }
-                                );
+                                if (!foodSamples.TryGetValue(idFoodSample, out var _)) {
+                                    foodSamples.Add(
+                                        idFoodSample,
+                                        new FoodSample {
+                                            Code = idFoodSample,
+                                            Food = food,
+                                            Location = r.GetStringOrNull(RawFoodSamples.Location, fieldMap),
+                                            Region = r.GetStringOrNull(RawFoodSamples.Region, fieldMap),
+                                            DateSampling = r.GetDateTimeOrNull(RawFoodSamples.DateSampling, fieldMap),
+                                            ProductionMethod = r.GetStringOrNull(RawFoodSamples.ProductionMethod, fieldMap),
+                                            Name = r.GetStringOrNull(RawFoodSamples.Name, fieldMap),
+                                            Description = r.GetStringOrNull(RawFoodSamples.Description, fieldMap),
+                                            SampleAnalyses = [],
+                                        }
+                                    );
+                                }
                             }
                         }
                     }
@@ -194,16 +196,11 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                     Description = r.GetStringOrNull(RawAnalysisSamples.Description, fieldMap),
                                 };
 
-                                if (sampleAnalyses.ContainsKey(sampleAnalysis.Code)) {
-                                    var msg = $"Duplicate key '{sampleAnalysis.Code}' found in the table 'AnalysisSamples', " +
-                                               "the 'idAnalysisSample' column should contain unique values. " +
-                                               "Please correct the table in the original data file and upload it again.";
-                                    throw new Exception(msg);
+                                if (!sampleAnalyses.TryGetValue(sampleAnalysis.Code, out _)) {
+                                    sampleAnalyses.Add(sampleAnalysis.Code, sampleAnalysis);
                                 }
-
-                                sampleAnalyses.Add(sampleAnalysis.Code, sampleAnalysis);
                                 foodSample.SampleAnalyses.Add(sampleAnalysis);
-                                if (!amSampleCounts.ContainsKey(analyticalMethod.Code)) {
+                                if (!amSampleCounts.TryGetValue(analyticalMethod.Code, out _)) {
                                     amSampleCounts[analyticalMethod.Code] = 1;
                                 } else {
                                     amSampleCounts[analyticalMethod.Code]++;
@@ -277,7 +274,9 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                     Description = r.GetStringOrNull(RawAnalyticalMethods.Description, fieldMap),
                                     Name = r.GetStringOrNull(RawAnalyticalMethods.Name, fieldMap)
                                 };
-                                analyticalMethods.Add(am.Code, am);
+                                if (!analyticalMethods.TryGetValue(am.Code, out _)) {
+                                    analyticalMethods[am.Code] = am;
+                                }
                             }
                         }
                     }
