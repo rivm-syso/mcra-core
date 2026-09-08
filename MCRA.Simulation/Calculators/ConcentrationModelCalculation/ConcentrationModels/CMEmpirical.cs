@@ -67,14 +67,24 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
                     var resType = Residues.CensoredValuesCollection[iLor].ResType;
                     if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByLOR) {
                         return Residues.CensoredValues[iLor] * FractionOfLor;
-                    } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByLODLOQSystem && resType == ResType.LOD) {
-                        return Residues.CensoredValuesCollection[iLor].LOD * FractionOfLor;
-                    } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByLODLOQSystem && resType == ResType.LOQ) {
-                        return Residues.CensoredValuesCollection[iLor].LOD + FractionOfLor * (Residues.CensoredValuesCollection[iLor].LOQ - Residues.CensoredValuesCollection[iLor].LOD);
-                    } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZeroLOQSystem && resType == ResType.LOD) {
-                        return 0;
-                    } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZeroLOQSystem && resType == ResType.LOQ) {
-                        return FractionOfLor * Residues.CensoredValuesCollection[iLor].LOQ;
+                    } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByLODLOQSystem) {
+                        var loq = !double.IsNaN(Residues.CensoredValuesCollection[iLor].LOQ)
+                            ? Residues.CensoredValuesCollection[iLor].LOQ : Residues.CensoredValuesCollection[iLor].LOD;
+                        var lod = !double.IsNaN(Residues.CensoredValuesCollection[iLor].LOD)
+                            ? Residues.CensoredValuesCollection[iLor].LOD : loq;
+                        if (resType == ResType.LOD) {
+                            return lod * FractionOfLor;
+                        } else if (resType == ResType.LOQ) {
+                            return lod + FractionOfLor * (loq - lod);
+                        }
+                    } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZeroLOQSystem) {
+                        if (resType == ResType.LOD) {
+                            return 0;
+                        } else if (resType == ResType.LOQ) {
+                            var loq = !double.IsNaN(Residues.CensoredValuesCollection[iLor].LOQ)
+                                ? Residues.CensoredValuesCollection[iLor].LOQ : Residues.CensoredValuesCollection[iLor].LOD;
+                            return FractionOfLor * loq;
+                        }
                     }
                 }
             }
