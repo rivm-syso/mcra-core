@@ -14,6 +14,7 @@ namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
 
         public LogNormalDistribution Distribution { get; set; }
         public double FractionZeros { get; set; }
+        public double AbsorptionFactor { get; set; }
         public ConsumerProductExposureEstimateUnit Unit { get; set; }
 
         public double Draw(IRandom random) {

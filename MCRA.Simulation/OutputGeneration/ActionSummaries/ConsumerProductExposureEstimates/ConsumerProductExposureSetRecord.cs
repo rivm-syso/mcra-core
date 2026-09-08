@@ -49,6 +49,11 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:0}")]
         public double PercentageOfZeros { get; set; }
 
+        [Description("Absorption factor, default = 1.")]
+        [DisplayName("Absorption factor")]
+        [DisplayFormat(DataFormatString = "{0:G3}")]
+        public double AbsorptionFactor { get; set; }
+
         [Description("Unit of measurement.")]
         [DisplayName("Unit")]
         public string Unit { get; set; }

@@ -32,6 +32,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         Products = string.Join(", ", c.cpS.Products.Select(p => p.Name)),
                         Routes = string.Join(", ",   c.cpS.ExposureRoutes.Select(r => r.GetShortDisplayName())),
                         PercentageOfZeros = c.cpS.PercentageZeros ?? 0,
+                        AbsorptionFactor = c.cpS.AbsorptionFactor ?? 1,
                         Unit = c.cpS.ConsumerProductExposureEstimateUnit.GetShortDisplayName(),
                     };
                 })];

@@ -58,6 +58,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             EstimateType = r.GetEnum(RawConsumerProductExposureSets.EstimateType, fieldMap, defaultValue: ConsumerProductExposureEstimateType.Systemic),
                                             ExposureRoutes = exposureRoutes,
                                             Products = consumerProducts,
+                                            AbsorptionFactor = r.GetDoubleOrNull(RawConsumerProductExposureSets.AbsorptionFactor, fieldMap) ?? 1,
                                             PercentageZeros = r.GetDoubleOrNull(RawConsumerProductExposureSets.PercentageZeros, fieldMap),
                                             ConsumerProductExposureEstimateUnit = r.GetEnum(RawConsumerProductExposureSets.Unit, fieldMap, defaultValue: ConsumerProductExposureEstimateUnit.mgPerKgBWPerDay)
                                         };

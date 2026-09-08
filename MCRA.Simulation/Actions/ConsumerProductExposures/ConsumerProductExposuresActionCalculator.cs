@@ -82,8 +82,8 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
                 : ExposureUnitTriple.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
 
             if (ModuleConfig.ConsumerProductExposureCalculationMethod == ConsumerProductExposureCalculationMethod.FromExposureEstimates) {
-                var exposureDsitributionCalculator = new ConsumerProductExposureDistributionCalculator();
-                var models = exposureDsitributionCalculator.Compute([.. data.ConsumerProductExposureAssessments.Values]);
+                var exposureDistributionCalculator = new ConsumerProductExposureDistributionCalculator();
+                var models = exposureDistributionCalculator.Compute([.. data.ConsumerProductExposureAssessments.Values]);
 
                 var simulatedIndividuals = data.Individuals
                     .Select(r => r.SimulatedIndividual)

@@ -9,13 +9,13 @@ namespace MCRA.Simulation.OutputGeneration {
         [Display(AutoGenerateField = false)]
         public List<(double x, double y)> FittedValues { get; set; }
 
-        [Description("Mu")]
+        [Description("Mu on logscale")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
-        [Display(Name = "Mu", Order = 2)]
+        [Display(Name = "logMu", Order = 2)]
         public double Mu { get => Distribution.Mu; }
-        [Description("Sigma")]
+        [Description("Sigma on logscale")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
-        [Display(Name = "Sigma", Order = 3)]
+        [Display(Name = "logSigma", Order = 3)]
         public double Sigma { get => Distribution.Sigma; }
     }
 }

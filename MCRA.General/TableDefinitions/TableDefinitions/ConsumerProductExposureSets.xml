@@ -79,6 +79,14 @@
         <string>PercentageZeroes</string>
       </Aliases>
     </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="Numeric">
+      <Id>AbsorptionFactor</Id>
+      <Description>Absorption factor, default = 1.</Description>
+      <Aliases>
+        <string>AbsorptionFactor</string>
+        <string>Factor</string>
+      </Aliases>
+    </ColumnDefinition>
     <ColumnDefinition FieldType="ConsumerProductExposureEstimateUnit">
       <Id>Unit</Id>
       <Description>

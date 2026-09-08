@@ -15,6 +15,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .SelectMany(c => c.ExposureSets, (cpA, cpS) => (cpA, cpS))
                 .Where(c => !c.cpS.ExposurePercentiles.All(p => p.Value == 0))
                 .Select(c => {
+                    var absorptionFactor = c.cpS.AbsorptionFactor.Value;
                     var set = distributions?.FirstOrDefault(d => d.ExposureSetCode == c.cpS.IdExposureSet);
                     var fittedValues = getFittedValues(c, set);
                     return new ParameterRecord() {
@@ -25,7 +26,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         SubstanceName = c.cpS.Substance.Name,
                         Route = string.Join(", ",   c.cpS.ExposureRoutes.Select(r => r.GetShortDisplayName())),
                         Unit = c.cpS.ConsumerProductExposureEstimateUnit.GetShortDisplayName(),
-                        Percentiles = [.. c.cpS.ExposurePercentiles.Select(c => (c.Value, c.Percentage))],
+                        Percentiles = [.. c.cpS.ExposurePercentiles.Select(c => (c.Value / absorptionFactor, c.Percentage))],
                     };
                 })];
         }
@@ -35,7 +36,8 @@ namespace MCRA.Simulation.OutputGeneration {
             ConsumerProductExposureDistribution set
         ) {
             var steps = 100;
-            var exposures = c.cpS.ExposurePercentiles.Select(c => c.Value).ToList();
+            var absorptionFactor = c.cpS.AbsorptionFactor.Value;
+            var exposures = c.cpS.ExposurePercentiles.Select(c => c.Value / absorptionFactor).ToList();
             var min = exposures.Min();
             var max = exposures.Max();
             var logStart = Math.Log(min);

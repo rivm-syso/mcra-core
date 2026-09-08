@@ -9,6 +9,7 @@ namespace MCRA.Data.Compiled.Objects {
         public ConsumerProductExposureEstimateType EstimateType { get; set; }
         public List<ExposureRoute> ExposureRoutes { get; set; }
         public double? PercentageZeros { get; set; }
+        public double? AbsorptionFactor { get; set; } = 1;
         public ConsumerProductExposureEstimateUnit ConsumerProductExposureEstimateUnit { get; set; }
         public List<ConsumerProductExposurePercentile> ExposurePercentiles { get; set; }
     }
