@@ -73,6 +73,8 @@ namespace MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDieta
                     var seed = randomSeed + ind.Key.Id;
                     var rnd = new McraRandomGenerator(seed);
                     var candidates = individualDaysLookup[ind.Key].ToList();
+                    var processingFactorsRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(seed, (int)RandomSource.DE_DrawProcessingFactor));
+                    var residueGeneratorRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(seed, (int)RandomSource.DE_DrawConcentration));
                     var intakes = ind
                         .Select(r => {
                             var sample = candidates[rnd.Next(candidates.Count)];
@@ -80,7 +82,8 @@ namespace MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDieta
                                 r,
                                 ind.Key.Individual,
                                 sample.Day,
-                                seed
+                                processingFactorsRandomGenerator,
+                                residueGeneratorRandomGenerator
                             );
                             var prunedIndividualDayIntake = (_individualDayIntakePruner != null)
                                 ? _individualDayIntakePruner?.Prune(individualDayIntake)
@@ -108,12 +111,9 @@ namespace MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDieta
             SimulatedIndividualDay sid,
             Individual individual,
             string day,
-            int seed
+            IRandom processingFactorsRandomGenerator,
+            IRandom residueGeneratorRandomGenerator
         ) {
-            Func<RandomSource, IRandom> spawnGenerator = x => new McraRandomGenerator(RandomUtils.CreateSeed(seed, (int)x));
-            var processingFactorsRandomGenerator = spawnGenerator(RandomSource.DE_DrawProcessingFactor);
-            var residueGeneratorRandomGenerator = spawnGenerator(RandomSource.DE_DrawConcentration);
-
             if (!_consumptionsByFoodsAsMeasured.TryGetValue((individual, day), out var consumptions)) {
                 consumptions = [];
             }
