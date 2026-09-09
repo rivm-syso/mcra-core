@@ -94,7 +94,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         $"AttributableBodTable_{key}",
                         viewBag,
                         header: true,
-                        caption: $"Attributable burden of disease {name}.",
+                        caption: $"Attributable burden of disease {name}, risk is expressed as {group.First().EffectMetric.ToLower()}.",
                         saveCsv: true,
                         sortable: true,
                         hiddenProperties: hiddenProperties

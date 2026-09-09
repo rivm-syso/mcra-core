@@ -83,7 +83,8 @@ namespace MCRA.Simulation.OutputGeneration {
                     TotalBods = [],
                     CumulativeAttributableBod = r.CumulativeAttributableBod,
                     CumulativeAttributableBods = [],
-                    StandardisedPopulationSize = r.StandardisedPopulationSize
+                    StandardisedPopulationSize = r.StandardisedPopulationSize,
+                    EffectMetric = ebdResultRecord.ExposureResponseModel.EffectMetric.GetDisplayName()
                 })
                 .ToList();
             return records;

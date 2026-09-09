@@ -4,6 +4,8 @@ using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
     public class AttributableBodSummaryRecord {
+        [Display(AutoGenerateField = false)]
+        public string EffectMetric { get; set; }
 
         [Display(AutoGenerateField = false)]
         public double PopulationSize { get; set; }
@@ -116,16 +118,16 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Unit")]
         public string TargetUnit { get; set; }
 
-        [Description("Percentile specific response value ({EffectMetric}).")]
-        [DisplayName("Percentile specific {EffectMetric}")]
+        [Description("Percentile specific risk.")]
+        [DisplayName("Percentile specific risk")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double ResponseValue { get; set; }
 
         [Display(AutoGenerateField = false)]
         public List<double> ResponseValues { get; set; }
 
-        [Description("Median percentile specific response value ({EffectMetric}).")]
-        [DisplayName("Percentile specific {EffectMetric} median")]
+        [Description("Median percentile specific risk.")]
+        [DisplayName("Percentile specific median risk")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double MedianResponseValue { get { return ResponseValues.Count != 0 ? ResponseValues.Percentile(50) : double.NaN; } }
 
