@@ -10,18 +10,32 @@ namespace MCRA.Utils.Test.UnitTests {
         /// Violin
         /// </summary>
         [TestMethod]
-        public void StackedBarChart_Test() {
+        [DataRow(25,5,70,30,20,50,"1")]
+        [DataRow(6,44,50,30,20,50,"2")]
+        [DataRow(6,44,50,3,20,77,"3")]
+        [DataRow(6,5,89,30,20,50,"4_Oth")]
+        [DataRow(6,6,88,3,20,77,"5_Oth")]
+        [DataRow(6,6,88,3,6,91,"6_Oth")]
+        public void StackedBarChart1_Test(
+            double maleOral,
+            double maleInhalation,
+            double maleDermal,
+            double femaleOral,
+            double femaleInhalation,
+            double femaleDermal,
+            string chartName
+        ) {
             var data = new List<BarDataPoint>() {
-                new ("Male", "Oral", 25),
-                new ("Male", "Inhalation", 5),
-                new ("Male", "Dermal", 70),
-                new ("Female", "Oral", 30),
-                new ("Female", "Inhalation", 20),
-                new ("Female", "Dermal", 50)
+                new ("Male", "Oral", maleOral),
+                new ("Male", "Inhalation", maleInhalation),
+                new ("Male", "Dermal", maleDermal),
+                new ("Female", "Oral", femaleOral),
+                new ("Female", "Inhalation", femaleInhalation),
+                new ("Female", "Dermal", femaleDermal)
             };
 
             var chart = new StackedBarChartCreator(data);
-            WritePng(chart, $"StackedBarChart");
+            WritePng(chart, $"StackedBarChart{chartName}");
         }
     }
 }
