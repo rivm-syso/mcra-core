@@ -77,8 +77,8 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 var name = group.First().GetGroupDisplayName();
 
                 var panelSb = new StringBuilder();
-                if (!group.All(g => g.AttributableBod == 0D)) {
-                    
+                if (!group.All(g => g.AttributableBod == 0D) || (isUncertainty && !group.All(g => g.UpperAttributableBod == 0D))) {
+
                     var populationSize = group.FirstOrDefault().PopulationSize;
                     if (!double.IsNaN(populationSize)) {
                         panelSb.AppendDescriptionParagraph($"Population size: {string.Format("{0:N0}", populationSize)}");
