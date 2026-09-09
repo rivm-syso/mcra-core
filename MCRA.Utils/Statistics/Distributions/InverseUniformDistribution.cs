@@ -51,6 +51,10 @@ namespace MCRA.Utils.Statistics {
         /// <param name="upper"></param>
         /// <returns></returns>
         public static InverseUniformDistribution FromMeanAndUpper(double mean, double upper) {
+            if (double.IsNaN(upper)) {
+                var msg = $"No upper p95 percentile for the Inverse uniform distribution is specified.";
+                throw new ArgumentException(msg);
+            }
             var a = 1D / upper;
             var b_median = 2 / mean - a;
             Func<double, double> equation =

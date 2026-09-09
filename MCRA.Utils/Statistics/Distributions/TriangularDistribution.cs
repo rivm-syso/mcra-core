@@ -45,6 +45,10 @@ namespace MCRA.Utils.Statistics {
         /// mode, lower and upper bound.
         /// </summary>
         public static TriangularDistribution FromModeLowerandUpper(double mode, double lower, double upper) {
+            if (double.IsNaN(upper) || double.IsNaN(lower) || double.IsNaN(mode)) {
+                var msg = $"One or more parameters for the triangular distribution are not specified.";
+                throw new ArgumentException(msg);
+            }
             if (upper < mode) {
                 var msg = $"Specified mode of {mode} is greater than the upper {upper}.";
                 throw new ArgumentException(msg);

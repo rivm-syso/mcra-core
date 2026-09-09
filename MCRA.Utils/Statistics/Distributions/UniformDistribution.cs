@@ -34,6 +34,10 @@
         /// mean and upper bound.
         /// </summary>
         public static UniformDistribution FromMeanAndUpper(double mean, double upper) {
+            if (double.IsNaN(upper)) {
+                var msg = $"No upper p95 percentile for the Uniform distribution is specified.";
+                throw new ArgumentException(msg);
+            }
             if (upper < mean) {
                 var msg = $"Specified mean of {mean} is greater than the upper {upper}.";
                 throw new ArgumentException(msg);
@@ -50,6 +54,10 @@
         /// median and upper bound.
         /// </summary>
         public static UniformDistribution FromMedianAndUpper(double median, double upper) {
+            if (double.IsNaN(upper)) {
+                var msg = $"No upper p95 percentile for the Uniform distribution is specified.";
+                throw new ArgumentException(msg);
+            }
             if (upper < median) {
                 var msg = $"Specified median of {median} is greater than the upper {upper}.";
                 throw new ArgumentException(msg);

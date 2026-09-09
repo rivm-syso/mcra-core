@@ -65,6 +65,10 @@ namespace MCRA.Utils.Statistics {
         /// </summary>
         public static NormalDistribution FromMeanAndUpper(double mean, double upper) {
             var mu = mean;
+            if (double.IsNaN(upper)) {
+                var msg = $"No upper p95 percentile for the normal distribution is specified.";
+                throw new ArgumentException(msg);
+            }
             if (mean > upper) {
                 var msg = $"The provided mean of {mean} is higher than the specified upper p95 percentile of {upper}.";
                 throw new ArgumentException(msg);

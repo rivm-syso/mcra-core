@@ -79,6 +79,10 @@ namespace MCRA.Utils.Statistics {
         /// and upper (p95) percentile.
         /// </summary>
         public static LogNormalDistribution FromMeanAndUpper(double mean, double upper) {
+            if (double.IsNaN(upper)) {
+                var msg = $"No upper p95 percentile for the lognormal distribution is specified.";
+                throw new ArgumentException(msg);
+            }
             var mu = UtilityFunctions.LogBound(mean);
             if (mean > upper) {
                 var msg = $"The provided mean of {mean} is higher than the specified upper p95 percentile of {upper}.";

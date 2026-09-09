@@ -58,6 +58,10 @@ namespace MCRA.Utils.Statistics {
         /// <param name="variance"></param>
         /// <returns></returns>
         public static BetaDistribution FromMeanAndVariance(double mean, double variance) {
+            if (double.IsNaN(variance)) {
+                var msg = $"No variance for the Beta distribution is specified.";
+                throw new ArgumentException(msg);
+            }
             var alpha = ((1 - mean) / variance - 1 / mean) * mean * mean;
             var beta = alpha * (1 / mean - 1);
             return new BetaDistribution(alpha, beta);
