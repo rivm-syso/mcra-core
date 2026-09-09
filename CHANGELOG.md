@@ -1,5 +1,25 @@
 # Change Log
 
+## Version 10.3.2 (2026-09-09)
+
+### Added
+
+- Add method for fitting lognormal distribution from percentile points
+- Add consumer product exposure estimates data module and use in consumer product exposure calculation module (#2481)
+- Implementation of stratified risk contributions by substance (#2487)
+- Consumer product exposure determinants: make exposure fractions age and sex specific (#2509)
+- Consumer product exposure percentiles module: add distribution plots to output (#2511)
+
+### Changed
+
+- Update SSD concentrations data format with SSD2 aliases for labSampCode and prodCode
+- Update concentrations module to allow selection of multiple datasets (e.g. food monitoring + drinking water concentrations) (#2510)
+
+### Fixed
+
+- Random concentrations in STL are computed per individual day instead of per individual
+- Imputation for missing concentration no longer gives NaN when lod missing (#2514)
+
 ## Version 10.3.1 (2026-08-14)
 
 ### Fixed
