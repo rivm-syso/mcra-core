@@ -33,10 +33,10 @@ namespace MCRA.Simulation.Actions.SoilConcentrations {
             subHeader.Units = collectUnits(data, sectionConfig);
             if (outputSettings.ShouldSummarize(SoilConcentrationsSections.ConcentrationsSection)) {
                 section.Summarize(
-                data.SoilConcentrationsCollection,
-                sectionConfig.VariabilityLowerPercentage,
-                sectionConfig.VariabilityUpperPercentage
-            );
+                    data.SoilConcentrationsCollection,
+                    sectionConfig.VariabilityLowerPercentage,
+                    sectionConfig.VariabilityUpperPercentage
+                );
                 subHeader.SaveSummarySection(section);
             }
 

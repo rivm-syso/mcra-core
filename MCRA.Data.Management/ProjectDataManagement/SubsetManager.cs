@@ -577,6 +577,7 @@ namespace MCRA.Data.Management {
         public IList<DustAdherenceAmount> AllDustAdherenceAmounts => _dataManager.GetAllDustAdherenceAmounts();
 
         public IList<DustAvailabilityFraction> AllDustAvailabilityFractions => _dataManager.GetAllDustAvailabilityFractions();
+        public IList<DustBioaccessibilityFraction> AllDustBioaccessibilityFractions => _dataManager.GetAllDustBioaccessibilityFractions();
 
         public IList<ExposureResponseFunction> AllExposureResponseFunctions => _dataManager.GetAllExposureResponseFunctions();
 
@@ -588,6 +589,7 @@ namespace MCRA.Data.Management {
 
         public IList<SoilIngestion> AllSoilIngestions => _dataManager.GetAllSoilIngestions();
 
+        public IList<SoilBioaccessibilityFraction> AllSoilBioaccessibilityFractions => _dataManager.GetAllSoilBioaccessibilityFractions();
         public IList<BurdenOfDisease> AllBurdensOfDisease => _dataManager.GetAllBurdensOfDisease();
 
         public IList<BodIndicatorConversion> AllBodIndicatorConversions => _dataManager.GetAllBodIndicatorConversions();

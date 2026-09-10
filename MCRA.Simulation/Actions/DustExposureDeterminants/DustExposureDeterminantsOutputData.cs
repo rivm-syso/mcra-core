@@ -9,6 +9,7 @@ namespace MCRA.Simulation.Actions.DustExposureDeterminants {
         public IList<DustBodyExposureFraction> DustBodyExposureFractions { get; set; }
         public IList<DustAdherenceAmount> DustAdherenceAmounts { get; set; }
         public IList<DustAvailabilityFraction> DustAvailabilityFractions { get; set; }
+        public IList<DustBioaccessibilityFraction> DustBioaccessibilityFractions { get; set; }
 
         public IModuleOutputData Copy() {
             return new DustExposureDeterminantsOutputData() {
@@ -16,7 +17,8 @@ namespace MCRA.Simulation.Actions.DustExposureDeterminants {
                 DustIngestionUnit = DustIngestionUnit,
                 DustBodyExposureFractions = DustBodyExposureFractions,
                 DustAdherenceAmounts = DustAdherenceAmounts,
-                DustAvailabilityFractions = DustAvailabilityFractions
+                DustAvailabilityFractions = DustAvailabilityFractions,
+                DustBioaccessibilityFractions = DustBioaccessibilityFractions
             };
         }
     }

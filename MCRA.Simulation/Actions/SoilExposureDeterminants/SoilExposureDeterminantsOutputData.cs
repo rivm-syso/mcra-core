@@ -6,11 +6,13 @@ namespace MCRA.Simulation.Actions.SoilExposureDeterminants {
     public class SoilExposureDeterminantsOutputData : IModuleOutputData {
         public IList<SoilIngestion> SoilIngestions { get; set; }
         public ExternalExposureUnit SoilIngestionUnit { get; set; }
+        public IList<SoilBioaccessibilityFraction> SoilBioaccessibilityFractions { get; set; }
 
         public IModuleOutputData Copy() {
             return new SoilExposureDeterminantsOutputData() {
                 SoilIngestions = SoilIngestions,
-                SoilIngestionUnit = SoilIngestionUnit
+                SoilIngestionUnit = SoilIngestionUnit,
+                SoilBioaccessibilityFractions = SoilBioaccessibilityFractions
             };
         }
     }

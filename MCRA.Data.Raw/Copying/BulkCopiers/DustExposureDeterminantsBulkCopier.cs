@@ -17,13 +17,17 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
         }
 
         public override void TryCopy(IDataSourceReader dataSourceReader, ProgressState progressState) {
-            progressState.Update("Processing DustExposureDeterminants");
+            progressState.Update("Processing Dust exposure determinants");
             var hasDustIngestions = tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.DustIngestions);
             var hasDustBodyExposureFractions = tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.DustBodyExposureFractions);
             var hasDustAdherenceAmount = tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.DustAdherenceAmounts);
             var hasDustAvailabilityFractions = tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.DustAvailabilityFractions);
-            if (hasDustIngestions && hasDustBodyExposureFractions &&
-                hasDustAdherenceAmount && hasDustAvailabilityFractions) {
+            var hasDustBioaccessibilityFractions = tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.DustBioaccessibilityFractions);
+            if (hasDustIngestions
+                && hasDustBodyExposureFractions
+                && hasDustAdherenceAmount
+                && hasDustAvailabilityFractions
+            ) {
                 registerTableGroup(SourceTableGroup.DustExposureDeterminants);
             }
             progressState.Update(100);

@@ -1,5 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.Simulation.Calculators.BioaccessibilityFractionModels;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
 using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Objects;
@@ -20,10 +21,11 @@ namespace MCRA.Simulation.Calculators.SoilExposureCalculation {
             ICollection<Compound> substances,
             IDictionary<Compound, ConcentrationModel> concentrationModels,
             ICollection<SoilIngestion> soilIngestions,
+            ICollection<SoilBioaccessibilityFraction> soilBioaccessibilityFractions,
             ConcentrationUnit soilConcentrationUnit,
             ExternalExposureUnit soilIngestionUnit,
             ExposureUnitTriple targetUnit,
-            IRandom soilExposureDeterminantsRandomGenerator
+            IRandom exposureDeterminantsRandomGenerator
         ) {
             var needsAge = soilIngestions.All(r => r.AgeLower.HasValue);
             if (needsAge && individualDays.Any(r => !r.SimulatedIndividual.Age.HasValue)) {
@@ -35,8 +37,9 @@ namespace MCRA.Simulation.Calculators.SoilExposureCalculation {
                 throw new Exception("Missing values for gender in individuals.");
             }
 
-            var ingestionsRandomGenerator = new McraRandomGenerator(soilExposureDeterminantsRandomGenerator.Next());
-            var concentrationsRandomGenerator = new McraRandomGenerator(soilExposureDeterminantsRandomGenerator.Next());
+            var ingestionsRandomGenerator = new McraRandomGenerator(exposureDeterminantsRandomGenerator.Next());
+            var concentrationsRandomGenerator = new McraRandomGenerator(exposureDeterminantsRandomGenerator.Next());
+            var bioaccessibilityRandomGenerator = new McraRandomGenerator(exposureDeterminantsRandomGenerator.Next());
 
             // Note: we use grams for expressing soil amounts;
             // - we align concentrations so that they are expressed per gram soil;
@@ -47,6 +50,10 @@ namespace MCRA.Simulation.Calculators.SoilExposureCalculation {
             var concentrationMassFactor = soilConcentrationUnit.GetConcentrationMassUnit()
                 .GetMultiplicationFactor(ConcentrationMassUnit.Grams);
             var concentrationAlignmentFactor = concentrationAmountFactor * concentrationMassFactor;
+
+            // Create bioaccessibility models
+            var bioaccessibilityModels = BioaccessibilityFractionModelBuilder
+                .Create(substances, soilBioaccessibilityFractions);
 
             var result = new List<SoilIndividualExposure>();
             foreach (var individualDay in individualDays) {
@@ -66,6 +73,8 @@ namespace MCRA.Simulation.Calculators.SoilExposureCalculation {
                     substances,
                     individualSoilIngestion,
                     concentrationModels,
+                    bioaccessibilityModels,
+                    bioaccessibilityRandomGenerator.Next(),
                     concentrationsRandomGenerator.Next()
                 );
                 exposuresPerPath[new(ExposureSource.Soil, ExposureRoute.Oral)] = soilExposurePerSubstance;
@@ -80,17 +89,23 @@ namespace MCRA.Simulation.Calculators.SoilExposureCalculation {
             ICollection<Compound> substances,
             double individualSoilIngestion,
             IDictionary<Compound, ConcentrationModel> concentrationModels,
-            int seed
+            IDictionary<Compound, IBioaccessibilityFractionModel> bioaccessibilityModels,
+            int bioaccessibilitySeed,
+            int concentrationSeed
         ) {
             var result = new List<IIntakePerCompound>();
             foreach (var substance in substances) {
-                var random = new McraRandomGenerator(RandomUtils.CreateSeed(seed, substance.GetHashCode()));
+                var concentrationRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(concentrationSeed, substance.GetHashCode()));
+                var bioaccessibilityRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(bioaccessibilitySeed, substance.GetHashCode()));
                 if (concentrationModels.TryGetValue(substance, out var concentrationModel)) {
                     var individualSoilConcentration = concentrationModel
-                        .DrawFromDistribution(random, NonDetectsHandlingMethod.ReplaceByZero);
+                        .DrawFromDistribution(concentrationRandomGenerator, NonDetectsHandlingMethod.ReplaceByZero);
+                    var bioaccessibilityFraction = bioaccessibilityModels.TryGetValue(substance, out var bioaccessibityModel)
+                       ? bioaccessibityModel.Draw(bioaccessibilityRandomGenerator)
+                       : 1d;
                     var exposure = new ExposurePerSubstance {
                         Compound = substance,
-                        Amount = individualSoilIngestion * individualSoilConcentration
+                        Amount = individualSoilIngestion * individualSoilConcentration * bioaccessibilityFraction
                     };
                     result.Add(exposure);
                 }

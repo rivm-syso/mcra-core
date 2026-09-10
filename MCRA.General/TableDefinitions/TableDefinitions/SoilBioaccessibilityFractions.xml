@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>SoilBioaccessibilityFractions</Id>
+  <Name>Soil bioaccessibility fractions</Name>
+  <Description>
+    Bioaccessibility fractions of substances in soil available for or ingestion,
+    i.e., the fraction of a substance that is extracted from soil particles by saliva and digestive fluids
+    in the gastro-intestinal tract. Between 0 and 1, where 1 means that the substance is fully bioaccessible.
+  </Description>
+  <Aliases>
+    <string>SoilBioaccessibilityFractions</string>
+    <string>SoilBioaccessibilityFraction</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawSoilBioaccessibilityFractions</string>
+  </HiddenAliases>
+  <TargetDataTable>RawSoilBioaccessibilityFractions</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idSubstance</Id>
+      <Description>The code of the substance.</Description>
+      <Aliases>
+        <string>idSubstance</string>
+        <string>SubstanceId</string>
+        <string>SubstanceCode</string>
+        <string>Substance</string>
+      </Aliases>
+      <PreferredAlias>SubstanceCode</PreferredAlias>
+      <ForeignKeyTables>
+        <string>Compounds</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>Value</Id>
+      <Description>Bioaccessibility fraction.</Description>
+      <Aliases>
+        <string>Value</string>
+        <string>Fraction</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="BioaccessibilityFractionDistributionType">
+      <Id>DistributionType</Id>
+      <Description>
+        Distribution type (Uniform, or LogNormal).
+        If not specified, the soil bioaccessibility fraction is assumed to be constant.
+      </Description>
+      <Aliases>
+        <string>DistributionType</string>
+        <string>Distribution</string>
+      </Aliases>
+      <PossibleValues>
+        <PossibleValue>Uniform</PossibleValue>
+        <PossibleValue>LogNormal</PossibleValue>
+      </PossibleValues>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric">
+      <Id>CvVariability</Id>
+      <Description>Coefficient of variation.</Description>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

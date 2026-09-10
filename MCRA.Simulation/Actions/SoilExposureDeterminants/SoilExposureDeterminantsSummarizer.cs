@@ -6,7 +6,8 @@ using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.Actions.SoilExposureDeterminants {
     public enum SoilExposureDeterminantsSections {
-        SoilIngestionsDataSection
+        SoilIngestionsDataSection,
+        SoilBioaccessibilityFractionsDataSection
     }
 
     public class SoilExposureDeterminantsSummarizer : ActionResultsSummarizerBase<ISoilExposureDeterminantsActionResult> {
@@ -22,8 +23,12 @@ namespace MCRA.Simulation.Actions.SoilExposureDeterminants {
             var subOrder = 0;
 
             // Summarize soil ingestion data.
-            if (data.SoilIngestions != null) {
+            if ( data.SoilIngestions != null && outputSettings.ShouldSummarize(SoilExposureDeterminantsSections.SoilIngestionsDataSection)) {
                 summarizeSoilIngestions(data, subHeader, subOrder++);
+            }
+
+            if (data.SoilBioaccessibilityFractions != null && outputSettings.ShouldSummarize(SoilExposureDeterminantsSections.SoilBioaccessibilityFractionsDataSection)) {
+                summarizeSoilBioaccessibilityFractions(data, subHeader, subOrder++);
             }
         }
 
@@ -32,10 +37,27 @@ namespace MCRA.Simulation.Actions.SoilExposureDeterminants {
             SectionHeader header,
             int order
         ) {
-            var section = new SoilIngestionsDataSection();
+            var section = new SoilIngestionsDataSection() {
+                SectionLabel = getSectionLabel(SoilExposureDeterminantsSections.SoilIngestionsDataSection)
+            };
             var subHeader = header.AddSubSectionHeaderFor(section, "Soil ingestions", order);
             section.Summarize(
                 data.SoilIngestions
+            );
+            subHeader.SaveSummarySection(section);
+        }
+
+        private void summarizeSoilBioaccessibilityFractions(
+            ActionData data,
+            SectionHeader header,
+            int order
+        ) {
+            var section = new SoilBioaccessibilityFractionsDataSection() {
+                SectionLabel = getSectionLabel(SoilExposureDeterminantsSections.SoilBioaccessibilityFractionsDataSection)
+            };
+            var subHeader = header.AddSubSectionHeaderFor(section, "Soil bioaccessibility fractions", order);
+            section.Summarize(
+                data.SoilBioaccessibilityFractions
             );
             subHeader.SaveSummarySection(section);
         }

@@ -19,5 +19,8 @@
     <DataGroupTable>
       <Id>DustAvailabilityFractions</Id>
     </DataGroupTable>
+    <DataGroupTable>
+      <Id>DustBioaccessibilityFractions</Id>
+    </DataGroupTable>
   </DataGroupTables>
 </DataGroupDefinition>

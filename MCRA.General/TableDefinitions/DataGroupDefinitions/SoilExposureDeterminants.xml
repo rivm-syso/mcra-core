@@ -10,5 +10,8 @@
     <DataGroupTable>
       <Id>SoilIngestions</Id>
     </DataGroupTable>
+    <DataGroupTable>
+      <Id>SoilBioaccessibilityFractions</Id>
+    </DataGroupTable>
   </DataGroupTables>
 </DataGroupDefinition>

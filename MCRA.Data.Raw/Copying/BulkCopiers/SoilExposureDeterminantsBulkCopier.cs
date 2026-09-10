@@ -17,8 +17,9 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
         }
 
         public override void TryCopy(IDataSourceReader dataSourceReader, ProgressState progressState) {
-            progressState.Update("Processing SoilExposureDeterminants");
+            progressState.Update("Processing Soil exposure determinants");
             var hasSoilIngestions = tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.SoilIngestions);
+            var hasSoilBioaccessibilityFractions = tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.SoilBioaccessibilityFractions);
             if (hasSoilIngestions) {
                 registerTableGroup(SourceTableGroup.SoilExposureDeterminants);
             }

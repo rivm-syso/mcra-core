@@ -1,10 +1,12 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.Simulation.Calculators.BioaccessibilityFractionModels;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
 using MCRA.Simulation.Calculators.DietaryExposureCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Objects;
 using MCRA.Simulation.Objects.IndividualExposures;
 using MCRA.Utils.Statistics;
+using MCRA.Utils.Statistics.RandomGenerators;
 
 namespace MCRA.Simulation.Calculators.DustExposureCalculation {
     public class DustExposureCalculator {
@@ -23,11 +25,12 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
             ICollection<DustAdherenceAmount> dustAdherenceAmounts,
             ICollection<DustAvailabilityFraction> dustAvailabilityFractions,
             ICollection<DustBodyExposureFraction> dustBodyExposureFractions,
+            ICollection<DustBioaccessibilityFraction> bioaccessibilityFractions,
             ConcentrationUnit dustConcentrationUnit,
             ExternalExposureUnit dustIngestionUnit,
             double timeDustExposure,
             ExposureUnitTriple targetUnit,
-            IRandom dustExposureDeterminantsRandomGenerator
+            IRandom exposureDeterminantsRandomGenerator
         ) {
             var needsAge = dustIngestions.All(r => r.AgeLower.HasValue)
                 || dustAdherenceAmounts.All(r => r.AgeLower.HasValue)
@@ -48,30 +51,35 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
                 throw new Exception("Missing values for body surface area (BSA) in individuals.");
             }
 
-            var dustAvailabilityRandomGenerator = new McraRandomGenerator(dustExposureDeterminantsRandomGenerator.Next());
-            var dustIngestionsRandomGenerator = new McraRandomGenerator(dustExposureDeterminantsRandomGenerator.Next());
-            var dustAdherenceAmountsRandomGenerator = new McraRandomGenerator(dustExposureDeterminantsRandomGenerator.Next());
-            var dustExposureFractionsRandomGenerator = new McraRandomGenerator(dustExposureDeterminantsRandomGenerator.Next());
-            var dustConcentrationsRandomGenerator = new McraRandomGenerator(dustExposureDeterminantsRandomGenerator.Next());
+            var availabilityRandomGenerator = new McraRandomGenerator(exposureDeterminantsRandomGenerator.Next());
+            var ingestionsRandomGenerator = new McraRandomGenerator(exposureDeterminantsRandomGenerator.Next());
+            var adherenceAmountsRandomGenerator = new McraRandomGenerator(exposureDeterminantsRandomGenerator.Next());
+            var exposureFractionsRandomGenerator = new McraRandomGenerator(exposureDeterminantsRandomGenerator.Next());
+            var concentrationsRandomGenerator = new McraRandomGenerator(exposureDeterminantsRandomGenerator.Next());
+            var bioaccessibilityRandomGenerator = new McraRandomGenerator(exposureDeterminantsRandomGenerator.Next());
 
             // Note: we use grams for expressing dust amounts;
             // - we align concentrations so that they are expressed per gram dust;
             // - we align dust ingestions so that these are expressed as gram dust per day;
             // - we align dermal contact so that it is expressed as gram dust per surface area per day.
-            var dustConcentrationAmountFactor = dustConcentrationUnit.GetSubstanceAmountUnit()
+            var concentrationAmountFactor = dustConcentrationUnit.GetSubstanceAmountUnit()
                 .GetMultiplicationFactor(targetUnit.SubstanceAmountUnit);
-            var dustConcentrationMassFactor = dustConcentrationUnit.GetConcentrationMassUnit()
+            var concentrationMassFactor = dustConcentrationUnit.GetConcentrationMassUnit()
                 .GetMultiplicationFactor(ConcentrationMassUnit.Grams);
-            var concentrationAlignmentFactor = dustConcentrationAmountFactor * dustConcentrationMassFactor;
+            var concentrationAlignmentFactor = concentrationAmountFactor * concentrationMassFactor;
 
             // Compute availability fractions for ingestion exposure
             var substanceDustAvailabilityFraction = routes.Contains(ExposureRoute.Dermal)
                 ? calculateSubstanceDustAvailabilityFraction(
                         dustAvailabilityFractions,
                         substances,
-                        dustAvailabilityRandomGenerator
+                        availabilityRandomGenerator
                     )
                 : null;
+
+            // Create bioaccessibility models
+            var bioaccessibilityModels = BioaccessibilityFractionModelBuilder
+                .Create(substances, bioaccessibilityFractions);
 
             var result = new List<DustIndividualExposure>();
             foreach (var simulatedIndividual in simulatedIndividuals) {
@@ -86,39 +94,42 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
                         age,
                         sex,
                         dustIngestionUnit,
-                        dustIngestionsRandomGenerator
+                        ingestionsRandomGenerator
                     );
+
                     var dustExposurePerSubstance = computeIngestionExposures(
                         substances,
                         individualDustIngestion,
                         concentrationModels,
-                        dustConcentrationsRandomGenerator
+                        bioaccessibilityModels,
+                        bioaccessibilityRandomGenerator.Next(),
+                        concentrationsRandomGenerator.Next()
                     );
                     exposuresPerPath[new(ExposureSource.Dust, ExposureRoute.Oral)] = dustExposurePerSubstance;
                 }
 
                 // Compute dermal exposure
                 if (routes.Contains(ExposureRoute.Dermal)) {
-                    var bodySurfaceArea = simulatedIndividual.BodySurfaceArea;
+                    var bodySurfaceArea = simulatedIndividual.BodySurfaceArea.Value;
                     var individualDustAdherenceAmount = calculateDustAdherenceAmount(
                         dustAdherenceAmounts,
                         age,
                         sex,
-                        dustAdherenceAmountsRandomGenerator
+                        adherenceAmountsRandomGenerator
                     );
                     var individualDustBodyExposureFraction = calculateDustBodyExposureFraction(
                         dustBodyExposureFractions,
                         age,
                         sex,
-                        dustExposureFractionsRandomGenerator
+                        exposureFractionsRandomGenerator
                     );
                     var dustExposurePerSubstance = computeDermalExposures(
                         substances,
                         timeDustExposure,
-                        dustConcentrationsRandomGenerator,
+                        concentrationsRandomGenerator,
                         substanceDustAvailabilityFraction,
                         concentrationModels,
-                        bodySurfaceArea.Value,
+                        bodySurfaceArea,
                         individualDustAdherenceAmount,
                         individualDustBodyExposureFraction
                     );
@@ -165,23 +176,30 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
             ICollection<Compound> substances,
             double individualDustIngestion,
             IDictionary<Compound, ConcentrationModel> concentrationModels,
-            IRandom dustConcentrationsRandomGenerator
+            IDictionary<Compound, IBioaccessibilityFractionModel> bioaccessibilityFractionModels,
+            int bioaccessibilitySeed,
+            int concentrationSeed
         ) {
-            // TODO: create random generator per substance
-            var dustExposurePerSubstance = new List<IIntakePerCompound>();
+            var result = new List<IIntakePerCompound>();
             foreach (var substance in substances) {
+                var concentrationRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(concentrationSeed, substance.GetHashCode()));
+                var bioaccessibilityRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(bioaccessibilitySeed, substance.GetHashCode()));
                 if (concentrationModels.TryGetValue(substance, out var concentrationModel)) {
                     var individualDustConcentration = concentrationModel
-                        .DrawFromDistribution(dustConcentrationsRandomGenerator, NonDetectsHandlingMethod.ReplaceByZero);
+                        .DrawFromDistribution(concentrationRandomGenerator, NonDetectsHandlingMethod.ReplaceByZero);
+                    var bioaccessibilityFraction = bioaccessibilityFractionModels
+                        .TryGetValue(substance, out var bioaccessibityFractionModel) 
+                            ? bioaccessibityFractionModel.Draw(bioaccessibilityRandomGenerator) 
+                            : 1d;
                     var exposure = new ExposurePerSubstance {
                         Compound = substance,
-                        Amount = individualDustIngestion * individualDustConcentration
+                        Amount = individualDustIngestion * individualDustConcentration * bioaccessibilityFraction
                     };
-                    dustExposurePerSubstance.Add(exposure);
+                    result.Add(exposure);
                 }
             }
 
-            return dustExposurePerSubstance;
+            return result;
         }
 
         private static Dictionary<Compound, double> calculateSubstanceDustAvailabilityFraction(

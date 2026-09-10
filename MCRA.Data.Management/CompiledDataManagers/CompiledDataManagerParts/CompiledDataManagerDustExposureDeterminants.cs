@@ -130,5 +130,37 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             }
             return _data.AllDustAvailabilityFractions;
         }
+
+        public IList<DustBioaccessibilityFraction> GetAllDustBioaccessibilityFractions() {
+            if (_data.AllDustBioaccessibilityFractions == null) {
+                LoadScope(SourceTableGroup.DustExposureDeterminants);
+                var allBioaccessibilityFractions = new List<DustBioaccessibilityFraction>();
+                var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.DustExposureDeterminants);
+                if (rawDataSourceIds?.Count > 0) {
+                    GetAllCompounds();
+                    using (var rdm = _rawDataProvider.CreateRawDataManager()) {
+                        foreach (var rawDataSourceId in rawDataSourceIds) {
+                            using (var r = rdm.OpenDataReader<RawDustBioaccessibilityFractions>(rawDataSourceId, out int[] fieldMap)) {
+                                while (r?.Read() ?? false) {
+                                    var idSubstance = r.GetString(RawDustBioaccessibilityFractions.IdSubstance, fieldMap);
+                                    var valid = CheckLinkSelected(ScopingType.Compounds, idSubstance);
+                                    if (valid) {
+                                        var bioaccessibilityFraction = new DustBioaccessibilityFraction {
+                                            Substance = _data.GetOrAddSubstance(idSubstance),
+                                            Value = r.GetDouble(RawDustBioaccessibilityFractions.Value, fieldMap),
+                                            DistributionType = r.GetEnum(RawDustBioaccessibilityFractions.DistributionType, fieldMap, BioaccessibilityFractionDistributionType.Constant),
+                                            CvVariability = r.GetDoubleOrNull(RawDustBioaccessibilityFractions.CvVariability, fieldMap)
+                                        };
+                                        allBioaccessibilityFractions.Add(bioaccessibilityFraction);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                _data.AllDustBioaccessibilityFractions = allBioaccessibilityFractions;
+            }
+            return _data.AllDustBioaccessibilityFractions;
+        }
     }
 }

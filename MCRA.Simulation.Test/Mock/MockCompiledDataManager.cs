@@ -315,6 +315,9 @@ namespace MCRA.Simulation.Test.Mock {
         public IList<DustAvailabilityFraction> GetAllDustAvailabilityFractions() {
             return _data.AllDustAvailabilityFractions;
         }
+        public IList<DustBioaccessibilityFraction> GetAllDustBioaccessibilityFractions() {
+            return _data.AllDustBioaccessibilityFractions;
+        }
 
         public IList<ExposureResponseFunction> GetAllExposureResponseFunctions() {
             return _data.AllExposureResponseFunctions;
@@ -331,6 +334,9 @@ namespace MCRA.Simulation.Test.Mock {
         }
         public IList<SoilIngestion> GetAllSoilIngestions() {
             return _data.AllSoilIngestions;
+        }
+        public IList<SoilBioaccessibilityFraction> GetAllSoilBioaccessibilityFractions() {
+            return _data.AllSoilBioaccessibilityFractions;
         }
         public IList<BurdenOfDisease> GetAllBurdensOfDisease() {
             return _data.AllBurdensOfDisease;

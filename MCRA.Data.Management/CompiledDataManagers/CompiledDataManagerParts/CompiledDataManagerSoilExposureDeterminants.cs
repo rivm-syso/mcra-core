@@ -37,5 +37,36 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             }
             return _data.AllSoilIngestions;
         }
+        public IList<SoilBioaccessibilityFraction> GetAllSoilBioaccessibilityFractions() {
+            if (_data.AllSoilBioaccessibilityFractions == null) {
+                LoadScope(SourceTableGroup.SoilExposureDeterminants);
+                var allBioaccessibilityFractions = new List<SoilBioaccessibilityFraction>();
+                var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.SoilExposureDeterminants);
+                if (rawDataSourceIds?.Count > 0) {
+                    GetAllCompounds();
+                    using (var rdm = _rawDataProvider.CreateRawDataManager()) {
+                        foreach (var rawDataSourceId in rawDataSourceIds) {
+                            using (var r = rdm.OpenDataReader<RawSoilBioaccessibilityFractions>(rawDataSourceId, out int[] fieldMap)) {
+                                while (r?.Read() ?? false) {
+                                    var idSubstance = r.GetString(RawSoilBioaccessibilityFractions.IdSubstance, fieldMap);
+                                    var valid = CheckLinkSelected(ScopingType.Compounds, idSubstance);
+                                    if (valid) {
+                                        var bioaccessibilityFraction = new SoilBioaccessibilityFraction {
+                                            Substance = _data.GetOrAddSubstance(idSubstance),
+                                            Value = r.GetDouble(RawSoilBioaccessibilityFractions.Value, fieldMap),
+                                            DistributionType = r.GetEnum(RawSoilBioaccessibilityFractions.DistributionType, fieldMap, BioaccessibilityFractionDistributionType.Constant),
+                                            CvVariability = r.GetDoubleOrNull(RawSoilBioaccessibilityFractions.CvVariability, fieldMap)
+                                        };
+                                        allBioaccessibilityFractions.Add(bioaccessibilityFraction);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                _data.AllSoilBioaccessibilityFractions = allBioaccessibilityFractions;
+            }
+            return _data.AllSoilBioaccessibilityFractions;
+        }
     }
 }

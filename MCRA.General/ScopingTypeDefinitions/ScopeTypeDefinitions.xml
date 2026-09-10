@@ -1854,6 +1854,19 @@
       </ParentScopeReference>
     </ParentScopeReferences>
   </ScopingTypeDefinition>
+  <ScopingTypeDefinition>
+    <Id>DustBioaccessibilityFractions</Id>
+    <Name>Dust bioaccessibility fractions</Name>
+    <RawTableId>DustBioaccessibilityFractions</RawTableId>
+    <Description>-</Description>
+    <TableGroup>DustExposureDeterminants</TableGroup>
+    <ParentScopeReferences>
+      <ParentScopeReference>
+        <IdField>idSubstance</IdField>
+        <ReferencedScope>Compounds</ReferencedScope>
+      </ParentScopeReference>
+    </ParentScopeReferences>
+  </ScopingTypeDefinition>
 
   <ScopingTypeDefinition>
     <Id>SoilConcentrationDistributions</Id>
@@ -1888,6 +1901,19 @@
     <RawTableId>SoilIngestions</RawTableId>
     <Description>-</Description>
     <TableGroup>SoilExposureDeterminants</TableGroup>
+  </ScopingTypeDefinition>
+  <ScopingTypeDefinition>
+    <Id>SoilBioaccessibilityFractions</Id>
+    <Name>Soil bioaccessibility fractions</Name>
+    <RawTableId>SoilBioaccessibilityFractions</RawTableId>
+    <Description>-</Description>
+    <TableGroup>SoilExposureDeterminants</TableGroup>
+    <ParentScopeReferences>
+      <ParentScopeReference>
+        <IdField>idSubstance</IdField>
+        <ReferencedScope>Compounds</ReferencedScope>
+      </ParentScopeReference>
+    </ParentScopeReferences>
   </ScopingTypeDefinition>
   <ScopingTypeDefinition>
     <Id>BurdensOfDisease</Id>

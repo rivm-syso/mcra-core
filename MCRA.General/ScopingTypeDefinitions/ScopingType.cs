@@ -165,5 +165,7 @@
         ConsumerProductExposurePercentiles = 168,
         ConsumerProductExposureAssessments = 169,
         ConsumerProductExposureSets = 170,
+        DustBioaccessibilityFractions = 171,
+        SoilBioaccessibilityFractions = 172,
     }
 }

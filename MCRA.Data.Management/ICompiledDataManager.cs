@@ -88,11 +88,13 @@ namespace MCRA.Data.Management {
         IList<DustBodyExposureFraction> GetAllDustBodyExposureFractions();
         IList<DustAdherenceAmount> GetAllDustAdherenceAmounts();
         IList<DustAvailabilityFraction> GetAllDustAvailabilityFractions();
+        IList<DustBioaccessibilityFraction> GetAllDustBioaccessibilityFractions();
         IList<ExposureResponseFunction> GetAllExposureResponseFunctions();
         IDictionary<string, PbkModelDefinition> GetAllPbkModelDefinitions(string dataFilePath = null);
         IList<SubstanceConcentration> GetAllSoilConcentrations();
         IList<SoilConcentrationDistribution> GetAllSoilConcentrationDistributions();
         IList<SoilIngestion> GetAllSoilIngestions();
+        IList<SoilBioaccessibilityFraction> GetAllSoilBioaccessibilityFractions();
         IList<BurdenOfDisease> GetAllBurdensOfDisease();
         IList<BodIndicatorConversion> GetAllBodIndicatorConversions();
         IDictionary<string, ConsumerProduct> GetAllConsumerProducts();

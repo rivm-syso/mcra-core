@@ -1,11 +1,11 @@
-﻿using MCRA.Simulation.Objects;
-using MCRA.General;
+﻿using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Calculators.DustExposureCalculation;
+using MCRA.Simulation.Objects;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
@@ -121,6 +121,7 @@ namespace MCRA.Simulation.Actions.DustExposures {
                     data.DustAdherenceAmounts,
                     data.DustAvailabilityFractions,
                     data.DustBodyExposureFractions,
+                    data.DustBioaccessibilityFractions,
                     data.DustConcentrationDistributionUnit,
                     data.DustIngestionUnit,
                     ModuleConfig.DustTimeExposed,

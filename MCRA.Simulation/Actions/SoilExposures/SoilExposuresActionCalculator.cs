@@ -116,6 +116,7 @@ namespace MCRA.Simulation.Actions.SoilExposures {
                     substances,
                     data.SoilConcentrationModels,
                     soilIngestions,
+                    data.SoilBioaccessibilityFractions,
                     data.SoilConcentrationDistributionUnit,
                     data.SoilIngestionUnit,
                     targetUnit,

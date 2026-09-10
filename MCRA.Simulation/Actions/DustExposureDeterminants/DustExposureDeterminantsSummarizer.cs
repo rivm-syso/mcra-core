@@ -1,13 +1,17 @@
 ﻿using MCRA.General;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
+using MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.Actions.DustExposureDeterminants {
     public enum DustExposureDeterminantsSections {
         DustIngestionsDataSection,
-        DustBodyExposureFractionsDataSection
+        DustBodyExposureFractionsDataSection,
+        DustAdherenceAmountsDataSection,
+        DustAvailabilityFractionsDataSection,
+        DustBioaccessibilityFractionsDataSection,
     }
 
     public class DustExposureDeterminantsSummarizer : ActionResultsSummarizerBase<IDustExposureDeterminantsActionResult> {
@@ -24,23 +28,27 @@ namespace MCRA.Simulation.Actions.DustExposureDeterminants {
             int subOrder = 0;
 
             // Summarize dust ingestion data.
-            if (data.DustIngestions != null) {
+            if (data.DustIngestions != null  && outputSettings.ShouldSummarize(DustExposureDeterminantsSections.DustIngestionsDataSection)) {
                 summarizeDustIngestions(data, subHeader, subOrder++);
             }
 
             // Summarize dust body exposure fractions.
-            if (data.DustBodyExposureFractions != null) {
+            if (data.DustBodyExposureFractions != null && outputSettings.ShouldSummarize(DustExposureDeterminantsSections.DustBodyExposureFractionsDataSection)) {
                 summarizeDustBodyExposureFractions(data, subHeader, subOrder++);
             }
 
             // Summarize dust adherence fractions.
-            if (data.DustAdherenceAmounts != null) {
+            if (data.DustAdherenceAmounts != null && outputSettings.ShouldSummarize(DustExposureDeterminantsSections.DustAdherenceAmountsDataSection)) {
                 summarizeDustAdherenceAmounts(data, subHeader, subOrder++);
             }
 
             // Summarize dust availability fractions.
-            if (data.DustAvailabilityFractions != null) {
+            if (data.DustAvailabilityFractions != null && outputSettings.ShouldSummarize(DustExposureDeterminantsSections.DustAvailabilityFractionsDataSection)) {
                 summarizeDustAvailabilityFractions(data, subHeader, subOrder++);
+            }
+            // Summarize dust bioaccessibility fractions.
+            if (data.DustBioaccessibilityFractions != null && outputSettings.ShouldSummarize(DustExposureDeterminantsSections.DustBioaccessibilityFractionsDataSection)) {
+                summarizeDustBioaccessibilityFractions(data, subHeader, subOrder++);
             }
         }
 
@@ -49,7 +57,9 @@ namespace MCRA.Simulation.Actions.DustExposureDeterminants {
             SectionHeader header,
             int order
         ) {
-            var section = new DustIngestionsDataSection();
+            var section = new DustIngestionsDataSection() {
+                SectionLabel = getSectionLabel(DustExposureDeterminantsSections.DustIngestionsDataSection)
+            };
             var subHeader = header.AddSubSectionHeaderFor(section, "Dust ingestions", order);
             section.Summarize(
                 data.DustIngestions
@@ -62,7 +72,9 @@ namespace MCRA.Simulation.Actions.DustExposureDeterminants {
             SectionHeader header,
             int order
         ) {
-            var section = new DustBodyExposureFractionsDataSection();
+            var section = new DustBodyExposureFractionsDataSection() {
+                SectionLabel = getSectionLabel(DustExposureDeterminantsSections.DustBodyExposureFractionsDataSection)
+            };
             var subHeader = header.AddSubSectionHeaderFor(section, "Dust body exposure fractions", order);
             section.Summarize(
                 data.DustBodyExposureFractions,
@@ -77,7 +89,9 @@ namespace MCRA.Simulation.Actions.DustExposureDeterminants {
             SectionHeader header,
             int order
         ) {
-            var section = new DustAdherenceAmountsDataSection();
+            var section = new DustAdherenceAmountsDataSection() {
+                SectionLabel = getSectionLabel(DustExposureDeterminantsSections.DustAdherenceAmountsDataSection)
+            };
             var subHeader = header.AddSubSectionHeaderFor(section, "Dust adherence amounts", order);
             section.Summarize(
                 data.DustAdherenceAmounts
@@ -90,10 +104,27 @@ namespace MCRA.Simulation.Actions.DustExposureDeterminants {
             SectionHeader header,
             int order
         ) {
-            var section = new DustAvailabilityFractionsDataSection();
+            var section = new DustAvailabilityFractionsDataSection() {
+                SectionLabel = getSectionLabel(DustExposureDeterminantsSections.DustAvailabilityFractionsDataSection)
+            };
             var subHeader = header.AddSubSectionHeaderFor(section, "Dust availiability fractions", order);
             section.Summarize(
                 data.DustAvailabilityFractions
+            );
+            subHeader.SaveSummarySection(section);
+        }
+
+        private void summarizeDustBioaccessibilityFractions(
+            ActionData data,
+            SectionHeader header,
+            int order
+        ) {
+            var section = new DustBioaccessibilityFractionsDataSection(){
+                SectionLabel = getSectionLabel(DustExposureDeterminantsSections.DustBioaccessibilityFractionsDataSection)
+            };
+            var subHeader = header.AddSubSectionHeaderFor(section, "Dust bioaccessibility fractions", order);
+            section.Summarize(
+                data.DustBioaccessibilityFractions
             );
             subHeader.SaveSummarySection(section);
         }

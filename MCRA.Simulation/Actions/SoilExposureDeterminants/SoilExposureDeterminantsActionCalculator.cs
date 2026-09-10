@@ -1,11 +1,12 @@
-﻿using MCRA.Utils.ProgressReporting;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Management;
+using MCRA.Data.Management.CompiledDataManagers.DataReadingSummary;
 using MCRA.General;
-using MCRA.General.Annotations;
 using MCRA.General.Action.Settings;
+using MCRA.General.Annotations;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Data.Compiled.Objects;
+using MCRA.Utils.ProgressReporting;
 
 namespace MCRA.Simulation.Actions.SoilExposureDeterminants {
 
@@ -16,6 +17,7 @@ namespace MCRA.Simulation.Actions.SoilExposureDeterminants {
         }
 
         protected override void verify() {
+            _actionDataLinkRequirements[ScopingType.SoilBioaccessibilityFractions][ScopingType.Compounds].AlertTypeMissingData = AlertType.Notification;
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
@@ -42,6 +44,7 @@ namespace MCRA.Simulation.Actions.SoilExposureDeterminants {
 
             data.SoilIngestions = adjustedSoilIngestions;
             data.SoilIngestionUnit = soilIngestionUnit;
+            data.SoilBioaccessibilityFractions = [.. subsetManager.AllSoilBioaccessibilityFractions ];
         }
 
         protected override void summarizeActionResult(ISoilExposureDeterminantsActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {

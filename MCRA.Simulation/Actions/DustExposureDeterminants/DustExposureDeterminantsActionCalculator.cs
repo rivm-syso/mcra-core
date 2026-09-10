@@ -18,6 +18,7 @@ namespace MCRA.Simulation.Actions.DustExposureDeterminants {
 
         protected override void verify() {
             _actionDataLinkRequirements[ScopingType.DustAvailabilityFractions][ScopingType.Compounds].AlertTypeMissingData = AlertType.Notification;
+            _actionDataLinkRequirements[ScopingType.DustBioaccessibilityFractions][ScopingType.Compounds].AlertTypeMissingData = AlertType.Notification;
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
@@ -47,6 +48,7 @@ namespace MCRA.Simulation.Actions.DustExposureDeterminants {
             data.DustBodyExposureFractions = [.. subsetManager.AllDustBodyExposureFractions];
             data.DustAdherenceAmounts = [.. subsetManager.AllDustAdherenceAmounts];
             data.DustAvailabilityFractions = [.. subsetManager.AllDustAvailabilityFractions];
+            data.DustBioaccessibilityFractions = [.. subsetManager.AllDustBioaccessibilityFractions];
         }
 
         protected override void summarizeActionResult(IDustExposureDeterminantsActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {

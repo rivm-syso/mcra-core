@@ -486,6 +486,10 @@ namespace MCRA.Simulation {
             get => GetOrCreateModuleOutputData<DustExposureDeterminantsOutputData>(ActionType.DustExposureDeterminants).DustAvailabilityFractions;
             set => GetOrCreateModuleOutputData<DustExposureDeterminantsOutputData>(ActionType.DustExposureDeterminants).DustAvailabilityFractions = value;
         }
+        public IList<DustBioaccessibilityFraction> DustBioaccessibilityFractions {
+            get => GetOrCreateModuleOutputData<DustExposureDeterminantsOutputData>(ActionType.DustExposureDeterminants).DustBioaccessibilityFractions;
+            set => GetOrCreateModuleOutputData<DustExposureDeterminantsOutputData>(ActionType.DustExposureDeterminants).DustBioaccessibilityFractions = value;
+        }
 
         // EnvironmentalBurdenOfDisease
         public List<EnvironmentalBurdenOfDiseaseResultRecord> EnvironmentalBurdenOfDiseases {
@@ -963,6 +967,10 @@ namespace MCRA.Simulation {
         public IList<SoilIngestion> SoilIngestions {
             get => GetOrCreateModuleOutputData<SoilExposureDeterminantsOutputData>(ActionType.SoilExposureDeterminants).SoilIngestions;
             set => GetOrCreateModuleOutputData<SoilExposureDeterminantsOutputData>(ActionType.SoilExposureDeterminants).SoilIngestions = value;
+        }
+        public IList<SoilBioaccessibilityFraction> SoilBioaccessibilityFractions {
+            get => GetOrCreateModuleOutputData<SoilExposureDeterminantsOutputData>(ActionType.SoilExposureDeterminants).SoilBioaccessibilityFractions;
+            set => GetOrCreateModuleOutputData<SoilExposureDeterminantsOutputData>(ActionType.SoilExposureDeterminants).SoilBioaccessibilityFractions = value;
         }
 
         public ExternalExposureUnit SoilIngestionUnit {
