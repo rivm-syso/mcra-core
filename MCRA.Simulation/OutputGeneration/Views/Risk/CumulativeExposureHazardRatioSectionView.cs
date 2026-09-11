@@ -24,25 +24,25 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
                 var isUncertainty = riskRecords
                     .Any(c => c.RiskPercentiles[0].UncertainValues?.Count > 0);
-                var hiddenProperties = new List<string>() { "Stratification"};
+                var hiddenProperties = new List<string>() { nameof(SubstanceRiskDistributionRecord.Stratification) };
                 if (isUncertainty) {
-                    hiddenProperties.Add("PLowerRiskNom");
-                    hiddenProperties.Add("RiskP50Nom");
-                    hiddenProperties.Add("PUpperRiskNom");
-                    hiddenProperties.Add("ProbabilityOfCriticalEffect");
+                    hiddenProperties.Add(nameof(SubstanceRiskDistributionRecord.PLowerRiskNom));
+                    hiddenProperties.Add(nameof(SubstanceRiskDistributionRecord.RiskP50Nom));
+                    hiddenProperties.Add(nameof(SubstanceRiskDistributionRecord.PUpperRiskNom));
+                    hiddenProperties.Add(nameof(SubstanceRiskDistributionRecord.ProbabilityOfCriticalEffect));
                 } else {
-                    hiddenProperties.Add("PLowerRiskUncP50");
-                    hiddenProperties.Add("RiskP50UncP50");
-                    hiddenProperties.Add("PUpperRiskUncP50");
-                    hiddenProperties.Add("PLowerRiskUncLower");
-                    hiddenProperties.Add("PUpperRiskUncUpper");
-                    hiddenProperties.Add("MedianProbabilityOfCriticalEffect");
-                    hiddenProperties.Add("LowerProbabilityOfCriticalEffect");
-                    hiddenProperties.Add("UpperProbabilityOfCriticalEffect");
+                    hiddenProperties.Add(nameof(SubstanceRiskDistributionRecord.PLowerRiskUncP50));
+                    hiddenProperties.Add(nameof(SubstanceRiskDistributionRecord.RiskP50UncP50));
+                    hiddenProperties.Add(nameof(SubstanceRiskDistributionRecord.PUpperRiskUncP50));
+                    hiddenProperties.Add(nameof(SubstanceRiskDistributionRecord.PLowerRiskUncLower));
+                    hiddenProperties.Add(nameof(SubstanceRiskDistributionRecord.PUpperRiskUncUpper));
+                    hiddenProperties.Add(nameof(SubstanceRiskDistributionRecord.MedianProbabilityOfCriticalEffect));
+                    hiddenProperties.Add(nameof(SubstanceRiskDistributionRecord.LowerProbabilityOfCriticalEffect));
+                    hiddenProperties.Add(nameof(SubstanceRiskDistributionRecord.UpperProbabilityOfCriticalEffect));
                 }
                 if (riskRecords.All(c => string.IsNullOrEmpty(c.ExpressionType))) {
-                    hiddenProperties.Add("BiologicalMatrix");
-                    hiddenProperties.Add("ExpressionType");
+                    hiddenProperties.Add(nameof(SubstanceRiskDistributionRecord.BiologicalMatrix));
+                    hiddenProperties.Add(nameof(SubstanceRiskDistributionRecord.ExpressionType));
                 }
 
                 var targets = Model.RiskRecords.Select(c => c.Target).ToList();

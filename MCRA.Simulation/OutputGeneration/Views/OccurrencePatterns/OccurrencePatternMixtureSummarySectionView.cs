@@ -6,7 +6,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>();
             if (Model.Records.All(r => r.FromAuthorisedUse == null)) {
-                hiddenProperties.Add("FromAuthorisedUse");
+                hiddenProperties.Add(nameof(OccurrencePatternMixtureSummaryRecord.FromAuthorisedUse));
             }
             //Render HTML
             sb.AppendTable(

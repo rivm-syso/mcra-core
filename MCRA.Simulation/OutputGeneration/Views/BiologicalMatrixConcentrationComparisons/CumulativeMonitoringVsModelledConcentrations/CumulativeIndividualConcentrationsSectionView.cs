@@ -1,18 +1,19 @@
-﻿using MCRA.Simulation.OutputGeneration.Helpers;
-using System.Text;
+﻿using System.Text;
+using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
+using MCRA.Simulation.OutputGeneration.Helpers;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class CumulativeIndividualConcentrationsSectionView : SectionView<CumulativeIndividualConcentrationsSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string> {
-                "SubstanceName",
-                "SubstanceCode"
+                nameof(BiologicalMatrixConcentrationPercentilesRecord.SubstanceName),
+                nameof(BiologicalMatrixConcentrationPercentilesRecord.SubstanceCode)
             };
             if (Model.Records.All(r => string.IsNullOrEmpty(r.BiologicalMatrix))) {
-                hiddenProperties.Add("BiologicalMatrix");
+                hiddenProperties.Add(nameof(BiologicalMatrixConcentrationPercentilesRecord.BiologicalMatrix));
             }
             if (Model.Records.All(r => string.IsNullOrEmpty(r.ExposureRoute))) {
-                hiddenProperties.Add("ExposureRoute");
+                hiddenProperties.Add(nameof(BiologicalMatrixConcentrationPercentilesRecord.ExposureRoute));
             }
             var unitString = $"Monitoring concentration ({Model.TargetUnit.GetShortDisplayName()}) vs modelled concentration ({ViewBag.GetUnit("ModelledExposureUnit")})";
             var chartCreator = new CumulativeIndividualConcentrationsBoxPlotChartCreator(Model, unitString);

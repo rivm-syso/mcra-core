@@ -7,12 +7,12 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (Model.Records?.Count > 0) {
                 var hiddenProperties = new List<string>();
                 if (Model.Records.All(r => string.IsNullOrEmpty(r.ProcessingTypeName))) {
-                    hiddenProperties.Add("ProcessingTypeCode");
-                    hiddenProperties.Add("ProcessingTypeName");
-                    hiddenProperties.Add("ProcessingFactor");
+                    hiddenProperties.Add(nameof(ChronicSingleValueDietaryExposureRecord.ProcessingTypeCode));
+                    hiddenProperties.Add(nameof(ChronicSingleValueDietaryExposureRecord.ProcessingTypeName));
+                    hiddenProperties.Add(nameof(ChronicSingleValueDietaryExposureRecord.ProcessingFactor));
                 }
                 if (Model.Records.All(r => r.OccurrenceFraction == 1)) {
-                    hiddenProperties.Add("OccurrenceFraction");
+                    hiddenProperties.Add(nameof(ChronicSingleValueDietaryExposureRecord.OccurrenceFraction));
                 }
 
                 var method = Model.Records.Select(r => r.CalculationMethod).Distinct();

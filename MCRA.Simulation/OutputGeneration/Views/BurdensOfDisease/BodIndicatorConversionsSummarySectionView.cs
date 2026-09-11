@@ -11,10 +11,10 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             var hiddenProperties = new List<string>();
             if (Model.Records.All(c => c.FromUnit == string.Empty)) {
-                hiddenProperties.Add("FromUnit");
+                hiddenProperties.Add(nameof(BodIndicatorConversionSummaryRecord.FromUnit));
             }
             if (Model.Records.All(c => c.ToUnit == string.Empty)) {
-                hiddenProperties.Add("ToUnit");
+                hiddenProperties.Add(nameof(BodIndicatorConversionSummaryRecord.ToUnit));
             }
             sb.AppendTable(
                 Model,

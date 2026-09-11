@@ -27,7 +27,7 @@ namespace MCRA.Simulation.Actions.ConsumerProductUseFrequencies {
 
             if (outputSettings.ShouldSummarize(ConsumerProductUseFrequenciesSections.SurveysSection)) {
                 summarizeSurveys(
-                    data.ConsumerProductSurveys.First(),
+                    data.ConsumerProductSurveys,
                     _configuration.PopulationSubsetSelection,
                     data.SelectedPopulation,
                     subHeader,
@@ -53,7 +53,7 @@ namespace MCRA.Simulation.Actions.ConsumerProductUseFrequencies {
             }
         }
         private void summarizeSurveys(
-            ConsumerProductSurvey survey,
+            ICollection<ConsumerProductSurvey> surveys,
             bool populationSubsetSelection,
             Population population,
             SectionHeader header,
@@ -63,7 +63,7 @@ namespace MCRA.Simulation.Actions.ConsumerProductUseFrequencies {
                 SectionLabel = getSectionLabel(ConsumerProductUseFrequenciesSections.SurveysSection)
             };
             section.Summarize(
-                survey,
+                surveys,
                 population
             );
             var subHeader = header.AddSubSectionHeaderFor(

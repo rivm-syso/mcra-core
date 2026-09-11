@@ -6,7 +6,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>();
             if (Model.Records.All(r => string.IsNullOrEmpty(r.GuidelineMethod))) {
-                hiddenProperties.Add("GuidelineMethod");
+                hiddenProperties.Add(nameof(ResponseSummaryRecord.GuidelineMethod));
             }
 
             //Render HTML

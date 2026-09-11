@@ -16,9 +16,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             //Render HTML
             sb.AppendDescriptionParagraph($"Number of records: {Model.Records?.Count ?? 0}");
             if (Model.Records.All(c => c.Values.Count == 0)) {
-                hiddenProperties.Add("Median");
-                hiddenProperties.Add("LowerBound");
-                hiddenProperties.Add("UpperBound");
+                hiddenProperties.Add(nameof(ConcentrationPercentileRecord.Median));
+                hiddenProperties.Add(nameof(ConcentrationPercentileRecord.LowerBound));
+                hiddenProperties.Add(nameof(ConcentrationPercentileRecord.UpperBound));
             }
 
             if (Model.Records?.Count > 0) {

@@ -7,7 +7,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             var hiddenProperties = new List<string>();
 
             if (string.IsNullOrEmpty(Model.Record.Description)) {
-                hiddenProperties.Add("Description");
+                hiddenProperties.Add(nameof(HbmSingleValueExposureSurveySummaryRecord.Description));
             }
 
             //Render HTML

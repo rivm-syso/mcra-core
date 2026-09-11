@@ -13,11 +13,11 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             var hiddenProperties = new List<string>();
             var hasCramerClassInfo = Model.Records.All(r => string.IsNullOrEmpty(r.CramerClass));
             if (hasCramerClassInfo) {
-                hiddenProperties.Add("CramerClass");
+                hiddenProperties.Add(nameof(SubstanceSummaryRecord.CramerClass));
             }
             var hasMolecularWeights = Model.Records.All(r => double.IsNaN(r.MolecularWeight) || r.MolecularWeight == 0D);
             if (hasMolecularWeights) {
-                hiddenProperties.Add("MolecularWeight");
+                hiddenProperties.Add(nameof(SubstanceSummaryRecord.MolecularWeight));
             }
             sb.AppendTable(
                Model,

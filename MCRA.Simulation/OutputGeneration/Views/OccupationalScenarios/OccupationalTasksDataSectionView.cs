@@ -7,7 +7,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>();
             if (Model.Records.All(c => string.IsNullOrEmpty(c.Description))) {
-                hiddenProperties.Add("Description");
+                hiddenProperties.Add(nameof(OccupationalTasksDataRecord.Description));
             }
 
             if (Model.Records.Any()) {

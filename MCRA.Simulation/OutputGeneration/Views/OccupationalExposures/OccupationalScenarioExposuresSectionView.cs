@@ -59,14 +59,14 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 var hiddenProperties = new List<string>();
 
                 if (Model.Records.All(r => double.IsNaN(r.MedianUncLowerPercentile))) {
-                    hiddenProperties.Add("MedianUncMedianPercentile");
-                    hiddenProperties.Add("MedianUncLowerPercentile");
-                    hiddenProperties.Add("MedianUncUpperPercentile");
+                    hiddenProperties.Add(nameof(OccupationalScenarioExposureDistributionRecord.MedianUncMedianPercentile));
+                    hiddenProperties.Add(nameof(OccupationalScenarioExposureDistributionRecord.MedianUncLowerPercentile));
+                    hiddenProperties.Add(nameof(OccupationalScenarioExposureDistributionRecord.MedianUncUpperPercentile));
                 } else {
-                    hiddenProperties.Add("Median");
+                    hiddenProperties.Add(nameof(OccupationalScenarioExposureDistributionRecord.Median));
                 }
                 if (Model.Records.All(r => string.IsNullOrEmpty(r.EstimateType))) {
-                    hiddenProperties.Add("EstimateType");
+                    hiddenProperties.Add(nameof(OccupationalScenarioExposureDistributionRecord.EstimateType));
                 }
 
                 sb.AppendTable(

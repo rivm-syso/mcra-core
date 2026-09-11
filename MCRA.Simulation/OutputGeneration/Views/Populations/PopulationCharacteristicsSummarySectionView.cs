@@ -7,7 +7,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             //Render HTML
             var hiddenProperties = new List<string>();
             if (Model.Records.All(r => r.CV == null || double.IsNaN((double)r.CV))) {
-                hiddenProperties.Add("CV");
+                hiddenProperties.Add(nameof(PopulationCharacteristicsSummaryRecord.CV));
             }
 
             if (Model.Records.Count != 0) {

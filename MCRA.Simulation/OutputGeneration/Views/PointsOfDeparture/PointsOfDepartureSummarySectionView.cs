@@ -11,31 +11,31 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 var hiddenProperties = new List<string>();
 
                 if (Model.Records.All(r => string.IsNullOrEmpty(r.Code))) {
-                    hiddenProperties.Add("Code");
+                    hiddenProperties.Add(nameof(PointsOfDepartureSummaryRecord.Code));
                 }
                 if (Model.Records.All(r => string.IsNullOrEmpty(r.ModelCode))) {
-                    hiddenProperties.Add("ModelCode");
+                    hiddenProperties.Add(nameof(PointsOfDepartureSummaryRecord.ModelCode));
                 }
                 if (Model.Records.All(r => string.IsNullOrEmpty(r.ModelEquation))) {
-                    hiddenProperties.Add("ModelEquation");
-                    hiddenProperties.Add("ParameterValues");
+                    hiddenProperties.Add(nameof(PointsOfDepartureSummaryRecord.ModelEquation));
+                    hiddenProperties.Add(nameof(PointsOfDepartureSummaryRecord.ParameterValues));
                 }
                 if (Model.Records.All(r => double.IsNaN(r.CriticalEffectSize))) {
-                    hiddenProperties.Add("CriticalEffectSize");
+                    hiddenProperties.Add(nameof(PointsOfDepartureSummaryRecord.CriticalEffectSize));
                 }
                 if (Model.Records.All(r => r.NumberOfUncertaintySets == 0)) {
-                    hiddenProperties.Add("NumberOfUncertaintySets");
-                    hiddenProperties.Add("Median");
-                    hiddenProperties.Add("Maximum");
-                    hiddenProperties.Add("Minimum");
+                    hiddenProperties.Add(nameof(PointsOfDepartureSummaryRecord.NumberOfUncertaintySets));
+                    hiddenProperties.Add(nameof(PointsOfDepartureSummaryRecord.Median));
+                    hiddenProperties.Add(nameof(PointsOfDepartureSummaryRecord.Maximum));
+                    hiddenProperties.Add(nameof(PointsOfDepartureSummaryRecord.Minimum));
                 }
                 // Use case: all PODs are provided for (external) dietary or other exposure routes, and not for internal biological matrix
                 if (!Model.AllPodsAtTarget) {
-                    hiddenProperties.Add("BiologicalMatrix");
+                    hiddenProperties.Add(nameof(PointsOfDepartureSummaryRecord.BiologicalMatrix));
                 }
                 // Use case: all PODs are provided as (internal) values measured on a biological matrix, the exposure route is always the same, leave it out
                 if (Model.AllPodsAtTarget) {
-                    hiddenProperties.Add("ExposureRoute");
+                    hiddenProperties.Add(nameof(PointsOfDepartureSummaryRecord.ExposureRoute));
                 }
 
                 var numSubstances = Model.Records.Select(r => r.CompoundCode).Distinct().Count();

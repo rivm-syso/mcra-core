@@ -18,35 +18,35 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             var hiddenProperties = new List<string>();
             if (Model.InternalTargetSystemExposures.All(r => r.ExpressionType == null)) {
-                hiddenProperties.Add("ExpressionType");
+                hiddenProperties.Add(nameof(PbkModelTimeCourseDrilldownRecord.ExpressionType));
             }
             var routes = new List<ExposureRoute>();
             if (Model.InternalTargetSystemExposures.Any(r => r.Oral != null)) {
                 routes.Add(ExposureRoute.Oral);
             } else {
-                hiddenProperties.Add("Oral");
+                hiddenProperties.Add(nameof(PbkModelTimeCourseDrilldownRecord.Oral));
             }
             if (Model.InternalTargetSystemExposures.Any(r => r.Dermal != null)) {
                 routes.Add(ExposureRoute.Dermal);
             } else {
-                hiddenProperties.Add("Dermal");
+                hiddenProperties.Add(nameof(PbkModelTimeCourseDrilldownRecord.Dermal));
             }
             if (Model.InternalTargetSystemExposures.Any(r => r.Inhalation != null)) {
                 routes.Add(ExposureRoute.Inhalation);
             } else {
-                hiddenProperties.Add("Inhalation");
+                hiddenProperties.Add(nameof(PbkModelTimeCourseDrilldownRecord.Inhalation));
             }
             if (routes.Count <= 1) {
                 // If only one route, then hide route-specific fields
-                hiddenProperties.Add("Oral");
-                hiddenProperties.Add("Dermal");
-                hiddenProperties.Add("Inhalation");
+                hiddenProperties.Add(nameof(PbkModelTimeCourseDrilldownRecord.Oral));
+                hiddenProperties.Add(nameof(PbkModelTimeCourseDrilldownRecord.Dermal));
+                hiddenProperties.Add(nameof(PbkModelTimeCourseDrilldownRecord.Inhalation));
             }
             if (Model.InternalTargetSystemExposures.All(r => r.IndividualCode == null)) {
-                hiddenProperties.Add("IndividualCode");
+                hiddenProperties.Add(nameof(PbkModelTimeCourseDrilldownRecord.IndividualCode));
             }
             if (Model.InternalTargetSystemExposures.All(r => double.IsNaN(r.Age))) {
-                hiddenProperties.Add("Age");
+                hiddenProperties.Add(nameof(PbkModelTimeCourseDrilldownRecord.Age));
             }
             //no items in InternalTargetSystemExposures collection, return
             if ((Model.InternalTargetSystemExposures?.Count ?? 0) == 0) {

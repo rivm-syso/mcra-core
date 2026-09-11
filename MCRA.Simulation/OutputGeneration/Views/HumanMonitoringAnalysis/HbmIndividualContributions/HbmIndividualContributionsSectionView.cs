@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using MCRA.Simulation.OutputGeneration.ActionSummaries.Risk;
 using MCRA.Simulation.OutputGeneration.Helpers;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
@@ -35,20 +36,20 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             var hiddenProperties = new List<string>();
 
             if (Model.IndividualContributionRecords.All(c => double.IsNaN(c.LowerContributionPercentage))) {
-                hiddenProperties.Add("LowerContributionPercentage");
-                hiddenProperties.Add("UpperContributionPercentage");
-                hiddenProperties.Add("MeanContribution");
+                hiddenProperties.Add(nameof(IndividualContributionsRecord.LowerContributionPercentage));
+                hiddenProperties.Add(nameof(IndividualContributionsRecord.UpperContributionPercentage));
+                hiddenProperties.Add(nameof(IndividualContributionsRecord.MeanContribution));
             } else {
-                hiddenProperties.Add("Contribution");
+                hiddenProperties.Add(nameof(IndividualContributionsRecord.Contribution));
             }
             if (Model.IndividualContributionRecords.All(r => string.IsNullOrEmpty(r.ExposureRoute))) {
-                hiddenProperties.Add("ExposureRoute");
+                hiddenProperties.Add(nameof(IndividualContributionsRecord.ExposureRoute));
             }
             if (Model.IndividualContributionRecords.All(r => string.IsNullOrEmpty(r.BiologicalMatrix))) {
-                hiddenProperties.Add("BiologicalMatrix");
+                hiddenProperties.Add(nameof(IndividualContributionsRecord.BiologicalMatrix));
             }
             if (Model.IndividualContributionRecords.All(r => string.IsNullOrEmpty(r.ExpressionType))) {
-                hiddenProperties.Add("ExpressionType");
+                hiddenProperties.Add(nameof(IndividualContributionsRecord.ExpressionType));
             }
             sb.AppendTable(
                 Model,

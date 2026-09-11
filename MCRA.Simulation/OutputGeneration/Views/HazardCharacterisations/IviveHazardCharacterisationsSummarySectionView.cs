@@ -8,41 +8,41 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             var hiddenProperties = new List<string>();
             var failedRecordCount = Model.Records.Count(r => double.IsNaN(r.HazardCharacterisation));
             if (Model.Records.All(r => string.IsNullOrEmpty(r.ModelCode))) {
-                hiddenProperties.Add("ModelCode");
+                hiddenProperties.Add(nameof(IviveHazardCharacterisationsSummaryRecord.ModelCode));
             }
             if (Model.Records.All(r => string.IsNullOrEmpty(r.BiologicalMatrix))) {
-                hiddenProperties.Add("BiologicalMatrix");
+                hiddenProperties.Add(nameof(IviveHazardCharacterisationsSummaryRecord.BiologicalMatrix));
             }
             if (Model.Records.All(r => double.IsNaN(r.TargetDoseUpperBound))) {
-                hiddenProperties.Add("TargetDoseUpperBound");
+                hiddenProperties.Add(nameof(IviveHazardCharacterisationsSummaryRecord.TargetDoseUpperBound));
             }
             if (Model.Records.All(r => double.IsNaN(r.TargetDoseLowerBound))) {
-                hiddenProperties.Add("TargetDoseLowerBound");
+                hiddenProperties.Add(nameof(IviveHazardCharacterisationsSummaryRecord.TargetDoseLowerBound));
             }
             if (Model.Records.All(r => double.IsNaN(r.TargetDoseLowerBoundPercentile))) {
-                hiddenProperties.Add("TargetDoseLowerBoundPercentile");
-                hiddenProperties.Add("TargetDoseUpperBoundPercentile");
-                hiddenProperties.Add("TargetDoseLowerBoundPercentileUnc");
-                hiddenProperties.Add("TargetDoseUpperBoundPercentileUnc");
+                hiddenProperties.Add(nameof(IviveHazardCharacterisationsSummaryRecord.TargetDoseLowerBoundPercentile));
+                hiddenProperties.Add(nameof(IviveHazardCharacterisationsSummaryRecord.TargetDoseUpperBoundPercentile));
+                hiddenProperties.Add(nameof(IviveHazardCharacterisationsSummaryRecord.TargetDoseLowerBoundPercentileUnc));
+                hiddenProperties.Add(nameof(IviveHazardCharacterisationsSummaryRecord.TargetDoseUpperBoundPercentileUnc));
             }
             if (Model.Records.All(r => double.IsNaN(r.GeometricStandardDeviation))) {
-                hiddenProperties.Add("GeometricStandardDeviation");
+                hiddenProperties.Add(nameof(IviveHazardCharacterisationsSummaryRecord.GeometricStandardDeviation));
             }
             if (Model.Records.All(r => double.IsNaN(r.NominalInterSpeciesConversionFactor) || r.NominalInterSpeciesConversionFactor == 1D)) {
-                hiddenProperties.Add("NominalInterSpeciesConversionFactor");
+                hiddenProperties.Add(nameof(IviveHazardCharacterisationsSummaryRecord.NominalInterSpeciesConversionFactor));
             }
             if (Model.Records.All(r => double.IsNaN(r.NominalIntraSpeciesConversionFactor) || r.NominalIntraSpeciesConversionFactor == 1D)) {
-                hiddenProperties.Add("NominalIntraSpeciesConversionFactor");
+                hiddenProperties.Add(nameof(IviveHazardCharacterisationsSummaryRecord.NominalIntraSpeciesConversionFactor));
             }
             if (Model.Records.All(r => double.IsNaN(r.AdditionalConversionFactor) || r.AdditionalConversionFactor == 1D)) {
-                hiddenProperties.Add("AdditionalConversionFactor");
+                hiddenProperties.Add(nameof(IviveHazardCharacterisationsSummaryRecord.AdditionalConversionFactor));
             }
             if (Model.Records.All(r => double.IsNaN(r.InternalMolBasedRpf))) {
-                hiddenProperties.Add("MolBasedRpf");
-                hiddenProperties.Add("MolecularMass");
+                hiddenProperties.Add(nameof(IviveHazardCharacterisationsSummaryRecord.InternalMolBasedRpf));
+                hiddenProperties.Add(nameof(IviveHazardCharacterisationsSummaryRecord.MolecularMass));
             }
             if (Model.Records.All(r => double.IsNaN(r.ExternalRpf))) {
-                hiddenProperties.Add("ExternalRpf");
+                hiddenProperties.Add(nameof(IviveHazardCharacterisationsSummaryRecord.ExternalRpf));
             }
 
             //Render HTML

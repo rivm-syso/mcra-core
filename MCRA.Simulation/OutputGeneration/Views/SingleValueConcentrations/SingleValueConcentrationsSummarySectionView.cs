@@ -12,24 +12,24 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
                 var isActiveConversion = Model.Records.Any(r => !string.IsNullOrEmpty(r.MeasuredSubstanceCode) && !double.IsNaN(r.ConversionFactor));
                 if (!isActiveConversion) {
-                    hiddenProperties.Add("MeasuredSubstanceCode");
-                    hiddenProperties.Add("MeasuredSubstanceName");
-                    hiddenProperties.Add("ConversionFactor");
+                    hiddenProperties.Add(nameof(SingleValueConcentrationSummaryRecord.MeasuredSubstanceCode));
+                    hiddenProperties.Add(nameof(SingleValueConcentrationSummaryRecord.MeasuredSubstanceName));
+                    hiddenProperties.Add(nameof(SingleValueConcentrationSummaryRecord.ConversionFactor));
                 }
                 if (Model.Records.All(r => double.IsNaN(r.MeanConcentration))) {
-                    hiddenProperties.Add("MeanConcentration");
+                    hiddenProperties.Add(nameof(SingleValueConcentrationSummaryRecord.MeanConcentration));
                 }
                 if (Model.Records.All(r => double.IsNaN(r.MedianConcentration))) {
-                    hiddenProperties.Add("MedianConcentration");
+                    hiddenProperties.Add(nameof(SingleValueConcentrationSummaryRecord.MedianConcentration));
                 }
                 if (Model.Records.All(r => double.IsNaN(r.HighestConcentration))) {
-                    hiddenProperties.Add("HighestConcentration");
+                    hiddenProperties.Add(nameof(SingleValueConcentrationSummaryRecord.HighestConcentration));
                 }
                 if (Model.Records.All(r => double.IsNaN(r.Loq))) {
-                    hiddenProperties.Add("Loq");
+                    hiddenProperties.Add(nameof(SingleValueConcentrationSummaryRecord.Loq));
                 }
                 if (Model.Records.All(r => double.IsNaN(r.Mrl))) {
-                    hiddenProperties.Add("Mrl");
+                    hiddenProperties.Add(nameof(SingleValueConcentrationSummaryRecord.Mrl));
                 }
                 sb.AppendDescriptionParagraph($"Total {Model.Records.Count} concentration single values for {foodsCount} foods and {substancesCount} substances.");
                 sb.AppendTable(

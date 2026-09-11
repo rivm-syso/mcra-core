@@ -242,41 +242,41 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 targetPanelBuilder.RenderPanel(sb);
 
                 if (!hasUncertainty) {
-                    hiddenProperties.Add("LowerRisk_UncLower");
-                    hiddenProperties.Add("UpperRisk_UncUpper");
-                    hiddenProperties.Add("LowerHc_UncLower");
-                    hiddenProperties.Add("UpperHc_UncUpper");
-                    hiddenProperties.Add("LowerExposure_UncLower");
-                    hiddenProperties.Add("UpperExposure_UncUpper");
-                    hiddenProperties.Add("MedianAllRisk_UncMedian");
-                    hiddenProperties.Add("LowerAllRisk_UncMedian");
-                    hiddenProperties.Add("UpperAllRisk_UncMedian");
+                    hiddenProperties.Add(nameof(HazardExposureRecord.LowerRisk_UncLower));
+                    hiddenProperties.Add(nameof(HazardExposureRecord.UpperRisk_UncUpper));
+                    hiddenProperties.Add(nameof(HazardExposureRecord.LowerHc_UncLower));
+                    hiddenProperties.Add(nameof(HazardExposureRecord.UpperHc_UncUpper));
+                    hiddenProperties.Add(nameof(HazardExposureRecord.LowerExposure_UncLower));
+                    hiddenProperties.Add(nameof(HazardExposureRecord.UpperExposure_UncUpper));
+                    hiddenProperties.Add(nameof(HazardExposureRecord.MedianAllRisk_UncMedian));
+                    hiddenProperties.Add(nameof(HazardExposureRecord.LowerAllRisk_UncMedian));
+                    hiddenProperties.Add(nameof(HazardExposureRecord.UpperAllRisk_UncMedian));
                 } else {
-                    hiddenProperties.Add("MedianAllRisk");
-                    hiddenProperties.Add("LowerAllRisk");
-                    hiddenProperties.Add("UpperAllRisk");
+                    hiddenProperties.Add(nameof(HazardExposureRecord.MedianAllRisk));
+                    hiddenProperties.Add(nameof(HazardExposureRecord.LowerAllRisk));
+                    hiddenProperties.Add(nameof(HazardExposureRecord.UpperAllRisk));
                 }
                 if (!hasHcVariability) {
-                    hiddenProperties.Add("LowerHc");
-                    hiddenProperties.Add("UpperHc");
+                    hiddenProperties.Add(nameof(HazardExposureRecord.LowerHc));
+                    hiddenProperties.Add(nameof(HazardExposureRecord.UpperHc));
                 }
                 if (!hasUncertainty) {
-                    hiddenProperties.Add("LowerHc_UncLower");
-                    hiddenProperties.Add("UpperHc_UncUpper");
-                    hiddenProperties.Add("MedianHc");
+                    hiddenProperties.Add(nameof(HazardExposureRecord.LowerHc_UncLower));
+                    hiddenProperties.Add(nameof(HazardExposureRecord.UpperHc_UncUpper));
+                    hiddenProperties.Add(nameof(HazardExposureRecord.MedianHc));
                 }
-                hiddenProperties.Add("MeanExposure");
-                hiddenProperties.Add("StDevExposure");
-                hiddenProperties.Add("MeanHc");
-                hiddenProperties.Add("StDevHc");
-                hiddenProperties.Add("LowerRisk");
-                hiddenProperties.Add("MedianRisk");
-                hiddenProperties.Add("UpperRisk");
+                hiddenProperties.Add(nameof(HazardExposureRecord.MeanExposure));
+                hiddenProperties.Add(nameof(HazardExposureRecord.StDevExposure));
+                hiddenProperties.Add(nameof(HazardExposureRecord.MeanHc));
+                hiddenProperties.Add(nameof(HazardExposureRecord.StDevHc));
+                hiddenProperties.Add(nameof(HazardExposureRecord.LowerRisk));
+                hiddenProperties.Add(nameof(HazardExposureRecord.MedianRisk));
+                hiddenProperties.Add(nameof(HazardExposureRecord.UpperRisk));
 
                 var records = Model.HazardExposureRecords.SelectMany(c => c.Records).ToList();
                 if (records.All(c => string.IsNullOrEmpty(c.ExpressionType))) {
-                    hiddenProperties.Add("BiologicalMatrix");
-                    hiddenProperties.Add("ExpressionType");
+                    hiddenProperties.Add(nameof(HazardExposureRecord.BiologicalMatrix));
+                    hiddenProperties.Add(nameof(HazardExposureRecord.ExpressionType));
                 }
                 sb.AppendTable(
                     Model,

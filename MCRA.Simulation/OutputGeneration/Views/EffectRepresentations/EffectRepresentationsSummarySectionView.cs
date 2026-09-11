@@ -6,10 +6,10 @@ namespace MCRA.Simulation.OutputGeneration.Views {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>();
             if (!Model.Records.Any(r => r.HasBenchmarkResponse)) {
-                hiddenProperties.Add("BenchmarkResponseType");
-                hiddenProperties.Add("BenchmarkResponse");
+                hiddenProperties.Add(nameof(EffectRepresentationRecord.BenchmarkResponseType));
+                hiddenProperties.Add(nameof(EffectRepresentationRecord.BenchmarkResponse));
             } else if (Model.Records.All(r => r.HasBenchmarkResponse)) {
-                hiddenProperties.Add("HasBenchmarkResponse");
+                hiddenProperties.Add(nameof(EffectRepresentationRecord.HasBenchmarkResponse));
             }
             var missingBenchmarkResponseCount = Model.Records.Count(r => !r.HasBenchmarkResponse);
 

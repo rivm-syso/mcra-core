@@ -6,7 +6,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>();
             if (!Model.Records?.Any(r => !string.IsNullOrEmpty(r.CodeParent)) ?? true) {
-                hiddenProperties.Add("CodeParent");
+                hiddenProperties.Add(nameof(NonDietaryExposureSourceSummaryRecord.CodeParent));
             }
 
             // Description paragraph

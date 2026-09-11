@@ -5,9 +5,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
     public class ScreeningSummarySectionView : SectionView<ScreeningSummarySection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string> {
-                "CompoundCode",
-                "FoodAsEatenCode",
-                "FoodAsMeasuredCode"
+                nameof(ScreeningSummaryRecord.CompoundCode),
+                nameof(ScreeningSummaryRecord.FoodAsEatenCode),
+                nameof(ScreeningSummaryRecord.FoodAsMeasuredCode)
             };
             var countRiskDrivers = Model.GroupedScreeningSummaryRecords.Count - 1;
             var countComponents = Model.GroupedScreeningSummaryRecords.Take(countRiskDrivers).Sum(c => c.NumberOfFoods);
@@ -71,19 +71,19 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 );
 
                 if (Model.ScreeningSummaryRecords.All(c => double.IsNaN(c.WeightDetect))) {
-                    hiddenProperties.Add("WeightDetect");
+                    hiddenProperties.Add(nameof(ScreeningSummaryRecord.WeightDetect));
                 }
                 if (Model.ScreeningSummaryRecords.All(c => double.IsNaN(c.WeightCensoredValues))) {
-                    hiddenProperties.Add("WeightCensoredValues");
+                    hiddenProperties.Add(nameof(ScreeningSummaryRecord.WeightCensoredValues));
                 }
                 if (Model.ScreeningSummaryRecords.All(c => double.IsNaN(c.MuCensoredValues))) {
-                    hiddenProperties.Add("MuCensoredValues");
+                    hiddenProperties.Add(nameof(ScreeningSummaryRecord.MuCensoredValues));
                 }
                 if (Model.ScreeningSummaryRecords.All(c => double.IsNaN(c.SigmaCensoredValues))) {
-                    hiddenProperties.Add("SigmaCensoredValues");
+                    hiddenProperties.Add(nameof(ScreeningSummaryRecord.SigmaCensoredValues));
                 }
                 if (Model.ScreeningSummaryRecords.All(c => c.FractionCensoredValues == 0)) {
-                    hiddenProperties.Add("FractionCensoredValues");
+                    hiddenProperties.Add(nameof(ScreeningSummaryRecord.FractionCensoredValues));
                 }
 
                 sb.AppendTable(

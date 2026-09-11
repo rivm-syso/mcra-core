@@ -5,11 +5,11 @@ namespace MCRA.Simulation.OutputGeneration.Views {
     public class PbkModelParametersSummarySectionView : SectionView<PbkModelParametersSummarySection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string> {
-                "SubstanceCode",
-                "SubstanceName"
+                nameof(PbkModelParameterSummaryRecord.SubstanceCode),
+                nameof(PbkModelParameterSummaryRecord.SubstanceName)
             };
             if (Model.Records.All(r => string.IsNullOrEmpty(r.Remark))) {
-                hiddenProperties.Add("Remark");
+                hiddenProperties.Add(nameof(PbkModelParameterSummaryRecord.Remark));
             }
 
             var unmatchedParameters = Model.Records

@@ -1,15 +1,16 @@
-﻿using MCRA.Simulation.OutputGeneration.Helpers;
-using System.Text;
+﻿using System.Text;
+using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
+using MCRA.Simulation.OutputGeneration.Helpers;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class HbmVsModelledIndividualDayConcentrationsBySubstanceSectionView : SectionView<HbmVsModelledIndividualDayConcentrationsBySubstanceSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>();
             if (Model.Records.All(r => string.IsNullOrEmpty(r.BiologicalMatrix))) {
-                hiddenProperties.Add("BiologicalMatrix");
+                hiddenProperties.Add(nameof(BiologicalMatrixConcentrationPercentilesRecord.BiologicalMatrix));
             }
             if (Model.Records.All(r => string.IsNullOrEmpty(r.ExposureRoute))) {
-                hiddenProperties.Add("ExposureRoute");
+                hiddenProperties.Add(nameof(BiologicalMatrixConcentrationPercentilesRecord.ExposureRoute));
             }
 
             var percentileDataSection = DataSectionHelper.CreateCsvDataSection(

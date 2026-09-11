@@ -6,16 +6,16 @@ namespace MCRA.Simulation.OutputGeneration.Views {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>();
             if (Model.Records.All(c => double.IsNaN(c.Percentile))) {
-                hiddenProperties.Add("Percentile");
+                hiddenProperties.Add(nameof(SingleValueConsumptionsDataSummaryRecord.Percentile));
             }
             if (Model.Records.All(c => string.IsNullOrEmpty(c.Reference))) {
-                hiddenProperties.Add("Reference");
+                hiddenProperties.Add(nameof(SingleValueConsumptionsDataSummaryRecord.Reference));
             }
             if (Model.Records.All(c => string.IsNullOrEmpty(c.PopulationName))) {
-                hiddenProperties.Add("PopulationName");
+                hiddenProperties.Add(nameof(SingleValueConsumptionsDataSummaryRecord.PopulationName));
             }
             if (Model.Records.All(c => string.IsNullOrEmpty(c.PopulationId))) {
-                hiddenProperties.Add("PopulationId");
+                hiddenProperties.Add(nameof(SingleValueConsumptionsDataSummaryRecord.PopulationId));
             }
             sb.AppendDescriptionParagraph($"Total {Model.Records.Count} single value consumption estimates.");
             sb.AppendTable(

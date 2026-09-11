@@ -7,7 +7,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             var hiddenProperties = new List<string>();
             if (Model.Records.All(r => string.IsNullOrEmpty(r.ExposureRoute))) {
-                hiddenProperties.Add("ExposureRoute");
+                hiddenProperties.Add(nameof(HbmSamplesSummaryRecord.ExposureRoute));
             }
 
             sb.AppendTable(

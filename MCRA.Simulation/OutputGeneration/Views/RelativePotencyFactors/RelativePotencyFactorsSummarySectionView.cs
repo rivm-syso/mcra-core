@@ -6,8 +6,8 @@ namespace MCRA.Simulation.OutputGeneration.Views {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>();
             if (Model.Records.All(r => double.IsNaN(r.RelativePotencyFactorLowerBoundPercentile))) {
-                hiddenProperties.Add("RelativePotencyFactorLowerBoundPercentile");
-                hiddenProperties.Add("RelativePotencyFactorUpperBoundPercentile");
+                hiddenProperties.Add(nameof(RelativePotencyFactorsSummaryRecord.RelativePotencyFactorLowerBoundPercentile));
+                hiddenProperties.Add(nameof(RelativePotencyFactorsSummaryRecord.RelativePotencyFactorUpperBoundPercentile));
             }
             var failedRecordCount = Model.Records.Count(r => double.IsNaN(r.RelativePotencyFactor));
 

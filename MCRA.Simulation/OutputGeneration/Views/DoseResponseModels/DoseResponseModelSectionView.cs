@@ -6,42 +6,36 @@ namespace MCRA.Simulation.OutputGeneration.Views {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>();
             if (Model.DoseResponseFits.All(r => string.IsNullOrEmpty(r.CovariateLevel))) {
-                hiddenProperties.Add("CovariateLevel");
+                hiddenProperties.Add(nameof(DoseResponseFitRecord.CovariateLevel));
             }
             if (Model.DoseResponseFits.All(r => string.IsNullOrEmpty(r.ModelParameterValues))) {
-                hiddenProperties.Add("ModelParameterValues");
+                hiddenProperties.Add(nameof(DoseResponseFitRecord.ModelParameterValues));
             }
             if (Model.DoseResponseFits.Count <= 1) {
-                hiddenProperties.Add("RelativePotencyFactor");
-                hiddenProperties.Add("RpfLower");
-                hiddenProperties.Add("RpfUpper");
-                hiddenProperties.Add("RpfUncertainMedian");
-                hiddenProperties.Add("RpfUncertainLowerBoundPercentile");
-                hiddenProperties.Add("RpfUncertainUpperBoundPercentile");
+                hiddenProperties.Add(nameof(DoseResponseFitRecord.RelativePotencyFactor));
+                hiddenProperties.Add(nameof(DoseResponseFitRecord.RpfLower));
+                hiddenProperties.Add(nameof(DoseResponseFitRecord.RpfUpper));
+                hiddenProperties.Add(nameof(DoseResponseFitRecord.RpfUncertainMedian));
+                hiddenProperties.Add(nameof(DoseResponseFitRecord.RpfUncertainLowerBoundPercentile));
+                hiddenProperties.Add(nameof(DoseResponseFitRecord.RpfUncertainUpperBoundPercentile));
             }
             if (!Model.DoseResponseFits.Any(r => r.BenchmarkDosesUncertain != null && r.BenchmarkDosesUncertain.Any())) {
-                hiddenProperties.Add("BenchmarkDosesUncertainMedian");
-                hiddenProperties.Add("BenchmarkDosesUncertainLowerBoundPercentile");
-                hiddenProperties.Add("BenchmarkDosesUncertainUpperBoundPercentile");
-                hiddenProperties.Add("BenchmarkDoseLower");
-                hiddenProperties.Add("BenchmarkDoseUpper");
+                hiddenProperties.Add(nameof(DoseResponseFitRecord.BenchmarkDosesUncertainMedian));
+                hiddenProperties.Add(nameof(DoseResponseFitRecord.BenchmarkDosesUncertainLowerBoundPercentile));
+                hiddenProperties.Add(nameof(DoseResponseFitRecord.BenchmarkDosesUncertainUpperBoundPercentile));
+                hiddenProperties.Add(nameof(DoseResponseFitRecord.BenchmarkDoseLower));
+                hiddenProperties.Add(nameof(DoseResponseFitRecord.BenchmarkDoseUpper));
             } else {
-                hiddenProperties.Add("BenchmarkDoseLowerConfidenceLimit");
-                hiddenProperties.Add("BenchmarkDoseUpperConfidenceLimit");
-                hiddenProperties.Add("BenchmarkDoseLower");
-                hiddenProperties.Add("BenchmarkDoseUpper");
+                hiddenProperties.Add(nameof(DoseResponseFitRecord.BenchmarkDoseLowerConfidenceLimit));
+                hiddenProperties.Add(nameof(DoseResponseFitRecord.BenchmarkDoseUpperConfidenceLimit));
+                hiddenProperties.Add(nameof(DoseResponseFitRecord.BenchmarkDoseLower));
+                hiddenProperties.Add(nameof(DoseResponseFitRecord.BenchmarkDoseUpper));
             }
 
             if (!Model.DoseResponseFits.Any(r => r.RpfUncertain != null && r.RpfUncertain.Any())) {
-                hiddenProperties.Add("RpfUncertainMedian");
-                hiddenProperties.Add("RpfUncertainLowerBoundPercentile");
-                hiddenProperties.Add("RpfUncertainUpperBoundPercentile");
-            }
-            if (Model.NumberOfBootstraps == null) {
-                hiddenProperties.Add("NumberOfBootstraps");
-            }
-            if (string.IsNullOrEmpty(Model.Message)) {
-                hiddenProperties.Add("Message");
+                hiddenProperties.Add(nameof(DoseResponseFitRecord.RpfUncertainMedian));
+                hiddenProperties.Add(nameof(DoseResponseFitRecord.RpfUncertainLowerBoundPercentile));
+                hiddenProperties.Add(nameof(DoseResponseFitRecord.RpfUncertainUpperBoundPercentile));
             }
 
             //Render HTML

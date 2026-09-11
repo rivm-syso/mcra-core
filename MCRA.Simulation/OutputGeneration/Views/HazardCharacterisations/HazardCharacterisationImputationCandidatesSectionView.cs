@@ -6,39 +6,39 @@ namespace MCRA.Simulation.OutputGeneration.Views {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>();
             if (Model.Records.All(r => string.IsNullOrEmpty(r.ModelCode))) {
-                hiddenProperties.Add("ModelCode");
+                hiddenProperties.Add(nameof(HazardCharacterisationImputationRecord.ModelCode));
             }
             if (Model.Records.All(r => double.IsNaN(r.TargetDoseLowerBoundPercentile))) {
-                hiddenProperties.Add("TargetDoseLowerBoundPercentile");
-                hiddenProperties.Add("TargetDoseUpperBoundPercentile");
-                hiddenProperties.Add("TargetDoseLowerBoundPercentileUnc");
-                hiddenProperties.Add("TargetDoseUpperBoundPercentileUnc");
+                hiddenProperties.Add(nameof(HazardCharacterisationImputationRecord.TargetDoseLowerBoundPercentile));
+                hiddenProperties.Add(nameof(HazardCharacterisationImputationRecord.TargetDoseUpperBoundPercentile));
+                hiddenProperties.Add(nameof(HazardCharacterisationImputationRecord.TargetDoseLowerBoundPercentileUnc));
+                hiddenProperties.Add(nameof(HazardCharacterisationImputationRecord.TargetDoseUpperBoundPercentileUnc));
             }
             if (Model.Records.All(r => double.IsNaN(r.GeometricStandardDeviation))) {
-                hiddenProperties.Add("GeometricStandardDeviation");
+                hiddenProperties.Add(nameof(HazardCharacterisationImputationRecord.GeometricStandardDeviation));
             }
             if (Model.Records.All(r => string.IsNullOrEmpty(r.PotencyOrigin))) {
-                hiddenProperties.Add("PotencyOrigin");
+                hiddenProperties.Add(nameof(HazardCharacterisationImputationRecord.PotencyOrigin));
             }
             if (Model.Records.All(r => string.IsNullOrEmpty(r.Organ))) {
-                hiddenProperties.Add("Organ");
+                hiddenProperties.Add(nameof(HazardCharacterisationImputationRecord.Organ));
             }
             if (Model.Records.All(r => double.IsNaN(r.NominalKineticConversionFactor) || r.NominalKineticConversionFactor == 1D)) {
-                hiddenProperties.Add("NominalKineticConversionFactor");
+                hiddenProperties.Add(nameof(HazardCharacterisationImputationRecord.NominalKineticConversionFactor));
             }
             if (Model.Records.All(r => double.IsNaN(r.NominalInterSpeciesConversionFactor) || r.NominalInterSpeciesConversionFactor == 1D)) {
-                hiddenProperties.Add("NominalInterSpeciesConversionFactor");
+                hiddenProperties.Add(nameof(HazardCharacterisationImputationRecord.NominalInterSpeciesConversionFactor));
             }
             if (Model.Records.All(r => double.IsNaN(r.NominalIntraSpeciesConversionFactor) || r.NominalIntraSpeciesConversionFactor == 1D)) {
-                hiddenProperties.Add("NominalIntraSpeciesConversionFactor");
+                hiddenProperties.Add(nameof(HazardCharacterisationImputationRecord.NominalIntraSpeciesConversionFactor));
             }
             if (Model.Records.All(r => double.IsNaN(r.ExpressionTypeConversionFactor) || r.ExpressionTypeConversionFactor == 1D)) {
-                hiddenProperties.Add("ExpressionTypeConversionFactor");
+                hiddenProperties.Add(nameof(HazardCharacterisationImputationRecord.ExpressionTypeConversionFactor));
             }
             if (Model.Records.All(r => string.IsNullOrEmpty(r.ModelEquation))) {
-                hiddenProperties.Add("ModelEquation");
-                hiddenProperties.Add("ModelParameterValues");
-                hiddenProperties.Add("CriticalEffectSize");
+                hiddenProperties.Add(nameof(HazardCharacterisationImputationRecord.ModelEquation));
+                hiddenProperties.Add(nameof(HazardCharacterisationImputationRecord.ModelParameterValues));
+                hiddenProperties.Add(nameof(HazardCharacterisationImputationRecord.CriticalEffectSize));
             }
 
             //Render HTML

@@ -6,18 +6,17 @@ namespace MCRA.Simulation.OutputGeneration.Views {
         public override void RenderSectionHtml(StringBuilder sb) {
             sb.AppendDescriptionParagraph($"Number of records: {Model.Records?.Count ?? 0}");
             var hiddenProperties = new List<string>();
-            hiddenProperties.Add("Source");
             if (Model.Records.All(c => String.IsNullOrEmpty(c.Route))) {
-                hiddenProperties.Add("Route");
+                hiddenProperties.Add(nameof(ExposurePercentileRecord.Route));
             }
             if (Model.Records.All(c => String.IsNullOrEmpty(c.SubstanceCode))) {
-                hiddenProperties.Add("SubstanceCode");
-                hiddenProperties.Add("SubstanceName");
+                hiddenProperties.Add(nameof(ExposurePercentileRecord.SubstanceCode));
+                hiddenProperties.Add(nameof(ExposurePercentileRecord.SubstanceName));
             }
             if (Model.Records.All(c => c.Values.Count == 0)) {
-                hiddenProperties.Add("Median");
-                hiddenProperties.Add("LowerBound");
-                hiddenProperties.Add("UpperBound");
+                hiddenProperties.Add(nameof(ExposurePercentileRecord.Median));
+                hiddenProperties.Add(nameof(ExposurePercentileRecord.LowerBound));
+                hiddenProperties.Add(nameof(ExposurePercentileRecord.UpperBound));
             }
 
             if (Model.Records?.Count > 0) {

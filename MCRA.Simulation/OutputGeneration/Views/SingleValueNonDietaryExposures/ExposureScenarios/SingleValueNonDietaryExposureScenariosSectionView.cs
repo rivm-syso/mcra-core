@@ -7,7 +7,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (Model.Records?.Count > 0) {
                 var hiddenProperties = new List<string>();
                 if (Model.Records.All(r => string.IsNullOrEmpty(r.ExposureRoutes))) {
-                    hiddenProperties.Add("ExposureRoutes");
+                    hiddenProperties.Add(nameof(SingleValueNonDietaryExposureScenarioRecord.ExposureRoutes));
                 }
 
                 var descriptions = new List<string>();

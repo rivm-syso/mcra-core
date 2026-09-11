@@ -7,7 +7,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (Model.Records.Any()) {
                 var hiddenProperties = new List<string>();
                 if (Model.Records.All(r => string.IsNullOrEmpty(r.Description))) {
-                    hiddenProperties.Add("Description");
+                    hiddenProperties.Add(nameof(PbkModelDefinitionSummaryRecord.Description));
                 }
                 sb.AppendTable(
                    Model,

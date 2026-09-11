@@ -66,11 +66,11 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 var hiddenProperties = new List<string>();
 
                 if (Model.Records.All(r => double.IsNaN(r.MedianAllLowerBoundPercentile))) {
-                    hiddenProperties.Add("MedianAllMedianPercentile");
-                    hiddenProperties.Add("MedianAllLowerBoundPercentile");
-                    hiddenProperties.Add("MedianAllUpperBoundPercentile");
+                    hiddenProperties.Add(nameof(OccupationalExposuresByRouteRecord.MedianAllMedianPercentile));
+                    hiddenProperties.Add(nameof(OccupationalExposuresByRouteRecord.MedianAllLowerBoundPercentile));
+                    hiddenProperties.Add(nameof(OccupationalExposuresByRouteRecord.MedianAllUpperBoundPercentile));
                 } else {
-                    hiddenProperties.Add("MedianAll");
+                    hiddenProperties.Add(nameof(OccupationalExposuresByRouteRecord.MedianAll));
                 }
 
                 sb.AppendTable(

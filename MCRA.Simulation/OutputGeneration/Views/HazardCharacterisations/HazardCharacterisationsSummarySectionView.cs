@@ -10,41 +10,41 @@ namespace MCRA.Simulation.OutputGeneration.Views {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>();
             if (Model.Records.All(r => string.IsNullOrEmpty(r.ModelCode))) {
-                hiddenProperties.Add("ModelCode");
+                hiddenProperties.Add(nameof(HazardCharacterisationsSummaryRecord.ModelCode));
             }
             if (Model.Records.All(r => string.IsNullOrEmpty(r.EffectCode))) {
-                hiddenProperties.Add("EffectCode");
+                hiddenProperties.Add(nameof(HazardCharacterisationsSummaryRecord.EffectCode));
             }
             if (Model.Records.All(r => string.IsNullOrEmpty(r.EffectName))) {
-                hiddenProperties.Add("EffectName");
+                hiddenProperties.Add(nameof(HazardCharacterisationsSummaryRecord.EffectName));
             }
             if (Model.Records.All(r => double.IsNaN(r.TargetDoseLowerBoundPercentile))) {
-                hiddenProperties.Add("TargetDoseLowerBoundPercentile");
-                hiddenProperties.Add("TargetDoseUpperBoundPercentile");
-                hiddenProperties.Add("TargetDoseLowerBoundPercentileUnc");
-                hiddenProperties.Add("TargetDoseUpperBoundPercentileUnc");
+                hiddenProperties.Add(nameof(HazardCharacterisationsSummaryRecord.TargetDoseLowerBoundPercentile));
+                hiddenProperties.Add(nameof(HazardCharacterisationsSummaryRecord.TargetDoseUpperBoundPercentile));
+                hiddenProperties.Add(nameof(HazardCharacterisationsSummaryRecord.TargetDoseLowerBoundPercentileUnc));
+                hiddenProperties.Add(nameof(HazardCharacterisationsSummaryRecord.TargetDoseUpperBoundPercentileUnc));
             }
             if (Model.Records.All(r => double.IsNaN(r.GeometricStandardDeviation))) {
-                hiddenProperties.Add("GeometricStandardDeviation");
+                hiddenProperties.Add(nameof(HazardCharacterisationsSummaryRecord.GeometricStandardDeviation));
             }
             if (Model.Records.All(r => double.IsNaN(r.TargetDoseLowerBound))) {
-                hiddenProperties.Add("TargetDoseLowerBound");
+                hiddenProperties.Add(nameof(HazardCharacterisationsSummaryRecord.TargetDoseLowerBound));
             }
             if (Model.Records.All(r => double.IsNaN(r.TargetDoseUpperBound))) {
-                hiddenProperties.Add("TargetDoseUpperBound");
+                hiddenProperties.Add(nameof(HazardCharacterisationsSummaryRecord.TargetDoseUpperBound));
             }
             if (Model.Records.All(r => double.IsNaN(r.TargetDoseLowerBoundPercentileUnc))) {
-                hiddenProperties.Add("TargetDoseLowerBoundPercentileUnc");
+                hiddenProperties.Add(nameof(HazardCharacterisationsSummaryRecord.TargetDoseLowerBoundPercentileUnc));
             }
             if (Model.Records.All(r => double.IsNaN(r.TargetDoseUpperBoundPercentileUnc))) {
-                hiddenProperties.Add("TargetDoseUpperBoundPercentileUnc");
+                hiddenProperties.Add(nameof(HazardCharacterisationsSummaryRecord.TargetDoseUpperBoundPercentileUnc));
             }
             if (Model.Records.All(r => string.Equals(r.BiologicalMatrix, BiologicalMatrix.Undefined.GetShortDisplayName(), StringComparison.OrdinalIgnoreCase))) {
-                hiddenProperties.Add("BiologicalMatrix");
+                hiddenProperties.Add(nameof(HazardCharacterisationsSummaryRecord.BiologicalMatrix));
             }
             // Use case: all hazard characterisations are provided as (internal) values measured on a biological matrix, the exposure route is always the same, leave it out
             if (Model.AllHazardsAtTarget || Model.Records.All(r => string.IsNullOrEmpty(r.ExposureRoute))) {
-                hiddenProperties.Add("ExposureRoute");
+                hiddenProperties.Add(nameof(HazardCharacterisationsSummaryRecord.ExposureRoute) );
             }
 
             var failedRecordCount = Model.FailedRecordCount;

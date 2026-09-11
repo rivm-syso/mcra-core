@@ -14,10 +14,10 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 // Table
                 var hiddenProperties = new List<string>();
                 if (Model.Records.All(r => string.IsNullOrEmpty(r.StartDate))) {
-                    hiddenProperties.Add("StartDate");
+                    hiddenProperties.Add(nameof(ConcentrationLimitsDataRecord.StartDate));
                 }
                 if (Model.Records.All(r => string.IsNullOrEmpty(r.EndDate))) {
-                    hiddenProperties.Add("EndDate");
+                    hiddenProperties.Add(nameof(ConcentrationLimitsDataRecord.EndDate));
                 }
                 sb.AppendTable(
                     Model,

@@ -12,7 +12,15 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 sb.AppendDescriptionParagraph($"Total {totalRecords} consumer product exposure fraction records.");
 
                 var hiddenProperties = new List<string>();
-
+                if (Model.Records.All(r => r.ParentName == null)) {
+                    hiddenProperties.Add(nameof(ConsumerProductExposureFractionRecord.ParentName));
+                }
+                if (Model.Records.All(r => r.AgeLower == null)) {
+                    hiddenProperties.Add(nameof(ConsumerProductExposureFractionRecord.AgeLower));
+                }
+                if (Model.Records.All(r => r.Sex == null)) {
+                    hiddenProperties.Add(nameof(ConsumerProductExposureFractionRecord.Sex));
+                }
                 // Table
                 sb.AppendTable(
                     Model,

@@ -6,10 +6,10 @@ namespace MCRA.Simulation.OutputGeneration.Views {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>();
             if (Model.Records.All(c => string.IsNullOrEmpty(c.Distribution))) {
-                hiddenProperties.Add("Distribution");
+                hiddenProperties.Add(nameof(ExposureBiomarkerConversionRecord.Distribution));
             }
             if (Model.Records.All(c => double.IsNaN(c.VariabilityUpper))) {
-                hiddenProperties.Add("CV uncertainty");
+                hiddenProperties.Add(nameof(ExposureBiomarkerConversionRecord.VariabilityUpper));
             }
             //Render HTML
             sb.AppendDescriptionParagraph($"Number of exposure biomarker conversions: {Model.Records.Count}");

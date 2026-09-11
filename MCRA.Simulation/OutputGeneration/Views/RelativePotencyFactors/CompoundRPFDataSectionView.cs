@@ -7,19 +7,19 @@ namespace MCRA.Simulation.OutputGeneration.Views {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>();
             if (!Model.Records.Any(r => r.IsUncertain)) {
-                hiddenProperties.Add("RPFMean");
-                hiddenProperties.Add("RPFMedian");
-                hiddenProperties.Add("Range");
+                hiddenProperties.Add(nameof(CompoundRPFDataRecord.RPFMean));
+                hiddenProperties.Add(nameof(CompoundRPFDataRecord.RPFMedian));
+                hiddenProperties.Add(nameof(CompoundRPFDataRecord.Range));
             }
             if (Model.Records.All(r => double.IsNaN(r.LimitDose))) {
-                hiddenProperties.Add("LimitDose");
+                hiddenProperties.Add(nameof(CompoundRPFDataRecord.LimitDose));
             }
             if (Model.Records.All(r => double.IsNaN(r.SystemHazardDose))) {
-                hiddenProperties.Add("SystemHazardDose");
-                hiddenProperties.Add("SystemToHumanConversionFactor");
+                hiddenProperties.Add(nameof(CompoundRPFDataRecord.SystemHazardDose));
+                hiddenProperties.Add(nameof(CompoundRPFDataRecord.SystemToHumanConversionFactor));
             }
             if (Model.Records.All(r => r.PotencyOrigin == PotencyOrigin.Unknown)) {
-                hiddenProperties.Add("PotencyOrigin");
+                hiddenProperties.Add(nameof(CompoundRPFDataRecord.PotencyOrigin));
             }
 
             //Render HTML

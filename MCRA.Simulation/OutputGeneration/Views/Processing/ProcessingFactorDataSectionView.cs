@@ -7,7 +7,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (Model.Records?.Count > 0) {
                 var hiddenProperties = new List<string>();
                 if (Model.Records.All(r => double.IsNaN(r.Upper) || r.Nominal == r.Upper)) {
-                    hiddenProperties.Add("Upper");
+                    hiddenProperties.Add(nameof(ProcessingFactorDataRecord.Upper));
                 }
                 var description = $"Total {Model.Records.Count} processing factors.";
                 if (Model.DuplicateEntryCount > 0) {

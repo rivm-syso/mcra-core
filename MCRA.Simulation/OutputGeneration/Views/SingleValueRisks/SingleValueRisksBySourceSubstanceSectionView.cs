@@ -6,7 +6,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>();
             if (Model.Records.All(r => string.IsNullOrEmpty(r.ExposureRoute))) {
-                hiddenProperties.Add("ExposureRoute");
+                hiddenProperties.Add(nameof(SingleValueRisksBySourceSubstanceRecord.ExposureRoute));
             }
 
             var distinctSubstances = Model.Records.Select(r => r.SubstanceCode).Distinct().Count();

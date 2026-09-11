@@ -10,47 +10,47 @@ namespace MCRA.Simulation.OutputGeneration.Views {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>();
             if (Model.Records.All(r => string.IsNullOrEmpty(r.ModelEquation))) {
-                hiddenProperties.Add("ModelEquation");
-                hiddenProperties.Add("ModelParameterValues");
-                hiddenProperties.Add("CriticalEffectSize");
+                hiddenProperties.Add(nameof(AvailableHazardCharacterisationsSummaryRecord.ModelEquation));
+                hiddenProperties.Add(nameof(AvailableHazardCharacterisationsSummaryRecord.ModelParameterValues));
+                hiddenProperties.Add(nameof(AvailableHazardCharacterisationsSummaryRecord.CriticalEffectSize));
             }
             if (Model.Records.All(r => string.IsNullOrEmpty(r.ModelCode))) {
-                hiddenProperties.Add("ModelCode");
+                hiddenProperties.Add(nameof(AvailableHazardCharacterisationsSummaryRecord.ModelCode));
             }
             if (Model.Records.All(r => double.IsNaN(r.TargetDoseLowerBoundPercentile))) {
-                hiddenProperties.Add("TargetDoseLowerBound");
-                hiddenProperties.Add("TargetDoseUpperBound");
-                hiddenProperties.Add("TargetDoseLowerBoundPercentile");
-                hiddenProperties.Add("TargetDoseUpperBoundPercentile");
-                hiddenProperties.Add("TargetDoseLowerBoundPercentileUnc");
-                hiddenProperties.Add("TargetDoseUpperBoundPercentileUnc");
+                hiddenProperties.Add(nameof(AvailableHazardCharacterisationsSummaryRecord.TargetDoseLowerBound));
+                hiddenProperties.Add(nameof(AvailableHazardCharacterisationsSummaryRecord.TargetDoseUpperBound));
+                hiddenProperties.Add(nameof(AvailableHazardCharacterisationsSummaryRecord.TargetDoseLowerBoundPercentile));
+                hiddenProperties.Add(nameof(AvailableHazardCharacterisationsSummaryRecord.TargetDoseUpperBoundPercentile));
+                hiddenProperties.Add(nameof(AvailableHazardCharacterisationsSummaryRecord.TargetDoseLowerBoundPercentileUnc));
+                hiddenProperties.Add(nameof(AvailableHazardCharacterisationsSummaryRecord.TargetDoseUpperBoundPercentileUnc));
             }
             if (Model.Records.All(r => double.IsNaN(r.GeometricStandardDeviation))) {
-                hiddenProperties.Add("GeometricStandardDeviation");
+                hiddenProperties.Add(nameof(AvailableHazardCharacterisationsSummaryRecord.GeometricStandardDeviation));
             }
             if (Model.Records.All(r => string.IsNullOrEmpty(r.Organ))) {
-                hiddenProperties.Add("Organ");
+                hiddenProperties.Add(nameof(AvailableHazardCharacterisationsSummaryRecord.Organ));
             }
             if (Model.Records.All(r => double.IsNaN(r.NominalKineticConversionFactor) || r.NominalKineticConversionFactor == 1D)) {
-                hiddenProperties.Add("NominalKineticConversionFactor");
+                hiddenProperties.Add(nameof(AvailableHazardCharacterisationsSummaryRecord.NominalKineticConversionFactor));
             }
             if (Model.Records.All(r => double.IsNaN(r.NominalInterSpeciesConversionFactor) || r.NominalInterSpeciesConversionFactor == 1D)) {
-                hiddenProperties.Add("NominalInterSpeciesConversionFactor");
+                hiddenProperties.Add(nameof(AvailableHazardCharacterisationsSummaryRecord.NominalInterSpeciesConversionFactor));
             }
             if (Model.Records.All(r => double.IsNaN(r.NominalIntraSpeciesConversionFactor) || r.NominalIntraSpeciesConversionFactor == 1D)) {
-                hiddenProperties.Add("NominalIntraSpeciesConversionFactor");
+                hiddenProperties.Add(nameof(AvailableHazardCharacterisationsSummaryRecord.NominalIntraSpeciesConversionFactor));
             }
             if (Model.Records.All(r => double.IsNaN(r.AdditionalConversionFactor) || r.AdditionalConversionFactor == 1D)) {
-                hiddenProperties.Add("AdditionalConversionFactor");
+                hiddenProperties.Add(nameof(AvailableHazardCharacterisationsSummaryRecord.AdditionalConversionFactor));
             }
             if (Model.Records.All(r => string.IsNullOrEmpty(r.BiologicalMatrix))) {
-                hiddenProperties.Add("BiologicalMatrix");
+                hiddenProperties.Add(nameof(AvailableHazardCharacterisationsSummaryRecord.BiologicalMatrix));
             }
             if (Model.Records.All(r => string.IsNullOrEmpty(r.ExposureRoute))) {
-                hiddenProperties.Add("ExposureRoute");
+                hiddenProperties.Add(nameof(AvailableHazardCharacterisationsSummaryRecord.ExposureRoute));
             }
             if (Model.Records.All(r => string.IsNullOrEmpty(r.SystemExpressionType))) {
-                hiddenProperties.Add("SystemExpressionType");
+                hiddenProperties.Add(nameof(AvailableHazardCharacterisationsSummaryRecord.SystemExpressionType));
             }
 
             var failedRecordCount = Model.Records.Count(r => double.IsNaN(r.HazardCharacterisation));

@@ -76,27 +76,27 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             viewBag.UnitsDictionary.Add("IntakeUnit", Model.TargetUnit?.GetShortDisplayName() ?? string.Empty);
 
             if (!showUncertainty) {
-                hiddenProperties.Add("Median");
-                hiddenProperties.Add("LowerBound");
-                hiddenProperties.Add("UpperBound");
-                hiddenProperties.Add("MedianExposure");
-                hiddenProperties.Add("LowerBoundExposure");
-                hiddenProperties.Add("UpperBoundExposure");
+                hiddenProperties.Add(nameof(RiskPercentileRecord.Median));
+                hiddenProperties.Add(nameof(RiskPercentileRecord.LowerBound));
+                hiddenProperties.Add(nameof(RiskPercentileRecord.UpperBound));
+                hiddenProperties.Add(nameof(RiskPercentileRecord.MedianExposure));
+                hiddenProperties.Add(nameof(RiskPercentileRecord.LowerBoundExposure));
+                hiddenProperties.Add(nameof(RiskPercentileRecord.UpperBoundExposure));
             } else {
-                hiddenProperties.Add("ReferenceValue");
-                hiddenProperties.Add("ReferenceValueExposure");
+                hiddenProperties.Add(nameof(RiskPercentileRecord.ReferenceValue));
+                hiddenProperties.Add(nameof(RiskPercentileRecord.ReferenceValueExposure));
             }
             if (riskPercentileRecords.All(r => r.RisksPercentage == r.ExposurePercentage)) {
-                hiddenProperties.Add("RisksPercentage");
+                hiddenProperties.Add(nameof(RiskPercentileRecord.RisksPercentage));
             }
             if (Model.Reference == null || Model.RiskMetricCalculationType == RiskMetricCalculationType.SumRatios) {
-                hiddenProperties.Add("ReferenceValueExposure");
-                hiddenProperties.Add("LowerBoundExposure");
-                hiddenProperties.Add("UpperBoundExposure");
-                hiddenProperties.Add("MedianExposure");
+                hiddenProperties.Add(nameof(RiskPercentileRecord.ReferenceValueExposure));
+                hiddenProperties.Add(nameof(RiskPercentileRecord.LowerBoundExposure));
+                hiddenProperties.Add(nameof(RiskPercentileRecord.UpperBoundExposure));
+                hiddenProperties.Add(nameof(RiskPercentileRecord.MedianExposure));
             }
             if (Model.RiskMetricType == RiskMetricType.HazardExposureRatio) {
-                hiddenProperties.Add("ReferenceValueExposure");
+                hiddenProperties.Add(nameof(RiskPercentileRecord.ReferenceValueExposure));
             }
 
             // Percentiles table

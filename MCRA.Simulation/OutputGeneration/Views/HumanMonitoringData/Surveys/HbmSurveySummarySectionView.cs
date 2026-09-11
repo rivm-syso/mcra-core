@@ -7,11 +7,11 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             {
                 var hiddenProperties = new List<string>();
                 if (string.IsNullOrEmpty(Model.Record.Description)) {
-                    hiddenProperties.Add("Description");
+                    hiddenProperties.Add(nameof(HbmSurveySummaryRecord.Description));
                 }
                 sb.AppendTable(
                     Model,
-                    new List<HbmSurveySummaryRecord>() { Model.Record },
+                    [Model.Record],
                     "HumanMonitoringSurveySummaryTable",
                     ViewBag,
                     hiddenProperties: hiddenProperties,

@@ -6,12 +6,18 @@ namespace MCRA.Simulation.OutputGeneration.Views {
         public override void RenderSectionHtml(StringBuilder sb) {
             {
                 var hiddenProperties = new List<string>();
-                if (string.IsNullOrEmpty(Model.Record.Description)) {
-                    hiddenProperties.Add("Description");
+                if (Model.Records.All(r => string.IsNullOrEmpty(r.Description))) {
+                    hiddenProperties.Add(nameof(CPSurveySummaryRecord.Description));
                 }
-                _ = sb.AppendTable(
+                if (Model.Records.All(r => string.IsNullOrEmpty(r.StartDate))) {
+                    hiddenProperties.Add(nameof(CPSurveySummaryRecord.StartDate));
+                }
+                if (Model.Records.All(r => string.IsNullOrEmpty(r.EndDate))) {
+                    hiddenProperties.Add(nameof(CPSurveySummaryRecord.EndDate));
+                }
+                sb.AppendTable(
                     Model,
-                    [Model.Record],
+                    Model.Records,
                     "ConsumerProductSurveySummaryTable",
                     ViewBag,
                     hiddenProperties: hiddenProperties,

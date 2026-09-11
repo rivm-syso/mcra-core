@@ -10,12 +10,12 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
                 var hiddenProperties = new List<string>();
                 if (Model.Records.All(r => string.IsNullOrEmpty(r.CompoundCode))) {
-                    hiddenProperties.Add("CompoundCode");
-                    hiddenProperties.Add("CompoundName");
+                    hiddenProperties.Add(nameof(ConversionSummaryRecord.CompoundCode));
+                    hiddenProperties.Add(nameof(ConversionSummaryRecord.CompoundName));
                 }
                 var msValues = Model.Records.Select(r => r.MarketShare).ToList();
                 if (Model.Records.All(r => double.IsNaN(r.MarketShare) || r.MarketShare == 1)) {
-                    hiddenProperties.Add("MarketShare");
+                    hiddenProperties.Add(nameof(ConversionSummaryRecord.MarketShare));
                 }
                 sb.AppendTable(
                     Model,

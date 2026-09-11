@@ -10,9 +10,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             var uncertaintyMeanOfExposure = string.Empty;
             var hiddenProperties = new List<string>();
             if (!showUncertainty) {
-                hiddenProperties.Add("LowerBound");
-                hiddenProperties.Add("UpperBound");
-                hiddenProperties.Add("Median");
+                hiddenProperties.Add(nameof(IntakePercentileRecord.LowerBound));
+                hiddenProperties.Add(nameof(IntakePercentileRecord.UpperBound));
+                hiddenProperties.Add(nameof(IntakePercentileRecord.Median));
             } else if (Model.MeanOfExposure.Any()) {
                 uncertaintyMeanOfExposure = $"({Model.MeanOfExposure.First().Percentile(Model.UncertaintyLowerLimit):G4}, {Model.MeanOfExposure.First().Percentile(Model.UncertaintyUpperLimit):G4})";
             }

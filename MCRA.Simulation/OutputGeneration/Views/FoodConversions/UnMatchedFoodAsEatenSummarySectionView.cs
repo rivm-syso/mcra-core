@@ -8,15 +8,14 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             //Render HTML
             if (Model.FoodsNotFound > 0) {
                 var hiddenProperties = new List<string>() {
-                    "FoodAsMeasuredName",
-                    "FoodAsMeasuredCode",
-                    "CompoundCode",
-                    "CompoundName",
-                    "ConversionSteps"
+                    nameof(UnMatchedFoodAsEatenSummaryRecord.FoodAsMeasuredName),
+                    nameof(UnMatchedFoodAsEatenSummaryRecord.FoodAsMeasuredCode),
+                    nameof(UnMatchedFoodAsEatenSummaryRecord.CompoundCode),
+                    nameof(UnMatchedFoodAsEatenSummaryRecord.CompoundName),
                 };
                 if (Model.Records.Select(r => r.CompoundCode).Distinct().Count() == 1) {
-                    hiddenProperties.Add("CompoundCode");
-                    hiddenProperties.Add("FoodAsMeasuredName");
+                    hiddenProperties.Add(nameof(UnMatchedFoodAsEatenSummaryRecord.CompoundCode));
+                    hiddenProperties.Add(nameof(UnMatchedFoodAsEatenSummaryRecord.FoodAsMeasuredName));
                 }
                 sb.AppendDescriptionParagraph($"Number of unmatched foods as eaten: {Model.FoodsNotFound}");
                 if (!Model.SubstanceIndependent) {

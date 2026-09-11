@@ -8,45 +8,45 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             var records = Model.ConcentrationModelRecords;
             if (records.All(r => r.AgriculturalUseFraction == 1)) {
-                hiddenProperties.Add("AgriculturalUseFraction");
-                hiddenProperties.Add("CorrectedAgriculturalUseFraction");
+                hiddenProperties.Add(nameof(ConcentrationModelRecord.AgriculturalUseFraction));
+                hiddenProperties.Add(nameof(ConcentrationModelRecord.CorrectedAgriculturalUseFraction));
             }
             if (records.All(r => r.Mu == null)) {
-                hiddenProperties.Add("Mu");
-                hiddenProperties.Add("Sigma");
+                hiddenProperties.Add(nameof(ConcentrationModelRecord.Mu));
+                hiddenProperties.Add(nameof(ConcentrationModelRecord.Sigma));
             }
             if (records.All(r => r.MaximumResidueLimit == null)) {
-                hiddenProperties.Add("MaximumResidueLimit");
+                hiddenProperties.Add(nameof(ConcentrationModelRecord.MaximumResidueLimit));
             }
             if (records.All(r => r.FractionOfMrl == null)) {
-                hiddenProperties.Add("FractionOfMrl");
+                hiddenProperties.Add(nameof(ConcentrationModelRecord.FractionOfMrl));
             }
             if (records.All(r => string.IsNullOrEmpty(r.Warning))) {
-                hiddenProperties.Add("Warning");
+                hiddenProperties.Add(nameof(ConcentrationModelRecord.Warning));
             }
             if (records.All(r => r.DesiredModel == r.Model)) {
-                hiddenProperties.Add("DesiredModel");
+                hiddenProperties.Add(nameof(ConcentrationModelRecord.DesiredModel));
             }
             if (records.All(r => r.MeanConcentration == null)) {
-                hiddenProperties.Add("MeanConcentration");
+                hiddenProperties.Add(nameof(ConcentrationModelRecord.MeanConcentration));
             }
             if (records.All(r => double.IsNaN(r.FractionCensored))) {
-                hiddenProperties.Add("FractionCensored");
+                hiddenProperties.Add(nameof(ConcentrationModelRecord.FractionCensored));
             }
-            if (!records.Any(r => !double.IsNaN(r.FractionNonDetects) && r.FractionNonDetects> 0)) {
-                hiddenProperties.Add("FractionNonDetects");
+            if (!records.Any(r => !double.IsNaN(r.FractionNonDetects) && r.FractionNonDetects > 0)) {
+                hiddenProperties.Add(nameof(ConcentrationModelRecord.FractionNonDetects));
             }
             if (!records.Any(r => !double.IsNaN(r.FractionNonQuantifications) && r.FractionNonQuantifications > 0)) {
-                hiddenProperties.Add("FractionNonQuantifications");
+                hiddenProperties.Add(nameof(ConcentrationModelRecord.FractionNonQuantifications));
             }
             if (records.All(r => r.AgriculturalUseFraction == r.CorrectedAgriculturalUseFraction)) {
-                hiddenProperties.Add("CorrectedAgriculturalUseFraction");
+                hiddenProperties.Add(nameof(ConcentrationModelRecord.CorrectedAgriculturalUseFraction));
             }
             if (records.All(r => double.IsNaN(r.MeanConcentrationLowerBoundPercentile))) {
-                hiddenProperties.Add("MeanConcentrationLowerBoundPercentile");
+                hiddenProperties.Add(nameof(ConcentrationModelRecord.MeanConcentrationLowerBoundPercentile));
             }
             if (records.All(r => double.IsNaN(r.MeanConcentrationUpperBoundPercentile))) {
-                hiddenProperties.Add("MeanConcentrationUpperBoundPercentile");
+                hiddenProperties.Add(nameof(ConcentrationModelRecord.MeanConcentrationUpperBoundPercentile));
             }
 
             //Render HTML

@@ -29,10 +29,10 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (Model.PopulationRecords?.Count > 0) {
                 var hiddenProperties = new List<string>();
                 if (Model.PopulationRecords.All(r => r.Min == null)) {
-                    hiddenProperties.Add("Min");
+                    hiddenProperties.Add(nameof(CPPopulationCharacteristicsDataRecord.Min));
                 }
                 if (Model.PopulationRecords.All(r => r.Max == null)) {
-                    hiddenProperties.Add("Max");
+                    hiddenProperties.Add(nameof(CPPopulationCharacteristicsDataRecord.Max));
                 }
                 sb.AppendTable(
                     Model,

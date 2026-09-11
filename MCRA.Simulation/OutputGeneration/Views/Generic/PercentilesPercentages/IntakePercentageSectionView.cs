@@ -8,10 +8,10 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             bool showUncertainty = intakePercentageRecords.Any(r => !double.IsNaN(r.LowerBound) && r.LowerBound > 0);
             var hiddenProperties = new List<string>();
             if (!showUncertainty) {
-                hiddenProperties.Add("LowerBoundPercentage");
-                hiddenProperties.Add("UpperBoundPercentage");
-                hiddenProperties.Add("LowerBoundNumberOfPeopleExceedanceExposureLevel");
-                hiddenProperties.Add("UpperBoundNumberOfPeopleExceedanceExposureLevel");
+                hiddenProperties.Add(nameof(IntakePercentageRecord.LowerBoundPercentage));
+                hiddenProperties.Add(nameof(IntakePercentageRecord.UpperBoundPercentage));
+                hiddenProperties.Add(nameof(IntakePercentageRecord.LowerBoundNumberOfPeopleExceedanceExposureLevel));
+                hiddenProperties.Add(nameof(IntakePercentageRecord.UpperBoundNumberOfPeopleExceedanceExposureLevel));
             }
             //render HTML
             var description = string.Empty;

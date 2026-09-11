@@ -6,39 +6,39 @@ namespace MCRA.Simulation.OutputGeneration.Views {
     public class PopulationPropertySummarySectionView : SectionView<PopulationPropertySummarySection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string> {
-                "PopulationName",
-                "PopulationCode",
-                "Location"
+                nameof(PopulationPropertySummaryRecord.PopulationName),
+                nameof(PopulationPropertySummaryRecord.PopulationCode),
+                nameof(PopulationPropertySummaryRecord.Location)
             };
             if (Model.Records.All(r => string.IsNullOrEmpty(r.Description))) {
-                hiddenProperties.Add("Description");
+                hiddenProperties.Add(nameof(PopulationPropertySummaryRecord.Description));
             }
             if (Model.Records.All(r => string.IsNullOrEmpty(r.Location))) {
-                hiddenProperties.Add("Location");
+                hiddenProperties.Add(nameof(PopulationPropertySummaryRecord.Location));
             }
             if (Model.Records.All(r => string.IsNullOrEmpty(r.Description))) {
-                hiddenProperties.Add("Description");
+                hiddenProperties.Add(nameof(PopulationPropertySummaryRecord.Description));
             }
             if (Model.Records.All(r => string.IsNullOrEmpty(r.Value))) {
-                hiddenProperties.Add("Value");
+                hiddenProperties.Add(nameof(PopulationPropertySummaryRecord.Value));
             }
             if (Model.Records.All(r => r.MinValue == null || double.IsNaN((double)r.MinValue))) {
-                hiddenProperties.Add("MinValue");
+                hiddenProperties.Add(nameof(PopulationPropertySummaryRecord.MinValue));
             }
             if (Model.Records.All(r => r.MaxValue == null || double.IsNaN((double)r.MaxValue))) {
-                hiddenProperties.Add("MaxValue");
+                hiddenProperties.Add(nameof(PopulationPropertySummaryRecord.MaxValue));
             }
             if (Model.Records.All(r => string.IsNullOrEmpty(r.PropertyLevel))) {
-                hiddenProperties.Add("PropertyLevel");
+                hiddenProperties.Add(nameof(PopulationPropertySummaryRecord.PropertyLevel));
             }
             if (Model.Records.All(r => string.IsNullOrEmpty(r.StartDate))) {
-                hiddenProperties.Add("StartDate");
+                hiddenProperties.Add(nameof(PopulationPropertySummaryRecord.StartDate));
             }
             if (Model.Records.All(r => string.IsNullOrEmpty(r.EndDate))) {
-                hiddenProperties.Add("EndDate");
+                hiddenProperties.Add(nameof(PopulationPropertySummaryRecord.EndDate));
             }
             if (Model.Records.All(r => string.IsNullOrEmpty(r.Type))) {
-                hiddenProperties.Add("Type");
+                hiddenProperties.Add(nameof(PopulationPropertySummaryRecord.Type));
             }
 
             if (!string.IsNullOrEmpty(Model.PopulationName)) {

@@ -7,22 +7,21 @@ namespace MCRA.Simulation.OutputGeneration.Views {
     public class AcuteSingleValueDietaryExposuresSectionView : SectionView<AcuteSingleValueDietaryExposuresSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>();
-            var records = Model.Records;
 
-            if (records?.Count > 0) {
-                if (records.All(r => string.IsNullOrEmpty(r.ProcessingTypeName))) {
-                    hiddenProperties.Add("ProcessingTypeCode");
-                    hiddenProperties.Add("ProcessingTypeName");
-                    hiddenProperties.Add("ProcessingFactor");
+            if (Model.Records?.Count > 0) {
+                if (Model.Records.All(r => string.IsNullOrEmpty(r.ProcessingTypeName))) {
+                    hiddenProperties.Add(nameof(AcuteSingleValueDietaryExposureRecord.ProcessingTypeCode));
+                    hiddenProperties.Add(nameof(AcuteSingleValueDietaryExposureRecord.ProcessingTypeName));
+                    hiddenProperties.Add(nameof(AcuteSingleValueDietaryExposureRecord.ProcessingFactor));
                 }
 
-                if (records.All(r => r.OccurrenceFraction == 1)) {
-                    hiddenProperties.Add("OccurrenceFraction");
+                if (Model.Records.All(r => r.OccurrenceFraction == 1)) {
+                    hiddenProperties.Add(nameof(AcuteSingleValueDietaryExposureRecord.OccurrenceFraction));
                 }
                 var iestiMethod = Model.SingleValueDietaryExposuresCalculationMethod.GetDisplayName();
                 if (Model.SingleValueDietaryExposuresCalculationMethod == SingleValueDietaryExposuresCalculationMethod.IESTINew) {
-                    hiddenProperties.Add("CalculationMethod");
-                    hiddenProperties.Add("UnitWeightEp");
+                    hiddenProperties.Add(nameof(AcuteSingleValueDietaryExposureRecord.CalculationMethod));
+                    hiddenProperties.Add(nameof(AcuteSingleValueDietaryExposureRecord.UnitWeightEp));
                 }
 
                 var descriptions = new List<string>();

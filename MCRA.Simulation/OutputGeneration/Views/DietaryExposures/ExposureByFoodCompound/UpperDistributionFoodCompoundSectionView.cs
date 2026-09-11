@@ -33,7 +33,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     .ThenBy(r => r.CompoundName, StringComparer.OrdinalIgnoreCase)
                     .ThenBy(r => r.CompoundCode, StringComparer.OrdinalIgnoreCase)
                     .ToList();
-                hiddenProperties.Add("ContributionPercentage");
+                hiddenProperties.Add(nameof(DistributionFoodCompoundRecord.ContributionPercentage));
             }
 
             //Render HTML

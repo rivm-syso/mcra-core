@@ -15,12 +15,12 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             var hiddenProperties = new List<string>();
 
             if (!Model.Records?.Any(r => !string.IsNullOrEmpty(r.BaseFoodCode)) ?? true) {
-                hiddenProperties.Add("BaseFoodCode");
-                hiddenProperties.Add("BaseFoodName");
+                hiddenProperties.Add(nameof(FoodAsEatenConsumptionDataRecord.BaseFoodCode));
+                hiddenProperties.Add(nameof(FoodAsEatenConsumptionDataRecord.BaseFoodName));
             }
             if (!Model.Records?.Any(r => !string.IsNullOrEmpty(r.TreatmentCodes)) ?? true) {
-                hiddenProperties.Add("TreatmentCodes");
-                hiddenProperties.Add("TreatmentNames");
+                hiddenProperties.Add(nameof(FoodAsEatenConsumptionDataRecord.TreatmentCodes));
+                hiddenProperties.Add(nameof(FoodAsEatenConsumptionDataRecord.TreatmentNames));
             }
 
             if (Model.HasHierarchicalData) {

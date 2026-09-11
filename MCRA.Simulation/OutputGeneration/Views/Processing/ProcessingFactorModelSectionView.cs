@@ -7,8 +7,8 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (Model.Records?.Count > 0) {
                 var hiddenProperties = new List<string>();
                 if (Model.Records.All(r => string.IsNullOrEmpty(r.Distribution))) {
-                    hiddenProperties.Add("Mu");
-                    hiddenProperties.Add("Sigma");
+                    hiddenProperties.Add(nameof(ProcessingFactorModelRecord.Mu));
+                    hiddenProperties.Add(nameof(ProcessingFactorModelRecord.Sigma));
                 }
                 sb.AppendDescriptionParagraph($"Total {Model.Records.Count} processing factor models.");
                 sb.AppendTable(

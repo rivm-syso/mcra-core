@@ -7,27 +7,27 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             var hiddenProperties = new List<string>();
 
             if (!Model.Records?.Any(r => !string.IsNullOrEmpty(r.CodeParent)) ?? true) {
-                hiddenProperties.Add("CodeParent");
+                hiddenProperties.Add(nameof(FoodsSummaryRecord.CodeParent));
             }
             if (!Model.Records?.Any(r => !string.IsNullOrEmpty(r.BaseFoodCode)) ?? true) {
-                hiddenProperties.Add("BaseFoodCode");
-                hiddenProperties.Add("BaseFoodName");
+                hiddenProperties.Add(nameof(FoodsSummaryRecord.BaseFoodCode));
+                hiddenProperties.Add(nameof(FoodsSummaryRecord.BaseFoodName));
             }
             if (!Model.Records?.Any(r => !string.IsNullOrEmpty(r.TreatmentCodes)) ?? true) {
-                hiddenProperties.Add("TreatmentCodes");
-                hiddenProperties.Add("TreatmentNames");
+                hiddenProperties.Add(nameof(FoodsSummaryRecord.TreatmentCodes));
+                hiddenProperties.Add(nameof(FoodsSummaryRecord.TreatmentNames));
             }
             if (!Model.Records?.Any(r => r.DefaultUnitWeightRacQualifiedValue != null) ?? true) {
-                hiddenProperties.Add("DefaultUnitWeightRac");
+                hiddenProperties.Add(nameof(FoodsSummaryRecord.DefaultUnitWeightRac));
             }
             if (!Model.Records?.Any(r => r.DefaultUnitWeightEpQualifiedValue != null) ?? true) {
-                hiddenProperties.Add("DefaultUnitWeightEp");
+                hiddenProperties.Add(nameof(FoodsSummaryRecord.DefaultUnitWeightEp));
             }
             if (!Model.Records?.Any(r => r.LocationUnitWeightsRacValues?.Count > 0) ?? true) {
-                hiddenProperties.Add("LocationUnitWeightsRac");
+                hiddenProperties.Add(nameof(FoodsSummaryRecord.LocationUnitWeightsRac));
             }
             if (!Model.Records?.Any(r => r.LocationUnitWeightsEpValues?.Count > 0) ?? true) {
-                hiddenProperties.Add("LocationUnitWeightsEp");
+                hiddenProperties.Add(nameof(FoodsSummaryRecord.LocationUnitWeightsEp));
             }
 
             //Render HTML

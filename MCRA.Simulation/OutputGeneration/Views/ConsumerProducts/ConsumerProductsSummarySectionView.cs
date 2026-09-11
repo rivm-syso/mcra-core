@@ -12,7 +12,10 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             // Table
             var hiddenProperties = new List<string>();
             if (Model.Records.All(c => string.IsNullOrEmpty(c.Description))) {
-                hiddenProperties.Add("Description");
+                hiddenProperties.Add(nameof(ConsumerProductsSummaryRecord.Description));
+            }
+            if (Model.Records.All(c => string.IsNullOrEmpty(c.CodeParent))) {
+                hiddenProperties.Add(nameof(ConsumerProductsSummaryRecord.CodeParent));
             }
             sb.AppendTable(
                Model,

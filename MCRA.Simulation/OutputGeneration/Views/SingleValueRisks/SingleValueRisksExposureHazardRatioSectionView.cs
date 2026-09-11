@@ -6,35 +6,33 @@ namespace MCRA.Simulation.OutputGeneration.Views {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>();
             if (!Model.UseAdjustmentFactor) {
-                hiddenProperties.Add("AdjustmentFactor");
-                hiddenProperties.Add("AdjustedRisk");
-                hiddenProperties.Add("PUpperAdjustedRisk");
-                hiddenProperties.Add("PLowerAdjustedRisk");
+                hiddenProperties.Add(nameof(SingleValueRisksExposureHazardRatioRecord.AdjustmentFactor));
+                hiddenProperties.Add(nameof(SingleValueRisksExposureHazardRatioRecord.AdjustedRisk));
+                hiddenProperties.Add(nameof(SingleValueRisksExposureHazardRatioRecord.PUpperAdjustedRisk));
+                hiddenProperties.Add(nameof(SingleValueRisksExposureHazardRatioRecord.PLowerAdjustedRisk));
             }
             var isUncertainty = Model.Records.First().Risks.Count > 0;
             if (isUncertainty) {
-                hiddenProperties.Add("AdjustedRisk");
-                hiddenProperties.Add("Risk");
-                hiddenProperties.Add("ReferenceValueExposure");
+                hiddenProperties.Add(nameof(SingleValueRisksExposureHazardRatioRecord.AdjustedRisk));
+                hiddenProperties.Add(nameof(SingleValueRisksExposureHazardRatioRecord.Risk));
+                hiddenProperties.Add(nameof(SingleValueRisksExposureHazardRatioRecord.ReferenceValueExposure));
             } else {
-                hiddenProperties.Add("PUpperAdjustedRisk");
-                hiddenProperties.Add("PLowerAdjustedRisk");
-                hiddenProperties.Add("PUpperRisk_uncertainty");
-                hiddenProperties.Add("PLowerRisk_uncertainty");
-                hiddenProperties.Add("MedianAdjustedRisk");
-                hiddenProperties.Add("MedianRisk");
-                hiddenProperties.Add("MedianExposure");
+                hiddenProperties.Add(nameof(SingleValueRisksExposureHazardRatioRecord.PUpperAdjustedRisk));
+                hiddenProperties.Add(nameof(SingleValueRisksExposureHazardRatioRecord.PLowerAdjustedRisk));
+                hiddenProperties.Add(nameof(SingleValueRisksExposureHazardRatioRecord.PUpperRisk_uncertainty));
+                hiddenProperties.Add(nameof(SingleValueRisksExposureHazardRatioRecord.PLowerRisk_uncertainty));
+                hiddenProperties.Add(nameof(SingleValueRisksExposureHazardRatioRecord.MedianAdjustedRisk));
+                hiddenProperties.Add(nameof(SingleValueRisksExposureHazardRatioRecord.MedianRisk));
+                hiddenProperties.Add(nameof(SingleValueRisksExposureHazardRatioRecord.MedianExposure));
             }
             if (Model.Records.All(r => r.SubstanceCode == null)) {
-                hiddenProperties.Add("SubstanceCode");
-                hiddenProperties.Add("SubstanceName");
+                hiddenProperties.Add(nameof(SingleValueRisksExposureHazardRatioRecord.SubstanceCode));
+                hiddenProperties.Add(nameof(SingleValueRisksExposureHazardRatioRecord.SubstanceName));
             }
             if (!Model.UseAdjustmentFactor) {
-                hiddenProperties.Add("PUpperRisk");
-                hiddenProperties.Add("PLowerRisk");
-                hiddenProperties.Add("MedianAdjustedRisk");
-                hiddenProperties.Add("AdjustmentFactor");
-                hiddenProperties.Add("AdjustedRisk");
+                hiddenProperties.Add(nameof(SingleValueRisksExposureHazardRatioRecord.MedianAdjustedRisk));
+                hiddenProperties.Add(nameof(SingleValueRisksExposureHazardRatioRecord.AdjustmentFactor));
+                hiddenProperties.Add(nameof(SingleValueRisksExposureHazardRatioRecord.AdjustedRisk));
             }
 
             var description = "Single value risks based on individual risk distribution. ";

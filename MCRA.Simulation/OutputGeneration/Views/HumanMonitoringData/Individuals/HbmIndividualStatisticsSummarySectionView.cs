@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData.Individuals;
 using MCRA.Simulation.OutputGeneration.Helpers;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
@@ -29,10 +30,10 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (Model.HbmPopulationRecords?.Count > 0) {
                 var hiddenProperties = new List<string>();
                 if (Model.HbmPopulationRecords.All(r => r.Min == null)) {
-                    hiddenProperties.Add("Min");
+                    hiddenProperties.Add(nameof(HbmPopulationCharacteristicsDataRecord.Min));
                 }
                 if (Model.HbmPopulationRecords.All(r => r.Max == null)) {
-                    hiddenProperties.Add("Max");
+                    hiddenProperties.Add(nameof(HbmPopulationCharacteristicsDataRecord.Max));
                 }
                 sb.AppendTable(
                     Model,

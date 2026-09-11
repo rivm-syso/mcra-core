@@ -6,13 +6,13 @@ namespace MCRA.Simulation.OutputGeneration.Views {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>();
             if (Model.FoodConversionSummaryRecords.All(c => c.Regionality == null)) {
-                hiddenProperties.Add("Regionality");
+                hiddenProperties.Add(nameof(TDSConversionSummaryRecord.Regionality));
             }
             if (Model.FoodConversionSummaryRecords.All(c => c.Seasonality == null)) {
-                hiddenProperties.Add("Seasonality");
+                hiddenProperties.Add(nameof(TDSConversionSummaryRecord.Seasonality));
             }
             if (Model.FoodConversionSummaryRecords.All(c => c.Description == null)) {
-                hiddenProperties.Add("Description");
+                hiddenProperties.Add(nameof(TDSConversionSummaryRecord.Description));
             }
 
             //Render HTML

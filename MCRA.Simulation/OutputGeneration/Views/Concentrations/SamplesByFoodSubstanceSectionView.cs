@@ -9,24 +9,24 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             var hiddenProperties = new List<string>();
             if (Model.ConcentrationInputDataRecords.All(r => string.IsNullOrEmpty(r.MeasuredCompoundCode) || r.MeasuredCompoundCode == r.CompoundCode)) {
-                hiddenProperties.Add("MeasuredCompoundCode");
-                hiddenProperties.Add("MeasuredCompoundName");
+                hiddenProperties.Add(nameof(SamplesByFoodSubstanceRecord.MeasuredCompoundCode));
+                hiddenProperties.Add(nameof(SamplesByFoodSubstanceRecord.MeasuredCompoundName));
             }
             if (Model.ConcentrationInputDataRecords.All(r => r.ZerosCount <= 0)) {
-                hiddenProperties.Add("ZerosCount");
+                hiddenProperties.Add(nameof(SamplesByFoodSubstanceRecord.ZerosCount));
             }
             if (!Model.ConcentrationInputDataRecords.Any(r => r.Extrapolated)) {
-                hiddenProperties.Add("Extrapolated");
+                hiddenProperties.Add(nameof(SamplesByFoodSubstanceRecord.Extrapolated));
             }
             if (Model.ConcentrationInputDataRecords.All(c => double.IsNaN((double)c.MeanLODs))){
-                hiddenProperties.Add("MeanLODs");
+                hiddenProperties.Add(nameof(SamplesByFoodSubstanceRecord.MeanLODs));
             }
             if (Model.ConcentrationInputDataRecords.All(c => double.IsNaN((double)c.MeanLOQs))) {
-                hiddenProperties.Add("MeanLOQs");
+                hiddenProperties.Add(nameof(SamplesByFoodSubstanceRecord.MeanLOQs));
             }
             var focalCommodityRecords = Model.ConcentrationInputDataRecords.Where(r => r.FocalCombination);
             if (!focalCommodityRecords.Any()) {
-                hiddenProperties.Add("FocalCombination");
+                hiddenProperties.Add(nameof(SamplesByFoodSubstanceRecord.FocalCombination));
             } else {
                 if (focalCommodityRecords.Count() == 1) {
                     var combination = focalCommodityRecords.First();
