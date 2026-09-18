@@ -25,6 +25,19 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                      $"{record.ExposureSetCode}: {record.SubstanceName}, {record.Route}",
                      true
                  );
+                var exposureSet = Model.Records.FirstOrDefault(c => c.ExposureSetCode == record.ExposureSetCode);
+                //Render HTML
+                panelSb.AppendTable(
+                   Model,
+                   [exposureSet],
+                   $"ConsumerProductExposureSet{record.ExposureSetCode}Table",
+                   ViewBag,
+                   caption: "Consumer product exposure set summary.",
+                   saveCsv: true,
+                   header: true,
+                   displayLimit: 20,
+                   hiddenProperties: hiddenProperties
+                );
 
                 panelBuilder.AddPanel(
                      id: $"Panel_{record.ExposureSetCode}",
