@@ -70,11 +70,11 @@ namespace MCRA.Simulation.OutputGeneration {
         public string ErSpecificationUncUpper { get; set; }
 
         [Description("Dose unit of the exposure response function.")]
-        [DisplayName("EFR dose unit")]
+        [DisplayName("ERF dose unit")]
         public string ErfDoseUnit { get; set; }
 
         [Description("Alignment factor to align dose unit of ERF with target unit.")]
-        [DisplayName("EFR dose unit alignment factor")]
+        [DisplayName("ERF dose unit alignment factor")]
         public double ErfDoseAlignmentFactor { get; set; }
 
         [Description("The counterfactual value of the exposure response function.")]
