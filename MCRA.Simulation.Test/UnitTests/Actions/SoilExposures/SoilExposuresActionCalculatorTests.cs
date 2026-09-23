@@ -81,6 +81,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions.SoilExposures {
                 SoilConcentrationDistributionUnit = soilConcentrations.FirstOrDefault().Unit,
                 SoilIngestionUnit = soilIngestions.FirstOrDefault().ExposureUnit,
                 Individuals = IndividualDaysGenerator.CreateSimulatedIndividualDays(individuals),
+                SoilBioaccessibilityFractions = []
             };
 
             var calculator = new SoilExposuresActionCalculator(project);
@@ -135,7 +136,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions.SoilExposures {
                 SoilConcentrationModels = concentrationModels,
                 SoilIngestions = soilIngestions,
                 SoilConcentrationDistributionUnit = soilConcentrations.FirstOrDefault().Unit,
-                SoilIngestionUnit = soilIngestions.FirstOrDefault().ExposureUnit
+                SoilIngestionUnit = soilIngestions.FirstOrDefault().ExposureUnit,
+                SoilBioaccessibilityFractions = []
             };
 
             var calculator = new SoilExposuresActionCalculator(project);

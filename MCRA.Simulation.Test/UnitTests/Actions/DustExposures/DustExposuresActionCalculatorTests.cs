@@ -88,6 +88,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions.DustExposures {
                 DustConcentrationDistributionUnit = dustConcentrations.FirstOrDefault().Unit,
                 DustIngestionUnit = dustIngestions.FirstOrDefault().ExposureUnit,
                 Individuals = IndividualDaysGenerator.CreateSimulatedIndividualDays(individuals),
+                DustBioaccessibilityFractions = []
             };
 
             var calculator = new DustExposuresActionCalculator(project);
@@ -154,7 +155,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions.DustExposures {
                 DustAdherenceAmounts = dustAdherenceAmounts,
                 DustAvailabilityFractions = dustAvailabilityFractions,
                 DustConcentrationDistributionUnit = dustConcentrations.FirstOrDefault().Unit,
-                DustIngestionUnit = dustIngestions.FirstOrDefault().ExposureUnit
+                DustIngestionUnit = dustIngestions.FirstOrDefault().ExposureUnit,
+                DustBioaccessibilityFractions = []
             };
 
             var calculator = new DustExposuresActionCalculator(project);
