@@ -61,7 +61,6 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 result.Add(UncertaintySource.HbmNonDetectImputation);
                 result.Add(UncertaintySource.HbmMissingValueImputation);
                 result.Add(UncertaintySource.ExposureBiomarkerConversion);
-                result.Add(UncertaintySource.KineticConversionFactors);
             }
             return result;
         }
