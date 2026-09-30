@@ -15,7 +15,6 @@ namespace MCRA.Simulation.OutputGeneration {
 
         protected static double[] _percentages = [5, 10, 25, 50, 75, 90, 95];
         protected readonly double _upperWhisker = 95;
-
         public ExposureType ExposureType { get; set; }
         public List<T1> Records { get; set; } = [];
         public SerializableDictionary<ExposureTarget, List<T2>> HbmBoxPlotRecords { get; set; } = [];

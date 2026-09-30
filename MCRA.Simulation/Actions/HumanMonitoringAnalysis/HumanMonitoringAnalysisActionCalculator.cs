@@ -345,7 +345,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             }
 
             // Compute cumulative concentrations (only for single target)
-            // Allways calculate cumulative individual day concentrations, these are needed for startification on a daily day base
+            // Always calculate cumulative individual day concentrations, these are needed for stratification on a daily day base
             if (individualDayCollections.Count == 1) {
                 if (data.CorrectedRelativePotencyFactors != null) {
 

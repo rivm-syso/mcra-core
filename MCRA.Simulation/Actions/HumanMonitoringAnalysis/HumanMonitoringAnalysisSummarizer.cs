@@ -14,6 +14,7 @@ using MCRA.Utils.ExtensionMethods;
 namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
     public enum HumanMonitoringAnalysisSections {
         CumulativeConcentrationsSections,
+        CumulativeConcentrationsTimepointSections,
         HbmConcentrationsByTargetSubstanceSection,
         HbmConcentrationsByTargetSubstanceTimePointSection,
         HbmConcentrationsByTargetSubstanceDetailsSection,
@@ -51,11 +52,26 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             if ((data.HbmCumulativeIndividualCollection != null || data.HbmCumulativeIndividualDayCollection != null)
                 && outputSettings.ShouldSummarize(HumanMonitoringAnalysisSections.CumulativeConcentrationsSections)
             ) {
-                SummarizeCumulativeConcentrations(
+                summarizeCumulativeConcentrations(
                     stratifier,
                     data.HbmCumulativeIndividualDayCollection,
                     data.HbmCumulativeIndividualCollection,
                     _configuration.ExposureType,
+                    _configuration.VariabilityLowerPercentage,
+                    _configuration.VariabilityUpperPercentage,
+                    _configuration.SkipPrivacySensitiveOutputs,
+                    subHeader,
+                    subOrder++
+                 );
+            }
+
+            // HBM cumulative concentrations timepoints
+            if (data.HbmCumulativeIndividualDayCollection != null
+                && outputSettings.ShouldSummarize(HumanMonitoringAnalysisSections.CumulativeConcentrationsTimepointSections)
+            ) {
+                summarizeCumulativeConcentrationsTimepoints(
+                    stratifier,
+                    data.HbmCumulativeIndividualDayCollection,
                     _configuration.VariabilityLowerPercentage,
                     _configuration.VariabilityUpperPercentage,
                     _configuration.SkipPrivacySensitiveOutputs,
@@ -90,7 +106,6 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 summarizeHbmConcentrationsBySubstanceTimePoint(
                     stratifier,
                     data.HbmIndividualDayCollections,
-                    data.HbmIndividualCollections,
                     data.ActiveSubstances,
                     _configuration.VariabilityLowerPercentage,
                     _configuration.VariabilityUpperPercentage,
@@ -150,7 +165,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 && actionResult.ExposureMatrix != null
                 && outputSettings.ShouldSummarize(HumanMonitoringAnalysisSections.McrCoExposureSection)
             ) {
-                SummarizeMaximumCumulativeRatio(
+                summarizeMaximumCumulativeRatio(
                     actionResult.DriverSubstances,
                     actionResult.ExposureMatrix,
                     data.HbmIndividualDayCollections.FirstOrDefault().TargetUnit,
@@ -171,7 +186,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 && outputSettings.ShouldSummarize(HumanMonitoringAnalysisSections.IndividualMonitoringConcentrationsSection)
                 && data.HbmIndividualDayCollections.Any()
             ) {
-                SummarizeIndividualMonitoringConcentrations(
+                summarizeIndividualMonitoringConcentrations(
                     data.ActiveSubstances,
                     data.HbmSamplingMethods.First(),
                     data.HbmIndividualDayCollections,
@@ -191,11 +206,18 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             var stratifier = getPopulationStratifier(data);
 
             if (data.HbmCumulativeIndividualCollection != null || data.HbmCumulativeIndividualDayCollection != null) {
-                summarizeCumulativeConcentrationseUncertainty(
+                summarizeCumulativeConcentrationsUncertainty(
                     stratifier,
                     data.HbmCumulativeIndividualDayCollection,
                     data.HbmCumulativeIndividualCollection,
                     _configuration.ExposureType,
+                    _configuration.UncertaintyLowerBound,
+                    _configuration.UncertaintyUpperBound,
+                    header
+                );
+                summarizeCumulativeConcentrationsTimePointUncertainty(
+                    stratifier,
+                    data.HbmCumulativeIndividualDayCollection,
                     _configuration.UncertaintyLowerBound,
                     _configuration.UncertaintyUpperBound,
                     header
@@ -376,7 +398,6 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
         private void summarizeHbmConcentrationsBySubstanceTimePoint(
            PopulationStratifier stratifier,
            ICollection<HbmIndividualDayCollection> hbmIndividualDayCollections,
-           ICollection<HbmIndividualCollection> hbmIndividualCollections,
            ICollection<Compound> activeSubstances,
            double lowerPercentage,
            double upperPercentage,
@@ -580,7 +601,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             }
         }
 
-        private void summarizeHbmConcentrationsByTargetSubstanceUncertainty(
+        private static void summarizeHbmConcentrationsByTargetSubstanceUncertainty(
             PopulationStratifier stratifier,
             ICollection<HbmIndividualDayCollection> hbmIndividualDayCollections,
             ICollection<HbmIndividualCollection> hbmIndividualCollections,
@@ -645,7 +666,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
         }
 
 
-        private void summarizeHbmIndividualContributionsUncertainty(
+        private static void summarizeHbmIndividualContributionsUncertainty(
             ICollection<HbmIndividualDayCollection> hbmIndividualDayCollections,
             ICollection<HbmIndividualCollection> hbmIndividualCollections,
             ICollection<Compound> substances,
@@ -684,7 +705,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
         }
 
 
-        private void summarizeHbmConcentrationsByTargetSubstanceDetailsUncertainty(
+        private static void summarizeHbmConcentrationsByTargetSubstanceDetailsUncertainty(
             HumanMonitoringAnalysisActionResult actionResult,
             ActionData data,
             HumanMonitoringAnalysisModuleConfig config,
@@ -720,7 +741,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             }
         }
 
-        private void summarizeCumulativeConcentrationseUncertainty(
+        private void summarizeCumulativeConcentrationsUncertainty(
             PopulationStratifier stratifier,
             HbmCumulativeIndividualDayCollection hbmCumulativeIndividualDayCollection,
             HbmCumulativeIndividualCollection hbmCumulativeIndividualCollection,
@@ -756,7 +777,29 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             }
         }
 
-        private void summarizeRiskDriversUncertainty(
+        private static void summarizeCumulativeConcentrationsTimePointUncertainty(
+            PopulationStratifier stratifier,
+            HbmCumulativeIndividualDayCollection hbmCumulativeIndividualDayCollection,
+            double lowerBound,
+            double upperBound,
+            SectionHeader header
+        ) {
+            if (hbmCumulativeIndividualDayCollection.IndividualDayConcentrations.Any()) {
+                var subHeader = header.GetSubSectionHeader<HbmCumulativeIndividualTimePointDistributionsSection>();
+                if (subHeader != null) {
+                    var section = subHeader.GetSummarySection() as HbmCumulativeIndividualTimePointDistributionsSection;
+                    section.SummarizeUncertainty(
+                        hbmCumulativeIndividualDayCollection,
+                        stratifier,
+                        lowerBound,
+                        upperBound
+                    );
+                    subHeader.SaveSummarySection(section);
+                }
+            }
+        }
+
+        private static void summarizeRiskDriversUncertainty(
             PopulationStratifier stratifier,
             ICollection<HbmIndividualDayCollection> hbmIndividualDayCollections,
             ICollection<HbmIndividualCollection> hbmIndividualCollections,
@@ -815,7 +858,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
         }
 
 
-        private void SummarizeCumulativeConcentrations(
+        private void summarizeCumulativeConcentrations(
             PopulationStratifier stratifier,
             HbmCumulativeIndividualDayCollection hbmCumulativeIndividualDayCollection,
             HbmCumulativeIndividualCollection hbmCumulativeIndividualCollection,
@@ -863,7 +906,39 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             }
         }
 
-        private void SummarizeIndividualMonitoringConcentrations(
+        private void summarizeCumulativeConcentrationsTimepoints(
+            PopulationStratifier stratifier,
+            HbmCumulativeIndividualDayCollection hbmCumulativeIndividualDayCollection,
+            double lowerPercentage,
+            double upperPercentage,
+            bool skipPrivacySensitiveOutputs,
+            SectionHeader header,
+            int order
+        ) {
+            var display = hbmCumulativeIndividualDayCollection.IndividualDayConcentrations
+                .GroupBy(c => c.TimePoint)
+                .Count() > 1;
+            if (display) {
+                var section = new HbmCumulativeIndividualTimePointDistributionsSection() {
+                    SectionLabel = getSectionLabel(HumanMonitoringAnalysisSections.CumulativeConcentrationsTimepointSections)
+                };
+                var subHeader = header.AddSubSectionHeaderFor(
+                    section,
+                    "Cumulative concentrations by timepoint",
+                    order
+                );
+                section.Summarize(
+                    hbmCumulativeIndividualDayCollection,
+                    stratifier,
+                    lowerPercentage,
+                    upperPercentage,
+                    skipPrivacySensitiveOutputs
+                 );
+                subHeader.SaveSummarySection(section);
+            }
+        }
+
+        private void summarizeIndividualMonitoringConcentrations(
             ICollection<Compound> activeSubstances,
             HumanMonitoringSamplingMethod samplingMethod,
             ICollection<HbmIndividualDayCollection> hbmIndividualDayCollections,
@@ -921,7 +996,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             section.Summarize(concentrationModels);
             subHeader.SaveSummarySection(section);
         }
-        private void SummarizeMaximumCumulativeRatio(
+        private void summarizeMaximumCumulativeRatio(
             List<DriverSubstance> driverSubstances,
             ExposureMatrix exposureMatrix,
             TargetUnit targetUnit,

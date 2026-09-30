@@ -142,6 +142,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     if (Model.Records.All(r => string.IsNullOrEmpty(r.ExpressionType))) {
                         hiddenProperties.Add("ExpressionType");
                     }
+                    if (Model.Records.All(r => string.IsNullOrEmpty(r.SourceSamplingMethods))) {
+                        hiddenProperties.Add("SourceSamplingMethods");
+                    }
                     if (Model.Records.All(r => double.IsNaN(r.MedianAllLowerBoundPercentile))) {
                         hiddenProperties.Add("MedianAllMedianPercentile");
                         hiddenProperties.Add("MedianAllLowerBoundPercentile");
