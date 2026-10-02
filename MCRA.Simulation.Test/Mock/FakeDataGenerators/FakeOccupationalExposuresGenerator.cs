@@ -103,8 +103,8 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                 foreach (var route in routes) {
                     foreach (var item in tasks) {
                         var mean = random.NextDouble(1, 5);
-                        var upper = mean + random.NextDouble(1, 5);
-                        var distribution = LogNormalDistribution.FromMeanAndUpper(mean, upper);
+                        var upper = mean + random.NextDouble(1, 4);
+                       var distribution = LogNormalDistribution.FromMeanAndUpper(mean, upper);
                         var (unit, estimateType) = routeUnits[route][random.Next(routeUnits[route].Count - 1)];
                         var records = percentiles
                             .Select(r => new OccupationalTaskExposure() {

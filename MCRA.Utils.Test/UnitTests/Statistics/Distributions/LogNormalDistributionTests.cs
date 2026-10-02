@@ -93,6 +93,29 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.Distributions {
         }
 
         [TestMethod]
+        [DataRow(3, 9)]
+        [DataRow(.4, 1)]
+        [DataRow(1, 2.2)]
+        public void LogNormalDistribution_TestFromMeanAndUpper(
+            double expectedMu,
+            double expectedUpper
+        ) {
+            var seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var logExpectedMu = Math.Log(expectedMu);
+            var logExpectedUpper = Math.Log(expectedUpper);
+            var sigma = (logExpectedUpper - logExpectedMu) / 1.645;
+            var samples = LogNormalDistribution.Samples(random, logExpectedMu, sigma, 10000);
+            var mean = samples.Average();
+            var upper = samples.Percentile(95);
+
+            var distribution = LogNormalDistribution.FromMeanAndUpper(mean, upper);
+            Assert.AreEqual(logExpectedMu, distribution.Mu, 0.01);
+            Assert.AreEqual(sigma, distribution.Sigma, 0.01);
+            Assert.AreEqual(logExpectedUpper, Math.Log(distribution.InvCDF(0.95)), 0.01);
+        }
+
+        [TestMethod]
         [DataRow(2, 3, new[] { 50D, 95D })]
         [DataRow(4, 5, new[] { 50D, 75D, 95D })]
         [DataRow(4, 5, new[] { 5D, 95D })]

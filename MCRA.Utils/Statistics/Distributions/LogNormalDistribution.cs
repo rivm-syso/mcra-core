@@ -83,13 +83,27 @@ namespace MCRA.Utils.Statistics {
                 var msg = $"No upper p95 percentile for the lognormal distribution is specified.";
                 throw new ArgumentException(msg);
             }
-            var mu = UtilityFunctions.LogBound(mean);
-            if (mean > upper) {
-                var msg = $"The provided mean of {mean} is higher than the specified upper p95 percentile of {upper}.";
-                throw new ArgumentException(msg);
+
+            var logMean = UtilityFunctions.LogBound(mean);
+            var logUpper = UtilityFunctions.LogBound(upper);
+
+            // Solve: 0.5*sigma^2 - 1.645*sigma + (logUpper - logMean) = 0
+            // abc-formula: a = 0.5, b = -1.645, c = logUpper - logMean
+            // (b * b) * 0.5 - 4 * a * c; 
+            var a = 0.5;
+            var b = -1.64485;
+            var c = logUpper - logMean;
+
+            var discriminant = (b * b) - 4 * a * c;
+
+            if (discriminant < 0) {
+                throw new ArgumentException("The given combination of mean and upper p95 is mathematically impossible for a lognormal distribution.");
             }
-            var sigma = (UtilityFunctions.LogBound(upper) - mu) / 1.645;
-            return new LogNormalDistribution(mu, sigma);
+
+            // Take the negative variant because sigma must be the smallest positive root
+            var sigma = (-b - Math.Sqrt(discriminant)) / (2 * a);
+            var mu = logMean - (sigma * sigma) / 2.0;
+            return new LogNormalDistribution(mu, sigma); ;
         }
 
         /// <summary>
