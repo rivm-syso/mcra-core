@@ -1,4 +1,5 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using DocumentFormat.OpenXml.Presentation;
+using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ExposureResponseFunctions;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
@@ -10,7 +11,7 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
 
         private readonly List<double> _defaultBinBoundaries;
         private readonly ExposureGroupingMethod _exposureGroupingMethod;
-        private readonly WithinBinExposureRepresentationMethod _withinBinExposureRepresentationMethod;
+        private readonly WithinBinExposureRepresentationMethod _withinBinExposureRepresentationMethod;        
 
         public ExposureResponseCalculator(
             ExposureGroupingMethod exposureGroupingMethod,
@@ -149,6 +150,7 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
             var unitAlignmentFactor = targetUnit.GetAlignmentFactor(
                 exposureResponseFunctionModel.TargetUnit, substance.MolecularMass, double.NaN
             );
+            var subgroupIntervalBound = exposureResponseFunctionModel.ExposureResponseFunction.SubgroupIntervalBound;
 
             var percentiles = hbmSingleValueExposureSet
                 .HbmSingleValueExposures
@@ -163,10 +165,14 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
                 .Select(c => c.Value)
                 .ToList();
 
-            var bins = getIntervals(exposureLevels, percentages);
+            var bins = getIntervals(exposureLevels, percentages, subgroupIntervalBound);
             var topBin = bins.Last();
             if (topBin.PercentileInterval.Upper != 100) {
-                var exposureInterval = new ExposureInterval(topBin.ExposureInterval.Upper, double.NaN);
+                var exposureInterval = new ExposureInterval(
+                    topBin.ExposureInterval.Upper, 
+                    double.NaN, 
+                    subgroupIntervalBound
+                );
                 var percentileInterval = new PercentileInterval(topBin.PercentileInterval.Upper, 100.0);
                 bins.Add((exposureInterval, percentileInterval));
             }
@@ -213,6 +219,7 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
             double unitAlignmentFactor
         ) {
             var substance = exposureResponseFunctionModel.Substance;
+            var subgroupIntervalBoundType = exposureResponseFunctionModel.ExposureResponseFunction.SubgroupIntervalBound;
 
             var weights = exposures
                 .Select(c => c.SimulatedIndividual.SamplingWeight)
@@ -236,7 +243,7 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
                 .PercentagesWithSamplingWeights(weights, exposureLevels)
                 .ToList();
 
-            var result = getIntervals(exposureLevels, percentages);
+            var result = getIntervals(exposureLevels, percentages, subgroupIntervalBoundType);
 
             return result;
         }
@@ -247,6 +254,7 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
             List<PercentileInterval> percentileIntervals
         ) {
             var substance = exposureResponseFunctionModel.Substance;
+            var subgroupIntervalBoundType = exposureResponseFunctionModel.ExposureResponseFunction.SubgroupIntervalBound;
 
             var weights = exposures
                 .Select(c => c.SimulatedIndividual.SamplingWeight)
@@ -268,7 +276,8 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
                 var percentileInterval = percentileIntervals[i];
                 var exposureInterval = new ExposureInterval() {
                     Lower = i == 0 ? 0 : exposureLevels[i - 1],
-                    Upper = i == exposureLevels.Count - 1 ? double.NaN : exposureLevels[i]
+                    Upper = i == exposureLevels.Count - 1 ? double.NaN : exposureLevels[i],
+                    SubgroupIntervalBoundType = subgroupIntervalBoundType
                 };
                 result.Add((exposureInterval, percentileInterval));
             }
@@ -302,7 +311,8 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
 
         private static List<(ExposureInterval ExposureInterval, PercentileInterval PercentileInterval)> getIntervals(
             List<double> exposureLevels,
-            List<double> percentages
+            List<double> percentages,
+            SubgroupIntervalBoundType subgroupIntervalBoundType
         ) {
             var result = new List<(ExposureInterval, PercentileInterval)>();
             var lower = double.NaN;
@@ -312,7 +322,8 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
                 var upperPercentile = !double.IsNaN(upper) ? percentages[i] : double.NaN;
                 var exposureInterval = new ExposureInterval() {
                     Lower = lower,
-                    Upper = upper
+                    Upper = upper,
+                    SubgroupIntervalBoundType = subgroupIntervalBoundType
                 };
                 var percentileInterval = new PercentileInterval() {
                     Lower = lowerPercentile,

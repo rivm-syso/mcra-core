@@ -20,6 +20,7 @@ namespace MCRA.Data.Compiled.Objects {
         public ExposureResponseSpecificationDistributionType ERFUncertaintyDistribution { get; set; } = ExposureResponseSpecificationDistributionType.Constant;
         public Expression ExposureResponseSpecificationLower { get; set; }
         public Expression ExposureResponseSpecificationUpper { get; set; }
+        public SubgroupIntervalBoundType SubgroupIntervalBound { get; set; } = SubgroupIntervalBoundType.RightInclusive;
         public ICollection<ErfSubgroup> ErfSubgroups { get; set; } = [];
         public PopulationCharacteristicType PopulationCharacteristic { get; set; }
         public double? EffectThresholdLower { get; set; }

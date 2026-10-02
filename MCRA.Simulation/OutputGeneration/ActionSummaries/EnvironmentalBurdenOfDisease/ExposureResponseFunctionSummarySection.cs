@@ -77,6 +77,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     ErfDoseAlignmentFactor = doseUnitAlignmentFactor,
                     CounterfactualValue = erf.GetCounterFactualValue(),
                     HasSubgroups = erf.HasErfSubGroups,
+                    SubgroupIntervalBoundType = erf.ExposureResponseFunction.SubgroupIntervalBound.GetDisplayName(),
                     ExposureResponseDataPoints = dataPoints,
                     ExposureResponseGridDataPoints = exposureResponseGridDataPoints
                 };

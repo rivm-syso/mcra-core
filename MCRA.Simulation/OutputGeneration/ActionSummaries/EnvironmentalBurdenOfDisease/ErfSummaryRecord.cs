@@ -87,6 +87,10 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public bool HasSubgroups { get; set; }
 
+        [Description("Specifies the type of interval bound used in the subgroup specification of this ERF.")]
+        [DisplayName("Subgroup interval bound type")]
+        public string SubgroupIntervalBoundType { get; set; }
+
         [Display(AutoGenerateField = false)]
         public List<ExposureResponseDataPoint> ExposureResponseDataPoints { get; set; }
 

@@ -95,10 +95,21 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
                 ? [.. data.ExposureResponseFunctionModels.Where(r => r.ExposureResponseFunction.Substance == data.ReferenceSubstance)]
                 : data.ExposureResponseFunctionModels;
 
+            if (ModuleConfig.WithinBinExposureRepresentationMethod == WithinBinExposureRepresentationMethod.MaximumInBin &&
+                exposureResponseFunctionModels
+                    .Any(r => r.ExposureResponseFunction.SubgroupIntervalBound == SubgroupIntervalBoundType.LeftInclusive)) {
+                throw new Exception("Maximum in bin not implemented for exposure response function with left inclusive subgroups.");
+            }
+            if (ModuleConfig.WithinBinExposureRepresentationMethod == WithinBinExposureRepresentationMethod.MinimumInBin &&
+                exposureResponseFunctionModels
+                    .Any(r => r.ExposureResponseFunction.SubgroupIntervalBound == SubgroupIntervalBoundType.RightInclusive)) {
+                throw new Exception("Minimum in bin not implemented for exposure response function with right inclusive subgroups.");
+            }
+
             // Compute exposure response results
             var seed = factorialSet?.Contains(UncertaintySource.ExposureResponseFunctions) ?? false
-                ? RandomUtils.CreateSeed(uncertaintySourceGenerators[UncertaintySource.ExposureResponseFunctions].Seed, (int)RandomSource.ERF_DrawResponseTypeFunctionDistributions)
-                : RandomUtils.CreateSeed(_project.ExposureResponseFunctionsSettings.RandomSeed, (int)RandomSource.ERF_DrawResponseTypeFunctionDistributions);
+               ? RandomUtils.CreateSeed(uncertaintySourceGenerators[UncertaintySource.ExposureResponseFunctions].Seed, (int)RandomSource.ERF_DrawResponseTypeFunctionDistributions)
+               : RandomUtils.CreateSeed(_project.ExposureResponseFunctionsSettings.RandomSeed, (int)RandomSource.ERF_DrawResponseTypeFunctionDistributions);
             var exposureResponseResults = ModuleConfig.UsePointEstimates
                 ? erCalculator.ComputeFromHbmSingleValueExposures(
                     data.HbmSingleValueExposureSets,

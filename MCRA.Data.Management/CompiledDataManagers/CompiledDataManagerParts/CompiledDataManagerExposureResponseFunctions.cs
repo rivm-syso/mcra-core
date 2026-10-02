@@ -87,6 +87,11 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             exposureResponseSpecificationUpperString,
                                             exposureResponseType
                                         );
+                                        var subgroupIntervalBound = r.GetEnum(
+                                            RawExposureResponseFunctions.SubgroupIntervalBound,
+                                            fieldMap,
+                                            SubgroupIntervalBoundType.RightInclusive
+                                        );
 
                                         var exposureTarget = targetLevel == TargetLevelType.External
                                             ? new ExposureTarget(exposureRoute)
@@ -108,6 +113,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             ERFUncertaintyDistribution = ExposureResponseSpecificationDistributionTypeConverter.FromString(erfDistributionTypeString, ExposureResponseSpecificationDistributionType.Constant),
                                             ExposureResponseSpecificationLower = exposureResponseSpecificationLower,
                                             ExposureResponseSpecificationUpper = exposureResponseSpecificationUpper,
+                                            SubgroupIntervalBound = subgroupIntervalBound,
                                             CounterFactualValue = r.GetDouble(RawExposureResponseFunctions.CounterfactualValue, fieldMap),
                                             PopulationCharacteristic = populationCharacteristicType,
                                             EffectThresholdLower = r.GetDoubleOrNull(RawExposureResponseFunctions.EffectThresholdLower, fieldMap),

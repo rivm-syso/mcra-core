@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>SubgroupIntervalBoundType</Id>
+  <Name>Subgroup interval bound type</Name>
+  <Description>
+    Accepted subgroup interval bound types.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>LeftInclusive</Id>
+      <Name>Left inclusive</Name>
+      <ShortName>Left inclusive</ShortName>
+      <Description>Left inclusive subgroup interval bounds.</Description>
+      <Aliases>
+        <Alias>LeftInclusive</Alias>
+        <Alias>Left</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>RightInclusive</Id>
+      <Name>Right inclusive</Name>
+      <ShortName>Right inclusive</ShortName>
+      <Description>Right inclusive subgroup interval bounds.</Description>
+      <Aliases>
+        <Alias>RightInclusive</Alias>
+        <Alias>Right</Alias>
+      </Aliases>
+    </Unit>
+  </Units>
+</UnitDefinition>

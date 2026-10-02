@@ -53,6 +53,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             } else if (Model.ErfSummaryRecords.All(r => string.IsNullOrEmpty(r.ErSpecificationUncUpper))) {
                 hiddenProperties.Add(nameof(ErfSummaryRecord.ErSpecificationUncUpper));
             }
+            if (Model.ErfSummaryRecords.All(r => !r.HasSubgroups)) {
+                hiddenProperties.Add(nameof(ErfSummaryRecord.SubgroupIntervalBoundType));
+            }
 
             sb.AppendTable(
                 Model,

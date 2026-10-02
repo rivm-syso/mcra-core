@@ -266,5 +266,15 @@
         <string>CFVUncertaintyUpper</string>
       </Aliases>
     </ColumnDefinition>
+    <ColumnDefinition FieldType="SubgroupIntervalBoundType">
+      <Id>SubgroupIntervalBound</Id>
+      <Description>
+        Type of interval bound for subgroups (either right inclusive or left inclusive).
+        If not specified, the intervals defined by the subgroups are assumed to be right inclusive.
+      </Description>
+      <Aliases>
+        <string>SubgroupIntervalBound</string>
+      </Aliases>
+    </ColumnDefinition>
   </ColumnDefinitions>
 </TableDefinition>
