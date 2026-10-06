@@ -31,6 +31,7 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
                 .AddJsonFile("appsettings.user.json", optional: true)
                 .AddEnvironmentVariables();
             var appSettings = builder.Build();
+            Simulation.ConfigureSbmlRoadRunnerOptions(appSettings);
 
             var timestamp = DateTime.Now.ToString("yyyyMMdd-HHmmss");
 
@@ -71,7 +72,7 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
 
                 // If an override is given for the amount of significant digits to print
                 // for numerical values (e.g. use 5 for regression test output for easy file diffs)
-                if(options.SignificantDigits > 0) {
+                if (options.SignificantDigits > 0) {
                     CsvOutputWriterFactory.DefaultOptions.SignificantDigits = options.SignificantDigits;
                 }
 

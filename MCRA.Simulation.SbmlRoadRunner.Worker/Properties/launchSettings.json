@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "MCRA.Simulation.SbmlRoadRunner.Worker": {
+      "commandName": "Project",
+      "launchBrowser": false,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:54390;http://localhost:54391"
+    }
+  }
+}

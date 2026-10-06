@@ -7,6 +7,7 @@ using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Calculators.KineticConversionCalculation;
 using MCRA.Simulation.Calculators.PbkModelCalculation;
 using MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation;
+using MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation.InProcess;
 using MCRA.Simulation.Objects;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.ProgressReporting;

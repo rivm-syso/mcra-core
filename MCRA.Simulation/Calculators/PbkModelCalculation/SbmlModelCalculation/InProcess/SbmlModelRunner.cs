@@ -6,7 +6,7 @@ using MCRA.General.PbkModelDefinitions.PbkModelSpecifications.Sbml;
 using MCRA.Simulation.Calculators.PbkModelCalculation.ExposureEventsGeneration;
 using Python.Runtime;
 
-namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation {
+namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation.InProcess {
     public class SbmlModelRunner : IDisposable {
 
         public static bool ReuseEvents = true;

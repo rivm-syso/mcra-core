@@ -49,7 +49,7 @@ namespace MCRA.Simulation.Commander {
                 Console.WriteLine(ex.ToString());
                 result = 1;
             }
-
+            
             return result;
         }
 

@@ -1,8 +1,34 @@
 ﻿using System.Configuration;
 using System.Reflection;
+using MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation;
+using Microsoft.Extensions.Options;
 
 namespace MCRA.Simulation {
     public abstract class Simulation {
+
+        private static SbmlRoadRunnerOptions _sbmlRoadRunnerOptions = Options.Create(new SbmlRoadRunnerOptions()).Value;
+
+        /// <summary>RoadRunner options shared by SBML calculators and worker processes.</summary>
+        public static SbmlRoadRunnerOptions RoadRunnerOptions => _sbmlRoadRunnerOptions;
+
+        /// <summary>Configures RoadRunner options from the application configuration.</summary>
+        public static void ConfigureSbmlRoadRunnerOptions(Microsoft.Extensions.Configuration.IConfiguration configuration) {
+            var section = configuration.GetSection(SbmlRoadRunnerOptions.SectionName);
+            var options = new SbmlRoadRunnerOptions();
+            if (section[nameof(SbmlRoadRunnerOptions.WorkerCount)] is string workerCount) {
+                options.WorkerCount = workerCount;
+            }
+            if (Enum.TryParse<RoadRunnerWorkerProxyType>(section[nameof(SbmlRoadRunnerOptions.ProxyType)], true, out var proxyType)) {
+                options.ProxyType = proxyType;
+            }
+            if (bool.TryParse(section[nameof(SbmlRoadRunnerOptions.ShowConsoleWindow)], out var showConsoleWindow)) {
+                options.ShowConsoleWindow = showConsoleWindow;
+            }
+            if (bool.TryParse(section[nameof(SbmlRoadRunnerOptions.ExtensiveConsoleLogging)], out var extensiveConsoleLogging)) {
+                options.ExtensiveConsoleLogging = extensiveConsoleLogging;
+            }
+            _sbmlRoadRunnerOptions = Options.Create(options).Value;
+        }
 
         private static string _tempDataPath = null;
 
