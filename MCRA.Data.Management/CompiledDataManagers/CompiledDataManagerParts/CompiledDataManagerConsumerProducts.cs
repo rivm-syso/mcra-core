@@ -27,7 +27,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             Name = r.GetStringOrNull(RawConsumerProducts.Name, fieldMap),
                                             Description = r.GetStringOrNull(RawConsumerProducts.Description, fieldMap),
                                         };
-                                        consumerProduct = getOrAddConsumerProduct(allConsumerProducts, consumerProductId);
+                                        allConsumerProducts[consumerProductId] = consumerProduct;
                                         var parent = getOrAddConsumerProduct(allConsumerProducts, idParent);
                                         consumerProduct.Parent = parent;
                                         parent?.Children.Add(consumerProduct);
