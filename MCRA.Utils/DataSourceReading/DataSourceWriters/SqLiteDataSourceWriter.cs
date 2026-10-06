@@ -110,8 +110,12 @@ namespace MCRA.Utils.DataFileReading {
                             command.Parameters[$"@{columnDefinition.Id}"].Value = sourceTableReader.IsDBNull(mappings[i]) ? DBNull.Value : sourceTableReader[mappings[i]];
                         }
                     }
-
-                    command.ExecuteNonQuery();
+                    try {
+                        command.ExecuteNonQuery();
+                    } catch (Exception ex) {
+                        var message = $"{ex.Message}. Error occurs at record {transactionRecordCounter + 1}";
+                        throw new Exception(message);
+                    }
                     if (++transactionRecordCounter % 92551 == 0) {
                         // If cancelled, stop writing, break out of the loop
                         if (progressState?.CancellationToken.IsCancellationRequested ?? false) {
