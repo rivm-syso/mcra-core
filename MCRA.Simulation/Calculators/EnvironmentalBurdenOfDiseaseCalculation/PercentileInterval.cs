@@ -9,7 +9,7 @@
             var res = Lower == 0 || double.IsNaN(Lower)
                 ? $"< {Upper:G3}"
                 : Upper == 100 || double.IsNaN(Upper)
-                    ? $"> {Lower:G3}"
+                    ? $">= {Lower:G3}"
                     : $"{Lower:G3} - {Upper:G3}";
             return res;
         }

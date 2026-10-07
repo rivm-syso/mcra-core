@@ -46,6 +46,8 @@ namespace MCRA.Simulation.Calculators.ExposureResponseFunctions {
 
         public bool HasErfSubGroups => ErfSubGroupModels.Count > 0;
 
+        public SubgroupIntervalBoundType SubgroupIntervalBound => ExposureResponseFunction.SubgroupIntervalBound;
+
         public PopulationCharacteristicType PopulationCharacteristic => ExposureResponseFunction.PopulationCharacteristic;
 
         public double? EffectThresholdLower => ExposureResponseFunction.EffectThresholdLower;
@@ -64,18 +66,21 @@ namespace MCRA.Simulation.Calculators.ExposureResponseFunctions {
         /// Evaluates the ERF model for exposure x.
         /// </summary>
         public double Compute(double exposure, bool useErfBins) {
-            if (exposure <= CounterFactualValueModel.GetCounterFactualValue()) {
+            var counterFactualValue = CounterFactualValueModel.GetCounterFactualValue();
+            if (exposure < counterFactualValue) {
                 return EffectMetric == EffectMetric.NegativeShift
                     || EffectMetric == EffectMetric.PositiveShift ? 0D : 1D;
             }
-
-            var counterFactualValue = CounterFactualValueModel.GetCounterFactualValue();
             if (HasErfSubGroups && useErfBins) {
                 var erfSubGroups = ErfSubGroupModels
                     .OrderBy(r => r.Upper ?? double.PositiveInfinity)
                     .ToList();
                 var i = 0;
-                while (i < erfSubGroups.Count && erfSubGroups[i].Upper < exposure) {
+                while (i < erfSubGroups.Count && 
+                    (
+                        (SubgroupIntervalBound == SubgroupIntervalBoundType.LeftInclusive && erfSubGroups[i].Upper <= exposure) ||
+                        (SubgroupIntervalBound == SubgroupIntervalBoundType.RightInclusive && erfSubGroups[i].Upper < exposure)
+                    )) {
                     i++;
                 }
                 if (i == erfSubGroups.Count) {

@@ -43,8 +43,75 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.EnvironmentalBurdenOfDiseas
             Assert.IsLessThan(8, erfModel.Compute(2, true));
         }
 
+
         [TestMethod]
-        public void ExposureResponseFunctionModel_TestComputeSubGroup() {
+        public void ExposureResponseFunctionModel_TestComputeSubGroup_LeftInclusive() {
+            var erf = new ExposureResponseFunction() {
+                ExposureResponseType = ExposureResponseType.Constant,
+                ExposureResponseSpecification = null,
+                ERFUncertaintyDistribution = ExposureResponseSpecificationDistributionType.Normal,
+                CounterFactualValue = 1.52,
+                SubgroupIntervalBound = SubgroupIntervalBoundType.LeftInclusive,
+                ErfSubgroups = [
+                    new ErfSubgroup() {
+                        ExposureResponseSpecification = new NCalc.Expression("2"),
+                        ExposureUpper = 2.17,
+                    },
+                    new ErfSubgroup() {
+                        ExposureResponseSpecification = new NCalc.Expression("3"),
+                        ExposureUpper = 2.95,
+                    },
+                    new ErfSubgroup() {
+                        ExposureResponseSpecification = new NCalc.Expression("4"),
+                        ExposureUpper = double.PositiveInfinity,
+                    }
+                ]
+            };
+
+            var erfModel = ExposureResponseModelBuilder.Create(erf);
+            Assert.AreEqual(1, erfModel.Compute(0, true));
+            Assert.AreEqual(1, erfModel.Compute(1.51, true));
+            Assert.AreEqual(2, erfModel.Compute(1.52, true));
+            Assert.AreEqual(3, erfModel.Compute(2.17, true));
+            Assert.AreEqual(4, erfModel.Compute(2.95, true));
+            Assert.AreEqual(4, erfModel.Compute(3, true));
+        }
+
+        [TestMethod]
+        public void ExposureResponseFunctionModel_TestComputeSubGroup_RightInclusive() {
+            var erf = new ExposureResponseFunction() {
+                ExposureResponseType = ExposureResponseType.Constant,
+                ExposureResponseSpecification = null,
+                ERFUncertaintyDistribution = ExposureResponseSpecificationDistributionType.Normal,
+                CounterFactualValue = 1.52,
+                SubgroupIntervalBound = SubgroupIntervalBoundType.RightInclusive,
+                ErfSubgroups = [
+                    new ErfSubgroup() {
+                        ExposureResponseSpecification = new NCalc.Expression("2"),
+                        ExposureUpper = 2.17,
+                    },
+                    new ErfSubgroup() {
+                        ExposureResponseSpecification = new NCalc.Expression("3"),
+                        ExposureUpper = 2.95,
+                    },
+                    new ErfSubgroup() {
+                        ExposureResponseSpecification = new NCalc.Expression("4"),
+                        ExposureUpper = double.PositiveInfinity,
+                    }
+                ]
+            };
+
+            var erfModel = ExposureResponseModelBuilder.Create(erf);
+            Assert.AreEqual(1, erfModel.Compute(0, true));
+            Assert.AreEqual(1, erfModel.Compute(1.51, true));
+            Assert.AreEqual(2, erfModel.Compute(1.52, true));
+            Assert.AreEqual(2, erfModel.Compute(2.17, true));
+            Assert.AreEqual(3, erfModel.Compute(2.95, true));
+            Assert.AreEqual(4, erfModel.Compute(3, true));
+        }
+
+        [TestMethod]
+        public void ExposureResponseFunctionModel_TestComputeSubGroup_Uncertain() {
             var erf = new ExposureResponseFunction() {
                 ExposureResponseType = ExposureResponseType.Constant,
                 ExposureResponseSpecification = new NCalc.Expression("5.01"),

@@ -234,9 +234,9 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
             var maximum = allExposures.Max();
             if (exposureResponseFunctionModel.HasErfSubGroups) {
                 exposureLevels.AddRange(
-                    exposureResponseFunctionModel.SubGroupLevels.Select(r => r * unitAlignmentFactor)
-                    );
-                exposureLevels = [.. exposureLevels.OrderBy(r => double.IsNaN(r) ? double.PositiveInfinity : r)];
+                    exposureResponseFunctionModel.SubGroupLevels
+                        .Select(r => (double.IsNaN(r) ? maximum : r) * unitAlignmentFactor)
+                );
             }
 
             var percentages = allExposures
@@ -315,8 +315,8 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
             SubgroupIntervalBoundType subgroupIntervalBoundType
         ) {
             var result = new List<(ExposureInterval, PercentileInterval)>();
-            var lower = double.NaN;
-            var lowerPercentile = double.NaN;
+            var lower = 0.0;
+            var lowerPercentile = 0.0;
             for (int i = 0; i < exposureLevels.Count; i++) {
                 var upper = exposureLevels[i];
                 var upperPercentile = !double.IsNaN(upper) ? percentages[i] : double.NaN;
