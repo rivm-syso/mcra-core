@@ -1,4 +1,5 @@
-﻿using NCalc;
+﻿using MCRA.General;
+using NCalc;
 
 namespace MCRA.Data.Compiled.Objects {
     public sealed class ErfSubgroup {
@@ -6,6 +7,7 @@ namespace MCRA.Data.Compiled.Objects {
         public string idSubgroup { get; set; }
         public double? ExposureUpper { get; set; }
         public Expression ExposureResponseSpecification { get; set; }
+        public ExposureResponseSpecificationDistributionType ERFUncertaintyDistribution { get; set; } = ExposureResponseSpecificationDistributionType.Constant;
         public Expression ExposureResponseSpecificationLower { get; set; }
         public Expression ExposureResponseSpecificationUpper { get; set; }
     }

@@ -29,7 +29,7 @@ namespace MCRA.Simulation.Calculators.ExposureResponseFunctionModels {
                             r.ExposureResponseSpecification,
                             r.ExposureResponseSpecificationLower,
                             r.ExposureResponseSpecificationUpper,
-                            erf.ERFUncertaintyDistribution
+                            r.ERFUncertaintyDistribution
                         )
                     ))]
             };

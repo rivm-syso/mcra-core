@@ -19,8 +19,8 @@ namespace MCRA.Simulation.OutputGeneration {
                         ExposureResponseFunctionCode = r.Code,
                         ErSubgroupCode = s.idSubgroup,
                         ExposureUpper = s.ExposureUpper,
-                        ErSpecificationUncertaintyType = r.ERFUncertaintyDistribution != ExposureResponseSpecificationDistributionType.Constant
-                            ? r.ERFUncertaintyDistribution.GetShortDisplayName()
+                        ErSpecificationUncertaintyType = s.ERFUncertaintyDistribution != ExposureResponseSpecificationDistributionType.Constant
+                            ? s.ERFUncertaintyDistribution.GetShortDisplayName()
                             : null,
                         ExposureResponseSpecification = s.ExposureResponseSpecification.ExpressionString,
                         ErSpecificationUncLower = s.ExposureResponseSpecificationLower.ExpressionString.Length != 0
