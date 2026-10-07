@@ -53,11 +53,15 @@ namespace MCRA.Simulation.OutputGeneration {
             double uncertaintyUpperLimit
         ) {
             var x = record.ExposureResponseDataPoints.Select(c => c.Exposure).ToList();
-            var y = record.ExposureResponseDataPoints.Select(c => c.ResponseValue).ToList();
+            var y = uncertainty
+                ? record.ExposureResponseDataPoints.Select(c => c.MedianResponseValue).ToList()
+                : record.ExposureResponseDataPoints.Select(c => c.ResponseValue).ToList();
 
             var gridDataPoints = record.ExposureResponseGridDataPoints;
             var xLine = gridDataPoints.Select(c => c.XValue).ToList();
-            var yLine = gridDataPoints.Select(c => c.ReferenceValue).ToList();
+            var yLine = uncertainty
+                ? gridDataPoints.Select(c => c.MedianUncertainty).ToList()
+                : gridDataPoints.Select(c => c.ReferenceValue).ToList();
 
             var plotModel = createDefaultPlotModel();
 

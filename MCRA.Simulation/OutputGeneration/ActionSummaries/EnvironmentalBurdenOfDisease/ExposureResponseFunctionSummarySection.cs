@@ -26,8 +26,10 @@ namespace MCRA.Simulation.OutputGeneration {
                 var dataPoints = exposureResponseResult
                     .ExposureResponseResultRecords
                     .Select(r => new ExposureResponseDataPoint() {
+                        ExposureBin = r.ExposureBinId,
                         Exposure = r.ExposureLevel,
-                        ResponseValue = r.PercentileSpecificRisk
+                        ResponseValue = r.PercentileSpecificRisk,
+                        ResponseValues = []
                     })
                     .ToList();
                 var maxExposure = dataPoints.Max(r => r.Exposure);
@@ -103,6 +105,14 @@ namespace MCRA.Simulation.OutputGeneration {
                     .Select(r => resultRecord.ExposureResponseFunctionModel
                         .Compute(r * doseUnitAlignmentFactor, useErfBins)
                     );
+                var dataPointRecords = ErfSummaryRecords
+                    .Single(r => r.ErfCode == resultRecord.ExposureResponseFunctionModel.Code)
+                    .ExposureResponseDataPoints;
+                foreach (var dataPointRecord in dataPointRecords) {
+                    var resultDataPoint = resultRecord.ExposureResponseResultRecords
+                        .Single(r => r.ExposureBinId == dataPointRecord.ExposureBin);
+                    dataPointRecord.ResponseValues.Add(resultDataPoint.PercentileSpecificRisk);
+                }
                 ErfSummaryRecords
                     .Single(r => r.ErfCode == resultRecord.ExposureResponseFunctionModel.Code)
                     .ExposureResponseGridDataPoints.AddUncertaintyValues(YValues);
