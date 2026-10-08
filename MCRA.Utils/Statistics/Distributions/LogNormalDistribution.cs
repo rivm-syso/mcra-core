@@ -76,9 +76,21 @@ namespace MCRA.Utils.Statistics {
 
         /// <summary>
         /// Creates a <see cref="LogNormalDistribution"/> instance based on a provided mean
-        /// and upper (p95) percentile.
+        /// and upper (p95) percentile. This function can be used to fit a lognormal distribution
+        /// from a sample mean and p95 percentile provided on the original (untransformed) scale.
+        /// Sampling from this fitted distribution should yield the same mean and p95 percentile
+        /// as provided as input of this function. Because there can be two solutions (i.e., two
+        /// distinct parametrisations of mu and sigma), there is a choice to be made in deciding
+        /// which of the parametrisations to return. By default, the solution with the smallest
+        /// sigma is returned, unless specified otherwise.
         /// </summary>
-        public static LogNormalDistribution FromMeanAndUpper(double mean, double upper) {
+        /// <param name="mean">Mean on the original scale. Mean = exp(mu+1/2*sigma^2). </param>
+        /// <param name="upper">Upper (p95) percentile (original scale). Upper = exp(mu + 1.645*sigma).</param>
+        /// <param name="useSigmaHigh">If true, the solution/parametrisation with the highest sigma is returned.</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
+        public static LogNormalDistribution 
+            FromMeanAndUpper(double mean, double upper, bool useSigmaHigh = false) {
             if (double.IsNaN(upper)) {
                 var msg = $"No upper p95 percentile for the lognormal distribution is specified.";
                 throw new ArgumentException(msg);
@@ -91,19 +103,21 @@ namespace MCRA.Utils.Statistics {
             // abc-formula: a = 0.5, b = -1.645, c = logUpper - logMean
             // (b * b) * 0.5 - 4 * a * c; 
             var a = 0.5;
-            var b = -1.64485;
+            var b = -NormalDistribution.InvCDF(0, 1, 0.95);
             var c = logUpper - logMean;
 
             var discriminant = (b * b) - 4 * a * c;
-
             if (discriminant < 0) {
                 throw new ArgumentException("The given combination of mean and upper p95 is mathematically impossible for a lognormal distribution.");
             }
 
             // Take the negative variant because sigma must be the smallest positive root
-            var sigma = (-b - Math.Sqrt(discriminant)) / (2 * a);
+            var sigma = useSigmaHigh
+                ? (-b + Math.Sqrt(discriminant)) / (2 * a)
+                : (-b - Math.Sqrt(discriminant)) / (2 * a);
+
             var mu = logMean - (sigma * sigma) / 2.0;
-            return new LogNormalDistribution(mu, sigma); ;
+            return new LogNormalDistribution(mu, sigma);
         }
 
         /// <summary>

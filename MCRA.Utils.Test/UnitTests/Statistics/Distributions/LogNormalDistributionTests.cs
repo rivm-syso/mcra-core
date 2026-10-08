@@ -18,7 +18,7 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.Distributions {
             var random = new McraRandomGenerator(1);
             var values = distribution.Draws(random, 100000);
 
-            var mean = values.Average(c=> Math.Log(c));
+            var mean = values.Average(c => Math.Log(c));
             Assert.AreEqual(mu, mean, 0.3);
 
             var testmean = values.Average();
@@ -93,26 +93,37 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.Distributions {
         }
 
         [TestMethod]
-        [DataRow(3, 9)]
+        [DataRow(0, 1)]
+        [DataRow(0, 0.5)]
+        [DataRow(0, 2)]
+        [DataRow(1.1, 1.33)]
+        [DataRow(-1, 1)]
+        [DataRow(-1, 2)]
         [DataRow(.4, 1)]
         [DataRow(1, 2.2)]
         public void LogNormalDistribution_TestFromMeanAndUpper(
-            double expectedMu,
-            double expectedUpper
+            double mu,
+            double sigma
         ) {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var logExpectedMu = Math.Log(expectedMu);
-            var logExpectedUpper = Math.Log(expectedUpper);
-            var sigma = (logExpectedUpper - logExpectedMu) / 1.645;
-            var samples = LogNormalDistribution.Samples(random, logExpectedMu, sigma, 10000);
+            var origDistribution = new LogNormalDistribution(mu, sigma);
+            var samples = origDistribution.Draws(random, 10000000);
             var mean = samples.Average();
             var upper = samples.Percentile(95);
 
-            var distribution = LogNormalDistribution.FromMeanAndUpper(mean, upper);
-            Assert.AreEqual(logExpectedMu, distribution.Mu, 0.01);
-            Assert.AreEqual(sigma, distribution.Sigma, 0.01);
-            Assert.AreEqual(logExpectedUpper, Math.Log(distribution.InvCDF(0.95)), 0.01);
+            // There can be two potential solutions / parametrisations of a lognormal distribution
+            // that yield the same mean and upper. Depending on the original sigma, either the solution
+            // with the highest sigma, or the solution with the lowest sigma corresponds to the original
+            // sigma. The tipping point is at sigma = 1.64485. When <= 1.64485, the solution with lowest
+            // sigma corresponds with the original distribution, when sigma > 1.64485, the solution with
+            // the highest sigma corresponds with the original one.
+            var useSigmaHigh = sigma > 1.64485;
+
+            var tolerance = 1e-2;
+            var distribution = LogNormalDistribution.FromMeanAndUpper(mean, upper, useSigmaHigh);
+            Assert.AreEqual(mu, distribution.Mu, tolerance);
+            Assert.AreEqual(sigma, distribution.Sigma, tolerance);
         }
 
         [TestMethod]
@@ -154,8 +165,8 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.Distributions {
                 .Select(p => (p, distributionExpected.InvCDF(p / 100)))
                 .ToList();
             var distribution = LogNormalDistribution.FitFromPercentiles(percentiles);
-            Assert.AreEqual(distributionExpected.Mu, distribution.Mu, .1/n);
-            Assert.AreEqual(distributionExpected.Sigma, distribution.Sigma, .1/n);
+            Assert.AreEqual(distributionExpected.Mu, distribution.Mu, .1 / n);
+            Assert.AreEqual(distributionExpected.Sigma, distribution.Sigma, .1 / n);
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using MCRA.Utils.Charting.OxyPlot;
 using MCRA.Utils.Statistics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Utils.Test.UnitTests.Statistics.Distributions {
     [TestClass]
@@ -64,6 +63,26 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.Distributions {
             var exactVariance = Math.Exp(2 * mu + Math.Pow(sigma, 2)) * (Math.Exp(Math.Pow(sigma, 2)) - 1);
             Assert.AreEqual(exactMean, ran.Average(), 1e-2);
             Assert.AreEqual(exactVariance, ran.Variance(), 1e-2);
+        }
+
+        [TestMethod]
+        [DataRow(0, 1)]
+        [DataRow(.4, 1)]
+        [DataRow(1, 2.2)]
+        public void NormalDistribution_TestFromMeanAndUpper(
+            double mu,
+            double sigma
+        ) {
+            var seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var origDistribution = new NormalDistribution(mu, sigma);
+            var samples = origDistribution.Draws(random, 10000);
+            var mean = samples.Average();
+            var upper = samples.Percentile(95);
+
+            var distribution = NormalDistribution.FromMeanAndUpper(mean, upper);
+            Assert.AreEqual(mu, distribution.Mu, 0.01);
+            Assert.AreEqual(sigma, distribution.Stddev, 0.01);
         }
 
         /// <summary>
