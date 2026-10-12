@@ -41,7 +41,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.Reverse
                 PbkModelType.DeSolve => createFakeDesolveModelInstance(substance),
                 _ => throw new NotImplementedException($"Model type {modelType} not implemented"),
             };
-            var calculator = PbkModelCalculatorFactory.Create(instance, simulationSettings);
+            var calculator = PbkModelCalculatorFactory.Create(instance, simulationSettings, null);
 
             var reverseDoseCalculator = new ReverseDoseCalculator();
             var externalDose = reverseDoseCalculator

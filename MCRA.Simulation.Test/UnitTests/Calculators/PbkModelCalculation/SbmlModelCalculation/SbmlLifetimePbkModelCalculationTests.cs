@@ -28,7 +28,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.SbmlMod
             var expected = new[] { "AGut" };
             CollectionAssert.AreEquivalent(
                 expected,
-                modelDefinition.GetRouteInputSpecies().Values.Select(r => r.Id).ToArray()
+                modelDefinition.GetRouteInputSpecies().Values.Select(r => r.Species.Id).ToArray()
             );
 
             var bwParam = modelDefinition.GetParameterDefinitionByType(PbkModelParameterType.BodyWeight);

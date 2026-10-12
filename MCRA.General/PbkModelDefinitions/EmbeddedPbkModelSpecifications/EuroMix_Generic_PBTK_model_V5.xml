@@ -22,6 +22,7 @@
       <Name>Oral</Name>
       <Description>Oral exposure</Description>
       <Route>Oral</Route>
+      <IsSystemicFallback>false</IsSystemicFallback>
       <Order>0</Order>
       <Unit>mmoles</Unit>
     </Forcing>
@@ -30,6 +31,7 @@
       <Name>Dermal</Name>
       <Description>Dermal exposure</Description>
       <Route>Dermal</Route>
+      <IsSystemicFallback>false</IsSystemicFallback>
       <Order>1</Order>
       <Unit>mmoles</Unit>
     </Forcing>
@@ -38,6 +40,7 @@
       <Name>Inhalation</Name>
       <Description>Inhalatory exposure</Description>
       <Route>Inhalation</Route>
+      <IsSystemicFallback>true</IsSystemicFallback>
       <Order>2</Order>
       <Unit>mmoles</Unit>
     </Forcing>

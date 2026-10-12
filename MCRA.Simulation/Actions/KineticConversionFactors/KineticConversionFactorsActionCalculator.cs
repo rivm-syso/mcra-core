@@ -32,6 +32,8 @@ namespace MCRA.Simulation.Actions.KineticConversionFactors {
             var requirePbkModels = ModuleConfig.IsCompute;
             _actionInputRequirements[ActionType.PbkModels].IsRequired = requirePbkModels;
             _actionInputRequirements[ActionType.PbkModels].IsVisible = requirePbkModels;
+            _actionInputRequirements[ActionType.KineticModels].IsVisible = requirePbkModels && ModuleConfig.AllowFallbackSystemic;
+            _actionInputRequirements[ActionType.KineticModels].IsRequired = false;
         }
 
         public override ICollection<UncertaintySource> GetRandomSources() {
@@ -131,6 +133,7 @@ namespace MCRA.Simulation.Actions.KineticConversionFactors {
                     data.ActiveSubstances,
                     data.KineticModelInstances,
                     simulationSettings,
+                    data.AbsorptionFactors,
                     externalExposureUnit,
                     internalTargets,
                     ModuleConfig.ExposureType,

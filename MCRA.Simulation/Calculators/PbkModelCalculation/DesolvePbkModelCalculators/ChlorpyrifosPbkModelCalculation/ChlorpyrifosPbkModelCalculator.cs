@@ -1,13 +1,15 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 using MCRA.General.PbkModelDefinitions.PbkModelSpecifications.DeSolve;
 
 namespace MCRA.Simulation.Calculators.PbkModelCalculation.DesolvePbkModelCalculators.ChlorpyrifosPbkModelCalculation {
     public sealed class ChlorpyrifosPbkModelCalculator : DesolvePbkModelCalculator {
 
         public ChlorpyrifosPbkModelCalculator(
-          KineticModelInstance kineticModelInstance,
-          PbkSimulationSettings simulationSettings
-        ) : base(kineticModelInstance, simulationSettings) {
+            KineticModelInstance kineticModelInstance,
+            PbkSimulationSettings simulationSettings,
+            Dictionary<ExposureRoute, double> absorptionFactors = null
+        ) : base(kineticModelInstance, simulationSettings, absorptionFactors) {
         }
 
         protected override double getRelativeCompartmentWeight(

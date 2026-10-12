@@ -2,7 +2,6 @@
 using MCRA.General;
 using MCRA.Simulation.Calculators.KineticConversionFactorModels;
 using MCRA.Simulation.Calculators.PbkModelCalculation;
-using MCRA.Simulation.Constants;
 
 namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
     public sealed class KineticConversionCalculatorFactory {
@@ -11,13 +10,19 @@ namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
         private readonly ICollection<IKineticConversionFactorModel> _kineticConversionFactorModels = [];
         private readonly InternalModelType _internalModelType;
 
+        private readonly ICollection<ExposureRoute> _exposureRoutes;
+        private readonly IDictionary<(ExposureRoute, Compound), SimpleAbsorptionFactor> _absorptionFactorsLookup;
+
         public KineticConversionCalculatorFactory(
             ICollection<KineticModelInstance> kineticModelInstances,
             ICollection<IKineticConversionFactorModel> kineticConversionFactorModels,
             ICollection<SimpleAbsorptionFactor> absorptionFactors,
             TargetLevelType targetLevelType,
-            InternalModelType internalModelType
+            InternalModelType internalModelType,
+            ICollection<ExposureRoute> exposureRoutes
         ) {
+            _absorptionFactorsLookup = absorptionFactors?.ToDictionary(r => (r.ExposureRoute, r.Substance)) ?? [];
+            _exposureRoutes = exposureRoutes;
             if (targetLevelType == TargetLevelType.Systemic) {
                 // For systemic target level, always use conversion factor models based on absorption factors
                 _internalModelType = InternalModelType.ConversionFactorModel;
@@ -39,9 +44,13 @@ namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
         }
 
         public KineticConversionCalculatorFactory(
-            ICollection<KineticModelInstance> kineticModelInstances
+            ICollection<KineticModelInstance> kineticModelInstances,
+            ICollection<SimpleAbsorptionFactor> absorptionFactors,
+            ICollection<ExposureRoute> exposureRoutes
         ) {
             _kineticModelInstances = kineticModelInstances;
+            _absorptionFactorsLookup = absorptionFactors.ToDictionary(r => (r.ExposureRoute, r.Substance)) ?? [];
+            _exposureRoutes = exposureRoutes;
         }
 
         public IKineticConversionCalculator CreateHumanKineticModelCalculator(
@@ -60,15 +69,23 @@ namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
 
                 var modelInstance = instances.First();
                 if (modelInstance.InputSubstance == substance) {
+                    var substanceAbsorptionFactors = _exposureRoutes.ToDictionary(
+                        r => r,
+                        r => _absorptionFactorsLookup.TryGetValue((r, substance), out var valSpecific)
+                            ? valSpecific.AbsorptionFactor
+                            : _absorptionFactorsLookup.TryGetValue((r, null), out var valGeneric) ? valGeneric.AbsorptionFactor : 1D
+                    );
+
                     return new PbkKineticConversionCalculator(
                         modelInstance,
-                        simulationSettings
+                        simulationSettings,
+                        substanceAbsorptionFactors
                     );
                 }
             }
 
             if (_internalModelType == InternalModelType.PBKModelOnly) {
-                throw new Exception($"For substance: {substance.Code} no PBK model is found, use option 'PBK models with fallback on kinetic conversion factors'.");
+                throw new Exception($"No PBK model found for substance [{substance.Code}].");
             }
 
             // No PBK model found, create kinetic conversion factor model calculator

@@ -39,9 +39,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.SbmlMod
 
         protected override IPbkModelCalculator createCalculator(
             KineticModelInstance instance,
-            PbkSimulationSettings simulationSettings
+            PbkSimulationSettings simulationSettings,
+            Dictionary<ExposureRoute, double> absorptionFactors
         ) {
-            return new SbmlPbkModelCalculator(instance, simulationSettings);
+            return new SbmlPbkModelCalculator(instance, simulationSettings, absorptionFactors);
         }
 
         protected override TargetUnit getDefaultInternalTarget() {
@@ -56,7 +57,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.SbmlMod
         public void SbmlPbkModelCalculator_TestDefinition() {
             var modelDefinition = GetModelDefinition();
             var expected = new[] { "QGut", "QSkin_sc_e", "QAir" };
-            var actual = modelDefinition.GetRouteInputSpecies().Values.Select(r => r.Id).ToArray();
+            var actual = modelDefinition.GetRouteInputSpecies().Values.Select(r => r.Species.Id).ToArray();
             CollectionAssert.AreEquivalent(
                 expected,
                 actual

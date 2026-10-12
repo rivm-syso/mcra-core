@@ -27,9 +27,9 @@ namespace MCRA.Simulation.OutputGeneration {
                         FileName = Path.GetFileName(definition.FileName),
                         TimeResolution = def.Resolution.GetDisplayName(),
                         ExposureRoutes = string.Join(", ", exposureRouteStrings),
-                        OralInputCompartment = oral?.Compartment.Id,
-                        DermalInputCompartment = dermal?.Compartment.Id,
-                        InhalationInputCompartment = inhalation?.Compartment.Id
+                        OralInputCompartment = oral.Species?.Compartment.Id,
+                        DermalInputCompartment = dermal.Species?.Compartment.Id,
+                        InhalationInputCompartment = inhalation.Species?.Compartment.Id
                     };
                     Records.Add(record);
                 }

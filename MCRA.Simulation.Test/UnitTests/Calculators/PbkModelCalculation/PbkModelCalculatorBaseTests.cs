@@ -13,14 +13,14 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation {
 
         public PbkModelCalculatorBaseTests()
             : base(
-                  new KineticModelInstance() {
-                      KineticModelDefinition = new DeSolvePbkModelSpecification() {
-                          Parameters = []
-                      }
-                  },
-                  new PbkSimulationSettings()
-            )
-        {
+                new KineticModelInstance() {
+                    KineticModelDefinition = new DeSolvePbkModelSpecification() {
+                        Parameters = []
+                    }
+                },
+                new PbkSimulationSettings(),
+                []
+            ) {
         }
 
         public override List<PbkSimulationOutput> calculate(

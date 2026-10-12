@@ -1,4 +1,5 @@
-﻿using MCRA.Data.Management;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Management;
 using MCRA.Data.Management.RawDataWriters;
 using MCRA.General;
 using MCRA.General.Action.ActionSettingsManagement;
@@ -91,7 +92,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             _actionInputRequirements[ActionType.Individuals].IsVisible = requireIndividuals;
 
             _actionInputRequirements[ActionType.KineticModels].IsRequired = false;
-            _actionInputRequirements[ActionType.KineticModels].IsVisible = ModuleConfig.RequireAbsorptionFactors;
+            _actionInputRequirements[ActionType.KineticModels].IsVisible = ModuleConfig.RequireAbsorptionFactors
+                || (ModuleConfig.RequirePbkModels && ModuleConfig.AllowFallbackSystemic);
 
             _actionInputRequirements[ActionType.KineticConversionFactors].IsRequired = ModuleConfig.RequireKineticConversionFactors;
             _actionInputRequirements[ActionType.KineticConversionFactors].IsVisible = ModuleConfig.RequireKineticConversionFactors;
@@ -592,7 +594,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 data.KineticConversionFactorModels,
                 data.AbsorptionFactors,
                 ModuleConfig.TargetDoseLevelType,
-                ModuleConfig.InternalModelType
+                ModuleConfig.InternalModelType,
+                ModuleConfig.ExposureRoutes
             );
 
             var pbkSimulationSettings = new PbkSimulationSettings() {
@@ -616,6 +619,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 LifetimeWindowYears = ModuleConfig.LifetimeWindowYears,
                 BodyWeightCorrected = ModuleConfig.BodyWeightCorrected,
             };
+
             var kineticModelCalculators = kineticConversionCalculatorFactory
                 .CreateHumanKineticModels(data.ActiveSubstances, pbkSimulationSettings);
 
@@ -624,7 +628,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             // Create internal concentrations calculator
             var kineticConversionCalculatorProvider = new KineticConversionCalculatorProvider(kineticModelCalculators);
             var targetExposuresCalculator = new InternalTargetExposuresCalculator(kineticConversionCalculatorProvider);
-
             var seedKineticModelParameterSampling = RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.BME_DrawKineticModelParameters);
             var kineticConversionRandomGenerator = new McraRandomGenerator(seedKineticModelParameterSampling);
             if (ModuleConfig.ExposureType == ExposureType.Acute) {

@@ -14,9 +14,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.Desolve
 
         protected override IPbkModelCalculator createCalculator(
             KineticModelInstance instance,
-            PbkSimulationSettings simulationSettings
+            PbkSimulationSettings simulationSettings,
+            Dictionary<ExposureRoute, double> absorptionFactors = null
         ) {
-            return new KarrerReImplementedKineticModelCalculator(instance, simulationSettings);
+            return new KarrerReImplementedKineticModelCalculator(instance, simulationSettings, absorptionFactors);
         }
 
         protected override TargetUnit getDefaultInternalTarget() {

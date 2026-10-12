@@ -56,6 +56,7 @@
   </SelectionInputs>
   <CalculationInputs>
     <Input>PbkModels</Input>
+    <Input>KineticModels</Input>
   </CalculationInputs>
   <Entities>
     <Entity>Substances</Entity>

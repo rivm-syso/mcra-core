@@ -27,6 +27,7 @@
     <Input>KineticConversionFactors</Input>
     <Input>ExposureBiomarkerConversions</Input>
     <Input>PbkModels</Input>
+    <Input>KineticModels</Input>
     <Input>OccupationalScenarios</Input>
   </CalculationInputs>
   <UncertaintySources>

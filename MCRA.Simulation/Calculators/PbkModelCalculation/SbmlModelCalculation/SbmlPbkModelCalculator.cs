@@ -12,8 +12,9 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation {
 
         public SbmlPbkModelCalculator(
             KineticModelInstance kineticModelInstance,
-            PbkSimulationSettings simulationSettings
-        ) : base(kineticModelInstance, simulationSettings) {
+            PbkSimulationSettings simulationSettings,
+            Dictionary<ExposureRoute, double> absorptionFactors = null
+        ) : base(kineticModelInstance, simulationSettings, absorptionFactors) {
         }
 
         public override List<PbkSimulationOutput> calculate(
@@ -30,7 +31,12 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation {
 
             // Get model input mappings for exposure routes
             var inputSpecies = PbkModelSpecification.GetRouteInputSpecies(SimulationSettings.AllowFallbackSystemic);
-            var inputMappings = inputSpecies.ToDictionary(r => r.Key, r => r.Value.Id);
+            var inputMappings = inputSpecies.ToDictionary(r => r.Key, r => r.Value.Species.Id);
+
+            // Get absorption factors for routes using systemic fallback
+            var absorptionFactors = SimulationSettings.AllowFallbackSystemic
+                ? routes.ToDictionary(r => r, r => inputSpecies.TryGetValue(r, out var species) && species.IsFallback ? AbsorptionFactors[r] : 1)
+                : null;
 
             // Check if routes are supported by the model
             var missingRoutes = routes.Except(inputMappings.Keys).ToList();
@@ -47,8 +53,9 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation {
                 inputSpecies
                     .ToDictionary(
                         r => r.Key,
-                        r => r.Value.SubstanceAmountUnit
-                    )
+                        r => r.Value.Species.SubstanceAmountUnit
+                    ),
+                absorptionFactors
             );
 
             // Get model output mappings for selected targets

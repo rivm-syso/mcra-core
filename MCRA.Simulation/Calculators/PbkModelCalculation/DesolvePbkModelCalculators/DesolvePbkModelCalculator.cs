@@ -22,8 +22,9 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.DesolvePbkModelCalcula
 
         public DesolvePbkModelCalculator(
             KineticModelInstance kineticModelInstance,
-            PbkSimulationSettings simulationSettings
-        ) : base(kineticModelInstance, simulationSettings) {
+            PbkSimulationSettings simulationSettings,
+            Dictionary<ExposureRoute, double> absorptionFactors = null
+        ) : base(kineticModelInstance, simulationSettings, absorptionFactors) {
             _dllFileName = Path.GetFileNameWithoutExtension(PbkModelSpecification.FileName);
             _modelFilePath = getModelFilePath();
             if (simulationSettings.PbkSimulationMethod != PbkSimulationMethod.Standard) {
@@ -73,6 +74,11 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.DesolvePbkModelCalcula
                 .Select(c => c.Route)
                 .ToList();
 
+            // Get absorption factors for routes using systemic fallback
+            var absorptionFactors = SimulationSettings.AllowFallbackSystemic
+                ? modelInputs.ToDictionary(r => r.Route, r => r.IsSystemicFallback ? AbsorptionFactors[r.Route] : 1D)
+                : null;
+
             // Check if routes are supported by the model
             var missingRoutes = routes.Except(modelInputRoutes).ToList();
             if (missingRoutes.Count > 0) {
@@ -89,7 +95,8 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.DesolvePbkModelCalcula
                     .ToDictionary(
                         r => r.Route,
                         r => r.DoseUnit.GetSubstanceAmountUnit()
-                    )
+                    ),
+                absorptionFactors
             );
 
             // Get model output mappings for selected targets

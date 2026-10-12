@@ -51,7 +51,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.Desolve
             var simulationSettings = getDefaultSimulationSettings();
             simulationSettings.NumberOfSimulatedDays = 100;
             simulationSettings.NumberOfOralDosesPerDay = 1;
-
             var calculator = createCalculator(instance, simulationSettings) as DesolvePbkModelCalculator;
             var outputPath = CreateTestOutputPath($"TestSingle_{exposureType}");
             using (var logger = new FileLogger(Path.Combine(outputPath, "AnalysisCode.R"))) {

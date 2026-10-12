@@ -33,9 +33,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.Desolve
 
         protected override IPbkModelCalculator createCalculator(
             KineticModelInstance instance,
-            PbkSimulationSettings simulationSettings
+            PbkSimulationSettings simulationSettings,
+            Dictionary<ExposureRoute, double> absorptionFactors = null
         ) {
-            return new ChlorpyrifosPbkModelCalculator(instance, simulationSettings);
+            return new ChlorpyrifosPbkModelCalculator(instance, simulationSettings, absorptionFactors);
         }
 
         protected override PbkSimulationSettings getDefaultSimulationSettings() {
@@ -93,9 +94,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.Desolve
                 NumberOfOralDosesPerDay = 1,
                 NonStationaryPeriod = 0
             };
+            var absorptionFactors = routes.ToDictionary(r => r, r => 1.0);
             var calculator = new PbkKineticConversionCalculator(
                 instance,
-                simulationSettings
+                simulationSettings,
+                absorptionFactors
             );
             var internalExposures = calculator.CalculateIndividualDayTargetExposures(
                 individualDayExposures,

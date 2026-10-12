@@ -1,4 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 
 namespace MCRA.Simulation.Calculators.PbkModelCalculation.DesolvePbkModelCalculators.KarrerKineticModelCalculation {
 
@@ -6,8 +7,9 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.DesolvePbkModelCalcula
 
         public KarrerKineticModelCalculator(
             KineticModelInstance kineticModelInstance,
-            PbkSimulationSettings simulationSettings
-        ) : base(kineticModelInstance, simulationSettings) {
+            PbkSimulationSettings simulationSettings,
+            Dictionary<ExposureRoute, double> absorptionFactors = null
+        ) : base(kineticModelInstance, simulationSettings, absorptionFactors) {
         }
 
         /// <summary>

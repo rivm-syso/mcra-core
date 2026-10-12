@@ -42,15 +42,19 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 var useDoseResponseModels = ModuleConfig.RequireDoseResponseModels();
                 var isHazardDoseImputation = ModuleConfig.ImputeMissingHazardDoses;
 
-                var requireAbsorptionFactors = ModuleConfig.ApplyKineticConversions
-                    && ModuleConfig.TargetDoseLevelType == TargetLevelType.Systemic; ;
-                _actionInputRequirements[ActionType.KineticModels].IsRequired = false;
-                _actionInputRequirements[ActionType.KineticModels].IsVisible = requireAbsorptionFactors;
+                var requirePbkModels = ModuleConfig.RequirePbkModels;
 
                 var requireConversionFactors = ModuleConfig.TargetDoseLevelType != TargetLevelType.Systemic
                     && ModuleConfig.ApplyKineticConversions
                     && (ModuleConfig.InternalModelType == InternalModelType.ConversionFactorModel
                         || ModuleConfig.InternalModelType == InternalModelType.PBKModel);
+
+                var requireAbsorptionFactors = ModuleConfig.ApplyKineticConversions
+                    && ModuleConfig.TargetDoseLevelType == TargetLevelType.Systemic
+                    || (requirePbkModels && ModuleConfig.AllowFallbackSystemic);
+
+                _actionInputRequirements[ActionType.KineticModels].IsRequired = false;
+                _actionInputRequirements[ActionType.KineticModels].IsVisible = requireAbsorptionFactors;
                 _actionInputRequirements[ActionType.KineticConversionFactors].IsRequired = requireConversionFactors;
                 _actionInputRequirements[ActionType.KineticConversionFactors].IsVisible = requireConversionFactors;
                 _actionInputRequirements[ActionType.PbkModels].IsRequired = ModuleConfig.RequirePbkModels;
@@ -257,7 +261,8 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                     data.KineticConversionFactorModels,
                     data.AbsorptionFactors,
                     ModuleConfig.TargetDoseLevelType,
-                    ModuleConfig.InternalModelType
+                    ModuleConfig.InternalModelType,
+                    ModuleConfig.ExposureRoutes
                 ) : null;
             var pbkSimulationSettings = new PbkSimulationSettings() {
                 NumberOfSimulatedDays = ModuleConfig.NumberOfDays,

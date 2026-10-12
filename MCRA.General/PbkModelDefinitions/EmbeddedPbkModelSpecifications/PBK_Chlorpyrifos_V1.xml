@@ -39,6 +39,7 @@
       <Id>Oral</Id>
       <Name>Oral</Name>
       <Description>Oral exposure</Description>
+      <IsSystemicFallback>false</IsSystemicFallback>
       <Route>Oral</Route>
       <Order>0</Order>
       <Unit>umoles</Unit>

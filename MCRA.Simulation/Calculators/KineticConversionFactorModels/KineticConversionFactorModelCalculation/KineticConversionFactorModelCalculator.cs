@@ -18,6 +18,7 @@ namespace MCRA.Simulation.Calculators.KineticConversionFactorModels {
             ICollection<Compound> activeSubstance,
             ICollection<KineticModelInstance> pbkModelInstances,
             PbkSimulationSettings simulationSettings,
+            ICollection<SimpleAbsorptionFactor> absorptionFactors,
             ExposureUnitTriple externalExposureUnit,
             ICollection<TargetUnit> targetUnits,
             ExposureType exposureType,
@@ -37,16 +38,24 @@ namespace MCRA.Simulation.Calculators.KineticConversionFactorModels {
             var timeSeriesExposureCharacterisationCalculator = TimeSeriesExposureCharacterisationCalculatorFactory
                 .Create(exposureType, simulationSettings);
 
+            var absorptionFactorsLookup = absorptionFactors?.ToDictionary(r => (r.ExposureRoute, r.Substance)) ?? [];
             foreach (var substance in activeSubstance) {
                 if (!pbkModelLookup.TryGetValue(substance, out var pbkModelInstance)) {
                     throw new Exception($"No PBK model for substance {substance.Name} ({substance.Code}).");
                 }
+                var substanceAbsorptionFactors = exposureRoutes.ToDictionary(
+                    r => r,
+                    r => absorptionFactorsLookup.TryGetValue((r, substance), out var valSpecific)
+                        ? valSpecific.AbsorptionFactor
+                        : absorptionFactorsLookup.TryGetValue((r, null), out var valGeneric) ? valGeneric.AbsorptionFactor : 1D
+                );
                 for (int i = 0; i < exposureRoutes.Count; i++) {
                     var route = exposureRoutes.ElementAt(i);
                     var records = ComputeFromPbk(
                         substance,
                         pbkModelInstance,
                         simulationSettings,
+                        substanceAbsorptionFactors,
                         externalExposureUnit,
                         targetUnits,
                         timeSeriesExposureCharacterisationCalculator,
@@ -66,6 +75,7 @@ namespace MCRA.Simulation.Calculators.KineticConversionFactorModels {
             Compound substance,
             KineticModelInstance pbkModelInstance,
             PbkSimulationSettings simulationSettings,
+            Dictionary<ExposureRoute, double> absorptionFactors,
             ExposureUnitTriple externalExposureUnit,
             ICollection<TargetUnit> targetUnits,
             ITimeSeriesExposureCharacterisationCalculator timeSeriesExposureCharacterisationCalculator,
@@ -77,7 +87,7 @@ namespace MCRA.Simulation.Calculators.KineticConversionFactorModels {
         ) {
             var result = new List<IKineticConversionFactorModel>();
             var pbkModelCalculator = PbkModelCalculatorFactory
-                .Create(pbkModelInstance, simulationSettings);
+                .Create(pbkModelInstance, simulationSettings, absorptionFactors);
 
             // Create external individual exposures
             var externalTargetUnit = new TargetUnit(new ExposureTarget(route), externalExposureUnit);

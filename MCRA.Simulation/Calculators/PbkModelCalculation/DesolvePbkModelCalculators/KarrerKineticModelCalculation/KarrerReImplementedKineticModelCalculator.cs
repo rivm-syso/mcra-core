@@ -8,8 +8,9 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.DesolvePbkModelCalcula
 
         public KarrerReImplementedKineticModelCalculator(
             KineticModelInstance kineticModelInstance,
-            PbkSimulationSettings simulationSettings
-        ) : base(kineticModelInstance, simulationSettings) {
+            PbkSimulationSettings simulationSettings,
+            Dictionary<ExposureRoute, double> absorptionFactors = null
+        ) : base(kineticModelInstance, simulationSettings, absorptionFactors) {
         }
 
         protected override(List<double> timings, Dictionary<ExposureRoute, List<double>> dosesPerRoute) computeDoses(

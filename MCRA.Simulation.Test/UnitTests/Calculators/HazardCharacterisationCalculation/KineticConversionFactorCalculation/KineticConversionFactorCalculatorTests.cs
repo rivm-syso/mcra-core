@@ -36,9 +36,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
                 kineticConversionFactorModels,
                 null,
                 TargetLevelType.Internal,
-                InternalModelType.ConversionFactorModel
+                InternalModelType.ConversionFactorModel,
+                routes
             );
-
             var calculator = new KineticConversionFactorCalculator(
                 kineticModelFactory,
                 new PbkSimulationSettings() {

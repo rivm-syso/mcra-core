@@ -23,7 +23,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation {
 
         protected abstract IPbkModelCalculator createCalculator(
             KineticModelInstance instance,
-            PbkSimulationSettings simulationSettings
+            PbkSimulationSettings simulationSettings,
+            Dictionary<ExposureRoute, double> absorptionFactors = null
         );
 
         protected abstract TargetUnit getDefaultInternalTarget();

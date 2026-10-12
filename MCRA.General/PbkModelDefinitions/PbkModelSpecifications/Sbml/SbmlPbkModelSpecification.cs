@@ -66,10 +66,11 @@ namespace MCRA.General.PbkModelDefinitions.PbkModelSpecifications.Sbml {
         /// <summary>
         /// Retrieves the list of inputs available in the PBK model.
         /// </summary>
-        public Dictionary<ExposureRoute, SbmlPbkModelSpecies> GetRouteInputSpecies(bool fallbackSystemic = false) {
-            var result = new Dictionary<ExposureRoute, SbmlPbkModelSpecies>();
+        public Dictionary<ExposureRoute, (SbmlPbkModelSpecies Species, bool IsFallback)> GetRouteInputSpecies(bool fallbackSystemic = false) {
+            var result = new Dictionary<ExposureRoute, (SbmlPbkModelSpecies Species, bool IsFallback)>();
             var routes = new[] { ExposureRoute.Inhalation, ExposureRoute.Oral, ExposureRoute.Dermal };
             foreach (var route in routes) {
+                var isFallback = false;
                 var inputForRoute = Species
                     .Select(r => (species: r, priority: r.Compartment.GetExposureRouteInputPriority(route)))
                     .Where(c => c.priority > 0)
@@ -78,14 +79,15 @@ namespace MCRA.General.PbkModelDefinitions.PbkModelSpecifications.Sbml {
                     .FirstOrDefault();
                 if (inputForRoute == null && fallbackSystemic) {
                     inputForRoute = Species
-                    .Select(r => (species: r, priority: r.Compartment.GetSystemicInputPriority()))
-                    .Where(c => c.priority > 0)
-                    .OrderByDescending(c => c.priority)
-                    .Select(r => r.species)
-                    .FirstOrDefault();
+                        .Select(r => (species: r, priority: r.Compartment.GetSystemicInputPriority()))
+                        .Where(c => c.priority > 0)
+                        .OrderByDescending(c => c.priority)
+                        .Select(r => r.species)
+                        .FirstOrDefault();
+                    isFallback = true;
                 }
                 if (inputForRoute != null) {
-                    result.Add(route, inputForRoute);
+                    result.Add(route, (inputForRoute, isFallback));
                 }
             }
             return result;

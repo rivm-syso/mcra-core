@@ -11,18 +11,21 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.ExposureEventsGenerati
         private readonly int _timeUnitMultiplier;
         private readonly ExposureUnitTriple _exposureUnit;
         private readonly Dictionary<ExposureRoute, SubstanceAmountUnit> _routeDoseAmountUnits;
+        private readonly Dictionary<ExposureRoute, double> _routeAbsorptionFactors;
         private bool _perPerson => !SimulationSettings.ApplyBodyWeightScaling;
 
         public ExposureEventsGenerator(
             PbkSimulationSettings simulationSetings,
             TimeUnit timeScale,
             ExposureUnitTriple exposureUnit,
-            Dictionary<ExposureRoute, SubstanceAmountUnit> routeDoseAmountUnits
+            Dictionary<ExposureRoute, SubstanceAmountUnit> routeDoseAmountUnits,
+            Dictionary<ExposureRoute, double> routeAbsorptionFactors = null
         ) {
             SimulationSettings = simulationSetings;
             _exposureUnit = exposureUnit;
             _timeUnitMultiplier = (int)TimeUnit.Days.GetTimeUnitMultiplier(timeScale);
             _routeDoseAmountUnits = routeDoseAmountUnits;
+            _routeAbsorptionFactors = routeAbsorptionFactors;
         }
 
         public List<IExposureEvent> CreateExposureEvents(
@@ -59,9 +62,13 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.ExposureEventsGenerati
             var exposureEvents = new List<IExposureEvent>();
             foreach (var route in routes) {
 
+                // Absorption factor for multiplying exposures when falling back to a systemic compartment for the exposure route
+                var absorptionFactor = (_routeAbsorptionFactors?.TryGetValue(route, out var fallbackAbsorptionFactor) ?? false)
+                    ? fallbackAbsorptionFactor : 1;
+
                 // Get daily doses
                 var dailyDoses = externalIndividualDayExposures
-                    .Select(r => r.GetExposure(route, substance, _perPerson))
+                    .Select(r => r.GetExposure(route, substance, _perPerson) * absorptionFactor)
                     .ToList();
 
                 // Compute average daily dose
@@ -74,7 +81,6 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.ExposureEventsGenerati
                         _exposureUnit.SubstanceAmountUnit,
                         substance.MolecularMass
                     );
-
                 // Timescale and exposure unit should be aligned with unit of the model
                 var routeExposureEvent = new RepeatingExposureEvent() {
                     Route = route,
@@ -96,6 +102,7 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.ExposureEventsGenerati
         ) {
             var exposureEvents = new List<IExposureEvent>();
             foreach (var route in routes) {
+
                 // Get alignment factor for aligning the substance amount unit of the
                 // exposure with the substance amount unit of the PBK model
                 var substanceAmountAlignmentFactor = _routeDoseAmountUnits[route]
@@ -104,9 +111,13 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.ExposureEventsGenerati
                         substance.MolecularMass
                     );
 
+                // Absorption factor for multiplying exposures when falling back to a systemic compartment for the exposure route
+                var absorptionFactor = (_routeAbsorptionFactors?.TryGetValue(route, out var fallbackAbsorptionFactor) ?? false)
+                    ? fallbackAbsorptionFactor : 1;
+
                 // Get daily doses
                 var dailyDoses = externalIndividualExposures
-                    .Select(e => e.GetExposure(route, substance, _perPerson) / substanceAmountAlignmentFactor)
+                    .Select(e => e.GetExposure(route, substance, _perPerson) / substanceAmountAlignmentFactor * absorptionFactor)
                     .ToList();
 
                 // Get the timings of the exposure events per day

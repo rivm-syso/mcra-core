@@ -24,6 +24,13 @@
         public ExposureRoute Route { get; set; }
 
         /// <summary>
+        /// If true, this forcing is a systemic fallback for the exposure route
+        /// for which you may want to multiply the input with a route-specific
+        /// absorption factor.
+        /// </summary>
+        public bool IsSystemicFallback { get; set; }
+
+        /// <summary>
         /// Gets/sets the unit of this parameter.
         /// </summary>
         public string Unit { get; set; }

@@ -50,6 +50,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             _actionInputRequirements[ActionType.KineticConversionFactors].IsVisible = useKineticConversionFactorModels;
             _actionInputRequirements[ActionType.PbkModels].IsRequired = usePbkModels;
             _actionInputRequirements[ActionType.PbkModels].IsVisible = usePbkModels;
+            _actionInputRequirements[ActionType.KineticModels].IsRequired = false;
+            _actionInputRequirements[ActionType.KineticModels].IsVisible = usePbkModels && ModuleConfig.AllowFallbackSystemic;
             var occupationalScenarios = ModuleConfig.OccupationalExposureAssessment;
             _actionInputRequirements[ActionType.OccupationalScenarios].IsRequired = occupationalScenarios;
             _actionInputRequirements[ActionType.OccupationalScenarios].IsVisible = occupationalScenarios;
@@ -255,7 +257,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                                 LifetimeWindowYears = ModuleConfig.LifetimeWindowYears,
                                 BodyWeightCorrected = ModuleConfig.BodyWeightCorrected,
                             }
-                            : null
+                            : null,
+                        usePbkModels ? data.AbsorptionFactors : null
                     );
 
                     var kineticConversionRandomGenerator = usePbkModels ?

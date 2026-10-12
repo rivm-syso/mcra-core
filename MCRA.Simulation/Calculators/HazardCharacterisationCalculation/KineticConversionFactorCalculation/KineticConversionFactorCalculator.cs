@@ -19,7 +19,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticC
         ) {
             _kineticModelCalculatorFactory = kineticModelCalculatorFactory;
             _pbkSimulationSettings = pbkSimulationSettings;
-            _nominalIndividual = new(new (0) {
+            _nominalIndividual = new(new(0) {
                 BodyWeight = nominalBodyWeight,
             }, 0);
         }

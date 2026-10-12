@@ -25,7 +25,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
         /// <summary>
         /// Dictionary with relevant PBK models
         /// </summary>
-        private readonly Dictionary<Compound, IKineticConversionCalculator> _kineticModelCalculators;
+        private readonly IDictionary<Compound, IKineticConversionCalculator> _kineticModelCalculators;
 
         /// <summary>
         /// Default (intermediate) external exposure route for reverse PBK model calculations
@@ -40,7 +40,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
         public TargetMatrixKineticConversionCalculator(
             ICollection<IKineticConversionFactorModel> kineticConversionFactors,
             ICollection<KineticModelInstance> kineticModelInstances = null,
-            PbkSimulationSettings pbkSimulationSettings = null
+            PbkSimulationSettings pbkSimulationSettings = null,
+            ICollection<SimpleAbsorptionFactor> absorptionFactors = null
         ) {
             _reverseDoseDefaultExposureRoute = ExposureRoute.Oral;
             _kineticConversionModels = kineticConversionFactors?
@@ -49,12 +50,17 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
                     c.TargetFrom,
                     c.TargetTo
                 ));
-            var kmcFactory = new KineticConversionCalculatorFactory(kineticModelInstances);
-            _kineticModelCalculators = kineticModelInstances?
-                .ToDictionary(
-                    c => c.InputSubstance,
-                    c => kmcFactory.CreateHumanKineticModelCalculator(c.InputSubstance, pbkSimulationSettings)
+            if (kineticModelInstances != null) {
+                var kmcFactory = new KineticConversionCalculatorFactory(
+                    kineticModelInstances,
+                    absorptionFactors,
+                    [_reverseDoseDefaultExposureRoute]
                 );
+                _kineticModelCalculators = kmcFactory.CreateHumanKineticModels(
+                    [.. kineticModelInstances.Select(r => r.InputSubstance)],
+                    pbkSimulationSettings
+                );
+            }
         }
 
         public ICollection<HbmSubstanceTargetExposure> GetSubstanceTargetExposures(

@@ -35,9 +35,10 @@ namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
 
         public PbkKineticConversionCalculator(
             KineticModelInstance kineticModelInstance,
-            PbkSimulationSettings simulationSettings
+            PbkSimulationSettings simulationSettings,
+            Dictionary<ExposureRoute, double> absorptionFactors
         ) {
-            _pbkModelCalculator = PbkModelCalculatorFactory.Create(kineticModelInstance, simulationSettings);
+            _pbkModelCalculator = PbkModelCalculatorFactory.Create(kineticModelInstance, simulationSettings, absorptionFactors);
             _simulationSettings = simulationSettings;
         }
 

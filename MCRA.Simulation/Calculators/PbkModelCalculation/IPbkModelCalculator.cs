@@ -7,10 +7,12 @@ using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.PbkModelCalculation {
     public interface IPbkModelCalculator {
+
         KineticModelInstance KineticModelInstance { get; }
         List<Compound> OutputSubstances { get; }
         PbkSimulationSettings SimulationSettings { get; }
         Compound Substance { get; }
+        Dictionary<ExposureRoute, double> AbsorptionFactors { get; }
 
         List<PbkSimulationOutput> Calculate(
             ICollection<(SimulatedIndividual Individual, List<IExternalIndividualDayExposure> IndividualDayExposures)> externalIndividualExposures,

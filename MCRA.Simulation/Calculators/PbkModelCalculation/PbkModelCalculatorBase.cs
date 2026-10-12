@@ -23,6 +23,9 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation {
         // Run/simulation settings
         public PbkSimulationSettings SimulationSettings { get; }
 
+        // Absorption factors used when falling back to a systemic compartment for exposure routes not represented in the model
+        public Dictionary<ExposureRoute, double> AbsorptionFactors { get; }
+
         // Matrices that can be used for extrapolation when blood is requested
         public static readonly Dictionary<BiologicalMatrix, HashSet<BiologicalMatrix>> ExtrapolationMatrices =
             new() {
@@ -40,11 +43,12 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation {
 
         public PbkModelCalculatorBase(
             KineticModelInstance kineticModelInstance,
-            PbkSimulationSettings simulationSettings
+            PbkSimulationSettings simulationSettings,
+            Dictionary<ExposureRoute, double> absorptionFactors
         ) {
             KineticModelInstance = kineticModelInstance;
             SimulationSettings = simulationSettings;
-
+            AbsorptionFactors = absorptionFactors;
             if (kineticModelInstance.KineticModelDefinition is T value) {
                 PbkModelSpecification = value;
             } else {
