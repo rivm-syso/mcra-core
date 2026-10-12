@@ -10,15 +10,18 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
 
         private readonly BodApproach _bodApproach;
         private readonly EnvironmentalBodStandardisationMethod _ebdStandardisationMethod;
+        private readonly PAFCalculationMethod _pafCalculationMethod;
         private readonly bool _forcePafLimit;
 
         public EnvironmentalBurdenOfDiseaseCalculator(
             BodApproach bodApproach,
             EnvironmentalBodStandardisationMethod ebdStandardisationMethod,
+            PAFCalculationMethod pafCalculationMethod,
             bool forcePafLimit
         ) {
             _bodApproach = bodApproach;
             _ebdStandardisationMethod = ebdStandardisationMethod;
+            _pafCalculationMethod = pafCalculationMethod;
             _forcePafLimit = forcePafLimit;
         }
 
@@ -80,6 +83,8 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
                 EnvironmentalBodStandardisationMethod.PER1M => 1E6,
                 _ => 1E5,
             };
+            var meanRelativeRisk = exposureResponseResult.ExposureResponseResultRecords
+                .Sum(r => r.PercentileSpecificRisk * r.PercentileInterval.Percentage / 100);
             var environmentalBurdenOfDiseaseResultBinRecords = exposureResponseResult.ExposureResponseResultRecords
                 .Select(r => computeBinResults(
                     r,
@@ -87,7 +92,8 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
                     bodIndicatorModel,
                     _bodApproach,
                     _forcePafLimit,
-                    standardisedPopulationSize
+                    standardisedPopulationSize,
+                    meanRelativeRisk
                 ))
                 .ToList();
             var population = bodIndicatorModel.Population;
@@ -125,10 +131,14 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
             IBodIndicatorModel bodIndicatorModel,
             BodApproach bodApproach,
             bool forcePafLimit,
-            double standardisedPopulationSize
+            double standardisedPopulationSize,
+            double meanRelativeRisk
         ) {
             var totalBod = bodIndicatorModel.GetBodIndicatorValue()
                 * exposureResponseResultRecord.PercentileInterval.Percentage / 100;
+            if (_pafCalculationMethod == PAFCalculationMethod.Levin) {
+                totalBod = totalBod * exposureResponseResultRecord.PercentileSpecificRisk / meanRelativeRisk;
+            }
             var responseValue = exposureResponseResultRecord.PercentileSpecificRisk;
             var result = new EnvironmentalBurdenOfDiseaseResultBinRecord {
                 ExposureBinId = exposureResponseResultRecord.ExposureBinId,

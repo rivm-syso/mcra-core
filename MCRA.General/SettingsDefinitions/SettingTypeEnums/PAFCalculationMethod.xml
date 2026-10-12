@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>PAFCalculationMethod</Id>
+  <Name>PAF calculation method</Name>
+  <Description>
+    Method used for calculating the PAF.
+  </Description>
+  <IsInternalEnum>true</IsInternalEnum>
+  <Units>
+    <Unit>
+      <Id>Levin</Id>
+      <Name>Levin</Name>
+      <ShortName>Levins method</ShortName>
+      <Description>
+        PAF calculation as proposed by Levin.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>PersonWeightedAF</Id>
+      <Name>Person weighted attributable fraction</Name>
+      <ShortName>Person weighted AF</ShortName>
+      <Description>
+        Person weighted mean of attributable fractions.
+      </Description>
+    </Unit>
+  </Units>
+</UnitDefinition>

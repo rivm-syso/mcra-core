@@ -36,6 +36,7 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
                 section.SummarizeSetting(SettingsItemType.EbdCumulative, _configuration.EbdCumulative);
             }
             if (_configuration.BodApproach == BodApproach.TopDown) {
+                section.SummarizeSetting(SettingsItemType.PAFCalculationMethod, _configuration.PAFCalculationMethod);
                 section.SummarizeSetting(SettingsItemType.ForcePAFLimit, _configuration.ForcePAFLimit);
             }
             return section;

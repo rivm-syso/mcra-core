@@ -80,6 +80,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Enviro
             var ebdCalculator = new EnvironmentalBurdenOfDiseaseCalculator(
                 BodApproach.TopDown,
                 EnvironmentalBodStandardisationMethod.PER1M,
+                PAFCalculationMethod.PersonWeightedAF,
                 true
             );
             var ebdResultRecords = ebdCalculator.Compute(bodIndicatorModels, exposureResponseResults);

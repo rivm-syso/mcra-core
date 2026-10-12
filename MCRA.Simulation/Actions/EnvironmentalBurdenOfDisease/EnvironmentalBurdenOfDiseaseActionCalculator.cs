@@ -97,12 +97,14 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
 
             if (ModuleConfig.WithinBinExposureRepresentationMethod == WithinBinExposureRepresentationMethod.BinUpperLimit &&
                 exposureResponseFunctionModels
-                    .Any(r => r.ExposureResponseFunction.SubgroupIntervalBound == SubgroupIntervalBoundType.LeftInclusive)) {
+                    .Any(r => r.HasErfSubGroups &&
+                            r.ExposureResponseFunction.SubgroupIntervalBound == SubgroupIntervalBoundType.LeftInclusive)) {
                 throw new Exception("Maximum in bin not implemented for exposure response function with left inclusive subgroups.");
             }
             if (ModuleConfig.WithinBinExposureRepresentationMethod == WithinBinExposureRepresentationMethod.BinLowerLimit &&
                 exposureResponseFunctionModels
-                    .Any(r => r.ExposureResponseFunction.SubgroupIntervalBound == SubgroupIntervalBoundType.RightInclusive)) {
+                    .Any(r => r.HasErfSubGroups &&
+                            r.ExposureResponseFunction.SubgroupIntervalBound == SubgroupIntervalBoundType.RightInclusive)) {
                 throw new Exception("Minimum in bin not implemented for exposure response function with right inclusive subgroups.");
             }
 
@@ -126,6 +128,7 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
             var ebdCalculator = new EnvironmentalBurdenOfDiseaseCalculator(
                 ModuleConfig.BodApproach,
                 ModuleConfig.EbdStandardisation,
+                ModuleConfig.PAFCalculationMethod,
                 ModuleConfig.ForcePAFLimit
             );
             var environmentalBurdenOfDiseases = ebdCalculator.Compute(
