@@ -85,7 +85,8 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                 ExposureResponseSpecificationLower = new NCalc.Expression(erfStringLower),
                 ExposureResponseSpecificationUpper = new NCalc.Expression(erfStringUpper),
                 ExposureResponseType = erfType,
-                CounterFactualValue = counterfactualValue
+                CounterFactualValue = counterfactualValue,
+                SubgroupIntervalBound = SubgroupIntervalBoundType.LeftInclusive
             };
             if (metric == EffectMetric.PositiveShift
                 || metric == EffectMetric.NegativeShift

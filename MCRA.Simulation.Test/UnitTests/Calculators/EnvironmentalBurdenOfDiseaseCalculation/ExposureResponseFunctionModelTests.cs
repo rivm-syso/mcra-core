@@ -127,7 +127,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.EnvironmentalBurdenOfDiseas
                     new ErfSubgroup() {
                         ExposureResponseSpecification = new NCalc.Expression("7.01"),
                     }
-                ]
+                ],
+                SubgroupIntervalBound = SubgroupIntervalBoundType.RightInclusive
             };
             var erfModel = ExposureResponseModelBuilder.Create(erf);
             var random = new McraRandomGenerator();

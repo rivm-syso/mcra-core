@@ -80,7 +80,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Enviro
             var exposureResponseDataPoints = xScatter
                 .Zip(yScatter, (x, y) => new ExposureResponseDataPoint() {
                     Exposure = x,
-                    ResponseValue = y
+                    ResponseValue = y,
+                    ResponseValues = []
                 })
                 .ToList();
 
@@ -98,6 +99,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Enviro
                 XValues = xGrid,
                 ReferenceValues = yGrid
             };
+
 
             if (numUncertaintyValues > 0) {
                 for (var j = 0; j < numUncertaintyValues; j++) {
