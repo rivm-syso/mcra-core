@@ -84,16 +84,16 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation {
                 applyBodyWeightScaling
             );
 
-            // Regenerate model only if events changed or not reusing
-            if (eventsChanged) {
-                _model.regenerateModel(true, true);
-            }
-
             // Set model parameters
             if (parameters != null) {
                 foreach (var parameter in parameters) {
                     _model.__setattr__(parameter.Key, parameter.Value);
                 }
+            }
+
+            // Regenerate model only if events changed or not reusing
+            if (eventsChanged) {
+                _model.regenerateModel(true, true);
             }
 
             // Specify selected output for roadrunner, including time
