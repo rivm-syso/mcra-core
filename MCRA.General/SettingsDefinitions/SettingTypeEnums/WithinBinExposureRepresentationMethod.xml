@@ -8,27 +8,27 @@
   <IsInternalEnum>true</IsInternalEnum>
   <Units>
     <Unit>
-      <Id>MinimumInBin</Id>
-      <Name>Minimum in bin</Name>
-      <ShortName>Minimum in bin</ShortName>
+      <Id>BinLowerLimit</Id>
+      <Name>Bin lower limit</Name>
+      <ShortName>Bin lower limit</ShortName>
       <Description>
-        Minimum exposure value within the bin.
+        Lower limit of the bin.
       </Description>
     </Unit>
     <Unit>
-      <Id>MaximumInBin</Id>
-      <Name>Maximum in bin</Name>
-      <ShortName>Maximum in bin</ShortName>
+      <Id>BinUpperLimit</Id>
+      <Name>Bin upper limit</Name>
+      <ShortName>Bin upper limit</ShortName>
       <Description>
-        Maximum exposure value within the bin.
+        Upper limit of the bin.
       </Description>
     </Unit>
     <Unit>
-      <Id>AverageInBin</Id>
-      <Name>Average in bin</Name>
-      <ShortName>Average in bin</ShortName>
+      <Id>BinMidpoint</Id>
+      <Name>Bin midpoint</Name>
+      <ShortName>Bin midpoint</ShortName>
       <Description>
-        Average exposure value within the bin.
+        Midpoint of the bin.
       </Description>
     </Unit>
   </Units>

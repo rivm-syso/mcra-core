@@ -348,11 +348,11 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
             int exposureBinId
         ) {
             var exposureLevel = withinBinExposureRepresentationMethod switch {
-                WithinBinExposureRepresentationMethod.MinimumInBin =>
+                WithinBinExposureRepresentationMethod.BinLowerLimit =>
                     !double.IsNaN(exposureInterval.Lower) ? exposureInterval.Lower : exposureInterval.Upper,
-                WithinBinExposureRepresentationMethod.MaximumInBin =>
+                WithinBinExposureRepresentationMethod.BinUpperLimit =>
                     !double.IsNaN(exposureInterval.Upper) ? exposureInterval.Upper : exposureInterval.Lower,
-                WithinBinExposureRepresentationMethod.AverageInBin => exposureInterval.Average,
+                WithinBinExposureRepresentationMethod.BinMidpoint => exposureInterval.Midpoint,
                 _ => throw new NotImplementedException()
             };
             var response = exposureResponseFunctionModel

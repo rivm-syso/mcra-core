@@ -6,7 +6,7 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
         public double Upper { get; set; } = upper;
         public SubgroupIntervalBoundType SubgroupIntervalBoundType { get; set; } = subgroupIntervalBoundType;
 
-        public readonly double Average =>
+        public readonly double Midpoint =>
             double.IsNaN(Lower) || Lower == 0 ? Upper
             : double.IsNaN(Upper) ? Lower
             : (Upper + Lower) / 2;

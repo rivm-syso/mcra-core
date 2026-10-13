@@ -62,7 +62,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Enviro
             var erCalculator = new ExposureResponseCalculator(
                 ExposureGroupingMethod.CustomBins,
                 [5.0, 50.0, 95.0],
-                WithinBinExposureRepresentationMethod.AverageInBin
+                WithinBinExposureRepresentationMethod.BinMidpoint
             );
             var exposureResponseResults = erCalculator.ComputeFromTargetIndividualExposures(
                 hbmIndividualCollections,

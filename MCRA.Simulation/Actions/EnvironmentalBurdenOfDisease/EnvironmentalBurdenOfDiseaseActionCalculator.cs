@@ -95,12 +95,12 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
                 ? [.. data.ExposureResponseFunctionModels.Where(r => r.ExposureResponseFunction.Substance == data.ReferenceSubstance)]
                 : data.ExposureResponseFunctionModels;
 
-            if (ModuleConfig.WithinBinExposureRepresentationMethod == WithinBinExposureRepresentationMethod.MaximumInBin &&
+            if (ModuleConfig.WithinBinExposureRepresentationMethod == WithinBinExposureRepresentationMethod.BinUpperLimit &&
                 exposureResponseFunctionModels
                     .Any(r => r.ExposureResponseFunction.SubgroupIntervalBound == SubgroupIntervalBoundType.LeftInclusive)) {
                 throw new Exception("Maximum in bin not implemented for exposure response function with left inclusive subgroups.");
             }
-            if (ModuleConfig.WithinBinExposureRepresentationMethod == WithinBinExposureRepresentationMethod.MinimumInBin &&
+            if (ModuleConfig.WithinBinExposureRepresentationMethod == WithinBinExposureRepresentationMethod.BinLowerLimit &&
                 exposureResponseFunctionModels
                     .Any(r => r.ExposureResponseFunction.SubgroupIntervalBound == SubgroupIntervalBoundType.RightInclusive)) {
                 throw new Exception("Minimum in bin not implemented for exposure response function with right inclusive subgroups.");
