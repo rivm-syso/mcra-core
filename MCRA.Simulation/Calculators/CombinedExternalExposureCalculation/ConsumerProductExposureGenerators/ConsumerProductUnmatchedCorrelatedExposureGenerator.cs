@@ -87,9 +87,10 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.Consum
             ICollection<ConsumerProductIndividualExposure> individualDayExposures,
             SimulatedIndividual simulatedIndividual
         ) {
-            individualDayExposures = [.. individualDayExposures
-                .Where(c => c.SimulatedIndividual.Gender == simulatedIndividual.Gender)];
-            return individualDayExposures;
+            var result = individualDayExposures
+                .Where(c => c.SimulatedIndividual.Gender == simulatedIndividual.Gender)
+                .ToList();
+            return result;
         }
 
         /// <summary>
@@ -100,7 +101,7 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.Consum
             SimulatedIndividual simulatedIndividual,
             List<(double left, double right)> intervals
         ) {
-            if (individualDayExposures != null) {
+            if (individualDayExposures?.Count > 0) {
                 if (intervals != null) {
                     var (left, right) = intervals
                         .Single(c => simulatedIndividual.Age >= c.left && simulatedIndividual.Age < c.right);

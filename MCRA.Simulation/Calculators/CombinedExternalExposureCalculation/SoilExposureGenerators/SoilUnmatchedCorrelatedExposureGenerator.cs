@@ -104,7 +104,7 @@ namespace MCRA.Simulation.Calculators.CombinedExternalExposureCalculation.SoilEx
             SimulatedIndividual simulatedIndividual,
             List<(double left, double right)> intervals
         ) {
-            if (individualDayExposures != null) {
+            if (individualDayExposures?.Count > 0) {
                 if (intervals != null) {
                     var (left, right) = intervals
                         .Single(c => simulatedIndividual.Age >= c.left && simulatedIndividual.Age < c.right);
