@@ -65,12 +65,13 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             DietaryExposuresActionResult result
         ) {
             var exposureStatistics = new List<SimpleExposureStatistics>();
+
             if (config.ExposureType == ExposureType.Acute && result.DietaryIndividualDayIntakes != null) {
                 if (data.CorrectedRelativePotencyFactors != null || data.ActiveSubstances.Count == 1) {
                     // Acute cumulative
                     var statistics = new SimpleExposureStatistics() {
                         Code = config.Id,
-                        Name = config.Name,
+                        Name = config.Name.Length > 100 ? $"{config.Name[..97]}..." : config.Name,
                         Description = config.Description,
                         TargetUnit = data.DietaryExposureUnit,
                         Substance = data.ActiveSubstances.Count == 1 ? data.ActiveSubstances.First() : data.ReferenceSubstance,
@@ -88,13 +89,14 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                     exposureStatistics.Add(statistics);
                 }
             } else {
+                var projectName = config.Name.Length > 83 ? $"{config.Name[..80]}..." : config.Name;
                 if (config.IntakeFirstModelThenAdd && result.DietaryObservedIndividualMeans != null) {
                     // Model-then-add
                     var intakes = result.DietaryObservedIndividualMeans.Select(c => c.DietaryIntakePerMassUnit).ToList();
                     var weights = result.DietaryObservedIndividualMeans.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
                     var statistics = new SimpleExposureStatistics() {
                         Code = $"{config.Id}-Model-Assisted",
-                        Name = $"{config.Name} (Model assisted)",
+                        Name = $"{projectName} (Model assisted)",
                         Description = config.Description,
                         TargetUnit = data.DietaryExposureUnit,
                         Substance = data.ActiveSubstances.Count == 1 ? data.ActiveSubstances.First() : data.ReferenceSubstance,
@@ -108,7 +110,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                     var weights = result.DietaryModelAssistedIntakes.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
                     var statistics = new SimpleExposureStatistics() {
                         Code = $"{config.Id}-Model-Assisted",
-                        Name = $"{config.Name} (Model assisted)",
+                        Name = $"{projectName} (Model assisted)",
                         Description = config.Description,
                         TargetUnit = data.DietaryExposureUnit,
                         Substance = data.ActiveSubstances.Count == 1 ? data.ActiveSubstances.First() : data.ReferenceSubstance,
@@ -121,7 +123,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                     var weights = result.DietaryObservedIndividualMeans.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
                     var statistics = new SimpleExposureStatistics() {
                         Code = $"{config.Id}-OIM",
-                        Name = $"{config.Name} (OIM)",
+                        Name = $"{projectName} (OIM)",
                         Description = config.Description,
                         TargetUnit = data.DietaryExposureUnit,
                         Substance = data.ActiveSubstances.Count == 1 ? data.ActiveSubstances.First() : data.ReferenceSubstance,
