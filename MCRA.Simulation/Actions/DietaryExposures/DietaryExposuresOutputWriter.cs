@@ -71,7 +71,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                     // Acute cumulative
                     var statistics = new SimpleExposureStatistics() {
                         Code = config.Id,
-                        Name = config.Name.Length > 100 ? $"{config.Name[..97]}..." : config.Name,
+                        Name = config.Name?.Length > 100 ? $"{config.Name[..97]}..." : config.Name,
                         Description = config.Description,
                         TargetUnit = data.DietaryExposureUnit,
                         Substance = data.ActiveSubstances.Count == 1 ? data.ActiveSubstances.First() : data.ReferenceSubstance,
@@ -89,7 +89,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                     exposureStatistics.Add(statistics);
                 }
             } else {
-                var projectName = config.Name.Length > 83 ? $"{config.Name[..80]}..." : config.Name;
+                var projectName = config.Name?.Length > 83 ? $"{config.Name[..80]}..." : config.Name;
                 if (config.IntakeFirstModelThenAdd && result.DietaryObservedIndividualMeans != null) {
                     // Model-then-add
                     var intakes = result.DietaryObservedIndividualMeans.Select(c => c.DietaryIntakePerMassUnit).ToList();
