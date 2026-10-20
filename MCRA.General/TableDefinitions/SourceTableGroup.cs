@@ -152,6 +152,8 @@ namespace MCRA.General {
         [Display(Name = "Consumer product exposure estimates", Order = 72)]
         ConsumerProductExposureEstimates = 70,
         [Display(Name = "Focal processing", Order = 73)]
-        FocalProcessing = 71
+        FocalProcessing = 71,
+        [Display(Name = "Background food concentrations", Order = 73)]
+        BackgroundFoodConcentrations = 72
     }
 }

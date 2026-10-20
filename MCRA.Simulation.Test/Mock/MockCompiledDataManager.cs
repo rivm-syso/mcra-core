@@ -420,5 +420,8 @@ namespace MCRA.Simulation.Test.Mock {
         public IDictionary<string, ConsumerProductExposureAssessment> GetAllConsumerProductExposureAssessments() {
             return _data.AllConsumerProductExposureAssessments;
         }
+        public ICollection<BackgroundFoodConcentration> GetAllBackgroundFoodConcentrations() {
+            return _data.AllBackgroundFoodConcentrations;
+        }
     }
 }

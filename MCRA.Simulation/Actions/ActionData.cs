@@ -7,6 +7,7 @@ using MCRA.Simulation.Actions.AirConcentrationDistributions;
 using MCRA.Simulation.Actions.AirExposureDeterminants;
 using MCRA.Simulation.Actions.AirExposures;
 using MCRA.Simulation.Actions.AOPNetworks;
+using MCRA.Simulation.Actions.BackgroundFoodConcentrations;
 using MCRA.Simulation.Actions.BurdensOfDisease;
 using MCRA.Simulation.Actions.ConcentrationDistributions;
 using MCRA.Simulation.Actions.ConcentrationLimits;
@@ -175,6 +176,11 @@ namespace MCRA.Simulation {
         public ICollection<Effect> RelevantEffects {
             get => GetOrCreateModuleOutputData<AOPNetworksOutputData>(ActionType.AOPNetworks).RelevantEffects;
             set => GetOrCreateModuleOutputData<AOPNetworksOutputData>(ActionType.AOPNetworks).RelevantEffects = value;
+        }
+        // BackgroundFoodConcentrations
+        public ICollection<BackgroundFoodConcentration> BackgroundFoodConcentrations {
+            get => GetOrCreateModuleOutputData<BackgroundFoodConcentrationsOutputData>(ActionType.BackgroundFoodConcentrations).BackgroundFoodConcentrations;
+            set => GetOrCreateModuleOutputData<BackgroundFoodConcentrationsOutputData>(ActionType.BackgroundFoodConcentrations).BackgroundFoodConcentrations = value;
         }
 
         // BiologicalMatrixConcentrationComparisons/ExposureComparisons

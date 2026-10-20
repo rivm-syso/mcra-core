@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>BackgroundFoodConcentrations</Id>
+  <Name>Background food concentrations</Name>
+  <SourceTableGroup>BackgroundFoodConcentrations</SourceTableGroup>
+  <Description>
+    Background food concentrations: this are data for e.g.CS2 substances and food combinations
+    where naturally occurring background levels are subtracted from positive residue values.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>BackgroundFoodConcentrations</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

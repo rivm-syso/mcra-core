@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>BackgroundFoodConcentrations</Id>
+  <Name>Background food concentrations</Name>
+  <Description>
+    Background food concentrations data for various foods and substance combinations.
+  </Description>
+  <Aliases>
+    <string>BackgroundFoodConcentrations</string>
+    <string>BackgroundFoodConcentration</string>
+    <string>BackgroundFoodLevels</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawBackgroundFoodConcentrations</string>
+  </HiddenAliases>
+  <TargetDataTable>RawBackgroundFoodConcentrations</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldSize="50" FieldType="AlphaNumeric">
+      <Id>idFood</Id>
+      <Description>
+        Code of the food.
+      </Description>
+      <Aliases>
+        <string>idFood</string>
+        <string>FoodId</string>
+        <string>FoodCode</string>
+        <string>Food</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Foods</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idSubstance</Id>
+      <Name>idSubstance</Name>
+      <Description>The code of the substance.</Description>
+      <Aliases>
+        <string>idSubstance</string>
+        <string>SubstanceId</string>
+        <string>SubstanceCode</string>
+        <string>Substance</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Compounds</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric" Required="true">
+      <Id>Value</Id>
+      <Name>Value</Name>
+      <Description>
+        Background food concentration value.
+      </Description>
+      <Aliases>
+        <string>Concentration</string>
+        <string>Level</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="ConcentrationUnit">
+      <Id>ConcentrationUnit</Id>
+      <Description>
+        The unit of the mean value (default mg/kg).
+      </Description>
+      <Aliases>
+        <string>ConcentrationUnit</string>
+        <string>Unit</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
+      <Id>Reference</Id>
+      <Description>
+        The description or reference to origin of the background concentration level.
+      </Description>
+      <Aliases>
+        <string>Origin</string>
+        <string>Description</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

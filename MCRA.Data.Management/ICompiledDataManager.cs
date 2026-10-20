@@ -117,5 +117,6 @@ namespace MCRA.Data.Management {
         IDictionary<string, OccupationalScenario> GetAllOccupationalScenarios();
         ICollection<OccupationalTaskExposure> GetAllOccupationalTaskExposures();
         IDictionary<string, ConsumerProductExposureAssessment> GetAllConsumerProductExposureAssessments();
+        ICollection<BackgroundFoodConcentration> GetAllBackgroundFoodConcentrations();
     }
 }

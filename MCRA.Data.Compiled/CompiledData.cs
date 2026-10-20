@@ -124,6 +124,7 @@ namespace MCRA.Data.Compiled {
         public IDictionary<string, OccupationalScenario> AllOccupationalScenarios { get; set; }
         public ICollection<OccupationalTaskExposure> AllOccupationalTaskExposures { get; set; }
         public IDictionary<string, ConsumerProductExposureAssessment> AllConsumerProductExposureAssessments { get; set; }
+        public ICollection<BackgroundFoodConcentration> AllBackgroundFoodConcentrations { get; set; }
 
         #region Methods
 

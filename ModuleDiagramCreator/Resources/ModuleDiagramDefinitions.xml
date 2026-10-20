@@ -10,7 +10,8 @@
 		<GraphDefinition ActionType="FoodRecipes" X="0" Y="73" Linebreaks="0"/>
 		<GraphDefinition ActionType="Concentrations" X="23" Y="15" Linebreaks="0"/>
 		<GraphDefinition ActionType="ConcentrationDistributions" X="3" Y="15" Linebreaks="1"/>
-		<GraphDefinition ActionType="SingleValueConcentrations" X="23" Y="23" Linebreaks="0"/>
+    <GraphDefinition ActionType="SingleValueConcentrations" X="23" Y="23" Linebreaks="0"/>
+    <GraphDefinition ActionType="BackgroundFoodConcentrations" X="24" Y="24" Linebreaks="0"/>
     <GraphDefinition ActionType="ProcessingFactors" X="3" Y="46" Linebreaks="1"/>
     <GraphDefinition ActionType="FocalProcessingFactors" X="3" Y="47" Linebreaks="1"/>
 		<GraphDefinition ActionType="UnitVariabilityFactors" X="3" Y="38" Linebreaks="1"/>

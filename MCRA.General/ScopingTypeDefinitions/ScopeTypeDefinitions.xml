@@ -2413,4 +2413,23 @@
       </ParentScopeReference>
     </ParentScopeReferences>
   </ScopingTypeDefinition>
+
+  <ScopingTypeDefinition>
+    <Id>BackgroundFoodConcentrations</Id>
+    <Name>Background food concentrations</Name>
+    <RawTableId>BackgroundFoodConcentrations</RawTableId>
+    <Description>-</Description>
+    <TableGroup>BackgroundFoodConcentrations</TableGroup>
+    <IsStrongEntity>false</IsStrongEntity>
+    <ParentScopeReferences>
+      <ParentScopeReference>
+        <IdField>idFood</IdField>
+        <ReferencedScope>Foods</ReferencedScope>
+      </ParentScopeReference>
+      <ParentScopeReference>
+        <IdField>idSubstance</IdField>
+        <ReferencedScope>Compounds</ReferencedScope>
+      </ParentScopeReference>
+    </ParentScopeReferences>
+  </ScopingTypeDefinition>
 </ScopingTypeDefinitions>

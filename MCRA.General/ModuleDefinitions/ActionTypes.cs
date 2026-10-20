@@ -231,5 +231,7 @@ namespace MCRA.General {
         ConsumerProductExposureEstimates = 88,
         [Display(Name = "Focal processing factors")]
         FocalProcessingFactors = 89,
+        [Display(Name = "Background food concentrations")]
+        BackgroundFoodConcentrations = 90
     }
 }

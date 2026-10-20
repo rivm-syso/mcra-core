@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>BackgroundFoodConcentrations</Id>
+  <Name>Background food concentrations</Name>
+  <ModuleType>DataModule</ModuleType>
+  <ActionType>BackgroundFoodConcentrations</ActionType>
+  <TableGroup>BackgroundFoodConcentrations</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Background food concentrations, this are food occurrence data representing the naturally occurring background levels in crops 
+    for e.g. CS2 (dithiocarbamates) substances. These naturally occurring background levels are subtracted from the positive residue values.  
+  </Description>
+  <DataDescription>
+    Background food concentrations, this are food occurrence data representing the naturally occurring background levels
+    for e.g. CS2 (dithiocarbamates) substances. These naturally occurring background levels are subtracted from the positive residue values.
+  </DataDescription>
+  <Entities>
+    <Entity>Foods</Entity>
+    <Entity>Substances</Entity>
+  </Entities>
+</Module>

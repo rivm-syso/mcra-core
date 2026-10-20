@@ -44,6 +44,7 @@
     <Modules>
       <xi:include href="Modules/Concentrations.xml" />
       <xi:include href="Modules/ConcentrationDistributions.xml" />
+      <xi:include href="Modules/BackgroundFoodConcentrations.xml" />
       <xi:include href="Modules/DustConcentrations.xml" />
       <xi:include href="Modules/DustConcentrationDistributions.xml" />
       <xi:include href="Modules/SoilConcentrations.xml" />
