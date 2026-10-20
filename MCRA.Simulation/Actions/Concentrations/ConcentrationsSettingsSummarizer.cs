@@ -42,6 +42,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
                 section.SummarizeSetting(SettingsItemType.RestrictWaterImputationToAuthorisedUses, _configuration.RestrictWaterImputationToAuthorisedUses);
                 section.SummarizeSetting(SettingsItemType.RestrictWaterImputationToApprovedSubstances, _configuration.RestrictWaterImputationToApprovedSubstances);
             }
+            section.SummarizeSetting(SettingsItemType.SubtractNaturallyOccurringConcentrations, _configuration.SubtractNaturallyOccurringConcentrations);
             section.SummarizeSetting(SettingsItemType.FocalCommodity, _configuration.FocalCommodity);
             if (_configuration.FocalCommodity) {
                 section.SummarizeSetting(SettingsItemType.FocalCommodityReplacementMethod, _configuration.FocalCommodityReplacementMethod);
@@ -115,7 +116,6 @@ namespace MCRA.Simulation.Actions.Concentrations {
                     }
                 }
             }
-
             return section;
         }
     }

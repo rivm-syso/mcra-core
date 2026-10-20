@@ -97,7 +97,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 substances,
                 allFoodSamples,
                 ConcentrationUnit.mgPerL,
-                null,
                 null
             );
 
@@ -173,7 +172,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 fgSubstances,
                 fgFoodSamples,
                 ConcentrationUnit.mgPerL,
-                null,
                 null
             );
 
@@ -189,9 +187,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var calculator = new ConcentrationsActionCalculator(project);
             if (exception) {
-                Assert.ThrowsExactly<AggregateException>(() => TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoadFocal0"));
+                Assert.ThrowsExactly<AggregateException>(() => TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestProspective"));
             } else {
-                TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoadFocal0");
+                TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestProspective");
             }
         }
 
@@ -259,7 +257,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 fgSubstances,
                 fgFoodSamples,
                 ConcentrationUnit.mgPerL,
-                null,
                 null
             );
 
@@ -278,7 +275,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
             sw.Start();
             for (int i = 0; i < 1000; i++) {
-                TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoadFocal0");
+                TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestReplaceRpcProspective");
             }
             sw.Stop();
             System.Diagnostics.Debug.WriteLine(sw.Elapsed.TotalMilliseconds.ToString());
@@ -340,7 +337,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 fgSubstances,
                 fgFoodSamples,
                 ConcentrationUnit.mgPerL,
-                null,
                 null
             );
 
@@ -356,9 +352,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var calculator = new ConcentrationsActionCalculator(project);
             if (focalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByLimitValue)
-                Assert.ThrowsExactly<Exception>(() => TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoadFocal2"));
+                Assert.ThrowsExactly<Exception>(() => TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestProposedConcentrationLimit"));
             else {
-                TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoadFocal2");
+                TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestProposedConcentrationLimit");
             }
         }
 
@@ -400,14 +396,14 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var calculator = new ConcentrationsActionCalculator(project);
-            var header = TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoadFocal");
+            var header = TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoadFocalIsReplace");
 
             Assert.HasCount(50, data.ActiveSubstanceSampleCollections.Values.First().SampleCompoundRecords);
 
             var factorialSet = new UncertaintyFactorialSet(UncertaintySource.Concentrations, UncertaintySource.FocalCommodityReplacement);
             var uncertaintySourceGenerators = factorialSet.UncertaintySources.ToDictionary(r => r, r => random as IRandom);
 
-            TestLoadAndSummarizeUncertainty(calculator, data, header, random, factorialSet, uncertaintySourceGenerators, "TestLoadFocal");
+            TestLoadAndSummarizeUncertainty(calculator, data, header, random, factorialSet, uncertaintySourceGenerators, "TestLoadFocalIsReplace");
         }
 
         /// <summary>
@@ -519,7 +515,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             }
         }
 
-
         /// <summary>
         /// Runs concentrations module as data. Tests filters.
         /// </summary>
@@ -597,7 +592,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         }
 
         [TestMethod]
-        public void UseWaterImputation_RestrictBySubstanceApprovals() {
+        public void ConcentrationsActionCalculator_TestUseWaterImputation_RestrictBySubstanceApprovals() {
             var seed = 1;
             var nrOfFoods = 3;
             var foods = FakeFoodsGenerator.Create(nrOfFoods);
@@ -637,7 +632,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var calculator = new ConcentrationsActionCalculator(project);
-            var header = TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoad");
+            var header = TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestUseWaterImputation_RestrictBySubstanceApprovals");
 
             Assert.IsNotNull(data.MeasuredSubstanceSampleCollections);
             Assert.IsNotNull(data.ActiveSubstanceSampleCollections);
@@ -648,7 +643,59 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var factorialSet = new UncertaintyFactorialSet(UncertaintySource.Concentrations);
             var uncertaintySourceGenerators = factorialSet.UncertaintySources.ToDictionary(r => r, r => random as IRandom);
 
-            TestLoadAndSummarizeUncertainty(calculator, data, header, random, factorialSet, uncertaintySourceGenerators, "TestLoadUnc");
+            TestLoadAndSummarizeUncertainty(calculator, data, header, random, factorialSet, uncertaintySourceGenerators, "TestUseWaterImputation_RestrictBySubstanceApprovals");
+        }
+
+
+        /// <summary>
+        /// Runs concentrations module as data with subtraction of background concentrations.
+        /// </summary>
+        [TestMethod]
+        public void ConcentrationsActionCalculator_TestSubtractBackgroundConcentrations() {
+            var seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var foods = FakeFoodsGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(3);
+            var allFoodSamples = FakeSamplesGenerator.CreateFoodSamples(foods, substances, numberOfSamples: 50, seed: seed);
+            var backgroundConcentrations = FakeBackgroundFoodConcentrationsGenerator
+                .Create(foods.Take(2), substances.Take(2), seed: seed);
+
+            var compiledData = new CompiledData() {
+                AllFoodSamples = allFoodSamples.ToDictionary(c => c.Code)
+            };
+
+            var project = new ProjectDto();
+            var config = project.ConcentrationsSettings;
+            config.SubtractNaturallyOccurringConcentrations = true;
+            var dataManager = new MockCompiledDataManager(compiledData);
+            var subsetManager = new SubsetManager(dataManager, project);
+
+            var data = new ActionData {
+                AllFoods = foods,
+                AllFoodsByCode = foods.ToDictionary(r => r.Code),
+                BackgroundFoodConcentrations = backgroundConcentrations,
+                ActiveSubstances = substances,
+                AllCompounds = substances
+            };
+
+            var calculator = new ConcentrationsActionCalculator(project);
+            var header = TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestSubtractBackgroundConcentrations");
+
+            Assert.IsNotNull(data.MeasuredSubstanceSampleCollections);
+            Assert.IsNotNull(data.ActiveSubstanceSampleCollections);
+            Assert.HasCount(3, data.ActiveSubstanceSampleCollections);
+            Assert.HasCount(3, data.MeasuredSubstanceSampleCollections);
+
+            foreach (var record in backgroundConcentrations) {
+                var sumAfter = data.ActiveSubstanceSampleCollections[record.Food].SampleCompoundRecords.Sum(r => r.SampleCompounds[record.Substance].IsPositiveResidue ? r.SampleCompounds[record.Substance].Residue : 0D);
+                var expectedAfter = data.MeasuredSubstanceSampleCollections[record.Food].SampleCompoundRecords.Sum(r => r.SampleCompounds[record.Substance].IsPositiveResidue ? Math.Max(r.SampleCompounds[record.Substance].Residue - record.Value, 0) : 0D);
+                Assert.AreEqual(expectedAfter, sumAfter, 1e-4);
+            }
+
+            var factorialSet = new UncertaintyFactorialSet(UncertaintySource.Concentrations);
+            var uncertaintySourceGenerators = factorialSet.UncertaintySources.ToDictionary(r => r, r => random as IRandom);
+
+            TestLoadAndSummarizeUncertainty(calculator, data, header, random, factorialSet, uncertaintySourceGenerators, "TestSubtractBackgroundConcentrations");
         }
     }
 }

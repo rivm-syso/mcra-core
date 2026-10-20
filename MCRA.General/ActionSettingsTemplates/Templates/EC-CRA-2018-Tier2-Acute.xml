@@ -251,6 +251,7 @@
         <Setting id="RestrictWaterImputationToMostPotentSubstances">true</Setting>
         <Setting id="RestrictWaterImputationToAuthorisedUses">false</Setting>
         <Setting id="RestrictWaterImputationToApprovedSubstances">false</Setting>
+        <Setting id="SubtractNaturallyOccurringConcentrations">false</Setting>
       </Settings>
       <ExcludedSettings>
         <Setting id="AlignSampleDateSubsetWithPopulation" />

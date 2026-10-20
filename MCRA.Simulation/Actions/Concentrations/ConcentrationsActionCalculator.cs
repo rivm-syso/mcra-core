@@ -9,6 +9,7 @@ using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Calculators.ActiveSubstanceAllocation;
+using MCRA.Simulation.Calculators.BackgroundFoodConcentrationsSubtraction;
 using MCRA.Simulation.Calculators.FocalCommodityCombinationsBuilder;
 using MCRA.Simulation.Calculators.FocalCommodityMeasurementReplacementCalculation;
 using MCRA.Simulation.Calculators.FoodExtrapolationsCalculation;
@@ -99,6 +100,9 @@ namespace MCRA.Simulation.Actions.Concentrations {
                 && ModuleConfig.FocalCommodityIncludeProcessedDerivatives;
             _actionInputRequirements[ActionType.ProcessingFactors].IsVisible = useProcessingFactors;
             _actionInputRequirements[ActionType.ProcessingFactors].IsRequired = useProcessingFactors;
+
+            _actionInputRequirements[ActionType.BackgroundFoodConcentrations].IsRequired = ModuleConfig.SubtractNaturallyOccurringConcentrations;
+            _actionInputRequirements[ActionType.BackgroundFoodConcentrations].IsVisible = ModuleConfig.SubtractNaturallyOccurringConcentrations;
 
             // Data selection requirements
             _actionDataSelectionRequirements[ScopingType.AnalyticalMethods].AllowEmptyScope = true;
@@ -368,6 +372,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
                 }
             }
 
+
             //Set concentration unit
             data.ConcentrationUnit = data.MeasuredSubstances.Count == 1
                 ? data.MeasuredSubstances.First().ConcentrationUnit
@@ -464,6 +469,15 @@ namespace MCRA.Simulation.Actions.Concentrations {
         ) {
             var measuredSubstanceSampleCollections = data.MeasuredSubstanceSampleCollections.Values
                 .ToDictionary(r => r.Food, r => r.Clone());
+
+            // If specified, subtract (naturally occurring) background concentration levels
+            if (ModuleConfig.SubtractNaturallyOccurringConcentrations) {
+                measuredSubstanceSampleCollections = BackgroundFoodConcentrationsSubtractor.Subtract(
+                    measuredSubstanceSampleCollections,
+                    data.BackgroundFoodConcentrations,
+                    data.ConcentrationUnit
+                );
+            }
 
             // Get substance authorisations
             var substanceAuthorisations = data.SubstanceAuthorisations;

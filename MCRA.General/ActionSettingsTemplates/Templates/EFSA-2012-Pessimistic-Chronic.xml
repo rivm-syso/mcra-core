@@ -197,6 +197,7 @@
     <ModuleConfiguration module="Concentrations">
       <Settings>
         <Setting id="FilterConcentrationLimitExceedingSamples">false</Setting>
+        <Setting id="SubtractNaturallyOccurringConcentrations">false</Setting>
       </Settings>
       <ExcludedSettings>
         <Setting id="AlignSampleDateSubsetWithPopulation" />

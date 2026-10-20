@@ -254,6 +254,7 @@
         <Setting id="RestrictWaterImputationToAuthorisedUses">false</Setting>
         <Setting id="RestrictWaterImputationToApprovedSubstances">true</Setting>
         <Setting id="FocalCommodityIncludeProcessedDerivatives">true</Setting>
+        <Setting id="SubtractNaturallyOccurringConcentrations">false</Setting>
       </Settings>
       <ExcludedSettings>
         <Setting id="AlignSampleDateSubsetWithPopulation" />

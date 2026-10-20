@@ -43,8 +43,8 @@ namespace MCRA.Simulation.Calculators.SampleCompoundCollections {
                     r.Food,
                     r.FoodSamples.OrderBy(s => s.Food.Code, StringComparer.OrdinalIgnoreCase).ToList(),
                     compounds,
-                    concentrationUnit)
-                )
+                    concentrationUnit
+                ))
                 .OrderBy(f => f.Food.Code, StringComparer.OrdinalIgnoreCase)
                 .ToDictionary(r => r.Food);
 
@@ -66,6 +66,7 @@ namespace MCRA.Simulation.Calculators.SampleCompoundCollections {
                     }
                 }
             }
+
             return result;
         }
 
@@ -180,7 +181,8 @@ namespace MCRA.Simulation.Calculators.SampleCompoundCollections {
                 resType = ResType.LOD;
             } else {
                 resType = ResType.MV;
-            };
+            }
+            ;
 
             var result = new SampleCompound() {
                 MeasuredSubstance = sampleCompounds.First().MeasuredSubstance,

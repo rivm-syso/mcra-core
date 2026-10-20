@@ -131,7 +131,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleCompoundCollections {
                 subsetManager.AllCompounds,
                 subsetManager.SelectedFoodSamples,
                 ConcentrationUnit.mgPerKg,
-                null);
+                null
+            );
 
             //-------------------------------------------------------------------------------
             // Tests Apple
@@ -291,7 +292,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleCompoundCollections {
                 subsetManager.AllCompounds,
                 sampleCompoundCollections.Values,
                 agriculturalUseInfo,
-                null);
+                null
+            );
 
             //-------------------------------------------------------------------------------
             // Apple

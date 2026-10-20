@@ -347,4 +347,10 @@
     <Description>If checked, measurement replacement is also performed for processed derivatives of the focal food (e.g. for juiced oranges).</Description>
     <ValueType>Boolean</ValueType>
   </SettingsItem>
+  <SettingsItem>
+    <Id>SubtractNaturallyOccurringConcentrations</Id>
+    <Name>Subtract naturally occurring (background) concentrations</Name>
+    <Description>If checked, naturally occurring concentrations (background)are substracted from the positive residue values for all combinations of food and substance for which these background concentration levels are specified.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
 </SettingsItems>

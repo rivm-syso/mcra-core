@@ -35,7 +35,13 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
 
             var measuredSubstances = residueDefinitions.Select(r => r.MeasuredSubstance).Distinct().ToList();
             var activeSubstances = residueDefinitions.Select(r => r.ActiveSubstance).ToHashSet();
-            var sampleCompoundCollections = SampleCompoundCollectionsBuilder.Create(foods, measuredSubstances, foodSamples, concentrationUnit, null);
+            var sampleCompoundCollections = SampleCompoundCollectionsBuilder.Create(
+                foods,
+                measuredSubstances,
+                foodSamples,
+                concentrationUnit,
+                null
+            );
 
             var csvWriter = new SampleCompoundCollectionCsvWriter() {
                 PrintLocation = false
