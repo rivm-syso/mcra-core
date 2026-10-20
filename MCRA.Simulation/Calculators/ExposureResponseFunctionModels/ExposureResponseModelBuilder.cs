@@ -18,7 +18,8 @@ namespace MCRA.Simulation.Calculators.ExposureResponseFunctionModels {
                     erf.ExposureResponseSpecification,
                     erf.ExposureResponseSpecificationLower,
                     erf.ExposureResponseSpecificationUpper,
-                    erf.ERFUncertaintyDistribution
+                    erf.ERFUncertaintyDistribution,
+                    erf.EffectMetric
                 ),
                 ExposureResponseFunction = erf,
                 ErfSubGroupModels = [.. erf.ErfSubgroups
@@ -29,7 +30,8 @@ namespace MCRA.Simulation.Calculators.ExposureResponseFunctionModels {
                             r.ExposureResponseSpecification,
                             r.ExposureResponseSpecificationLower,
                             r.ExposureResponseSpecificationUpper,
-                            r.ERFUncertaintyDistribution
+                            r.ERFUncertaintyDistribution,
+                            erf.EffectMetric
                         )
                     ))]
             };
@@ -41,7 +43,8 @@ namespace MCRA.Simulation.Calculators.ExposureResponseFunctionModels {
             Expression nominal,
             Expression lower,
             Expression upper,
-            ExposureResponseSpecificationDistributionType distributionType
+            ExposureResponseSpecificationDistributionType distributionType,
+            EffectMetric effectMetric
         ) {
             IExposureResponseFunctionModel exposureResponseFunctionModel = null;
             switch (exposureResponseType) {
@@ -50,7 +53,8 @@ namespace MCRA.Simulation.Calculators.ExposureResponseFunctionModels {
                         nominal,
                         lower,
                         upper,
-                        distributionType
+                        distributionType,
+                        effectMetric
                     );
                     break;
                 case ExposureResponseType.PerDoubling:
@@ -58,7 +62,8 @@ namespace MCRA.Simulation.Calculators.ExposureResponseFunctionModels {
                         getValue(nominal),
                         getValue(lower),
                         getValue(upper),
-                        distributionType
+                        distributionType,
+                        effectMetric
                     );
                     break;
                 case ExposureResponseType.PerUnit:
@@ -66,7 +71,8 @@ namespace MCRA.Simulation.Calculators.ExposureResponseFunctionModels {
                         getValue(nominal),
                         getValue(lower),
                         getValue(upper),
-                        distributionType
+                        distributionType,
+                        effectMetric
                     );
                     break;
                 case ExposureResponseType.Constant:
@@ -74,7 +80,8 @@ namespace MCRA.Simulation.Calculators.ExposureResponseFunctionModels {
                         getValue(nominal),
                         getValue(lower),
                         getValue(upper),
-                        distributionType
+                        distributionType,
+                        effectMetric
                     );
                     break;
                 default:

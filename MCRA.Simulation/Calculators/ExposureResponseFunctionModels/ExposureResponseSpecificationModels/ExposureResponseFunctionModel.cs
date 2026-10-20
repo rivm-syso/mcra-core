@@ -9,6 +9,7 @@ namespace MCRA.Simulation.Calculators.ExposureResponseFunctionModels.ExposureRes
         public Expression Nominal { get; set; }
 
         public ExposureResponseSpecificationDistributionType DistributionType { get; set; }
+        public EffectMetric EffectMetric { get; set; }
 
         public Expression Lower { get; set; }
 
@@ -27,10 +28,12 @@ namespace MCRA.Simulation.Calculators.ExposureResponseFunctionModels.ExposureRes
             Expression nominal,
             Expression lower,
             Expression upper,
-            ExposureResponseSpecificationDistributionType distributionType
+            ExposureResponseSpecificationDistributionType distributionType,
+            EffectMetric effectMetric
         ) {
             Nominal = nominal;
             DistributionType = distributionType;
+            EffectMetric = effectMetric;
             Lower = lower;
             Upper = upper;
             _fitDistribution = (getNom, getLow, getUpp) => ExposureResponseUncertaintyDistributionFactory

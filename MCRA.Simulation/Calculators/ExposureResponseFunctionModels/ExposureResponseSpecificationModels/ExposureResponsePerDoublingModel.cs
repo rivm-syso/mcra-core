@@ -11,8 +11,9 @@ namespace MCRA.Simulation.Calculators.ExposureResponseFunctionModels.ExposureRes
             double nominal,
             double lower,
             double upper,
-            ExposureResponseSpecificationDistributionType distributionType
-        ) : base(nominal, lower, upper, distributionType) {
+            ExposureResponseSpecificationDistributionType distributionType,
+            EffectMetric effectMetric
+        ) : base(nominal, lower, upper, distributionType, effectMetric) {
         }
 
         public override double Compute(double exposure, double counterFactualValue) {

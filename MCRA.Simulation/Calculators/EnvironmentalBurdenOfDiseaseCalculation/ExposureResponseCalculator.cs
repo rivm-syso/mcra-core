@@ -1,5 +1,4 @@
-﻿using DocumentFormat.OpenXml.Presentation;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ExposureResponseFunctions;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
@@ -11,7 +10,7 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
 
         private readonly List<double> _defaultBinBoundaries;
         private readonly ExposureGroupingMethod _exposureGroupingMethod;
-        private readonly WithinBinExposureRepresentationMethod _withinBinExposureRepresentationMethod;        
+        private readonly WithinBinExposureRepresentationMethod _withinBinExposureRepresentationMethod;
 
         public ExposureResponseCalculator(
             ExposureGroupingMethod exposureGroupingMethod,
@@ -169,8 +168,8 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
             var topBin = bins.Last();
             if (topBin.PercentileInterval.Upper != 100) {
                 var exposureInterval = new ExposureInterval(
-                    topBin.ExposureInterval.Upper, 
-                    double.NaN, 
+                    topBin.ExposureInterval.Upper,
+                    double.NaN,
                     subgroupIntervalBound
                 );
                 var percentileInterval = new PercentileInterval(topBin.PercentileInterval.Upper, 100.0);
@@ -231,11 +230,10 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
             var exposureLevels = new List<double> {
                 exposureResponseFunctionModel.GetCounterFactualValue() * unitAlignmentFactor
             };
-            var maximum = allExposures.Max();
             if (exposureResponseFunctionModel.HasErfSubGroups) {
                 exposureLevels.AddRange(
                     exposureResponseFunctionModel.SubGroupLevels
-                        .Select(r => (double.IsNaN(r) ? maximum : r) * unitAlignmentFactor)
+                        .Select(r => r * unitAlignmentFactor)
                 );
             }
 

@@ -10,6 +10,7 @@ namespace MCRA.Simulation.Calculators.ExposureResponseFunctionModels.ExposureRes
         public double Nominal { get; set; }
 
         public ExposureResponseSpecificationDistributionType DistributionType { get; set; }
+        public EffectMetric EffectMetric { get; set; }
 
         public double Lower { get; set; }
 
@@ -21,9 +22,11 @@ namespace MCRA.Simulation.Calculators.ExposureResponseFunctionModels.ExposureRes
             double nominal,
             double lower,
             double upper,
-            ExposureResponseSpecificationDistributionType distributionType
+            ExposureResponseSpecificationDistributionType distributionType,
+            EffectMetric effectMetric
         ) {
             DistributionType = distributionType;
+            EffectMetric = effectMetric;
             Nominal = nominal;
             Lower = lower;
             Upper = upper;
@@ -35,7 +38,8 @@ namespace MCRA.Simulation.Calculators.ExposureResponseFunctionModels.ExposureRes
                   getValue(erf.ExposureResponseSpecification),
                   getValue(erf.ExposureResponseSpecificationLower),
                   getValue(erf.ExposureResponseSpecificationUpper),
-                  erf.ERFUncertaintyDistribution
+                  erf.ERFUncertaintyDistribution,
+                  erf.EffectMetric
             ) {
         }
 
@@ -52,6 +56,10 @@ namespace MCRA.Simulation.Calculators.ExposureResponseFunctionModels.ExposureRes
                     () => Upper
                 );
                 _draw = distribution.Draw(random);
+            }
+            if (_draw < 0D && 
+                (EffectMetric == EffectMetric.RelativeRisk || EffectMetric == EffectMetric.OddsRatio)) {
+                    throw new Exception("Resampling produced a negative exposure response function outcome.");
             }
         }
 

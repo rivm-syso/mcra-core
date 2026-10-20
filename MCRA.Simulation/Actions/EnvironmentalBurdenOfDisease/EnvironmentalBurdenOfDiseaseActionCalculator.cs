@@ -99,13 +99,13 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
                 exposureResponseFunctionModels
                     .Any(r => r.HasErfSubGroups &&
                             r.ExposureResponseFunction.SubgroupIntervalBound == SubgroupIntervalBoundType.LeftInclusive)) {
-                throw new Exception("Maximum in bin not implemented for exposure response function with left inclusive subgroups.");
+                throw new Exception("Bin upper limit not implemented for exposure response function with left inclusive subgroups.");
             }
             if (ModuleConfig.WithinBinExposureRepresentationMethod == WithinBinExposureRepresentationMethod.BinLowerLimit &&
                 exposureResponseFunctionModels
                     .Any(r => r.HasErfSubGroups &&
                             r.ExposureResponseFunction.SubgroupIntervalBound == SubgroupIntervalBoundType.RightInclusive)) {
-                throw new Exception("Minimum in bin not implemented for exposure response function with right inclusive subgroups.");
+                throw new Exception("Bin lower limit not implemented for exposure response function with right inclusive subgroups.");
             }
 
             // Compute exposure response results
