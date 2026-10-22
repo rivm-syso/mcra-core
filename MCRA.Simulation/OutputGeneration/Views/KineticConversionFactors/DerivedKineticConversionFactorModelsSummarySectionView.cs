@@ -79,7 +79,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                             tabSb.AppendChart(
                                 $"SubstanceTargetExposureCorrelationScatterChart_{record.GetKey()}",
                                 chartCreator: chartCreator,
-                                fileType: ChartFileType.Png,
+                                fileType: ChartFileType.Svg,
                                 section: Model,
                                 viewBag: ViewBag,
                                 saveChartFile: false

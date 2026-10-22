@@ -124,17 +124,15 @@ namespace MCRA.Simulation.OutputGeneration {
                 && fromTargetExposures.Distinct().Count() > 1
                 && toTargetExposures.Distinct().Count() > 1
             ) {
-                var xMin = minimum;
-                var xMax = maximum;
-                var yMin = xMin * record.NominalFactor;
-                var yMax = xMax * record.NominalFactor;
+                var xMin = minimum / record.NominalFactor;
+                var yMax = maximum * record.NominalFactor;
                 var conversionFactorLineSeries = new LineSeries() {
                     Color = OxyColors.Black,
                     LineStyle = LineStyle.Solid,
                     StrokeThickness = 1.5,
                 };
-                conversionFactorLineSeries.Points.Add(new DataPoint(xMin, yMin));
-                conversionFactorLineSeries.Points.Add(new DataPoint(xMax, yMax));
+                conversionFactorLineSeries.Points.Add(new DataPoint(xMin, minimum));
+                conversionFactorLineSeries.Points.Add(new DataPoint(maximum, yMax));
                 plotModel.Series.Add(conversionFactorLineSeries);
             }
 
