@@ -1,5 +1,40 @@
 # Change Log
 
+## Version 10.3.3 (2026-10-22)
+
+### Added
+
+- Add HBM section cumulative concentrations by time point (#2475)
+- Implement FocalProcessingFactors module (#2505)
+- Add support for specification and use of bioaccessibility fractions for dust and soil exposures (#2508)
+- Add others category for stackedHistogram plots with contributions (#2516)
+- Display exposure response function subgroups table (#2521)
+- Add column ERFDsitributionType to table ErfSubgroups (#2522)
+- New column intervalBoundType in ERF data format (#2525)
+- Implement paf calculations using Levins formula in EBD (#2531)
+- Add reuse-events option to improve performance SBML PBK model runner
+
+### Changed
+
+- Update consumer product exposures calculation to allow providing use frequency data from multiple consumer surveys (e.g. cigarettes+cosmetics) (#2507)
+- Update consumer product exposure distribution percentiles data format with information of absorption factor used for systemic exposures and use for back-correction (#2513)
+- Adjust erf subgroup intervals to assure lower bound is not included and upper bound is (#2518)
+- Update PBK model simulation setting fallback to systemic dosing for missing exposure routes to use absorption factors in case of fallback (#2437)
+
+### Fixed
+
+- EBD: Attributable BOD table not shown, but summary table shows non-zero values (#2493)
+- EBD: Attributable BOD table header always shows metric of first data row (#2494)
+- EBD: Running uncertainty for er functions with empty upper/lower gives a completely empty output (#2495)
+- Ebd: erf shows nominal run instead of median (#2520)
+- PACEM exposure set table is missing in output (#2523)
+- HBM results uncertainty analysis with both resample individuals and kcf are suspicious (#2529)
+- Update unmatched correlated exposure generators to account for empty sets when getting exposures for age range (#2534)
+- Assure that risk and odds ratios cannot be negative (#2538)
+- Name length limit exception when creating combined report (#2459)
+- Unclear error message (inner exception) when a required column is empty
+- Update calculation of lognormal distribution from mean and upper (anticipate two potential solutions)
+
 ## Version 10.3.2 (2026-09-09)
 
 ### Added
