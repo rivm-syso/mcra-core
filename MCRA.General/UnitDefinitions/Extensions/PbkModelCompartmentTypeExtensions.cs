@@ -33,6 +33,7 @@
             return route switch {
                 ExposureRoute.Oral => compartmentType switch {
                     PbkModelCompartmentType.Gut => 2,
+                    PbkModelCompartmentType.GutLumen => 3,
                     _ => -1,
                 },
                 ExposureRoute.Dermal => compartmentType switch {
@@ -57,7 +58,9 @@
                     or PbkModelCompartmentType.ArterialBlood
                     or PbkModelCompartmentType.ArterialPlasma
                     => ExposureRoute.Inhalation,
-                PbkModelCompartmentType.Gut => ExposureRoute.Oral,
+                PbkModelCompartmentType.Gut 
+                    or PbkModelCompartmentType.GutLumen
+                    => ExposureRoute.Oral,
                 PbkModelCompartmentType.Skin
                     or PbkModelCompartmentType.ExposedSkin
                     or PbkModelCompartmentType.StratumCorneumExposedSkin

@@ -96,6 +96,16 @@
       </Aliases>
     </Unit>
     <Unit>
+      <Id>GutLumen</Id>
+      <Name>gut lumen</Name>
+      <URIs>
+        <URI>http://purl.obolibrary.org/obo/PBPKO_02004</URI>
+      </URIs>
+      <Aliases>
+        <Alias>Gut lumen</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
       <Id>Gonads</Id>
       <Name>gonads compartment</Name>
       <URIs>
