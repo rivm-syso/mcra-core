@@ -8,16 +8,16 @@ namespace MCRA.Simulation.OutputGeneration {
 
     public class DerivedKineticConversionFactorModelScatterChartCreator : ReportLineChartCreatorBase {
 
-        private readonly DerivedKineticConversionFactorModelsSummarySection _section;
+        private readonly string _sectionId;
         private readonly DerivedKineticConversionFactorModelSummaryRecord _record;
 
         public DerivedKineticConversionFactorModelScatterChartCreator(
-            DerivedKineticConversionFactorModelsSummarySection section,
-            DerivedKineticConversionFactorModelSummaryRecord record
+            DerivedKineticConversionFactorModelSummaryRecord record,
+            string sectionId
         ) {
             Width = 350;
             Height = 250;
-            _section = section;
+            _sectionId = sectionId;
             _record = record;
         }
 
@@ -38,16 +38,15 @@ namespace MCRA.Simulation.OutputGeneration {
         public override string ChartId {
             get {
                 var chartId = "6C3A6EAE-074E-4254-A421-ADB31371319A";
-                return StringExtensions.CreateFingerprint(_section.SectionId + _record.GetKey() + chartId);
+                return StringExtensions.CreateFingerprint(_sectionId + _record.GetKey() + chartId);
             }
         }
 
         public override PlotModel Create() {
-            return create(_section, _record);
+            return create(_record);
         }
 
         protected PlotModel create(
-            DerivedKineticConversionFactorModelsSummarySection section,
             DerivedKineticConversionFactorModelSummaryRecord record
         ) {
             var plotModel = createDefaultPlotModel();
@@ -120,22 +119,28 @@ namespace MCRA.Simulation.OutputGeneration {
             plotModel.Series.Add(neutralFactorLineSeries);
 
             // Conversion factor
-            if (records.Count > 1 
+            if (records.Count > 1
                 && fromTargetExposures.Distinct().Count() > 1
                 && toTargetExposures.Distinct().Count() > 1
             ) {
-                var xMin = minimum / record.NominalFactor;
-                var yMax = maximum * record.NominalFactor;
                 var conversionFactorLineSeries = new LineSeries() {
                     Color = OxyColors.Black,
                     LineStyle = LineStyle.Solid,
-                    StrokeThickness = 1.5,
+                    StrokeThickness = 1,
                 };
-                conversionFactorLineSeries.Points.Add(new DataPoint(xMin, minimum));
-                conversionFactorLineSeries.Points.Add(new DataPoint(maximum, yMax));
+                if (record.NominalFactor < 1) {
+                    var xMin = minimum / record.NominalFactor;
+                    var yMax = maximum * record.NominalFactor;
+                    conversionFactorLineSeries.Points.Add(new DataPoint(xMin, minimum));
+                    conversionFactorLineSeries.Points.Add(new DataPoint(maximum, yMax));
+                } else {
+                    var yMin = minimum * record.NominalFactor;
+                    var xMax = maximum / record.NominalFactor;
+                    conversionFactorLineSeries.Points.Add(new DataPoint(minimum, yMin));
+                    conversionFactorLineSeries.Points.Add(new DataPoint(xMax, maximum));
+                }
                 plotModel.Series.Add(conversionFactorLineSeries);
             }
-
             return plotModel;
         }
     }

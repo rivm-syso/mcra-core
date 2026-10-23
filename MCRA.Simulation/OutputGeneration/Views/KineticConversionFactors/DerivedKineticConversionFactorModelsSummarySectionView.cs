@@ -41,7 +41,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     hiddenProperties.Add(nameof(KineticConversionFactorModelSummaryRecord.UncertaintyLowerBoundPercentile));
                     hiddenProperties.Add(nameof(KineticConversionFactorModelSummaryRecord.UncertaintyUpperBoundPercentile));
                 }
-
+                if (Model.Records.All(r => string.IsNullOrEmpty(r.KineticModelType))) {
+                    hiddenProperties.Add(nameof(KineticConversionFactorModelSummaryRecord.KineticModelType));
+                }
                 var tabSb = new StringBuilder();
                 tabSb.AppendDescriptionParagraph($"Number of kinetic conversion factor records: {Model.Records.Count}");
                 if (Model.Records?.Count > 0) {
@@ -75,7 +77,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         tabSb.Append("<td>");
                         if (ix < Model.Records.Count) {
                             var record = Model.Records[ix++];
-                            var chartCreator = new DerivedKineticConversionFactorModelScatterChartCreator(Model, record);
+                            var chartCreator = new DerivedKineticConversionFactorModelScatterChartCreator(record, Model.SectionId);
                             tabSb.AppendChart(
                                 $"SubstanceTargetExposureCorrelationScatterChart_{record.GetKey()}",
                                 chartCreator: chartCreator,

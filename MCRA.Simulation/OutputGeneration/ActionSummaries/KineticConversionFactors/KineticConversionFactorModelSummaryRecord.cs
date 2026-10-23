@@ -105,6 +105,10 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Sex subgroups")]
         public bool HasCovariateSex { get; set; }
 
+        [Description("Kinetic model type.")]
+        [DisplayName("Kinetic model type")]
+        public string KineticModelType { get; set; }
+
         public string GetKey() {
             var keys = new string[] {
                 SubstanceCodeFrom,

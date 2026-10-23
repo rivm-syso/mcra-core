@@ -23,6 +23,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
         McrCoExposureSection,
         CumulativeRiskDriversSections,
         IndividualContributionsSections,
+        KineticConversionSection
     }
 
     public sealed class HumanMonitoringAnalysisSummarizer : ActionModuleResultsSummarizer<HumanMonitoringAnalysisModuleConfig, HumanMonitoringAnalysisActionResult> {
@@ -124,6 +125,22 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     data,
                     _configuration,
                     stratifier,
+                    subHeader,
+                    subOrder++
+                 );
+            }
+
+            // PBK output
+            if (outputSettings.ShouldSummarize(HumanMonitoringAnalysisSections.KineticConversionSection)
+                && _configuration.ApplyKineticConversions
+            ) {
+                summarizeKineticConversions(
+                    actionResult.HbmIndividualDayCollection,
+                    actionResult.HbmIndividualCollection,
+                    actionResult.HbmMeasuredMatrixIndividualDayCollections,
+                    actionResult.HbmMeasuredMatrixIndividualCollections,
+                    data,
+                    _configuration.ExposureType,
                     subHeader,
                     subOrder++
                  );
@@ -394,6 +411,56 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 subHeader.SaveSummarySection(section);
             }
         }
+
+        private void summarizeKineticConversions(
+            ICollection<HbmIndividualDayCollection> hbmIndividualDayCollections,
+            ICollection<HbmIndividualCollection> hbmIndividualCollections,
+            ICollection<HbmIndividualDayCollection> hbmMeasuredMatrixIndividualDayCollections,
+            ICollection<HbmIndividualCollection> hbmMeasuredMatrixIndividualCollections,
+            ActionData data,
+            ExposureType exposureType,
+            SectionHeader header,
+            int order
+        ) {
+            if (exposureType == ExposureType.Acute) {
+                var section = new HbmIndividualDayKineticConversionBySubstanceSection() {
+                    SectionLabel = getSectionLabel(HumanMonitoringAnalysisSections.KineticConversionSection),
+                    Units = header.Units
+                };
+                var subHeader = header.AddSubSectionHeaderFor(
+                    section,
+                    "Kinetic conversion",
+                    order
+                );
+                section.Summarize(
+                    hbmIndividualDayCollections,
+                    hbmMeasuredMatrixIndividualDayCollections,
+                    data.ActiveSubstances,
+                    data.KineticConversionFactorModels,
+                    data.KineticModelInstances
+                );
+                subHeader.SaveSummarySection(section);
+            } else {
+                var section = new HbmIndividualKineticConversionBySubstanceSection() {
+                    SectionLabel = getSectionLabel(HumanMonitoringAnalysisSections.KineticConversionSection),
+                    Units = header.Units
+                };
+                var subHeader = header.AddSubSectionHeaderFor(
+                    section,
+                    "Kinetic conversion",
+                    order
+                );
+                section.Summarize(
+                    hbmIndividualCollections,
+                    hbmMeasuredMatrixIndividualCollections,
+                    data.ActiveSubstances,
+                    data.KineticConversionFactorModels,
+                    data.KineticModelInstances
+                );
+                subHeader.SaveSummarySection(section);
+            }
+        }
+
 
         private void summarizeHbmConcentrationsBySubstanceTimePoint(
            PopulationStratifier stratifier,

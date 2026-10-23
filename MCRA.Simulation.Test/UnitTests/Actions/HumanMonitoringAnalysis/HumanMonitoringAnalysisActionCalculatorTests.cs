@@ -142,6 +142,71 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var result = calculator.Run(data, new CompositeProgressState());
         }
 
+
+        /// <summary>
+        /// Runs the HumanMonitoringAnalysis action:
+        /// config.ExposureType = ExposureType.Chronic, ApplyKineticConversions = true
+        /// </summary>
+        [TestMethod]
+        [DataRow(ExposureType.Chronic, true)]
+        [DataRow(ExposureType.Acute, true)]
+        [DataRow(ExposureType.Chronic, false)]
+        [DataRow(ExposureType.Acute, false)]
+        public void HumanMonitoringAnalysisActionCalculator_TestChronicKcfToExternal(
+            ExposureType exposureType,
+            bool hbmConvertToSingleTargetMatrix
+        ) {
+            var seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var substances = FakeSubstancesGenerator.Create(3);
+            var rpfs = substances.ToDictionary(c => c, c => 1d);
+            var memberships = substances.ToDictionary(c => c, c => 1d);
+            var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
+            var targetUnit = ConcentrationUnit.ugPerL;
+            var hbmSampleSubstanceCollections = FakeHbmDataGenerator
+                .FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod, targetUnit);
+            var routes = new List<ExposureRoute> {
+                ExposureRoute.Oral
+            };
+            var externalDoseUnit = TargetUnit.FromExternalDoseUnit(DoseUnit.ugPerKg, ExposureRoute.Oral);
+            var kcf = new List<KineticConversionFactor>() { new(){
+                IdKineticConversionFactor = "kcf1",
+                SubstanceFrom = substances.First(),
+                BiologicalMatrixFrom = samplingMethod.BiologicalMatrix,
+                DoseUnitFrom = ExposureUnitTriple.FromDoseUnit(DoseUnit.ugPerL),
+                SubstanceTo = substances.First(),
+                ExposureRouteTo = routes.First(),
+                DoseUnitTo = ExposureUnitTriple.FromDoseUnit(DoseUnit.ugPerKgBWPerDay),
+                ConversionFactor = 2
+            }};
+            var kineticConversionFactorModels = kcf
+                .Select(c => KineticConversionFactorCalculatorFactory
+                    .Create(c, false)
+                ).ToList();
+            var project = new ProjectDto();
+            var config = project.HumanMonitoringAnalysisSettings;
+            config.ExposureType = exposureType;
+            config.TargetDoseLevelType = TargetLevelType.External;
+            config.TargetMatrix = samplingMethod.BiologicalMatrix;
+            config.ApplyKineticConversions = true;
+            config.HbmConvertToSingleTargetMatrix = hbmConvertToSingleTargetMatrix;
+            var data = new ActionData() {
+                AllCompounds = substances,
+                ActiveSubstances = substances,
+                CorrectedRelativePotencyFactors = rpfs,
+                MembershipProbabilities = memberships,
+                HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
+                HbmSamplingMethods = [samplingMethod],
+                HbmSurveys = [FakeHbmDataGenerator.FakeHbmSurvey(individualDays)],
+                KineticConversionFactorModels = kineticConversionFactorModels
+            };
+
+            var calculator = new HumanMonitoringAnalysisActionCalculator(project);
+            var header = TestRunUpdateSummarizeNominal(project, calculator, data, $"TestChronicKcf");
+        }
+
         /// <summary>
         /// Runs the HumanMonitoringAnalysis action:
         /// config.ExposureType = ExposureType.Chronic;
@@ -775,7 +840,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ActiveSubstances = activeSubstances,
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
                 HbmSamplingMethods = [samplingMethod],
-                HbmSurveys = [                    FakeHbmDataGenerator.FakeHbmSurvey(individualDays)                ]
+                HbmSurveys = [FakeHbmDataGenerator.FakeHbmSurvey(individualDays)]
             };
 
             var calculator = new HumanMonitoringAnalysisActionCalculator(project);
