@@ -53,5 +53,14 @@
         <Alias>Prevalences</Alias>
       </Aliases>
     </Unit>
+    <Unit>
+      <Id>TotalShift</Id>
+      <Name>TotalShift</Name>
+      <ShortName>TotalShift</ShortName>
+      <Description>Total shift.</Description>
+      <Aliases>
+        <Alias>TotalShift</Alias>
+      </Aliases>
+    </Unit>
   </Units>
 </UnitDefinition>

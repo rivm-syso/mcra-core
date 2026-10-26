@@ -6,6 +6,7 @@
         public double Exposure { get; set; }
         public double ResponseValue { get; set; }
         public double AttributableFraction { get; set; }
+        public double PercentileSpecificShift { get; set; }
         public double TotalBod { get; set; } 
         public double AttributableBod { get; set; }
         public ExposureResponseResultRecord ExposureResponseResultRecord { get; set; }

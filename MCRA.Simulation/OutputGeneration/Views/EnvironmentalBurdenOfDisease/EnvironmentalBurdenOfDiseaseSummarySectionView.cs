@@ -14,6 +14,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.TotalAttributableBod));
                 hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.StandardisedTotalAttributableBod));
                 hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.TotalPopulationAttributableFraction));
+                hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.TotalPopulationShift));
             } else {
                 hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.MedianTotalAttributableBod));
                 hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.LowerTotalAttributableBod));
@@ -24,6 +25,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.MedianTotalPopulationAttributableFraction));
                 hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.LowerTotalPopulationAttributableFraction));
                 hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.UpperTotalPopulationAttributableFraction));
+                hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.MedianTotalPopulationShift));
+                hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.LowerTotalPopulationShift));
+                hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.UpperTotalPopulationShift));
             }
             if (Model.Records.All(r => string.IsNullOrEmpty(r.SourceIndicators))) {
                 hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.SourceIndicators));

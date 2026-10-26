@@ -107,6 +107,29 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:P1}")]
         public double UpperTotalPopulationAttributableFraction { get { return TotalPopulationAttributableFractions.Percentile(UncertaintyUpperBound); } }
 
+        [Description("Total population shift.")]
+        [DisplayName("Total shift")]
+        [DisplayFormat(DataFormatString = "{0:G4}")]
+        public double TotalPopulationShift { get; set; }
+
+        [Display(AutoGenerateField = false)]
+        public List<double> TotalPopulationShifts { get; set; }
+
+        [Description("Median (p50) of the uncertainty distribution of the total population shift.")]
+        [DisplayName("Total shift - Unc median")]
+        [DisplayFormat(DataFormatString = "{0:G4}")]
+        public double MedianTotalPopulationShift { get { return TotalPopulationShifts.Percentile(50); } }
+
+        [Description("Lower (LowerBound) uncertainty bound of the total population shift.")]
+        [DisplayName("Total shift - Unc lower (LowerBound)")]
+        [DisplayFormat(DataFormatString = "{0:G4}")]
+        public double LowerTotalPopulationShift { get { return TotalPopulationShifts.Percentile(UncertaintyLowerBound); } }
+
+        [Description("Upper (UpperBound) uncertainty bound of the total population shift.")]
+        [DisplayName("Total shift - Unc upper (UpperBound)")]
+        [DisplayFormat(DataFormatString = "{0:G4}")]
+        public double UpperTotalPopulationShift { get { return TotalPopulationShifts.Percentile(UncertaintyUpperBound); } }
+
         [Description("Standardised total attributable burden of disease {EbdStandardisedPopulationSize}.")]
         [DisplayName("Standardised attr. BoD ({EbdStandardisedPopulationSize})")]
         [DisplayFormat(DataFormatString = "{0:G4}")]

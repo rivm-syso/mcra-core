@@ -1,9 +1,11 @@
-﻿using MCRA.General;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
+using MCRA.Simulation.Calculators.BodIndicatorModels;
 using MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation;
 using MCRA.Simulation.Calculators.RiskCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
@@ -82,6 +84,20 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
             // Only keep BoDs for selected indicators
             var bodIndicatorModels = data.BodIndicatorModels;
             bodIndicatorModels = [.. bodIndicatorModels.Where(r => ModuleConfig.BodIndicators.Contains(r.BodIndicator))];
+            var modeledEffects = bodIndicatorModels.Select(r => r.Effect).ToList();
+
+            if (ModuleConfig.BodIndicators.Contains(BodIndicator.TotalShift)) {
+                foreach (var effect in data.AllEffects.Except(modeledEffects)) {
+                    var population = data.SelectedPopulation;
+                    var bodShift = new BurdenOfDisease() {
+                        Population = population,
+                        Effect = effect,
+                        BodIndicator = BodIndicator.TotalShift
+                    };
+                    var bodIndicatorShiftModels = BodIndicatorModelFactory.Create(bodShift, population);
+                    bodIndicatorModels.Add(bodIndicatorShiftModels);
+                }
+            }
 
             // Compute exposure response
             var erCalculator = new ExposureResponseCalculator(

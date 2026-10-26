@@ -16,7 +16,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 nameof(AttributableBodSummaryRecord.PopulationCode),
                 nameof(AttributableBodSummaryRecord.PopulationName),
             };
-            var isUncertainty = Model.Records.FirstOrDefault()?.AttributableBods.Any() ?? false;
+            var first = Model.Records.FirstOrDefault();
+            var isUncertainty = (first?.AttributableFractions.Any() ?? false) ||
+                (first?.PercentileSpecificShifts.Any() ?? false);
 
             if (isUncertainty) {
                 hiddenProperties.Add(nameof(AttributableBodSummaryRecord.AttributableBod));
@@ -26,6 +28,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add(nameof(AttributableBodSummaryRecord.Exposure));
                 hiddenProperties.Add(nameof(AttributableBodSummaryRecord.ResponseValue));
                 hiddenProperties.Add(nameof(AttributableBodSummaryRecord.AttributableFraction));
+                hiddenProperties.Add(nameof(AttributableBodSummaryRecord.PercentileSpecificShift));
                 hiddenProperties.Add(nameof(AttributableBodSummaryRecord.TotalBod));
             } else {
                 hiddenProperties.Add(nameof(AttributableBodSummaryRecord.LowerAttributableBod));
@@ -43,6 +46,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add(nameof(AttributableBodSummaryRecord.MedianBinPercentage));
                 hiddenProperties.Add(nameof(AttributableBodSummaryRecord.MedianResponseValue));
                 hiddenProperties.Add(nameof(AttributableBodSummaryRecord.MedianAttributableFraction));
+                hiddenProperties.Add(nameof(AttributableBodSummaryRecord.MedianPercentileSpecificShift));
                 hiddenProperties.Add(nameof(AttributableBodSummaryRecord.MedianTotalBod));
             }
             // Remove all standardised records when the population size is not specified
@@ -77,7 +81,35 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 var name = group.First().GetGroupDisplayName();
 
                 var panelSb = new StringBuilder();
-                if (!group.All(g => g.AttributableBod == 0D) || (isUncertainty && !group.All(g => g.UpperAttributableBod == 0D))) {
+                if (!group.All(g => g.AttributableBod == 0D) || !group.All(g => g.PercentileSpecificShift == 0D) ||
+                    (isUncertainty && (!group.All(g => g.UpperAttributableBod == 0D) || !group.All(g => g.MedianPercentileSpecificShift == 0D)))) {
+
+                    var isBodGroup = !group.All(g => g.AttributableBod == 0D);
+
+                    var hiddenPanelProperties = hiddenProperties.ToList();
+                    if (isBodGroup) {
+                        hiddenPanelProperties.Add(nameof(AttributableBodSummaryRecord.PercentileSpecificShift));
+                        hiddenPanelProperties.Add(nameof(AttributableBodSummaryRecord.MedianPercentileSpecificShift));
+                    } else {
+                        hiddenPanelProperties.Add(nameof(AttributableBodSummaryRecord.ResponseValue));
+                        hiddenPanelProperties.Add(nameof(AttributableBodSummaryRecord.MedianResponseValue));
+                        hiddenPanelProperties.Add(nameof(AttributableBodSummaryRecord.AttributableFraction));
+                        hiddenPanelProperties.Add(nameof(AttributableBodSummaryRecord.MedianAttributableFraction));
+                        hiddenPanelProperties.Add(nameof(AttributableBodSummaryRecord.TotalBod));
+                        hiddenPanelProperties.Add(nameof(AttributableBodSummaryRecord.MedianTotalBod));
+                        hiddenPanelProperties.Add(nameof(AttributableBodSummaryRecord.AttributableBod));
+                        hiddenPanelProperties.Add(nameof(AttributableBodSummaryRecord.MedianAttributableBod));
+                        hiddenPanelProperties.Add(nameof(AttributableBodSummaryRecord.LowerAttributableBod));
+                        hiddenPanelProperties.Add(nameof(AttributableBodSummaryRecord.UpperAttributableBod));
+                        hiddenPanelProperties.Add(nameof(AttributableBodSummaryRecord.CumulativeAttributableBod));
+                        hiddenPanelProperties.Add(nameof(AttributableBodSummaryRecord.MedianCumulativeAttributableBod));
+                        hiddenPanelProperties.Add(nameof(AttributableBodSummaryRecord.LowerCumulativeAttributableBod));
+                        hiddenPanelProperties.Add(nameof(AttributableBodSummaryRecord.UpperCumulativeAttributableBod));
+                        hiddenPanelProperties.Add(nameof(AttributableBodSummaryRecord.StandardisedAttributableBod));
+                        hiddenPanelProperties.Add(nameof(AttributableBodSummaryRecord.MedianStandardisedAttributableBod));
+                        hiddenPanelProperties.Add(nameof(AttributableBodSummaryRecord.LowerStandardisedAttributableBod));
+                        hiddenPanelProperties.Add(nameof(AttributableBodSummaryRecord.UpperStandardisedAttributableBod));
+                    }
 
                     var populationSize = group.FirstOrDefault().PopulationSize;
                     if (!double.IsNaN(populationSize)) {
@@ -97,43 +129,49 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         caption: $"Attributable burden of disease {name}, risk is expressed as {group.First().EffectMetric.ToLower()}.",
                         saveCsv: true,
                         sortable: true,
-                        hiddenProperties: hiddenProperties
-                    );
-                    var chartCreator = new AttributableBodChartCreator(
-                        [.. group],
-                        Model.StandardisationMethod,
-                        Model.SectionId
+                        hiddenProperties: hiddenPanelProperties
                     );
 
-                    var chart = ChartHelpers.Chart(
-                        name: $"AttributableBodChart_{key}",
-                        section: Model,
-                        viewBag: ViewBag,
-                        caption: chartCreator.Title,
-                        chartCreator: chartCreator,
-                        fileType: ChartFileType.Svg,
-                        saveChartFile: true
-                    );
-
+                    var chart = string.Empty;
                     var chartStandardised = string.Empty;
                     var chartExposed = string.Empty;
-                    if (!missingPopulationSize) {
-                        var chartCreatorStandardised = new StandardisedAttributableBodChartCreator(
+
+                    if (isBodGroup) {
+                        var chartCreator = new AttributableBodChartCreator(
                             [.. group],
                             Model.StandardisationMethod,
                             Model.SectionId
                         );
 
-                        chartStandardised = ChartHelpers
+                        chart = ChartHelpers
                             .Chart(
-                               name: $"StandardisedAttributableBodChart_{key}",
-                               section: Model,
-                               viewBag: ViewBag,
-                               caption: chartCreatorStandardised.Title,
-                               chartCreator: chartCreatorStandardised,
-                               fileType: ChartFileType.Svg,
-                               saveChartFile: true
-                           ).ToString();
+                                name: $"AttributableBodChart_{key}",
+                                section: Model,
+                                viewBag: ViewBag,
+                                caption: chartCreator.Title,
+                                chartCreator: chartCreator,
+                                fileType: ChartFileType.Svg,
+                                saveChartFile: true
+                            ).ToString();
+
+                        if (!missingPopulationSize) {
+                            var chartCreatorStandardised = new StandardisedAttributableBodChartCreator(
+                                [.. group],
+                                Model.StandardisationMethod,
+                                Model.SectionId
+                            );
+
+                            chartStandardised = ChartHelpers
+                                .Chart(
+                                   name: $"StandardisedAttributableBodChart_{key}",
+                                   section: Model,
+                                   viewBag: ViewBag,
+                                   caption: chartCreatorStandardised.Title,
+                                   chartCreator: chartCreatorStandardised,
+                                   fileType: ChartFileType.Svg,
+                                   saveChartFile: true
+                                ).ToString();
+                        }
                     }
 
                     var contentPanel = new HtmlString(
@@ -149,6 +187,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         hoverText: key,
                         content: contentPanel
                     );
+
                 } else {
                     panelSb.AppendNotification($"No attributable burden of disease above the threshold for {key}.");
                     panelBuilder.AddPanel(

@@ -109,7 +109,7 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
                 record.CumulativeAttributableBod = cumulative / sum * 100;
             }
             var result = new EnvironmentalBurdenOfDiseaseResultRecord {
-                Population = bodIndicatorModel.Population,
+                Population = population,
                 Effect = bodIndicatorModel.Effect,
                 BodIndicator = bodIndicatorModel.BodIndicator,
                 SourceIndicatorList = (bodIndicatorModel is DerivedBodIndicatorModel)
@@ -134,36 +134,39 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
             double standardisedPopulationSize,
             double meanRelativeRisk
         ) {
-            var totalBod = bodIndicatorModel.GetBodIndicatorValue()
-                * exposureResponseResultRecord.PercentileInterval.Percentage / 100;
-            if (_pafCalculationMethod == PAFCalculationMethod.Levin) {
-                totalBod = totalBod * exposureResponseResultRecord.PercentileSpecificRisk / meanRelativeRisk;
-            }
             var responseValue = exposureResponseResultRecord.PercentileSpecificRisk;
             var result = new EnvironmentalBurdenOfDiseaseResultBinRecord {
                 ExposureBinId = exposureResponseResultRecord.ExposureBinId,
                 ExposureBin = exposureResponseResultRecord.ExposureInterval,
                 ExposurePercentileBin = exposureResponseResultRecord.PercentileInterval,
                 Exposure = exposureResponseResultRecord.ExposureLevel,
-                TotalBod = totalBod,
                 ResponseValue = responseValue,
                 ExposureResponseResultRecord = exposureResponseResultRecord,
                 StandardisedPopulationSize = standardisedPopulationSize
             };
-            if (bodApproach == BodApproach.TopDown) {
-                var attributableFraction = computeAttributableFraction(
-                    exposureResponseResultRecord,
-                    bodIndicatorModel.Population,
-                    responseValue,
-                    effectMetric
-                );
-                attributableFraction = forcePafLimit ? Math.Max(0, attributableFraction) : attributableFraction;
-                result.AttributableFraction = attributableFraction;
-                result.AttributableBod = totalBod * attributableFraction;
+            if (bodIndicatorModel.BodIndicator != BodIndicator.TotalShift) {
+                var totalBod = bodIndicatorModel.GetBodIndicatorValue()
+                    * exposureResponseResultRecord.PercentileInterval.Percentage / 100;
+                if (_pafCalculationMethod == PAFCalculationMethod.Levin) {
+                    totalBod = totalBod * exposureResponseResultRecord.PercentileSpecificRisk / meanRelativeRisk;
+                }
+                result.TotalBod = totalBod;
+                if (bodApproach == BodApproach.TopDown) {
+                    var attributableFraction = computeAttributableFraction(
+                        exposureResponseResultRecord,
+                        bodIndicatorModel.Population,
+                        responseValue,
+                        effectMetric
+                    );
+                    attributableFraction = forcePafLimit ? Math.Max(0, attributableFraction) : attributableFraction;
+                    result.AttributableFraction = attributableFraction;
+                    result.AttributableBod = totalBod * attributableFraction;
+                } else {
+                    result.AttributableBod = totalBod * responseValue * bodIndicatorModel.Population.Size;
+                }
             } else {
-                result.AttributableBod = totalBod * responseValue * bodIndicatorModel.Population.Size;
+                result.PercentileSpecificShift = responseValue;
             }
-
             return result;
         }
 

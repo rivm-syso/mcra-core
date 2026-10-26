@@ -35,6 +35,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 record.ResponseValues.Add(resultSummaryRecord.ResponseValue);
                 record.AttributableFractions.Add(resultSummaryRecord.AttributableFraction);
                 record.AttributableBods.Add(resultSummaryRecord.AttributableBod);
+                record.PercentileSpecificShifts.Add(resultSummaryRecord.PercentileSpecificShift);
                 record.AttributableBodsStandardised.Add(resultSummaryRecord.AttributableBod / resultSummaryRecord.PopulationSize);
                 record.BinPercentages.Add(resultSummaryRecord.BinPercentage);
                 record.TotalBods.Add(resultSummaryRecord.TotalBod);
@@ -76,6 +77,8 @@ namespace MCRA.Simulation.OutputGeneration {
                     ResponseValues = [],
                     AttributableFraction = r.AttributableFraction,
                     AttributableFractions = [],
+                    PercentileSpecificShift = r.PercentileSpecificShift,
+                    PercentileSpecificShifts = [],
                     TotalBod = r.TotalBod,
                     AttributableBod = r.AttributableBod * multiplicator,
                     AttributableBods = [],

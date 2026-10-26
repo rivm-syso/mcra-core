@@ -144,6 +144,19 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double MedianAttributableFraction { get { return AttributableFractions.Count != 0 ? AttributableFractions.Percentile(50) : double.NaN; } }
 
+        [Description("Percentile specific shift.")]
+        [DisplayName("Percentile specific shift")]
+        [DisplayFormat(DataFormatString = "{0:G3}")]
+        public double PercentileSpecificShift { get; set; }
+
+        [Display(AutoGenerateField = false)]
+        public List<double> PercentileSpecificShifts { get; set; }
+
+        [Description("Median percentile specific shift.")]
+        [DisplayName("Percentile specific shift median")]
+        [DisplayFormat(DataFormatString = "{0:G3}")]
+        public double MedianPercentileSpecificShift { get { return PercentileSpecificShifts.Count != 0 ? PercentileSpecificShifts.Percentile(50) : double.NaN; } }
+
         [Description("Total burden of disease ({BodIndicator}).")]
         [DisplayName("Total BoD ({BodIndicator})")]
         [DisplayFormat(DataFormatString = "{0:G4}")]

@@ -35,6 +35,9 @@ namespace MCRA.Simulation.OutputGeneration {
                 record.TotalPopulationAttributableFractions.Add(
                     resultSummaryRecord.TotalPopulationAttributableFraction
                 );
+                record.TotalPopulationShifts.Add(
+                    resultSummaryRecord.TotalPopulationShift
+                );
                 record.TotalAttributableBodsStandardised.Add(
                    resultSummaryRecord.TotalAttributableBod / resultSummaryRecord.PopulationSize
                 );
@@ -48,6 +51,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Sum(bin => bin.AttributableBod);
             var totalPopulationAttributableFraction = ebdResultRecord.EnvironmentalBurdenOfDiseaseResultBinRecords
                 .Sum(bin => bin.AttributableFraction * bin.ExposurePercentileBin.Percentage) / 100;
+            var totalPopulationShift = ebdResultRecord.EnvironmentalBurdenOfDiseaseResultBinRecords
+                .Sum(bin => bin.PercentileSpecificShift * bin.ExposurePercentileBin.Percentage) / 100;
             var population = ebdResultRecord.Population;
             return new EnvironmentalBurdenOfDiseaseSummaryRecord {
                 PopulationSize = population?.Size > 0 ? population.Size : double.NaN,
@@ -68,7 +73,9 @@ namespace MCRA.Simulation.OutputGeneration {
                 TotalAttributableBodsStandardised = [],
                 StandardisedPopulationSize = ebdResultRecord.StandardisedPopulationSize,
                 TotalPopulationAttributableFraction = totalPopulationAttributableFraction,
-                TotalPopulationAttributableFractions = []
+                TotalPopulationAttributableFractions = [],
+                TotalPopulationShift = totalPopulationShift,
+                TotalPopulationShifts = [],
             };
         }
     }
