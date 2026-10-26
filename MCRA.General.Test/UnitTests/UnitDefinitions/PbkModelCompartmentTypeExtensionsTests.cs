@@ -25,6 +25,7 @@
                 PbkModelCompartmentType.Other,
                 PbkModelCompartmentType.AlveolarAir,
                 PbkModelCompartmentType.Gut,
+                PbkModelCompartmentType.GutLumen,
                 PbkModelCompartmentType.ExposedSkin,
                 PbkModelCompartmentType.UnexposedSkin,
                 PbkModelCompartmentType.RestOfBody
