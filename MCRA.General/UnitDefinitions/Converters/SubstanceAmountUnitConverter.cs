@@ -19,8 +19,14 @@
             var targetMultiplier = getLog10MetricPrefixMultiplier(target);
             var multiplier = Math.Pow(10, unitMultiplier - targetMultiplier);
             if (unit.IsInMoles() && !target.IsInMoles()) {
+                if (double.IsNaN(molarMass)) {
+                    throw new Exception($"Missing molar mass to convert amount specified in moles to grams.");
+                }
                 return multiplier * molarMass;
             } else if (!unit.IsInMoles() && target.IsInMoles()) {
+                if (double.IsNaN(molarMass)) {
+                    throw new Exception($"Missing molar mass to convert amount specified in grams to moles.");
+                }
                 return multiplier / molarMass;
             } else {
                 return multiplier;

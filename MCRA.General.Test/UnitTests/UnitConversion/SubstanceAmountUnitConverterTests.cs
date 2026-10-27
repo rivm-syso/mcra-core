@@ -2,11 +2,19 @@
 
     [TestClass]
     public class SubstanceAmountUnitConverterTests {
+
         [TestMethod]
-        public void SubstanceAmountUnitConverter_Test1() {
+        public void SubstanceAmountUnitConverter_TestGetMultiplicationFactor_Cases() {
             Assert.AreEqual(1e3, SubstanceAmountUnit.Kilograms.GetMultiplicationFactor(SubstanceAmountUnit.Grams, double.NaN));
             Assert.AreEqual(1 / 50D, SubstanceAmountUnit.Grams.GetMultiplicationFactor(SubstanceAmountUnit.Moles, 50));
             Assert.AreEqual(50, SubstanceAmountUnit.Moles.GetMultiplicationFactor(SubstanceAmountUnit.Grams, 50));
+        }
+
+        [TestMethod]
+        public void SubstanceAmountUnitConverter_TestGetMultiplicationFactor_MissingMolasMass() {
+            Assert.ThrowsExactly<Exception>(
+                () => SubstanceAmountUnit.Moles.GetMultiplicationFactor(SubstanceAmountUnit.Grams, double.NaN)
+            );
         }
 
         /// <summary>
@@ -14,7 +22,7 @@
         /// of substance amount units.
         /// </summary>
         [TestMethod]
-        public void SubstanceAmountUnitConverter_TestGetMultiplicationFactor() {
+        public void SubstanceAmountUnitConverter_TestGetMultiplicationFactor_Completeness() {
             var enumValues = Enum.GetValues(typeof(SubstanceAmountUnit))
                 .Cast<SubstanceAmountUnit>()
                 .Where(r => r != SubstanceAmountUnit.Undefined)
