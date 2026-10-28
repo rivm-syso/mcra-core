@@ -131,7 +131,7 @@ This component is only necessary if you plan to develop with MCRA Core and want 
 * **Build sources**
   * Open PowerShell or a command prompt, browse to the root folder where you downloaded the sources, and run the command:
   ```
-    dotnet build --configuration release mcra-core.sln
+    dotnet build --configuration release mcra-core.slnx
   ```
   This will build the release binaries, including the CLI tool. The CLI utility mcra.exe is located in folder C:\MCRA\mcra-core\MCRA.Simulation.Commander\bin\Release. For instructions on how to use the CLI utility, see [README.md](./README.md).
 

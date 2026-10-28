@@ -34,11 +34,11 @@ WORKDIR /restr
 # RUN touch "GitInfo.ThisAssembly.cs"
 COPY ["Shared/", "Shared/"]
 # copy csproj and solution file
-COPY ["**/*.csproj", "mcra-core.sln", "."]
+COPY ["**/*.csproj", "mcra-core.slnx", "."]
 # move csproj files to their respective subfolders based on file name
 RUN for f in *.csproj; do mkdir "${f%.csproj}" && cp "$f" "${f%.csproj}" && rm "$f"; done
 # Restore the solution
-RUN dotnet restore "mcra-core.sln" -r ${MCRA_RUNTIME}
+RUN dotnet restore "mcra-core.slnx" -r ${MCRA_RUNTIME}
 
 # NOTE: /src is mounted from the underlying file system
 # this is VITAL because the solution needs access to the .git repository
@@ -54,7 +54,7 @@ ARG CACHE_DATE=empty_date_value
 RUN echo CACHE_DATE = ${CACHE_DATE}
 
 # build full solution
-#RUN dotnet build "mcra-core.sln" -c ${MCRA_BUILD_CONFIG} -p:UseAppHost=false
+#RUN dotnet build "mcra-core.slnx" -c ${MCRA_BUILD_CONFIG} -p:UseAppHost=false
 RUN dotnet build "MCRA.Simulation.Commander/MCRA.Simulation.Commander.csproj" -c "Release" -r ${MCRA_RUNTIME} -p:UseAppHost=false --self-contained false
 
 ## temporarily skip unit tests

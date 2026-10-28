@@ -1,0 +1,89 @@
+<Solution>
+  <Configurations>
+    <BuildType Name="Debug" />
+    <BuildType Name="Local" />
+    <BuildType Name="Publish" />
+    <BuildType Name="Release" />
+  </Configurations>
+  <Folder Name="/Solution Items/">
+    <File Path=".dockerignore" />
+    <File Path=".editorconfig" />
+    <File Path=".gitattributes" />
+    <File Path=".gitignore" />
+    <File Path=".gitlab-ci.yml" />
+    <File Path=".runsettings" />
+    <File Path="CHANGELOG.md" />
+    <File Path="ci-build-debug.env" />
+    <File Path="ci-build-release.env" />
+    <File Path="Dockerfile" />
+    <File Path="INSTALLATION.md" />
+    <File Path="README.md" />
+  </Folder>
+  <Folder Name="/Solution Items/Shared/">
+    <File Path="Shared/MCRA.Shared.Build.targets" />
+    <File Path="Shared/SharedAssemblyInfo.cs" />
+  </Folder>
+  <Project Path="MCRA.Data.Compiled.Tests/MCRA.Data.Compiled.Tests.csproj">
+    <BuildType Solution="Local|*" Project="Debug" />
+    <BuildType Solution="Publish|*" Project="Release" />
+    <Build Solution="Publish|*" Project="false" />
+  </Project>
+  <Project Path="MCRA.Data.Compiled/MCRA.Data.Compiled.csproj">
+    <BuildType Solution="Local|*" Project="Release" />
+    <BuildType Solution="Publish|*" Project="Release" />
+  </Project>
+  <Project Path="MCRA.Data.Management.Tests/MCRA.Data.Management.Tests.csproj">
+    <BuildType Solution="Publish|*" Project="Release" />
+    <Build Solution="Publish|*" Project="false" />
+  </Project>
+  <Project Path="MCRA.Data.Management/MCRA.Data.Management.csproj">
+    <BuildType Solution="Local|*" Project="Debug" />
+    <BuildType Solution="Publish|*" Project="Release" />
+  </Project>
+  <Project Path="MCRA.Data.Raw.Test/MCRA.Data.Raw.Test.csproj">
+    <BuildType Solution="Local|*" Project="Debug" />
+    <BuildType Solution="Publish|*" Project="Release" />
+    <Build Solution="Publish|*" Project="false" />
+  </Project>
+  <Project Path="MCRA.Data.Raw/MCRA.Data.Raw.csproj">
+    <BuildType Solution="Local|*" Project="Debug" />
+    <BuildType Solution="Publish|*" Project="Release" />
+  </Project>
+  <Project Path="MCRA.General.Test/MCRA.General.Test.csproj">
+    <BuildType Solution="Local|*" Project="Debug" />
+    <BuildType Solution="Publish|*" Project="Release" />
+    <Build Solution="Publish|*" Project="false" />
+  </Project>
+  <Project Path="MCRA.General/MCRA.General.csproj">
+    <BuildType Solution="Local|*" Project="Debug" />
+    <BuildType Solution="Publish|*" Project="Release" />
+  </Project>
+  <Project Path="MCRA.Simulation.Commander/MCRA.Simulation.Commander.csproj">
+    <BuildType Solution="Publish|*" Project="Release" />
+  </Project>
+  <Project Path="MCRA.Simulation.Test/MCRA.Simulation.Test.csproj">
+    <BuildType Solution="Local|*" Project="Debug" />
+    <BuildType Solution="Publish|*" Project="Release" />
+    <Build Solution="Publish|*" Project="false" />
+  </Project>
+  <Project Path="MCRA.Simulation/MCRA.Simulation.csproj">
+    <BuildType Solution="Publish|*" Project="Release" />
+  </Project>
+  <Project Path="MCRA.Utils.Test/MCRA.Utils.Test.csproj">
+    <BuildType Solution="Local|*" Project="Debug" />
+    <BuildType Solution="Publish|*" Project="Release" />
+    <Build Solution="Publish|*" Project="false" />
+  </Project>
+  <Project Path="MCRA.Utils/MCRA.Utils.csproj">
+    <BuildType Solution="Local|*" Project="Debug" />
+    <BuildType Solution="Publish|*" Project="Release" />
+  </Project>
+  <Project Path="ModuleDiagramCreator.Test/ModuleDiagramCreator.Test.csproj">
+    <BuildType Solution="Local|*" Project="Debug" />
+    <BuildType Solution="Publish|*" Project="Debug" />
+  </Project>
+  <Project Path="ModuleDiagramCreator/ModuleDiagramCreator.csproj">
+    <BuildType Solution="Local|*" Project="Debug" />
+    <BuildType Solution="Publish|*" Project="Debug" />
+  </Project>
+</Solution>
