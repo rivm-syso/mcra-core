@@ -1,4 +1,9 @@
 <Solution>
+  <Configurations>
+    <BuildType Name="Debug" />
+    <BuildType Name="Publish" />
+    <BuildType Name="Release" />
+  </Configurations>
   <Folder Name="/Solution Items/">
     <File Path=".dockerignore" />
     <File Path=".editorconfig" />
@@ -17,19 +22,57 @@
     <File Path="Shared/MCRA.Shared.Build.targets" />
     <File Path="Shared/SharedAssemblyInfo.cs" />
   </Folder>
-  <Project Path="MCRA.Data.Compiled.Tests/MCRA.Data.Compiled.Tests.csproj" />
-  <Project Path="MCRA.Data.Compiled/MCRA.Data.Compiled.csproj" />
-  <Project Path="MCRA.Data.Management.Tests/MCRA.Data.Management.Tests.csproj" />
-  <Project Path="MCRA.Data.Management/MCRA.Data.Management.csproj" />
-  <Project Path="MCRA.Data.Raw.Test/MCRA.Data.Raw.Test.csproj" />
-  <Project Path="MCRA.Data.Raw/MCRA.Data.Raw.csproj" />
-  <Project Path="MCRA.General.Test/MCRA.General.Test.csproj" />
-  <Project Path="MCRA.General/MCRA.General.csproj" />
-  <Project Path="MCRA.Simulation.Commander/MCRA.Simulation.Commander.csproj" />
-  <Project Path="MCRA.Simulation.Test/MCRA.Simulation.Test.csproj" />
-  <Project Path="MCRA.Simulation/MCRA.Simulation.csproj" />
-  <Project Path="MCRA.Utils.Test/MCRA.Utils.Test.csproj" />
-  <Project Path="MCRA.Utils/MCRA.Utils.csproj" />
-  <Project Path="ModuleDiagramCreator.Test/ModuleDiagramCreator.Test.csproj" />
-  <Project Path="ModuleDiagramCreator/ModuleDiagramCreator.csproj" />
+  <Project Path="MCRA.Data.Compiled.Tests/MCRA.Data.Compiled.Tests.csproj">
+    <BuildType Solution="Publish|*" Project="Release" />
+    <Build Solution="Publish|*" Project="false" />
+  </Project>
+  <Project Path="MCRA.Data.Compiled/MCRA.Data.Compiled.csproj">
+    <BuildType Solution="Publish|*" Project="Release" />
+  </Project>
+  <Project Path="MCRA.Data.Management.Tests/MCRA.Data.Management.Tests.csproj">
+    <BuildType Solution="Publish|*" Project="Release" />
+    <Build Solution="Publish|*" Project="false" />
+  </Project>
+  <Project Path="MCRA.Data.Management/MCRA.Data.Management.csproj">
+    <BuildType Solution="Publish|*" Project="Release" />
+  </Project>
+  <Project Path="MCRA.Data.Raw.Test/MCRA.Data.Raw.Test.csproj">
+    <BuildType Solution="Publish|*" Project="Release" />
+    <Build Solution="Publish|*" Project="false" />
+  </Project>
+  <Project Path="MCRA.Data.Raw/MCRA.Data.Raw.csproj">
+    <BuildType Solution="Publish|*" Project="Release" />
+  </Project>
+  <Project Path="MCRA.General.Test/MCRA.General.Test.csproj">
+    <BuildType Solution="Publish|*" Project="Release" />
+    <Build Solution="Publish|*" Project="false" />
+  </Project>
+  <Project Path="MCRA.General/MCRA.General.csproj">
+    <BuildType Solution="Publish|*" Project="Release" />
+  </Project>
+  <Project Path="MCRA.Simulation.Commander/MCRA.Simulation.Commander.csproj">
+    <BuildType Solution="Publish|*" Project="Release" />
+    <Build Solution="Publish|*" Project="false" />
+  </Project>
+  <Project Path="MCRA.Simulation.Test/MCRA.Simulation.Test.csproj">
+    <BuildType Solution="Publish|*" Project="Release" />
+    <Build Solution="Publish|*" Project="false" />
+  </Project>
+  <Project Path="MCRA.Simulation/MCRA.Simulation.csproj">
+    <BuildType Solution="Publish|*" Project="Release" />
+  </Project>
+  <Project Path="MCRA.Utils.Test/MCRA.Utils.Test.csproj">
+    <BuildType Solution="Publish|*" Project="Release" />
+    <Build Solution="Publish|*" Project="false" />
+  </Project>
+  <Project Path="MCRA.Utils/MCRA.Utils.csproj">
+    <BuildType Solution="Publish|*" Project="Release" />
+  </Project>
+  <Project Path="ModuleDiagramCreator.Test/ModuleDiagramCreator.Test.csproj">
+    <BuildType Solution="Publish|*" Project="Release" />
+    <Build Solution="Publish|*" Project="false" />
+  </Project>
+  <Project Path="ModuleDiagramCreator/ModuleDiagramCreator.csproj">
+    <BuildType Solution="Publish|*" Project="Release" />
+  </Project>
 </Solution>
