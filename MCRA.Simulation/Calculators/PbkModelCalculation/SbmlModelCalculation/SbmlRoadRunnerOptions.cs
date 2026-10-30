@@ -1,4 +1,6 @@
-﻿namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation {
+﻿using MCRA.Utils.Sbml.BatchSimulation;
+
+namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation {
     /// <summary>Configuration for SBML RoadRunner simulations.</summary>
     public sealed class SbmlRoadRunnerOptions {
         public const string SectionName = "SbmlRoadRunner";

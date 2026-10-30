@@ -1,4 +1,4 @@
-﻿namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation;
+﻿namespace MCRA.Utils.Sbml.BatchSimulation;
 
 /// <summary>
 /// Executes a batch of SBML simulations through a RoadRunner worker implementation.
@@ -8,9 +8,10 @@
 /// per job.
 /// </summary>
 public interface IRoadRunnerWorkerProxy : IDisposable {
+
     /// <summary>
     /// Runs all given jobs against this proxy's (single) worker/model instance and returns their
     /// results in the same order as <paramref name="jobs"/>.
     /// </summary>
-    Task<List<RoadRunnerSimulationResult>> RunAsync(List<RoadRunnerSimulationJob> jobs);
+    Task<List<SbmlSimulationJobResult>> RunAsync(List<SbmlSimulationJob> jobs);
 }

@@ -5,7 +5,6 @@ using MCRA.General;
 using MCRA.General.PbkModelDefinitions.PbkModelSpecifications.DeSolve;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Calculators.PbkModelCalculation.ExposureEventsGeneration;
-using MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation;
 using MCRA.Simulation.Objects;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.R.REngines;

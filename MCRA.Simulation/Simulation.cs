@@ -1,6 +1,7 @@
 ﻿using System.Configuration;
 using System.Reflection;
 using MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation;
+using MCRA.Utils.Sbml.BatchSimulation;
 using Microsoft.Extensions.Options;
 
 namespace MCRA.Simulation {

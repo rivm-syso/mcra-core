@@ -1,4 +1,4 @@
-﻿namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation {
+﻿namespace MCRA.Simulation.Calculators.PbkModelCalculation {
     public sealed class SimulationOutput {
         public double[] Time { get; set; }
         public Dictionary<string, double[]> OutputTimeSeries { get; set; }

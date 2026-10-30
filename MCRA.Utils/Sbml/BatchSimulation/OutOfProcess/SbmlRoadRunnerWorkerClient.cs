@@ -1,19 +1,21 @@
 ﻿using System.Diagnostics;
 using System.Globalization;
 using System.Net.Http.Json;
+using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Text;
-using MCRA.General.PbkModelDefinitions.SbmlRoadRunnerWorker;
+using MCRA.Utils.Sbml.BatchSimulation.OutOfProcess.Dto;
 
-namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation.OutOfProcess {
+namespace MCRA.Utils.Sbml.BatchSimulation.OutOfProcess {
+
     /// <summary>
-    /// Wraps a single, persistent out-of-process RoadRunner worker. A <see cref="WorkerClient"/> is
+    /// Wraps a single, persistent out-of-process RoadRunner worker. A <see cref="SbmlRoadRunnerWorkerClient"/> is
     /// shared by the pool across many leases (potentially for different kinetic models and different
     /// users), so it re-initializes the worker with the requested model whenever it differs from the
     /// model that is currently loaded in the worker process.
     /// </summary>
-    internal sealed class WorkerClient : IDisposable {
+    internal sealed class SbmlRoadRunnerWorkerClient : IDisposable {
+
         private const int FirstWorkerPort = 46000;
         private static int _nextWorkerPort = FirstWorkerPort;
         private static readonly JsonSerializerOptions JsonOptions = new() {
@@ -23,22 +25,24 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation.O
         };
         private readonly Process _process;
         private readonly HttpClient _httpClient;
-        private readonly string _workingDirectory;
+        private readonly string _workerDirectory;
         private readonly string _endpoint;
         private readonly StringBuilder _diagnostics = new();
-        private readonly object _diagnosticsLock = new();
+        private readonly Lock _diagnosticsLock = new();
         private readonly SemaphoreSlim _gate = new(1, 1);
         private string _currentModelSignature;
 
-        public WorkerClient() {
-            _workingDirectory = ResolveWorkerDirectory();
+        public SbmlRoadRunnerWorkerClient(
+            bool showConsoleWindow,
+            bool extensiveConsoleLogging
+        ) {
+            _workerDirectory = resolveWorkerDirectory();
             var port = Interlocked.Increment(ref _nextWorkerPort) - 1;
             var workerName = "MCRA.Simulation.SbmlRoadRunner.Worker";
             var isWindows = OperatingSystem.IsWindows();
-            var showConsoleWindow = Simulation.RoadRunnerOptions.ShowConsoleWindow;
             var startInfo = new ProcessStartInfo {
-                FileName = isWindows ? Path.Combine(_workingDirectory, workerName + ".exe") : "dotnet",
-                WorkingDirectory = _workingDirectory,
+                FileName = isWindows ? Path.Combine(_workerDirectory, workerName + ".exe") : "dotnet",
+                WorkingDirectory = _workerDirectory,
                 UseShellExecute = isWindows && showConsoleWindow,
                 WindowStyle = showConsoleWindow ? ProcessWindowStyle.Normal : ProcessWindowStyle.Hidden,
                 CreateNoWindow = !showConsoleWindow
@@ -54,12 +58,12 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation.O
                 if (!OperatingSystem.IsLinux()) {
                     throw new PlatformNotSupportedException("The RoadRunner worker is supported only on Windows and Linux.");
                 }
-                startInfo.ArgumentList.Add(Path.Combine(_workingDirectory, workerName + ".dll"));
+                startInfo.ArgumentList.Add(Path.Combine(_workerDirectory, workerName + ".dll"));
             }
             startInfo.ArgumentList.Add(port.ToString(CultureInfo.InvariantCulture));
             startInfo.ArgumentList.Add(Environment.ProcessId.ToString(CultureInfo.InvariantCulture));
             startInfo.ArgumentList.Add(Process.GetCurrentProcess().StartTime.ToUniversalTime().Ticks.ToString(CultureInfo.InvariantCulture));
-            startInfo.ArgumentList.Add(Simulation.RoadRunnerOptions.ExtensiveConsoleLogging.ToString());
+            startInfo.ArgumentList.Add(extensiveConsoleLogging.ToString());
             _process = Process.Start(startInfo) ?? throw new InvalidOperationException("Failed to start RoadRunner worker.");
             _process.EnableRaisingEvents = true;
             _process.Exited += (_, _) => Exited?.Invoke(this);
@@ -73,12 +77,47 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation.O
             _httpClient = new HttpClient { BaseAddress = new Uri(_endpoint), Timeout = TimeSpan.FromMinutes(30) };
         }
 
-        public event Action<WorkerClient> Exited;
+        public event Action<SbmlRoadRunnerWorkerClient> Exited;
 
         public bool IsAlive {
             get {
-                try { return !_process.HasExited; }
-                catch (InvalidOperationException) { return false; }
+                try { return !_process.HasExited; } catch (InvalidOperationException) { return false; }
+            }
+        }
+
+        /// <summary>
+        /// Runs a batch of simulation jobs on this worker in a single request, (re)initializing the
+        /// worker with the given model first if it is not already the model currently loaded in the
+        /// worker process. Access to the worker is serialized: only one initialize/simulate request is
+        /// in flight at a time, since a single worker process can only usefully run one request at a
+        /// time and may be shared by multiple concurrent leases from the pool.
+        /// </summary>
+        public async Task<List<WorkerJobResultDto>> RunAsync(
+            SbmlSimulationBatchJobDto batch,
+            SbmlSimulationInitializationDto init
+        ) {
+            await _gate.WaitAsync().ConfigureAwait(false);
+            try {
+                if (_process.HasExited) {
+                    throw new InvalidOperationException($"RoadRunner worker exited ({_process.ExitCode}).{getDiagnostics()}");
+                }
+
+                var signature = computeModelSignature(init);
+                if (signature != _currentModelSignature) {
+                    var ready = await sendInitializeWhenReady(init).ConfigureAwait(false);
+                    if (ready.Type != "ready" || ready.ProtocolVersion != 1) {
+                        throw new InvalidOperationException($"RoadRunner worker failed to initialize: {formatError(ready.Error)}");
+                    }
+                    _currentModelSignature = signature;
+                }
+
+                var response = await sendRequest<WorkerResponseDto>("simulate", batch).ConfigureAwait(false);
+                if (response.Type != "result") {
+                    throw new InvalidOperationException($"RoadRunner worker failed batch of {batch.Jobs.Count} job(s): {formatError(response.Error)}");
+                }
+                return response.Results ?? [];
+            } finally {
+                _gate.Release();
             }
         }
 
@@ -100,7 +139,7 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation.O
         /// Resolves the build output directory for the stand-alone SbmlRoadrunnerWorker executable.
         /// The worker's output should live next to this project's own output, under the subfolder SbmlRoadrunnerWorker.<Configuration>".
         /// </summary>
-        private static string ResolveWorkerDirectory() {
+        private static string resolveWorkerDirectory() {
             const string workerProjectName = "MCRA.Simulation.SbmlRoadRunner.Worker";
             const string workerDllName = workerProjectName + ".dll";
 
@@ -117,56 +156,6 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation.O
                 );
             }
             return workerDirectory;
-        }
-
-        private static string computeModelSignature(WorkerInitializationDto init) {
-            var routes = string.Join(",", init.RouteInputMappings
-                .OrderBy(kv => kv.Key, StringComparer.Ordinal)
-                .Select(kv => $"{kv.Key}={kv.Value}"));
-            return $"{init.ModelFileName}|{init.BodyWeightParameterId}|{routes}";
-        }
-
-        private async Task<WorkerResponseDto> sendInitializeWhenReady(WorkerInitializationDto initialization) {
-            var deadline = DateTime.UtcNow.AddSeconds(30);
-            while (true) {
-                if (_process.HasExited) throw new InvalidOperationException($"RoadRunner worker exited ({_process.ExitCode}).{getDiagnostics()}");
-                try {
-                    return await sendRequest<WorkerResponseDto>("initialize", initialization).ConfigureAwait(false);
-                } catch (HttpRequestException) when (DateTime.UtcNow < deadline) {
-                    await Task.Delay(100).ConfigureAwait(false);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Runs a batch of simulation jobs on this worker in a single request, (re)initializing the
-        /// worker with the given model first if it is not already the model currently loaded in the
-        /// worker process. Access to the worker is serialized: only one initialize/simulate request is
-        /// in flight at a time, since a single worker process can only usefully run one request at a
-        /// time and may be shared by multiple concurrent leases from the pool.
-        /// </summary>
-        public async Task<List<WorkerJobResultDto>> RunAsync(SimulationJobBatch batch, WorkerInitializationDto init) {
-            await _gate.WaitAsync().ConfigureAwait(false);
-            try {
-                if (_process.HasExited) throw new InvalidOperationException($"RoadRunner worker exited ({_process.ExitCode}).{getDiagnostics()}");
-
-                var signature = computeModelSignature(init);
-                if (signature != _currentModelSignature) {
-                    var ready = await sendInitializeWhenReady(init).ConfigureAwait(false);
-                    if (ready.Type != "ready" || ready.ProtocolVersion != 1) {
-                        throw new InvalidOperationException($"RoadRunner worker failed to initialize: {formatError(ready.Error)}");
-                    }
-                    _currentModelSignature = signature;
-                }
-
-                var response = await sendRequest<WorkerResponseDto>("simulate", batch).ConfigureAwait(false);
-                if (response.Type != "result") {
-                    throw new InvalidOperationException($"RoadRunner worker failed batch of {batch.Jobs.Count} job(s): {formatError(response.Error)}");
-                }
-                return response.Results ?? [];
-            } finally {
-                _gate.Release();
-            }
         }
 
         private async Task<TResponse> sendRequest<TResponse>(string endpoint, object request) {
@@ -187,6 +176,24 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation.O
         private string formatError(string error) => string.IsNullOrWhiteSpace(error)
             ? $"No error details were returned by the worker.{Environment.NewLine}{getDiagnostics()}"
             : $"{error}{Environment.NewLine}{getDiagnostics()}";
+
+        private static string computeModelSignature(SbmlSimulationInitializationDto init) {
+            return init.ModelFileName;
+        }
+
+        private async Task<WorkerResponseDto> sendInitializeWhenReady(SbmlSimulationInitializationDto initialization) {
+            var deadline = DateTime.UtcNow.AddSeconds(30);
+            while (true) {
+                if (_process.HasExited) {
+                    throw new InvalidOperationException($"RoadRunner worker exited ({_process.ExitCode}).{getDiagnostics()}");
+                }
+                try {
+                    return await sendRequest<WorkerResponseDto>("initialize", initialization).ConfigureAwait(false);
+                } catch (HttpRequestException) when (DateTime.UtcNow < deadline) {
+                    await Task.Delay(100).ConfigureAwait(false);
+                }
+            }
+        }
 
         public void Dispose() {
             try {

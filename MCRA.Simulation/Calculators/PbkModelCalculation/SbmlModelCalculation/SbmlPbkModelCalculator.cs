@@ -1,11 +1,12 @@
-﻿using System.Globalization;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.PbkModelDefinitions.PbkModelSpecifications.Sbml;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Calculators.PbkModelCalculation.ExposureEventsGeneration;
 using MCRA.Simulation.Objects;
 using MCRA.Utils.ExtensionMethods;
+using MCRA.Utils.Sbml.BatchSimulation;
+using MCRA.Utils.Sbml.Simulation;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation {
@@ -28,6 +29,9 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation {
             var timeUnitMultiplier = TimeUnit.Days.GetTimeUnitMultiplier(PbkModelSpecification.Resolution);
             var stepsPerDay = getSimulationStepsPerDay();
             var stepLength = 1d / stepsPerDay * timeUnitMultiplier;
+
+            // Get bodyweight parameter
+            var bwParam = PbkModelSpecification.GetParameterDefinitionByType(PbkModelParameterType.BodyWeight);
 
             // Get model input mappings for exposure routes
             var inputSpecies = PbkModelSpecification.GetRouteInputSpecies(SimulationSettings.AllowFallbackSystemic);
@@ -68,7 +72,6 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation {
 
             // For lifetime modelling, include output timeseries for body weight and age
             if (PbkModelSpecification.IsLifetimeModel()) {
-                var bwParam = PbkModelSpecification.GetParameterDefinitionByType(PbkModelParameterType.BodyWeight);
                 if (bwParam != null && bwParam.IsInternalParameter) {
                     outputTimeSeriesSelection.Add(bwParam.Id);
                 }
@@ -83,148 +86,111 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation {
                 .Select(r => r.CompartmentId)
                 .ToList();
 
-            var work = new List<(SimulatedIndividual individual, List<IExposureEvent> events, Dictionary<string, double> parameters, int duration, int steps)>();
-            foreach (var id in externalIndividualExposures) {
-                var numberOfDays = (int)getSimulationDuration(id.Individual.Age);
+            // Create simulations
+            var simulationInputs = new List<SbmlSimulationJob>();
+            for (int i = 0; i < externalIndividualExposures.Count; i++) {
+                var ind = externalIndividualExposures.ElementAt(i);
+                var numberOfDays = (int)getSimulationDuration(ind.Individual.Age);
                 var duration = (int)(timeUnitMultiplier * numberOfDays);
                 var simulationSteps = (int)(numberOfDays * stepsPerDay) + 1;
-                var exposureEvents = exposureEventsGenerator.CreateExposureEvents(
-                    id.IndividualDayExposures, routes, Substance, generator);
+
+                // Create exposure events
+                var exposureEvents = exposureEventsGenerator
+                    .CreateExposureEvents(ind.IndividualDayExposures, routes, Substance, generator)
+                    .Select(r => toSbmlSimulationEvent(
+                        r,
+                        inputMappings,
+                        SimulationSettings.ApplyBodyWeightScaling,
+                        bwParam.Id
+                    ))
+                    .ToList();
+
+                // Create simulation parameters
                 var parameters = new Dictionary<string, double>();
                 foreach (var parameter in PbkModelSpecification.GetParameters()) {
-                    if (KineticModelInstance.KineticModelInstanceParameters.TryGetValue(parameter.Id, out var value))
+                    if (KineticModelInstance.KineticModelInstanceParameters.TryGetValue(parameter.Id, out var value)) {
                         parameters.Add(parameter.Id, value.Value);
+                    }
                 }
-                setPhysiologicalParameterValues(parameters, id.Individual);
-                work.Add((id.Individual, exposureEvents, parameters, duration, simulationSteps));
-            }
+                setPhysiologicalParameterValues(parameters, ind.Individual);
 
-            var results = new List<PbkSimulationOutput>(work.Count);
-
-            var workerCount = Simulation.RoadRunnerOptions.GetEffectiveWorkerCount();
-            var roadRunnerWorkerProxyType = Simulation.RoadRunnerOptions.ProxyType;
-
-            var proxyFactory = new RoadRunnerWorkerProxyFactory(workerCount: workerCount);
-
-            var ss = System.Diagnostics.Stopwatch.StartNew();
-
-            // Create at most one worker proxy per unit of work, but never more than the number of
-            // workers recommended by the factory, so the total workload (e.g. all individuals) is
-            // divided over the configured number of workers/processes.
-            var proxies = new List<IRoadRunnerWorkerProxy>(workerCount);
-            try {
-                for (var w = 0; w < workerCount; w++) {
-                    proxies.Add(proxyFactory.Create(
-                        roadRunnerWorkerProxyType, PbkModelSpecification, KineticModelInstance, inputMappings));
-                }
-
-                // Partition the work round-robin across the proxies: each proxy processes its own
-                // slice of individuals sequentially, while the slices run concurrently with each other.
-                var outputs = new RoadRunnerSimulationResult[work.Count];
-                var partitionTasks = new Task[proxies.Count];
-                for (var w = 0; w < proxies.Count; w++) {
-                    var proxy = proxies[w];
-                    var startIndex = w;
-                    partitionTasks[w] = runPartitionAsync(
-                        proxy, startIndex, proxies.Count, work, outputs, outputStatesSelection, outputTimeSeriesSelection,
-                        SimulationSettings.ApplyBodyWeightScaling);
-                }
-                Task.WhenAll(partitionTasks).GetAwaiter().GetResult();
-
-                for (var i = 0; i < work.Count; i++) {
-                    var (individual, events, parameters, duration, steps) = work[i];
-                    var output = outputs[i];
-                    SimulationOutput simulationOutput = output == null ? null : new SimulationOutput {
-                        Time = output.Time,
-                        OutputTimeSeries = output.OutputTimeSeries,
-                        OutputStates = output.OutputStates
+                if (exposureEvents.Count > 0) {
+                    var job = new SbmlSimulationJob {
+                        JobId = i.ToString(),
+                        Parameters = parameters,
+                        Events = exposureEvents,
+                        OutputStates = outputStatesSelection,
+                        OutputTimeSeries = outputTimeSeriesSelection,
+                        Duration = duration,
+                        Steps = simulationSteps
                     };
-                    results.Add(collectPbkSimulationResults(outputMappings, individual,
-                        simulationOutput, 1D / stepsPerDay));
-                }
-
-                ss.Stop();
-                var elapsed = ss.Elapsed.ToString();
-                Console.WriteLine();
-                Console.WriteLine($"PBK model {PbkModelSpecification.Id} simulation completed in {elapsed}.");
-                return results;
-            } catch (Exception ex) {
-                var individualId = ex.Data["JobId"] is string jobId
-                    && int.TryParse(jobId, NumberStyles.Integer, CultureInfo.InvariantCulture, out var parsedJobId)
-                    ? parsedJobId
-                    : 0;
-                var individualCode = individualId >= 0 && individualId < work.Count
-                    ? work[individualId].individual.Individual.ToString()
-                    : "unknown";
-                throw new InvalidOperationException($"PBK model {PbkModelSpecification.Id} simulation failed for individual {individualCode}", ex);
-            } finally {
-                foreach (var proxy in proxies) {
-                    proxy.Dispose();
+                    simulationInputs.Add(job);
                 }
             }
+
+            // Create SBML batch simulation runner and run
+            var sbmlBatchJobRunner = new SbmlBatchSimulationRunner();
+            var outputs = sbmlBatchJobRunner
+                .Compute(
+                    filename: PbkModelSpecification.FileName,
+                    jobs: simulationInputs,
+                    proxyType: Simulation.RoadRunnerOptions.ProxyType,
+                    maxParallelWorkers: Simulation.RoadRunnerOptions.GetEffectiveWorkerCount(),
+                    showConsoleWindow: Simulation.RoadRunnerOptions.ShowConsoleWindow,
+                    extensiveConsoleLogging: Simulation.RoadRunnerOptions.ExtensiveConsoleLogging
+                )
+                .ToDictionary(r => r.JobId);
+
+            // Process simulation outputs
+            var results = new List<PbkSimulationOutput>(simulationInputs.Count);
+            for (int i = 0; i < externalIndividualExposures.Count; i++) {
+                var ind = externalIndividualExposures.ElementAt(i);
+                var jobId = i.ToString();
+                var simulationOutput = outputs.TryGetValue(jobId, out var jobResult)
+                    ? new SimulationOutput {
+                        Time = jobResult.Result.Time,
+                        OutputTimeSeries = jobResult.Result.OutputTimeSeries,
+                        OutputStates = jobResult.Result.OutputStates
+                    }
+                    : null;
+
+                var pbkSimulationOutput = collectPbkSimulationResults(
+                    outputMappings,
+                    ind.Individual,
+                    simulationOutput,
+                    1D / stepsPerDay
+                );
+                results.Add(pbkSimulationOutput);
+            }
+
+            return results;
         }
 
-        private static async Task runPartitionAsync(
-            IRoadRunnerWorkerProxy proxy,
-            int startIndex,
-            int stride,
-            List<(SimulatedIndividual individual, List<IExposureEvent> events, Dictionary<string, double> parameters, int duration, int steps)> work,
-            RoadRunnerSimulationResult[] outputs,
-            List<string> outputStatesSelection,
-            List<string> outputTimeSeriesSelection,
-            bool applyBodyWeightScaling
-        ) {
-            // Collect all jobs for this partition first, so the whole partition is submitted to the
-            // proxy/worker in a single batched call instead of one call per individual. For an
-            // out-of-process worker, this reduces e.g. 144 individuals to 1 HTTP round-trip per
-            // worker (instead of 144), while still reusing the same loaded model for all of them.
-            var indices = new List<int>();
-            var jobs = new List<RoadRunnerSimulationJob>();
-            for (var i = startIndex; i < work.Count; i += stride) {
-                var (individual, events, parameters, duration, steps) = work[i];
-                if (events.Count == 0) {
-                    continue;
-                }
-                indices.Add(i);
-                jobs.Add(new RoadRunnerSimulationJob {
-                    JobId = i.ToString(CultureInfo.InvariantCulture),
-                    Parameters = parameters,
-                    Events = [.. events.Select(toRoadRunnerEvent)],
-                    OutputStates = outputStatesSelection,
-                    OutputTimeSeries = outputTimeSeriesSelection,
-                    Duration = duration,
-                    Steps = steps,
-                    ApplyBodyWeightScaling = applyBodyWeightScaling
-                });
-            }
-
-            if (jobs.Count == 0) {
-                return;
-            }
-
-            var results = await proxy.RunAsync(jobs).ConfigureAwait(false);
-            for (var j = 0; j < indices.Count; j++) {
-                outputs[indices[j]] = results[j];
-            }
-        }
-
-        private static RoadRunnerExposureEvent toRoadRunnerEvent(IExposureEvent exposureEvent) => exposureEvent switch {
-            SingleExposureEvent single => new RoadRunnerExposureEvent {
-                Kind = "single",
-                Route = single.Route.ToString(),
+        private static SbmlSimulationEvent toSbmlSimulationEvent(
+            IExposureEvent exposureEvent,
+            Dictionary<ExposureRoute, string> targetMappings,
+            bool bodyweightAdjustment,
+            string bodyweightParameter
+        ) => exposureEvent switch {
+            SingleExposureEvent single => new SbmlSimulationEvent {
+                Id = $"single_{exposureEvent.Route}_{exposureEvent.Time}",
+                Kind = SbmlSimulationEventType.Single,
+                Target = targetMappings[exposureEvent.Route],
                 Time = single.Time,
-                Value = single.Value
+                Value = single.Value,
+                Adjustment = bodyweightAdjustment ? $"*{bodyweightParameter}" : null
             },
-            RepeatingExposureEvent repeating => new RoadRunnerExposureEvent {
-                Kind = "repeating",
-                Route = repeating.Route.ToString(),
+            RepeatingExposureEvent repeating => new SbmlSimulationEvent {
+                Id = $"repeating_{exposureEvent.Route}_{exposureEvent.Time}",
+                Kind = SbmlSimulationEventType.Repeated,
+                Target = targetMappings[exposureEvent.Route],
                 Time = repeating.Time,
                 Interval = repeating.Interval,
                 TimeEnd = repeating.TimeEnd,
-                Value = repeating.Value
+                Value = repeating.Value,
+                Adjustment = bodyweightAdjustment ? $"*{bodyweightParameter}" : null
             },
             _ => throw new NotSupportedException($"Unsupported exposure event type {exposureEvent.GetType().Name}.")
         };
-
     }
 }

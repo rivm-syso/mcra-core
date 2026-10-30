@@ -18,7 +18,7 @@
     <PackageReference Include="pythonnet" Version="3.2.1" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MCRA.General\MCRA.General.csproj" />
+    <ProjectReference Include="..\MCRA.Utils\MCRA.Utils.csproj" />
   </ItemGroup>
   <Target Name="CleanResources" AfterTargets="Clean">
     <RemoveDir Directories="$(OutputPath)" />

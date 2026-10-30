@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using MCRA.General.PbkModelDefinitions.SbmlRoadRunnerWorker;
+using MCRA.Utils.Sbml.BatchSimulation.OutOfProcess.Dto;
+using MCRA.Utils.Sbml.Simulation;
 
 namespace MCRA.Simulation.SbmlRoadRunner.Worker;
 
@@ -56,12 +57,12 @@ internal static class Program {
             }
 
             // Set python path
-            var pythonPath = config.GetSection("SimulationServiceOptions").GetValue<string>("PythonDllPath");
+            var pythonPath = config.GetSection("SimulationServiceOptions").GetValue<string>("PythonPath");
             Environment.SetEnvironmentVariable("PYTHONNET_PYDLL", pythonPath);
 
-            RoadRunnerWorker runner = null;
+            SbmlModelRunner runner = null;
             var gate = new SemaphoreSlim(1, 1);
-            app.MapPost("/initialize", (WorkerInitializationDto init) => {
+            app.MapPost("/initialize", (SbmlSimulationInitializationDto init) => {
                 try {
                     bool interactive = config.GetSection("SimulationServiceOptions").GetValue<bool>("InteractiveMode");
                     if (interactive) {
@@ -73,10 +74,16 @@ internal static class Program {
                     if (init == null || init.Type != "initialize") {
                         throw new InvalidDataException("Expected initialize request.");
                     }
+                    if (string.IsNullOrEmpty(init.ModelFileContent)) {
+                        throw new InvalidDataException($"No SBML model content supplied (ModelFileName: '{init.ModelFileName}').");
+                    }
                     gate.Wait();
+                    if (extensiveConsoleLogging) {
+                        Console.Error.WriteLine($"Worker process {Environment.ProcessId} starting up with model '{init.ModelFileName}'...");
+                    }
                     try {
-                        runner?.Dispose();
-                        runner = new RoadRunnerWorker(init, extensiveConsoleLogging);
+                        runner = new SbmlModelRunner();
+                        runner.LoadModelFromXmlString(init.ModelFileContent);
                     } finally {
                         gate.Release();
                     }
@@ -86,13 +93,62 @@ internal static class Program {
                 }
             });
 
-            app.MapPost("/simulate", async (SimulationJobBatch batch) => {
+            app.MapPost("/simulate", async (SbmlSimulationBatchJobDto batch) => {
                 await gate.WaitAsync().ConfigureAwait(false);
+                if (extensiveConsoleLogging) {
+                    Console.Error.WriteLine($"Worker process {Environment.ProcessId} running batch of {batch.Jobs.Count} simulation(s)");
+                }
                 try {
-                    if (runner == null) throw new InvalidOperationException("Worker has not been initialized.");
-                    if (batch == null || batch.Type != "simulate") throw new InvalidDataException("Expected simulate request.");
+                    if (runner == null) {
+                        throw new InvalidOperationException("Worker has not been initialized.");
+                    }
+                    if (batch == null || batch.Type != "simulate") {
+                        throw new InvalidDataException("Expected simulate request.");
+                    }
 
-                    var results = runner.RunBatch(batch.Jobs);
+                    var results = new List<WorkerJobResultDto>(batch.Jobs.Count);
+                    for (int jobIndex = 0; jobIndex < batch.Jobs.Count; jobIndex++) {
+                        var job = batch.Jobs[jobIndex];
+                        if (extensiveConsoleLogging) {
+                            Console.WriteLine($"Worker process {Environment.ProcessId} running simulation: {job.JobId}");
+                        }
+                        try {
+                            var output = runner.Run(
+                                job.Events
+                                    .Select(r => new SbmlSimulationEvent() {
+                                        Id = r.Id,
+                                        Kind = r.Kind,
+                                        Target = r.Target,
+                                        Time = r.Time,
+                                        Interval = r.Interval,
+                                        TimeEnd = r.TimeEnd,
+                                        Value = r.Value,
+                                        Adjustment = r.Adjustment
+                                    })
+                                    .ToList(),
+                                job.Parameters,
+                                job.OutputStates,
+                                job.OutputTimeSeries,
+                                job.Duration,
+                                job.Steps
+                            );
+                            var res = new WorkerJobResultDto() {
+                                JobId = job.JobId,
+                                Result = new SbmlSimulationResultDto {
+                                    OutputStates = output.OutputStates,
+                                    OutputTimeSeries = output.OutputTimeSeries,
+                                    Time = output.Time
+                                }
+                            };
+                            results.Add(res);
+                        } catch (Exception ex) {
+                            var res = new WorkerJobResultDto() {
+                                JobId = job.JobId,
+                                Error = ex.Message
+                            };
+                            results.Add(res);
+                        }
+                    }
 
                     var type = results.Any(r => r.Error != null) ? "error" : "result";
                     var statusCode = type == "error" ? 500 : 200;
@@ -123,7 +179,6 @@ internal static class Program {
             app.MapControllers();
 
             app.Run();
-            runner?.Dispose();
         } catch (Exception ex) {
             Console.Error.WriteLine($"Worker process {Environment.ProcessId} exiting with error: {ex.Message}");
             Console.Error.WriteLine(ex.StackTrace);
@@ -131,7 +186,11 @@ internal static class Program {
         }
     }
 
-    private static async Task monitorOwnerAsync(int ownerPid, long ownerStartTimeTicks, IHostApplicationLifetime lifetime) {
+    private static async Task monitorOwnerAsync(
+        int ownerPid,
+        long ownerStartTimeTicks,
+        IHostApplicationLifetime lifetime
+    ) {
         while (!lifetime.ApplicationStopping.IsCancellationRequested) {
             if (!isOwnerAlive(ownerPid, ownerStartTimeTicks)) {
                 lifetime.StopApplication();

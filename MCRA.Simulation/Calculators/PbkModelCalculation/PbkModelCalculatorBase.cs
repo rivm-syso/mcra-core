@@ -3,7 +3,6 @@ using MCRA.General;
 using MCRA.General.PbkModelDefinitions.PbkModelSpecifications;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Calculators.PbkModelCalculation.PbkModelParameterDistributionModels;
-using MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation;
 using MCRA.Simulation.Objects;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;

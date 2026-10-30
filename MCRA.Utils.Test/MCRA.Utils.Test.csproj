@@ -24,6 +24,7 @@
     </PackageReference>
     <PackageReference Include="OxyPlot.Core" Version="2.2.0" />
     <PackageReference Include="OxyPlot.SkiaSharp" Version="2.2.0" />
+    <PackageReference Include="pythonnet" Version="3.2.1" />
   </ItemGroup>
 
   <ItemGroup>
