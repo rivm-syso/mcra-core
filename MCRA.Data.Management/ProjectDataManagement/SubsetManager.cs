@@ -621,5 +621,11 @@ namespace MCRA.Data.Management {
         public ICollection<OccupationalTaskExposure> AllOccupationalTaskExposures => _dataManager.GetAllOccupationalTaskExposures();
         public IDictionary<string, ConsumerProductExposureAssessment> AllConsumerProductExposureAssessments  => _dataManager.GetAllConsumerProductExposureAssessments ();
         public ICollection<BackgroundFoodConcentration> AllBackgroundFoodConcentrations => _dataManager.GetAllBackgroundFoodConcentrations();
+
+        /// <summary>
+        /// Returns all food-specific conversion factors.
+        /// </summary>
+        public ICollection<DeterministicSubstanceConversionFactor> AllFoodSubstanceConversionFactors => _dataManager.GetAllFoodSubstanceConversionFactors();
+
     }
 }

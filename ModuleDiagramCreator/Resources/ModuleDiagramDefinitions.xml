@@ -20,7 +20,8 @@
 		<GraphDefinition ActionType="SubstanceAuthorisations" X="23" Y="0" Linebreaks="0"/>
 		<GraphDefinition ActionType="SubstanceApprovals" X="41" Y="-3" Linebreaks="0"/>
 		<GraphDefinition ActionType="SubstanceConversions" X="50" Y="0" Linebreaks="0"/>
-		<GraphDefinition ActionType="DeterministicSubstanceConversionFactors" X="50" Y="15" Linebreaks="2"/>
+    <GraphDefinition ActionType="DeterministicSubstanceConversionFactors" X="50" Y="15" Linebreaks="2"/>
+    <GraphDefinition ActionType="FoodSubstanceConversionFactors" X="51" Y="15" Linebreaks="2"/>
 		<GraphDefinition ActionType="ConcentrationLimits" X="3" Y="7" Linebreaks="1"/>
 		<GraphDefinition ActionType="ConcentrationModels" X="39" Y="38" Linebreaks="0"/>
 		<GraphDefinition ActionType="ModelledFoods" X="50" Y="30" Linebreaks="1"/>

@@ -423,5 +423,8 @@ namespace MCRA.Simulation.Test.Mock {
         public ICollection<BackgroundFoodConcentration> GetAllBackgroundFoodConcentrations() {
             return _data.AllBackgroundFoodConcentrations;
         }
+        public ICollection<DeterministicSubstanceConversionFactor> GetAllFoodSubstanceConversionFactors() {
+            return _data.AllFoodSubstanceConversionFactors;
+        }
     }
 }

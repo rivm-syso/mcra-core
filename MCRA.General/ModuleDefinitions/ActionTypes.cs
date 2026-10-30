@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace MCRA.General {
 
@@ -232,6 +233,8 @@ namespace MCRA.General {
         [Display(Name = "Focal processing factors")]
         FocalProcessingFactors = 89,
         [Display(Name = "Background food concentrations")]
-        BackgroundFoodConcentrations = 90
+        BackgroundFoodConcentrations = 90,
+        [Display(Name = "Food substance conversion factors")]
+        FoodSubstanceConversionFactors = 91
     }
 }

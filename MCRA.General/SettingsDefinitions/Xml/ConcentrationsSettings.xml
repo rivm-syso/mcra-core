@@ -353,4 +353,10 @@
     <Description>If checked, naturally occurring concentrations (background)are substracted from the positive residue values for all combinations of food and substance for which these background concentration levels are specified.</Description>
     <ValueType>Boolean</ValueType>
   </SettingsItem>
+  <SettingsItem>
+    <Id>UseFoodSpecificConversionFactors</Id>
+    <Name>Use food specific conversion factors to include metabolites</Name>
+    <Description>If checked, food specific conversion factors are used to include metabolites.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
 </SettingsItems>

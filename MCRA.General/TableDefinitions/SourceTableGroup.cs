@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Xml.Serialization;
+using DocumentFormat.OpenXml.Drawing.Charts;
+using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace MCRA.General {
 
@@ -144,7 +146,7 @@ namespace MCRA.General {
         [Display(Name = "Occupational task exposures", Order = 68)]
         OccupationalTaskExposures = 66,
         [Display(Name = "Occupational scenarios", Order = 69)]
-        OccupationalScenarios= 67,
+        OccupationalScenarios = 67,
         [Display(Name = "Soil concentration distributions", Order = 70)]
         SoilConcentrationDistributions = 68,
         [Display(Name = "Air concentration distributions", Order = 71)]
@@ -154,6 +156,8 @@ namespace MCRA.General {
         [Display(Name = "Focal processing", Order = 73)]
         FocalProcessing = 71,
         [Display(Name = "Background food concentrations", Order = 73)]
-        BackgroundFoodConcentrations = 72
+        BackgroundFoodConcentrations = 72,
+        [Display(Name = "Food substance conversion factors", Order = 74)]
+        FoodSubstanceConversionFactors = 73
     }
 }

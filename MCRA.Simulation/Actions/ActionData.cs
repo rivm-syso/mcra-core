@@ -41,6 +41,7 @@ using MCRA.Simulation.Actions.FoodConversions;
 using MCRA.Simulation.Actions.FoodExtrapolations;
 using MCRA.Simulation.Actions.FoodRecipes;
 using MCRA.Simulation.Actions.Foods;
+using MCRA.Simulation.Actions.FoodSubstanceConversionFactors;
 using MCRA.Simulation.Actions.HazardCharacterisations;
 using MCRA.Simulation.Actions.HbmSingleValueExposures;
 using MCRA.Simulation.Actions.HighExposureFoodSubstanceCombinations;
@@ -226,6 +227,12 @@ namespace MCRA.Simulation {
         public ILookup<Food, FoodSample> FoodSamples {
             get => GetOrCreateModuleOutputData<ConcentrationsOutputData>(ActionType.Concentrations).FoodSamples;
             set => GetOrCreateModuleOutputData<ConcentrationsOutputData>(ActionType.Concentrations).FoodSamples = value;
+        }
+
+        // FoodSubstanceConversionFactors
+        public ICollection<DeterministicSubstanceConversionFactor> FoodSubstanceConversionFactors {
+            get => GetOrCreateModuleOutputData<FoodSubstanceConversionFactorsOutputData>(ActionType.FoodSubstanceConversionFactors).FoodSubstanceConversionFactors;
+            set => GetOrCreateModuleOutputData<FoodSubstanceConversionFactorsOutputData>(ActionType.FoodSubstanceConversionFactors).FoodSubstanceConversionFactors = value;
         }
 
         public IDictionary<Food, List<ISampleOrigin>> SampleOriginInfos {

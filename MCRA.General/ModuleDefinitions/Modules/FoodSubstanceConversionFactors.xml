@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>FoodSubstanceConversionFactors</Id>
+  <Name>Food substance conversion factors</Name>
+  <ModuleType>DataModule</ModuleType>
+  <ActionType>FoodSubstanceConversionFactors</ActionType>
+  <TableGroup>FoodSubstanceConversionFactors</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Food-specific conversion factors.
+  </Description>
+  <ShortDescription>
+    Food-specific conversion factors.
+  </ShortDescription>
+  <DataDescription>
+    Specify for a combination of food, measured substance and active substance a conversion factors.
+  </DataDescription>
+  <Entities>
+    <Entity>Foods</Entity>
+    <Entity>Substances</Entity>
+  </Entities>
+</Module>
