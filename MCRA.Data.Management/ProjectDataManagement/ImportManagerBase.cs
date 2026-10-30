@@ -117,7 +117,6 @@ namespace MCRA.Data.Management {
             workingFolder = string.Empty;
             //}
 
-            DataSourceConfiguration dsConf;
             List<DataSourceMappingRecord> dsMappings;
 
             if (oldStyle) {
@@ -135,15 +134,8 @@ namespace MCRA.Data.Management {
                             SourceTableGroup = ds.TableGroup
                         }
                     ).ToList();
-
-                dsConf = new DataSourceConfiguration();
-
-                foreach (var mapping in dsMappings) {
-                    //also set input mapping record's datasource id to the new raw DS id
-                    dsConf.SetTableGroupDataSource(mapping.SourceTableGroup, mapping.IdRawDataSourceVersion);
-                }
-
             } else {
+                DataSourceConfiguration dsConf;
                 if (hasDataConfig) {
                     dsConf = XmlSerialization.FromXml<DataSourceConfiguration>(dsConfigXml);
                 } else {
@@ -203,17 +195,16 @@ namespace MCRA.Data.Management {
                 foreach (var file in rawFiles) {
                     if (dsFileNames.Contains(file.Name)) {
                         var sourceFileInfo = new FileInfo(file.FullName);
-                        var version = new RawDataSourceVersion() {
+                        var version = new RawDataSourceVersion {
                             id = rawDsVersionId++,
                             UploadTimestamp = DateTime.Now,
                             Name = sourceFileInfo.Name,
                             FullPath = file.FullName,
                             DataSourcePath = file.DirectoryName,
-                            VersionNumber = 1
+                            VersionNumber = 1,
+                            // Calculate checksum
+                            Checksum = DataSourceReaderBase.CalculateFileHashBase64(file.FullName)
                         };
-
-                        // Calculate checksum
-                        version.Checksum = DataSourceReaderBase.CalculateFileHashBase64(file.FullName);
 
                         // Copy the data to the database
                         var fileCopyProgress = progress?.NewCompositeState(fileCopyProgressStepSize) ?? new CompositeProgressState();
@@ -268,8 +259,8 @@ namespace MCRA.Data.Management {
                 foreach (var mapping in dsMappings) {
                     //also set input mapping record's datasource id to the new raw DS id
                     mapping.IdRawDataSourceVersion = dsIdLookup[pathFromName ? mapping.Name : mapping.RawDataSourcePath].id;
-                    dsConfigNew.AppendTableGroupDataSource(mapping.SourceTableGroup, mapping.IdRawDataSourceVersion);
                 }
+                dsConfigNew.DataSourceMappingRecords = dsMappings;
 
                 //backward compatibility: also hook up table groups for which data is in the files
                 //but was not read in yet.

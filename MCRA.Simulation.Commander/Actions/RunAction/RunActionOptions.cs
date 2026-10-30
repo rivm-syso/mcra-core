@@ -23,6 +23,9 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
         [Option("skipcharts", Default = false, HelpText = "Don't generate charts.")]
         public bool SkipCharts { get; set; }
 
+        [Option('l', "loopconfig", Default = null, HelpText = "Loop configuration file containing a loop definition.")]
+        public string LoopConfigPath { get; set; }
+
         [Option("keeptempfiles", Default = false, HelpText = "Keep temp files.")]
         public bool KeepTempFiles { get; set; }
 

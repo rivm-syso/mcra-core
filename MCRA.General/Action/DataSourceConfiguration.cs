@@ -20,7 +20,7 @@ namespace MCRA.General {
         /// Create new instance from a dictionary, <see cref="IDictionary<SourceTableGroup, IList<IRawDataSourceVersion>>"/>
         /// </summary>
         /// <param name="versions">dictionary to create the instance from</param>
-        public DataSourceConfiguration (IDictionary<SourceTableGroup, List<IRawDataSourceVersion>> versions) {
+        public DataSourceConfiguration(IDictionary<SourceTableGroup, List<IRawDataSourceVersion>> versions) {
             DataSourceMappingRecords = versions
             .SelectMany(
                 d => d.Value,
@@ -143,5 +143,9 @@ namespace MCRA.General {
                 return tableGroups;
             }
         }
+
+        public DataSourceConfiguration Clone() => new() {
+            DataSourceMappingRecords = [.. DataSourceMappingRecords.Select(d => d.Clone())]
+        };
     }
 }

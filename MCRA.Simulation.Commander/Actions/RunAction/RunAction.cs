@@ -1,5 +1,6 @@
 ﻿using System.IO.Compression;
 using System.Text;
+using System.Xml;
 using MCRA.Data.Management;
 using MCRA.Data.Management.CompiledDataManagers;
 using MCRA.Data.Management.RawDataManagers;
@@ -8,6 +9,7 @@ using MCRA.Data.Raw;
 using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action;
+using MCRA.Simulation.Commander.Models;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.OutputGeneration.Helpers;
 using MCRA.Simulation.OutputManagement;
@@ -151,7 +153,10 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
                 }
 
                 var projectSettingsXml = XmlSerialization.ToXml(project, true);
-                var isLoop = project.LoopScopingTypes?.Count > 0;
+
+                var isLoop = tryGetLoopConfiguration(actionFolder, options, out var loopDef);
+
+                // var isLoop = project.LoopScopingTypes?.Count > 0;
                 var task = new TaskData {
                     ActionType = project.ActionType,
                     SettingsXml = projectSettingsXml,
@@ -159,40 +164,9 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
                     Type = isLoop ? MCRATaskType.LoopCalculation : MCRATaskType.Simulation
                 };
                 var outputFolderName = diOutput.FullName;
-                // check whether we have a loop on our hands
-                if (isLoop) {
-                    if (project.LoopScopingTypes.Count > 1) {
-                        throw new Exception("Loops over multiple entity types are currently not supported.");
-                    }
-                    var scopingType = project.LoopScopingTypes.Single();
-                    var actionMapping = ActionMappingFactory.Create(project, project.ActionType);
-                    var tableGroupMappings = actionMapping.GetTableGroupMappings();
-                    var provider = new ActionRawDataProvider(project, tableGroupMappings, dataManagerFactory);
-                    var linkManager = new CompiledLinkManager(provider);
-                    var scopeEntities = linkManager.GetAllScopeEntities(scopingType);
-                    //Create the project XMLs for the loop scoping keys
-                    foreach (var entity in scopeEntities.Values) {
-                        var subTaskName = !string.IsNullOrEmpty(entity.Name) ? $"{entity.Name} ({entity.Code})" : entity.Code;
-                        var settings = XmlSerialization.FromXml<ProjectDto>(projectSettingsXml);
-                        var loopEntityKeyFilter = settings.ScopeKeysFilters.FirstOrDefault(r => r.ScopingType == scopingType);
-                        if (loopEntityKeyFilter == null) {
-                            loopEntityKeyFilter = new ScopeKeysFilter() {
-                                ScopingType = scopingType,
-                                SelectedCodes = [entity.Code]
-                            };
-                            settings.ScopeKeysFilters.Add(loopEntityKeyFilter);
-                        } else {
-                            loopEntityKeyFilter.SelectedCodes = [entity.Code];
-                        }
 
-                        var subTask = new TaskData {
-                            Description = subTaskName,
-                            ActionType = project.ActionType,
-                            DataSourceConfiguration = dsConfig,
-                            SettingsXml = XmlSerialization.ToXml(settings)
-                        };
-                        task.ChildTasks.Add(subTask);
-                    }
+                if (isLoop) {
+                    createLoopTaskItems(dataManagerFactory, dsConfig, project, task, loopDef);
                 }
 
                 // Save project settings as created to xml, to be able to make a comparison of
@@ -314,12 +288,238 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
             }
         }
 
+        private static bool tryGetLoopConfiguration(string actionFolder, RunActionOptions options, out LoopSettings def) {
+            def = null;
+
+            // Fetch loop configuration file, if any, this overrides an existing file "_loopConfig.xml"
+            if (!string.IsNullOrEmpty(options.LoopConfigPath) && !File.Exists(options.LoopConfigPath)) {
+                throw new Exception($"Specified loop configuration file {options.LoopConfigPath} does not exist.");
+            }
+
+            var loopConfigFile = string.IsNullOrEmpty(options.LoopConfigPath)
+                ? Path.Combine(actionFolder, "_LoopSettings.xml")
+                : options.LoopConfigPath;
+
+            if (File.Exists(loopConfigFile)) {
+                try {
+                    def = XmlSerialization.FromXmlFile<LoopSettings>(loopConfigFile);
+                    return true;
+                } catch (Exception ex) {
+                    throw new Exception($"Specified loop configuration file {loopConfigFile} contains invalid XML:\n{ex.Message}");
+                }
+            }
+
+            //try deserializing old style loop scoping from Action settings file
+            loopConfigFile = Path.Combine(actionFolder, "_ActionSettings.xml");
+            if (File.Exists(loopConfigFile)) {
+                try {
+                    var actionLoopSettings = XmlSerialization.FromXmlFile<ActionLoopSettings>(loopConfigFile);
+                    if (actionLoopSettings.LoopScopingTypes.Count > 0) {
+                        var xmlDoc = new XmlDocument();
+                        var elem = xmlDoc.CreateElement(nameof(LoopSettings.LoopConfiguration));
+                        elem.InnerXml = XmlSerialization.ToXml(actionLoopSettings.LoopScopingTypes.First());
+
+                        def = new() {
+                            LoopType = McraLoopType.Scoping,
+                            LoopConfiguration = elem
+                        };
+                        return true;
+                    }
+                } catch (Exception ex) {
+                    throw new Exception($"Specified loop configuration file {loopConfigFile} contains invalid XML:\n{ex.Message}");
+                }
+            }
+            return false;
+        }
+
+        private void createLoopTaskItems(
+            IRawDataManagerFactory rdmFactory,
+            DataSourceConfiguration dsConfig,
+            ProjectDto project,
+            TaskData task,
+            LoopSettings loopDef
+        ) {
+            var xmlString = loopDef.LoopConfiguration.OuterXml;
+
+            switch (loopDef.LoopType) {
+                case McraLoopType.Scoping:
+                    var scopeConfig = XmlSerialization.FromXml<ScopeLoopConfig>(xmlString);
+                    createScopeLoopItems(rdmFactory, dsConfig, project, task, scopeConfig);
+                    break;
+                case McraLoopType.DataSource:
+                    var dsLoopConfig = XmlSerialization.FromXml<DataSourceLoopConfig>(xmlString);
+                    createDataSourceLoopItems(dsConfig, project, task, dsLoopConfig);
+                    break;
+                case McraLoopType.Setting:
+                    var settingsLoopConfig = XmlSerialization.FromXml<SettingLoopConfig>(xmlString);
+                    createSettingLoopItems(project.ActionType, dsConfig, task, settingsLoopConfig);
+                    break;
+                case McraLoopType.Complex:
+                    var complexLoopConfig = XmlSerialization.FromXml<ComplexLoopConfig>(xmlString);
+                    createComplexLoopItems(dsConfig, project, task, complexLoopConfig);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private static void createScopeLoopItems(
+            IRawDataManagerFactory rdmFactory,
+            DataSourceConfiguration dsConfig,
+            ProjectDto project,
+            TaskData task,
+            ScopeLoopConfig scopeConfig
+        ) {
+            var scopingType = scopeConfig.ScopingType;
+            var actionMapping = ActionMappingFactory.Create(project, project.ActionType);
+            var tableGroupMappings = actionMapping.GetTableGroupMappings();
+            var provider = new ActionRawDataProvider(project, tableGroupMappings, rdmFactory);
+            var linkManager = new CompiledLinkManager(provider);
+            var scopeEntities = linkManager.GetAllScopeEntities(scopingType);
+            //Create the project XMLs for the loop scoping keys
+            foreach (var entity in scopeEntities.Values) {
+                var subTaskName = !string.IsNullOrEmpty(entity.Name) ? $"{entity.Name} ({entity.Code})" : entity.Code;
+                var settings = XmlSerialization.FromXml<ProjectDto>(task.SettingsXml);
+                var loopEntityKeyFilter = settings.ScopeKeysFilters.FirstOrDefault(r => r.ScopingType == scopingType);
+                if (loopEntityKeyFilter == null) {
+                    loopEntityKeyFilter = new ScopeKeysFilter() {
+                        ScopingType = scopingType,
+                        SelectedCodes = [entity.Code]
+                    };
+                    settings.ScopeKeysFilters.Add(loopEntityKeyFilter);
+                } else {
+                    loopEntityKeyFilter.SelectedCodes = [entity.Code];
+                }
+
+                var subTask = new TaskData {
+                    Description = subTaskName,
+                    ActionType = project.ActionType,
+                    DataSourceConfiguration = dsConfig,
+                    SettingsXml = XmlSerialization.ToXml(settings)
+                };
+                task.ChildTasks.Add(subTask);
+            }
+        }
+
+        private static void createDataSourceLoopItems(
+            DataSourceConfiguration dsConfig,
+            ProjectDto project,
+            TaskData task,
+            DataSourceLoopConfig loopConfig
+        ) {
+            var actionMapping = ActionMappingFactory.Create(project, project.ActionType);
+            var loopSourceIds = dsConfig.GetRawDataSourceIds(loopConfig.SourceTableGroup);
+
+            //Create the project XMLs for the data sources
+            foreach (var dsId in loopSourceIds) {
+                //exclude all data source versions except current id
+                DataSourceMappingRecord loopDsmr = null;
+                var newDsConfig = new DataSourceConfiguration();
+
+                foreach (var dsmr in dsConfig.DataSourceMappingRecords) {
+                    if (dsmr.SourceTableGroup == loopConfig.SourceTableGroup) {
+                        //only add the one record to the new ds config
+                        if (dsmr.IdRawDataSourceVersion == dsId) {
+                            loopDsmr = dsmr;
+                            newDsConfig.DataSourceMappingRecords.Add(dsmr);
+                        }
+                    } else {
+                        newDsConfig.DataSourceMappingRecords.Add(dsmr);
+                    }
+                }
+                var subTaskName = $"{dsId}-{loopDsmr.Name}";
+
+                var subTask = new TaskData {
+                    Description = subTaskName,
+                    ActionType = project.ActionType,
+                    DataSourceConfiguration = newDsConfig,
+                    SettingsXml = task.SettingsXml
+                };
+
+                task.ChildTasks.Add(subTask);
+            }
+        }
+
+        private static void createSettingLoopItems(
+            ActionType actionType,
+            DataSourceConfiguration dsConfig,
+            TaskData task,
+            SettingLoopConfig loopConfig
+        ) {
+            //Create the project XMLs for the data sources
+            foreach (var settingValue in loopConfig.LoopValues) {
+                var subTaskName = $"{loopConfig.SettingsItemType}={settingValue}";
+                var settings = XmlSerialization.FromXml<ProjectDto>(task.SettingsXml);
+
+                settings.SetRawValue(actionType, loopConfig.SettingsItemType, settingValue);
+
+                var subTask = new TaskData {
+                    Description = subTaskName,
+                    ActionType = actionType,
+                    DataSourceConfiguration = dsConfig,
+                    SettingsXml = XmlSerialization.ToXml(settings)
+                };
+
+                task.ChildTasks.Add(subTask);
+            }
+        }
+
+        private static void createComplexLoopItems(
+            DataSourceConfiguration dsConfig,
+            ProjectDto project,
+            TaskData task,
+            ComplexLoopConfig loopConfig
+        ) {
+            var actionMapping = ActionMappingFactory.Create(project, project.ActionType);
+            //Create the project XMLs for the data sources
+            foreach (var loopItem in loopConfig.LoopItems) {
+                var subTaskName = $"{loopItem.DisplayName}";
+                var settings = XmlSerialization.FromXml<ProjectDto>(task.SettingsXml);
+
+                foreach(var modConfig in loopItem.ModuleConfigurations) {
+                    var modSettings = settings.GetModuleConfiguration(modConfig.ActionType);
+                    modSettings.Apply(modConfig);
+                }
+
+                foreach(var scopeFilter in loopItem.ScopeKeysFilters) {
+                    settings.SetFilterCodes(scopeFilter.ScopingType, scopeFilter.SelectedCodes);
+                }
+
+                var loopDs = dsConfig;
+                if(loopItem.DataSources.Count > 0) {
+                    var loopDsDict = loopItem.DataSources
+                        .GroupBy(d => d.SourceTableGroup)
+                        .ToDictionary(g => g.Key, g => g.Select(d => d.Name).ToHashSet());
+                    loopDs = new DataSourceConfiguration();
+
+                    foreach (var dsmr in dsConfig.DataSourceMappingRecords) {
+                        if(loopDsDict.TryGetValue(dsmr.SourceTableGroup, out var dsNames)) {
+                            if(dsNames.Contains(dsmr.Name)) {
+                                loopDs.DataSourceMappingRecords.Add(dsmr);
+                            }
+                        } else {
+                            loopDs.DataSourceMappingRecords.Add(dsmr);
+                        }
+                    }
+                }
+
+                var subTask = new TaskData {
+                    Description = subTaskName,
+                    ActionType = project.ActionType,
+                    DataSourceConfiguration = loopDs,
+                    SettingsXml = XmlSerialization.ToXml(settings)
+                };
+
+                task.ChildTasks.Add(subTask);
+            }
+        }
+
         /// <summary>
         /// Supports two options:
         /// 1) if no input path is specified, it uses the current directory, when you launch mcra.exe inside an action folder.
         /// 2) otherwise, it uses the specified inputpath from the cmd line argument.
         /// </summary>
-        private string DetermineInputPath(RunActionOptions options) {
+        private static string DetermineInputPath(RunActionOptions options) {
             if (string.IsNullOrWhiteSpace(options.InputPath)) {
                 return Directory.GetCurrentDirectory();
             } else {
