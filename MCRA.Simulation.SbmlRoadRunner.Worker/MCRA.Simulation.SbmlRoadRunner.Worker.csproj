@@ -3,6 +3,7 @@
   <PropertyGroup>
     <UserSecretsId>6ad0e0b4-af2b-4e24-b267-1ac4797dbb49</UserSecretsId>
     <Configurations>Debug;Release</Configurations>
+    <AccelerateBuildsInVisualStudio>false</AccelerateBuildsInVisualStudio>
   </PropertyGroup>
   <PropertyGroup>
     <ModuleExtension Condition="'$(OS)' == 'Windows_NT'">.dll</ModuleExtension>
