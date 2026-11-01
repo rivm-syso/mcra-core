@@ -23,7 +23,6 @@
     <File Path="Shared/SharedAssemblyInfo.cs" />
   </Folder>
   <Project Path="MCRA.Data.Compiled.Tests/MCRA.Data.Compiled.Tests.csproj">
-    <BuildDependency Project="MCRA.Simulation.SbmlRoadRunner.Worker/MCRA.Simulation.SbmlRoadRunner.Worker.csproj" />
     <BuildType Solution="Publish|*" Project="Release" />
     <Build Solution="Publish|*" Project="false" />
   </Project>
@@ -52,7 +51,6 @@
     <BuildType Solution="Publish|*" Project="Release" />
   </Project>
   <Project Path="MCRA.Simulation.Commander/MCRA.Simulation.Commander.csproj">
-    <BuildDependency Project="MCRA.Simulation.SbmlRoadRunner.Worker/MCRA.Simulation.SbmlRoadRunner.Worker.csproj" />
     <BuildType Solution="Publish|*" Project="Release" />
     <Build Solution="Publish|*" Project="false" />
   </Project>

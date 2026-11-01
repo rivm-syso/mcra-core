@@ -23,6 +23,12 @@
     <ProjectReference Include="..\MCRA.Utils\MCRA.Utils.csproj" />
   </ItemGroup>
 
+  <Target Name="BuildSbmlRoadRunnerWorker" BeforeTargets="Build">
+    <MSBuild Projects="..\MCRA.Simulation.SbmlRoadRunner.Worker\MCRA.Simulation.SbmlRoadRunner.Worker.csproj"
+             Targets="Build"
+             Properties="Configuration=$(Configuration)" />
+  </Target>
+
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
