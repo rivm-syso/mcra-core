@@ -1,6 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\Shared\MCRA.Shared.Build.targets" />
 
+  <PropertyGroup>
+    <OutputPath>..\bin\</OutputPath>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Remove="Resources\ModuleDiagramDefinitions.xml" />
   </ItemGroup>

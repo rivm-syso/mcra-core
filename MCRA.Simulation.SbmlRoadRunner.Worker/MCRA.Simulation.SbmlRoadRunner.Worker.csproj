@@ -32,7 +32,7 @@
           SkipUnchangedFiles="true" />
   </Target>
 
-  <Target Name="CleanWorkerOutput" BeforeTargets="Clean">
+  <Target Name="CleanWorkerOutput" AfterTargets="Clean">
     <RemoveDir Directories="$(MSBuildProjectDirectory)\..\MCRA.Simulation.Commander\bin\$(Configuration)\SbmlRoadrunnerWorker;$(MSBuildProjectDirectory)\..\bin\SbmlRoadrunnerWorker" />
   </Target>
 </Project>

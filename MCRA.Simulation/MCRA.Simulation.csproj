@@ -35,6 +35,12 @@
     <None Remove="Resources\Opex\OpexToMcra.R" />
   </ItemGroup>
 
+  <Target Name="CleanResources" AfterTargets="Clean">
+    <RemoveDir Directories="$(OutputPath)Resources" />
+    <RemoveDir Directories="$(OutputPath)graphviz" />
+    <RemoveDir Directories="$(OutputPath)runtimes" />
+  </Target>
+
   <ItemGroup>
     <Content Include="Resources\KineticModels\EuroMix_Bisphenols_PBPK_model_V1$(ModuleExtension)">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
