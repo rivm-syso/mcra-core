@@ -53,9 +53,10 @@ ENV R_HOME=/usr/lib/R
 ARG CACHE_DATE=empty_date_value
 RUN echo CACHE_DATE = ${CACHE_DATE}
 
-# build full solution
-#RUN dotnet build "mcra-core.slnx" -c ${MCRA_BUILD_CONFIG} -p:UseAppHost=false
-RUN dotnet build "MCRA.Simulation.Commander/MCRA.Simulation.Commander.csproj" -c "Release" -r ${MCRA_RUNTIME} -p:UseAppHost=false --self-contained false
+# build full solution in configuration 'publish', doesn't build unit test projects
+RUN dotnet build "mcra-core.slnx" -c Publish -p:UseAppHost=false
+#RUN dotnet build "MCRA.Simulation.SbmlRoadrunner.Worker/MCRA.Simulation.SbmlRoadrunner.Worker.csproj" -c "Release" -r ${MCRA_RUNTIME} -p:UseAppHost=false --self-contained false
+#RUN dotnet build "MCRA.Simulation.Commander/MCRA.Simulation.Commander.csproj" -c "Release" -r ${MCRA_RUNTIME} -p:UseAppHost=false --self-contained false
 
 ## temporarily skip unit tests
 #  # run all unit test projects
@@ -90,6 +91,6 @@ FROM ${DOCKER_IO_REPO}/busybox as appstore
 ARG MCRA_RUNTIME
 WORKDIR /apps
 # Copy the MCRA binaries that are referenced in the web apps
-COPY --from=build /app/mcra-bin/${MCRA_RUNTIME} ./mcra-bin/
+COPY --from=build /app/mcra-bin ./mcra-bin/
 # Copy the MCRA command line interface files (CLI)
 COPY --from=publish /app/publish ./mcra-cli/

@@ -51,13 +51,14 @@
     <BuildType Solution="Publish|*" Project="Release" />
   </Project>
   <Project Path="MCRA.Simulation.Commander/MCRA.Simulation.Commander.csproj">
+    <BuildDependency Project="MCRA.Simulation.SbmlRoadRunner.Worker/MCRA.Simulation.SbmlRoadRunner.Worker.csproj" />
     <BuildType Solution="Publish|*" Project="Release" />
-    <Build Solution="Publish|*" Project="false" />
   </Project>
   <Project Path="MCRA.Simulation.SbmlRoadRunner.Worker/MCRA.Simulation.SbmlRoadRunner.Worker.csproj">
     <BuildType Solution="Publish|*" Project="Release" />
   </Project>
   <Project Path="MCRA.Simulation.Test/MCRA.Simulation.Test.csproj">
+    <BuildDependency Project="MCRA.Simulation.SbmlRoadRunner.Worker/MCRA.Simulation.SbmlRoadRunner.Worker.csproj" />
     <BuildType Solution="Publish|*" Project="Release" />
     <Build Solution="Publish|*" Project="false" />
   </Project>

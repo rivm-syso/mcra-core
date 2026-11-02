@@ -4,6 +4,7 @@
     <UserSecretsId>6ad0e0b4-af2b-4e24-b267-1ac4797dbb49</UserSecretsId>
     <Configurations>Debug;Release</Configurations>
     <AccelerateBuildsInVisualStudio>false</AccelerateBuildsInVisualStudio>
+    <OutputPath>..\bin\SbmlRoadrunnerWorker\</OutputPath>
   </PropertyGroup>
   <PropertyGroup>
     <ModuleExtension Condition="'$(OS)' == 'Windows_NT'">.dll</ModuleExtension>
@@ -19,20 +20,7 @@
   <ItemGroup>
     <ProjectReference Include="..\MCRA.General\MCRA.General.csproj" />
   </ItemGroup>
-
-  <Target Name="CopyWorkerOutput" AfterTargets="Build">
-    <ItemGroup>
-      <WorkerOutputFiles Include="$(TargetDir)**\*" />
-    </ItemGroup>
-    <Copy SourceFiles="@(WorkerOutputFiles)"
-          DestinationFiles="@(WorkerOutputFiles->'$(MSBuildProjectDirectory)\..\MCRA.Simulation.Commander\bin\$(Configuration)\SbmlRoadrunnerWorker\%(RecursiveDir)%(Filename)%(Extension)')"
-          SkipUnchangedFiles="true" />
-    <Copy SourceFiles="@(WorkerOutputFiles)"
-          DestinationFiles="@(WorkerOutputFiles->'$(MSBuildProjectDirectory)\..\bin\SbmlRoadrunnerWorker\%(RecursiveDir)%(Filename)%(Extension)')"
-          SkipUnchangedFiles="true" />
-  </Target>
-
-  <Target Name="CleanWorkerOutput" AfterTargets="Clean">
-    <RemoveDir Directories="$(MSBuildProjectDirectory)\..\MCRA.Simulation.Commander\bin\$(Configuration)\SbmlRoadrunnerWorker;$(MSBuildProjectDirectory)\..\bin\SbmlRoadrunnerWorker" />
+  <Target Name="CleanResources" AfterTargets="Clean">
+    <RemoveDir Directories="$(OutputPath)" />
   </Target>
 </Project>

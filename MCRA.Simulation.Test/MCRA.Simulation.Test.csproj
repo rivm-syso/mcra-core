@@ -40,6 +40,11 @@
     <ProjectReference Include="..\MCRA.General\MCRA.General.csproj" />
     <ProjectReference Include="..\MCRA.Simulation\MCRA.Simulation.csproj" />
     <ProjectReference Include="..\MCRA.Utils\MCRA.Utils.csproj" />
+    <ProjectReference Include="..\MCRA.Simulation.SbmlRoadrunner.Worker\MCRA.Simulation.SbmlRoadrunner.Worker.csproj">
+      <Private>False</Private>
+      <CopyLocalSatelliteAssemblies>False</CopyLocalSatelliteAssemblies>
+      <ReferenceOutputAssembly>False</ReferenceOutputAssembly>
+    </ProjectReference>
   </ItemGroup>
 
   <ItemGroup>
@@ -53,6 +58,13 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>MockProject.tt</DependentUpon>
     </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\bin\SbmlRoadrunnerWorker\**\*">
+      <Link>SbmlRoadrunnerWorker\%(RecursiveDir)/%(FileName)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
