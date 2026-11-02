@@ -12,6 +12,11 @@
     <RuntimeIdentifier Condition="'$(OS)' != 'Windows_NT'">linux-x64</RuntimeIdentifier>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <DebugSymbols>False</DebugSymbols>
+    <DebugType>None</DebugType>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Include="..\Shared\SharedAssemblyInfo.cs" Link="Properties\SharedAssemblyInfo.cs" />
   </ItemGroup>
@@ -28,6 +33,17 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
+
+  <!-- Exclude .pdb files from release builds -->
+  <Target Name="ExcludePdbFilesAfterCompile" BeforeTargets="Compile" Condition="'$(Configuration)'=='Release'">
+    <ItemGroup>
+      <_FilteredContentWithTargetPath Include="@(ContentWithTargetPath)" Condition="'%(Extension)' == '.pdb'" />
+      <ContentWithTargetPath Remove="@(_FilteredContentWithTargetPath)" />
+
+      <_FilteredReferenceCopyLocalPaths Include="@(ReferenceCopyLocalPaths)" Condition="'%(Extension)' == '.pdb'" />
+      <ReferenceCopyLocalPaths Remove="@(_FilteredReferenceCopyLocalPaths)" />
+    </ItemGroup>
+  </Target>
 
   <!-- T4 build support for .NET Core builds (Begin) -->
   <ItemGroup Condition="'$(MSBuildRuntimeType)'=='Core'">
