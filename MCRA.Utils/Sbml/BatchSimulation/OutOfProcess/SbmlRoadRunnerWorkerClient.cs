@@ -16,7 +16,12 @@ namespace MCRA.Utils.Sbml.BatchSimulation.OutOfProcess {
     /// </summary>
     internal sealed class SbmlRoadRunnerWorkerClient : IDisposable {
 
-        private const int FirstWorkerPort = 46000;
+        /// <summary>
+        /// This port is part of the safe range of user registered ports (1024 - 49151) and outside
+        /// the Windows dynamic port range (49152 - 65535). The worker pool will assign ports starting 
+        /// from this value and increment for each new worker.
+        /// </summary>
+        private const int FirstWorkerPort = 30000;
         private static int _nextWorkerPort = FirstWorkerPort;
         private static readonly JsonSerializerOptions JsonOptions = new() {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,

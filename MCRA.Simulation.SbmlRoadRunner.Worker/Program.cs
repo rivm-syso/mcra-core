@@ -24,7 +24,10 @@ internal static class Program {
             var config = confBuilder.Build();
 
             // The first numeric argument overrides the configured application URL (used by the worker pool).
-            // When no port is supplied, ASP.NET Core uses the applicationUrl from launchSettings.json.
+            // When no port is supplied, ASP.NET Core reads the listen URL from standard configuration:
+            // "Urls" in appsettings.json (default http://localhost:30000), the ASPNETCORE_URLS environment
+            // variable, or the --urls command-line argument. This allows the URL to be configured from
+            // outside the application, for example per environment or in a container.
             var portArgument = args.FirstOrDefault(a => int.TryParse(a, out var value) && value is > 0 and <= 65535);
             var ownerPidArgument = args.SkipWhile(a => a != portArgument).Skip(1).FirstOrDefault();
             var ownerStartTimeArgument = args.SkipWhile(a => a != portArgument).Skip(2).FirstOrDefault();
@@ -33,8 +36,13 @@ internal static class Program {
             var extensiveConsoleLogging = bool.TryParse(extensiveConsoleLoggingArgument, out var parsedLogging) && parsedLogging;
 
             var builder = WebApplication.CreateBuilder(new WebApplicationOptions { Args = hostArgs });
+
             if (int.TryParse(portArgument, out var requestedPort)) {
-                builder.WebHost.UseUrls($"http://localhost:{requestedPort}");
+                var baseUrl = Environment.GetEnvironmentVariable("ASPNETCORE_URLS");
+                if (string.IsNullOrWhiteSpace(baseUrl)) {
+                    baseUrl = config.GetValue<string>("Urls");
+                }
+                builder.WebHost.UseUrls(buildWorkerUrl(baseUrl, requestedPort));
             }
 
             JsonSerializerOptions JsonOptions = new() {
@@ -184,6 +192,24 @@ internal static class Program {
             Console.Error.WriteLine(ex.StackTrace);
             throw;
         }
+    }
+
+    /// <summary>
+    /// Builds the URL on which a worker managed by the worker pool listens. The configured base URL
+    /// determines the scheme and host; the port is assigned by the worker pool.
+    /// </summary>
+    private static string buildWorkerUrl(string baseUrl, int port) {
+        const string defaultBaseUrl = "http://localhost:30000";
+        var firstUrl = (baseUrl ?? string.Empty)
+            .Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+            .FirstOrDefault();
+        if (string.IsNullOrWhiteSpace(firstUrl)) {
+            firstUrl = defaultBaseUrl;
+        }
+        var uriBuilder = new UriBuilder(firstUrl) {
+            Port = port
+        };
+        return uriBuilder.Uri.GetLeftPart(UriPartial.Authority);
     }
 
     private static async Task monitorOwnerAsync(
