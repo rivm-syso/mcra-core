@@ -22,5 +22,11 @@ namespace MCRA.Simulation.OutputGeneration {
 
         [Display(AutoGenerateField = false)]
         public double MedianResponseValue { get { return ResponseValues.Count != 0 ? ResponseValues.Percentile(50d) : double.NaN; } }
+
+        [Display(AutoGenerateField = false)]
+        public List<double> Exposures { get; set; }
+
+        [Display(AutoGenerateField = false)]
+        public double MedianExposure { get { return Exposures.Count != 0 ? Exposures.Percentile(50d) : double.NaN; } }
     }
 }

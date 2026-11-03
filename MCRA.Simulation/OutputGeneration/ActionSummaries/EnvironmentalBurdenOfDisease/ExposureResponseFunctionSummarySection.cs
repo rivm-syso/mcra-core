@@ -29,7 +29,8 @@ namespace MCRA.Simulation.OutputGeneration {
                         ExposureBin = r.ExposureBinId,
                         Exposure = r.ExposureLevel,
                         ResponseValue = r.PercentileSpecificRisk,
-                        ResponseValues = []
+                        ResponseValues = [],
+                        Exposures = []
                     })
                     .ToList();
                 var maxExposure = dataPoints.Max(r => r.Exposure);
@@ -112,6 +113,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     var resultDataPoint = resultRecord.ExposureResponseResultRecords
                         .Single(r => r.ExposureBinId == dataPointRecord.ExposureBin);
                     dataPointRecord.ResponseValues.Add(resultDataPoint.PercentileSpecificRisk);
+                    dataPointRecord.Exposures.Add(resultDataPoint.ExposureLevel);
                 }
                 ErfSummaryRecords
                     .Single(r => r.ErfCode == resultRecord.ExposureResponseFunctionModel.Code)

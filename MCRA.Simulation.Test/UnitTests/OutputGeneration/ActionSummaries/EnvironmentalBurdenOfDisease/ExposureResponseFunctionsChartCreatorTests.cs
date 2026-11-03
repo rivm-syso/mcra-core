@@ -81,7 +81,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Enviro
                 .Zip(yScatter, (x, y) => new ExposureResponseDataPoint() {
                     Exposure = x,
                     ResponseValue = y,
-                    ResponseValues = []
+                    ResponseValues = [],
+                    Exposures = []
                 })
                 .ToList();
 

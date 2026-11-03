@@ -52,7 +52,9 @@ namespace MCRA.Simulation.OutputGeneration {
             double uncertaintyLowerLimit,
             double uncertaintyUpperLimit
         ) {
-            var x = record.ExposureResponseDataPoints.Select(c => c.Exposure).ToList();
+            var x = uncertainty 
+                ? record.ExposureResponseDataPoints.Select(c => c.MedianExposure).ToList()
+                : record.ExposureResponseDataPoints.Select(c => c.Exposure).ToList();
             var y = uncertainty
                 ? record.ExposureResponseDataPoints.Select(c => c.MedianResponseValue).ToList()
                 : record.ExposureResponseDataPoints.Select(c => c.ResponseValue).ToList();
