@@ -1,5 +1,8 @@
 ﻿using System.Text;
+using MCRA.Simulation.OutputGeneration.ActionSummaries.EnvironmentalBurdenOfDisease;
 using MCRA.Simulation.OutputGeneration.Helpers;
+using MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders;
+using Microsoft.AspNetCore.Html;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class EnvironmentalBurdenOfDiseaseSummarySectionView : SectionView<EnvironmentalBurdenOfDiseaseSummarySection> {
@@ -29,6 +32,23 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.LowerTotalPopulationShift));
                 hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.UpperTotalPopulationShift));
             }
+            var hasBod = !Model.Records.All(c => c.TotalAttributableBod == 0D) &&
+                !Model.Records.All(c => c.UpperTotalAttributableBod == 0D);
+            var hasShift = !Model.Records.All(c => c.TotalPopulationShift == 0D) &&
+                !Model.Records.All(c => c.UpperTotalPopulationShift == 0D);
+            if (!hasBod) {
+                hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.TotalAttributableBod));
+                hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.MedianTotalAttributableBod));
+                hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.LowerTotalAttributableBod));
+                hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.UpperTotalAttributableBod));
+            }
+            if (!hasShift) {
+                hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.TotalPopulationShift));
+                hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.MedianTotalPopulationShift));
+                hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.LowerTotalPopulationShift));
+                hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.UpperTotalPopulationShift));
+            }
+
             if (Model.Records.All(r => string.IsNullOrEmpty(r.SourceIndicators))) {
                 hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.SourceIndicators));
             }
@@ -62,6 +82,63 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 sortable: false,
                 hiddenProperties: hiddenProperties
             );
+
+            if (Model.Records.GroupBy(r => (r.BodIndicator, r.EffectCode)).Any(g => g.Count() > 0)) {
+                sb.AppendWarning($"Summary of total attributable burden omitted because of potential double-counting of the same effect.");
+            } else {
+                var panelBuilder = new HtmlTabPanelBuilder();
+                var panelGroup = Model.Records
+                    .Where(r => (!isUncertainty && r.TotalAttributableBod != 0) || (isUncertainty && r.MedianTotalAttributableBod != 0))
+                    .GroupBy(r => r.BodIndicator);
+
+                foreach (var group in panelGroup) {
+                    var key = group.Key;
+                    var name = group.Key;
+
+                    var panelSb = new StringBuilder();
+                    panelSb.Append("<div class=\"figure-container\">");
+
+                    var chartSubstanceByEffectCreator = new EbdStackedBarSubstanceByEffectChartCreator(
+                        Model.SectionId,
+                        Model.Records,
+                        isUncertainty
+                    );
+                    panelSb.AppendChart(
+                            name: $"EbdSubstanceByEffectChart_{key}",
+                            section: Model,
+                            chartCreator: chartSubstanceByEffectCreator,
+                            fileType: ChartFileType.Svg,
+                            viewBag: ViewBag,
+                            saveChartFile: true,
+                            caption: chartSubstanceByEffectCreator.Title
+                        );
+
+                    var chartEffectBySubstanceCreator = new EbdStackedBarEffectBySubstanceChartCreator(
+                        Model.SectionId,
+                        Model.Records,
+                        isUncertainty
+                    );
+                    panelSb.AppendChart(
+                        name: $"EbdEffectBySubstamceChart_{key}",
+                        section: Model,
+                        chartCreator: chartEffectBySubstanceCreator,
+                        fileType: ChartFileType.Svg,
+                        viewBag: ViewBag,
+                        saveChartFile: true,
+                        caption: chartEffectBySubstanceCreator.Title
+                    );
+
+                    panelSb.Append("\"</div>\"");
+                    panelBuilder.AddPanel(
+                        id: $"Panel_{key}",
+                        title: name,
+                        hoverText: key,
+                        content: new HtmlString(sb.ToString())
+                    );
+
+                    panelBuilder.RenderPanel(sb, collapseSingleTab: true);
+                }
+            }
         }
     }
 }

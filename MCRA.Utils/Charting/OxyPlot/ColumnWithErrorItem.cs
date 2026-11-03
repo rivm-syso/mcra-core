@@ -1,7 +1,7 @@
 ﻿using OxyPlot.Series;
 
 namespace MCRA.Utils.Charting.OxyPlot {
-    public sealed class ColumnWithErrorItem : BarItem {
+    public class ColumnWithErrorItem : BarItem {
 
         public ColumnWithErrorItem() {
         }
