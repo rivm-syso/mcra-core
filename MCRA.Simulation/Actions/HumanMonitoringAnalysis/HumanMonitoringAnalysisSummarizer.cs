@@ -101,8 +101,6 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
 
             // HBM calculated (derived) concentrations by substance for different timepoints
             if (outputSettings.ShouldSummarize(HumanMonitoringAnalysisSections.HbmConcentrationsByTargetSubstanceTimePointSection)
-                && _configuration.OccupationalExposureAssessment
-                && _configuration.ShiftAnalysis
             ) {
                 summarizeHbmConcentrationsBySubstanceTimePoint(
                     stratifier,
@@ -472,6 +470,12 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
            SectionHeader header,
            int order
        ) {
+            var hasMultipleTimePoints = hbmIndividualDayCollections
+                .Select(c => c.HbmIndividualDayConcentrations.Select(c => c.TimePoint).ToHashSet().Count)
+                .All(c => c > 1);
+            if (!hasMultipleTimePoints) {
+                return;
+            }
             var section = new HbmIndividualDayDistributionBySubstanceTimePointSection() {
                 SectionLabel = getSectionLabel(HumanMonitoringAnalysisSections.HbmConcentrationsByTargetSubstanceTimePointSection),
                 Units = header.Units
