@@ -67,6 +67,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
                     section.SummarizeSetting(SettingsItemType.FocalCommodityIncludeProcessedDerivatives, _configuration.FocalCommodityIncludeProcessedDerivatives);
                 }
                 section.SummarizeSetting(SettingsItemType.FilterProcessedFocalCommoditySamples, _configuration.FilterProcessedFocalCommoditySamples);
+                section.SummarizeSetting(SettingsItemType.UseFoodSpecificConversionFactors, _configuration.UseFoodSpecificConversionFactors);
             }
 
             section.SummarizeSetting(SettingsItemType.SampleSubsetSelection, _configuration.SampleSubsetSelection);

@@ -36,6 +36,7 @@
     <Input>SubstanceApprovals</Input>
     <Input>ProcessingFactors</Input>
     <Input>BackgroundFoodConcentrations</Input>
+    <Input>FoodSubstanceConversionFactors</Input>
   </SelectionInputs>
   <LoopEntities>
     <LoopEntity>Compounds</LoopEntity>
@@ -84,6 +85,7 @@
     <SelectionSetting>FocalCommodityProposedConcentrationLimit</SelectionSetting>
     <SelectionSetting>FocalCommodityIncludeProcessedDerivatives</SelectionSetting>
     <SelectionSetting>SubtractNaturallyOccurringConcentrations</SelectionSetting>
+    <SelectionSetting>UseFoodSpecificConversionFactors</SelectionSetting>
   </SelectionSettings>
   <OutputSettings>
     <OutputSetting source="Action">VariabilityLowerPercentage</OutputSetting>

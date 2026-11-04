@@ -121,6 +121,93 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         }
 
         /// <summary>
+        /// Runs concentrations module as data.
+        /// config.FocalCommodity = true;
+        /// config.UseFoodSpecificConversionFactors = true;
+        /// config.FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.AppendSamples;
+        /// project.FocalFoods = new ListFocalFoodDto() { new FocalFoodDto() { CodeFood = foods[0].Code } };
+        /// </summary>
+
+        [DataRow(false, false)]
+        [DataRow(true, false)]
+        [DataRow(false, true)]
+        [DataRow(true, true)]
+        [TestMethod]
+        public void ConcentrationsActionCalculator_TestLoadFocalAndFoodSpecificConversionFactors(
+            bool useFoodSpecificConversionFactors,
+            bool useComplexResidueDefinitions
+        ) {
+            var seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var foods = FakeFoodsGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(3);
+            var allFoodSamples = FakeSamplesGenerator.CreateFoodSamples(foods, substances, numberOfSamples: 50, seed: seed);
+            var focalCommodityFoodSamples = FakeSamplesGenerator.CreateFoodSamples(foods.Take(1).ToList(), substances, numberOfSamples: 50, seed: seed + 1);
+
+            var fake = new Compound() { Code = "fake" };
+            var conversionFactor0 = new DeterministicSubstanceConversionFactor() {
+                ActiveSubstance = fake,
+                MeasuredSubstance = substances[0],
+                ConversionFactor = 3,
+                Food = foods[0]
+            };
+            var conversionFactor1 = new DeterministicSubstanceConversionFactor() {
+                ActiveSubstance = substances[0],
+                MeasuredSubstance = substances[0],
+                ConversionFactor = 3,
+                Food = foods[0]
+            };
+            var substanceConversion = new SubstanceConversion() {
+                MeasuredSubstance = substances[0],
+                ActiveSubstance = fake,
+                ConversionFactor = 1,
+                IsExclusive = true
+            };
+            var compiledData = new CompiledData() {
+                AllFoodSamples = allFoodSamples.ToDictionary(c => c.Code)
+            };
+
+            var project = new ProjectDto();
+            var config = project.ConcentrationsSettings;
+            config.FocalCommodity = true;
+            config.FocalFoods = [new() { CodeFood = foods[0].Code }];
+            config.FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.ReplaceSubstances;
+            config.UseFoodSpecificConversionFactors = useFoodSpecificConversionFactors;
+            config.UseComplexResidueDefinitions = useComplexResidueDefinitions;
+            var dataManager = new MockCompiledDataManager(compiledData);
+            var subsetManager = new SubsetManager(dataManager, project);
+
+            var focalCommoditySubstanceSampleCollections = SampleCompoundCollectionsBuilder.Create(
+                foods,
+                substances,
+                allFoodSamples,
+                ConcentrationUnit.mgPerL,
+                null
+            );
+
+            var data = new ActionData {
+                AllFoods = foods,
+                AllFoodsByCode = foods.ToDictionary(r => r.Code),
+                ActiveSubstances = [.. substances.Union([fake])],
+                AllCompounds = substances,
+                FocalCommoditySamples = focalCommodityFoodSamples,
+                FocalCommoditySubstanceSampleCollections = focalCommoditySubstanceSampleCollections.Values,
+                FoodSubstanceConversionFactors = [conversionFactor0, conversionFactor1],
+                SubstanceConversions = [substanceConversion]
+            };
+
+            var calculator = new ConcentrationsActionCalculator(project);
+            var header = TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoadFocal0");
+
+            Assert.HasCount(50, data.ActiveSubstanceSampleCollections.Values.First().SampleCompoundRecords);
+
+            var factorialSet = new UncertaintyFactorialSet(UncertaintySource.Concentrations, UncertaintySource.FocalCommodityReplacement, UncertaintySource.ActiveSubstanceAllocation);
+            var uncertaintySourceGenerators = factorialSet.UncertaintySources.ToDictionary(r => r, r => random as IRandom);
+
+            TestLoadAndSummarizeUncertainty(calculator, data, header, random, factorialSet, uncertaintySourceGenerators, "TestLoadFocal");
+        }
+
+        /// <summary>
         ///                      Active substance (AS)  Compound (CMP)
         /// Background (BG)             x                   -
         /// Forground  (FG)             -                   x
@@ -156,7 +243,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             concentrationsSettings.UseDeterministicSubstanceConversionsForFocalCommodity = useDeterministicSubstanceConversionsForFocalCommodity;
             var focalFoodConcentrationsSettings = project.FocalFoodConcentrationsSettings;
             focalFoodConcentrationsSettings.FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.ReplaceSubstances;
-            focalFoodConcentrationsSettings.FocalFoods = new List<FocalFood>() { new() { CodeFood = foods.First().Code, CodeSubstance = mSubst.Code } };
+            focalFoodConcentrationsSettings.FocalFoods = [new() { CodeFood = foods.First().Code, CodeSubstance = mSubst.Code }];
 
             var substanceConversions = new List<SubstanceConversion>() { new() {
                 ActiveSubstance = aSubst,
@@ -239,7 +326,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             concentrationsSettings.FilterProcessedFocalCommoditySamples = filterProcessedFocalCommoditySamples;
             var focalFoodConcentrationsSettings = project.FocalFoodConcentrationsSettings;
             focalFoodConcentrationsSettings.FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.ReplaceSubstances;
-            focalFoodConcentrationsSettings.FocalFoods = new List<FocalFood>() { new() { CodeFood = foods.First().Code, CodeSubstance = mSubst.Code } };
+            focalFoodConcentrationsSettings.FocalFoods = [new() { CodeFood = foods.First().Code, CodeSubstance = mSubst.Code }];
 
             var substanceConversions = new List<SubstanceConversion>() {
                 new() {
@@ -319,7 +406,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             concentrationsSettings.FocalCommodityProposedConcentrationLimit = 0.10;
             var focalFoodConcentrationsSettings = project.FocalFoodConcentrationsSettings;
             focalFoodConcentrationsSettings.FocalCommodityReplacementMethod = focalCommodityReplacementMethod;
-            focalFoodConcentrationsSettings.FocalFoods = new List<FocalFood>() { new() { CodeFood = foods.First().Code, CodeSubstance = mSubst.Code } };
+            focalFoodConcentrationsSettings.FocalFoods = [new() { CodeFood = foods.First().Code, CodeSubstance = mSubst.Code }];
 
             var substanceConversions = new List<SubstanceConversion>() {
                 new() {

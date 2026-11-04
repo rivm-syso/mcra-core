@@ -14,10 +14,12 @@ using MCRA.Simulation.Calculators.FocalCommodityCombinationsBuilder;
 using MCRA.Simulation.Calculators.FocalCommodityMeasurementReplacementCalculation;
 using MCRA.Simulation.Calculators.FoodExtrapolationsCalculation;
 using MCRA.Simulation.Calculators.FoodSampleFilters;
+using MCRA.Simulation.Calculators.FoodSpecificSubstanceConversionCalculaton;
 using MCRA.Simulation.Calculators.ProcessingFactorCalculation;
 using MCRA.Simulation.Calculators.SampleCompoundCollections;
 using MCRA.Simulation.Calculators.SampleOriginCalculation;
 using MCRA.Simulation.Calculators.SubstanceAuthorisationsBuilder;
+using MCRA.Simulation.Objects;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.DateTimes;
 using MCRA.Utils.ProgressReporting;
@@ -95,6 +97,11 @@ namespace MCRA.Simulation.Actions.Concentrations {
                 && ModuleConfig.UseDeterministicSubstanceConversionsForFocalCommodity;
             _actionInputRequirements[ActionType.DeterministicSubstanceConversionFactors].IsVisible = useDeterministicSubstanceConversions;
             _actionInputRequirements[ActionType.DeterministicSubstanceConversionFactors].IsRequired = useDeterministicSubstanceConversions;
+
+            var useUseFoodSpecificConversionFactors = isFocalCommodityMeasurementReplacement
+                && ModuleConfig.UseFoodSpecificConversionFactors;
+            _actionInputRequirements[ActionType.FoodSubstanceConversionFactors].IsVisible = useUseFoodSpecificConversionFactors;
+            _actionInputRequirements[ActionType.FoodSubstanceConversionFactors].IsRequired = useUseFoodSpecificConversionFactors;
 
             var useProcessingFactors = isFocalCommodityMeasurementReplacement
                 && ModuleConfig.FocalCommodityIncludeProcessedDerivatives;
@@ -373,6 +380,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
             }
 
 
+
             //Set concentration unit
             data.ConcentrationUnit = data.MeasuredSubstances.Count == 1
                 ? data.MeasuredSubstances.First().ConcentrationUnit
@@ -534,6 +542,16 @@ namespace MCRA.Simulation.Actions.Concentrations {
                         progressState
                     )
                     .ToDictionary(r => r.Food);
+
+                if (ModuleConfig.UseFoodSpecificConversionFactors) {
+                    activeSubstanceSampleCollections = FoodSpecificSubstanceConversionCalculator
+                    .Compute(
+                        activeSubstanceSampleCollections.Values.ToList(),
+                        data.FoodSubstanceConversionFactors
+                    )
+                    .ToDictionary(r => r.Food);
+                }
+
                 data.ActiveSubstanceSampleCollections = activeSubstanceSampleCollections;
                 data.ModelledSubstances = data.ActiveSubstances;
             } else {
@@ -591,6 +609,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
                 data.ActiveSubstanceSampleCollections.Add(water, waterSampleCollection);
             }
 
+
             if (ModuleConfig.FocalCommodity
                 && ModuleConfig.IsFocalCommodityMeasurementReplacement
                 && ModuleConfig.UseDeterministicSubstanceConversionsForFocalCommodity
@@ -615,6 +634,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
                         focalCommodityReplacementRandomGenerator
                     );
             }
+
         }
 
         protected override void summarizeActionResult(IConcentrationsActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {

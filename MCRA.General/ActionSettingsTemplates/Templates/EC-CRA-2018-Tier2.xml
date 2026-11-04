@@ -245,6 +245,7 @@
         <Setting id="FilterProcessedFocalCommoditySamples" />
         <Setting id="FocalCommodityProposedConcentrationLimit" />
         <Setting id="FocalCommodityIncludeProcessedDerivatives" />
+        <Setting id="UseFoodSpecificConversionFactors" />
       </ExcludedSettings>
     </ModuleConfiguration>
   </ModuleConfigurations>
