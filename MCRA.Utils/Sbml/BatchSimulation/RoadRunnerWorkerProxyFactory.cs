@@ -13,16 +13,19 @@ public sealed class RoadRunnerWorkerProxyFactory {
     private readonly int _workerCount;
     private readonly bool _showConsoleWindow;
     private readonly bool _extensiveConsoleLogging;
+    private readonly int _restartAttempts;
     public int WorkerCount => _workerCount;
 
     public RoadRunnerWorkerProxyFactory(
         int? workerCount = null,
         bool showConsoleWindow = false,
-        bool extensiveConsoleLogging = false
+        bool extensiveConsoleLogging = false,
+        int restartAttempts = 1
     ) {
         _workerCount = workerCount ?? 1;
         _showConsoleWindow = showConsoleWindow;
         _extensiveConsoleLogging = extensiveConsoleLogging;
+        _restartAttempts = restartAttempts;
     }
 
     public IRoadRunnerWorkerProxy Create(
@@ -37,7 +40,7 @@ public sealed class RoadRunnerWorkerProxyFactory {
         // worker processes are shared and load-balanced across all of their requests rather than
         // spawning a fresh set of worker processes per simulation.
         RoadRunnerWorkerProxyType.OutOfProcess => SbmlSimulationWorkerPool
-            .GetInstance(_showConsoleWindow, _extensiveConsoleLogging)
+            .GetInstance(_showConsoleWindow, _extensiveConsoleLogging, _restartAttempts)
             .LeaseWorker(filename, _workerCount),
 
         _ => throw new ArgumentOutOfRangeException(nameof(proxyType))

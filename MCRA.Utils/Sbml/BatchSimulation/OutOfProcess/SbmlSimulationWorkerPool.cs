@@ -24,15 +24,17 @@ internal sealed class SbmlSimulationWorkerPool : IDisposable {
 
     public static SbmlSimulationWorkerPool GetInstance(
         bool showConsoleWindow,
-        bool extensiveConsoleLogging
+        bool extensiveConsoleLogging,
+        int restartAttempts
     ) {
         lock (_instanceLock) {
             if (_instance is null) {
-                _instance = new SbmlSimulationWorkerPool(showConsoleWindow, extensiveConsoleLogging);
+                _instance = new SbmlSimulationWorkerPool(showConsoleWindow, extensiveConsoleLogging, restartAttempts);
             } else if (_instance._showConsoleWindow != showConsoleWindow
-                || _instance._extensiveConsoleLogging != extensiveConsoleLogging) {
+                || _instance._extensiveConsoleLogging != extensiveConsoleLogging
+                || _instance._restartAttempts != Math.Max(0, restartAttempts)) {
                 throw new InvalidOperationException(
-                    "SbmlSimulationWorkerPool is already initialized with different console settings.");
+                    "SbmlSimulationWorkerPool is already initialized with different console or restart settings.");
             }
             return _instance;
         }
@@ -40,6 +42,7 @@ internal sealed class SbmlSimulationWorkerPool : IDisposable {
 
     private readonly bool _showConsoleWindow = false;
     private readonly bool _extensiveConsoleLogging = false;
+    private readonly int _restartAttempts = 1;
 
     private readonly object _growLock = new();
     private readonly List<SbmlRoadRunnerWorkerClient> _workers = [];
@@ -49,10 +52,12 @@ internal sealed class SbmlSimulationWorkerPool : IDisposable {
 
     private SbmlSimulationWorkerPool(
         bool showConsoleWindow,
-        bool extensiveConsoleLogging
+        bool extensiveConsoleLogging,
+        int restartAttempts
     ) {
         _showConsoleWindow = showConsoleWindow;
         _extensiveConsoleLogging = extensiveConsoleLogging;
+        _restartAttempts = Math.Max(0, restartAttempts);
     }
 
     /// <summary>
@@ -85,7 +90,8 @@ internal sealed class SbmlSimulationWorkerPool : IDisposable {
             worker,
             init,
             createReplacementWorker,
-            releaseWorker
+            releaseWorker,
+            _restartAttempts
         );
     }
 

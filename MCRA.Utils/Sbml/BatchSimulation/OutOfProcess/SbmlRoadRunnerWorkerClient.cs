@@ -84,6 +84,8 @@ namespace MCRA.Utils.Sbml.BatchSimulation.OutOfProcess {
 
         public event Action<SbmlRoadRunnerWorkerClient> Exited;
 
+        public int ProcessId => _process.Id;
+
         public bool IsAlive {
             get {
                 try { return !_process.HasExited; } catch (InvalidOperationException) { return false; }

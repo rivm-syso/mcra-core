@@ -13,39 +13,26 @@ namespace MCRA.Utils.Sbml.BatchSimulation.OutOfProcess {
         private readonly Func<SbmlRoadRunnerWorkerClient, SbmlRoadRunnerWorkerClient> _restartWorker;
         private readonly Action<SbmlRoadRunnerWorkerClient> _releaseWorker;
         private readonly SbmlSimulationInitializationDto _init;
+        private readonly int _restartAttempts;
         private bool _disposed;
 
         public PooledSbmlSimulationWorkerProxy(
             SbmlRoadRunnerWorkerClient client,
             SbmlSimulationInitializationDto init,
             Func<SbmlRoadRunnerWorkerClient, SbmlRoadRunnerWorkerClient> restartWorker,
-            Action<SbmlRoadRunnerWorkerClient> releaseWorker
+            Action<SbmlRoadRunnerWorkerClient> releaseWorker,
+            int restartAttempts
         ) {
             _client = client;
             _init = init;
             _restartWorker = restartWorker;
             _releaseWorker = releaseWorker;
+            _restartAttempts = restartAttempts;
         }
 
         public async Task<List<SbmlSimulationJobResult>> RunAsync(List<SbmlSimulationJob> jobs) {
-            List<WorkerJobResultDto> jobResults;
-
             var batch = createBatchJobDto(jobs);
-            try {
-                jobResults = await _client.RunAsync(batch, _init).ConfigureAwait(false);
-            } catch when (!_client.IsAlive) {
-                _client = _restartWorker(_client);
-                jobResults = await _client.RunAsync(batch, _init).ConfigureAwait(false);
-            } catch (Exception ex) {
-                // A worker-side exception may be returned as an HTTP 500 while the worker host
-                // process itself remains alive. Replace it either way, but preserve this failure
-                // for the caller rather than hiding it by retrying the partition.
-                Console.WriteLine($"RoadRunner worker failed batch of {batch.Jobs.Count} job(s): {ex.Message}\nRestartint roadrunner worker one time");
-                var failedClient = _client;
-                _client = _restartWorker(_client);
-                failedClient.Dispose();
-                jobResults = await _client.RunAsync(batch, _init).ConfigureAwait(false);
-            }
+            var jobResults = await runWithRestartsAsync(batch).ConfigureAwait(false);
             var resultsByJobId = jobResults.ToDictionary(r => r.JobId);
 
             var results = new List<SbmlSimulationJobResult>(jobs.Count);
@@ -69,6 +56,35 @@ namespace MCRA.Utils.Sbml.BatchSimulation.OutOfProcess {
                 });
             }
             return results;
+        }
+
+        private async Task<List<WorkerJobResultDto>> runWithRestartsAsync(SbmlSimulationBatchJobDto batch) {
+            for (var restart = 0; ; restart++) {
+                try {
+                    return await _client.RunAsync(batch, _init).ConfigureAwait(false);
+                } catch when (!_client.IsAlive) {
+                    // The worker process has died because of a severe crash, which was not caught as a
+                    // regular .NET exception or the process has just been killed. There is no exception information.
+                    if (restart >= _restartAttempts) {
+                        throw;
+                    }
+                    Console.WriteLine($"RoadRunner worker with processId {_client.ProcessId} has died for batch of {batch.Jobs.Count} job(s): \nRestart roadrunner worker (attempt {restart + 1} of {_restartAttempts})");
+                    var failedClient = _client;
+                    _client = _restartWorker(_client);
+                    failedClient.Dispose();
+                } catch (Exception ex) {
+                    // A worker-side exception may be returned as an HTTP 500 while the worker host
+                    // process itself remains alive. Replace it either way and retry the batch, up to
+                    // the configured number of restart attempts.
+                    if (restart >= _restartAttempts) {
+                        throw;
+                    }
+                    Console.WriteLine($"RoadRunner worker failed batch of {batch.Jobs.Count} job(s): {ex.Message}\nRestart roadrunner worker (attempt {restart + 1} of {_restartAttempts})");
+                    var failedClient = _client;
+                    _client = _restartWorker(_client);
+                    failedClient.Dispose();
+                }
+            }
         }
 
         private static SbmlSimulationBatchJobDto createBatchJobDto(

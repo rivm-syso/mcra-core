@@ -13,6 +13,12 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation {
         public bool ShowConsoleWindow { get; set; }
         public bool ExtensiveConsoleLogging { get; set; }
 
+        /// <summary>
+        /// Number of times a RoadRunner worker is restarted and the batch is retried when the
+        /// worker crashes or throws an exception. A value of 0 disables restarting.
+        /// </summary>
+        public int RestartAttempts { get; set; } = 3;
+
         /// <summary>Gets the process count selected for this machine and configuration.</summary>
         public int GetEffectiveWorkerCount() {
             var processorCount = Math.Max(1, Environment.ProcessorCount);

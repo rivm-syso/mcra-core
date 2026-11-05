@@ -7,13 +7,15 @@
             RoadRunnerWorkerProxyType proxyType,
             int maxParallelWorkers = 10,
             bool showConsoleWindow = false,
-            bool extensiveConsoleLogging = false
+            bool extensiveConsoleLogging = false,
+            int restartAttempts = 1
         ) {
             var workerCount = Math.Min(jobs.Count, maxParallelWorkers);
             var proxyFactory = new RoadRunnerWorkerProxyFactory(
                 workerCount: workerCount,
                 showConsoleWindow: showConsoleWindow,
-                extensiveConsoleLogging: extensiveConsoleLogging
+                extensiveConsoleLogging: extensiveConsoleLogging,
+                restartAttempts: restartAttempts
             );
 
             // Create at most one worker proxy per unit of work, but never more than the number of
@@ -47,8 +49,12 @@
                 var result = outputs.ToList();
                 return result;
             } catch (Exception ex) {
-                var jobId = ex.Data["JobId"] ?? "unknown";
-                throw new InvalidOperationException($"SBML model simulation failed for job [{jobId}].", ex);
+                var appendMessage = string.Empty;
+                if (ex.Data.Contains("JobId")) {
+                    var jobId = ex.Data["JobId"];
+                    appendMessage = $" for job {jobId})";
+                }
+                throw new InvalidOperationException($"SBML model simulation failed{appendMessage}.", ex);
             } finally {
                 foreach (var proxy in proxies) {
                     proxy.Dispose();

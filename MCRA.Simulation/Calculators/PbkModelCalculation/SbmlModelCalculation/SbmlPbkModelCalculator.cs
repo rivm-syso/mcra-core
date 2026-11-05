@@ -137,7 +137,8 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation {
                     proxyType: Simulation.RoadRunnerOptions.ProxyType,
                     maxParallelWorkers: Simulation.RoadRunnerOptions.GetEffectiveWorkerCount(),
                     showConsoleWindow: Simulation.RoadRunnerOptions.ShowConsoleWindow,
-                    extensiveConsoleLogging: Simulation.RoadRunnerOptions.ExtensiveConsoleLogging
+                    extensiveConsoleLogging: Simulation.RoadRunnerOptions.ExtensiveConsoleLogging,
+                    restartAttempts: Simulation.RoadRunnerOptions.RestartAttempts
                 )
                 .ToDictionary(r => r.JobId);
 

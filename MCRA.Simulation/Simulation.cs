@@ -28,6 +28,9 @@ namespace MCRA.Simulation {
             if (bool.TryParse(section[nameof(SbmlRoadRunnerOptions.ExtensiveConsoleLogging)], out var extensiveConsoleLogging)) {
                 options.ExtensiveConsoleLogging = extensiveConsoleLogging;
             }
+            if (int.TryParse(section[nameof(SbmlRoadRunnerOptions.RestartAttempts)], out var restartAttempts) && restartAttempts >= 0) {
+                options.RestartAttempts = restartAttempts;
+            }
             _sbmlRoadRunnerOptions = Options.Create(options).Value;
         }
 
