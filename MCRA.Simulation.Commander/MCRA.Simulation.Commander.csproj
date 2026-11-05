@@ -48,7 +48,9 @@
     <None Update="appsettings*.json" CopyToPublishDirectory="Never" />
     <!-- do copy any user appsettings*.json to output and publish directory -->
     <None Update="appsettings.json" CopyToPublishDirectory="Always" CopyToOutputDirectory="PreserveNewest" />
-    <None Update="appsettings.user*.json" CopyToPublishDirectory="Always" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="appsettings.user*.json" CopyToPublishDirectory="Always" CopyToOutputDirectory="PreserveNewest">
+      <DependentUpon>appsettings.json</DependentUpon>
+    </None>
     <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
