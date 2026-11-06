@@ -1,12 +1,13 @@
-﻿using MCRA.Simulation.Objects;
-using MCRA.General;
+﻿using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.DietaryExposures;
+using MCRA.Simulation.Calculators.IndividualDaysGenerator;
 using MCRA.Simulation.Calculators.SoilExposureCalculation;
+using MCRA.Simulation.Objects;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
@@ -88,6 +89,8 @@ namespace MCRA.Simulation.Actions.SoilExposures {
             var result = new SoilExposuresActionResult();
 
             ICollection<IIndividualDay> individualDays = null;
+
+
             if (ModuleConfig.SoilExposuresIndividualGenerationMethod == SoilExposuresIndividualGenerationMethod.Simulate) {
                 individualDays = data.Individuals;
             } else {
@@ -96,6 +99,11 @@ namespace MCRA.Simulation.Actions.SoilExposures {
                     .Cast<IIndividualDay>()
                     .ToList();
             }
+            var simulatedIndividuals = individualDays
+                .Select(r => r.SimulatedIndividual)
+                .ToList();
+
+            IndividualDaysGenerator.ImputeBodyWeight(simulatedIndividuals);
 
             var substances = data.ActiveSubstances ?? data.AllCompounds;
 

@@ -5,6 +5,7 @@ using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Calculators.DustExposureCalculation;
+using MCRA.Simulation.Calculators.IndividualDaysGenerator;
 using MCRA.Simulation.Objects;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;
@@ -98,6 +99,8 @@ namespace MCRA.Simulation.Actions.DustExposures {
                     .Select(r => r.SimulatedIndividual)
                     .ToList();
             }
+            IndividualDaysGenerator.ImputeBodyWeight(simulatedIndividuals);
+
             var substances = data.ActiveSubstances ?? data.AllCompounds;
 
             var dustIngestions = data.DustIngestions
@@ -112,6 +115,7 @@ namespace MCRA.Simulation.Actions.DustExposures {
                 : ExposureUnitTriple.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
 
             var individualDustExposureRecords = DustExposureCalculator
+
                 .ComputeDustExposure(
                     simulatedIndividuals,
                     substances,

@@ -5,6 +5,7 @@ using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Calculators.ConsumerProductExposureCalculation;
+using MCRA.Simulation.Calculators.IndividualDaysGenerator;
 using MCRA.Simulation.Objects;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;
@@ -89,7 +90,7 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
                     .Select(r => r.SimulatedIndividual)
                     .Distinct()
                     .ToList();
-
+                IndividualDaysGenerator.ImputeBodyWeight(simulatedIndividuals);
                 // Generate exposures for each individual
                 var generator = new McraRandomGenerator(RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.CPE_ConsumerProductExposureEstimates));
                 var calculator = new ConsumerProductExposureCalculator();
@@ -112,7 +113,7 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
                 var simulatedIndividuals = data.ConsumerProductIndividuals
                     .Select((ind, ix) => new SimulatedIndividual(ind, ix))
                     .ToList();
-
+                IndividualDaysGenerator.ImputeBodyWeight(simulatedIndividuals);
                 var exposureCalculator = new ConsumerProductExposureCalculator(
                     data.ConsumerProductExposureFractions,
                     data.ConsumerProductApplicationAmounts,

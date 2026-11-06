@@ -1,11 +1,12 @@
-﻿using MCRA.Simulation.Objects;
-using MCRA.General;
+﻿using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Calculators.AirExposureCalculation;
+using MCRA.Simulation.Calculators.IndividualDaysGenerator;
+using MCRA.Simulation.Objects;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
@@ -95,7 +96,10 @@ namespace MCRA.Simulation.Actions.AirExposures {
                     .Cast<IIndividualDay>()
                     .ToList();
             }
-
+            var simulatedIndividuals = individualDays
+                .Select(r => r.SimulatedIndividual)
+                .ToList();
+            IndividualDaysGenerator.ImputeBodyWeight(simulatedIndividuals);
             var substances = data.ActiveSubstances ?? data.AllCompounds;
 
             var airVentilatoryFlowRates = data.AirVentilatoryFlowRates
