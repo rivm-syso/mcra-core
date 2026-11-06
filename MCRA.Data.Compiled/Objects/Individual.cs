@@ -56,11 +56,33 @@ namespace MCRA.Data.Compiled.Objects {
         });
 
         public void SetPropertyValue(IndividualPropertyValue value) {
+            var match = _individualPropertyValues.FirstOrDefault(v => v.IndividualProperty.Name.Equals(value.IndividualProperty.Name));
+            var property = value.IndividualProperty;
+
+            if (match != null && match.DoubleValue.HasValue && value.DoubleValue.HasValue) {
+                if (value.DoubleValue.Value != match.DoubleValue.Value) {
+                    if (property.IsAgeProperty) {
+                        throw new Exception("Age property already set for individual.");
+                    } else if (property.IsHeightProperty) {
+                        throw new Exception("Height property already set for individual.");
+                    } else if (property.IsBsaProperty) {
+                        throw new Exception("Body surface area property already set for individual.");
+                    }
+                }
+            }
+            if (match != null) {
+                if (value.TextValue != match.TextValue) {
+                    if (property.IsSexProperty) {
+                        throw new Exception("Gender property already set for individual.");
+                    }
+                }
+            }
+
+
             if (_individualPropertyValues.Contains(value)) {
                 return;
             }
             _individualPropertyValues.Add(value);
-            var property = value.IndividualProperty;
             if (property.IsAgeProperty) {
                 Age = value.DoubleValue;
             } else if (property.IsHeightProperty) {

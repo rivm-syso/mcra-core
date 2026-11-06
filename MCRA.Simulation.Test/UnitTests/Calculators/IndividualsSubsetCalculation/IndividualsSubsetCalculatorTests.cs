@@ -17,6 +17,73 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IndividualsSubsetCalculatio
 
 
         /// <summary>
+        /// Test individuals identity with duplicates of gender.
+        /// </summary>
+        [TestMethod]
+        public void Individual_TestGenderDuplicates() {
+            var seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var individuals = FakeIndividualsGenerator.Create(4, 2, random);
+
+            var property = FakeIndividualPropertiesGenerator.FakeGenderProperty;
+            var genderSurvey1 = new[] { "M", "M", "F", "F" };
+            setIndividualPropertyTextValues(individuals, property, genderSurvey1);
+            var genderSurvey2 = new[] { "M", "M", "F", "F" };
+            setIndividualPropertyTextValues(individuals, property, genderSurvey2);
+        }
+
+        /// <summary>
+        /// Test individuals identity with duplicates of age.
+        /// </summary>
+        [TestMethod]
+        public void Individual_TestAgeDuplicates() {
+            var seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var individuals = FakeIndividualsGenerator.Create(4, 2, random);
+
+            var property = FakeIndividualPropertiesGenerator.FakeAgeProperty;
+            var ageSurvey1 = new double[] { 1, 2, 3, 4 };
+            setIndividualPropertyNumericValues(individuals, property, ageSurvey1);
+            var ageSurvey2 = new double[] { 1, 2, 3, 4 };
+            setIndividualPropertyNumericValues(individuals, property, ageSurvey2);
+        }
+
+
+        /// <summary>
+        /// Test individuals identity with duplicates of gender.
+        /// </summary>
+        [TestMethod]
+        public void Individual_TestGenderNoDuplicates() {
+            var seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var individuals = FakeIndividualsGenerator.Create(4, 2, random);
+
+            var property = FakeIndividualPropertiesGenerator.FakeGenderProperty;
+            var genderSurvey1 = new[] { "M", "M", "F", "F" };
+            setIndividualPropertyTextValues(individuals, property, genderSurvey1);
+            var genderSurvey2 = new[] { "F", "F", "M", "M" };
+            var exception = Assert.Throws<Exception>(() => setIndividualPropertyTextValues(individuals, property, genderSurvey2));
+            Assert.AreEqual("Gender property already set for individual.", exception.Message);
+        }
+
+        /// <summary>
+        /// Test individuals identity with duplicates of age.
+        /// </summary>
+        [TestMethod]
+        public void Individual_TestAgeNoDuplicates() {
+            var seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var individuals = FakeIndividualsGenerator.Create(4, 2, random);
+
+            var property = FakeIndividualPropertiesGenerator.FakeAgeProperty;
+            var ageSurvey1 = new double[] { 1, 2, 3, 4 };
+            setIndividualPropertyNumericValues(individuals, property, ageSurvey1);
+            var ageSurvey2 = new double[] { 8, 9, 10, 11 };
+            var exception = Assert.Throws<Exception>(() => setIndividualPropertyNumericValues(individuals, property, ageSurvey2));
+            Assert.AreEqual("Age property already set for individual.", exception.Message);
+        }
+
+        /// <summary>
         /// Test calculation of individuals subset by gender.
         /// </summary>
         [TestMethod]
