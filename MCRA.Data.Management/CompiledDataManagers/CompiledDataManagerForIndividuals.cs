@@ -15,19 +15,25 @@ namespace MCRA.Data.Management.CompiledDataManagers {
         /// Gets all individual set individuals.
         /// </summary>
         /// <returns></returns>
-        public IDictionary<string, Individual> GetIndividuals<T>(
+        private (List<Individual>, Dictionary<string, IndividualProperty>) GetIndividuals<T>(
             SourceTableGroup sourceTableGroup,
             ScopingType linkedScopingType,
             Func<string, string, T> getOrAddIndividualCollection,
             Dictionary<string, int> collectionNumberOfDaysInSurveys = null
         ) where T : IIndividualCollection {
-            var allIndividuals = new Dictionary<string, Individual>(StringComparer.OrdinalIgnoreCase);
+            var allIndividuals = new List<Individual>();
+            var allIndividualProperties = new Dictionary<string, IndividualProperty>(StringComparer.OrdinalIgnoreCase);
+            var emptyPropertyTypes = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(sourceTableGroup);
             if (rawDataSourceIds?.Count > 0) {
                 using (var rdm = _rawDataProvider.CreateRawDataManager()) {
+                    var _dataSourceIndividualsLookup = new Dictionary<int, Dictionary<string, Individual>>();
+
+                    // Read individual properties
                     var id = 0;
                     foreach (var rawDataSourceId in rawDataSourceIds) {
                         using (var r = rdm.OpenDataReader<RawIndividuals>(rawDataSourceId, out int[] fieldMap)) {
+                            _dataSourceIndividualsLookup[rawDataSourceId] = new Dictionary<string, Individual>(StringComparer.OrdinalIgnoreCase);
                             while (r?.Read() ?? false) {
                                 var collectionCode = r.GetString(RawIndividuals.IdFoodSurvey, fieldMap);
                                 var valid = CheckLinkSelected(linkedScopingType, collectionCode);
@@ -40,39 +46,22 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         : 1;
                                     var individual = new Individual(++id) {
                                         Code = idIndividual,
+                                        CodeFoodSurvey = collectionCode,
                                         BodyWeight = r.GetDoubleOrNull(RawIndividuals.BodyWeight, fieldMap) ?? double.NaN,
                                         SamplingWeight = r.GetDoubleOrNull(RawIndividuals.SamplingWeight, fieldMap) ?? 1D,
                                         NumberOfDaysInSurvey = r.GetIntOrNull(RawIndividuals.NumberOfSurveyDays, fieldMap)
                                             ?? collectionNumberOfDays,
-                                        CodeFoodSurvey = collectionCode,
                                     };
-
-                                    if (!allIndividuals.TryGetValue(individual.Code, out _)) {
-                                        allIndividuals.Add(individual.Code, individual);
-                                        collection.Individuals.Add(individual);
+                                    collection.Individuals.Add(individual);
+                                    allIndividuals.Add(individual);
+                                    if (!_dataSourceIndividualsLookup[rawDataSourceId].TryAdd(idIndividual, individual)) {
+                                        throw new Exception($"Duplicate definition of individual with code [{idIndividual}].");
                                     }
                                 }
                             }
                         }
                     }
-                }
-            }
-            return allIndividuals;
-        }
 
-        /// <summary>
-        /// Gets all individual properties.
-        /// </summary>
-        public IDictionary<string, IndividualProperty> GetIndividualProperties(
-            SourceTableGroup sourceTableGroup,
-            ScopingType linkedScopingTypeIndividuals,
-            IDictionary<string, Individual> allIndividuals
-        ) {
-            var allIndividualProperties = new Dictionary<string, IndividualProperty>(StringComparer.OrdinalIgnoreCase);
-            var emptyPropertyTypes = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(sourceTableGroup);
-            if (rawDataSourceIds?.Count > 0) {
-                using (var rdm = _rawDataProvider.CreateRawDataManager()) {
                     // Read individual properties
                     foreach (var rawDataSourceId in rawDataSourceIds) {
                         using (var r = rdm.OpenDataReader<RawIndividualProperties>(rawDataSourceId, out int[] fieldMap)) {
@@ -98,19 +87,18 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                     // Read individual property values
                     foreach (var rawDataSourceId in rawDataSourceIds) {
                         using (var r = rdm.OpenDataReader<RawIndividualPropertyValues>(rawDataSourceId, out int[] fieldMap)) {
+                            var individualsLookup = _dataSourceIndividualsLookup[rawDataSourceId];
                             while (r?.Read() ?? false) {
                                 var idIndividual = r.GetString(RawIndividualPropertyValues.IdIndividual, fieldMap);
-                                var valid = CheckLinkSelected(linkedScopingTypeIndividuals, idIndividual);
-                                if (valid) {
-                                    var propertyName = r.GetString(RawIndividualPropertyValues.PropertyName, fieldMap);
-                                    var individual = allIndividuals[idIndividual];
-                                    if (allIndividualProperties.TryGetValue(propertyName, out IndividualProperty individualProperty)) {
-                                        individual.SetPropertyValue(
-                                            individualProperty,
-                                            r.GetStringOrNull(RawIndividualPropertyValues.TextValue, fieldMap),
-                                            r.GetDoubleOrNull(RawIndividualPropertyValues.DoubleValue, fieldMap)
-                                        );
-                                    }
+                                var propertyName = r.GetString(RawIndividualPropertyValues.PropertyName, fieldMap);
+                                if (individualsLookup.TryGetValue(idIndividual, out var individual)
+                                    && allIndividualProperties.TryGetValue(propertyName, out IndividualProperty individualProperty)
+                                ) {
+                                    individual.SetPropertyValue(
+                                        individualProperty,
+                                        r.GetStringOrNull(RawIndividualPropertyValues.TextValue, fieldMap),
+                                        r.GetDoubleOrNull(RawIndividualPropertyValues.DoubleValue, fieldMap)
+                                    );
                                 }
                             }
                         }
@@ -119,7 +107,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                     // Set property types (i.e., numeric/categorical) for properties without type
                     foreach (var property in allIndividualProperties) {
                         if (emptyPropertyTypes.Contains(property.Key)) {
-                            var individualPropertyValues = allIndividuals.Values
+                            var individualPropertyValues = allIndividuals
                                 .Where(r => r.IndividualPropertyValues.Any(c => c.IndividualProperty == property.Value))
                                 .Select(r => r.IndividualPropertyValues.First(c => c.IndividualProperty == property.Value))
                                 .ToList();
@@ -130,7 +118,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                     }
                 }
             }
-            return allIndividualProperties;
+            return (allIndividuals, allIndividualProperties);
         }
     }
 }

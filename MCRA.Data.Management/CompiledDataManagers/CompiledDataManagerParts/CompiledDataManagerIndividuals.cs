@@ -52,16 +52,13 @@ namespace MCRA.Data.Management.CompiledDataManagers {
         public IDictionary<string, Individual> GetAllIndividualSetIndividuals() {
             if (_data.AllIndividualSetIndividuals == null) {
                 GetAllIndividualSets();
-                _data.AllIndividualSetIndividuals = GetIndividuals(
+                (var individuals, var individualPropertyValues) = GetIndividuals(
                     SourceTableGroup.Individuals,
                     ScopingType.IndividualSets,
                     _data.GetOrAddIndividualSet
-                    );
-                _data.AllIndividualSetIndividualProperties = GetIndividualProperties(
-                    SourceTableGroup.Individuals,
-                    ScopingType.IndividualSetIndividuals,
-                    _data.AllIndividualSetIndividuals
-                    );
+                );                
+                _data.AllIndividualSetIndividuals = individuals.ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase);
+                _data.AllIndividualSetIndividualProperties = individualPropertyValues;
             }
             return _data.AllIndividualSetIndividuals;
         }

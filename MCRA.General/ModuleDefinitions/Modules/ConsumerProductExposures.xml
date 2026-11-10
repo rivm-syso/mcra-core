@@ -32,6 +32,7 @@
     <CalculationSetting source="Action">RandomSeed</CalculationSetting>
     <CalculationSetting>ConsumerProductExposureCalculationMethod</CalculationSetting>
     <CalculationSetting>ConsumerProductAssessmentMatchingMethod</CalculationSetting>
+    <CalculationSetting>ConsumerProductMultipleSurveyMatchingMethod</CalculationSetting>
   </CalculationSettings>
   <OutputSettings>
     <OutputSetting source="Action">SelectedPercentiles</OutputSetting>

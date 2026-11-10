@@ -88,5 +88,7 @@
         KCF_PbkModelSimulation = 44,
         // Consumer product exposures: draw consumer product exposure estimates
         CPE_ConsumerProductExposureEstimates = 45,
+        // Consumer product use frequencies: draw consumer product use frequencies
+        CPE_ConsumerProductUseFrequencies = 46,
     }
 }

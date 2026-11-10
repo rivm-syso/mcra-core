@@ -19,6 +19,7 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
             if (_configuration.ConsumerProductExposureCalculationMethod == ConsumerProductExposureCalculationMethod.FromExposureEstimates) {
                 section.SummarizeSetting(SettingsItemType.ConsumerProductAssessmentMatchingMethod, _configuration.ConsumerProductAssessmentMatchingMethod.GetDisplayName());
             }
+            section.SummarizeSetting(SettingsItemType.ConsumerProductMultipleSurveyMatchingMethod, _configuration.ConsumerProductMultipleSurveyMatchingMethod.GetDisplayName());
             return section;
         }
     }

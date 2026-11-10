@@ -109,7 +109,7 @@ namespace MCRA.Data.Compiled {
         public IList<BodIndicatorConversion> AllBodIndicatorConversions { get; set; }
         public IDictionary<string, ConsumerProduct> AllConsumerProducts { get; set; }
         public IDictionary<string, ConsumerProductSurvey> AllConsumerProductSurveys { get; set; }
-        public IDictionary<string, Individual> AllConsumerProductIndividuals { get; set; }
+        public IList<Individual> AllConsumerProductIndividuals { get; set; }
         public IDictionary<string, IndividualProperty> AllConsumerProductIndividualProperties { get; set; }
         public IList<IndividualConsumerProductUseFrequency> AllIndividualConsumerProductUseFrequencies { get; set; }
         public IList<ConsumerProductExposureFraction> AllConsumerProductExposureFractions { get; set; }

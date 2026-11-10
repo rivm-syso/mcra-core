@@ -65,4 +65,14 @@
     <ValueType>ConsumerProductAssessmentMatchingMethod</ValueType>
     <DefaultValue>AtRandom</DefaultValue>
   </SettingsItem>
+  <SettingsItem>
+    <Id>ConsumerProductMultipleSurveyMatchingMethod</Id>
+    <Name>Consumer product individual matching method for multiple surveys</Name>
+    <Description>
+      Method types for consumer product individuals when multiple survey are loaded,
+      matching is based on gender and/or ages that are closest together or at random.
+    </Description>
+    <ValueType>ConsumerProductMultipleSurveyMatchingMethod</ValueType>
+    <DefaultValue>AtRandom</DefaultValue>
+  </SettingsItem>
 </SettingsItems>

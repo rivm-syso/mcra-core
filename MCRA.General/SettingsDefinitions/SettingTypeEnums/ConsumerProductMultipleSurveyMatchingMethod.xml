@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>ConsumerProductMultipleSurveyMatchingMethod</Id>
+  <Name>Consumer product multiple survey matching method</Name>
+  <Description>
+    Method types for consumer product individuals when multiple survey are loaded,
+    matching based on gender and and ages that are closest together.
+  </Description>
+  <IsInternalEnum>true</IsInternalEnum>
+  <Units>
+    <Unit>
+      <Id>AtRandom</Id>
+      <Name>At random</Name>
+      <ShortName>At random</ShortName>
+      <Description>
+         Match at random.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>MatchOnGender</Id>
+      <Name>Match on gender</Name>
+      <ShortName>Match on gender</ShortName>
+      <Description>
+        Match individuals to assessments based on gender.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>MatchOnAge</Id>
+      <Name>Match on age</Name>
+      <ShortName>Match on age</ShortName>
+      <Description>
+        Matching of individuals is based on the ages that are closest together.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>MatchOnAgeAndGender</Id>
+      <Name>Match on gender and age</Name>
+      <ShortName>Match on gender and age</ShortName>
+      <Description>
+        Match individuals to assessments based on gender and ages that are closest together.
+      </Description>
+    </Unit>
+  </Units>
+</UnitDefinition>

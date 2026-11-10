@@ -2,7 +2,9 @@
 using MCRA.General;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
 using MCRA.Simulation.Calculators.ConsumerProductExposureCalculation;
+using MCRA.Simulation.Objects;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.ConsumerProductExposureCalculation {
 
@@ -76,6 +78,13 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConsumerProductExposureCalc
                 [(product, substance)] = concModel,
             };
 
+            var useFrequenciesLookup = ConsumerProductExposureCalculator.MatchUseFrequencies(
+                [useFrequency],
+                [simIndividual],
+                ConsumerProductMultipleSurveyMatchingMethod.AtRandom,
+                new McraRandomGenerator(1111)
+            );
+
             var calculator = new ConsumerProductExposureCalculator(
                 [exposureFraction],
                 [appAmount],
@@ -89,7 +98,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConsumerProductExposureCalc
 
             var results = calculator.Compute(
                 [simIndividual],
-                [useFrequency],
+                useFrequenciesLookup,
                 [ExposureRoute.Oral],
                 [substance],
                 targetUnit
@@ -100,6 +109,64 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConsumerProductExposureCalc
                 .IntakesPerSubstance[ExposureRoute.Oral][0];
 
             Assert.AreEqual(expectedAmount, perSubstance.Amount, 1e-10);
+        }
+
+        [TestMethod]
+        [DataRow(ConsumerProductMultipleSurveyMatchingMethod.AtRandom)]
+        [DataRow(ConsumerProductMultipleSurveyMatchingMethod.MatchOnGender)]
+        [DataRow(ConsumerProductMultipleSurveyMatchingMethod.MatchOnAge)]
+        [DataRow(ConsumerProductMultipleSurveyMatchingMethod.MatchOnAgeAndGender)]
+
+        public void ConsumerProductExposureCalculator_MultipleSurveys(ConsumerProductMultipleSurveyMatchingMethod consumerProductMultipleSurveyMatchingMethod) {
+            var refCount = 20;
+            
+            int seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var cosmetic = FakeConsumerProductsGenerator.Create(2)[0];
+            var smoking = FakeConsumerProductsGenerator.Create(2)[1];
+
+            var substance = FakeSubstancesGenerator.Create(1)[0];
+            var individuals = FakeIndividualsGenerator.Create(25, 2, random);
+            FakeIndividualsGenerator.AddFakeSexProperty(individuals, random);
+            var referenceIndividuals = individuals.Take(refCount).ToList();
+            var smokingIndividuals = individuals.Skip(refCount).Take(5).ToList();
+            var useFrequencyValues = new List<IndividualConsumerProductUseFrequency>();
+            for (int i = 0; i < referenceIndividuals.Count; i++) {
+                var individual = referenceIndividuals[i];
+                individual.CodeFoodSurvey = "CosmeticSurvey";
+                var useFrequency = new IndividualConsumerProductUseFrequency {
+                    Individual = individual,
+                    Product = cosmetic,
+                    Frequency = 0.5,
+                };
+                useFrequencyValues.Add(useFrequency);
+            }
+
+            for (int i = 0; i < smokingIndividuals.Count; i++) {
+                var individual = smokingIndividuals[i];
+                individual.CodeFoodSurvey = "SmokingSurvey";
+                var useFrequency = new IndividualConsumerProductUseFrequency {
+                    Individual = individual,
+                    Product = smoking,
+                    Frequency = 0.5,
+                };
+                useFrequencyValues.Add(useFrequency);
+            }
+
+            var simulatedIndividuals = referenceIndividuals
+                .Select((ind, ix) => new SimulatedIndividual(ind, ix))
+                .ToList();
+
+            var useFrequenciesLookup = ConsumerProductExposureCalculator.MatchUseFrequencies(
+                useFrequencyValues,
+                simulatedIndividuals,
+                consumerProductMultipleSurveyMatchingMethod,
+                new McraRandomGenerator(1111)
+            );
+            //There are 20 reference individuals, each with a use frequency for the cosmetic product and the smoking product,
+            //so we expect 40 matched use frequencies in total
+            var expectedCount = refCount * 2;
+            Assert.AreEqual(expectedCount, useFrequenciesLookup.Values.SelectMany(c => c).Count());
         }
     }
 }

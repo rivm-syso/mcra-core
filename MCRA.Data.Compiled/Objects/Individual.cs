@@ -13,6 +13,7 @@ namespace MCRA.Data.Compiled.Objects {
             get => string.IsNullOrEmpty(_name) ? Code : _name;
             set => _name = value;
         }
+
         public string Description { get; set; }
 
         public double SamplingWeight { get; set; } = 1D;

@@ -12,6 +12,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
         /// <returns></returns>
         public IDictionary<string, ConsumerProductSurvey> GetAllConsumerProductSurveys() {
             if (_data.AllConsumerProductSurveys == null) {
+                var allSurveys = new Dictionary<int, string>();
                 LoadScope(SourceTableGroup.ConsumerProductUseFrequencies);
                 var allConsumerProductSurveys = new Dictionary<string, ConsumerProductSurvey>(StringComparer.OrdinalIgnoreCase);
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.ConsumerProductUseFrequencies);
@@ -25,6 +26,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                     if (valid) {
                                         var survey = new ConsumerProductSurvey {
                                             Code = surveyId,
+                                            IdDataSource = rawDataSourceId,
                                             Name = r.GetStringOrNull(RawConsumerProductSurveys.Name, fieldMap),
                                             Description = r.GetStringOrNull(RawConsumerProductSurveys.Description, fieldMap),
                                             Country = r.GetStringOrNull(RawConsumerProductSurveys.Country, fieldMap),
@@ -34,6 +36,10 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             IdPopulation = r.GetStringOrNull(RawConsumerProductSurveys.IdPopulation, fieldMap),
                                         };
                                         allConsumerProductSurveys[survey.Code] = survey;
+                                        if (allSurveys.TryGetValue(rawDataSourceId, value: out var _)) {
+                                            continue;
+                                        }
+                                        allSurveys[rawDataSourceId] = surveyId;
                                     }
                                 }
                             }
@@ -49,19 +55,16 @@ namespace MCRA.Data.Management.CompiledDataManagers {
         /// Gets all consumer product survey individuals.
         /// </summary>
         /// <returns></returns>
-        public IDictionary<string, Individual> GetAllConsumerProductIndividuals() {
+        public IList<Individual> GetAllConsumerProductIndividuals() {
             if (_data.AllConsumerProductIndividuals == null) {
                 GetAllConsumerProductSurveys();
-                _data.AllConsumerProductIndividuals = GetIndividuals(
+                (var individuals, var individualProperties) = GetIndividuals(
                     SourceTableGroup.ConsumerProductUseFrequencies,
                     ScopingType.ConsumerProductSurveys,
                     _data.GetOrAddConsumerProductSurvey
-                    );
-                _data.AllConsumerProductIndividualProperties = GetIndividualProperties(
-                    SourceTableGroup.ConsumerProductUseFrequencies,
-                    ScopingType.ConsumerProductIndividuals,
-                    _data.AllConsumerProductIndividuals
-                    );
+                );
+                _data.AllConsumerProductIndividuals = individuals;
+                _data.AllConsumerProductIndividualProperties = individualProperties;
             }
             return _data.AllConsumerProductIndividuals;
         }
@@ -87,10 +90,15 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.ConsumerProductUseFrequencies);
                 if (rawDataSourceIds?.Count > 0) {
                     GetAllConsumerProducts();
-                    GetAllConsumerProductIndividuals();
+                    var surveys = GetAllConsumerProductSurveys();
+                    var individuals = GetAllConsumerProductIndividuals();
                     using (var rdm = _rawDataProvider.CreateRawDataManager()) {
                         // Read samples
                         foreach (var rawDataSourceId in rawDataSourceIds) {
+                            var dataSourceSurveys = surveys.Values.Where(r => r.IdDataSource == rawDataSourceId);
+                            var dataSourceIndividuals = dataSourceSurveys
+                                .SelectMany(r => r.Individuals)
+                                .ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase);
                             using (var r = rdm.OpenDataReader<RawConsumerProductUseFrequencies>(rawDataSourceId, out int[] fieldMap)) {
                                 while (r?.Read() ?? false) {
                                     var idIndividual = r.GetString(RawConsumerProductUseFrequencies.IdIndividual, fieldMap);
@@ -98,8 +106,9 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                     var valid = CheckLinkSelected(ScopingType.ConsumerProductIndividuals, idIndividual)
                                         && IsCodeSelected(ScopingType.ConsumerProducts, idProduct); ;
                                     if (valid) {
-                                        var individual = _data.AllConsumerProductIndividuals[idIndividual];
-
+                                        if (!dataSourceIndividuals.TryGetValue(idIndividual, out var individual)) {
+                                            continue;
+                                        }
                                         var consumerProduct = _data.AllConsumerProducts[idProduct];
                                         var individualConsumerProductUseFrequency = new IndividualConsumerProductUseFrequency() {
                                             Individual = individual,

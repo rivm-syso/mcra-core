@@ -100,7 +100,7 @@ namespace MCRA.Data.Management {
         IList<BodIndicatorConversion> GetAllBodIndicatorConversions();
         IDictionary<string, ConsumerProduct> GetAllConsumerProducts();
         IDictionary<string, ConsumerProductSurvey> GetAllConsumerProductSurveys();
-        IDictionary<string, Individual> GetAllConsumerProductIndividuals();
+        IList<Individual> GetAllConsumerProductIndividuals();
         IDictionary<string, IndividualProperty> GetAllConsumerProductIndividualProperties();
         IList<IndividualConsumerProductUseFrequency> GetAllIndividualConsumerProductUseFrequencies();
         IList<ConsumerProductExposureFraction> GetAllConsumerProductExposureFractions();

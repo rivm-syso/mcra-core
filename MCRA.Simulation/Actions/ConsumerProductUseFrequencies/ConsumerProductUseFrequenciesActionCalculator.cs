@@ -1,14 +1,10 @@
-﻿using DocumentFormat.OpenXml.Office2013.Excel;
-using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Management;
+﻿using MCRA.Data.Management;
 using MCRA.Data.Management.CompiledDataManagers.DataReadingSummary;
 using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
-using MCRA.Simulation.Actions.ConsumerProductExposures;
-using MCRA.Simulation.Calculators.HumanMonitoringCalculation.IndividualDaysGenerator;
 using MCRA.Simulation.Calculators.IndividualsSubsetCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;

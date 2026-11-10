@@ -60,17 +60,14 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 GetAllFoodSurveys();
                 var collectionNrOfDaysInSurvey = _data.AllFoodSurveys.Values
                     .ToDictionary(s => s.Code, s => s.NumberOfSurveyDays.GetValueOrDefault(), StringComparer.OrdinalIgnoreCase);
-                _data.AllIndividuals = GetIndividuals(
+                (var individuals, var individualProperties) = GetIndividuals(
                     SourceTableGroup.Survey,
                     ScopingType.FoodSurveys,
                     _data.GetOrAddFoodSurvey,
                     collectionNrOfDaysInSurvey
-                    );
-                _data.AllDietaryIndividualProperties = GetIndividualProperties(
-                    SourceTableGroup.Survey,
-                    ScopingType.DietaryIndividuals,
-                    _data.AllIndividuals
-                    );
+                );
+                _data.AllIndividuals = individuals.ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase);
+                _data.AllDietaryIndividualProperties = individualProperties;
             }
             return _data.AllIndividuals;
         }
@@ -81,7 +78,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
         /// <returns></returns>
         public IDictionary<string, IndividualProperty> GetAllIndividualProperties() {
             if (_data.AllDietaryIndividualProperties == null) {
-                GetAllIndividuals();
+                 GetAllIndividuals();
             }
             return _data.AllDietaryIndividualProperties;
         }

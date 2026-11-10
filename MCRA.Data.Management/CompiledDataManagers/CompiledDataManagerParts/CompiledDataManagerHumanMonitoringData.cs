@@ -96,17 +96,15 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 GetAllHumanMonitoringSurveys();
                 var collectionNrOfDaysInSurvey = _data.AllHumanMonitoringSurveys.Values
                     .ToDictionary(s => s.Code, s => s.NumberOfSurveyDays, StringComparer.OrdinalIgnoreCase);
-                _data.AllHumanMonitoringIndividuals = GetIndividuals(
+                (var individuals, var individualProperties) = GetIndividuals(
                     SourceTableGroup.HumanMonitoringData,
                     ScopingType.HumanMonitoringSurveys,
                     _data.GetOrAddHumanMonitoringSurvey,
                     collectionNrOfDaysInSurvey
-                    );
-                _data.AllHumanMonitoringIndividualProperties = GetIndividualProperties(
-                    SourceTableGroup.HumanMonitoringData,
-                    ScopingType.HumanMonitoringIndividuals,
-                    _data.AllHumanMonitoringIndividuals
-                    );
+                );
+                _data.AllHumanMonitoringIndividuals = individuals
+                    .ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase);
+                _data.AllHumanMonitoringIndividualProperties = individualProperties;
             }
             return _data.AllHumanMonitoringIndividuals;
         }

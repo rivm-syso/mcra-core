@@ -7,6 +7,9 @@ namespace MCRA.Data.Compiled.Objects {
         public ConsumerProductSurvey() {
             Individuals = [];
         }
+
+        public int IdDataSource { get; set; }
+
         public string Country { get; set; }
         public string AgeUnitString { get; set; }
         public DateTime? StartDate { get; set; }

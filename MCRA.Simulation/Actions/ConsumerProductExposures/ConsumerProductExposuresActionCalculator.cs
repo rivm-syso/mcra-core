@@ -110,24 +110,37 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
                 // Create individual days
                 localProgress.Update("Generating individual days", 30);
 
-                var simulatedIndividuals = data.ConsumerProductIndividuals
+                //TODO: take largest survey for now
+                var referenceIndividuals = data.ConsumerProductIndividuals
+                    .GroupBy(c => c.CodeFoodSurvey)
+                    .MaxBy(c => c.Count());
+
+                var simulatedIndividuals = referenceIndividuals
                     .Select((ind, ix) => new SimulatedIndividual(ind, ix))
                     .ToList();
+
                 IndividualDaysGenerator.ImputeBodyWeight(simulatedIndividuals);
+                var generator = new McraRandomGenerator(RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.CPE_ConsumerProductUseFrequencies));
+                var useFrequenciesLookup = ConsumerProductExposureCalculator.MatchUseFrequencies(
+                    data.AllIndividualConsumerProductUseFrequencies,
+                    simulatedIndividuals,
+                    ModuleConfig.ConsumerProductMultipleSurveyMatchingMethod,
+                    generator
+                );
+
                 var exposureCalculator = new ConsumerProductExposureCalculator(
                     data.ConsumerProductExposureFractions,
                     data.ConsumerProductApplicationAmounts,
                     data.ConsumerProductConcentrationModels
                 );
-
-                var consumerProductIndividualDayIntakes = exposureCalculator.Compute(
-                    simulatedIndividuals,
-                    data.AllIndividualConsumerProductUseFrequencies,
-                    ModuleConfig.SelectedExposureRoutes,
-                    data.ActiveSubstances,
-                    targetUnit
-                );
-
+                var consumerProductIndividualDayIntakes = exposureCalculator
+                    .Compute(
+                        simulatedIndividuals,
+                        useFrequenciesLookup,
+                        ModuleConfig.SelectedExposureRoutes,
+                        data.ActiveSubstances,
+                        targetUnit
+                    );
                 result.ConsumerProductIndividualExposures = consumerProductIndividualDayIntakes;
             }
             result.ConsumerProductExposureUnit = targetUnit;

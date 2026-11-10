@@ -604,7 +604,7 @@ namespace MCRA.Data.Management {
         public ICollection<ConsumerProduct> AllConsumerProducts => _dataManager.GetAllConsumerProducts().Values.ToHashSet();
         public ICollection<IndividualConsumerProductUseFrequency> AllIndividualConsumerProductUseFrequencies => _dataManager.GetAllIndividualConsumerProductUseFrequencies();
         public IDictionary<string, ConsumerProductSurvey> AllConsumerProductSurveys => _dataManager.GetAllConsumerProductSurveys();
-        public ICollection<Individual> AllConsumerProductIndividuals => [.. _dataManager.GetAllConsumerProductIndividuals().Values];
+        public ICollection<Individual> AllConsumerProductIndividuals => [.. _dataManager.GetAllConsumerProductIndividuals()];
         public IDictionary<string, IndividualProperty> AllConsumerProductIndividualProperties => _dataManager.GetAllConsumerProductIndividualProperties();
         public IList<ConsumerProductConcentration> AllConsumerProductConcentrations => _dataManager.GetAllConsumerProductConcentrations();
         public IList<ConsumerProductExposureFraction> AllConsumerProductExposureFractions => _dataManager.GetAllConsumerProductExposureFractions();
