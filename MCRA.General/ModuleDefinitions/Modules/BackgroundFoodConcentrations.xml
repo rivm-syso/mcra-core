@@ -7,12 +7,10 @@
   <TableGroup>BackgroundFoodConcentrations</TableGroup>
   <IsAdvancedActionType>true</IsAdvancedActionType>
   <Description>
-    Background food concentrations, this are food occurrence data representing the naturally occurring background levels in crops 
-    for e.g. CS2 (dithiocarbamates) substances. These naturally occurring background levels are subtracted from the positive residue values.  
+    Background food concentrations comprise food occurrence data on naturally occurring levels of specific substances in food commodities (e.g. CS2 associated with dithiocarbamates). These data support the correction of measured residue levels by accounting for and subtracting the natural background contribution.
   </Description>
   <DataDescription>
-    Background food concentrations, this are food occurrence data representing the naturally occurring background levels
-    for e.g. CS2 (dithiocarbamates) substances. These naturally occurring background levels are subtracted from the positive residue values.
+    Background food concentrations comprise food occurrence data on naturally occurring levels of specific substances in food commodities (e.g. CS2 associated with dithiocarbamates). These data support the correction of measured residue levels by accounting for and subtracting the natural background contribution.
   </DataDescription>
   <Entities>
     <Entity>Foods</Entity>
