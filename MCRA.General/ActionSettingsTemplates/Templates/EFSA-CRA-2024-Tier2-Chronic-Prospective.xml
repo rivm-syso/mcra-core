@@ -241,7 +241,6 @@
         <Setting id="RestrictWaterImputationToAuthorisedUses">false</Setting>
         <Setting id="RestrictWaterImputationToApprovedSubstances">true</Setting>
         <Setting id="FocalCommodityIncludeProcessedDerivatives">true</Setting>
-        <Setting id="SubtractNaturallyOccurringConcentrations">false</Setting>
       </Settings>
       <ExcludedSettings>
         <Setting id="AlignSampleDateSubsetWithPopulation" />
@@ -264,6 +263,7 @@
         <Setting id="ThresholdForExtrapolation" />
         <Setting id="FilterProcessedFocalCommoditySamples" />
         <Setting id="FocalCommodityProposedConcentrationLimit" />
+        <Setting id="SubtractNaturallyOccurringConcentrations" />
         <Setting id="UseFoodSpecificConversionFactors" />
       </ExcludedSettings>
     </ModuleConfiguration>
