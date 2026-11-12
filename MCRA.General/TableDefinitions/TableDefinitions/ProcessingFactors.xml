@@ -85,6 +85,8 @@
             <Aliases>
                 <string>Nominal</string>
                 <string>ProcNom</string>
+                <string>Factor</string>
+                <string>Value</string>
             </Aliases>
         </ColumnDefinition>
         <ColumnDefinition FieldType="Numeric">
