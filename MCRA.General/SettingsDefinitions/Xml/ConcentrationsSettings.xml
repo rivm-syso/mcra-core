@@ -18,6 +18,12 @@
     <DefaultValue>1</DefaultValue>
   </SettingsItem>
   <SettingsItem>
+    <Id>SubtractNaturallyOccurringConcentrations</Id>
+    <Name>Subtract naturally occurring (background) concentrations</Name>
+    <Description>Substract  naturally occurring concentrations from the positive residue values for all combinations of food and substance for which these background concentration levels are specified.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
     <Id>UseComplexResidueDefinitions</Id>
     <Name>Use substance conversion rules</Name>
     <Description>If checked, concentrations are modelled in terms of active substances (using substance conversion).</Description>
@@ -58,6 +64,12 @@
       estimates for the same active substance. This method uses the mean of the positives or zero concentrations when
       available, or else the lowest of the censored values.
     </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>UseFoodSpecificConversionFactors</Id>
+    <Name>Use food specific substance conversion factors</Name>
+    <Description>Apply additional food specific substance conversion factors to translate measured substance concentrations to active substance concentrations (e.g. to account for metabolites on specific food commodities).</Description>
     <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>
@@ -296,8 +308,7 @@
     <ValueType>Boolean</ValueType>
     <DefaultValue>true</DefaultValue>
   </SettingsItem>
-  <!--In
-  fact these SettingsItems are empty, only used for Name and Description-->
+  <!--In fact these SettingsItems are empty, only used for Name and Description-->
   <SettingsItem>
     <Id>SampleYears</Id>
     <Name>Sample years</Name>
@@ -344,19 +355,7 @@
   <SettingsItem>
     <Id>FocalCommodityIncludeProcessedDerivatives</Id>
     <Name>Include processed derivatives of the focal food in measurement replacement</Name>
-    <Description>If checked, measurement replacement is also performed for processed derivatives of the focal food (e.g. for juiced oranges).</Description>
-    <ValueType>Boolean</ValueType>
-  </SettingsItem>
-  <SettingsItem>
-    <Id>SubtractNaturallyOccurringConcentrations</Id>
-    <Name>Subtract naturally occurring (background) concentrations</Name>
-    <Description>If checked, naturally occurring concentrations (background)are substracted from the positive residue values for all combinations of food and substance for which these background concentration levels are specified.</Description>
-    <ValueType>Boolean</ValueType>
-  </SettingsItem>
-  <SettingsItem>
-    <Id>UseFoodSpecificConversionFactors</Id>
-    <Name>Use food specific conversion factors to include metabolites</Name>
-    <Description>If checked, food specific conversion factors are used to include metabolites.</Description>
+    <Description>Also apply measurement replacement for processed derivatives of the focal food (e.g. for juiced oranges).</Description>
     <ValueType>Boolean</ValueType>
   </SettingsItem>
 </SettingsItems>

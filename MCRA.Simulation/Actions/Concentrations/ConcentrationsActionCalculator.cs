@@ -98,7 +98,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
             _actionInputRequirements[ActionType.DeterministicSubstanceConversionFactors].IsVisible = useDeterministicSubstanceConversions;
             _actionInputRequirements[ActionType.DeterministicSubstanceConversionFactors].IsRequired = useDeterministicSubstanceConversions;
 
-            var useUseFoodSpecificConversionFactors = isFocalCommodityMeasurementReplacement
+            var useUseFoodSpecificConversionFactors = ModuleConfig.UseComplexResidueDefinitions
                 && ModuleConfig.UseFoodSpecificConversionFactors;
             _actionInputRequirements[ActionType.FoodSubstanceConversionFactors].IsVisible = useUseFoodSpecificConversionFactors;
             _actionInputRequirements[ActionType.FoodSubstanceConversionFactors].IsRequired = useUseFoodSpecificConversionFactors;

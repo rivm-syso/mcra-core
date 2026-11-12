@@ -28,6 +28,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
                 if (_configuration.TryFixDuplicateAllocationInconsistencies) {
                     section.SummarizeSetting(SettingsItemType.TryFixDuplicateAllocationInconsistencies, _configuration.TryFixDuplicateAllocationInconsistencies);
                 }
+                section.SummarizeSetting(SettingsItemType.UseFoodSpecificConversionFactors, _configuration.UseFoodSpecificConversionFactors);
             }
             section.SummarizeSetting(SettingsItemType.ExtrapolateConcentrations, _configuration.ExtrapolateConcentrations);
             if (_configuration.ExtrapolateConcentrations) {
@@ -67,7 +68,6 @@ namespace MCRA.Simulation.Actions.Concentrations {
                     section.SummarizeSetting(SettingsItemType.FocalCommodityIncludeProcessedDerivatives, _configuration.FocalCommodityIncludeProcessedDerivatives);
                 }
                 section.SummarizeSetting(SettingsItemType.FilterProcessedFocalCommoditySamples, _configuration.FilterProcessedFocalCommoditySamples);
-                section.SummarizeSetting(SettingsItemType.UseFoodSpecificConversionFactors, _configuration.UseFoodSpecificConversionFactors);
             }
 
             section.SummarizeSetting(SettingsItemType.SampleSubsetSelection, _configuration.SampleSubsetSelection);
