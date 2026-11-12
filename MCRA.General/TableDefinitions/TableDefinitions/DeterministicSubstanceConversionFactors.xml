@@ -13,6 +13,7 @@
     <string>SubstanceConversionsFixed</string>
     <string>DeterministicSubstanceConversionFactors</string>
     <string>DeterministicConversionFactors</string>
+    <string>FoodSubstanceConversionFactors</string>
   </Aliases>
   <PreferredAlias>DeterministicConversionFactors</PreferredAlias>
   <HiddenAliases>
