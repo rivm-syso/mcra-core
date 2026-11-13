@@ -1,5 +1,31 @@
 # Change Log
 
+## Version 10.3.4 (2026-11-13)
+
+### Added
+
+- Implement use of food-specific substance conversion factors in concentrations module (#2502)
+- Implementation of correction with background concentration in Module Concentrations (#2532)
+- Add option to calculate burden of disease as total shift (#2539)
+- Add summary plots for total bod per substance and outcome (#2544)
+- Add multiple timepoints (already implemented for cumulative) (#2547)
+- Add factor and value as aliases for processing factor values
+- Add FoodSubstanceConversionFactors as table alias to DeterministicSubstanceConversionFactors
+
+### Changed
+
+- Update output HBM analysis with details on PBK modelling results when PBK model is used (#2540)
+- Update PBK model compartment types with gut lumen and add as compartment for modelling the oral exposure route
+
+### Fixed
+
+- Run SBML roadrunner out-of-process concurrently for several processes (#2542)
+- Use median exposure instead of nominal exposure when plotting erf with uncertainty (#2545)
+- Update substance amount unit converter to throw exception when trying to convert amounts between moles and grams without a molar mass (#2366)
+- Correct dependency and description of use-food-specific-conversion-factors setting
+- Impute missing bodyweights for Air, Soil, Dust and Consumerproducts
+- Prevent setting different values for individual properties Age, Height, BSA, Sex (Gender)
+
 ## Version 10.3.3 (2026-10-22)
 
 ### Added
