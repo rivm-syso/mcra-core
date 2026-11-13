@@ -65,14 +65,14 @@ internal static class Program {
             }
 
             // Set python path
-            var pythonPath = config.GetSection("SimulationServiceOptions").GetValue<string>("PythonPath");
+            var pythonPath = config.GetValue<string>("PythonPath");
             Environment.SetEnvironmentVariable("PYTHONNET_PYDLL", pythonPath);
 
             SbmlModelRunner runner = null;
             var gate = new SemaphoreSlim(1, 1);
             app.MapPost("/initialize", (SbmlSimulationInitializationDto init) => {
                 try {
-                    bool interactive = config.GetSection("SimulationServiceOptions").GetValue<bool>("InteractiveMode");
+                    bool interactive = config.GetValue<bool>("InteractiveMode");
                     if (interactive) {
                         Console.WriteLine("Interactive mode - start of execution halted, press enter to continue...");
                         Console.ReadKey();
