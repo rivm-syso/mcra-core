@@ -31,7 +31,7 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation {
             var stepLength = 1d / stepsPerDay * timeUnitMultiplier;
 
             // Get bodyweight parameter
-            var bwParam = PbkModelSpecification.GetParameterDefinitionByType(PbkModelParameterType.BodyWeight);
+            var hasBwParam = PbkModelSpecification.TryGetParameter(PbkModelParameterType.BodyWeight, out var bwParam);
 
             // Get model input mappings for exposure routes
             var inputSpecies = PbkModelSpecification.GetRouteInputSpecies(SimulationSettings.AllowFallbackSystemic);
@@ -72,11 +72,12 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.SbmlModelCalculation {
 
             // For lifetime modelling, include output timeseries for body weight and age
             if (PbkModelSpecification.IsLifetimeModel()) {
-                if (bwParam != null && bwParam.IsInternalParameter) {
+                if (hasBwParam && bwParam.IsInternalParameter) {
                     outputTimeSeriesSelection.Add(bwParam.Id);
                 }
-                var ageParam = PbkModelSpecification.GetParameterDefinitionByType(PbkModelParameterType.Age);
-                if (ageParam != null && ageParam.IsInternalParameter) {
+                if (PbkModelSpecification.TryGetParameter(PbkModelParameterType.Age, out var ageParam)
+                    && ageParam.IsInternalParameter
+                ) {
                     outputTimeSeriesSelection.Add(ageParam.Id);
                 }
             }

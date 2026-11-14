@@ -57,9 +57,9 @@
         List<IPbkModelParameterSpecification> GetParameters();
 
         /// <summary>
-        /// Gets a parameter definition by its type.
+        /// Try to gets a parameter definition by its type.
         /// </summary>
-        IPbkModelParameterSpecification GetParameterDefinitionByType(PbkModelParameterType paramType);
+        bool TryGetParameter(PbkModelParameterType paramType, out IPbkModelParameterSpecification parameter);
 
         /// <summary>
         /// Returns true if this is a lifetime model, i.e. it has an (external) initial age

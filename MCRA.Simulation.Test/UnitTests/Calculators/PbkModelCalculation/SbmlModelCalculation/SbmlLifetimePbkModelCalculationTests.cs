@@ -10,7 +10,7 @@ using MCRA.Utils.Statistics;
 namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.SbmlModelCalculation {
 
     /// <summary>
-    /// SBML KineticModelCalculation calculator tests.
+    /// SBML lifetime PBK model calculation tests.
     /// </summary>
     [TestClass]
     public class SbmlLifetimePbkModelCalculationTests {
@@ -25,36 +25,31 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.SbmlMod
         public void SbmlLifetimePbkModelCalculation_TestDefinition() {
             var file = "Resources/PbkModels/simple_lifetime.sbml";
             var modelDefinition = GetModelDefinition(file);
-            var expected = new[] { "AGut" };
-            CollectionAssert.AreEquivalent(
-                expected,
-                modelDefinition.GetRouteInputSpecies().Values.Select(r => r.Species.Id).ToArray()
-            );
 
-            var bwParam = modelDefinition.GetParameterDefinitionByType(PbkModelParameterType.BodyWeight);
+            var inputSpecies = modelDefinition.GetRouteInputSpecies().Values.Select(r => r.Species.Id);
+            Assert.AreSequenceEqual(["AGut"], inputSpecies, SequenceOrder.InAnyOrder);
+
+            modelDefinition.TryGetParameter(PbkModelParameterType.BodyWeight, out var bwParam);
             Assert.AreEqual("BW", bwParam.Id);
             Assert.IsTrue(bwParam.IsInternalParameter);
 
-            var ageParam = modelDefinition.GetParameterDefinitionByType(PbkModelParameterType.Age);
+            modelDefinition.TryGetParameter(PbkModelParameterType.Age, out var ageParam);
             Assert.AreEqual("Age", ageParam.Id);
             Assert.IsTrue(ageParam.IsInternalParameter);
 
-            var ageInitParam = modelDefinition.GetParameterDefinitionByType(PbkModelParameterType.AgeInit);
+            modelDefinition.TryGetParameter(PbkModelParameterType.AgeInit, out var ageInitParam);
             Assert.AreEqual("AgeInit", ageInitParam.Id);
             Assert.IsFalse(ageInitParam.IsInternalParameter);
 
-            var bwRefParam = modelDefinition.GetParameterDefinitionByType(PbkModelParameterType.BodyWeightRef);
+            modelDefinition.TryGetParameter(PbkModelParameterType.BodyWeightRef, out var bwRefParam);
             Assert.AreEqual("BWRef", bwRefParam.Id);
             Assert.IsFalse(bwRefParam.IsInternalParameter);
 
-            var ageRefParam = modelDefinition.GetParameterDefinitionByType(PbkModelParameterType.AgeRef);
+            modelDefinition.TryGetParameter(PbkModelParameterType.AgeRef, out var ageRefParam);
             Assert.AreEqual("AgeRef", ageRefParam.Id);
             Assert.IsFalse(ageRefParam.IsInternalParameter);
         }
 
-        /// <summary>
-        /// SBML ModelCalculator: calculates individual day target exposures, Euromix SBML, acute
-        /// </summary>
         [TestMethod]
         public void SbmlLifetimePbkModelCalculation_TestLifeTimeSimulation() {
             var seed = 1;
@@ -107,7 +102,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.SbmlMod
                 simulationResults.BodyWeightTimeSeries.Last()
             );
         }
-
 
         [TestMethod]
         public void SbmlLifetimePbkModelCalculation_TestLifetimeWindowToCurrent() {

@@ -60,9 +60,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.SbmlMod
             var expected = new[] { "QGut", "QSkin_sc_e", "QAir" };
             var actual = modelDefinition.GetRouteInputSpecies().Values.Select(r => r.Species.Id).ToArray();
             Assert.AreSequenceEqual(expected, actual, SequenceOrder.InAnyOrder);
-            var bwParam = modelDefinition.GetParameterDefinitionByType(PbkModelParameterType.BodyWeight);
+            modelDefinition.TryGetParameter(PbkModelParameterType.BodyWeight, out var bwParam);
             Assert.AreEqual("BM", bwParam.Id);
-            var bsaParam = modelDefinition.GetParameterDefinitionByType(PbkModelParameterType.BodySurfaceArea);
+            modelDefinition.TryGetParameter(PbkModelParameterType.BodySurfaceArea, out var bsaParam);
             Assert.AreEqual("BSA", bsaParam.Id);
         }
 

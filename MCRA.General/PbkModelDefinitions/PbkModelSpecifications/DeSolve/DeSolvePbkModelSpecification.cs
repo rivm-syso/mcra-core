@@ -132,8 +132,9 @@ namespace MCRA.General.PbkModelDefinitions.PbkModelSpecifications.DeSolve {
         /// Gets a parameter definition by its type. Returns null if no parameter
         /// of the specified type exists.
         /// </summary>
-        public IPbkModelParameterSpecification GetParameterDefinitionByType(PbkModelParameterType paramType) {
-            return Parameters.FirstOrDefault(p => p.Type == paramType);
+        public bool TryGetParameter(PbkModelParameterType paramType, out IPbkModelParameterSpecification parameter) {
+            parameter = Parameters.FirstOrDefault(p => p.Type == paramType);
+            return parameter != null;
         }
     }
 }

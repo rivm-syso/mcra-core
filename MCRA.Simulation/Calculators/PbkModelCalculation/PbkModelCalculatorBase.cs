@@ -60,7 +60,7 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation {
 
             // Check if model matches settings
             if (SimulationSettings.ApplyBodyWeightScaling
-                && PbkModelSpecification.GetParameterDefinitionByType(PbkModelParameterType.BodyWeight) == null
+                && !PbkModelSpecification.TryGetParameter(PbkModelParameterType.BodyWeight, out _)
             ) {
                 var msg = $"Cannot apply bodyweight corrected exposures on PBK model [{PbkModelSpecification.Id}]: no BW parameter found.";
                 throw new Exception(msg);
@@ -127,10 +127,8 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation {
             var instanceParameters = KineticModelInstance.KineticModelInstanceParameters;
 
             // Set BW
-            var bodyWeightParameter = PbkModelSpecification
-                .GetParameterDefinitionByType(PbkModelParameterType.BodyWeight);
             if (!double.IsNaN(individual.BodyWeight) 
-                && bodyWeightParameter != null 
+                && PbkModelSpecification.TryGetParameter(PbkModelParameterType.BodyWeight, out var bodyWeightParameter)
                 && !bodyWeightParameter.IsInternalParameter
             ) {
                 // TODO: current code assumes bodyweights in same unit as kinetic model parameter
@@ -138,9 +136,8 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation {
                 parametrisation[bodyWeightParameter.Id] = bodyWeight;
 
                 // Set BSA
-                var bsaParameter = PbkModelSpecification
-                    .GetParameterDefinitionByType(PbkModelParameterType.BodySurfaceArea);
-                if (bsaParameter != null && !bsaParameter.IsInternalParameter) {
+                if (PbkModelSpecification.TryGetParameter(PbkModelParameterType.BodySurfaceArea, out var bsaParameter)
+                    && !bsaParameter.IsInternalParameter) {
                     if (instanceParameters.TryGetValue(bsaParameter.Id, out var bsaParameterValue)
                         && instanceParameters.TryGetValue(bodyWeightParameter.Id, out var bwParameterValue)
                     ) {
@@ -153,9 +150,8 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation {
             }
 
             // Set age
-            var ageParameter = PbkModelSpecification
-                .GetParameterDefinitionByType(PbkModelParameterType.Age);
-            if (ageParameter != null && !ageParameter.IsInternalParameter) {
+            if (PbkModelSpecification.TryGetParameter(PbkModelParameterType.Age, out var ageParameter)
+                && !ageParameter.IsInternalParameter) {
                 // Get individual age
                 // TODO: current code assumes age in same unit as kinetic model parameter
                 var age = individual.Age.HasValue && !double.IsNaN(individual.Age.Value)
@@ -165,9 +161,8 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation {
             }
 
             // Set sex
-            var sexParameter = PbkModelSpecification
-                .GetParameterDefinitionByType(PbkModelParameterType.Sex);
-            if (sexParameter != null && !sexParameter.IsInternalParameter) {
+            if (PbkModelSpecification.TryGetParameter(PbkModelParameterType.Sex, out var sexParameter)
+                && !sexParameter.IsInternalParameter) {
                 // TODO: implicit assumption of Female = 1, Male = 2 should become explicit
                 var sex = individual.Gender;
                 if (sex == GenderType.Undefined) {
@@ -190,8 +185,7 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation {
             if (SimulationSettings.IsLifetime()) {
 
                 // Check for reference age parameter
-                var ageRefParam = PbkModelSpecification.GetParameterDefinitionByType(PbkModelParameterType.AgeRef);
-                if (ageRefParam != null) {
+                if (PbkModelSpecification.TryGetParameter(PbkModelParameterType.AgeRef, out var ageRefParam)) {
                     if (!individual.Age.HasValue) {
                         throw new Exception($"Cannot set age parameter for PBK model [{PbkModelSpecification.Name}]: some individuals have an unspecified age.");
                     }
@@ -199,8 +193,7 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation {
                 }
 
                 // Check for reference body weight parameter
-                var bwRefParam = PbkModelSpecification.GetParameterDefinitionByType(PbkModelParameterType.BodyWeightRef);
-                if (bwRefParam != null) {
+                if (PbkModelSpecification.TryGetParameter(PbkModelParameterType.BodyWeightRef, out var bwRefParam)) {
                     if (double.IsNaN(individual.BodyWeight)) {
                         throw new Exception($"Cannot set bodyweight parameter for PBK model [{PbkModelSpecification.Name}]: some individuals have an unspecified bodyweight.");
                     }
@@ -208,8 +201,7 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation {
                 }
 
                 // Check for reference age parameter
-                var ageInitParam = PbkModelSpecification.GetParameterDefinitionByType(PbkModelParameterType.AgeInit);
-                if (ageInitParam != null) {
+                if (PbkModelSpecification.TryGetParameter(PbkModelParameterType.AgeInit, out var ageInitParam)) {
                     var ageInit = SimulationSettings.PbkSimulationMethod switch {
                         PbkSimulationMethod.Standard => individual.Age.Value,
                         PbkSimulationMethod.LifetimeToSpecifiedAge => 0D,
@@ -448,12 +440,14 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation {
             };
 
             if (PbkModelSpecification.IsLifetimeModel()) {
-                var bwParam = PbkModelSpecification.GetParameterDefinitionByType(PbkModelParameterType.BodyWeight);
-                if (bwParam != null && bwParam.IsInternalParameter) {
+                if (PbkModelSpecification.TryGetParameter(PbkModelParameterType.BodyWeight, out var bwParam)
+                    && bwParam.IsInternalParameter
+                ) {
                     result.BodyWeightTimeSeries = simulationOutput?.OutputTimeSeries[bwParam.Id];
                 }
-                var ageParam = PbkModelSpecification.GetParameterDefinitionByType(PbkModelParameterType.Age);
-                if (ageParam != null && ageParam.IsInternalParameter) {
+                if (PbkModelSpecification.TryGetParameter(PbkModelParameterType.Age, out var ageParam)
+                    && ageParam.IsInternalParameter
+                ) {
                     var ageTimeSeries = simulationOutput?.OutputTimeSeries[ageParam.Id];
                     result.AgeStart = ageTimeSeries[0];
                     result.AgeEnd = ageTimeSeries.Last();
