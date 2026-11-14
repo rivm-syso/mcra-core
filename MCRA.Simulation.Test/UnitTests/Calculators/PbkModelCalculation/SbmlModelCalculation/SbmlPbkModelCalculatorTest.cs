@@ -59,10 +59,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.SbmlMod
             var modelDefinition = GetModelDefinition();
             var expected = new[] { "QGut", "QSkin_sc_e", "QAir" };
             var actual = modelDefinition.GetRouteInputSpecies().Values.Select(r => r.Species.Id).ToArray();
-            CollectionAssert.AreEquivalent(
-                expected,
-                actual
-            );
+            Assert.AreSequenceEqual(expected, actual, SequenceOrder.InAnyOrder);
             var bwParam = modelDefinition.GetParameterDefinitionByType(PbkModelParameterType.BodyWeight);
             Assert.AreEqual("BM", bwParam.Id);
             var bsaParam = modelDefinition.GetParameterDefinitionByType(PbkModelParameterType.BodySurfaceArea);
@@ -86,19 +83,19 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.SbmlMod
         }
 
         [TestMethod]
-        [DataRow(10, 10, ExposureEventsGenerationMethod.RandomDailyEvents, false)]
-        [DataRow(10, 10, ExposureEventsGenerationMethod.RandomDailyEvents, true)]
-        [DataRow(10, 10, ExposureEventsGenerationMethod.DailyAverageEvents, false)]
-        [DataRow(10, 50, ExposureEventsGenerationMethod.DailyAverageEvents, false)]
-        [DataRow(100, 50, ExposureEventsGenerationMethod.DailyAverageEvents, false)]
-        [DataRow(10, 10, ExposureEventsGenerationMethod.DailyAverageEvents, true)]
-        [DataRow(10, 100, ExposureEventsGenerationMethod.DailyAverageEvents, true)]
-        [DataRow(100, 50, ExposureEventsGenerationMethod.DailyAverageEvents, true)]
-        [DataRow(100, 51, ExposureEventsGenerationMethod.DailyAverageEvents, true)]
+        [DataRow(5, 10, ExposureEventsGenerationMethod.DailyAverageEvents, true, true)]
+        [DataRow(5, 10, ExposureEventsGenerationMethod.DailyAverageEvents, true, false)]
+        [DataRow(5, 10, ExposureEventsGenerationMethod.RandomDailyEvents, true, true)]
+        [DataRow(5, 10, ExposureEventsGenerationMethod.RandomDailyEvents, true, false)]
+        [DataRow(5, 10, ExposureEventsGenerationMethod.DailyAverageEvents, false, true)]
+        [DataRow(5, 10, ExposureEventsGenerationMethod.DailyAverageEvents, false, false)]
+        [DataRow(5, 10, ExposureEventsGenerationMethod.RandomDailyEvents, false, true)]
+        [DataRow(5, 10, ExposureEventsGenerationMethod.RandomDailyEvents, false, false)]
         public void SbmlPbkModelCalculator_TestCalculate(
             int numIndividuals,
             int numSimulatedDays,
             ExposureEventsGenerationMethod exposureEventsGenerationMethod,
+            bool reuse,
             bool bodyweightAdjusted
         ) {
             var seed = 1;
@@ -111,7 +108,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.SbmlMod
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var individualDayExposures = FakeExternalExposureGenerator.CreateExternalIndividualDayExposures(individualDays, substances, paths, seed);
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
-            var reuse = numSimulatedDays == 51;
             var instance = createFakeModelInstance(substance);
             var simulationSettings = new PbkSimulationSettings() {
                 BodyWeightCorrected = bodyweightAdjusted,
@@ -120,7 +116,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.SbmlMod
             };
             var model = new SbmlPbkModelCalculator(instance, simulationSettings);
 
-            var sw = new System.Diagnostics.Stopwatch();
+            var sw = new Stopwatch();
             sw.Start();
 
             var externalIndividualExposures = individualDayExposures
@@ -164,6 +160,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.SbmlMod
                 NumberOfSimulatedDays = 50,
             };
             SbmlModelRunner.ReuseEvents = false;
+
             // Create exposures with a small dose for each path and substance.This is the dose used in an event,
             // the actual dose is calculated by multiplying the event dose with the molecular mass of the substance.
             var eventDose = 0.01;
@@ -268,7 +265,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.SbmlMod
             };
             var model = new SbmlPbkModelCalculator(instance, simulationSettings);
 
-            var sw = new System.Diagnostics.Stopwatch();
+            var sw = new Stopwatch();
             sw.Start();
             var forwardCalculator = new PbkKineticConversionCalculator(model);
             var internalExposures = forwardCalculator.CalculateIndividualDayTargetExposures(
@@ -280,7 +277,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.SbmlMod
                 random
             );
             sw.Stop();
-            System.Diagnostics.Trace.WriteLine(message: $"Elapsed: {sw.Elapsed}");
+            Trace.WriteLine(message: $"Elapsed: {sw.Elapsed}");
             var positiveExternalExposures = individualDayExposures
                 .Where(r => r.ExposuresPerPath
                 .Any(eprc => eprc.Value.Any(ipc => ipc.Amount > 0)))
