@@ -23,6 +23,7 @@ namespace MCRA.Simulation.Calculators.KineticConversionFactorModels {
             ICollection<TargetUnit> targetUnits,
             ExposureType exposureType,
             ICollection<ExposureRoute> exposureRoutes,
+            ICollection<SimulatedIndividual> individuals,
             double exposureMin,
             double exposureMax,
             int numSimulations,
@@ -61,6 +62,7 @@ namespace MCRA.Simulation.Calculators.KineticConversionFactorModels {
                         timeSeriesExposureCharacterisationCalculator,
                         route,
                         exposures,
+                        individuals,
                         i == 0 && computeInternalTargetConversionFactors,
                         progressState,
                         generator
@@ -81,6 +83,7 @@ namespace MCRA.Simulation.Calculators.KineticConversionFactorModels {
             ITimeSeriesExposureCharacterisationCalculator timeSeriesExposureCharacterisationCalculator,
             ExposureRoute route,
             List<double> doses,
+            ICollection<SimulatedIndividual> individuals,
             bool computeInternalTargetConversionFactors,
             ProgressState progressState,
             IRandom generator
@@ -91,11 +94,19 @@ namespace MCRA.Simulation.Calculators.KineticConversionFactorModels {
 
             // Create external individual exposures
             var externalTargetUnit = new TargetUnit(new ExposureTarget(route), externalExposureUnit);
-            var externalIndividualExposures = createExternalIndividualExposures(substance, route, doses);
+            var externalIndividualExposures = createExternalIndividualExposures(
+                individuals,
+                substance,
+                route,
+                doses,
+                simulationSettings.BodyWeightCorrected
+            );
+            var simulatedDoses = externalIndividualExposures.Select(r => r.dose).ToList();
+            var simulatedExposures = externalIndividualExposures.Select(r => (r.Item1, r.Item3)).ToList();
 
             // Run PBK model simulations
             var simulationResults = pbkModelCalculator.Calculate(
-                externalIndividualExposures,
+                simulatedExposures,
                 externalExposureUnit,
                 [route],
                 targetUnits,
@@ -120,7 +131,7 @@ namespace MCRA.Simulation.Calculators.KineticConversionFactorModels {
                         substance,
                         toSubstance,
                         externalTargetUnit,
-                        doses,
+                        simulatedDoses,
                         targetUnit,
                         toTargetExposures
                     );
@@ -162,38 +173,44 @@ namespace MCRA.Simulation.Calculators.KineticConversionFactorModels {
             return result;
         }
 
-        private static List<(SimulatedIndividual, List<IExternalIndividualDayExposure>)> createExternalIndividualExposures(
+        private static List<(SimulatedIndividual, double dose, List<IExternalIndividualDayExposure>)> createExternalIndividualExposures(
+            ICollection<SimulatedIndividual> individuals,
             Compound substance,
             ExposureRoute route,
-            List<double> doses
+            List<double> doses,
+            bool bwAdjusted
         ) {
-            var simulatedIndividualExposures = new List<IExternalIndividualExposure>();
-            var ix = 0;
-            foreach (var dose in doses) {
-                var individual = new Individual(ix++);
-                var simulatedIndividual = new SimulatedIndividual(individual, ix);
-                var pathExposures = new Dictionary<ExposurePath, List<IIntakePerCompound>> {
-                    [new ExposurePath(ExposureSource.Undefined, route)] = [
-                        new AggregateIntakePerCompound() {
-                            Amount = dose,
-                            Compound = substance,
-                        }
-                    ]
-                };
-                var individualDayExposure = new ExternalIndividualDayExposure(pathExposures) {
-                    SimulatedIndividual = simulatedIndividual,
-                    SimulatedIndividualDayId = 0,
-                };
-                var individualExposure = new ExternalIndividualExposure(simulatedIndividual, pathExposures) {
-                    ExternalIndividualDayExposures = [individualDayExposure],
-                };
-                simulatedIndividualExposures.Add(individualExposure);
+            if (bwAdjusted && individuals.Any(r => double.IsNaN(r.BodyWeight))) {
+                throw new NotImplementedException("Cannot run PBK model with bodyweight adjusted exposures for individuals with a missing bodyweight.");
             }
 
-            var externalIndividualExposures = simulatedIndividualExposures
-                .Select(r => (r.SimulatedIndividual, r.ExternalIndividualDayExposures))
-                .ToList();
-            return externalIndividualExposures;
+            var result = new List<(SimulatedIndividual individual, double dose, List<IExternalIndividualDayExposure> exposure)>();
+            var ix = 0;
+            foreach (var individual in individuals) {
+                foreach (var dose in doses) {
+                    var pathExposures = new Dictionary<ExposurePath, List<IIntakePerCompound>> {
+                        [new ExposurePath(ExposureSource.Undefined, route)] = [
+                            new AggregateIntakePerCompound() {
+                                Amount = bwAdjusted ? dose / individual.BodyWeight : dose,
+                                Compound = substance,
+                            }
+                        ]
+                    };
+                    var individualDayExposure = new ExternalIndividualDayExposure(pathExposures) {
+                        SimulatedIndividual = individual,
+                        SimulatedIndividualDayId = ix++,
+                    };
+                    var individualExposure = new ExternalIndividualExposure(individual, pathExposures) {
+                        ExternalIndividualDayExposures = [individualDayExposure],
+                    };
+                    result.Add((
+                        individualExposure.SimulatedIndividual,
+                        dose,
+                        individualExposure.ExternalIndividualDayExposures
+                    ));
+                }
+            }
+            return result;
         }
 
         private static KineticConversionFactorEmpiricalModel createConversionModel(
@@ -208,8 +225,8 @@ namespace MCRA.Simulation.Calculators.KineticConversionFactorModels {
                 .Zip(fromTargetExposures, (t, e) => new KineticConversionDataRecord(e, t))
                 .ToList();
             var lmFit = SimpleLinearRegressionCalculator.Compute(
-                conversionRecords.Select(r => r.FromExposure).ToList(),
-                conversionRecords.Select(r => r.ToExposure).ToList(),
+                [.. conversionRecords.Select(r => r.FromExposure)],
+                [.. conversionRecords.Select(r => r.ToExposure)],
                 Intercept.Omit
             );
             var record = new KineticConversionFactorEmpiricalModel() {

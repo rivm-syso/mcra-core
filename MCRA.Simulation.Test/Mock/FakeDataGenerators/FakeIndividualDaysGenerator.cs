@@ -144,7 +144,8 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                             SimulatedIndividualDayId = individualDayCounter++,
                             Day = ix.ToString()
                         })
-                ).ToList();
+                )
+                .ToList();
         }
     }
 }

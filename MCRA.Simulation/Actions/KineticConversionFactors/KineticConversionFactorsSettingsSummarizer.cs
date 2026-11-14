@@ -21,6 +21,7 @@ namespace MCRA.Simulation.Actions.KineticConversionFactors {
                 section.SummarizeSetting(SettingsItemType.ExposureRangeMaximum, _configuration.ExposureRangeMaximum);
                 section.SummarizeSetting(SettingsItemType.NumberOfPbkModelSimulations, _configuration.NumberOfPbkModelSimulations);
                 section.SummarizeSetting(SettingsItemType.ComputeBetweenInternalTargetConversionFactors, _configuration.ComputeBetweenInternalTargetConversionFactors);
+                section.SummarizeSetting(SettingsItemType.UseIndividuals, _configuration.UseIndividuals);
                 section.SummarizeSetting(SettingsItemType.UseParameterVariability, _configuration.UseParameterVariability);
                 if (_configuration.PbkSimulationMethod == PbkSimulationMethod.Standard) {
                     section.SummarizeSetting(SettingsItemType.NumberOfDays, _configuration.NumberOfDays);

@@ -57,6 +57,9 @@ namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
                 .Select(r => (r.SimulatedIndividual, new List<IExternalIndividualDayExposure>() { r }))
                 .ToList();
 
+            var timeSeriesExposureCharacterisationCalculator = TimeSeriesExposureCharacterisationCalculatorFactory
+                .Create(ExposureType.Acute, _simulationSettings);
+
             var targetExposures = _pbkModelCalculator
                 .Calculate(
                     externalIndividualExposures,
@@ -66,9 +69,6 @@ namespace MCRA.Simulation.Calculators.KineticConversionCalculation {
                     generator,
                     progressState
                 );
-
-            var timeSeriesExposureCharacterisationCalculator = TimeSeriesExposureCharacterisationCalculatorFactory
-                .Create(ExposureType.Acute, _simulationSettings);
 
             var result = new List<AggregateIndividualDayExposure>();
             for (int i = 0; i < individualDayExposures.Count; i++) {

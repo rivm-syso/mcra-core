@@ -8,8 +8,16 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation.TargetExposureFromTime
         ) {
             switch (exposureType) {
                 case ExposureType.Acute:
-                    return new TimeSeriesAverageDailyPeakExposureCalculator(simulationSettings.NonStationaryPeriod);
+                    if (simulationSettings.NumberOfSimulatedDays < simulationSettings.NonStationaryPeriod) {
+                        throw new Exception("Invalid PBK simulation settings: non-stationary period cannot exceed the simulation duration.");
+                    }
+                    return new TimeSeriesAverageDailyPeakExposureCalculator(
+                        simulationSettings.NonStationaryPeriod
+                    );
                 case ExposureType.Chronic:
+                    if (!simulationSettings.IsLifetime() && simulationSettings.NumberOfSimulatedDays < simulationSettings.NonStationaryPeriod) {
+                        throw new Exception("Invalid PBK simulation settings: non-stationary period cannot exceed the simulation duration.");
+                    }
                     return new TimeSeriesSteadyStateExposureCalculator(
                         simulationSettings.IsLifetime(),
                         simulationSettings.NonStationaryPeriod,

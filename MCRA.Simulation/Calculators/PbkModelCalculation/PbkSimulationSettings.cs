@@ -9,7 +9,7 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation {
         public ExposureEventsGenerationMethod ExposureEventsGenerationMethod { get; set; } = ExposureEventsGenerationMethod.DailyAverageEvents;
         public bool BodyWeightCorrected { get; set; }
 
-        public bool ApplyBodyWeightScaling => IsLifetime() && BodyWeightCorrected;
+        public bool ApplyBodyWeightScaling => BodyWeightCorrected;
 
         public bool UseParameterVariability { get; set; }
 

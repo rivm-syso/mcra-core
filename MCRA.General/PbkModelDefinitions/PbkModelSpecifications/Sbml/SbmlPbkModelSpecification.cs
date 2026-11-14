@@ -161,7 +161,8 @@ namespace MCRA.General.PbkModelDefinitions.PbkModelSpecifications.Sbml {
         }
 
         /// <summary>
-        /// Gets a parameter definition by its type.
+        /// Gets a parameter definition by its type. Returns null if no parameter
+        /// of the specified type exists.
         /// </summary>
         public IPbkModelParameterSpecification GetParameterDefinitionByType(PbkModelParameterType paramType) {
             return Parameters.FirstOrDefault(p => p.Type == paramType);

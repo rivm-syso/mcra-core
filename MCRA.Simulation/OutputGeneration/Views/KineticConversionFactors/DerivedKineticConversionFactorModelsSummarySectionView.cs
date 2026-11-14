@@ -20,6 +20,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 }
                 if (Model.Records.All(r => r.SubstanceCodeTo == r.SubstanceCodeFrom)) {
                     hiddenProperties.Add(nameof(KineticConversionFactorModelSummaryRecord.SubstanceCodeTo));
+                    hiddenProperties.Add(nameof(KineticConversionFactorModelSummaryRecord.SubstanceNameTo));
                 }
                 if (Model.Records.All(r => string.IsNullOrEmpty(r.ExposureRouteTo))) {
                     hiddenProperties.Add(nameof(KineticConversionFactorModelSummaryRecord.ExposureRouteTo));

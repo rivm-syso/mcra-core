@@ -58,4 +58,10 @@
     <Description>Compute kinetic conversion factors to extrapolate exposures/concentrations between internal targets/matrices.</Description>
     <ValueType>Boolean</ValueType>
   </SettingsItem>
+  <SettingsItem>
+    <Id>UseIndividuals</Id>
+    <Name>Compute for individuals</Name>
+    <Description>Compute kinetic conversion factors for a specific set of individuals specified through the individuals module.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
 </SettingsItems>

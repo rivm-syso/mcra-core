@@ -31,6 +31,7 @@
     <CalculationSetting>ExposureRangeMinimum</CalculationSetting>
     <CalculationSetting>ExposureRangeMaximum</CalculationSetting>
     <CalculationSetting>ComputeBetweenInternalTargetConversionFactors</CalculationSetting>
+    <CalculationSetting>UseIndividuals</CalculationSetting>
     <CalculationSetting source="PbkModels">NumberOfDays</CalculationSetting>
     <CalculationSetting source="PbkModels">ExposureEventsGenerationMethod</CalculationSetting>
     <CalculationSetting source="PbkModels">NonStationaryPeriod</CalculationSetting>
@@ -57,6 +58,7 @@
   <CalculationInputs>
     <Input>PbkModels</Input>
     <Input>KineticModels</Input>
+    <Input>Individuals</Input>
   </CalculationInputs>
   <Entities>
     <Entity>Substances</Entity>

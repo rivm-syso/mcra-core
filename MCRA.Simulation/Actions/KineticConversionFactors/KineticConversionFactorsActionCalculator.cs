@@ -1,4 +1,5 @@
-﻿using MCRA.Data.Management;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Management;
 using MCRA.Data.Management.CompiledDataManagers.DataReadingSummary;
 using MCRA.General;
 using MCRA.General.Action.Settings;
@@ -34,6 +35,9 @@ namespace MCRA.Simulation.Actions.KineticConversionFactors {
             _actionInputRequirements[ActionType.PbkModels].IsVisible = requirePbkModels;
             _actionInputRequirements[ActionType.KineticModels].IsVisible = requirePbkModels && ModuleConfig.AllowFallbackSystemic;
             _actionInputRequirements[ActionType.KineticModels].IsRequired = false;
+            var requireIndividuals = ModuleConfig.IsCompute && ModuleConfig.UseIndividuals;
+            _actionInputRequirements[ActionType.Individuals].IsVisible = requireIndividuals;
+            _actionInputRequirements[ActionType.Individuals].IsRequired = requireIndividuals;
         }
 
         public override ICollection<UncertaintySource> GetRandomSources() {
@@ -128,6 +132,10 @@ namespace MCRA.Simulation.Actions.KineticConversionFactors {
             var generatorPbkModelSimulation = new McraRandomGenerator(
                 RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.KCF_PbkModelSimulation)
             );
+            var individuals = ModuleConfig.UseIndividuals
+                ? data.Individuals.Select(r => r.SimulatedIndividual).Distinct().ToList()
+                : [new(new Individual(0), 0)];
+
             var kcfs = KineticConversionFactorModelCalculator
                 .ComputeFromPbk(
                     data.ActiveSubstances,
@@ -138,6 +146,7 @@ namespace MCRA.Simulation.Actions.KineticConversionFactors {
                     internalTargets,
                     ModuleConfig.ExposureType,
                     ModuleConfig.ExposureRoutes,
+                    individuals: individuals,
                     exposureMin: ModuleConfig.ExposureRangeMinimum,
                     exposureMax: ModuleConfig.ExposureRangeMaximum,
                     numSimulations: ModuleConfig.NumberOfPbkModelSimulations,
