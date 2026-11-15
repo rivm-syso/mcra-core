@@ -148,7 +148,8 @@ namespace MCRA.Simulation.Actions.KineticConversionFactors {
                 );
 
                 section.Summarize(
-                    result.PbkSimulationOutputs
+                    result.PbkSimulationOutputs,
+                    _configuration.PbkSimulationMethod != PbkSimulationMethod.Standard
                 );
                 subHeader.SaveSummarySection(section);
             }

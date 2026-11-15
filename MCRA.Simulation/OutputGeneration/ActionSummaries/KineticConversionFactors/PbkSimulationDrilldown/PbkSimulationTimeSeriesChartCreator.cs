@@ -46,18 +46,14 @@ namespace MCRA.Simulation.OutputGeneration {
             var plotModel = createDefaultPlotModel();
 
             var xValues = isLifetime
-                ? Enumerable
-                    .Range(0, record.OutputTimeSeries.Count)
-                    .Select(r => r / 365D).ToList()
-                : Enumerable
-                    .Range(0, record.OutputTimeSeries.Count)
-                    .Select(r => (double)r).ToList();
-            var yValues = record.OutputTimeSeries;
+                ? record.OutputTimeSeries.Select(r => r.Time / 365D).ToList()
+                : record.OutputTimeSeries.Select(r => r.Time).ToList();
+            var yValues = record.OutputTimeSeries.Select(r => r.Value).ToList();
 
             // Time axis
             var xAxis = new LinearAxis() {
                 Position = AxisPosition.Bottom,
-                Title = isLifetime ? "Time (days)" : $"Time (years)",
+                Title = isLifetime ? "Time (years)" : $"Time (days)",
                 MajorGridlineStyle = LineStyle.Dash,
             };
             plotModel.Axes.Add(xAxis);

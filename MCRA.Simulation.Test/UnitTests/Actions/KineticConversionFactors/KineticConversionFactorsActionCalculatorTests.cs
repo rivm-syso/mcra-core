@@ -153,6 +153,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.ComputeBetweenInternalTargetConversionFactors = true;
             config.UseIndividuals = true;
             config.BodyWeightCorrected = bwAdjustment;
+            config.IsPbkSimulationDrilldown = true;
 
             var data = new ActionData() {
                 ActiveSubstances = substances,
@@ -185,6 +186,46 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 uncertaintySourceGenerators,
                 reportFileName: reportFileName
             );
+        }
+
+        [TestMethod]
+        [DataRow(true)]
+        [DataRow(false)]
+        public void KineticConversionFactorActionCalculator_TestComputeLifetime(bool bwAdjustment) {
+            var random = new McraRandomGenerator(1);
+            var filename = "Resources/PbkModels/simple_lifetime.sbml";
+            var substances = FakeSubstancesGenerator.Create(1);
+            var pbkModelInstances = substances
+                .Select(r => FakeKineticModelsGenerator.CreateSbmlPbkModelInstance(r, filename))
+                .ToList();
+
+            var project = new ProjectDto();
+            var config = project.KineticConversionFactorsSettings;
+            config.IsCompute = true;
+            config.ExposureType = ExposureType.Chronic;
+            config.ExposureRoutes = [ExposureRoute.Oral];
+            config.InternalMatrices = [BiologicalMatrix.Blood];
+            config.NumberOfPbkModelSimulations = 11;
+            config.ExposureRangeMinimum = .1;
+            config.ExposureRangeMaximum = 10;
+            config.PbkSimulationMethod = PbkSimulationMethod.LifetimeToSpecifiedAge;
+            config.LifetimeStartAge = 0;
+            config.LifetimeWindowYears = 1;
+            config.LifetimeEndAge = 10;
+            config.ExposureEventsGenerationMethod = ExposureEventsGenerationMethod.DailyAverageEvents;
+            config.ComputeBetweenInternalTargetConversionFactors = true;
+            config.BodyWeightCorrected = bwAdjustment;
+            config.IsPbkSimulationDrilldown = true;
+
+            var data = new ActionData() {
+                ActiveSubstances = substances,
+                KineticModelInstances = pbkModelInstances
+            };
+
+            var bwAdjustmentStr = bwAdjustment ? "_bwAdjusted" : string.Empty;
+            var reportFileName = $"TestComputeLifetime{bwAdjustmentStr}";
+            var calculator = new KineticConversionFactorsActionCalculator(project);
+            var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, reportFileName);
         }
     }
 }

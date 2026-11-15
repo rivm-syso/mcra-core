@@ -11,7 +11,8 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<PbkSimulationDrilldownRecord> Records { get; set; }
 
         public void Summarize(
-            ICollection<PbkSimulationOutput> pbkSimulationOutputs
+            ICollection<PbkSimulationOutput> pbkSimulationOutputs,
+            bool isLifeTime
         ) {
             var records = new List<PbkSimulationDrilldownRecord>();
             var ix = 0;
@@ -23,7 +24,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         EndpointCode = $"{item.Substance.Code}_{item.TargetUnit.Target}",
                         EndpointName = $"{item.Substance.Name} in {item.TargetUnit.Target.GetDisplayName()}",
                         Unit = item.TargetUnit.GetShortDisplayName(DisplayOption.UnitOnly),
-                        OutputTimeSeries = [.. item.Exposures.Select(r => r.Exposure)]
+                        OutputTimeSeries = [.. item.Exposures.Select(r => (r.Time, r.Exposure))]
                     };
                     records.Add(record);
                 }
@@ -40,7 +41,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
             Records = records;
             NumberOfDaysSkipped = 10;
-            IsLifetime = false;
+            IsLifetime = isLifeTime;
         }
     }
 }

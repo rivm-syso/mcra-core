@@ -10,7 +10,7 @@
 
         public string Unit { get; set; }
 
-        public List<double> OutputTimeSeries { get; set; }
+        public List<(double Time, double Value)> OutputTimeSeries { get; set; }
 
     }
 }

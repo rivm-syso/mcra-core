@@ -95,7 +95,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.SbmlMod
             var nrOfDays = (int)(30 * 365.25);
             Assert.AreEqual(0, simulationResults.AgeStart);
             Assert.AreEqual(individual.Age.Value, simulationResults.AgeEnd, 1D / 365); // One day tolerance
-            Assert.AreEqual(individual.BodyWeight, simulationResults.BodyWeightTimeSeries.Last(),
+            Assert.AreEqual(individual.BodyWeight, simulationResults.BodyWeightTimeSeries.Last().BodyWeight,
                 individual.BodyWeight / nrOfDays);
             Assert.IsGreaterThan(
                 simulationResults.BodyWeightTimeSeries.First(),
@@ -146,7 +146,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.SbmlMod
             var nrOfDays = (int)(simulationSettings.LifetimeWindowYears * 365.25);
             Assert.AreEqual(expectedStart, simulationResults.AgeStart, 1D / 365);
             Assert.AreEqual(individual.Age.Value, simulationResults.AgeEnd, 1D / 365);
-            Assert.AreEqual(individual.BodyWeight, simulationResults.BodyWeightTimeSeries.Last(),
+            Assert.AreEqual(individual.BodyWeight, simulationResults.BodyWeightTimeSeries.Last().BodyWeight,
                 individual.BodyWeight / nrOfDays);
         }
 
@@ -235,7 +235,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.SbmlMod
 
             Assert.AreEqual(individual.Age.Value, simulationResults.AgeStart, 1D / 365);
             Assert.AreEqual(simulationSettings.LifetimeEndAge, simulationResults.AgeEnd, 1D / 365);
-            Assert.AreEqual(individual.BodyWeight, simulationResults.BodyWeightTimeSeries.First(),
+            Assert.AreEqual(individual.BodyWeight, simulationResults.BodyWeightTimeSeries.First().BodyWeight,
                 individual.BodyWeight / 365);
         }
 
@@ -280,7 +280,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.SbmlMod
             Assert.AreEqual(individual.Age.Value, simulationResults.AgeStart, 1D / 365);
             Assert.AreEqual(individual.Age.Value + simulationSettings.LifetimeWindowYears, simulationResults.AgeEnd, 1D / 365);
             // BW at start (age = age_init = current age) should match individual's BW
-            Assert.AreEqual(individual.BodyWeight, simulationResults.BodyWeightTimeSeries.First(),
+            Assert.AreEqual(individual.BodyWeight, simulationResults.BodyWeightTimeSeries.First().BodyWeight,
                 individual.BodyWeight / 365);
         }
 

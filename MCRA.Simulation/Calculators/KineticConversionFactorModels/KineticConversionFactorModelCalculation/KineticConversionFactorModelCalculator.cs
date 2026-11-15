@@ -96,6 +96,20 @@ namespace MCRA.Simulation.Calculators.KineticConversionFactorModels {
         ) {
             var result = new List<IKineticConversionFactorModel>();
 
+            // If no individuals were provided, create one nominal individual
+            if (individuals == null || individuals.Count == 0) {
+                var individual = new SimulatedIndividual(new Individual(0), 0);
+                if (pbkModelInstance.TryGetParameterValue(PbkModelParameterType.BodyWeight, out var bw)) {
+                    individual.BodyWeight = bw;
+                } else if (pbkModelInstance.TryGetParameterValue(PbkModelParameterType.BodyWeightRef, out var bwRef)) {
+                    individual.BodyWeight = bwRef;
+                    if (pbkModelInstance.TryGetParameterValue(PbkModelParameterType.AgeRef, out var ageRef)) {
+                        individual.BodyWeight = ageRef;
+                    }
+                }
+                individuals = [individual];
+            }
+
             var pbkModelCalculator = PbkModelCalculatorFactory
                 .Create(pbkModelInstance, simulationSettings, absorptionFactors);
 
@@ -187,10 +201,6 @@ namespace MCRA.Simulation.Calculators.KineticConversionFactorModels {
             List<double> doses,
             bool bwAdjusted
         ) {
-            if (bwAdjusted && individuals.Any(r => double.IsNaN(r.BodyWeight))) {
-                throw new NotImplementedException("Cannot run PBK model with bodyweight adjusted exposures for individuals with a missing bodyweight.");
-            }
-
             var result = new List<(SimulatedIndividual individual, double dose, List<IExternalIndividualDayExposure> exposure)>();
             var ix = 0;
             foreach (var individual in individuals) {
@@ -198,7 +208,7 @@ namespace MCRA.Simulation.Calculators.KineticConversionFactorModels {
                     var pathExposures = new Dictionary<ExposurePath, List<IIntakePerCompound>> {
                         [new ExposurePath(ExposureSource.Undefined, route)] = [
                             new AggregateIntakePerCompound() {
-                                Amount = bwAdjusted ? dose / individual.BodyWeight : dose,
+                                Amount = dose,
                                 Compound = substance,
                             }
                         ]

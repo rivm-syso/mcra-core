@@ -63,5 +63,19 @@ namespace MCRA.Data.Compiled.Objects {
             return ModelSubstances
                 .Any(r => r.SubstanceDefinition != null && !r.SubstanceDefinition.IsInput);
         }
+
+        public bool TryGetParameterValue(PbkModelParameterType parameterType, out double value) {
+            if (KineticModelDefinition.TryGetParameter(parameterType, out var paramDef) && !paramDef.IsInternalParameter) {
+                if (KineticModelInstanceParameters.TryGetValue(paramDef.Id, out var val)) {
+                    value = val.Value;
+                    return true;
+                } else if (paramDef.DefaultValue.HasValue && !double.IsNaN(paramDef.DefaultValue.Value)) {
+                    value = paramDef.DefaultValue.Value;
+                    return true;
+                }
+            }
+            value = double.NaN;
+            return false;
+        }
     }
 }

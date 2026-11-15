@@ -134,7 +134,7 @@ namespace MCRA.Simulation.Actions.KineticConversionFactors {
             );
             var individuals = ModuleConfig.UseIndividuals
                 ? data.Individuals.Select(r => r.SimulatedIndividual).Distinct().ToList()
-                : [new(new Individual(0), 0)];
+                : null;
 
             var kcfCalculator = new KineticConversionFactorModelCalculator();
             (var kcfs, var simulationOutputs) = kcfCalculator

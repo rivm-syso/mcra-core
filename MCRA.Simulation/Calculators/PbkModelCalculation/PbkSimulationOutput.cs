@@ -8,7 +8,7 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation {
 
         public double AgeEnd { get; set; }
 
-        public double[] BodyWeightTimeSeries { get; set; }
+        public List<(double Time, double BodyWeight)> BodyWeightTimeSeries { get; set; }
 
         public SimulatedIndividual SimulatedIndividual { get; set; }
 

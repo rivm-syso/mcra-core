@@ -448,7 +448,9 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation {
                 if (PbkModelSpecification.TryGetParameter(PbkModelParameterType.BodyWeight, out var bwParam)
                     && bwParam.IsInternalParameter
                 ) {
-                    result.BodyWeightTimeSeries = simulationOutput?.OutputTimeSeries[bwParam.Id];
+                    result.BodyWeightTimeSeries = simulationOutput?.OutputTimeSeries[bwParam.Id]
+                        .Select((r, i) => (i * stepLength, r))
+                        .ToList();
                 }
                 if (PbkModelSpecification.TryGetParameter(PbkModelParameterType.Age, out var ageParam)
                     && ageParam.IsInternalParameter
