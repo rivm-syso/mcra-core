@@ -66,33 +66,20 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 );
             }
             {
-                int ncols = 3;
-                int nrows = (int)Math.Ceiling(1.0 * Model.Records.Count / ncols);
-                var ix = 0;
-
                 var tabSb = new StringBuilder();
-                tabSb.Append("<table><tbody>");
-                for (int i = 0; i < nrows; i++) {
-                    tabSb.Append("<tr>");
-                    for (int j = 0; j < ncols; j++) {
-                        tabSb.Append("<td>");
-                        if (ix < Model.Records.Count) {
-                            var record = Model.Records[ix++];
-                            var chartCreator = new DerivedKineticConversionFactorModelScatterChartCreator(record, Model.SectionId);
-                            tabSb.AppendChart(
-                                $"SubstanceTargetExposureCorrelationScatterChart_{record.GetKey()}",
-                                chartCreator: chartCreator,
-                                fileType: ChartFileType.Svg,
-                                section: Model,
-                                viewBag: ViewBag,
-                                saveChartFile: false
-                            );
-                        }
-                        tabSb.Append("</td>");
-                    }
-                    tabSb.Append("</tr>");
+                tabSb.Append("<div class=\"figure-container\">");
+                foreach (var record in Model.Records) {
+                    var chartCreator = new DerivedKineticConversionFactorModelScatterChartCreator(record, Model.SectionId);
+                    tabSb.AppendChart(
+                        $"SubstanceTargetExposureCorrelationScatterChart_{record.GetKey()}",
+                        chartCreator: chartCreator,
+                        fileType: ChartFileType.Svg,
+                        section: Model,
+                        viewBag: ViewBag,
+                        saveChartFile: false
+                    );
                 }
-                tabSb.Append("</tbody></table>");
+                tabSb.Append("</div>");
                 targetPanelBuilder.AddPanel(
                     id: "KineticConversionFactorsChartsTab",
                     title: "Charts",
