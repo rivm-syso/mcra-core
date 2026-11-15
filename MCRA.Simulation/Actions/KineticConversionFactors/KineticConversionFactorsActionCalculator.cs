@@ -136,7 +136,8 @@ namespace MCRA.Simulation.Actions.KineticConversionFactors {
                 ? data.Individuals.Select(r => r.SimulatedIndividual).Distinct().ToList()
                 : [new(new Individual(0), 0)];
 
-            var kcfs = KineticConversionFactorModelCalculator
+            var kcfCalculator = new KineticConversionFactorModelCalculator();
+            (var kcfs, var simulationOutputs) = kcfCalculator
                 .ComputeFromPbk(
                     data.ActiveSubstances,
                     data.KineticModelInstances,
@@ -151,10 +152,12 @@ namespace MCRA.Simulation.Actions.KineticConversionFactors {
                     exposureMax: ModuleConfig.ExposureRangeMaximum,
                     numSimulations: ModuleConfig.NumberOfPbkModelSimulations,
                     computeInternalTargetConversionFactors: ModuleConfig.ComputeBetweenInternalTargetConversionFactors,
+                    keepPbkSimulationOutputs: ModuleConfig.IsPbkSimulationDrilldown,
                     progressState: progressReport.NewProgressState(99),
                     generator: generatorPbkModelSimulation
                 );
             result.KineticConversionFactorModels = kcfs;
+            result.PbkSimulationOutputs = simulationOutputs;
 
             localProgress.Update(100);
             return result;

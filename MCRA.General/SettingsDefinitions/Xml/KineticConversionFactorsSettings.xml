@@ -64,4 +64,10 @@
     <Description>Compute kinetic conversion factors for a specific set of individuals specified through the individuals module.</Description>
     <ValueType>Boolean</ValueType>
   </SettingsItem>
+  <SettingsItem>
+    <Id>IsPbkSimulationDrilldown</Id>
+    <Name>Report PBK simulation time series</Name>
+    <Description>Report PBK model simulation output time series.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
 </SettingsItems>

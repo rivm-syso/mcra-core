@@ -54,6 +54,9 @@ namespace MCRA.Simulation.Actions.KineticConversionFactors {
                 if (_configuration.PbkOutputResolutionTimeUnit != PbkModelOutputResolutionTimeUnit.ModelTimeUnit) {
                     section.SummarizeSetting(SettingsItemType.PbkOutputResolutionStepSize, _configuration.PbkOutputResolutionStepSize);
                 }
+                if (_configuration.IsPbkSimulationDrilldown) {
+                    section.SummarizeSetting(SettingsItemType.IsPbkSimulationDrilldown, _configuration.IsPbkSimulationDrilldown);
+                }
             } else {
                 section.SummarizeSetting(SettingsItemType.KCFSubgroupDependent, _configuration.KCFSubgroupDependent);
             }

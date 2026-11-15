@@ -1,4 +1,5 @@
-﻿using MCRA.General;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.General.OpexProductDefinitions.Dto;
 using MCRA.Simulation.Action;
@@ -6,12 +7,14 @@ using MCRA.Simulation.Calculators.KineticConversionFactorModels;
 using MCRA.Simulation.Calculators.KineticConversionFactorModels.KineticConversionFactorModelCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
+using Microsoft.AspNetCore.Http;
 
 namespace MCRA.Simulation.Actions.KineticConversionFactors {
 
     public enum KineticConversionFactorsSections {
         KineticConversionFactorsSection,
         KineticConversionFactorModelsSection,
+        PbkSimulationOutputsSection
     }
 
     public sealed class KineticConversionFactorsSummarizer : ActionModuleResultsSummarizer<KineticConversionFactorsModuleConfig, KineticConversionFactorsActionResult> {
@@ -52,6 +55,15 @@ namespace MCRA.Simulation.Actions.KineticConversionFactors {
             }
 
             summarizeDerivedKineticConversionFactorModels(data, order++, subHeader);
+
+            if (outputSettings.ShouldSummarize(KineticConversionFactorsSections.PbkSimulationOutputsSection)) {
+                summarizePbkSimulationOutputs(
+                    data,
+                    actionResult,
+                    subHeader,
+                    order++
+                );
+            }
         }
 
         public void SummarizeUncertain(
@@ -114,6 +126,30 @@ namespace MCRA.Simulation.Actions.KineticConversionFactors {
                 var section = new DerivedKineticConversionFactorModelsSummarySection();
                 var subHeader = header.AddSubSectionHeaderFor(section, "Derived kinetic conversion factor models", order);
                 section.Summarize(empiricalKineticConversionFactorModels);
+                subHeader.SaveSummarySection(section);
+            }
+        }
+
+        /// <summary>
+        /// Summarize conversion factor models.
+        /// </summary>
+        private void summarizePbkSimulationOutputs(
+            ActionData data,
+            KineticConversionFactorsActionResult result,
+            SectionHeader header,
+            int order
+        ) {
+            if (result?.PbkSimulationOutputs?.Count > 0) {
+                var section = new PbkSimulationDrilldownSection();
+                var subHeader = header.AddSubSectionHeaderFor(
+                    section: section,
+                    title: "PBK simulation drilldown",
+                    order: order
+                );
+
+                section.Summarize(
+                    result.PbkSimulationOutputs
+                );
                 subHeader.SaveSummarySection(section);
             }
         }
