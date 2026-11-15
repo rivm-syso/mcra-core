@@ -186,30 +186,35 @@ namespace MCRA.Simulation.Calculators.PbkModelCalculation {
 
                 // Check for reference age parameter
                 if (PbkModelSpecification.TryGetParameter(PbkModelParameterType.AgeRef, out var ageRefParam)) {
-                    if (!individual.Age.HasValue) {
-                        throw new Exception($"Cannot set age parameter for PBK model [{PbkModelSpecification.Name}]: some individuals have an unspecified age.");
+                    if (individual.Age.HasValue) {
+                        parametrisation[ageRefParam.Id] = individual.Age.Value;
+                    } else {
+                        // Individual does not have an age: use PBK model default
                     }
-                    parametrisation[ageRefParam.Id] = individual.Age.Value;
                 }
 
                 // Check for reference body weight parameter
                 if (PbkModelSpecification.TryGetParameter(PbkModelParameterType.BodyWeightRef, out var bwRefParam)) {
-                    if (double.IsNaN(individual.BodyWeight)) {
-                        throw new Exception($"Cannot set bodyweight parameter for PBK model [{PbkModelSpecification.Name}]: some individuals have an unspecified bodyweight.");
+                    if (!double.IsNaN(individual.BodyWeight)) {
+                        parametrisation[bwRefParam.Id] = individual.BodyWeight;
+                    } else {
+                        // Individual does not have a BW: use PBK model default
                     }
-                    parametrisation[bwRefParam.Id] = individual.BodyWeight;
                 }
 
                 // Check for reference age parameter
                 if (PbkModelSpecification.TryGetParameter(PbkModelParameterType.AgeInit, out var ageInitParam)) {
                     var ageInit = SimulationSettings.PbkSimulationMethod switch {
-                        PbkSimulationMethod.Standard => individual.Age.Value,
                         PbkSimulationMethod.LifetimeToSpecifiedAge => 0D,
                         PbkSimulationMethod.LifetimeToCurrentAge => 0D,
-                        PbkSimulationMethod.LifetimeWindowToCurrent => Math.Max(0, individual.Age.Value - SimulationSettings.LifetimeWindowYears),
+                        PbkSimulationMethod.LifetimeWindowToCurrent => individual.Age.HasValue
+                            ? Math.Max(0, individual.Age.Value - SimulationSettings.LifetimeWindowYears)
+                            : throw new InvalidOperationException("Individual age is required for the selected PBK simulation method."),
                         PbkSimulationMethod.LifetimeRange => SimulationSettings.LifetimeStartAge,
-                        PbkSimulationMethod.LifetimeCurrentToSpecifiedAge => individual.Age.Value,
-                        PbkSimulationMethod.LifetimeCurrentAgeForward => individual.Age.Value,
+                        PbkSimulationMethod.LifetimeCurrentToSpecifiedAge => individual.Age
+                            ?? throw new InvalidOperationException("Individual age is required for the selected PBK simulation method."),
+                        PbkSimulationMethod.LifetimeCurrentAgeForward => individual.Age
+                            ?? throw new InvalidOperationException("Individual age is required for the selected PBK simulation method."),
                         _ => throw new NotImplementedException(),
                     };
                     parametrisation[ageInitParam.Id] = ageInit;
