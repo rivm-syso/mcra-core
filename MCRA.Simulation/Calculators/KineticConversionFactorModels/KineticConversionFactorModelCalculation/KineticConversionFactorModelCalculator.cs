@@ -104,7 +104,7 @@ namespace MCRA.Simulation.Calculators.KineticConversionFactorModels {
                 } else if (pbkModelInstance.TryGetParameterValue(PbkModelParameterType.BodyWeightRef, out var bwRef)) {
                     individual.BodyWeight = bwRef;
                     if (pbkModelInstance.TryGetParameterValue(PbkModelParameterType.AgeRef, out var ageRef)) {
-                        individual.BodyWeight = ageRef;
+                        individual.Age = ageRef;
                     }
                 }
                 individuals = [individual];
