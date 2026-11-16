@@ -83,20 +83,15 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.SbmlMod
         }
 
         [TestMethod]
-        [DataRow(5, 10, ExposureEventsGenerationMethod.DailyAverageEvents, true, true)]
-        [DataRow(5, 10, ExposureEventsGenerationMethod.DailyAverageEvents, true, false)]
-        [DataRow(5, 10, ExposureEventsGenerationMethod.RandomDailyEvents, true, true)]
-        [DataRow(5, 10, ExposureEventsGenerationMethod.RandomDailyEvents, true, false)]
-        [DataRow(5, 10, ExposureEventsGenerationMethod.DailyAverageEvents, false, true)]
-        [DataRow(5, 10, ExposureEventsGenerationMethod.DailyAverageEvents, false, false)]
-        [DataRow(5, 10, ExposureEventsGenerationMethod.RandomDailyEvents, false, true)]
-        [DataRow(5, 10, ExposureEventsGenerationMethod.RandomDailyEvents, false, false)]
+        [DataRow(5, 10, ExposureEventsGenerationMethod.DailyAverageEvents, true)]
+        [DataRow(5, 10, ExposureEventsGenerationMethod.DailyAverageEvents, false)]
+        [DataRow(5, 10, ExposureEventsGenerationMethod.RandomDailyEvents, true)]
+        [DataRow(5, 10, ExposureEventsGenerationMethod.RandomDailyEvents, false)]
         public void SbmlPbkModelCalculator_TestCalculate(
             int numIndividuals,
             int numSimulatedDays,
             ExposureEventsGenerationMethod exposureEventsGenerationMethod,
-            bool reuse,
-            bool bodyweightAdjusted
+            bool reuse
         ) {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
@@ -110,7 +105,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.SbmlMod
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
             var instance = createFakeModelInstance(substance);
             var simulationSettings = new PbkSimulationSettings() {
-                BodyWeightCorrected = bodyweightAdjusted,
                 ExposureEventsGenerationMethod = exposureEventsGenerationMethod,
                 NumberOfSimulatedDays = numSimulatedDays
             };
@@ -155,7 +149,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.PbkModelCalculation.SbmlMod
 
             var instance = createFakeModelInstance(substance);
             var simulationSettings = new PbkSimulationSettings() {
-                BodyWeightCorrected = true,
                 ExposureEventsGenerationMethod = ExposureEventsGenerationMethod.DailyAverageEvents,
                 NumberOfSimulatedDays = 50,
             };

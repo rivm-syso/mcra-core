@@ -119,7 +119,7 @@ namespace MCRA.Simulation.Calculators.KineticConversionFactorModels {
                 substance,
                 route,
                 doses,
-                simulationSettings.BodyWeightCorrected
+                simulationSettings.ApplyBodyWeightScaling
             );
             var simulatedDoses = externalIndividualExposures.Select(r => r.dose).ToList();
             var simulatedExposures = externalIndividualExposures.Select(r => (r.Item1, r.Item3)).ToList();
@@ -209,6 +209,10 @@ namespace MCRA.Simulation.Calculators.KineticConversionFactorModels {
             List<double> doses,
             bool bwAdjusted
         ) {
+            if (bwAdjusted && individuals.Any(r => double.IsNaN(r.BodyWeight))) {
+                throw new NotImplementedException("Cannot run PBK model with bodyweight adjusted exposures for individuals with a missing bodyweight.");
+            }
+
             var result = new List<(SimulatedIndividual individual, double dose, List<IExternalIndividualDayExposure> exposure)>();
             var ix = 0;
             foreach (var individual in individuals) {
@@ -216,7 +220,8 @@ namespace MCRA.Simulation.Calculators.KineticConversionFactorModels {
                     var pathExposures = new Dictionary<ExposurePath, List<IIntakePerCompound>> {
                         [new ExposurePath(ExposureSource.Undefined, route)] = [
                             new AggregateIntakePerCompound() {
-                                Amount = dose,
+                                // If BW adjusted, then multiply the amount by BW to get per BW exposure
+                                Amount = bwAdjusted ? dose * individual.BodyWeight : dose,
                                 Compound = substance,
                             }
                         ]
