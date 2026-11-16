@@ -139,19 +139,29 @@ namespace MCRA.Simulation.Actions.KineticConversionFactors {
             SectionHeader header,
             int order
         ) {
-            if (result?.PbkSimulationOutputs?.Count > 0) {
-                var section = new PbkSimulationDrilldownSection();
-                var subHeader = header.AddSubSectionHeaderFor(
-                    section: section,
-                    title: "PBK simulation drilldown",
-                    order: order
-                );
+            if (result?.KineticConversionFactorCalculationResults?.Any(r => r.PbkSimulationOutputs?.Count > 0) ?? false) {
+                var subHeader = header.AddEmptySubSectionHeader("PBK simulation drilldown", order++);
+                var subOrder = 0;
 
-                section.Summarize(
-                    result.PbkSimulationOutputs,
-                    _configuration.PbkSimulationMethod != PbkSimulationMethod.Standard
-                );
-                subHeader.SaveSummarySection(section);
+                var orderedRecords = result.KineticConversionFactorCalculationResults
+                    .OrderBy(r => r.Substance.Name)
+                    .ThenBy(r => r.Route)
+                    .ToList();
+                foreach (var record in orderedRecords) {
+                    var section = new PbkSimulationDrilldownSection();
+                    var subSubHeader = subHeader.AddSubSectionHeaderFor(
+                        section: section,
+                        title: $"{record.Substance.Name} - {record.Route.GetDisplayName()}",
+                        order: subOrder++
+                    );
+                    section.Summarize(
+                        record,
+                        result.ExposureUnit,
+                        _configuration.PbkSimulationMethod != PbkSimulationMethod.Standard,
+                        _configuration.NonStationaryPeriod
+                    );
+                    subSubHeader.SaveSummarySection(section);
+                }
             }
         }
 

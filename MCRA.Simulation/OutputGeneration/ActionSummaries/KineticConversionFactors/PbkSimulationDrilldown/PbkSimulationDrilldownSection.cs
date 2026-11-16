@@ -1,4 +1,5 @@
-﻿using MCRA.Simulation.Calculators.PbkModelCalculation;
+﻿using MCRA.General;
+using MCRA.Simulation.Calculators.KineticConversionFactorModels.KineticConversionFactorModelCalculation;
 using static MCRA.General.TargetUnit;
 
 namespace MCRA.Simulation.OutputGeneration {
@@ -7,41 +8,53 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public bool IsLifetime { get; set; }
         public int NumberOfDaysSkipped { get; set; }
+        public string DoseUnit { get; set; }
 
         public List<PbkSimulationDrilldownRecord> Records { get; set; }
 
         public void Summarize(
-            ICollection<PbkSimulationOutput> pbkSimulationOutputs,
-            bool isLifeTime
+            KineticConversionFactorCalculationResult resultRecord,
+            ExposureUnitTriple exposureUnit,
+            bool isLifeTime,
+            int numberOfDaysSkipped
         ) {
-            var records = new List<PbkSimulationDrilldownRecord>();
             var ix = 0;
-            foreach (var output in pbkSimulationOutputs) {
+            var records = new List<PbkSimulationDrilldownRecord>();
+            foreach (var output in resultRecord.PbkSimulationOutputs) {
                 ix++;
-                foreach (var item in output.SubstanceTargetLevelTimeSeries) {
+                foreach (var item in output.SimulationOutput.SubstanceTargetLevelTimeSeries) {
                     var record = new PbkSimulationDrilldownRecord() {
-                        SimulationId = $"Simulation {ix}",
+                        SimulationId = $"{ix}",
+                        Dose = output.Dose,
+                        DoseRoute = resultRecord.Route,
+                        SubstanceCode = resultRecord.Substance.Code,
+                        SubstanceName = resultRecord.Substance.Name,
                         EndpointCode = $"{item.Substance.Code}_{item.TargetUnit.Target}",
                         EndpointName = $"{item.Substance.Name} in {item.TargetUnit.Target.GetDisplayName()}",
-                        Unit = item.TargetUnit.GetShortDisplayName(DisplayOption.UnitOnly),
+                        EndpointUnit = item.TargetUnit.GetShortDisplayName(DisplayOption.UnitOnly),
                         OutputTimeSeries = [.. item.Exposures.Select(r => (r.Time, r.Exposure))]
                     };
                     records.Add(record);
                 }
-                if (output.BodyWeightTimeSeries != null) {
+                if (output.SimulationOutput.BodyWeightTimeSeries != null) {
                     var record = new PbkSimulationDrilldownRecord() {
-                        SimulationId = $"Simulation {ix}",
+                        SimulationId = $"{ix}",
+                        Dose = output.Dose,
+                        DoseRoute = resultRecord.Route,
+                        SubstanceCode = resultRecord.Substance.Code,
+                        SubstanceName = resultRecord.Substance.Name,
                         EndpointCode = $"BW",
                         EndpointName = $"Bodyweight",
-                        Unit = "kg",
-                        OutputTimeSeries = [.. output.BodyWeightTimeSeries]
+                        EndpointUnit = "kg",
+                        OutputTimeSeries = [.. output.SimulationOutput.BodyWeightTimeSeries]
                     };
                     records.Add(record);
                 }
             }
             Records = records;
-            NumberOfDaysSkipped = 10;
+            NumberOfDaysSkipped = numberOfDaysSkipped;
             IsLifetime = isLifeTime;
+            DoseUnit = exposureUnit.GetShortDisplayName();
         }
     }
 }

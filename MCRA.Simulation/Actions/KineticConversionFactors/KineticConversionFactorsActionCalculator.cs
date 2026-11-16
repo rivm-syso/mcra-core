@@ -10,6 +10,7 @@ using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Calculators.KineticConversionFactorModels;
 using MCRA.Simulation.Calculators.PbkModelCalculation;
 using MCRA.Simulation.OutputGeneration;
+using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.RandomGenerators;
@@ -95,7 +96,9 @@ namespace MCRA.Simulation.Actions.KineticConversionFactors {
             var result = new KineticConversionFactorsActionResult();
             var localProgress = progressReport.NewProgressState(1);
 
-            var externalExposureUnit = ExposureUnitTriple.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
+            var externalExposureUnit = ModuleConfig.BodyWeightCorrected
+                ? ExposureUnitTriple.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay)
+                : ExposureUnitTriple.FromExternalExposureUnit(ExternalExposureUnit.ugPerDay);
 
             // Determine internal targets and appropriate internal unit
             var internalTargets = ModuleConfig.InternalMatrices
@@ -137,7 +140,7 @@ namespace MCRA.Simulation.Actions.KineticConversionFactors {
                 : null;
 
             var kcfCalculator = new KineticConversionFactorModelCalculator();
-            (var kcfs, var simulationOutputs) = kcfCalculator
+            var kcfResult = kcfCalculator
                 .ComputeFromPbk(
                     data.ActiveSubstances,
                     data.KineticModelInstances,
@@ -156,8 +159,9 @@ namespace MCRA.Simulation.Actions.KineticConversionFactors {
                     progressState: progressReport.NewProgressState(99),
                     generator: generatorPbkModelSimulation
                 );
-            result.KineticConversionFactorModels = kcfs;
-            result.PbkSimulationOutputs = simulationOutputs;
+            result.ExposureUnit = externalExposureUnit;
+            result.KineticConversionFactorModels = kcfResult.SelectMany(r => r.ConversionFactors).ToList();
+            result.KineticConversionFactorCalculationResults = kcfResult;
 
             localProgress.Update(100);
             return result;

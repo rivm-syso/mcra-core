@@ -14,7 +14,7 @@ using MCRA.Utils.Statistics.Modelling;
 namespace MCRA.Simulation.Calculators.KineticConversionFactorModels {
     public class KineticConversionFactorModelCalculator {
 
-        public (List<IKineticConversionFactorModel> conversionFactors, List<PbkSimulationOutput> pbkSimulationOutputs) ComputeFromPbk(
+        public List<KineticConversionFactorCalculationResult> ComputeFromPbk(
             ICollection<Compound> activeSubstance,
             ICollection<KineticModelInstance> pbkModelInstances,
             PbkSimulationSettings simulationSettings,
@@ -32,8 +32,7 @@ namespace MCRA.Simulation.Calculators.KineticConversionFactorModels {
             ProgressState progressState,
             IRandom generator
         ) {
-            var result = new List<IKineticConversionFactorModel>();
-            var pbkSimulationOutputs = new List<PbkSimulationOutput>();
+            var result = new List<KineticConversionFactorCalculationResult>();
 
             var exposures = GriddingFunctions.LogSpace(exposureMin, exposureMax, numSimulations).ToList();
             var pbkModelLookup = pbkModelInstances
@@ -55,7 +54,7 @@ namespace MCRA.Simulation.Calculators.KineticConversionFactorModels {
                 );
                 for (int i = 0; i < exposureRoutes.Count; i++) {
                     var route = exposureRoutes.ElementAt(i);
-                    var (conversionFactors, simulationOutputs) = ComputeFromPbk(
+                    var record = ComputeFromPbk(
                         substance,
                         pbkModelInstance,
                         simulationSettings,
@@ -67,19 +66,17 @@ namespace MCRA.Simulation.Calculators.KineticConversionFactorModels {
                         exposures,
                         individuals,
                         i == 0 && computeInternalTargetConversionFactors,
+                        keepPbkSimulationOutputs,
                         progressState,
                         generator
                     );
-                    result.AddRange(conversionFactors);
-                    if (keepPbkSimulationOutputs) {
-                        pbkSimulationOutputs.AddRange(simulationOutputs);
-                    }
+                    result.Add(record);
                 }
             }
-            return (result, pbkSimulationOutputs);
+            return result;
         }
 
-        public static (List<IKineticConversionFactorModel> conversionFactors, List<PbkSimulationOutput> pbkSimulationOutputs) ComputeFromPbk(
+        public static KineticConversionFactorCalculationResult ComputeFromPbk(
             Compound substance,
             KineticModelInstance pbkModelInstance,
             PbkSimulationSettings simulationSettings,
@@ -91,10 +88,11 @@ namespace MCRA.Simulation.Calculators.KineticConversionFactorModels {
             List<double> doses,
             ICollection<SimulatedIndividual> individuals,
             bool computeInternalTargetConversionFactors,
+            bool keepPbkSimulationOutputs,
             ProgressState progressState,
             IRandom generator
         ) {
-            var result = new List<IKineticConversionFactorModel>();
+            var conversionFactorRecords = new List<IKineticConversionFactorModel>();
 
             // If no individuals were provided, create one nominal individual
             if (individuals == null || individuals.Count == 0) {
@@ -110,6 +108,7 @@ namespace MCRA.Simulation.Calculators.KineticConversionFactorModels {
                 individuals = [individual];
             }
 
+            // Create PBK model calculator
             var pbkModelCalculator = PbkModelCalculatorFactory
                 .Create(pbkModelInstance, simulationSettings, absorptionFactors);
 
@@ -156,7 +155,7 @@ namespace MCRA.Simulation.Calculators.KineticConversionFactorModels {
                         targetUnit,
                         toTargetExposures
                     );
-                    result.Add(record);
+                    conversionFactorRecords.Add(record);
                 }
             }
 
@@ -184,14 +183,23 @@ namespace MCRA.Simulation.Calculators.KineticConversionFactorModels {
                                     toTargetUnit,
                                     toTargetExposures
                                 );
-                                result.Add(record);
+                                conversionFactorRecords.Add(record);
                             }
                         }
                     }
                 }
             }
 
-            return (result, simulationResults);
+            var result = new KineticConversionFactorCalculationResult() {
+                Route = route,
+                Substance = substance,
+                ExposureUnit = externalExposureUnit,
+                ConversionFactors = conversionFactorRecords,
+                PbkSimulationOutputs = keepPbkSimulationOutputs
+                    ? simulationResults.Zip(simulatedDoses, (r, d) => (d, r)).ToList()
+                    : null,
+            };
+            return result;
         }
 
         private static List<(SimulatedIndividual, double dose, List<IExternalIndividualDayExposure>)> createExternalIndividualExposures(

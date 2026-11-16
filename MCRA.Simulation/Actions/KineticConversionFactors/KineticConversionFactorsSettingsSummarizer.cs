@@ -19,6 +19,7 @@ namespace MCRA.Simulation.Actions.KineticConversionFactors {
                 section.SummarizeSetting(SettingsItemType.InternalMatrices, _configuration.InternalMatrices);
                 section.SummarizeSetting(SettingsItemType.ExposureRangeMinimum, _configuration.ExposureRangeMinimum);
                 section.SummarizeSetting(SettingsItemType.ExposureRangeMaximum, _configuration.ExposureRangeMaximum);
+                section.SummarizeSetting(SettingsItemType.BodyWeightCorrected, _configuration.BodyWeightCorrected);
                 section.SummarizeSetting(SettingsItemType.NumberOfPbkModelSimulations, _configuration.NumberOfPbkModelSimulations);
                 section.SummarizeSetting(SettingsItemType.ComputeBetweenInternalTargetConversionFactors, _configuration.ComputeBetweenInternalTargetConversionFactors);
                 section.SummarizeSetting(SettingsItemType.UseIndividuals, _configuration.UseIndividuals);

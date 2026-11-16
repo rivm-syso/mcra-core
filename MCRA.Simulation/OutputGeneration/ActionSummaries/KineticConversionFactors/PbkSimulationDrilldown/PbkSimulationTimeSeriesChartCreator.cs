@@ -59,7 +59,7 @@ namespace MCRA.Simulation.OutputGeneration {
             plotModel.Axes.Add(xAxis);
 
             // Y-axis
-            var ytitle = $"{record.EndpointName} ({record.Unit})";
+            var ytitle = $"{record.EndpointName} ({record.EndpointUnit})";
             var verticalAxis = createLinearAxis(ytitle);
             verticalAxis.Maximum = yValues.DefaultIfEmpty(1).Max() * 1.05;
             verticalAxis.Minimum = 0;

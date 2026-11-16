@@ -38,7 +38,7 @@
     <Id>ExposureRangeMinimum</Id>
     <Name>Exposure range minimum</Name>
     <Description>
-      Minimum of the external exposure range for PBK model simulations used to derive kinetic conversion factors from PBK model simulations.
+      Minimum of the external exposure range for PBK model simulations used to derive kinetic conversion factors from PBK model simulations (substance amounts in µg).
     </Description>
     <ValueType>Numeric</ValueType>
     <DefaultValue>1e-1</DefaultValue>
@@ -47,7 +47,7 @@
     <Id>ExposureRangeMaximum</Id>
     <Name>Exposure range maximum</Name>
     <Description>
-      Maximum of the external exposure range for PBK model simulations used to derive kinetic conversion factors from PBK model simulations.
+      Maximum of the external exposure range for PBK model simulations used to derive kinetic conversion factors from PBK model simulations (substance amounts in µg).
     </Description>
     <ValueType>Numeric</ValueType>
     <DefaultValue>1e2</DefaultValue>
