@@ -25,19 +25,15 @@ namespace MCRA.Utils.Sbml.Simulation {
         public void LoadModelFromFile(string filename) {
             using (var gil = Py.GIL()) {
                 _model = _rr.RoadRunner(filename);
+                _model.integrator.maximum_num_steps = 1000000;
             }
         }
 
         public void LoadModelFromXmlString(string xml) {
             using (var gil = Py.GIL()) {
                 _model = _rr.RoadRunner(xml);
+                _model.integrator.maximum_num_steps = 1000000;
             }
-        }
-
-        private void reset() {
-            _model.resetToOrigin();
-            _model.resetAll();
-            _model.integrator.maximum_num_steps = 1000000;
         }
 
         public SbmlSimulationResult Run(
@@ -50,7 +46,7 @@ namespace MCRA.Utils.Sbml.Simulation {
         ) {
             using (var gil = Py.GIL()) {
                 // (Re)initialize model
-                reset();
+                _model.resetAll();
 
                 // Create model exposure events
                 var eventsChanged = setEvents(events);
@@ -65,6 +61,8 @@ namespace MCRA.Utils.Sbml.Simulation {
                 // Regenerate model only if events changed or not reusing
                 if (eventsChanged) {
                     _model.regenerateModel(true, true);
+                } else {
+                    _model.reset();
                 }
 
                 // Specify selected output for roadrunner, including time
