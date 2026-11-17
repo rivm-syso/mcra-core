@@ -16,8 +16,6 @@
       <TableIds>
         <TableId>KineticModelInstances</TableId>
         <TableId>KineticModelInstanceParameters</TableId>
-        <TableId>PbkModelInstances</TableId>
-        <TableId>PbkModelParametrisations</TableId>
       </TableIds>
     </DataFormat>
   </DataFormats>
