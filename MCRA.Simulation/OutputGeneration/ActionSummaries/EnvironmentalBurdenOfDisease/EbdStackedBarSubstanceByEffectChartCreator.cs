@@ -18,7 +18,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.EnvironmentalBurdenOf
             _records = records;
             _sectionId = sectionId;
             _isUncertainty = isUncertainty;
-            Height = 150 + _records.Select(r => r.SubstanceCode).Distinct().Count();
+            Height = 150 + _records.Select(r => r.SubstanceCode).Distinct().Count() * 25;
             Width = 500;
         }
 
@@ -75,7 +75,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.EnvironmentalBurdenOf
                 };
                 stackedColumnWithErrorItems.Add(stackedColumnWithErrorItem);
             }
-            return create(stackedColumnWithErrorItems, uncertainty: _isUncertainty);
+            return create(stackedColumnWithErrorItems, uncertainty: _isUncertainty, xTitle: _records.First().BodIndicator);
         }
     }
 }

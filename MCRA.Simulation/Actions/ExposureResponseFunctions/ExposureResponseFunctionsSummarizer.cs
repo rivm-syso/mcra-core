@@ -1,8 +1,6 @@
 ﻿using MCRA.General;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
-using MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease;
-using MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation;
 using MCRA.Simulation.Calculators.ExposureResponseFunctions;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
@@ -34,6 +32,7 @@ namespace MCRA.Simulation.Actions.ExposureResponseFunctions {
             // Table of ERF subgroups.
             if (outputSettings.ShouldSummarize(ExposureResponseFunctionsSections.ErfSubgroupSummarySection)
                 && data.ExposureResponseFunctionModels.Count > 0
+                && data.ExposureResponseFunctionModels.Any(r => r.HasErfSubGroups)
             ) {
                 summarizeErfSubgroups(
                     data.ExposureResponseFunctionModels,

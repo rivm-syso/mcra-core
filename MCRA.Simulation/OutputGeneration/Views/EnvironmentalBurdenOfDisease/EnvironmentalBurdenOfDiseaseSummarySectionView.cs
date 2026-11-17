@@ -37,10 +37,19 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             var hasShift = !Model.Records.All(c => c.TotalPopulationShift == 0D) &&
                 !Model.Records.All(c => c.UpperTotalPopulationShift == 0D);
             if (!hasBod) {
+                hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.TotalPopulationAttributableFraction));
+                hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.MedianTotalPopulationAttributableFraction));
+                hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.LowerTotalPopulationAttributableFraction));
+                hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.UpperTotalPopulationAttributableFraction));
                 hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.TotalAttributableBod));
                 hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.MedianTotalAttributableBod));
                 hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.LowerTotalAttributableBod));
                 hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.UpperTotalAttributableBod));
+                hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.StandardisedTotalAttributableBod));
+                hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.MedianStandardisedTotalAttributableBod));
+                hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.LowerStandardisedTotalAttributableBod));
+                hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.UpperStandardisedTotalAttributableBod));
+
             }
             if (!hasShift) {
                 hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.TotalPopulationShift));
@@ -83,8 +92,8 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties: hiddenProperties
             );
 
-            if (Model.Records.GroupBy(r => (r.BodIndicator, r.EffectCode)).Any(g => g.Count() > 0)) {
-                sb.AppendWarning($"Summary of total attributable burden omitted because of potential double-counting of the same effect.");
+            if (Model.Records.GroupBy(r => (r.BodIndicator, r.EffectCode, r.SubstanceCode)).All(g => g.Count() > 1)) {
+                sb.AppendWarning($"Summary of total attributable burden omitted because of potential double-counting of the same effect for all bod indicators.");
             } else {
                 var panelBuilder = new HtmlTabPanelBuilder();
                 var panelGroup = Model.Records
@@ -96,44 +105,48 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     var name = group.Key;
 
                     var panelSb = new StringBuilder();
-                    panelSb.Append("<div class=\"figure-container\">");
 
-                    var chartSubstanceByEffectCreator = new EbdStackedBarSubstanceByEffectChartCreator(
-                        Model.SectionId,
-                        Model.Records,
-                        isUncertainty
-                    );
-                    panelSb.AppendChart(
-                            name: $"EbdSubstanceByEffectChart_{key}",
+                    if (group.GroupBy(r => (r.EffectCode, r.SubstanceCode)).Any(g => g.Count() > 1)) {
+                        panelSb.AppendWarning($"Summary of total attributable burden for {key} omitted because of potential double-counting of the same effect.");
+                    } else {
+                        panelSb.Append("<div class=\"figure-container\">");
+
+                        var chartSubstanceByEffectCreator = new EbdStackedBarSubstanceByEffectChartCreator(
+                            Model.SectionId,
+                            [.. group],
+                            isUncertainty
+                        );
+                        panelSb.AppendChart(
+                                name: $"EbdSubstanceByEffectChart_{key}",
+                                section: Model,
+                                chartCreator: chartSubstanceByEffectCreator,
+                                fileType: ChartFileType.Svg,
+                                viewBag: ViewBag,
+                                saveChartFile: true,
+                                caption: chartSubstanceByEffectCreator.Title
+                            );
+
+                        var chartEffectBySubstanceCreator = new EbdStackedBarEffectBySubstanceChartCreator(
+                            Model.SectionId,
+                            [.. group],
+                            isUncertainty
+                        );
+                        panelSb.AppendChart(
+                            name: $"EbdEffectBySubstanceChart_{key}",
                             section: Model,
-                            chartCreator: chartSubstanceByEffectCreator,
+                            chartCreator: chartEffectBySubstanceCreator,
                             fileType: ChartFileType.Svg,
                             viewBag: ViewBag,
                             saveChartFile: true,
-                            caption: chartSubstanceByEffectCreator.Title
+                            caption: chartEffectBySubstanceCreator.Title
                         );
-
-                    var chartEffectBySubstanceCreator = new EbdStackedBarEffectBySubstanceChartCreator(
-                        Model.SectionId,
-                        Model.Records,
-                        isUncertainty
-                    );
-                    panelSb.AppendChart(
-                        name: $"EbdEffectBySubstamceChart_{key}",
-                        section: Model,
-                        chartCreator: chartEffectBySubstanceCreator,
-                        fileType: ChartFileType.Svg,
-                        viewBag: ViewBag,
-                        saveChartFile: true,
-                        caption: chartEffectBySubstanceCreator.Title
-                    );
-
-                    panelSb.Append("\"</div>\"");
+                        panelSb.Append("\"</div>\"");
+                    }
                     panelBuilder.AddPanel(
                         id: $"Panel_{key}",
                         title: name,
                         hoverText: key,
-                        content: new HtmlString(sb.ToString())
+                        content: new HtmlString(panelSb.ToString())
                     );
 
                     panelBuilder.RenderPanel(sb, collapseSingleTab: true);

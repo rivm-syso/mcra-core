@@ -9,7 +9,8 @@ namespace MCRA.Utils.Charting.OxyPlot {
         protected PlotModel create(
             List<StackedColumnWithErrorItem> data,
             OxyPalette palette = null,
-            bool uncertainty = false
+            bool uncertainty = false,
+            string xTitle = null
         ) {
             var categories = data.GroupBy(d => d.Label).ToList();
             var subCategories = data
@@ -36,7 +37,8 @@ namespace MCRA.Utils.Charting.OxyPlot {
                 Key = "x",
                 MaximumPadding = 0.06,
                 MinimumPadding = 0,
-                Position = AxisPosition.Bottom
+                Position = AxisPosition.Bottom,
+                Title = xTitle
             };
             plotModel.Axes.Add(linearAxis);
 

@@ -18,7 +18,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.EnvironmentalBurdenOf
             _records = records;
             _sectionId = sectionId;
             _isUncertainty = isUncertainty;
-            Height = 150 + _records.Select(r => r.EffectCode).Distinct().Count();
+            Height = 150 + _records.Select(r => r.EffectCode).Distinct().Count() * 25;
             Width = 500;
         }
 
@@ -43,17 +43,29 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.EnvironmentalBurdenOf
                 var subCategories = effectRecords
                     .ToDictionary(
                         r => r.SubstanceName,
-                        r => _isUncertainty ?
-                          (hasPopulationSize ? r.MedianStandardisedTotalAttributableBod : r.MedianTotalAttributableBod) :
-                          (hasPopulationSize ? r.StandardisedTotalAttributableBod : r.TotalAttributableBod));
+                        r => _isUncertainty
+                            ? (hasPopulationSize
+                                ? r.MedianStandardisedTotalAttributableBod
+                                : r.MedianTotalAttributableBod
+                            )
+                            : (hasPopulationSize
+                                ? r.StandardisedTotalAttributableBod
+                                : r.TotalAttributableBod)
+                    );
 
                 var value = subCategories.Sum(r => r.Value);
-                var lower = _isUncertainty ? effectRecords
-                    .Sum(r => hasPopulationSize ? r.LowerStandardisedTotalAttributableBod : r.LowerTotalAttributableBod) :
-                    double.NaN;
-                var upper = _isUncertainty ? effectRecords
-                    .Sum(r => hasPopulationSize ? r.UpperStandardisedTotalAttributableBod : r.UpperTotalAttributableBod) :
-                    double.NaN;
+                var lower = _isUncertainty
+                    ? effectRecords.Sum(r => hasPopulationSize
+                        ? r.LowerStandardisedTotalAttributableBod
+                        : r.LowerTotalAttributableBod
+                    )
+                    : double.NaN;
+                var upper = _isUncertainty
+                    ? effectRecords.Sum(r => hasPopulationSize
+                        ? r.UpperStandardisedTotalAttributableBod
+                        : r.UpperTotalAttributableBod
+                    )
+                    : double.NaN;
 
                 var stackedColumnWithErrorItem = new StackedColumnWithErrorItem() {
                     Label = effectRecords.FirstOrDefault().EffectName,
@@ -64,7 +76,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.EnvironmentalBurdenOf
                 };
                 stackedColumnWithErrorItems.Add(stackedColumnWithErrorItem);
             }
-            return create(stackedColumnWithErrorItems, uncertainty: _isUncertainty);
+            return create(stackedColumnWithErrorItems, uncertainty: _isUncertainty, xTitle: _records.First().BodIndicator);
         }
     }
 }
