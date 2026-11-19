@@ -1,13 +1,13 @@
 ﻿using OxyPlot;
 
 namespace MCRA.Utils.Charting.OxyPlot {
-    public class StackedBarChartWithErrorsCreator : OxyPlotStackedBarChartWithErrorsCreator {
+    public class CategorizedBarChartWithErrorsCreator : OxyPlotCategorizedBarChartWithErrorsCreator {
 
-        private List<StackedColumnWithErrorItem> _data;
+        private List<CategorizedColumnWithErrorItem> _data;
         private bool _uncertainty;
 
-        public StackedBarChartWithErrorsCreator(
-            List<StackedColumnWithErrorItem> data,
+        public CategorizedBarChartWithErrorsCreator(
+            List<CategorizedColumnWithErrorItem> data,
             bool uncertainty) {
                 _data = data;
                 _uncertainty = uncertainty;

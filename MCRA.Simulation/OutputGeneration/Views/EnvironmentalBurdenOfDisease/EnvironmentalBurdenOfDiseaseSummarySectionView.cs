@@ -13,6 +13,8 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.StandardisedTotalAttributableBod));
             }
             var isUncertainty = Model.Records.FirstOrDefault()?.TotalAttributableBods.Any() ?? false;
+            var uncertaintyLowerBound = isUncertainty? Model.Records.FirstOrDefault().UncertaintyLowerBound : double.NaN;
+            var uncertaintyUpperBound = isUncertainty? Model.Records.FirstOrDefault().UncertaintyUpperBound : double.NaN;
             if (isUncertainty) {
                 hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.TotalAttributableBod));
                 hiddenProperties.Add(nameof(EnvironmentalBurdenOfDiseaseSummaryRecord.StandardisedTotalAttributableBod));
@@ -111,25 +113,29 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     } else {
                         panelSb.Append("<div class=\"figure-container\">");
 
-                        var chartSubstanceByEffectCreator = new EbdStackedBarSubstanceByEffectChartCreator(
+                        var chartSubstanceByEffectCreator = new EbdCategorizedBarSubstanceByEffectChartCreator(
                             Model.SectionId,
                             [.. group],
-                            isUncertainty
+                            isUncertainty,
+                            uncertaintyLowerBound,
+                            uncertaintyUpperBound
                         );
                         panelSb.AppendChart(
-                                name: $"EbdSubstanceByEffectChart_{key}",
-                                section: Model,
-                                chartCreator: chartSubstanceByEffectCreator,
-                                fileType: ChartFileType.Svg,
-                                viewBag: ViewBag,
-                                saveChartFile: true,
-                                caption: chartSubstanceByEffectCreator.Title
-                            );
+                            name: $"EbdSubstanceByEffectChart_{key}",
+                            section: Model,
+                            chartCreator: chartSubstanceByEffectCreator,
+                            fileType: ChartFileType.Svg,
+                            viewBag: ViewBag,
+                            saveChartFile: true,
+                            caption: chartSubstanceByEffectCreator.Title
+                        );
 
-                        var chartEffectBySubstanceCreator = new EbdStackedBarEffectBySubstanceChartCreator(
+                        var chartEffectBySubstanceCreator = new EbdCategorizedBarEffectBySubstanceChartCreator(
                             Model.SectionId,
                             [.. group],
-                            isUncertainty
+                            isUncertainty,
+                            uncertaintyLowerBound,
+                            uncertaintyUpperBound
                         );
                         panelSb.AppendChart(
                             name: $"EbdEffectBySubstanceChart_{key}",
@@ -140,7 +146,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                             saveChartFile: true,
                             caption: chartEffectBySubstanceCreator.Title
                         );
-                        panelSb.Append("\"</div>\"");
+                        panelSb.Append("</div>");
                     }
                     panelBuilder.AddPanel(
                         id: $"Panel_{key}",

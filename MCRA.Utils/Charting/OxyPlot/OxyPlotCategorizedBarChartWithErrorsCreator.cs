@@ -5,9 +5,9 @@ using OxyPlot.Series;
 
 namespace MCRA.Utils.Charting.OxyPlot {
 
-    public abstract class OxyPlotStackedBarChartWithErrorsCreator : OxyPlotChartCreator {
+    public abstract class OxyPlotCategorizedBarChartWithErrorsCreator : OxyPlotChartCreator {
         protected PlotModel create(
-            List<StackedColumnWithErrorItem> data,
+            List<CategorizedColumnWithErrorItem> data,
             OxyPalette palette = null,
             bool uncertainty = false,
             string xTitle = null
@@ -59,7 +59,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
                 foreach (var category in categories) {
                     var item = category.Single();
                     if (item.Subcategories.TryGetValue(subCategory, out var value)) {
-                        barSeries.Items.Add(new BarItem(value, categoryIndex));
+                        barSeries.Items.Add(new BarItem(value * item.Value, categoryIndex));
                     }
                     categoryIndex++;
                 }

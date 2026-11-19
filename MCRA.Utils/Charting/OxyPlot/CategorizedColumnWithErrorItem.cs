@@ -1,10 +1,10 @@
 ﻿namespace MCRA.Utils.Charting.OxyPlot {
-    public sealed class StackedColumnWithErrorItem : ColumnWithErrorItem {
+    public sealed class CategorizedColumnWithErrorItem : ColumnWithErrorItem {
 
-        public StackedColumnWithErrorItem() {
+        public CategorizedColumnWithErrorItem() {
         }
 
-        public StackedColumnWithErrorItem(double value,
+        public CategorizedColumnWithErrorItem(double value,
             double lower,
             double upper,
             Dictionary<string, double> subcategories,
