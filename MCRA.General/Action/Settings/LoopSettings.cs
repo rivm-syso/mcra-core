@@ -1,10 +1,8 @@
 ﻿using System.Xml;
 using System.Xml.Serialization;
-using MCRA.General;
-using MCRA.General.Action.Settings;
 using MCRA.General.SettingsDefinitions;
 
-namespace MCRA.Simulation.Commander.Models {
+namespace MCRA.General.Action.Settings {
     public enum McraLoopType {
         Scoping,
         DataSource,

@@ -9,7 +9,6 @@ using MCRA.Data.Raw;
 using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action;
-using MCRA.Simulation.Commander.Models;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.OutputGeneration.Helpers;
 using MCRA.Simulation.OutputManagement;

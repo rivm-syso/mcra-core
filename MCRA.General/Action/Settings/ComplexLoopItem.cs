@@ -1,8 +1,6 @@
 ﻿using System.Xml.Serialization;
-using MCRA.General;
-using MCRA.General.Action.Settings;
 
-namespace MCRA.Simulation.Commander.Models {
+namespace MCRA.General.Action.Settings {
     public class ComplexLoopItem {
         public string DisplayName { get; set; }
         public string ShortName { get; set; }
