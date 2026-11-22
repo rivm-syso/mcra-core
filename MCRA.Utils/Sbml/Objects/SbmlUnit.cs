@@ -50,26 +50,35 @@
         public decimal Multiplier { get; set; }
 
         public string GetUnitString() {
-
             var multiplier = Multiplier;
+            var scale = Scale;
+
             string baseUnitString;
             if (Kind == SbmlUnitKind.Dimensionless) {
                 return string.Empty;
             } else if (Kind == SbmlUnitKind.Second) {
-                if (multiplier % 1 != 0) {
-                    throw new NotImplementedException();
+                var normalizedMultiplier = Math.Pow(10, (double)scale) * (double)multiplier;
+                if (Math.Abs(normalizedMultiplier - Math.Round(normalizedMultiplier)) < 1e-5
+                    && _shortTimeUnitMultipliers.TryGetValue((int)normalizedMultiplier, out var str)
+                ) {
+                    baseUnitString = str;
+                    multiplier = 1;
+                    scale = 0;
+                } else {
+                    baseUnitString = _shortTimeUnitMultipliers[1];
                 }
-                baseUnitString = _shortTimeUnitMultipliers[(int)Multiplier];
-                multiplier = 1;
             } else {
                 baseUnitString = _siShortBaseUnitStrings[Kind];
             }
 
-            if (Scale % 1 != 0) {
-                throw new NotImplementedException();
+            string scaleString;
+            if (Math.Abs((double)scale - Math.Round((double)scale)) < 1e-5
+                && _siShortPrefixes.TryGetValue((int)scale, out var scaleStr)
+            ) {
+                scaleString = scaleStr;
+            } else {
+                scaleString = $"10^{scale} ";
             }
-
-            var scaleString = _siShortPrefixes[(int)Scale];
             var operatorString = (Exponent >= 0) ? "." : "/";
             var exponentString = Math.Abs(Exponent) != 1 ? $"^{Math.Abs(Exponent):g}" : string.Empty;
             var multiplierString = multiplier != 1 ? $"{multiplier}." : "";

@@ -1,6 +1,6 @@
 ﻿using MCRA.Utils.SBML;
 
-namespace MCRA.Utils.Test.UnitTests.Sbml {
+namespace MCRA.Utils.Test.UnitTests.Sbml.Objects {
 
     [TestClass]
     public class SbmlFileReaderTests {
@@ -8,7 +8,7 @@ namespace MCRA.Utils.Test.UnitTests.Sbml {
         [TestMethod]
         [DataRow("simple_lifetime")]
         [DataRow("simple")]
-        public void SbmlUnitDefinition_TestSimpleUnits(string name) {
+        public void SbmlFileReader_TestRead(string name) {
             var filename = $"Resources/Sbml/{name}.sbml";
             var reader = new SbmlFileReader();
             var model = reader.LoadModel(filename);
