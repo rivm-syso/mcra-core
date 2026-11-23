@@ -1,4 +1,5 @@
-﻿using MCRA.Data.Management;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Management;
 using MCRA.Data.Management.CompiledDataManagers.DataReadingSummary;
 using MCRA.General;
 using MCRA.General.Action.Settings;
@@ -45,7 +46,20 @@ namespace MCRA.Simulation.Actions.ConsumerProductUseFrequencies {
             );
 
             data.ConsumerProductIndividuals = individuals;
-            data.AllIndividualConsumerProductUseFrequencies = subsetManager.AllIndividualConsumerProductUseFrequencies;
+            var useFrequencies = subsetManager.AllIndividualConsumerProductUseFrequencies;
+            // Load consumer product use frequencies and check that each survey contains unique products
+            var groups = useFrequencies.GroupBy(c => c.Individual.CodeFoodSurvey).ToList();
+            var cps = new HashSet<ConsumerProduct>();
+            foreach (var group in groups) {
+                var products = group.Select(c => c.Product).ToHashSet();
+                if (cps.Overlaps(products)) {
+                    throw new Exception($"Consumer product use frequencies for survey {group.Key} contain products that are already present in other surveys. " +
+                        $"Each survey must contain unique products.");
+                } else {
+                    cps.UnionWith(products);
+                }
+            }
+            data.AllIndividualConsumerProductUseFrequencies = useFrequencies;
         }
 
         protected override void summarizeActionResult(IConsumerProductUseFrequenciesActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {

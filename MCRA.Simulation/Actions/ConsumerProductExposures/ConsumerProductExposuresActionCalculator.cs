@@ -1,4 +1,5 @@
-﻿using MCRA.General;
+﻿using MCRA.Data.Management;
+using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
 using MCRA.General.ModuleDefinitions.Settings;
@@ -110,10 +111,18 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
                 // Create individual days
                 localProgress.Update("Generating individual days", 30);
 
-                //TODO: take largest survey for now
-                var referenceIndividuals = data.ConsumerProductIndividuals
-                    .GroupBy(c => c.CodeFoodSurvey)
-                    .MaxBy(c => c.Count());
+                var referenceIndividuals = data.ConsumerProductIndividuals;
+                if (data.ConsumerProductSurveys.Count > 1) {
+                    var lookup = data.ConsumerProductSurveys.ToDictionary(c => c.Code, StringComparer.OrdinalIgnoreCase);
+                    if (string.IsNullOrEmpty(ModuleConfig.ReferenceConsumerProductSurvey)
+                        || !lookup.ContainsKey(ModuleConfig.ReferenceConsumerProductSurvey)
+                    ) {
+                        throw new Exception($"Reference consumer product survey '{ModuleConfig.ReferenceConsumerProductSurvey}' is not valid.");
+                    }
+                    referenceIndividuals = data.ConsumerProductIndividuals
+                        .Where(c => c.CodeFoodSurvey.Equals(ModuleConfig.ReferenceConsumerProductSurvey, StringComparison.OrdinalIgnoreCase))
+                        .ToList();
+                }                
 
                 var simulatedIndividuals = referenceIndividuals
                     .Select((ind, ix) => new SimulatedIndividual(ind, ix))

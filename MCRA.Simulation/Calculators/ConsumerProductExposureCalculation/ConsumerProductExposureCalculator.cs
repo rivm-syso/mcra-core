@@ -94,7 +94,7 @@ namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
                 .AsParallel()
                 .Where(r => simulatedIndividuals.Any(c => c.Individual == r.Individual))
                 .ToList();
-            var candidates = individualConsumerProductUseFrequencies
+            var useFrequencies = individualConsumerProductUseFrequencies
                 .Except(references)
                 .ToList();
 
@@ -102,33 +102,35 @@ namespace MCRA.Simulation.Calculators.ConsumerProductExposureCalculation {
                 .GroupBy(c => c.Individual)
                 .ToDictionary(r => r.Key, r => r.ToList());
 
-            if (candidates.Count == 0) {
+            if (useFrequencies.Count == 0) {
                 return useFrequencyLookup;
             }
+            var candidatesPerSurvey = useFrequencies
+                .GroupBy(c => c.Individual.CodeFoodSurvey)
+                .ToList();
+            foreach (var candidates in candidatesPerSurvey) {
+                foreach (var reference in useFrequencyLookup) {
+                    List<IndividualConsumerProductUseFrequency> selectedUseFrequencies = matchingMethod switch {
+                        ConsumerProductMultipleSurveyMatchingMethod.AtRandom => [.. candidates],
+                        ConsumerProductMultipleSurveyMatchingMethod.MatchOnGender => [.. candidates
+                            .Where(c => c.Individual.Gender == reference.Key.Gender)],
+                        ConsumerProductMultipleSurveyMatchingMethod.MatchOnAge => [.. candidates
+                            .GroupBy(c => Math.Abs(c.Individual.Age.HasValue ? c.Individual.Age.Value - reference.Key.Age.Value : double.NaN))
+                            .OrderBy(g => g.Key)
+                            .FirstOrDefault()],
+                        ConsumerProductMultipleSurveyMatchingMethod.MatchOnAgeAndGender => [..candidates
+                            .Where(c => c.Individual.Gender == reference.Key.Gender)
+                            .GroupBy(c => Math.Abs(c.Individual.Age.HasValue ? c.Individual.Age.Value - reference.Key.Age.Value : double.NaN))
+                            .OrderBy(g => g.Key)
+                            .FirstOrDefault()],
+                        _ => []
+                    };
 
-            var selectedUseFrequencies = new List<IndividualConsumerProductUseFrequency>();
-            foreach (var reference in useFrequencyLookup) {
-                if (matchingMethod == ConsumerProductMultipleSurveyMatchingMethod.AtRandom) {
-                    selectedUseFrequencies = [.. candidates];
-                } else if (matchingMethod == ConsumerProductMultipleSurveyMatchingMethod.MatchOnGender) {
-                    selectedUseFrequencies = [.. candidates
-                        .Where(c => c.Individual.Gender == reference.Key.Gender)];
-                } else if (matchingMethod == ConsumerProductMultipleSurveyMatchingMethod.MatchOnAge) {
-                    //TODO what if age is not defined for the reference individual? Should we then select all candidates with undefined age?
-                    selectedUseFrequencies = [.. candidates
-                        .GroupBy(c => Math.Abs(c.Individual.Age.HasValue? c.Individual.Age.Value - reference.Key.Age.Value : double.NaN))
-                        .OrderBy(g => g.Key)
-                        .FirstOrDefault()?.ToList() ?? []];
-                } else if (matchingMethod == ConsumerProductMultipleSurveyMatchingMethod.MatchOnAgeAndGender) {
-                    selectedUseFrequencies = [.. candidates
-                        .Where(c => c.Individual.Gender == reference.Key.Gender)
-                        .GroupBy(c => Math.Abs(c.Individual.Age.HasValue? c.Individual.Age.Value - reference.Key.Age.Value : double.NaN))
-                        .OrderBy(g => g.Key)
-                        .FirstOrDefault()?.ToList() ?? []];
-                }
-                if (selectedUseFrequencies.Count > 0) {
-                    var ix = random.Next(0, selectedUseFrequencies.Count);
-                    useFrequencyLookup[reference.Key].Add(selectedUseFrequencies[ix]);
+                    if (selectedUseFrequencies.Count > 0) {
+                        var groups = selectedUseFrequencies.GroupBy(c => c.Individual).ToList();
+                        var ix = random.Next(0, groups.Count);
+                        useFrequencyLookup[reference.Key].AddRange(groups[ix]);
+                    }
                 }
             }
             return useFrequencyLookup;

@@ -75,4 +75,12 @@
     <ValueType>ConsumerProductMultipleSurveyMatchingMethod</ValueType>
     <DefaultValue>AtRandom</DefaultValue>
   </SettingsItem>
+  <SettingsItem>
+    <Id>ReferenceConsumerProductSurvey</Id>
+    <Name>Select a reference consumer product survey</Name>
+    <Description>
+      Reference survey to be used for consumer product exposure calculations.
+    </Description>
+    <ValueType>AlphaNumeric</ValueType>
+  </SettingsItem>
 </SettingsItems>

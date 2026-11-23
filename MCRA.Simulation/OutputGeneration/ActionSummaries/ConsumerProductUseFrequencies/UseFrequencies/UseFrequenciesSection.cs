@@ -15,16 +15,17 @@ namespace MCRA.Simulation.OutputGeneration {
 
             Records = [.. consumerProductUseFrequencies
                 .Where(c => individuals.Contains(c.Individual))
-                .GroupBy(c => c.Product)
+                .GroupBy(c => (c.Product, c.Individual.CodeFoodSurvey))
                 .Select(c => {
                     var frequencies = c.Select(c => c.Frequency).ToList();
                     var weights = c.Select(c => c.Individual.SamplingWeight).ToList();
                     var percentiles = frequencies.PercentilesWithSamplingWeights(weights, percentages);
                     return new UseFrequenciesSummaryRecord {
-                        Code = c.Key.Code,
-                        Name = c.Key.Name,
-                        NumberOfIndividualDays = individuals.Count,
-                        PercentageOfIndividualDaysWithUse = c.Count(r => r.Frequency > 0) *100d/individuals.Count,
+                        Code = c.Key.Product.Code,
+                        Name = c.Key.Product.Name,
+                        SurveyCode = c.Key.CodeFoodSurvey,
+                        NumberOfIndividualDays = c.Count(),
+                        PercentageOfIndividualDaysWithUse = c.Count(r => r.Frequency > 0) *100d/c.Count(),
                         Mean = frequencies.Average(),
                         Median = percentiles[1],
                         Percentile25All = percentiles[0],

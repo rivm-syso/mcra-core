@@ -20,6 +20,7 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
                 section.SummarizeSetting(SettingsItemType.ConsumerProductAssessmentMatchingMethod, _configuration.ConsumerProductAssessmentMatchingMethod.GetDisplayName());
             }
             section.SummarizeSetting(SettingsItemType.ConsumerProductMultipleSurveyMatchingMethod, _configuration.ConsumerProductMultipleSurveyMatchingMethod.GetDisplayName());
+            section.SummarizeSetting(SettingsItemType.ReferenceConsumerProductSurvey, _configuration.ReferenceConsumerProductSurvey);
             return section;
         }
     }

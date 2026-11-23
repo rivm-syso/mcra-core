@@ -33,6 +33,7 @@
     <CalculationSetting>ConsumerProductExposureCalculationMethod</CalculationSetting>
     <CalculationSetting>ConsumerProductAssessmentMatchingMethod</CalculationSetting>
     <CalculationSetting>ConsumerProductMultipleSurveyMatchingMethod</CalculationSetting>
+    <CalculationSetting>ReferenceConsumerProductSurvey</CalculationSetting>
   </CalculationSettings>
   <OutputSettings>
     <OutputSetting source="Action">SelectedPercentiles</OutputSetting>

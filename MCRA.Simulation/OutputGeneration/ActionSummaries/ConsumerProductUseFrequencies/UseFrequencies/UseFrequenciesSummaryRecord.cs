@@ -15,6 +15,9 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:N0}")]
         public int NumberOfIndividualDays { get; set; }
 
+        [DisplayName("Consumer product survey")]
+        public string SurveyCode { get; set; }
+
         [Description("Percentage of individuals using a consumer product.")]
         [DisplayName("Percentage of individuals with use")]
         [DisplayFormat(DataFormatString = "{0:F1}")]

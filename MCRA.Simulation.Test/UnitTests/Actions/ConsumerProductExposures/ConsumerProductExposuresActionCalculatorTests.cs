@@ -99,7 +99,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions.ConsumerProductExposures {
                 ConsumerProductApplicationAmounts = cpApplicationAmounts,
                 AllIndividualConsumerProductUseFrequencies = cpUseFrequencies,
                 ConsumerProductConcentrationModels = allModels,
-                ConsumerProductIndividuals = individuals
+                ConsumerProductIndividuals = individuals,
+                ConsumerProductSurveys = [new ConsumerProductSurvey()]
             };
 
             var calculator = new ConsumerProductExposuresActionCalculator(project);
