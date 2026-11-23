@@ -1,4 +1,6 @@
-﻿namespace MCRA.Utils.Sbml.Objects {
+﻿using System.Globalization;
+
+namespace MCRA.Utils.Sbml.Objects {
     public class SbmlUnit {
 
         private static readonly Dictionary<int, string> _siPrefixes = new() {
@@ -80,8 +82,8 @@
                 scaleString = $"10^{scale} ";
             }
             var operatorString = (Exponent >= 0) ? "." : "/";
-            var exponentString = Math.Abs(Exponent) != 1 ? $"^{Math.Abs(Exponent):g}" : string.Empty;
-            var multiplierString = multiplier != 1 ? $"{multiplier}." : "";
+            var exponentString = Math.Abs(Exponent) != 1 ? $"^{Math.Abs(Exponent).ToString("g", CultureInfo.InvariantCulture)}" : string.Empty;
+            var multiplierString = multiplier != 1 ? $"{multiplier.ToString("g", CultureInfo.InvariantCulture)}." : "";
             var result = $"{operatorString}{multiplierString}{scaleString}{baseUnitString}{exponentString}";
             return result;
         }
