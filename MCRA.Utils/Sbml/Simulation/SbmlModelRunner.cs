@@ -8,11 +8,10 @@ namespace MCRA.Utils.Sbml.Simulation {
 
         private readonly dynamic _rr = null;
         private readonly Dictionary<string, string> _eventCache = [];
-
+        private readonly Dictionary<string, string> _eventParamCache = [];
         private dynamic _model = null;
 
         public SbmlModelRunner() {
-            // Initialize python and acquire GIL for the lifetime of the runner
             if (!PythonEngine.IsInitialized) {
                 PythonEngine.Initialize();
                 PythonEngine.BeginAllowThreads();
@@ -97,7 +96,7 @@ namespace MCRA.Utils.Sbml.Simulation {
             var changed = false;
 
             var clearEvents = !ReuseEvents;
-            if (ReuseEvents && _eventCache != null) {
+            if (ReuseEvents && _eventCache.Count > 0) {
                 // Check if events match cache
                 var eventFingerprints = exposureEvents.Select(r => r.Id).ToHashSet();
                 clearEvents = eventFingerprints.Count != _eventCache.Count
@@ -110,7 +109,12 @@ namespace MCRA.Utils.Sbml.Simulation {
                 foreach (var eventId in eventIds) {
                     _model.removeEvent(eventId, false);
                 }
-                _eventCache?.Clear();
+                foreach (var eventParamId in _eventParamCache.Values) {
+                    _model.removeParameter(eventParamId, false);
+                }   
+                _eventCache.Clear();
+                _eventParamCache.Clear();
+
                 changed = true;
             }
 
@@ -133,11 +137,11 @@ namespace MCRA.Utils.Sbml.Simulation {
                     if (_eventCache.TryGetValue(fingerprint, out var eventId)) {
                         // Set dose parameter value of the event
                         // --- INDIVIDUAL 2+ (Or Cached Path) ---
-                        eventParamId = $"dose_{eventId}";
+                        eventParamId = toEventParamId(eventId);
                     } else {
                         // Event not found; create event and add to cache
-                        eventId = $"ev_{eidCounter++}";
-                        eventParamId = $"dose_{eventId}";
+                        eventId = toEventId(eidCounter++);
+                        eventParamId = toEventParamId(eventId);
                         var assignment = !string.IsNullOrEmpty(events.Adjustment)
                             ? $"{events.Target} + {eventParamId}{events.Adjustment}"
                             : $"{events.Target} + {eventParamId}";
@@ -146,7 +150,9 @@ namespace MCRA.Utils.Sbml.Simulation {
                         _model.setConstant(eventParamId, false);
                         _model.addEvent(eventId, false, trigger, false);
                         _model.addEventAssignment(eventId, events.Target, assignment, false);
+
                         _eventCache.Add(fingerprint, eventId);
+                        _eventParamCache.Add(fingerprint, eventParamId);
                         changed = true;
                     }
                     // CRITICAL: Explicitly set the initial value metadata so it survives the reset lifecycle
@@ -159,14 +165,23 @@ namespace MCRA.Utils.Sbml.Simulation {
                     var assignment = !string.IsNullOrEmpty(events.Adjustment)
                         ? $"{events.Target} + {value}{events.Adjustment}"
                         : $"{events.Target} + {value}";
-                    var eventId = $"ev_{eidCounter++}";
+                    var eventId = toEventId(eidCounter++);
                     _model.addEvent(eventId, false, trigger, false);
                     _model.addEventAssignment(eventId, events.Target, assignment, false);
+
                     changed = true;
                 }
             }
             // Events changed or newly created
             return changed;
+        }
+
+        private static string toEventId(int eidCounter) {
+            return $"ev_{eidCounter}";
+        }
+
+        private static string toEventParamId(string eventId) {
+            return $"dose_{eventId}";
         }
     }
 }
