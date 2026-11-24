@@ -79,7 +79,7 @@ namespace MCRA.Utils.Sbml.Objects {
             ) {
                 scaleString = scaleStr;
             } else {
-                scaleString = $"10^{scale} ";
+                scaleString = $"10^{scale.ToString("g", CultureInfo.InvariantCulture)}" + " ";
             }
             var operatorString = (Exponent >= 0) ? "." : "/";
             var exponentString = Math.Abs(Exponent) != 1 ? $"^{Math.Abs(Exponent).ToString("g", CultureInfo.InvariantCulture)}" : string.Empty;
