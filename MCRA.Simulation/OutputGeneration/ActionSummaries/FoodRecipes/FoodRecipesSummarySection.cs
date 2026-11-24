@@ -29,7 +29,13 @@ namespace MCRA.Simulation.OutputGeneration {
                 .ToList();
         }
 
-        private static List<RecursiveRecipe> fillRecursive(string foodFromCode, ILookup<string, FoodTranslation> recipesLookup, Dictionary<string, Food> foodsLookup, IDictionary<string, ProcessingType> processingTypesLookup, HashSet<string> foodTrace) {
+        private static List<RecursiveRecipe> fillRecursive(
+            string foodFromCode,
+            ILookup<string, FoodTranslation> recipesLookup,
+            Dictionary<string, Food> foodsLookup,
+            IDictionary<string, ProcessingType> processingTypesLookup,
+            HashSet<string> foodTrace
+        ) {
             var result = new List<RecursiveRecipe>();
             foodsLookup.TryGetValue(foodFromCode, out var foodFrom);
             var foodFromName = getFoodName(foodFromCode, foodsLookup, processingTypesLookup);
@@ -43,9 +49,9 @@ namespace MCRA.Simulation.OutputGeneration {
                         FoodFromName = foodFromName,
                         FoodToCode = foodToCode,
                         FoodToName = foodToName,
-                        Proportion = item.Proportion
+                        Proportion = item.Proportion / 100D
                     };
-                    var localTrace = foodTrace.Union(new List<string>() { foodFromCode }).ToHashSet(StringComparer.OrdinalIgnoreCase);
+                    var localTrace = foodTrace.Union([foodFromCode]).ToHashSet(StringComparer.OrdinalIgnoreCase);
                     if (!localTrace.Contains(foodToCode)) {
                         record.Children = fillRecursive(foodToCode, recipesLookup, foodsLookup, processingTypesLookup, localTrace);
                     } else {
@@ -79,10 +85,6 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <summary>
         /// Read the food as eaten and last food of the recipe
         /// </summary>
-        /// <param name="recursiveRecipe"></param>
-        /// <param name="trace"></param>
-        /// <param name="proportion"></param>
-        /// <param name="traces"></param>
         private static List<FoodRecipesSummaryRecord> readRecursive(RecursiveRecipe recursiveRecipe) {
             var result = new List<FoodRecipesSummaryRecord>();
             if (recursiveRecipe.Children?.Count > 0) {
@@ -112,7 +114,11 @@ namespace MCRA.Simulation.OutputGeneration {
             return result;
         }
 
-        private static string getFoodName(string code, IDictionary<string, Food> foodsLookup, IDictionary<string, ProcessingType> processingTypesLookup) {
+        private static string getFoodName(
+            string code,
+            IDictionary<string, Food> foodsLookup,
+            IDictionary<string, ProcessingType> processingTypesLookup
+        ) {
             foodsLookup.TryGetValue(code, out var food);
             if (!string.IsNullOrEmpty(food?.Name)) {
                 return food.Name;
@@ -125,10 +131,6 @@ namespace MCRA.Simulation.OutputGeneration {
                 }
             }
             return code;
-        }
-
-        private static string removeProcessingPart(string text) {
-            return new string(text.TakeWhile(c => !c.Equals('-')).ToArray());
         }
 
         private class RecursiveRecipe {

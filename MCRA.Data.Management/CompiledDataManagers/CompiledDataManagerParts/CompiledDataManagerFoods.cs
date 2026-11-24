@@ -71,9 +71,9 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         var record = new FoodUnitWeight {
                                             Food = food,
                                             Location = location,
-                                            Qualifier= r.GetEnum(RawFoodUnitWeights.Qualifier, fieldMap, ValueQualifier.Equals),
+                                            Qualifier = r.GetEnum(RawFoodUnitWeights.Qualifier, fieldMap, ValueQualifier.Equals),
                                             Value = r.GetDouble(RawFoodUnitWeights.Value, fieldMap),
-                                            ValueType= r.GetEnum(RawFoodUnitWeights.ValueType, fieldMap, UnitWeightValueType.UnitWeightRac),
+                                            ValueType = r.GetEnum(RawFoodUnitWeights.ValueType, fieldMap, UnitWeightValueType.UnitWeightRac),
                                             Reference = r.GetStringOrNull(RawFoodUnitWeights.Reference, fieldMap),
                                         };
                                         if (!string.IsNullOrEmpty(location)) {
@@ -211,7 +211,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             Code = processingTypeCode,
                                             Name = name,
                                             Description = description,
-                                            IsBulkingBlending = r.GetBoolean(RawProcessingTypes.BulkingBlending, fieldMap),
+                                            IsBulkingBlending = r.GetBooleanOrNull(RawProcessingTypes.BulkingBlending, fieldMap) ?? false,
                                             DistributionType = r.GetEnum(RawProcessingTypes.DistributionType, fieldMap, ProcessingDistributionType.LogisticNormal)
                                         };
                                         allProcessingTypes[pt.Code] = pt;
