@@ -19,9 +19,12 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
             if (_configuration.ConsumerProductExposureCalculationMethod == ConsumerProductExposureCalculationMethod.FromExposureEstimates) {
                 section.SummarizeSetting(SettingsItemType.ConsumerProductAssessmentMatchingMethod, _configuration.ConsumerProductAssessmentMatchingMethod.GetDisplayName());
             }
-            section.SummarizeSetting(SettingsItemType.ConsumerProductMultipleSurveyMatchingMethod, _configuration.ConsumerProductMultipleSurveyMatchingMethod.GetDisplayName());
-            section.SummarizeSetting(SettingsItemType.ReferenceConsumerProductSurvey, _configuration.ReferenceConsumerProductSurvey);
+            if (!string.IsNullOrEmpty(_configuration.ReferenceConsumerProductSurvey)) {
+                section.SummarizeSetting(SettingsItemType.ConsumerProductMultipleSurveyMatchingMethod, _configuration.ConsumerProductMultipleSurveyMatchingMethod.GetDisplayName());
+                section.SummarizeSetting(SettingsItemType.ReferenceConsumerProductSurvey, _configuration.ReferenceConsumerProductSurvey);
+            }
             return section;
+
         }
     }
 }

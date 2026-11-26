@@ -1,5 +1,6 @@
 ﻿using MCRA.Data.Management;
 using MCRA.General;
+using MCRA.General.Action.ActionSettingsManagement;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
 using MCRA.General.ModuleDefinitions.Settings;
@@ -36,6 +37,9 @@ namespace MCRA.Simulation.Actions.ConsumerProductExposures {
         protected override ActionSettingsSummary summarizeSettings() {
             var summarizer = new ConsumerProductExposuresSettingsSummarizer(ModuleConfig);
             return summarizer.Summarize(_project);
+        }
+        public override IActionSettingsManager GetSettingsManager() {
+            return new ConsumerProductExposuresSettingsManager();
         }
 
         protected override ConsumerProductExposuresActionResult run(
