@@ -38,6 +38,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add(nameof(KineticConversionFactorModelSummaryRecord.UncertaintyLowerBoundPercentile));
                 hiddenProperties.Add(nameof(KineticConversionFactorModelSummaryRecord.UncertaintyUpperBoundPercentile));
             }
+            if (Model.Records.All(r => string.IsNullOrEmpty(r.KineticModelType))) {
+                hiddenProperties.Add(nameof(KineticConversionFactorModelSummaryRecord.KineticModelType));
+            }
 
             sb.AppendDescriptionParagraph($"Number of kinetic conversion factor records: {Model.Records.Count}");
             if (Model.Records?.Count > 0) {

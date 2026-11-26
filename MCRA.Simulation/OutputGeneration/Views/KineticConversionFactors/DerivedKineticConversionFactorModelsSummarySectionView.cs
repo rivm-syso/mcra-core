@@ -45,6 +45,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 if (Model.Records.All(r => string.IsNullOrEmpty(r.KineticModelType))) {
                     hiddenProperties.Add(nameof(KineticConversionFactorModelSummaryRecord.KineticModelType));
                 }
+
                 var tabSb = new StringBuilder();
                 tabSb.AppendDescriptionParagraph($"Number of kinetic conversion factor records: {Model.Records.Count}");
                 if (Model.Records?.Count > 0) {
