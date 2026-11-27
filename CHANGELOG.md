@@ -1,5 +1,32 @@
 # Change Log
 
+## Version 10.3.5 (2026-11-27)
+
+### Added
+
+- Update looping functionality to allow specification of looping through loop-configurations (#2503)
+- Extend functionality of consumer product exposures module to support combining multiple surveys (#2536)
+- Add PBK simulation drilldown to kinetic conversion factors compute action
+- Add table aliases for PBK model instances/parametrisations
+- Update get-unit-string method for SBML units to accept more types of units
+
+### Fixed
+
+- Refactor loading of individuals with the same ID from multiple surveys in ConsumerProductUseFrequencies (#2536)
+- Correct summarizing of proportions in food recipes data section (#2569)
+- Add action settings manager for initial route selection and correct validity check for consumer product exposures module
+- Adjust appsettings for SbmlRoadRunnerWorker to match CLI
+- Always use decimal point for SBML unit definitions, InvariantCulture
+- Clear events of the SBML roadrunner should also remove the parameters
+- Correct BW adjustment in kinetic conversion factor calculation
+- Correct computation of uncertainties in ebd summary plots
+- Correct PBK models table group definition
+- Correct setting of individual age/bw in kinetic conversion factor calculator
+- Hide kinetic model type in kinetic conversion factor models summary section
+- Kinetic conversion factor calculation for lifetime simulations
+- Relax criterion for displaying ebd summary plots
+- Use decimal point for exponent unit of SBML unit definitions, InvariantCulture
+
 ## Version 10.3.4 (2026-11-13)
 
 ### Added
